@@ -157,10 +157,13 @@ Re-critique if the score is below target (set the target from the 2.1 result). O
 the job-to-be-done: find and cite the work.
 
 - [ ] **2.1 Home** (`/`) — the masthead page; the assert/reassure balance lives here.
-- [ ] **2.2 Publications index + detail** — the citation path, the single most important
+- [x] **2.2 Publications index + detail** — the citation path, the single most important
       flow. Include the bibliography row, BibTeX action, and DOI rendering in scope.
-- [ ] **2.3 Conference activity index + communications detail** — includes the slides
-      embed on detail pages.
+      _(Index done 2026-09-08 — facet apparatus. The detail page was refactored onto the
+      shared record shell in 2.3; a critique of the bibliography row / BibTeX / DOI path
+      itself is still owed.)_
+- [x] **2.3 Conference activity index + communications detail** — includes the slides
+      embed on detail pages. _(Detail done 2026-09-08; the index shares 2.2's facet fix.)_
 - [ ] **2.4 CV + timeline** — the scan-heavy page; ledger discipline and the PDF export
       (whose colours must match the current palette — verify, it has drifted before).
 - [ ] **2.5 Research index + the 6 project pages** — the static pages drift most easily;
@@ -481,5 +484,89 @@ Detector clean across all 46 changed files; parser deps confirmed present before
 reads taken after swapping the `html` class and disabling transitions. That is sufficient for rule
 weights, colours and intervals — all discrete values — but it is why 1.5 (midnight type compensation),
 which needs optical judgement, still cannot be done in this kind of session.
+
+**2026-09-08 — 2.2 publications index, facet apparatus (`/impeccable critique` → fix) — done.**
+Session run with the orchestrator/agent split (Fable directing, one Opus agent per item; the
+2.3 agent ran concurrently). Eight findings scored; five fixed here. The finding-aid's two open
+facets were laid out as if they were closed ones: "All 95 tags ↓" expanded twelve chips into the
+whole vocabulary (117 on current data) and "All 60 co-authors ↓" an eight-row ledger into sixty,
+growing the page by a screen and a half while the three neighbouring columns ended at ~200px and
+left three quarters of the apparatus as empty paper — the opposite of the density the brief asks
+for. Worse, a value the cut hid was _unremovable_: a `?tag=` deep link from a detail page, or a
+pick at rank 60, filtered the bibliography while rendering no control at all. Replaced both toggles
+with **`FacetCombobox`** — the WAI-ARIA editable combobox with list autocomplete
+(`aria-activedescendant` over a `role="listbox"`, arrow/Home/End/Enter/Escape/Tab, click-outside
+close, no blur on pick because multi-select is the norm here). Cast strictly: the field is
+machine-facing so it is the data voice and mirrors `.pub-search`; each row is a ledger line (9px
+marker, serif value, mono count, hairline between) so the overlay reads as the same apparatus as
+the columns it hangs under. The listbox is a **plate, not a card** — paper ground, 1px border,
+square corners, no shadow, top edge collapsed onto the field's — capped at eight rows and
+scrolled, and `position: absolute` deliberately: overlaying what follows is precisely what kills
+the empty space. The printed head of each facet stays frequency-ranked (real data as ornament);
+only the tail moved behind typing, and any selected value the cut would hide is merged back into
+the visible chips/rows (`visibleFacetOptions`) so a deep link is always switchable off in place.
+Matching folds case, diacritics and curly apostrophes (`cote` → Côte d'Ivoire) and ranks by the
+live disjunctive count, extracted to `facetSearch.ts` with 18 unit tests. Orchestrator's one
+refinement after the browser pass: Enter with a typed query and no active option commits the top
+match — the APG-strict version silently did nothing on `cote ⏎`. Also moved the **"N filters
+active · M matches / Clear all ✕"** summary out of the tags column and out of the grid: it is a
+statement about the whole narrowing, and living inside a module that is `display: none` below
+`--lg` meant phones with facets closed had neither a match count nor a way to clear. Midnight
+caught by token reasoning: the first draft grounded the plate in `--color-surface-elevated` and
+its hover row in `--color-background-muted`, which both resolve to `--sys-color-film-200` — the
+plate would have swallowed its own selection; regrounded on `--color-surface`. Idiom extracted to
+`ink-signal.css` (with `--touch` 44px targets) and documented live on `/style-guide` § 5.
+**Browser-verified** (dev server, computed reads + screenshots): typed match, Enter, arrow
+toggle, URL sync (`?tag=Data+Sovereignty&tag=Digital+Sovereignty`), rank-60 deep link rendering
+its chip, 44px input at 375px with the summary visible while the grid is collapsed, both themes.
+**Declined:** the craft floor's glyph-as-icon ban — the brief casts `↓ ↑ ✕` as mono stamps.
+**Left for later:** the countries facet still truncates nine values at eight; the five facet
+`<h2>`s sit at section level in the document outline (a document-outline pass).
+
+**2026-09-08 — 2.3 communications detail (`/impeccable critique` → extract → rebuild) — done.**
+Eight findings, all fixed. The headline one is that `/communications/[id]` was not a weaker
+version of the publication record but a _different template_: metadata inside the reading column
+as a `DetailsGrid`, panel papers and participants as bordered cards, and the access links six
+screens down under the tags in ink rather than accent; pine appeared ~10 times per screen (every
+participant role was an accent stamp). The fix was extraction, not a second implementation.
+**`RecordLayout`** (`components/common/`) now owns what is true of any record — editorial
+breadcrumb, mono-eyebrow/Archivo/serif-italic masthead, the `minmax(0,1fr) 380px` grid with the
+sticky rail, the `--lg-down` `display: contents` order choreography, and both JSON-LD injections —
+exposing `main` / `railPrimary` / `railSecondary` / `related` snippets. The rail is split in two
+because that ordering is the design: block one identifies and opens the record and belongs beside
+the title, block two indexes it and belongs after the document it indexes. `pub-*` classes renamed
+`record-*`; `PublicationAside` split into `PublicationRecordRail` + `PublicationIndexRail`, and
+`CommunicationRecordRail` mirrors the first. One real bug surfaced in the move: the rail's base
+`display: flex` and the breakpoint's `display: contents` carry equal specificity, so the base
+declaration only survives by preceding it — commented at the site. **The metadata ledger is now a
+named idiom:** `.meta-ledger` moved into `ink-signal.css` alongside `.rail-label` / `.rail-plate`
+/ `.rail-cta`, rendered by `<RecordLedger rows label>` and documented on `/style-guide` § 4 as
+_not_ a `.ledger` variant — the ledger sets a record (mono key against serif content, because the
+content is authored), the meta-ledger sets a record's catalogue entry, where both columns are
+strings a database could hold, so both are the data voice over a 5.5rem key. **Papers and
+participants became ledger rows**, keyed by programme order (`01`, `02`) and by role (`CHAIR`,
+`SPEAKER`, `—`), retiring the last cards-in-the-reading-column on the site and the two-up
+participants grid that gave the text-heaviest records the least measure. Pine is down to four
+countable occurrences per screen: the role stamps became ledger keys in faint ink, and the buried
+ink `btn-primary` became the rail's single `btn-accent`, with a "View slides ↓" jump to the
+embedded deck (previously an anchor nothing linked to). Also consolidated: `formatByline`
+(`utils/byline.ts`, 6 tests) replaces three copies of the same name-joiner — deliberately not in
+`nameUtils`, which the MCP server bundles; `AbstractSection` and `PublicationAside` deleted as
+dead; `getCommunicationTypeBadge('podcast')` no longer falls through to the raw lowercase type;
+`SlideDeckEmbed`'s poster slot corrected from 1150px to 580px now that the deck sits in the
+reading column. **Browser-verified** on a plain paper, a panel with papers, an event with
+participants, the deck+map talk and the podcast (Episode row), plus `/publications/[id]` parity,
+daylight and midnight, 800/1440px. **Declined:** a "Slides" eyebrow token (a deck is an action,
+not a fact about the record); and three `craft-floor.md` defaults the brief overrides — its ban on
+eyebrows, its ban on `01/02/03` keys (here programme order is real information the Ledger Default
+Rule wants hung), and its 65–75ch floor, superseded by the Measured Line Rule. **Deferred:**
+`ResearchProjectLayout` is already the same page structurally and should adopt `RecordLayout`
+once four differences are absorbed (no breadcrumb, a standfirst where a record has a byline, an
+undivided rail, its own gap values); `EntityDetailLayout` is down to two consumers, for 2.6/2.7.
+
+**Ship gate for both (one commit):** `format`, `lint`, `check` (1090 files, 0 errors), `test`
+(744 unit, +24), `build`, `check:build` (shared JS 106.2/140 KiB; 197 sitemap URLs resolve),
+`test:e2e` (32 passed, 1 skipped). Detector clean on every changed file; the detector's parser
+deps were absent again after the plugin update and the Svelte/CSS scan path was confirmed to run.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

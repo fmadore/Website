@@ -154,10 +154,10 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 Components in `src/lib/components/` follow atomic design:
 
 - **atoms/**: Basic elements (Button, NetworkStatusIndicator, RangeSlider, TweenedCount). `Button` skins a control as `.btn`; pass `bare` for a control that is a button semantically but must not look like one (transport controls, close crosses) — it renders the zero-specificity `.btn-bare` primitive instead, so your own class styles it without `!important`.
-- **molecules/**: Simple compositions (BibliographyRow, Breadcrumb, HeroImageDisplay, Pagination, RelatedItemCard, TagList, DetailsGrid, …)
+- **molecules/**: Simple compositions (BibliographyRow, Breadcrumb, HeroImageDisplay, Pagination, RelatedItemCard, TagList, DetailsGrid, RecordLedger — the `.meta-ledger` catalogue entry of a record rail, …)
 - **organisms/**: Complex UI (RelatedItemsList)
-- **common/**: Shared layout (Footer, Card, ContentBody, PageHeader, PageIntro, ProfileBanner, EntityDetailLayout). There is no shared _index_ layout component: the index pages compose `entity-index.css` with `EntityFilterBar`/`EntityFacetGrid` directly.
-- **entity-index/**: The live filter UI (EntityFilterBar, EntityFacetGrid)
+- **common/**: Shared layout (Footer, Card, ContentBody, PageHeader, PageIntro, ProfileBanner, EntityDetailLayout, RecordLayout). `RecordLayout` is the record shell — editorial breadcrumb, masthead, reading column, sticky 380px metadata rail with `main`/`railPrimary`/`railSecondary`/`related` snippets — shared by `/publications/[id]` and `/communications/[id]`; `EntityDetailLayout` remains for `/activities/[id]` and `/digital-humanities/[id]`. There is no shared _index_ layout component: the index pages compose `entity-index.css` with `EntityFilterBar`/`EntityFacetGrid` directly.
+- **entity-index/**: The live filter UI (EntityFilterBar, EntityFacetGrid, FacetCombobox — the WAI-ARIA combobox that replaces "All N ↓" expansion on the long facets; its pure matching/ranking lives in `facetSearch.ts`)
 - **Feature-specific**: publications/, communications/, activities/, cv/, menu/ (Header, NavLink, …), panels/, media/, visualisations/, reference/, research/, digital-humanities/
 
 ### State Management

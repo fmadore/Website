@@ -1,10 +1,13 @@
 <script lang="ts" generics="TItem">
 	// Facet grid (finding-aid apparatus) of the entity-index pages:
-	// projects · co-authors · countries · year slider · tags · summary row.
+	// projects · co-authors · countries · year slider · tags, with the narrowing
+	// summary ruled off beneath the grid.
 	// Previously byte-identical markup duplicated across /publications and
 	// /conference-activity; now parameterized by the runed EntityFilterSystem.
 	// Styled by entity-index.css (imported by the page).
 	import RangeSlider from '$lib/components/atoms/RangeSlider.svelte';
+	import FacetCombobox from './FacetCombobox.svelte';
+	import { visibleFacetOptions } from './facetSearch';
 	import type { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 	// Facet *labels* are typeset; the raw value stays the toggle key and the URL
 	// parameter, so filtering and deep links keep matching the data.
@@ -42,17 +45,18 @@
 	const af = $derived(filters.activeFilters);
 	const options = $derived(filters.filterOptions);
 
-	// Overflow toggles for the long facet columns.
+	// The open facets (tags: 95 values, co-authors: 60) print their
+	// frequency-ranked head and reach the tail through a combobox — laying the
+	// whole list out grew the page by a screen and a half. A selected value the
+	// cut would hide is merged back in, so a `?tag=` deep link or a combobox
+	// pick is always visible and always switchable off in place.
 	const AUTHOR_LIMIT = 8;
 	const TAG_LIMIT = 12;
+	// Countries is a closed list (single figures), so it still prints in full.
 	const COUNTRY_LIMIT = 8;
-	let showAllAuthors = $state(false);
-	let showAllTags = $state(false);
 	let showAllCountries = $state(false);
-	const visibleAuthors = $derived(
-		showAllAuthors ? options.authors : options.authors.slice(0, AUTHOR_LIMIT)
-	);
-	const visibleTags = $derived(showAllTags ? options.tags : options.tags.slice(0, TAG_LIMIT));
+	const visibleAuthors = $derived(visibleFacetOptions(options.authors, AUTHOR_LIMIT, af.authors));
+	const visibleTags = $derived(visibleFacetOptions(options.tags, TAG_LIMIT, af.tags));
 	const visibleCountries = $derived(
 		showAllCountries ? options.countries : options.countries.slice(0, COUNTRY_LIMIT)
 	);
@@ -113,9 +117,13 @@
 				{/each}
 			</ul>
 			{#if options.authors.length > AUTHOR_LIMIT}
-				<button type="button" class="facet-more" onclick={() => (showAllAuthors = !showAllAuthors)}>
-					{showAllAuthors ? 'Show fewer ↑' : `All ${options.authors.length} co-authors ↓`}
-				</button>
+				<FacetCombobox
+					options={options.authors}
+					counts={filters.counts.authors}
+					selected={af.authors}
+					label="co-authors"
+					ontoggle={(value) => filters.toggle('authors', value)}
+				/>
 			{/if}
 		</div>
 	{/if}
@@ -173,9 +181,9 @@
 		{/if}
 	</div>
 
-	<!-- TAGS + summary -->
+	<!-- TAGS -->
 	{#if options.tags.length > 0}
-		<div class="facet-col facet-col--tags">
+		<div class="facet-col">
 			<h2 class="facet-label">Tags</h2>
 			<div class="chip-row facet-tags">
 				{#each visibleTags as tag (tag)}
@@ -190,27 +198,37 @@
 				{/each}
 			</div>
 			{#if options.tags.length > TAG_LIMIT}
-				<button type="button" class="facet-more" onclick={() => (showAllTags = !showAllTags)}>
-					{showAllTags ? 'Show fewer ↑' : `All ${options.tags.length} tags ↓`}
-				</button>
+				<FacetCombobox
+					options={options.tags}
+					counts={filters.counts.tags}
+					selected={af.tags}
+					label="tags"
+					ontoggle={(value) => filters.toggle('tags', value)}
+				/>
 			{/if}
-
-			<div class="facet-summary">
-				<!-- Announce filter-result changes to screen readers -->
-				<span class="facet-summary-stat" aria-live="polite">
-					{#if activeFilterCount > 0}
-						<span class="facet-summary-count">{activeFilterCount}</span>
-						{activeFilterCount === 1 ? 'filter' : 'filters'} active ·
-						<span class="facet-summary-count">{matchCount}</span>
-						{matchCount === 1 ? 'match' : 'matches'}
-					{:else}
-						{totalEntries} entries
-					{/if}
-				</span>
-				{#if anyNarrowing}
-					<button type="button" class="facet-clear" onclick={onclearall}>Clear all ✕</button>
-				{/if}
-			</div>
 		</div>
 	{/if}
 </section>
+
+<!-- SUMMARY — a statement about the whole narrowing, not about tags, so it
+     rules off the apparatus instead of hanging under the fourth column. Outside
+     the grid deliberately: below --lg the grid collapses behind the
+     Advanced-filters toggle, which used to take the match count and the
+     "Clear all" affordance down with it on exactly the viewport where the
+     reader most needs to know how many records are left. -->
+<div class="facet-summary">
+	<!-- Announce filter-result changes to screen readers -->
+	<span class="facet-summary-stat" aria-live="polite">
+		{#if activeFilterCount > 0}
+			<span class="facet-summary-count">{activeFilterCount}</span>
+			{activeFilterCount === 1 ? 'filter' : 'filters'} active ·
+			<span class="facet-summary-count">{matchCount}</span>
+			{matchCount === 1 ? 'match' : 'matches'}
+		{:else}
+			{totalEntries} entries
+		{/if}
+	</span>
+	{#if anyNarrowing}
+		<button type="button" class="facet-clear" onclick={onclearall}>Clear all ✕</button>
+	{/if}
+</div>

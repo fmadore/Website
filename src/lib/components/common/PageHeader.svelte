@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { formatByline } from '$lib/utils/byline';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import TagList from '$lib/components/molecules/TagList.svelte'; // Use the one from molecules
 
@@ -24,16 +25,6 @@
 		editors?: string | string[] | undefined;
 		additionalClasses?: string;
 	} = $props();
-
-	// Helper function to format a list of names with "and" before the last one.
-	// Typeset on the way out: names carry apostrophes ("N'Dri", "King's College").
-	function formatNameList(names: string | string[] | undefined): string {
-		if (!names) return '';
-		if (typeof names === 'string') return typesetQuotes(names);
-		if (names.length === 1) return typesetQuotes(names[0]);
-		if (names.length === 2) return typesetQuotes(`${names[0]} and ${names[1]}`);
-		return typesetQuotes(`${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`);
-	}
 
 	// The masthead title — the one string every detail route funnels through here.
 	const displayTitle = $derived(typesetQuotes(title));
@@ -60,13 +51,13 @@
 
 		{#if authors && authors.length > 0}
 			<div class="authors">
-				{formatNameList(authors)}
+				{formatByline(authors)}
 			</div>
 		{/if}
 
 		{#if editors}
 			<div class="editors">
-				Edited by {formatNameList(editors)}
+				Edited by {formatByline(editors)}
 			</div>
 		{/if}
 

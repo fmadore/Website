@@ -48,10 +48,12 @@
 	});
 	const posterSrc = $derived(resolveImagePath(posterPath, base));
 	const posterSrcset = $derived(buildSrcset(posterSrc));
-	// Measured against the detail page's content column: the stage caps at
-	// 1150px and sits at roughly 85vw below that. Overstating a slot only costs
-	// bytes; understating it picks a candidate too small and renders soft.
-	const POSTER_SIZES = '(min-width: 1200px) 1150px, 85vw';
+	// Measured against the detail page's reading column, which is no longer the
+	// full page: the record layout gives the document `--container-lg` minus the
+	// 380px metadata rail and its gutter, so the stage caps near 580px and takes
+	// roughly 90vw once the rail dissolves below --lg. Overstating a slot only
+	// costs bytes; understating it picks a candidate too small and renders soft.
+	const POSTER_SIZES = '(min-width: 1024px) 580px, 90vw';
 
 	function activate() {
 		activated = true;

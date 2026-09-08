@@ -5,6 +5,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
+	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
 	import {
 		allPublicationSummaries as allPublications,
 		publicationSummariesByYear as publicationsByYear,
@@ -204,6 +205,15 @@
 	const topTags = Object.entries(tagCounts)
 		.sort((a, b) => b[1] - a[1])
 		.slice(0, 3);
+
+	// The facet combobox below runs on the real publications tag vocabulary; its
+	// picks narrow nothing here, they only demonstrate the selected state.
+	let demoFacetTags = $state<string[]>([]);
+	function toggleDemoFacetTag(tag: string) {
+		demoFacetTags = demoFacetTags.includes(tag)
+			? demoFacetTags.filter((t) => t !== tag)
+			: [...demoFacetTags, tag];
+	}
 
 	const pubYears = Object.keys(publicationsByYear)
 		.map(Number)
@@ -461,6 +471,46 @@
 					<span class="ledger-meta">Meta →</span>
 				</div>
 			</div>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">The meta-ledger — a catalogue entry</h3>
+			<p class="guide-note">
+				A distinct idiom, not a variant. The ledger above sets a <em>record</em>: mono key against
+				serif content, because the content is something the scholar wrote. The meta-ledger sets a
+				record’s <em>catalogue entry</em> — journal, DOI, place, date — where both columns are strings
+				a database could hold, so both are the data voice, over a key column narrowed to 5.5rem for the
+				380px metadata rail. It is what the “Record” block prints on a publication or a talk, above the
+				rail’s label and action stack.
+			</p>
+
+			<div class="guide-rail">
+				<p class="rail-label">Record</p>
+				<dl class="meta-ledger">
+					<div class="meta-row">
+						<dt class="meta-key">Type</dt>
+						<dd class="meta-value">Journal Article</dd>
+					</div>
+					<div class="meta-row">
+						<dt class="meta-key">Journal</dt>
+						<dd class="meta-value">Islamic Africa</dd>
+					</div>
+					<div class="meta-row">
+						<dt class="meta-key">Date</dt>
+						<dd class="meta-value">2026</dd>
+					</div>
+					<div class="meta-row">
+						<dt class="meta-key">DOI</dt>
+						<dd class="meta-value meta-value--accent">10.1163/21540993-01201007 ↗</dd>
+					</div>
+				</dl>
+				<div class="rail-cta">
+					<span class="btn btn-accent btn-block">Access Publication ↗</span>
+					<span class="btn btn-outline-primary btn-block">Export BibTeX</span>
+				</div>
+			</div>
+			<p class="guide-caption">
+				Pine marks only the row that leaves the record — a DOI, a live project page — and only one
+				control in the stack carries the accent fill.
+			</p>
 		</section>
 
 		<!-- ================================================================
@@ -486,6 +536,28 @@
 				{/each}
 				<span class="chip-more">All {allTags.length} tags ↓</span>
 			</div>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">Facet combobox</h3>
+			<p class="guide-note">
+				A chip row prints a closed list; an open one is reached by typing. The field is
+				machine-facing, so it takes the data voice and the square edge of the search field, and the
+				listbox is a plate rather than a floating card — paper ground, 1px border, ledger rows with
+				the serif value left and the mono count right. It overlays what follows on purpose: laying
+				all {allTags.length} publication tags out grew the index by a screen and a half. Matching ignores
+				case and diacritics, so <span class="data-voice">cote</span> reaches Côte d’Ivoire.
+			</p>
+			<div class="guide-combobox">
+				<FacetCombobox
+					options={allTags}
+					counts={tagCounts}
+					selected={demoFacetTags}
+					label="tags"
+					ontoggle={toggleDemoFacetTag}
+				/>
+			</div>
+			<p class="guide-caption">
+				Counts are real. Picks here narrow nothing — they only show the selected state.
+			</p>
 
 			<h3 class="eyebrow eyebrow--ink guide-subhead">Pagination</h3>
 			<div class="pager">
@@ -641,6 +713,21 @@
 
 	.guide-subhead {
 		margin-top: var(--space-xl);
+	}
+
+	/* The combobox fills its facet column on the index pages; here it gets a
+	 * column's worth of width so the demo reads at its real proportions. */
+	.guide-combobox {
+		max-width: 22rem;
+	}
+
+	/* The metadata rail is 380px on a record page; the demo is set at that width
+	 * so the 5.5rem key column reads at the proportion it actually ships in. */
+	.guide-rail {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-xl);
+		max-width: 380px;
 	}
 
 	/* ===== Colour swatches ===== */

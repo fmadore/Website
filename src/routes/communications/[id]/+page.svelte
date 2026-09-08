@@ -5,12 +5,8 @@
 	import { base } from '$app/paths';
 	import type { Communication } from '$lib/types/communication';
 	import type { ComponentType } from 'svelte';
-	import EntityDetailLayout from '$lib/components/common/EntityDetailLayout.svelte';
-	import DetailsGrid from '$lib/components/molecules/DetailsGrid.svelte';
-	import HeroImageDisplay from '$lib/components/molecules/HeroImageDisplay.svelte';
-	import TagList from '$lib/components/molecules/TagList.svelte';
-	import ActionLinks from '$lib/components/molecules/ActionLinks.svelte';
-	import AbstractSection from '$lib/components/molecules/AbstractSection.svelte';
+	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
+	import CommunicationRecordRail from '$lib/components/communications/CommunicationRecordRail.svelte';
 	import SlideDeckEmbed from '$lib/components/communications/SlideDeckEmbed.svelte';
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
@@ -20,7 +16,8 @@
 		truncateTitle
 	} from '$lib/utils/seoUtils';
 	import { getCommunicationTypeBadge } from '$lib/utils/typeUtils';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { formatByline } from '$lib/utils/byline';
+	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 	import MetaTags from '$lib/components/communications/MetaTags.svelte';
 
 	// Get communication from the page data
@@ -32,7 +29,7 @@
 	const seoDescription = $derived(createCommunicationSEODescription(communication));
 	const seoKeywords = $derived(createCommunicationSEOKeywords(communication));
 
-	// Define breadcrumb items
+	// Define breadcrumb items (used for JSON-LD structured data)
 	const breadcrumbItems = $derived([
 		{ label: 'Talks & Events', href: `${base}/conference-activity` },
 		{
@@ -41,7 +38,50 @@
 		}
 	]);
 
-	// Breadcrumb + communication JSON-LD injection is handled by EntityDetailLayout.
+	// The type badge prints in the breadcrumb, the masthead eyebrow and the rail
+	// ledger — one label, computed once.
+	const typeLabel = $derived(typesetQuotes(getCommunicationTypeBadge(communication.type ?? '')));
+
+	// Eyebrow: type and dateline only. A "Slides" token was considered and
+	// declined — a deck is an action, not a fact about the record, and it already
+	// has two affordances (the rail's jump button and the Slides section itself).
+	const eyebrow = $derived.by((): EyebrowToken[] => {
+		const tokens: EyebrowToken[] = [];
+		if (typeLabel) tokens.push({ label: typeLabel });
+		if (communication.date) tokens.push({ label: communication.date });
+		return tokens;
+	});
+
+	const displayTitle = $derived(typesetQuotes(communication.title));
+	const byline = $derived(formatByline(communication.authors));
+
+	// Internal research page for this talk's project, when the name matches one.
+	const projectPath = $derived(researchProjectPath(communication.project));
+	const projectUrl = $derived(projectPath ? `${base}${projectPath}` : undefined);
+
+	// Abstract → paragraphs. Rendered via {@html} because abstracts carry inline
+	// markup, so they take the HTML-aware typesetter — `typesetQuotes` would curl
+	// quotes inside any attribute.
+	const abstractParagraphs = $derived(
+		(communication.abstract ?? '')
+			.split(/\n\s*\n|\n/)
+			.map((p) => p.trim())
+			.filter((p) => p.length > 0)
+			.map(typesetQuotesInHtml)
+	);
+
+	const papers = $derived(communication.papers ?? []);
+	const participants = $derived(communication.participants ?? []);
+	const tags = $derived(communication.tags?.filter(Boolean) ?? []);
+
+	// Related talks in the same project (excluding the current one).
+	const relatedInProject = $derived(
+		communication.project
+			? allCommunications.filter(
+					(c) => c.id !== communication.id && c.project === communication.project
+				)
+			: []
+	);
 
 	// Lazy load MapVisualization only when the map scrolls near the viewport.
 	// maplibre-gl (~267 KiB JS) plus ~2 MB of Carto tiles dominate LCP/TBT, and
@@ -102,29 +142,18 @@
 			: []
 	);
 
-	// Internal research page for this talk's project, when the name matches one.
-	const projectPath = $derived(researchProjectPath(communication.project));
+	/** Programme order, printed as the hanging key of a paper's ledger row. */
+	function runningOrder(index: number): string {
+		return String(index + 1).padStart(2, '0');
+	}
 
-	// Prepare details for the DetailsGrid component
-	const communicationDetails = $derived([
-		{ label: 'Event', value: communication.conference ?? '' },
-		{
-			label: communication.type === 'conference' ? 'Panel' : 'Series',
-			value: communication.panelTitle ?? '',
-			condition: !!communication.panelTitle
-		},
-		{ label: 'Location', value: communication.location ?? '' },
-		{ label: 'Country', value: communication.country ?? '' },
-		{ label: 'Language', value: communication.language ?? '' },
-		{ label: 'Year', value: String(communication.year ?? '') },
-		{
-			label: 'Project',
-			value: communication.project ?? '',
-			link: projectPath ? `${base}${projectPath}` : undefined,
-			internal: true,
-			condition: !!communication.project
-		}
-	]);
+	/** "Name (Affiliation), Name (Affiliation)" — one serif line under a title. */
+	function paperByline(authors: Array<{ name: string; affiliation?: string }>): string {
+		return authors
+			.map((a) => (a.affiliation ? `${a.name} (${a.affiliation})` : a.name))
+			.map(typesetQuotes)
+			.join(', ');
+	}
 </script>
 
 <SEO
@@ -136,305 +165,232 @@
 
 <MetaTags {communication} />
 
-<EntityDetailLayout
+<!-- The tag block and the sibling-work block are grid children with their own
+     gap, so each is passed only when it prints something: an empty block would
+     read as a stray interval in the column. -->
+{#snippet indexRail()}
+	<div class="comm-tags">
+		<h2 class="rail-label">Tags</h2>
+		<div class="chip-row">
+			{#each tags as tag (tag)}
+				<!-- Label typeset; the href keeps the raw tag the filter matches. -->
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
+				<a class="chip" href="{base}/conference-activity?tag={encodeURIComponent(tag)}"
+					>{typesetQuotes(tag)}</a
+				>
+			{/each}
+		</div>
+	</div>
+{/snippet}
+
+{#snippet relatedBlock()}
+	<RelatedItemsList
+		allItems={allCommunications}
+		currentItemId={communication.id}
+		filterKey="project"
+		filterValue={communication.project}
+		title="More in this Project"
+		itemComponent={RelatedItemCard as unknown as ComponentType}
+		baseItemUrl="/communications/"
+		viewAllUrl="{base}/conference-activity"
+		maxItems={3}
+		sectionClass="comm-related section section--flush"
+		titleClass="comm-related-title section-title"
+	/>
+{/snippet}
+
+<RecordLayout
+	section={{ label: 'Talks & Events', href: `${base}/conference-activity` }}
+	breadcrumbCurrent={typeLabel}
+	{eyebrow}
+	title={displayTitle}
+	{byline}
 	{breadcrumbItems}
 	jsonLdScriptId="communication-json-ld"
 	{jsonLdString}
-	title={communication.title}
-	date={communication.date}
-	typeBadgeText={getCommunicationTypeBadge(communication.type || '')}
-	authors={communication.authors}
+	railSecondary={tags.length > 0 ? indexRail : undefined}
+	related={relatedInProject.length > 0 ? relatedBlock : undefined}
 >
-	{#snippet children({ breadcrumb, header })}
-		{@render breadcrumb()}
+	{#snippet main()}
+		<!-- Abstract -->
+		{#if abstractParagraphs.length > 0}
+			<section class="section comm-section" aria-labelledby="comm-abstract-head">
+				<div class="section-head">
+					<h2 id="comm-abstract-head" class="section-title">Abstract</h2>
+				</div>
+				<div class="comm-abstract">
+					{#each abstractParagraphs as paragraph, index (index)}
+						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
+						<p class="comm-abstract-p" class:drop-cap={index === 0}>{@html paragraph}</p>
+					{/each}
+				</div>
+			</section>
+		{/if}
 
-		<article class="communication-article">
-			<div class="content-wrapper">
-				{@render header()}
+		<!-- Slides — embedded inline when an embeddable deck URL is set. -->
+		{#if communication.slidesUrl}
+			<section class="section comm-section" id="slides" aria-labelledby="comm-slides-head">
+				<div class="section-head">
+					<h2 id="comm-slides-head" class="section-title">Slides</h2>
+				</div>
+				<SlideDeckEmbed src={communication.slidesUrl} title={communication.title} />
+			</section>
+		{/if}
 
-				<!-- Hero Image Display -->
-				<HeroImageDisplay
-					heroImage={communication.heroImage}
-					fallbackImage={communication.image}
-					defaultAlt={communication.title}
-					imageClass="w-full max-w-md h-auto mx-auto"
-					figcaptionClass="text-muted text-sm mt-2 italic"
-				/>
-
-				<!-- Abstract Section -->
-				<AbstractSection abstract={communication.abstract} />
-
-				<!-- Slide Deck — embedded inline when an embeddable deck URL is set -->
-				{#if communication.slidesUrl}
-					<section class="slides-section" id="slides">
-						<h2 class="editorial-section-title">Slides</h2>
-						<SlideDeckEmbed src={communication.slidesUrl} title={communication.title} />
-					</section>
-				{/if}
-
-				<!-- Details Grid -->
-				<DetailsGrid details={communicationDetails} />
-
-				<!-- Panel-specific information: Papers in Panel -->
-				{#if communication.type === 'panel' && communication.papers && communication.papers.length > 0}
-					<section class="panel-papers-section">
-						<h2 class="editorial-section-title">Papers in this Panel</h2>
-						<div class="panel-papers-grid">
-							{#each communication.papers as paper, index (paper.title + index)}
-								<div class="panel-paper-card">
-									<h3 class="panel-paper-title">{typesetQuotes(paper.title)}</h3>
-									{#if paper.authors && paper.authors.length > 0}
-										<div class="panel-paper-authors">
-											{#each paper.authors as author, index (author.name + index)}
-												<span>
-													{typesetQuotes(author.name)}{#if author.affiliation}&nbsp;({typesetQuotes(
-															author.affiliation
-														)}){/if}{#if index < paper.authors.length - 1},&nbsp;{/if}
-												</span>
-											{/each}
-										</div>
-									{/if}
-									{#if paper.abstract}
-										<div class="panel-paper-abstract">
-											{typesetQuotes(paper.abstract)}
-										</div>
-									{/if}
-								</div>
-							{/each}
+		<!-- Papers — a ledger keyed by programme order, not a grid of cards. -->
+		{#if papers.length > 0}
+			<section class="section comm-section" aria-labelledby="comm-papers-head">
+				<div class="section-head">
+					<h2 id="comm-papers-head" class="section-title">
+						{communication.type === 'panel' ? 'Papers in this Panel' : 'Papers'}
+					</h2>
+				</div>
+				<div class="ledger ledger--ruled comm-papers">
+					{#each papers as paper, index (paper.title + index)}
+						<div class="ledger-row">
+							<span class="ledger-key">{runningOrder(index)}</span>
+							<span class="ledger-content">
+								<span class="ledger-title">{typesetQuotes(paper.title)}</span>
+								{#if paper.authors && paper.authors.length > 0}
+									<span class="comm-paper-byline">{paperByline(paper.authors)}</span>
+								{/if}
+								{#if paper.abstract}
+									<span class="ledger-desc">{typesetQuotes(paper.abstract)}</span>
+								{/if}
+							</span>
 						</div>
-					</section>
-				{/if}
+					{/each}
+				</div>
+			</section>
+		{/if}
 
-				<!-- Participants Section -->
-				{#if communication.participants && communication.participants.length > 0}
-					<section class="participants-section">
-						<h2 class="editorial-section-title">Participants</h2>
-						<div class="participants-grid">
-							{#each communication.participants as participant, index (participant.name + index)}
-								<div class="participant-card">
-									<div class="participant-name">{typesetQuotes(participant.name)}</div>
-									{#if participant.role}
-										<div class="participant-role">
-											{typesetQuotes(participant.role)}
-										</div>
-									{/if}
-									{#if participant.affiliation}
-										<div class="participant-affiliation">
-											{typesetQuotes(participant.affiliation)}
-										</div>
-									{/if}
-								</div>
-							{/each}
+		<!-- Participants — role as the hanging key; an unroled name keys to an em dash. -->
+		{#if participants.length > 0}
+			<section class="section comm-section" aria-labelledby="comm-participants-head">
+				<div class="section-head">
+					<h2 id="comm-participants-head" class="section-title">Participants</h2>
+				</div>
+				<div class="ledger ledger--ruled comm-participants">
+					{#each participants as participant, index (participant.name + index)}
+						<div class="ledger-row">
+							<span class="ledger-key"
+								>{participant.role ? typesetQuotes(participant.role) : '—'}</span
+							>
+							<span class="ledger-content">
+								<span class="ledger-title">{typesetQuotes(participant.name)}</span>
+								{#if participant.affiliation}
+									<span class="comm-affiliation">{typesetQuotes(participant.affiliation)}</span>
+								{/if}
+							</span>
 						</div>
-					</section>
-				{/if}
+					{/each}
+				</div>
+			</section>
+		{/if}
 
-				<!-- Tags -->
-				<TagList tags={communication.tags} baseUrl="/conference-activity?tag=" />
-
-				<!-- Action Links -->
-				<ActionLinks
-					primaryUrl={communication.url}
-					primaryLabel={communication.urlLabel ?? 'Access Presentation'}
-					additionalUrls={communication.additionalUrls}
-					sectionClass="action-links"
-					primaryButtonClass="btn btn-primary"
-					secondaryButtonClass="btn btn-outline-primary"
-					primaryDivClass="mb-4"
-				/>
-
-				<!-- Map Location -->
-				{#if communication.coordinates}
-					<section class="map-section" bind:this={mapSectionEl}>
-						<h2 class="map-section-title editorial-section-title">Location</h2>
-						<div class="map-container-wrapper">
-							{#if MapVisualization}
-								<MapVisualization markersData={singleMarkerData} />
-							{:else}
-								<div class="flex items-center justify-center py-12">
-									<span class="text-light">Loading map...</span>
-								</div>
-							{/if}
-						</div>
-					</section>
-				{/if}
-			</div>
-		</article>
-
-		<!-- Related Communications in this Project -->
-		{#if communication.project}
-			<RelatedItemsList
-				allItems={allCommunications}
-				currentItemId={communication.id}
-				filterKey="project"
-				filterValue={communication.project}
-				title="More Conference Activities in this Project"
-				itemComponent={RelatedItemCard as unknown as ComponentType}
-				baseItemUrl="/communications/"
-				viewAllUrl="{base}/conference-activity"
-				maxItems={3}
-			/>
+		<!-- Location — the venue as a plate. -->
+		{#if communication.coordinates}
+			<section class="section comm-section" aria-labelledby="comm-location-head">
+				<div class="section-head">
+					<h2 id="comm-location-head" class="section-title">Location</h2>
+				</div>
+				<div class="comm-map" bind:this={mapSectionEl}>
+					{#if MapVisualization}
+						<MapVisualization markersData={singleMarkerData} />
+					{:else}
+						<p class="comm-map-loading">Loading map…</p>
+					{/if}
+				</div>
+			</section>
 		{/if}
 	{/snippet}
-</EntityDetailLayout>
+
+	{#snippet railPrimary()}
+		<CommunicationRecordRail
+			{communication}
+			{typeLabel}
+			{projectUrl}
+			hasSlides={Boolean(communication.slidesUrl)}
+		/>
+	{/snippet}
+</RecordLayout>
 
 <style>
-	/* Article container — no outer tile; individual sections carry their own styling */
-	.communication-article {
-		position: relative;
-	}
-
-	/* Content wrapper for scroll animation - consistent spacing between sections */
-	.content-wrapper {
-		display: flex;
-		flex-direction: column;
-	}
-
-	/* Consistent vertical spacing between major sections */
-	.content-wrapper > :global(*) {
-		margin-bottom: 0;
-	}
-
-	.content-wrapper > :global(* + *) {
-		margin-top: var(--space-xl);
-	}
-
-	/* Panel Papers & Participants — content-on-paper sections, not tiles.
-	 * The outer box (elevated surface + border + shadow) was the last
-	 * cards-in-cards survivor: it wrapped already-bordered inner cards. Now
-	 * the section sits directly on the page like Abstract / Reviews, the
-	 * shared .editorial-section-title carries the heading, and the inner
-	 * cards are the only chrome. */
-	.panel-papers-section,
-	.participants-section {
+	/* Consistent rhythm between the sections. */
+	.comm-section {
 		margin-top: var(--space-2xl);
 	}
 
-	/* Section titles come from the shared .editorial-section-title utility
-	 * (typography.css). */
-
-	/* Panel Papers Grid */
-	.panel-papers-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-md);
-	}
-
-	/* Panel Paper Cards — flat paper tiles on the page ground: elevated
-	 * surface, hairline border, square corners, no shadow (these are entries,
-	 * not affordances). */
-	.panel-paper-card {
-		padding: var(--space-md);
-		border-radius: 0;
-		position: relative;
-		background: var(--color-surface-elevated);
-		border: var(--border-width-thin) solid var(--color-border);
-	}
-
-	.panel-paper-title {
+	/* ── Abstract ──────────────────────────────────────────────────────────── */
+	.comm-abstract {
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-lg);
-		font-weight: var(--font-weight-semibold);
-		color: var(--color-text-emphasis);
-		margin: 0 0 var(--space-sm) 0;
-		line-height: var(--line-height-snug);
+		line-height: var(--line-height-relaxed);
+		color: var(--color-text);
+		max-width: var(--measure-prose);
 	}
 
-	.panel-paper-authors {
+	.comm-abstract-p {
+		margin: 0;
+	}
+
+	.comm-abstract-p + .comm-abstract-p {
+		margin-top: var(--space-md);
+	}
+
+	/* ── Papers & participants ─────────────────────────────────────────────── */
+	/* The programme number is a two-character key, so the ledger's 7rem default
+	   would hang the titles a third of the column away from it. */
+	.comm-papers {
+		--ledger-key-w: 3rem;
+	}
+
+	/* Roles are words, not numbers ("Chair", "Discussant", "Convenor"). */
+	.comm-participants {
+		--ledger-key-w: 8rem;
+	}
+
+	/* A paper's byline and a participant's affiliation are both names and
+	   institutions — the document voice, set quieter than the title above. */
+	.comm-paper-byline,
+	.comm-affiliation {
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-base);
+		line-height: var(--line-height-normal);
+		color: var(--color-text-soft);
+	}
+
+	.comm-affiliation {
 		font-size: var(--font-size-sm);
 		color: var(--color-text-light);
-		margin-bottom: var(--space-sm);
-		font-weight: var(--font-weight-medium);
 	}
 
-	.panel-paper-abstract {
-		font-size: var(--font-size-sm);
-		color: var(--color-text);
-		line-height: var(--line-height-relaxed);
-		margin-top: var(--space-xs);
-	}
-
-	/* Participants Grid */
-	.participants-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-md);
-	}
-
-	@media (--md) {
-		.participants-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	/* Participant Cards — same flat paper-tile treatment as panel-paper cards. */
-	.participant-card {
-		padding: var(--space-md);
-		border-radius: 0;
-		position: relative;
-		background: var(--color-surface-elevated);
+	/* ── Map plate ─────────────────────────────────────────────────────────── */
+	/* A plain block, not a flex box: MapVisualization sizes itself to the
+	   wrapper's height, and a flex main axis would leave it at content height. */
+	.comm-map {
+		height: 400px;
+		overflow: hidden;
+		background: var(--color-background-muted);
 		border: var(--border-width-thin) solid var(--color-border);
 	}
 
-	.participant-name {
-		font-weight: var(--font-weight-semibold);
-		font-size: var(--font-size-base);
-		color: var(--color-text-emphasis);
-		margin-bottom: var(--space-2xs);
-	}
-
-	/* Role — a short record marker in the data voice (mono caps). */
-	.participant-role {
+	/* Placeholder held in the data voice — it is machine status, not prose. */
+	.comm-map-loading {
+		margin: 0;
+		padding: var(--space-3xl) var(--space-md);
+		text-align: center;
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		text-transform: uppercase;
+		font-weight: var(--font-weight-medium);
 		letter-spacing: 0.1em;
-		color: var(--color-accent);
-		font-weight: var(--font-weight-semibold);
-		margin-bottom: var(--space-2xs);
+		text-transform: uppercase;
+		color: var(--color-text-light);
 	}
 
-	.participant-affiliation {
-		font-size: var(--font-size-xs);
-		color: var(--color-text-muted);
-		line-height: var(--line-height-relaxed);
-	}
-
-	/* Map Section */
-	.map-section {
-		display: block; /* Ensure block-level for spacing to work */
-	}
-
-	/* Heading comes from the shared .editorial-section-title utility; keep the
-	 * spacing to the map plate below. */
-	.map-section-title {
-		margin-bottom: var(--space-sm);
-	}
-
-	/* Map plate — square, hairline border, no shadow. */
-	.map-container-wrapper {
-		height: 400px;
-		border-radius: 0;
-		overflow: hidden;
-		background: var(--color-surface-alt);
-		border: var(--border-width-thin) solid var(--color-border);
-	}
-
-	/* Dark mode — warm dusk surfaces resolve automatically via the
-	 * `--color-surface-*` tokens; no per-element overrides required. */
-
-	/* Responsive adjustments */
 	@media (--sm-down) {
-		.panel-paper-card,
-		.participant-card {
-			padding: var(--space-sm);
-		}
-
-		.panel-paper-title {
-			font-size: var(--font-size-base);
-		}
-
-		.map-container-wrapper {
+		.comm-map {
 			height: 300px;
 		}
 	}

@@ -20,7 +20,8 @@ export const COMMUNICATION_TYPE_BADGE_LABELS: Record<string, string> = {
 	lecture: 'Lecture',
 	panel: 'Panel',
 	poster: 'Poster Presentation',
-	event: 'Academic Event'
+	event: 'Academic Event',
+	podcast: 'Podcast'
 };
 
 export const COMMUNICATION_TYPE_SEO_LABELS: Record<string, string> = {
