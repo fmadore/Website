@@ -280,15 +280,17 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Susan Elizabeth Gagliardi",
 			"Thompson Gyedu Kwarkye"
 		],
-		"date": "Forthcoming",
-		"dateISO": "2026",
+		"date": "2026",
+		"dateISO": "2026-09-08",
 		"year": 2026,
 		"series": "ZMO Programmatic Texts",
 		"issue": "16",
 		"publisher": "Leibniz-Zentrum Moderner Orient",
 		"placeOfPublication": "Berlin",
 		"publisherLocation": "Germany",
+		"pageCount": 24,
 		"language": "English",
+		"doi": "10.58144/20260827-000",
 		"openAccess": true,
 		"tags": [
 			"Digital Humanities",
@@ -303,7 +305,8 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Minimal Computing"
 		],
 		"project": "Digital Humanities and AI in African Studies",
-		"abstractExcerpt": "African Studies scholars have been involved in Digital Humanities (DH) projects since the 2000s. Recent advances in artificial intelligence (AI), particularly in large language models (LLMs), have expanded the possibiliti",
+		"url": "https://doi.org/10.58144/20260827-000",
+		"abstractExcerpt": "African Studies scholars have been involved in Digital Humanities (DH) projects since the 2000s. Recent advances in artificial intelligence (AI), particularly large language models (LLMs), have expanded the possibilities ",
 		"citedByCount": 0,
 		"tocAuthors": [],
 		"sourceDirType": "workingPapers"

@@ -562,8 +562,8 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 			"Thompson Gyedu Kwarkye"
 		],
 		"type": "working-paper",
-		"date": "Forthcoming",
-		"dateISO": "2026",
+		"date": "2026",
+		"dateISO": "2026-09-08",
 		"year": 2026,
 		"publisher": "Leibniz-Zentrum Moderner Orient"
 	},
