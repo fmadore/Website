@@ -1,10 +1,15 @@
 name: CI
 
-# Runs the quality gate on every PR to main. Triggering on pull_request alone
-# (rather than also on push) means each push to a PR branch runs CI exactly
-# once via the PR's synchronize event — no duplicate runs. Pushes to main are
-# covered by the Deploy workflow, which runs the same checks before publishing.
+# Runs the quality gate on every PR to main, and on main itself. Restricting
+# the push trigger to main keeps each push to a PR branch running CI exactly
+# once, via the PR's synchronize event — no duplicate runs. Deploy re-runs the
+# overlapping checks before publishing, but only the overlapping ones: the
+# audit, the MCP type-check and smoke test, the coverage floor, the research
+# prose freshness check and the Lighthouse budgets live here alone, so a commit
+# pushed straight to main used to reach production without ever meeting them.
 on:
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
 
