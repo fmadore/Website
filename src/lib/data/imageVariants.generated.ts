@@ -643,6 +643,11 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceHeight: 720,
 		widths: [400, 800]
 	},
+	'communications/ubt-ai-day-2026-logo.webp': {
+		sourceWidth: 1200,
+		sourceHeight: 630,
+		widths: [400, 800]
+	},
 	'communications/union-islamique-benin-elections-hero.webp': {
 		sourceWidth: 900,
 		sourceHeight: 675,

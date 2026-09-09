@@ -1879,9 +1879,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"date": "25 September 2026",
 		"dateISO": "2026-09-25",
 		"year": 2026,
-		"image": "images/communications/ubt-ai-day-2026-logo.svg",
+		"image": "images/communications/ubt-ai-day-2026-logo.webp",
 		"heroImage": {
-			"src": "images/communications/ubt-ai-day-2026-logo.svg"
+			"src": "images/communications/ubt-ai-day-2026-logo.webp"
 		},
 		"conference": "AI Day 2026, Research Center for AI in Science and Society (RAIS²)",
 		"location": "University of Bayreuth",

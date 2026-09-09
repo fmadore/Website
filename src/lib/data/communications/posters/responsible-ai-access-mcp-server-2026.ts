@@ -33,9 +33,9 @@ export const responsibleAiAccessMcpServer2026: Communication = {
 	],
 	url: 'https://www.rais2.uni-bayreuth.de/en/events/ai_day_2026/index.html',
 	urlLabel: 'Event Website',
-	image: 'images/communications/ubt-ai-day-2026-logo.svg',
+	image: 'images/communications/ubt-ai-day-2026-logo.webp',
 	heroImage: {
-		src: 'images/communications/ubt-ai-day-2026-logo.svg',
+		src: 'images/communications/ubt-ai-day-2026-logo.webp',
 		alt: 'Logo of UBT AI Day 26, the University of Bayreuth’s AI Day: the letters set in a geometric sans over two lines, “UBT AI” above “DAY”, with the AI and the A of DAY picked out in green and the year 26 stacked sideways at the right.'
 	},
 	coordinates: {
