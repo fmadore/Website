@@ -87,13 +87,24 @@
 		flex-wrap: wrap;
 		align-items: baseline;
 		/* Column spacing comes from the separator's own non-breaking spaces, so
-		 * only the wrapped-line gap is set here. */
-		row-gap: var(--space-1);
+		 * only the wrapped-line gap is set here — and it is sized so that two
+		 * addresses on successive lines sit one hit box apart: the 24px target
+		 * below overhangs its line by half the difference on each side, and this
+		 * gap is exactly that difference, so neighbouring targets touch but
+		 * never overlap. A row that does not wrap never pays it. */
+		row-gap: calc(var(--space-6) - 1lh);
 		margin-top: var(--space-1);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		letter-spacing: var(--tracking-figures);
 		line-height: var(--line-height-snug);
+	}
+
+	/* Consecutive groups (Site, then Repository) are stacks of targets too, so
+	 * they take the same 24px pitch as wrapped lines; the first group keeps the
+	 * plain interval, since the description above it is not a target. */
+	.dh-links + .dh-links {
+		margin-top: calc(var(--space-6) - 1lh);
 	}
 
 	/* Key column of the row — uppercase mono, quiet ink. */
@@ -114,12 +125,17 @@
 	 * The `.link-url` class they may carry is read by the CV page's print
 	 * rules, which skip appending an href to text that is already the URL. */
 
-	/* Coarse pointers get the 24px minimum target (WCAG 2.5.8): the mono 2xs
-	 * addresses are ~14px tall on their own. Padding only — the pointer layout
-	 * and the print/PDF output are untouched. */
-	@media (--touch) {
-		.dh-links a {
-			padding-block: var(--space-1-5);
-		}
+	/* Every address is a 24px-tall target on every pointer (WCAG 2.5.8): the
+	 * mono 2xs line is ~15px on its own. The box grows through padding and
+	 * gives the growth back through margin, so a single-line row keeps its
+	 * rhythm and the print/PDF output is untouched; only a row whose addresses
+	 * wrap opens up, by the row gap above. The 44px coarse-pointer floor that
+	 * `.ledger-action` takes is deliberately not applied here: these are
+	 * inline addresses that wrap, and 44px boxes on a 24px pitch would overlap
+	 * each other and the line above. */
+	.dh-links a {
+		display: inline-block;
+		padding-block: calc((var(--space-6) - 1lh) / 2);
+		margin-block: calc((1lh - var(--space-6)) / 2);
 	}
 </style>

@@ -149,6 +149,15 @@
 		gap: var(--space-2);
 	}
 
+	/* Each address in the stack is a 24px-tall target (WCAG 2.5.8): the xs
+	 * mono line is 19px on its own, and four of them at a 4px gap sat closer
+	 * than a fingertip. Height only — the row stays a single line. */
+	.cv-link-item a {
+		display: inline-flex;
+		align-items: center;
+		min-height: var(--space-6);
+	}
+
 	/* Desktop layout - side by side */
 	@media (--md) {
 		.cv-contact-section {
