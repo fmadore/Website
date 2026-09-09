@@ -40,6 +40,13 @@ export default defineConfig({
 			'mcp/src/**/*.{test,spec}.ts'
 		],
 		environment: 'node',
+		// Persist transformed modules in node_modules/.vitest-cache so reruns
+		// and separate processes reuse them; transforming is ~70% of a run
+		// here, and a warm run lands around 2.4s against 3.5-4.5s cold.
+		// The cache keys on file content, id, Vite config and coverage status,
+		// which is sound because this config loads no plugins that read state
+		// from outside those inputs.
+		fsModuleCache: true,
 		coverage: {
 			provider: 'v8',
 			// Pure-logic modules only: components and routes are exercised by the
