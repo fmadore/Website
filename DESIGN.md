@@ -214,7 +214,7 @@ The single accent. There is no third colour role in the UI.
 
 **The Warm Ground Rule.** Grounds and type stay warm in both themes; the accent is the only cooler note in the system. Pure white, pure black, and any cool gray are outside the palette.
 
-**The Negative Rule.** Midnight is the same page photographed as a negative, designed as its own pass. Never ship a component specified in only one theme, and never reach for an inversion filter or a slate-blue dark palette.
+**The Negative Rule.** Midnight is the same page photographed as a negative, designed as its own pass. Never ship a component specified in only one theme, and never reach for an inversion filter or a slate-blue dark palette. That pass carries exactly one typographic adjustment alongside the colour remap — the Microfilm Weight Rule below.
 
 ## Typography
 
@@ -247,6 +247,8 @@ The scale is deliberately forked. Body and UI steps follow a minor third (1.2) t
 **The Two Voices Rule.** Every string on every page belongs to exactly one voice. The document voice (Archivo, Newsreader) carries what the scholar writes; the data voice (Spline Sans Mono) carries what the machine indexes. If a string could plausibly be a database column, it is mono. No mono headlines, no serif metadata. Blurring the two is this system's only unforgivable error.
 
 **The Mono-Is-Not-A-Theme Rule.** The mono face is metadata, never body copy and never a page-wide treatment. A terminal or code-editor aesthetic is an anti-reference, not an adjacent style.
+
+**The Microfilm Weight Rule.** Light type on the film ground optically bolds, and the spread costs most where the strokes are thinnest, so midnight sets the three shared weight tokens 40 lighter — `--font-weight-medium` 500 → 460, `--font-weight-semibold` 600 → 560, `--font-weight-bold` 700 → 660. That step returns the data voice at its small sizes to its daylight weight while leaving serif titles at parity; a step of 50 was tested and over-corrected, dropping the 24px title below its daylight weight. Body weight stays 400 in both themes because the served font subsets are instanced to wght 400–700 and floor there, and neither the display face's hand-set heavy weights nor the tracking scale is compensated: at those sizes the effect is negligible, and tracking is keyed to size rather than to theme. A component that needs a theme-stable weight must set a literal instead of a token, and must say why — `midnightWeight.test.ts` guards the step and the axis range.
 
 **The Upright Heading Rule.** Inline `<em>` inside `h1`–`h3` stays upright in the display face; a Newsreader italic inside an Archivo head is a voice collision. Genuine serif italics belong in prose, standfirsts, and captions.
 
@@ -350,6 +352,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **Do** render dated or keyed records as ledger rows with a hanging mono key.
 - **Do** keep pine countable — a handful of occurrences per screen, marking only what is current, active, newest, or primary.
 - **Do** design midnight as its own pass, verifying every component in both themes before shipping it.
+- **Do** verify small mono caps in midnight against daylight by capture, not by computed style — the compensation is optical and only a render shows it.
 - **Do** use real data as the only ornament: year-bars, counts, frequency-scaled terms, corpus figures.
 - **Do** set imagery as plates — 1px border, square corners, serif-italic caption below — and prefer corpus scans to stock imagery.
 - **Do** address breakpoints through PostCSS custom media (`@media (--md)`) and colours through `color-mix()` with design tokens.

@@ -4,7 +4,9 @@
  * the pine accent brightens. Warmth lives in the type, not the surface.
  * Every value is drawn from the film-* / cream-* / pine-bright anchors
  * defined in variables.css. Shadows and glass are gone globally, so this file
- * only remaps colour tokens. */
+ * remaps colour tokens and one typographic pair: the three shared weight
+ * tokens, stepped down to cancel the optical bolding of light type on a dark
+ * ground (see the block at the end). */
 html.dark {
 	/* Primary — INK becomes CREAM. Rules, solid fills, selected chips,
 	 * emphasis, the nameplate. */
@@ -62,4 +64,32 @@ html.dark {
 	--color-footer-bg: #0f0c08;
 	--color-footer-text: var(--sys-color-cream);
 	--color-footer-text-muted: #8a8170;
+
+	/* ===== WEIGHT — THE MICROFILM COMPENSATION =====
+	 * Light type on a dark ground optically bolds: the bright glyph spreads into
+	 * the ground (irradiation), so the same weight reads heavier in midnight
+	 * than in daylight. The spread is a fixed optical quantity, so it costs the
+	 * most where the strokes are thinnest and closest together — the data voice
+	 * at 10–14px (nav, ledger keys, meta values), where captures showed a clear
+	 * step up. It is mild on a 24px serif title and negligible on the display
+	 * heads at 40px and above.
+	 *
+	 * An A/B at -30, -40 and -50 settled the step: -50 over-corrected, dropping
+	 * the 24px serif title below its own daylight weight, while -40 returned the
+	 * small mono to its daylight weight and left the serif title at parity.
+	 *
+	 * Three deliberate exclusions:
+	 *   - `--font-weight-normal` stays 400. The served Newsreader and Spline
+	 *     Sans Mono subsets are instanced to wght 400–700, so anything below 400
+	 *     clamps back to 400: body prose cannot be lightened without
+	 *     regenerating the fonts.
+	 *   - The Archivo display heads set raw weights (750–850) and are not
+	 *     compensated; at those sizes the captures showed parity already.
+	 *   - The `--tracking-*` scale is keyed to size and stays
+	 *     theme-independent. The weight step-down answers the same optical
+	 *     spread without forking that scale per theme.
+	 * Guarded by `src/styles/midnightWeight.test.ts`. */
+	--font-weight-medium: 460;
+	--font-weight-semibold: 560;
+	--font-weight-bold: 660;
 }

@@ -138,10 +138,38 @@
 		}
 	];
 
+	/* ===== Weight — the microfilm compensation.
+	 * Midnight remaps the three shared weights forty lighter; the specimens
+	 * below carry no literal weight of their own, so each row prints whichever
+	 * value the live theme resolves the token to. ===== */
+	const weightSteps = [
+		{
+			token: '--font-weight-normal',
+			role: 'Normal',
+			use: 'body prose, ledger descriptions'
+		},
+		{
+			token: '--font-weight-medium',
+			role: 'Medium',
+			use: 'ledger keys, datelines, chips'
+		},
+		{
+			token: '--font-weight-semibold',
+			role: 'Semibold',
+			use: 'nav, status stamps, serif titles'
+		},
+		{
+			token: '--font-weight-bold',
+			role: 'Bold',
+			use: 'eyebrows, § numbers'
+		}
+	];
+
 	const allResolvableTokens = [
 		...colourGroups.flatMap((g) => g.tokens),
 		...durationTokens,
-		...trackingRoles.map((r) => r.token)
+		...trackingRoles.map((r) => r.token),
+		...weightSteps.map((w) => w.token)
 	];
 
 	// Resolved values, read client-side and re-read when the theme class flips —
@@ -469,7 +497,7 @@
 				<span class="data-voice">em</span> value: the eight roles below are the entire vocabulary,
 				and <span class="data-voice">trackingScale.test.ts</span> fails the build on a ninth.
 			</p>
-			<div class="ledger ledger--ruled">
+			<div class="ledger ledger--ruled" style="--ledger-meta-w: 17rem">
 				{#each trackingRoles as role (role.token)}
 					<div class="ledger-row ledger-row--meta">
 						<span class="ledger-key">{role.role}</span>
@@ -482,6 +510,40 @@
 							<span class="ledger-desc">{role.use}</span>
 						</span>
 						<span class="ledger-meta">{role.token} · {resolved[role.token] ?? '—'}</span>
+					</div>
+				{/each}
+			</div>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">
+				Midnight weight — compensated, not inverted
+			</h3>
+			<p class="guide-note">
+				Light type on the film ground optically bolds, and it does so most at the sizes the data
+				voice is set in — <span class="data-voice">10–14px</span> mono, where a stem gains more
+				apparent width than the counter can absorb. Midnight therefore sets the three shared weights
+				forty lighter, which returns the small mono to the weight it holds in daylight and leaves
+				the serif titles at parity rather than trading one mismatch for another. Body copy stays at
+				<span class="data-voice">400</span> because the served
+				<span class="data-voice">wght</span> axis floors there, and the display face's hand-set cuts need
+				nothing: the values below are the ones painting in whichever theme is on — toggle the theme and
+				watch them move.
+			</p>
+			<div class="ledger ledger--ruled" style="--ledger-meta-w: 17rem">
+				{#each weightSteps as step (step.token)}
+					<div class="ledger-row ledger-row--meta">
+						<span class="ledger-key">{step.role}</span>
+						<span class="ledger-content">
+							<span
+								class="weight-specimen weight-specimen--data"
+								style:font-weight="var({step.token})">De Gruyter · ZMO-Studien 48 · 2025</span
+							>
+							<span
+								class="weight-specimen weight-specimen--title"
+								style:font-weight="var({step.token})">The archive, read closely</span
+							>
+							<span class="ledger-desc">{step.use}</span>
+						</span>
+						<span class="ledger-meta">{step.token} · {resolved[step.token] ?? '—'}</span>
 					</div>
 				{/each}
 			</div>
@@ -1182,6 +1244,36 @@
 		font-family: var(--font-family-mono);
 		font-variant-numeric: tabular-nums;
 		color: var(--color-text-soft);
+	}
+
+	/* ===== Weight specimens =====
+	 * Two lines per row, one per voice: the data voice at the size where the
+	 * midnight bolding is strongest, the serif title at the size where it is
+	 * mild. Neither states a weight — the token supplies it inline, so the pair
+	 * repaints when the theme flips and cannot drift from the value printed
+	 * beside it. */
+	.weight-specimen {
+		align-self: flex-start;
+		max-width: 100%;
+		margin: 0;
+		overflow-wrap: anywhere;
+	}
+
+	.weight-specimen--data {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-text-soft);
+	}
+
+	.weight-specimen--title {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-lg);
+		line-height: var(--line-height-snug);
+		letter-spacing: var(--tracking-title);
+		color: var(--color-text-emphasis);
 	}
 
 	/* ===== Rule specimens ===== */

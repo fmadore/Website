@@ -281,7 +281,14 @@
 	--tracking-caps: 0.06em;
 	--tracking-figures: 0.03em;
 
-	/* ===== FONT WEIGHTS ===== */
+	/* ===== FONT WEIGHTS =====
+	 * These are the daylight values. Midnight steps medium, semibold and bold
+	 * down by 40 in `base/dark.css` — the microfilm compensation for light type
+	 * optically bolding on a dark ground. `--font-weight-normal` cannot move
+	 * with them: the served Newsreader and Spline Sans Mono subsets are
+	 * instanced to wght 400–700, so anything below 400 clamps back to 400.
+	 * A component that needs the same weight in both themes must therefore set
+	 * a literal rather than one of these tokens, and say why. */
 	--font-weight-normal: 400;
 	--font-weight-medium: 500;
 	--font-weight-semibold: 600;

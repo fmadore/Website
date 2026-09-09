@@ -26,7 +26,11 @@ phases 2–5 can interleave. After a session, tick the box and append a dated ou
 1. **Both themes, always.** Midnight is a designed microfilm negative, not an inversion —
    verify it as its own pass. Read computed styles after swapping the `html` class and
    disabling transitions (the body has a 300ms background transition that causes stale
-   reads); treat screenshots as secondary evidence.
+   reads). Screenshots from the in-app browser pane come back blank on this machine, so
+   for anything optical use the repo's own capture recipe against a served build
+   (`npx serve build --listen 4174`, then `npm run shot -- --url http://localhost:4174/<route>
+--selector <css> --element --dark --out <png>`; `--scale 3` for the mobile density) and
+   read the PNGs back. Computed styles prove a token resolved; only a render shows weight.
 2. **Breakpoints:** 375 (mobile), 768 (`--md`), 1024 (`--lg`), 1440. Touch targets and
    the filter UI matter most at the small end.
 3. **Guardrails override skill suggestions.** If a skill proposes gradients, glass,
@@ -136,7 +140,7 @@ One critique per family representative covers the family; spot-check the sibling
       (`ink-signal.css`, `entity-index.css`, `activity-list.css`, `bibliography.css`), then
       the components. Pair with `/impeccable extract`. _Done when:_ no component sets a raw
       `em` tracking value and the guide documents the scale.
-- [ ] **1.5 Midnight type compensation.** Also raised by 1.1: `dark.css` makes **no
+- [x] **1.5 Midnight type compensation.** Also raised by 1.1: `dark.css` makes **no
       typographic adjustment whatsoever** — not tracking, weight, nor smoothing. Light type
       on a dark ground optically bolds and tightens, so midnight currently renders the same
       metrics daylight does and the small mono caps are the likely casualty. The brief calls
@@ -1051,5 +1055,51 @@ mini-token set and already sit on the scale's values (0.12 / -0.01 / 0.06em) but
 (mm) mirrors only eyebrow and label, which is all the document uses. **Ship gate:** `format`, `lint`,
 `check` (1092 files, 0 errors), `test` (774, +3), `build`, `check:build`; the detector's single finding
 is the known false positive from 2.7.
+
+**2026-09-09 — 1.5 midnight type compensation (visual pass, orchestrated: Fable judging captures,
+two Opus agents implementing on disjoint files) — done: midnight now carries a deliberate weight
+compensation, with the evidence recorded here.** The roadmap said this item "wants a session where
+rendering can actually be seen", and the reason previous sessions could not see it turns out to be
+the in-app browser pane, not the site: the repo's own `npm run shot` (Playwright + sharp, already in
+the tree for project cards) captures a served build at 2× and 3× in either theme — `--dark
+--selector .bib-row --element` — and those PNGs can be read back. **That is the recipe for every
+remaining item; retire "screenshots time out" as a standing caveat.**
+
+**Evidence, before deciding anything.** Side-by-side captures of the same components in daylight
+and midnight at 1440/2× and 375/3× — header nav, a bibliography row, the meta-ledger, a CV ledger
+row, a standfirst, a record title. Light type on the film ground does optically bold (irradiation:
+the bright glyph spreads into the ground), and the spread is a fixed optical quantity, so it costs
+the most where strokes are thinnest and closest: **the data voice at 10–14px** — nav links, ledger
+keys, meta values like `De Gruyter` — rendered a clear step heavier than daylight. It was mild on the
+24px serif title, and **negligible on the Archivo display heads**: the record title and the nameplate
+were at parity in both themes without any help. Two constraints were established as facts rather
+than assumed: the served Newsreader and Spline Sans Mono woff2 subsets carry a `wght` axis instanced
+to **400–700** (read with fontTools), so body prose at 400 cannot be lightened at all — a lower value
+clamps — and Archivo's axis runs 400–900.
+
+**An A/B settled the step.** Injecting `html.dark { --font-weight-medium/-semibold/-bold }` at −30,
+−40 and −50 into the served build without rebuilding: −50 returned the small mono exactly to its
+daylight weight but **over-corrected the 24px serif title**, which fell visibly below its own daylight
+weight; −30 left the mono still a touch heavy; **−40** brought the mono back and held the serif at
+parity. So midnight remaps the three shared weight tokens down by forty — 500→460, 600→560,
+700→660 — in `dark.css`, and nothing else: `--font-weight-normal` stays 400 (the floor), the display
+heads' hand-set 750–850 are untouched (parity already), and the tracking scale from 1.4 stays
+theme-independent — the weight step answers the same optical spread without forking a size-keyed
+scale per theme. Smoothing was already `antialiased` globally, so the roadmap's "nor smoothing" was
+a false premise. The change reaches 169 declarations through the tokens and touches no component.
+**Guard:** `src/styles/midnightWeight.test.ts` asserts the daylight values, that midnight sits exactly
+forty below on the three tokens and does not redeclare `normal`, and — reading the `@font-face`
+descriptor ranges out of `app.html` — that every compensated value lies inside the served axis, so
+regenerating the subsets with a narrower range or pushing the step past the floor fails red rather
+than clamping silently. **Documented:** `DESIGN.md` gains **The Microfilm Weight Rule** and a Do
+("verify small mono caps in midnight by capture, not computed style — the compensation is optical");
+`/style-guide` § 2 gains "Midnight weight — compensated, not inverted", four ledger rows whose mono
+and serif specimens carry no literal weight and so repaint on the theme toggle beside the live value.
+**Verified on the rebuilt production build** by fresh captures in midnight with no injection: the
+meta-ledger, nav and bibliography row now read at their daylight weight. **Declined:** per-theme
+tracking (would fork the 1.4 scale for no gain the weight step does not already give); lightening
+body prose (impossible without regenerating the fonts — recorded as the one thing a future font
+regeneration could unlock, by widening the subset to 300–700); compensating Archivo (no evidence).
+**Left for later:** nothing from this item.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->
