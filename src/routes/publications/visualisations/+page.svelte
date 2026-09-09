@@ -613,6 +613,7 @@
 				{#each keywordTerms as term (term.word)}
 					<a
 						href="{base}/publications?tag={encodeURIComponent(term.word)}"
+						rel="nofollow"
 						style="font-size: {term.size}px;"
 						title="{term.count} publications">{term.word}</a
 					>

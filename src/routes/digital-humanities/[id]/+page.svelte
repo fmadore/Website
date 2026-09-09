@@ -64,11 +64,15 @@
 		<h2 class="rail-label">Methods</h2>
 		<div class="chip-row">
 			{#each skills as skill (skill)}
-				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- skill filter URL -->
-				<a class="chip" href="{base}/digital-humanities?skill={encodeURIComponent(skill)}"
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- skill filter URL -->
+				<a
+					class="chip"
+					rel="nofollow"
+					href="{base}/digital-humanities?skill={encodeURIComponent(skill)}"
 					>{typesetQuotes(skill)}</a
 				>
 			{/each}
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		</div>
 	</div>
 {/snippet}

@@ -74,7 +74,12 @@
 		</ul>
 
 		<div class="view-all-container">
-			<Button href={viewAllUrl} variant="outline-secondary" size="base">
+			<Button
+				href={viewAllUrl}
+				rel={projectName ? 'nofollow' : undefined}
+				variant="outline-secondary"
+				size="base"
+			>
 				View all {itemTypePlural} →
 			</Button>
 		</div>

@@ -27,7 +27,9 @@
 				<!-- The label is typeset ("Côte d’Ivoire"); the href keeps the raw tag,
 				     since that string is what the filter on the target page matches. -->
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-				<a class="chip" href="{base}{baseUrl}{encodeURIComponent(tag)}">{typesetQuotes(tag)}</a>
+				<a class="chip" rel="nofollow" href="{base}{baseUrl}{encodeURIComponent(tag)}"
+					>{typesetQuotes(tag)}</a
+				>
 			{/each}
 		</div>
 	</section>

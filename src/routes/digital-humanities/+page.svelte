@@ -263,6 +263,7 @@
 							class="chip"
 							class:chip--selected={selectedSkill === skill}
 							href={skillHref(skill)}
+							rel="nofollow"
 							aria-current={selectedSkill === skill ? 'true' : undefined}
 						>
 							{skill} <span class="chip-count">{count}</span>
@@ -354,7 +355,7 @@ own methods close the entry as apparatus.
 							{#if i > 0}
 								<span class="apparatus-line-sep" aria-hidden="true">·</span>
 							{/if}
-							<a class="no-underline" href={skillHref(skill)}>{skill}</a>
+							<a class="no-underline" rel="nofollow" href={skillHref(skill)}>{skill}</a>
 						{/each}
 					</p>
 					<!-- eslint-enable svelte/no-navigation-without-resolve -->

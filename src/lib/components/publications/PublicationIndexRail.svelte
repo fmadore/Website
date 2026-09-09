@@ -62,7 +62,7 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 			{#each tags as tag (tag)}
 				<!-- Label typeset; the href keeps the raw tag the filter matches. -->
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-				<a class="chip" href="{base}/publications?tag={encodeURIComponent(tag)}"
+				<a class="chip" rel="nofollow" href="{base}/publications?tag={encodeURIComponent(tag)}"
 					>{typesetQuotes(tag)}</a
 				>
 			{/each}

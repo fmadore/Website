@@ -174,11 +174,14 @@
 		<div class="chip-row">
 			{#each tags as tag (tag)}
 				<!-- Label typeset; the href keeps the raw tag the filter matches. -->
-				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-				<a class="chip" href="{base}/conference-activity?tag={encodeURIComponent(tag)}"
-					>{typesetQuotes(tag)}</a
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- tag search URL -->
+				<a
+					class="chip"
+					rel="nofollow"
+					href="{base}/conference-activity?tag={encodeURIComponent(tag)}">{typesetQuotes(tag)}</a
 				>
 			{/each}
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		</div>
 	</div>
 {/snippet}

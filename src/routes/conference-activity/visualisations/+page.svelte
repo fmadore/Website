@@ -466,6 +466,7 @@
 				{#each tagTerms as term (term.word)}
 					<a
 						href="{base}/conference-activity?tag={encodeURIComponent(term.word)}"
+						rel="nofollow"
 						style="font-size: {term.size}px;"
 						title="{term.count} activities">{term.word}</a
 					>

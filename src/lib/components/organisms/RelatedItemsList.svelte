@@ -74,7 +74,12 @@
 
 		{#if viewAllLink}
 			<div class="view-all-container">
-				<Button href={viewAllLink} variant="outline-secondary" size="base">View all →</Button>
+				<Button
+					href={viewAllLink}
+					rel={filterValue ? 'nofollow' : undefined}
+					variant="outline-secondary"
+					size="base">View all →</Button
+				>
 			</div>
 		{/if}
 	</section>

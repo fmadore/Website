@@ -82,10 +82,11 @@ export const GET: RequestHandler = async () => {
 		{ path: '/conference-activity/slides', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/conference-activity/visualisations', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/teaching/guest-lectures', priority: 0.8, changefreq: 'monthly' },
-		{ path: '/style-guide', priority: 0.5, changefreq: 'monthly' },
-		// RSS Feeds - important for content syndication and discoverability
-		{ path: '/rss.xml', priority: 0.5, changefreq: 'weekly' },
-		{ path: '/publications/rss.xml', priority: 0.5, changefreq: 'weekly' }
+		{ path: '/style-guide', priority: 0.5, changefreq: 'monthly' }
+		// The RSS feeds are deliberately absent. A sitemap advertises indexable
+		// pages; a feed is not one, so listing it only buys a crawl that ends in
+		// "Crawled - currently not indexed". Readers and aggregators find the
+		// feeds through the <link rel="alternate"> in the document head.
 	];
 
 	// Research project routes (sub-pages of Research), derived from the route tree
