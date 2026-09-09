@@ -888,6 +888,19 @@
 	/* size set inline per term: style="font-size: 21px" */
 }
 
+/* A term that links to the filtered index is a target, and the scale runs
+   down to 13px — a 15.6px line box, well under the 24px WCAG 2.5.8 floor.
+   The terms cleared it only on the spacing exception, which the 6px row gap
+   granted or withheld depending on how the cloud happened to wrap: a sweep
+   of seventeen viewport widths failed ten of them, on a different pair of
+   terms each time. Padding the hit area symmetrically takes the smallest
+   term to 27.6px and settles it on size instead, leaving the frequency
+   scale — the thing the cloud exists to encode — untouched. Baselines stay
+   aligned because the padding is equal above and below. */
+.key-terms a {
+	padding-block: var(--space-1-5);
+}
+
 /* ===========================================================================
  * STAT LEDGER — "the corpus, in numbers"
  * =========================================================================== */

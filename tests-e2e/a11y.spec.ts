@@ -70,3 +70,32 @@ for (const { name, path } of darkPages) {
 		).toEqual([]);
 	});
 }
+
+/**
+ * The axe scans above run at one viewport, and WCAG 2.5.8 lets an undersized
+ * target pass on the space around it — so a cloud of small targets can clear
+ * the scan at 1280px and fail at 1240px, on whichever pair of terms happened
+ * to wrap together. The key-terms cloud did exactly that, failing ten of a
+ * seventeen-width sweep. Measure the targets themselves instead: every term
+ * that links to a filtered index must clear 24px on its own, whatever the
+ * frequency scale does to its type size.
+ */
+test('key-terms cloud targets clear the WCAG 2.5.8 floor', async ({ page }) => {
+	test.setTimeout(60_000);
+	await page.goto('/publications/visualisations');
+	await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
+
+	const terms = page.locator('.key-terms a');
+	await expect(terms.first()).toBeVisible();
+
+	for (const width of [1280, 1024, 768, 480]) {
+		await page.setViewportSize({ width, height: 900 });
+		const undersized = await terms.evaluateAll((nodes) =>
+			nodes
+				.map((node) => ({ term: node.textContent, box: node.getBoundingClientRect() }))
+				.filter(({ box }) => box.height < 24 || box.width < 24)
+				.map(({ term, box }) => `${term} (${box.width.toFixed(1)}×${box.height.toFixed(1)})`)
+		);
+		expect(undersized, `undersized targets at ${width}px`).toEqual([]);
+	}
+});
