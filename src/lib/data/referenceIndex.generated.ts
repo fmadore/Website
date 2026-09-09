@@ -563,8 +563,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		],
 		"type": "working-paper",
 		"date": "2026",
-		"dateISO": "2026-09-08",
+		"dateISO": "2026-09-09",
 		"year": 2026,
+		"image": "images/publications/for-whom-for-what-purpose-2026.webp",
 		"publisher": "Leibniz-Zentrum Moderner Orient"
 	},
 	"formation-recherche-en-ligne-niamey": {

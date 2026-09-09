@@ -913,6 +913,11 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceHeight: 885,
 		widths: [400]
 	},
+	'publications/for-whom-for-what-purpose-2026.webp': {
+		sourceWidth: 1240,
+		sourceHeight: 1754,
+		widths: [400, 800]
+	},
 	'publications/imams-ouagadougou-2020-hero.webp': {
 		sourceWidth: 800,
 		sourceHeight: 1148,

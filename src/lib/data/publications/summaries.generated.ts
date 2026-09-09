@@ -281,7 +281,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Thompson Gyedu Kwarkye"
 		],
 		"date": "2026",
-		"dateISO": "2026-09-08",
+		"dateISO": "2026-09-09",
 		"year": 2026,
 		"series": "ZMO Programmatic Texts",
 		"issue": "16",
@@ -292,6 +292,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"language": "English",
 		"doi": "10.58144/20260827-000",
 		"openAccess": true,
+		"image": "images/publications/for-whom-for-what-purpose-2026.webp",
 		"tags": [
 			"Digital Humanities",
 			"Artificial Intelligence",

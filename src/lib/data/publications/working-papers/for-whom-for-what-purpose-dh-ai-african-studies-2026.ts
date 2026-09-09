@@ -33,7 +33,7 @@ export const forWhomForWhatPurposeDhAiAfricanStudies2026: Publication = {
 		'Thompson Gyedu Kwarkye'
 	],
 	date: '2026',
-	dateISO: '2026-09-08',
+	dateISO: '2026-09-09',
 	year: 2026,
 	series: 'ZMO Programmatic Texts',
 	issue: '16',
@@ -44,6 +44,7 @@ export const forWhomForWhatPurposeDhAiAfricanStudies2026: Publication = {
 	language: 'English',
 	doi: '10.58144/20260827-000',
 	openAccess: true,
+	image: 'images/publications/for-whom-for-what-purpose-2026.webp',
 	abstract:
 		'African Studies scholars have been involved in Digital Humanities (DH) projects since the 2000s. Recent advances in artificial intelligence (AI), particularly large language models (LLMs), have expanded the possibilities for textual analysis and archival research, but implementation raises difficult questions: who controls access, whose data trains these systems without consent, whose languages remain underserved, and who bears the labour and environmental costs. This position paper is the collective work of a Volkswagen Foundation-funded scoping workshop in Hanover, Germany, in February 2026, with twenty-six scholars from sixteen countries. Across four working groups – language technologies; archives and visual heritage; infrastructure, governance, and access; and epistemologies, decoloniality, and ethics – one question recurred: for whom and for what purpose is this work undertaken? Ownership and sovereignty, access, sustainability, and standardisation emerged as transversal problems, which we set in dialogue with critiques of data colonialism and extractivism. We propose situated practices: licensing that conditions openness on return to source communities; digitisation agreements as living documents; ontologies built collaboratively; design grounded in access, governance, and sovereignty; and ethics treated as a process rather than a deliverable. Many of the problems we examine are common across DH and AI: consent, standardisation that erases variation, algorithmic bias, hidden labour, and the funding of innovation over maintenance. African contexts make them sharper and more visible, and Africa-based practice has produced concrete responses. We therefore argue that African epistemologies and decolonial critique belong at the centre of both fields, and that African scholars, practitioners, and institutions belong where these technologies are designed and governed.',
 	tags: [
