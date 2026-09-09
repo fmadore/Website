@@ -366,18 +366,25 @@ background texture is now the whole subject of the chart.
 						onfocus={(e) => showRow(e, row)}
 						onblur={clearHover}
 					>
-						<rect
-							x={axisX}
-							y={y - rowHeight / 2}
-							width={areaWidth - axisX}
-							height={rowHeight}
-							fill="transparent"
-						/>
+						<!-- The row's hit area. `areaWidth` is 0 until `bind:clientWidth`
+						     first reports, and `areaWidth - axisX` is then negative — an
+						     invalid <rect> width, which the browser rejects once per row.
+						     Skip the rect entirely on that first frame; it has nothing to
+						     catch anyway. -->
+						{#if areaWidth > 0}
+							<rect
+								x={axisX}
+								y={y - rowHeight / 2}
+								width={Math.max(0, areaWidth - axisX)}
+								height={rowHeight}
+								fill="transparent"
+							/>
+						{/if}
 						{#if row.kind === 'contributor'}
 							<!-- Contributor-only people are squares: a non-colour channel for
 							     the role, and on-brand (the system's corners are square). -->
 							<rect
-								x={axisX - dotRadius(row.weight)}
+								x={Math.max(0, axisX - dotRadius(row.weight))}
 								y={y - dotRadius(row.weight)}
 								width={dotRadius(row.weight) * 2}
 								height={dotRadius(row.weight) * 2}

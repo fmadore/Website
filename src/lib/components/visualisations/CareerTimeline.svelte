@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { scaleTime, scaleBand } from 'd3-scale';
+	import { scaleTime } from 'd3-scale';
 	import { type TimelineItem, TIMELINE_CATEGORIES, getCategoryColor } from '$lib/types/timeline';
 	import TimelineTooltip from './timeline/TimelineTooltip.svelte';
 	import TimelineDetailCard from './timeline/TimelineDetailCard.svelte';
@@ -10,10 +10,7 @@
 		class?: string;
 	}
 
-	let { items = [], height = 500, class: className = '' }: Props = $props();
-
-	// Simple counter for reactive key
-	const chartKey = $derived(`career-timeline-${items.length}`);
+	let { items = [], height = 0, class: className = '' }: Props = $props();
 
 	// Get unique categories present in the data.
 	// $derived.by caches the filtered array; the previous $derived(() => fn)
@@ -25,14 +22,26 @@
 		return TIMELINE_CATEGORIES.filter((c) => uniqueCats.has(c.id));
 	});
 
-	// Chart dimensions
-	const margin = { top: 40, right: 30, bottom: 40, left: 20 };
-	const chartWidth = $derived(900);
+	// Chart dimensions. `margin.left` is the hanging mono key column of the
+	// ledger: every lane names itself there, so no lane is keyed by colour
+	// alone. The plate draws at 1:1 (the viewBox matches the pixel size), so
+	// SVG user units are CSS pixels and the label column keeps its typographic
+	// size whatever the viewport.
+	const margin = { top: 40, right: 32, bottom: 8, left: 124 };
+	const MIN_PLOT_WIDTH = 620;
+	const LANE_HEIGHT = 52;
+
+	// The single horizontal scroller lives on the route container; the plate
+	// sizes to the space it is given, with a readable floor.
+	let containerWidth = $state(0);
+	const chartWidth = $derived(
+		Math.max(margin.left + MIN_PLOT_WIDTH + margin.right, Math.floor(containerWidth))
+	);
 	const chartHeight = $derived(
-		Math.max(300, activeCategories.length * 50 + margin.top + margin.bottom)
+		margin.top + Math.max(1, activeCategories.length) * LANE_HEIGHT + margin.bottom
 	);
 	const innerWidth = $derived(chartWidth - margin.left - margin.right);
-	const innerHeight = $derived(chartHeight - margin.top - margin.bottom);
+	const innerHeight = $derived(Math.max(1, activeCategories.length) * LANE_HEIGHT);
 
 	// Calculate the year domain
 	const yearDomain = $derived.by((): [Date, Date] => {
@@ -61,15 +70,7 @@
 		return [minDate, maxDate];
 	});
 
-	// Create scales
 	const xScale = $derived(scaleTime().domain(yearDomain).range([0, innerWidth]));
-
-	const yScale = $derived(
-		scaleBand<string>()
-			.domain(activeCategories.map((c) => c.id))
-			.range([0, innerHeight])
-			.padding(0.25)
-	);
 
 	// Generate x-axis ticks
 	const xTicks = $derived.by(() => {
@@ -84,14 +85,78 @@
 		return ticks;
 	});
 
+	function formatRange(item: TimelineItem): string {
+		const start = item.startDate.getFullYear();
+		if (item.endDate) {
+			const end = item.endDate.getFullYear();
+			return end === start ? `${start}` : `${start}–${end}`;
+		}
+		if (item.isOngoing) return `${start}–present`;
+		return `${start}`;
+	}
+
+	// One row per category: hanging mono key, hairline above, marks to the right.
+	const lanes = $derived.by(() =>
+		activeCategories.map((category, index) => {
+			const laneItems = items
+				.filter((item) => item.category === category.id)
+				.sort((a, b) => a.startDate.getTime() - b.startDate.getTime());
+			return {
+				...category,
+				index,
+				top: index * LANE_HEIGHT,
+				centre: index * LANE_HEIGHT + LANE_HEIGHT / 2,
+				count: laneItems.length,
+				items: laneItems
+			};
+		})
+	);
+
+	interface Mark {
+		item: TimelineItem;
+		laneIndex: number;
+		x: number;
+		width: number;
+		y: number;
+		duration: boolean;
+		colour: string;
+		name: string;
+	}
+
+	// Flat, lane-major then chronological — this order is also the keyboard
+	// order, so a roving tabindex over it reads the plate the way it is drawn.
+	const marks = $derived.by((): Mark[] =>
+		lanes.flatMap((lane) =>
+			lane.items.map((item) => {
+				const x = xScale(item.startDate);
+				const duration = !!(item.endDate || item.isOngoing);
+				const end = item.endDate ?? new Date();
+				return {
+					item,
+					laneIndex: lane.index,
+					x,
+					width: duration ? Math.max(6, xScale(end) - x) : 0,
+					y: lane.centre,
+					duration,
+					colour: getCategoryColor(item.category),
+					name: `${item.title}, ${lane.label}, ${formatRange(item)}`
+				};
+			})
+		)
+	);
+
 	// State for interaction
 	let containerEl = $state<HTMLDivElement | null>(null);
 	let tooltipOpen = $state(false);
 	let tooltipX = $state(0);
 	let tooltipY = $state(0);
+	let tooltipPlacement = $state<'above' | 'below'>('above');
 	let tooltipItem = $state<TimelineItem | null>(null);
 	let selectedItem = $state<TimelineItem | null>(null);
 	let selectedIndex = $state(0);
+	let focusIndex = $state(0);
+
+	const rovingIndex = $derived(Math.min(focusIndex, Math.max(0, marks.length - 1)));
 
 	// Initialize with the most recent item selected for better discovery
 	$effect(() => {
@@ -114,18 +179,29 @@
 		}
 	});
 
-	function updateTooltipPosition(e: PointerEvent) {
-		if (!containerEl) return;
-		const rect = containerEl.getBoundingClientRect();
-		// Position tooltip above the mouse with some offset
-		tooltipX = e.clientX - rect.left;
-		tooltipY = e.clientY - rect.top - 10;
+	function placeTooltip(x: number, y: number) {
+		tooltipX = x;
+		tooltipY = y;
+		// Near the top of the plate there is no room above the mark, and the
+		// route's scroller clips vertical overflow — flip below instead.
+		tooltipPlacement = y > 150 ? 'above' : 'below';
 	}
 
 	function showTooltip(e: PointerEvent, item: TimelineItem) {
+		if (!containerEl) return;
+		const rect = containerEl.getBoundingClientRect();
 		tooltipOpen = true;
 		tooltipItem = item;
-		updateTooltipPosition(e);
+		placeTooltip(e.clientX - rect.left, e.clientY - rect.top - 10);
+	}
+
+	function showTooltipForMark(mark: Mark) {
+		tooltipOpen = true;
+		tooltipItem = mark.item;
+		placeTooltip(
+			margin.left + mark.x + (mark.duration ? mark.width / 2 : 0),
+			margin.top + mark.y - 14
+		);
 	}
 
 	function hideTooltip() {
@@ -147,6 +223,65 @@
 		}
 	}
 
+	function focusMark(index: number) {
+		const next = Math.max(0, Math.min(marks.length - 1, index));
+		focusIndex = next;
+		containerEl?.querySelector<SVGGElement>(`[data-mark="${next}"]`)?.focus();
+	}
+
+	/** Nearest mark in time within another lane — keeps vertical moves aligned. */
+	function nearestInLane(laneIndex: number, x: number): number {
+		let best = -1;
+		let bestDistance = Number.POSITIVE_INFINITY;
+		marks.forEach((mark, index) => {
+			if (mark.laneIndex !== laneIndex) return;
+			const distance = Math.abs(mark.x - x);
+			if (distance < bestDistance) {
+				bestDistance = distance;
+				best = index;
+			}
+		});
+		return best === -1 ? 0 : best;
+	}
+
+	function onMarkKeydown(event: KeyboardEvent, mark: Mark, index: number) {
+		switch (event.key) {
+			case 'Enter':
+			case ' ':
+			case 'Spacebar':
+				// Space must activate as well as Enter, without scrolling the page.
+				event.preventDefault();
+				selectItem(mark.item);
+				break;
+			case 'ArrowRight':
+				event.preventDefault();
+				focusMark(index + 1);
+				break;
+			case 'ArrowLeft':
+				event.preventDefault();
+				focusMark(index - 1);
+				break;
+			case 'ArrowDown':
+				event.preventDefault();
+				focusMark(nearestInLane(Math.min(lanes.length - 1, mark.laneIndex + 1), mark.x));
+				break;
+			case 'ArrowUp':
+				event.preventDefault();
+				focusMark(nearestInLane(Math.max(0, mark.laneIndex - 1), mark.x));
+				break;
+			case 'Home':
+				event.preventDefault();
+				focusMark(0);
+				break;
+			case 'End':
+				event.preventDefault();
+				focusMark(marks.length - 1);
+				break;
+			default:
+				break;
+		}
+	}
+
 	function goToPrevious() {
 		// Find previous item logically (based on current index)
 		if (selectedIndex > 0) {
@@ -165,131 +300,130 @@
 	function closeDetailCard() {
 		selectedItem = null;
 	}
-
-	// Get x position for an item
-	function getItemX(item: TimelineItem): number {
-		return xScale(item.startDate);
-	}
-
-	// Get width for an item (duration items get bars, point items get circles)
-	function getItemWidth(item: TimelineItem): number {
-		if (item.endDate || item.isOngoing) {
-			const end = item.endDate || new Date();
-			return Math.max(8, xScale(end) - xScale(item.startDate));
-		}
-		// Point items - small width
-		return 8;
-	}
-
-	// Check if item is a duration (has meaningful width) or a point
-	function isDuration(item: TimelineItem): boolean {
-		return !!(item.endDate || item.isOngoing);
-	}
 </script>
 
-{#key chartKey}
-	<div
-		bind:this={containerEl}
-		class="career-timeline {className}"
-		style="height: auto; min-height: {height}px;"
-		role="img"
-		aria-label="Career timeline visualization"
-	>
-		<!-- Hover Tooltip -->
-		{#if tooltipOpen && tooltipItem}
-			<TimelineTooltip item={tooltipItem} x={tooltipX} y={tooltipY} />
-		{/if}
+<div
+	bind:this={containerEl}
+	bind:clientWidth={containerWidth}
+	class="career-timeline {className}"
+	style:min-height={height ? `${height}px` : null}
+	role="group"
+	aria-label="Career timeline, one lane per category"
+>
+	<!-- Hover Tooltip -->
+	{#if tooltipOpen && tooltipItem}
+		<TimelineTooltip item={tooltipItem} x={tooltipX} y={tooltipY} placement={tooltipPlacement} />
+	{/if}
 
-		<!-- SVG Chart -->
-		{#if items.length > 0}
-			<div class="chart-container">
-				<svg
-					viewBox="0 0 {chartWidth} {chartHeight}"
-					class="timeline-svg"
-					preserveAspectRatio="xMidYMid meet"
-				>
-					<g transform="translate({margin.left}, {margin.top})">
-						<!-- X Axis (top) -->
-						<g class="x-axis">
-							<line x1="0" y1="0" x2={innerWidth} y2="0" class="axis-line" />
-							{#each xTicks as tick (tick.getTime())}
-								{@const x = xScale(tick)}
-								<g transform="translate({x}, 0)">
-									<line y1="0" y2="-6" class="tick-line" />
-									<text y="-12" text-anchor="middle" class="tick-label">
-										{tick.getFullYear()}
-									</text>
-								</g>
-							{/each}
-						</g>
+	{#if items.length > 0}
+		<p class="sr-only">
+			{marks.length} records across {lanes.length} categories. Move between records with the arrow keys;
+			press Enter or Space to open one.
+		</p>
 
-						<!-- Category swim lanes -->
-						{#each activeCategories as category, index (category.id)}
-							{@const y = yScale(category.id) ?? 0}
-							{@const bandHeight = yScale.bandwidth()}
-							{@const categoryItems = items.filter((item) => item.category === category.id)}
-							{@const color = getCategoryColor(category.id)}
+		<svg
+			class="timeline-svg"
+			width={chartWidth}
+			height={chartHeight}
+			viewBox="0 0 {chartWidth} {chartHeight}"
+		>
+			<g transform="translate({margin.left}, {margin.top})">
+				<!-- Year axis (top) -->
+				<g class="x-axis">
+					<line x1={-margin.left} y1="0" x2={innerWidth} y2="0" class="axis-line" />
+					{#each xTicks as tick (tick.getTime())}
+						{@const x = xScale(tick)}
+						{#if x >= 0 && x <= innerWidth}
+							<g transform="translate({x}, 0)">
+								<line y1="0" y2="-6" class="tick-line" />
+								<text y="-12" text-anchor="middle" class="tick-label">
+									{tick.getFullYear()}
+								</text>
+							</g>
+						{/if}
+					{/each}
+				</g>
 
-							<!-- Lane background (subtle) -->
-							<rect
-								x="0"
-								{y}
-								width={innerWidth}
-								height={bandHeight}
-								class="lane-background"
-								style="--lane-index: {index};"
+				<!-- Lane key column: the ledger's hanging mono key, one per lane -->
+				<g class="lanes">
+					<line class="key-rule" x1="0" y1="0" x2="0" y2={innerHeight} />
+					{#each lanes as lane (lane.id)}
+						{#if lane.index > 0}
+							<line
+								class="lane-rule"
+								x1={-margin.left}
+								y1={lane.top}
+								x2={innerWidth}
+								y2={lane.top}
 							/>
+						{/if}
+						<text class="lane-label" x={-margin.left} y={lane.centre - 2}>
+							{lane.label.toUpperCase()}
+						</text>
+						<text class="lane-count" x={-margin.left} y={lane.centre + 13}>
+							{lane.count} records
+						</text>
+					{/each}
+					<line
+						class="lane-rule"
+						x1={-margin.left}
+						y1={innerHeight}
+						x2={innerWidth}
+						y2={innerHeight}
+					/>
+				</g>
 
-							<!-- Items in this lane -->
-							{#each categoryItems as item (item.id)}
-								{@const itemX = getItemX(item)}
-								{@const itemWidth = getItemWidth(item)}
-								{@const itemY = y + bandHeight / 2}
+				<!-- Records -->
+				<g class="marks">
+					{#each marks as mark, index (`${mark.item.category}:${mark.item.id}:${index}`)}
+						{@const hitWidth = Math.max(24, mark.width)}
+						{@const hitX = mark.duration
+							? mark.x - Math.max(0, (24 - mark.width) / 2)
+							: mark.x - 12}
+						<g
+							class="mark"
+							class:selected={selectedItem?.id === mark.item.id}
+							data-mark={index}
+							style="--_mark-colour: {mark.colour};"
+							role="button"
+							tabindex={index === rovingIndex ? 0 : -1}
+							aria-label={mark.name}
+							aria-pressed={selectedItem?.id === mark.item.id}
+							onpointermove={(e) => showTooltip(e, mark.item)}
+							onpointerleave={hideTooltip}
+							onclick={() => {
+								focusIndex = index;
+								selectItem(mark.item);
+							}}
+							onkeydown={(e) => onMarkKeydown(e, mark, index)}
+							onfocus={() => {
+								focusIndex = index;
+								showTooltipForMark(mark);
+							}}
+							onblur={hideTooltip}
+						>
+							<!-- 24px hit area (WCAG 2.5.8), and the focus ring -->
+							<rect class="mark-hit" x={hitX} y={mark.y - 12} width={hitWidth} height="24" />
+							{#if mark.duration}
+								<rect
+									class="timeline-bar"
+									x={mark.x}
+									y={mark.y - 9}
+									width={mark.width}
+									height="18"
+								/>
+							{:else}
+								<circle class="timeline-point" cx={mark.x} cy={mark.y} r="6" />
+							{/if}
+						</g>
+					{/each}
+				</g>
+			</g>
+		</svg>
 
-								{#if isDuration(item)}
-									<!-- Duration bar -->
-									<rect
-										x={itemX}
-										y={itemY - 10}
-										width={itemWidth}
-										height={20}
-										fill={color}
-										rx="0"
-										ry="0"
-										class="timeline-bar"
-										class:selected={selectedItem?.id === item.id}
-										onpointermove={(e) => showTooltip(e, item)}
-										onpointerleave={hideTooltip}
-										onclick={() => selectItem(item)}
-										role="button"
-										tabindex="0"
-										onkeydown={(e) => e.key === 'Enter' && selectItem(item)}
-									/>
-								{:else}
-									<!-- Point marker -->
-									<circle
-										cx={itemX}
-										cy={itemY}
-										r="6"
-										fill={color}
-										class="timeline-point"
-										class:selected={selectedItem?.id === item.id}
-										onpointermove={(e) => showTooltip(e, item)}
-										onpointerleave={hideTooltip}
-										onclick={() => selectItem(item)}
-										role="button"
-										tabindex="0"
-										onkeydown={(e) => e.key === 'Enter' && selectItem(item)}
-									/>
-								{/if}
-							{/each}
-						{/each}
-					</g>
-				</svg>
-			</div>
-
-			<!-- Detail Card (Always rendered if selectedItem exists) -->
-			{#if selectedItem}
+		<!-- Detail Card (Always rendered if selectedItem exists) -->
+		{#if selectedItem}
+			<div class="detail-slot">
 				<TimelineDetailCard
 					item={selectedItem}
 					index={selectedIndex}
@@ -298,29 +432,36 @@
 					onnext={goToNext}
 					onclose={closeDetailCard}
 				/>
-			{:else}
-				<!-- Clean prompt to select an item if nothing selected (though we try to auto-select) -->
-				<div class="empty-selection-hint">
-					<p>Select an item from the timeline to view details</p>
-				</div>
-			{/if}
-
-			<!-- Legend -->
-			<div class="timeline-legend">
-				{#each activeCategories as category (category.id)}
-					<div class="legend-item">
-						<span class="legend-color" style="background: {category.color};"></span>
-						<span class="legend-label">{category.label}</span>
-					</div>
-				{/each}
 			</div>
 		{:else}
-			<div class="empty-state">
-				<p class="text-muted">No timeline data available</p>
+			<!-- Clean prompt to select an item if nothing selected (though we try to auto-select) -->
+			<div class="empty-selection-hint">
+				<p>Select an item from the timeline to view details</p>
 			</div>
 		{/if}
-	</div>
-{/key}
+
+		<!-- Key to the mark forms; the lanes name their own categories. -->
+		<div class="timeline-key">
+			<span class="key-item">
+				<svg class="key-mark" viewBox="0 0 26 10" width="26" height="10" aria-hidden="true">
+					<rect x="0" y="2" width="26" height="6" />
+				</svg>
+				<span class="key-label">Span</span>
+			</span>
+			<span class="key-item">
+				<svg class="key-mark" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">
+					<circle cx="6" cy="6" r="5" />
+				</svg>
+				<span class="key-label">Single date</span>
+			</span>
+			<span class="key-note">Colour repeats the category named at the head of each lane.</span>
+		</div>
+	{:else}
+		<div class="empty-state">
+			<p class="text-muted">No timeline data available</p>
+		</div>
+	{/if}
+</div>
 
 <style>
 	.career-timeline {
@@ -331,136 +472,140 @@
 		gap: var(--space-lg);
 	}
 
-	.chart-container {
-		width: 100%;
-		overflow-x: auto;
-		overflow-y: hidden;
-		/* Hide scrollbar but keep functionality */
-		scrollbar-width: none;
-		-ms-overflow-style: none;
-	}
-
-	.chart-container::-webkit-scrollbar {
-		display: none;
-	}
-
+	/* The route container owns the one horizontal scroller; the plate draws at
+	   its natural width and lets that container scroll it. */
 	.timeline-svg {
-		width: 100%;
-		height: auto;
 		display: block;
-		min-width: 600px; /* Ensure it doesn't get too squished */
+		flex: none;
+		align-self: start;
 	}
 
-	.axis-line {
-		stroke: var(--color-border);
-		stroke-opacity: 0.5;
-	}
-
+	.axis-line,
 	.tick-line {
 		stroke: var(--color-border);
-		stroke-opacity: 0.5;
 	}
 
 	.tick-label {
-		fill: var(--color-text-muted);
-		font-size: var(--font-size-xs);
+		fill: var(--color-text-light);
 		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: var(--tracking-figures);
 	}
 
-	.lane-background {
-		fill: var(--color-surface-alt);
-		opacity: 0.3;
-		rx: 0;
+	/* Hairlines separate the lanes — the house separator, not a zebra fill. */
+	.lane-rule,
+	.key-rule {
+		stroke: var(--color-hairline);
+		stroke-width: var(--rule-hairline);
 	}
 
-	.lane-background:nth-child(even) {
-		opacity: 0.1;
+	.lane-label {
+		fill: var(--color-text-light);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: var(--tracking-label);
 	}
 
-	.timeline-bar {
+	/* The stamp under the key: a real count, the only ornament allowed. */
+	.lane-count {
+		fill: var(--color-text-muted);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: var(--tracking-figures);
+	}
+
+	.mark {
 		cursor: pointer;
-		transition:
-			opacity var(--duration-fast) var(--ease-out),
-			filter var(--duration-fast) var(--ease-out);
-		stroke: transparent;
-		stroke-width: var(--space-0-5);
+		outline: none;
 	}
 
-	.timeline-bar:hover {
-		filter: brightness(1.2) contrast(1.1);
-		opacity: 1;
+	.mark-hit {
+		fill: transparent;
+		stroke: none;
+		pointer-events: all;
 	}
 
-	.timeline-bar.selected {
-		stroke: var(--color-accent);
-		stroke-width: var(--space-0-5);
-		filter: brightness(1.05);
-		opacity: 1;
-	}
-
+	.timeline-bar,
 	.timeline-point {
-		cursor: pointer;
-		transition:
-			opacity var(--duration-fast) var(--ease-out),
-			filter var(--duration-fast) var(--ease-out);
-		stroke: transparent;
-		stroke-width: var(--space-0-5);
+		fill: var(--_mark-colour, var(--color-accent));
+		/* A ground-coloured ring keeps overlapping marks legible. */
+		stroke: var(--color-background);
+		stroke-width: var(--border-width-medium);
+		pointer-events: none;
+		transition: stroke var(--duration-fast) var(--ease-out);
 	}
 
-	.timeline-point:hover {
-		filter: brightness(1.2) contrast(1.1);
-		opacity: 1;
+	.mark:hover .timeline-bar,
+	.mark:hover .timeline-point {
+		stroke: var(--color-text-emphasis);
 	}
 
-	.timeline-point.selected {
+	.mark.selected .timeline-bar,
+	.mark.selected .timeline-point {
 		stroke: var(--color-accent);
-		stroke-width: var(--space-0-5);
-		filter: brightness(1.05);
-		opacity: 1;
+	}
+
+	.mark:focus-visible .mark-hit {
+		stroke: var(--color-accent);
+		stroke-width: var(--border-width-medium);
+	}
+
+	/* The plate is the only thing that scrolls sideways in the route's single
+	   scroller; the apparatus below it stays put at the left edge. */
+	.detail-slot,
+	.empty-selection-hint,
+	.timeline-key {
+		position: sticky;
+		left: 0;
 	}
 
 	.empty-selection-hint {
 		text-align: center;
 		padding: var(--space-xl);
-		border: 1px dashed var(--color-border);
-		border-radius: 0;
+		border: var(--border-width-thin) solid var(--color-border);
 		color: var(--color-text-light);
 		font-family: var(--font-family-serif);
 		font-style: italic;
 	}
 
-	/* Legend */
-	.timeline-legend {
+	/* Key to the mark forms */
+	.timeline-key {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-md) var(--space-xl);
-		padding: var(--space-lg);
-		justify-content: center;
-		border-top: 1px solid var(--color-border);
-		margin-top: var(--space-lg);
-	}
-
-	.legend-item {
-		display: flex;
 		align-items: center;
-		gap: var(--space-3);
+		gap: var(--space-sm) var(--space-xl);
+		padding-top: var(--space-md);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
-	.legend-color {
-		width: var(--space-3);
-		height: var(--space-3);
-		border-radius: var(--border-radius-full);
-		border: var(--space-0-5) solid transparent;
-		outline: var(--border-width-thin) solid var(--color-border);
+	.key-item {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
 	}
 
-	.legend-label {
+	.key-mark {
+		display: block;
+		fill: var(--color-primary);
+	}
+
+	.key-label {
 		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
 		color: var(--color-text-light);
 		text-transform: uppercase;
-		letter-spacing: var(--tracking-caps);
+		letter-spacing: var(--tracking-label);
+	}
+
+	.key-note {
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-sm);
+		color: var(--color-text-light);
 	}
 
 	/* Empty state */
@@ -471,15 +616,9 @@
 		height: 200px;
 	}
 
-	/* Mobile Optimizations */
 	@media (--md-down) {
-		.timeline-legend {
-			gap: var(--space-sm) var(--space-md);
-		}
-
-		.timeline-svg {
-			/* On mobile, let it scroll horizontally */
-			min-width: 800px;
+		.timeline-key {
+			gap: var(--space-2) var(--space-md);
 		}
 	}
 
@@ -488,7 +627,6 @@
 		.timeline-bar,
 		.timeline-point {
 			transition: none !important;
-			animation: none !important;
 		}
 	}
 </style>

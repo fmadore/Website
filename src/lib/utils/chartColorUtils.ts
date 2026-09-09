@@ -296,14 +296,48 @@ export const CHART_COLOR_FALLBACKS = {
 	highlight: '#1e6a56', // pine (--color-highlight)
 	success: '#5c6b3a', // muted olive (--color-success)
 	secondary: '#5c5442', // muted ink (--color-secondary)
-	plum: '#766090', // --sys-viz-6 (muted plum)
-	mauve: '#8d6376', // --sys-viz-5 (mauve)
-	sage: '#6e8255', // --sys-viz-3 (muted olive)
-	slateBlue: '#4e6c8b', // --sys-viz-2 (muted slate-blue)
-	ochre: '#b48952', // --sys-viz-4 (ochre / gold)
-	umber: '#6e4b45', // --sys-viz-7 (umber / deep clay)
+	// The --sys-viz-* series, resolved from OKLCH to literal hex. Keep in step
+	// with variables.css; designTokenParity.test.ts converts the tokens and
+	// fails if these drift.
+	plum: '#9c81bc', // --sys-viz-6 oklch(0.65 0.09 305)
+	mauve: '#824d67', // --sys-viz-5 oklch(0.49 0.08 350)
+	sage: '#566c38', // --sys-viz-3 oklch(0.5 0.08 128)
+	slateBlue: '#5584b4', // --sys-viz-2 oklch(0.6 0.09 250)
+	ochre: '#b1864f', // --sys-viz-4 oklch(0.65 0.09 72)
+	umber: '#714a43', // --sys-viz-7 oklch(0.45 0.055 30)
 	fontFamily: "'Spline Sans Mono', 'SF Mono', 'Consolas', monospace"
 } as const;
+
+/**
+ * Midnight fallbacks — the `html.dark` half of the same table.
+ *
+ * Only the values midnight actually redefines are listed; everything else
+ * falls through to the daylight record above. The viz series is the reason
+ * this exists: `dark.css` re-steps `--sys-viz-*` for the film ground, and a
+ * renderer that missed the computed value would otherwise paint the daylight
+ * seven on warm near-black — the exact regression the midnight step fixes.
+ */
+export const CHART_COLOR_FALLBACKS_DARK: Partial<
+	Record<keyof typeof CHART_COLOR_FALLBACKS, string>
+> = {
+	primary: '#efe7d6', // cream (--color-primary → --sys-color-cream)
+	primaryDark: '#fffdf7', // paper-raised (--color-primary-dark)
+	text: '#efe7d6', // cream (--color-text)
+	textLight: '#b3a88d', // muted cream (--color-text-light)
+	border: '#453d2f', // film border (--color-border)
+	surface: '#1f1a14', // film-100 (--color-surface)
+	surfaceRgb: '23, 19, 16', // film ground #171310
+	accent: '#4fbb99', // pine-bright (--color-accent)
+	highlight: '#4fbb99', // pine-bright (--color-highlight)
+	success: '#8a9a5b', // success-bright (--color-success)
+	secondary: '#b3a88d', // muted cream (--color-secondary)
+	plum: '#a185c3', // --sys-viz-6 oklch(0.665 0.095 305)
+	mauve: '#8e516f', // --sys-viz-5 oklch(0.515 0.09 350)
+	sage: '#536d2e', // --sys-viz-3 oklch(0.5 0.095 128)
+	slateBlue: '#5587ba', // --sys-viz-2 oklch(0.61 0.095 250)
+	ochre: '#b68b53', // --sys-viz-4 oklch(0.665 0.09 72)
+	umber: '#965449' // --sys-viz-7 oklch(0.52 0.09 30)
+};
 
 /**
  * Ink + Signal categorical palette — the default series palette for every
@@ -363,55 +397,42 @@ export interface ResolvedChartColors {
  * @returns Object with resolved color values
  */
 export function getResolvedChartColors(): ResolvedChartColors {
+	// Theme first: the fallbacks are the *values midnight would compute to*, so
+	// picking the wrong record is worse than having none. Everything midnight
+	// does not redefine falls through to the daylight record.
+	const theme = getTheme();
+	const fb: Record<keyof typeof CHART_COLOR_FALLBACKS, string> =
+		theme === 'dark'
+			? { ...CHART_COLOR_FALLBACKS, ...CHART_COLOR_FALLBACKS_DARK }
+			: CHART_COLOR_FALLBACKS;
 	return {
-		primary: getCSSVariableValueWithFallback('--color-primary', CHART_COLOR_FALLBACKS.primary),
-		primaryDark: getCSSVariableValueWithFallback(
-			'--color-primary-dark',
-			CHART_COLOR_FALLBACKS.primaryDark
-		),
-		text: getCSSVariableValueWithFallback('--color-text', CHART_COLOR_FALLBACKS.text),
-		textLight: getCSSVariableValueWithFallback(
-			'--color-text-light',
-			CHART_COLOR_FALLBACKS.textLight
-		),
-		border: getCSSVariableValueWithFallback('--color-border', CHART_COLOR_FALLBACKS.border),
-		surface: getCSSVariableValueWithFallback('--color-surface', CHART_COLOR_FALLBACKS.surface),
-		surfaceElevated: getCSSVariableValueWithFallback(
-			'--color-surface-elevated',
-			CHART_COLOR_FALLBACKS.surface
-		),
-		surfaceRgb: getCSSVariableValueWithFallback(
-			'--color-surface-rgb',
-			CHART_COLOR_FALLBACKS.surfaceRgb
-		),
-		black: getCSSVariableValueWithFallback('--color-black', CHART_COLOR_FALLBACKS.black),
-		white: getCSSVariableValueWithFallback('--color-white', CHART_COLOR_FALLBACKS.white),
-		accent: getCSSVariableValueWithFallback('--color-accent', CHART_COLOR_FALLBACKS.accent),
-		highlight: getCSSVariableValueWithFallback(
-			'--color-highlight',
-			CHART_COLOR_FALLBACKS.highlight
-		),
-		success: getCSSVariableValueWithFallback('--color-success', CHART_COLOR_FALLBACKS.success),
-		secondary: getCSSVariableValueWithFallback(
-			'--color-secondary',
-			CHART_COLOR_FALLBACKS.secondary
-		),
+		primary: getCSSVariableValueWithFallback('--color-primary', fb.primary),
+		primaryDark: getCSSVariableValueWithFallback('--color-primary-dark', fb.primaryDark),
+		text: getCSSVariableValueWithFallback('--color-text', fb.text),
+		textLight: getCSSVariableValueWithFallback('--color-text-light', fb.textLight),
+		border: getCSSVariableValueWithFallback('--color-border', fb.border),
+		surface: getCSSVariableValueWithFallback('--color-surface', fb.surface),
+		surfaceElevated: getCSSVariableValueWithFallback('--color-surface-elevated', fb.surface),
+		surfaceRgb: getCSSVariableValueWithFallback('--color-surface-rgb', fb.surfaceRgb),
+		black: getCSSVariableValueWithFallback('--color-black', fb.black),
+		white: getCSSVariableValueWithFallback('--color-white', fb.white),
+		accent: getCSSVariableValueWithFallback('--color-accent', fb.accent),
+		highlight: getCSSVariableValueWithFallback('--color-highlight', fb.highlight),
+		success: getCSSVariableValueWithFallback('--color-success', fb.success),
+		secondary: getCSSVariableValueWithFallback('--color-secondary', fb.secondary),
 		// Ink + Signal viz companions, read from the OKLCH-anchored --sys-viz-*
 		// tokens so charts recolour with the theme instead of the retired
 		// plum/mauve/sage/slate-blue system hues.
-		plum: getCSSVariableValueWithFallback('--sys-viz-6', CHART_COLOR_FALLBACKS.plum),
-		mauve: getCSSVariableValueWithFallback('--sys-viz-5', CHART_COLOR_FALLBACKS.mauve),
-		sage: getCSSVariableValueWithFallback('--sys-viz-3', CHART_COLOR_FALLBACKS.sage),
-		slateBlue: getCSSVariableValueWithFallback('--sys-viz-2', CHART_COLOR_FALLBACKS.slateBlue),
-		ochre: getCSSVariableValueWithFallback('--sys-viz-4', CHART_COLOR_FALLBACKS.ochre),
-		umber: getCSSVariableValueWithFallback('--sys-viz-7', CHART_COLOR_FALLBACKS.umber),
+		plum: getCSSVariableValueWithFallback('--sys-viz-6', fb.plum),
+		mauve: getCSSVariableValueWithFallback('--sys-viz-5', fb.mauve),
+		sage: getCSSVariableValueWithFallback('--sys-viz-3', fb.sage),
+		slateBlue: getCSSVariableValueWithFallback('--sys-viz-2', fb.slateBlue),
+		ochre: getCSSVariableValueWithFallback('--sys-viz-4', fb.ochre),
+		umber: getCSSVariableValueWithFallback('--sys-viz-7', fb.umber),
 		// Chart chrome speaks the data voice: Spline Sans Mono.
-		fontFamily: getCSSVariableValueWithFallback(
-			'--font-family-mono',
-			CHART_COLOR_FALLBACKS.fontFamily
-		),
+		fontFamily: getCSSVariableValueWithFallback('--font-family-mono', fb.fontFamily),
 		// Include theme to make $derived reactive to theme changes
-		currentTheme: getTheme()
+		currentTheme: theme
 	};
 }
 
@@ -423,15 +444,21 @@ export function getResolvedChartColors(): ResolvedChartColors {
  * Returns resolved hex values (canvas-safe) for ECharts/D3 consumption.
  */
 export function getTimelinePalette(): string[] {
-	// Fallbacks mirror the --sys-viz-* anchors the timeline tokens point at.
+	// The timeline tokens alias --sys-viz-*, in both themes, so the fallbacks
+	// are the same records the rest of this module uses rather than a third
+	// hand-copied set. (They were exactly that, and went stale.)
+	const fb: Record<keyof typeof CHART_COLOR_FALLBACKS, string> =
+		getTheme() === 'dark'
+			? { ...CHART_COLOR_FALLBACKS, ...CHART_COLOR_FALLBACKS_DARK }
+			: CHART_COLOR_FALLBACKS;
 	return [
-		getCSSVariableValueWithFallback('--color-timeline-positions', '#1e6a56'), // viz-1 pine
-		getCSSVariableValueWithFallback('--color-timeline-education', '#6e8255'), // viz-3 olive
-		getCSSVariableValueWithFallback('--color-timeline-grants', '#b48952'), // viz-4 ochre
-		getCSSVariableValueWithFallback('--color-timeline-publications', '#4e6c8b'), // viz-2 slate-blue
-		getCSSVariableValueWithFallback('--color-timeline-presentations', '#8d6376'), // viz-5 mauve
-		getCSSVariableValueWithFallback('--color-timeline-awards', '#6e4b45'), // viz-7 umber
-		getCSSVariableValueWithFallback('--color-timeline-fieldwork', '#766090') // viz-6 plum
+		getCSSVariableValueWithFallback('--color-timeline-positions', fb.accent), // viz-1 pine
+		getCSSVariableValueWithFallback('--color-timeline-education', fb.sage), // viz-3 olive
+		getCSSVariableValueWithFallback('--color-timeline-grants', fb.ochre), // viz-4 ochre
+		getCSSVariableValueWithFallback('--color-timeline-publications', fb.slateBlue), // viz-2 slate
+		getCSSVariableValueWithFallback('--color-timeline-presentations', fb.mauve), // viz-5 mauve
+		getCSSVariableValueWithFallback('--color-timeline-awards', fb.umber), // viz-7 umber
+		getCSSVariableValueWithFallback('--color-timeline-fieldwork', fb.plum) // viz-6 plum
 	];
 }
 
@@ -487,7 +514,9 @@ export function getEChartsSplitLineStyle(colors: ResolvedChartColors) {
 		lineStyle: {
 			color: colors.border,
 			opacity: 0.3,
-			type: 'dashed' as const
+			// Solid, not dashed: the brief draws hierarchy in rules, and a rule
+			// is a rule. The gridline recedes on opacity, not on being broken up.
+			type: 'solid' as const
 		}
 	};
 }

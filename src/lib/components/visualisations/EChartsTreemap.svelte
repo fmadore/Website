@@ -123,6 +123,42 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		};
 	}
 
+	/**
+	 * The tile area the series actually gets, in px² — the `height` percentage
+	 * below reserves room for the breadcrumb.
+	 */
+	const plotArea = $derived(
+		resolvedWidth > 0 && resolvedHeight > 0
+			? resolvedWidth * resolvedHeight * (isMobile ? 0.8 : 0.86)
+			: 0
+	);
+
+	/** Fewer visible characters than this and the label says nothing. */
+	const MIN_LABEL_CHARS = 8;
+
+	/**
+	 * Whether a leaf's tile can hold enough of its name to be worth printing.
+	 *
+	 * Tiles narrower than their label truncated to "Afri…", "Édit…" — three
+	 * characters that identify nothing and, repeated down a column of small
+	 * tiles, read as the same venue several times. A squarified treemap keeps
+	 * tiles close to square, so the tile's side is ≈ √area, and the name is set
+	 * in a monospace whose advance is ~0.6em; that is enough to decide before
+	 * the chart is laid out. Below the threshold the label is dropped and the
+	 * full name is left to the tooltip, which is where it was always legible.
+	 */
+	function leafLabelFits(name: string, value: number): boolean {
+		// Before the first measurement, print: hiding on a guess is worse.
+		if (plotArea <= 0 || totalPublications <= 0) return true;
+		const side = Math.sqrt((value / totalPublications) * plotArea);
+		const lineHeight = isMobile ? 16 : 20;
+		// Name line + count line, plus the label's own vertical padding.
+		if (side < lineHeight * 2 + 8) return false;
+		const usable = side - 12; // label padding: [4, 6]
+		const charWidth = (isMobile ? 11 : 13) * 0.6;
+		return Math.floor(usable / charWidth) >= Math.min(name.length, MIN_LABEL_CHARS);
+	}
+
 	// Pre-process data: assign each category a fill (children inherit it) plus a
 	// theme-aware label style derived from that fill, so parent `upperLabel` and
 	// leaf labels carry their own contrast-correct colours instead of one
@@ -145,7 +181,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				children: node.children.map((child) => ({
 					...child,
 					itemStyle: { color: fill },
-					label: { rich }
+					label: { rich, show: leafLabelFits(child.name, child.value) }
 				}))
 			};
 		})
@@ -236,9 +272,9 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						if ('children' in params.data && params.data.children) {
 							return `{name|${params.name}}\n{count|${params.data.children.reduce((s: number, c: TreemapChild) => s + c.value, 0)}}`;
 						}
-						return isMobile && (params.value as number) < 2
-							? ''
-							: `{name|${params.name}}\n{count|${params.value}}`;
+						// Whether a leaf prints at all is decided per node by
+						// `leafLabelFits`; the formatter only sets the text.
+						return `{name|${params.name}}\n{count|${params.value}}`;
 					},
 					// Fallback rich fragments (used only by the virtual root, which
 					// otherwise never renders a label); every visible tile overrides

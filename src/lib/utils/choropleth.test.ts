@@ -69,11 +69,33 @@ describe('choropleth helpers', () => {
 	});
 
 	it('uses theme colours to create a monotonic sequential ramp', () => {
+		// Starts at CHOROPLETH_RAMP_START, not at the surface: the lightest bin
+		// has to stay visible against the ground it sits on.
 		expect(buildChoroplethPalette('#ffffff', '#000000', 3)).toEqual([
-			'rgb(173, 173, 173)',
-			'rgb(87, 87, 87)',
+			'rgb(140, 140, 140)',
+			'rgb(70, 70, 70)',
 			'rgb(0, 0, 0)'
 		]);
+	});
+
+	it('keeps the lightest bin off the ground it is drawn on', () => {
+		// The floor the dataviz validator sets for the end of an ordinal ramp.
+		const contrast = (a: string, b: string) => {
+			const lum = (rgb: string) => {
+				const [r, g, bl] = rgb.match(/\d+/g)!.map(Number) as [number, number, number];
+				const channel = (c: number) => {
+					const v = c / 255;
+					return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+				};
+				return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(bl);
+			};
+			const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x) as [number, number];
+			return (hi + 0.05) / (lo + 0.05);
+		};
+		const daylight = buildChoroplethPalette('#f3eee0', '#1e6a56');
+		const midnight = buildChoroplethPalette('#1f1a14', '#4fbb99');
+		expect(contrast(daylight[0]!, 'rgb(250, 247, 239)')).toBeGreaterThanOrEqual(2);
+		expect(contrast(midnight[0]!, 'rgb(23, 19, 16)')).toBeGreaterThanOrEqual(2);
 	});
 
 	it('includes a boundary for every country currently supported by LocationMap', () => {

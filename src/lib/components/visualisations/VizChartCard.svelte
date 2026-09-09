@@ -49,6 +49,11 @@
 	 * no shadow, no glass; a single hairline rule sits the chart on the page
 	 * like a plate in a printed volume. The chart chrome (axes, labels) carries
 	 * the data voice; the container stays quiet.
+	 *
+	 * The plate does not respond to the pointer. It used to darken its border on
+	 * hover, which is an app affordance offered by something that is not
+	 * clickable — a printed plate does not acknowledge being looked at. The
+	 * marks inside it are the interactive part.
 	 */
 	.chart-wrapper,
 	.placeholder-message {
@@ -56,17 +61,12 @@
 		border-radius: 0;
 		background: var(--color-background);
 		border: var(--border-width-thin) solid var(--color-border);
-		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.chart-wrapper {
 		padding: var(--space-lg);
 		contain: layout style paint;
 		min-height: var(--iframe-height-xs);
-	}
-
-	.chart-wrapper:hover {
-		border-color: var(--color-border-dark);
 	}
 
 	.stacked-chart {

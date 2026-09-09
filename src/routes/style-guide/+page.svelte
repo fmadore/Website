@@ -13,6 +13,7 @@
 	} from '$lib/data/publications/summaries';
 	import { allCommunications } from '$lib/data/communications/index';
 	import { activitiesByDate } from '$lib/data/activities';
+	import { tallyBy } from '$lib/utils/vizAggregation';
 
 	const breadcrumbs = createSectionBreadcrumbs('Style Guide', '/style-guide');
 
@@ -340,6 +341,23 @@
 			const count = publicationsByYear[year]?.length ?? 0;
 			return { year, count, pct: maxYearCount > 0 ? (count / maxYearCount) * 100 : 0 };
 		});
+
+	/* The same publications, read as a share of a whole instead of a run of
+	 * years, for the proportion-ledger demo below the meter. A work declaring
+	 * two languages is counted once in each, so the denominator is the language
+	 * tally rather than the work count — which is exactly the case the ledger
+	 * handles better than a pie, since the shares need not sum to the corpus. */
+	const languageShares = (() => {
+		const tally = tallyBy(allPublications, (pub) => pub.language?.split(','));
+		const total = tally.reduce((sum, entry) => sum + entry.count, 0);
+		return total === 0
+			? []
+			: tally.map(({ key, count }) => ({
+					language: key,
+					count,
+					pct: (count / total) * 100
+				}));
+	})();
 
 	const stats = [
 		{ label: 'Publications', value: allPublications.length, accent: true },
@@ -971,6 +989,25 @@
 					</li>
 				{/each}
 			</ul>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">The proportion ledger</h3>
+			<p class="guide-note">
+				The same three columns and the same <code>.hbar</code> meter, keyed on a category rather than
+				a year — here the languages the publications are written in, counted once per language a work
+				declares. It is why a two-slice pie never needs to exist: the row prints the count and the share
+				the arc would have left the reader to estimate.
+			</p>
+			<ul class="proportion-ledger proportion-demo">
+				{#each languageShares as row (row.language)}
+					<li>
+						<div class="proportion-row">
+							<span class="proportion-key">{row.language}</span>
+							<span class="hbar" style="--pct: {row.pct.toFixed(1)}%" aria-hidden="true"></span>
+							<span class="proportion-meta">{row.count} · {Math.round(row.pct)}%</span>
+						</div>
+					</li>
+				{/each}
+			</ul>
 		</section>
 
 		<!-- ================================================================
@@ -1370,6 +1407,12 @@
 	/* The meter is a rail idiom; showing it at page width would misstate it. */
 	.meter-demo {
 		max-width: 20rem;
+	}
+
+	/* Wider than the year meter's demo: the key column holds a language name
+	   rather than four figures, and the bar must still have room to be read. */
+	.proportion-demo {
+		max-width: 26rem;
 	}
 
 	/* ===== Plate ===== */

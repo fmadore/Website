@@ -29,7 +29,7 @@ test('visualisation pages render each network view and its controls', async ({ p
 	const cases = [
 		{
 			path: '/publications/visualisations',
-			heading: 'Author Collaboration Network',
+			heading: 'Author collaboration network',
 			mark: 'svg.arc-svg .arc-row'
 		},
 		{
@@ -69,7 +69,7 @@ test('the arc diagram ranks collaborators and omits the centre', async ({ page }
 	await page.goto('/publications/visualisations');
 	const section = page
 		.locator('section')
-		.filter({ hasText: 'Author Collaboration Network' })
+		.filter({ hasText: 'Author collaboration network' })
 		.first();
 	await section.scrollIntoViewIfNeeded();
 
@@ -168,7 +168,7 @@ test('network marks are keyboard focusable', async ({ page }) => {
 	await page.goto('/publications/visualisations');
 	const section = page
 		.locator('section')
-		.filter({ hasText: 'Author Collaboration Network' })
+		.filter({ hasText: 'Author collaboration network' })
 		.first();
 	await section.scrollIntoViewIfNeeded();
 

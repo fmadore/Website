@@ -23,19 +23,27 @@
  * <div bind:this={chartContainer}></div>
  * ```
  *
- * Charts that need an ECharts extension (e.g. `echarts-wordcloud`) or must wait
- * for the container to have real dimensions pass the optional `loadExtensions`
- * / `requireDimensions` hooks instead of reimplementing the lifecycle:
+ * A chart that needs an ECharts extension — a package that registers a map, a
+ * custom series or a renderer against the shared core on import — or that must
+ * wait for its container to have real dimensions passes the optional
+ * `loadExtensions` / `requireDimensions` hooks instead of reimplementing the
+ * lifecycle:
  *
  * ```ts
  * useECharts({
  *   getContainer: () => chartContainer,
  *   getOption: () => chartOption,
- *   hasData: () => words.length > 0,
- *   loadExtensions: () => import('echarts-wordcloud').then(() => undefined),
+ *   hasData: () => rows.length > 0,
+ *   loadExtensions: () => import('some-echarts-extension').then(() => undefined),
  *   requireDimensions: true
  * });
  * ```
+ *
+ * No chart currently passes either hook: the word cloud was the last consumer
+ * and its section is now typeset as a key-terms list. They are kept because the
+ * cost is a branch each and the alternative — a component reopening the whole
+ * init/resize/dispose dance the day a map arrives — is how this file's job got
+ * duplicated in the first place.
  */
 
 import type * as echarts from '$lib/utils/echartsCore';
@@ -56,16 +64,18 @@ export interface UseEChartsOptions {
 	hasData: () => boolean;
 	/**
 	 * Optional async hook run after `echarts` loads but before `init`. Use it to
-	 * pull in an ECharts extension that registers itself on the core module
-	 * (e.g. `() => import('echarts-wordcloud').then(() => undefined)`).
+	 * pull in an ECharts extension that registers itself on the core module — a
+	 * map, a custom series, an alternative renderer. Currently unused; see the
+	 * module header.
 	 */
 	loadExtensions?: () => Promise<void>;
 	/** Optional `echarts.init` options (e.g. `{ renderer: 'svg' }`). */
 	initOptions?: Parameters<typeof echarts.init>[2];
 	/**
 	 * Defer initialization until the container reports non-zero dimensions.
-	 * Prevents ECharts' "Can't get DOM width or height" warning for charts whose
-	 * height resolves after the first effect tick (e.g. the word cloud).
+	 * Prevents ECharts' "Can't get DOM width or height" warning for a chart
+	 * whose height resolves after the first effect tick — one sized from its
+	 * own content, or revealed inside a collapsed section. Currently unused.
 	 */
 	requireDimensions?: boolean;
 	/**

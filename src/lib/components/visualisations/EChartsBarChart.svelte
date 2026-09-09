@@ -23,14 +23,39 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		yAccessor,
 		xAxisLabel = '',
 		yAxisLabel = '',
-		barColor = 'var(--color-accent)'
+		measure = '',
+		barColor = 'var(--color-primary)',
+		accentKey
 	}: {
 		data?: DataItem[];
 		xAccessor: (d: DataItem) => string | number;
 		yAccessor: (d: DataItem) => number;
+		/**
+		 * Axis names, drawn on the plate. Pass one only when the section head
+		 * does not already state it: a category axis of four-digit years under
+		 * a head reading "Citations per year" needs no axis called "Year", and
+		 * the name costs a rotated mobile axis the room it does not have.
+		 */
 		xAxisLabel?: string;
 		yAxisLabel?: string;
+		/**
+		 * What the bars count, for the strings that are not drawn on the axis:
+		 * the tooltip's series name and the download filename. Kept separate
+		 * from `yAxisLabel` so dropping a redundant axis name does not also
+		 * strip the export of its name.
+		 */
+		measure?: string;
+		/**
+		 * Bar fill. Ink by default (cream on midnight, via the resolved tokens):
+		 * a bar series is structure, not the current thing.
+		 */
 		barColor?: string;
+		/**
+		 * The one category drawn in pine — the Year-Bar Strip idiom, where the
+		 * newest year carries the accent and the rest are ink. Leave it unset
+		 * and no pine appears on the chart at all (the Scarcity Rule).
+		 */
+		accentKey?: string | number;
 	} = $props();
 
 	// Container reference
@@ -47,6 +72,10 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		...getResolvedChartColors(),
 		barColor: resolveColor(barColor)
 	});
+
+	// The single accented category, compared as a string so a numeric year key
+	// matches the stringified axis category.
+	const accentName = $derived(accentKey === undefined ? null : String(accentKey));
 
 	// Chart data transformation
 	const chartData = $derived(
@@ -112,18 +141,23 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		},
 		series: [
 			{
-				name: yAxisLabel || 'Value',
+				name: measure || yAxisLabel || 'Value',
 				type: 'bar',
-				data: chartData.map((d) => d.value),
-				itemStyle: {
-					// Flat solid fill — Ink + Signal permits no gradients; a faded
-					// bar base read as "broken". The bar is one honest ink/pine block.
-					color: resolvedColors.barColor,
-					borderRadius: 0
-				},
-				emphasis: {
+				// Flat solid fills — Ink + Signal permits no gradients; a faded bar
+				// base read as "broken". Every bar is one honest ink block, except
+				// the single `accentKey` category, which is the pine signal.
+				data: chartData.map((d) => ({
+					value: d.value,
 					itemStyle: {
-						color: resolvedColors.barColor
+						color: d.name === accentName ? resolvedColors.accent : resolvedColors.barColor,
+						borderRadius: 0
+					}
+				})),
+				emphasis: {
+					// Keep each bar's own fill on hover instead of ECharts' default
+					// lift: the mark must not change colour to acknowledge a pointer.
+					itemStyle: {
+						color: 'inherit'
 					}
 				}
 			}
@@ -142,7 +176,11 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 </script>
 
 <div class="echarts-container">
-	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename={yAxisLabel || 'bar-chart'} />
+	<ChartToolbar
+		chart={echartsInstance.chart}
+		bind:showDecal
+		filename={measure || yAxisLabel || 'bar-chart'}
+	/>
 	<div bind:this={chartContainer} class="chart"></div>
 </div>
 

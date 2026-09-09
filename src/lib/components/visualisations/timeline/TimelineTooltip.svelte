@@ -7,13 +7,16 @@
 		item: TimelineItem;
 		x: number;
 		y: number;
+		/** Flips below the mark when there is no room above it. */
+		placement?: 'above' | 'below';
 	}
 
-	let { item, x, y }: Props = $props();
+	let { item, x, y, placement = 'above' }: Props = $props();
 </script>
 
 <div
 	class="tooltip-card"
+	class:below={placement === 'below'}
 	style="transform: translate({x}px, {y}px);"
 	transition:fade={{ duration: 150 }}
 >
@@ -46,13 +49,17 @@
 		z-index: var(--z-tooltip);
 		pointer-events: none;
 		background: var(--color-surface-elevated);
-		border-radius: 0;
-		border: 1px solid var(--color-border);
+		border: var(--border-width-thin) solid var(--color-border);
 		padding: var(--space-3);
 		min-width: 200px;
 		max-width: 300px;
 		transform: translate(-50%, -100%);
-		margin-top: -12px;
+		margin-top: calc(-1 * var(--space-3));
+	}
+
+	.tooltip-card.below {
+		transform: translate(-50%, 0);
+		margin-top: var(--space-5);
 	}
 
 	.tooltip-header {
@@ -62,42 +69,48 @@
 		margin-bottom: var(--space-2);
 	}
 
+	/* Square swatch: the category colour is a data mark, not a dot ornament. */
 	.tooltip-category-indicator {
 		width: var(--space-2);
 		height: var(--space-2);
-		border-radius: var(--border-radius-full);
+		flex: none;
 	}
 
 	.tooltip-category {
 		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
 		text-transform: uppercase;
-		letter-spacing: var(--tracking-caps);
+		letter-spacing: var(--tracking-label);
 		color: var(--color-text-light);
 	}
 
 	.tooltip-title {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-semibold);
+		font-weight: var(--font-weight-medium);
 		color: var(--color-text);
 		margin-bottom: var(--space-1);
 		line-height: var(--line-height-tight);
 	}
 
 	.tooltip-subtitle {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-xs);
 		color: var(--color-text-light);
 		margin-bottom: var(--space-1);
 	}
 
 	.tooltip-date {
-		font-size: var(--font-size-xs);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		color: var(--color-primary);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: var(--tracking-figures);
+		color: var(--color-text-soft);
 		margin-top: var(--space-2);
 		padding-top: var(--space-2);
-		border-top: 1px solid var(--color-border);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	@media (prefers-reduced-motion: reduce) {

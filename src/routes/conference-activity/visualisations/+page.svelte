@@ -16,16 +16,14 @@
 	} from '$lib/utils/breadcrumbJsonLd.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
-	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
 	import NetworkGraph from '$lib/components/visualisations/NetworkGraph.svelte';
 	import NetworkMatrix from '$lib/components/visualisations/NetworkMatrix.svelte';
 	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
-	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
-	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
+	import VizContents from '$lib/components/visualisations/VizContents.svelte';
 	import {
 		buildLocationData,
 		tallyBy,
@@ -44,8 +42,8 @@
 	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
 	import type { LocationDatum } from '$lib/data/geo';
 	import type { Communication } from '$lib/types/communication';
-	import type { WordFrequency } from '$lib/types';
 	import { author } from '$lib/data/siteConfig';
+	import { scaleKeyTerms } from '$lib/utils/keyTerms';
 	import { COMMUNICATION_TYPE_CHART_LABELS } from '$lib/utils/typeUtils';
 
 	// ---------- Shared types for derived data ----------
@@ -53,7 +51,6 @@
 	type LanguageCount = { language: string; count: number };
 	type TypeCount = { type: string; count: number };
 	type CountryCount = { country: string; count: number };
-	type TagCount = { tag: string; count: number };
 
 	// ---------- Helpers ----------
 
@@ -74,6 +71,25 @@
 	const communicationTypes = $derived(Object.keys(communicationsByType).sort());
 	const formattedTypes = $derived(communicationTypes.map(formatTypeLabel));
 
+	/**
+	 * Categorical colours for the activity stack, keyed by the same label the
+	 * rows carry. The order is corpus size descending (conference paper, guest
+	 * lecture, workshop, event organised, panel organised, poster, podcast at the
+	 * time of writing), ties broken on the raw type key so a rebuild never
+	 * reshuffles the plate. Seven is the palette's length; anything beyond it
+	 * folds into "Other" inside the chart. This map is the communications' own —
+	 * the publication types are a different entity with a different ranking, and
+	 * sharing one map between them coloured neither honestly.
+	 */
+	const communicationTypeColors = $derived(
+		Object.fromEntries(
+			Object.entries(communicationsByType)
+				.sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]))
+				.slice(0, 7)
+				.map(([type], i) => [formatTypeLabel(type), `var(--sys-viz-${i + 1})`])
+		)
+	);
+
 	// 1. Communications per year by type (stacked bar) via the shared aggregator.
 	const perYearStackedData = $derived(
 		buildStackedByYear(allCommunications, {
@@ -84,7 +100,8 @@
 		})
 	);
 
-	// 2. Communications by type (doughnut).
+	// 2. Communications by type, ranked. A ranked bar reads the near-ties a
+	// doughnut hid: two slices at 31.65% and 31.64% are the same arc to the eye.
 	const typeDistribution = $derived<TypeCount[]>(
 		communicationTypes
 			.map((type) => ({
@@ -96,16 +113,32 @@
 	const getTypeName = (d: TypeCount) => d.type;
 	const getTypeCount = (d: TypeCount) => d.count;
 
-	// 3. Language distribution (doughnut). Communications may declare a single
-	// language, a comma-separated string, or an array — normaliseLanguages flattens
-	// all three before the shared tally.
+	// 3. Language shares. Communications may declare a single language, a
+	// comma-separated string, or an array — normaliseLanguages flattens all three
+	// before the shared tally.
 	const languageData = $derived<LanguageCount[]>(
 		tallyBy(allCommunications, (comm) => normaliseLanguages(comm.language)).map(
 			({ key, count }) => ({ language: key, count })
 		)
 	);
-	const getLanguageName = (d: LanguageCount) => d.language;
-	const getLanguageCount = (d: LanguageCount) => d.count;
+
+	/**
+	 * Language shares as `.hbar` proportion rows — the sanctioned proportion
+	 * meter, replacing a two-slice doughnut. A bilingual activity is counted once
+	 * in each language, so the denominator is the language tally rather than the
+	 * activity count.
+	 */
+	const languageShares = $derived.by(() => {
+		const total = languageData.reduce((sum, d) => sum + d.count, 0);
+		if (total === 0) return [];
+		return [...languageData]
+			.sort((a, b) => b.count - a.count || a.language.localeCompare(b.language))
+			.map((d) => ({
+				language: d.language,
+				count: d.count,
+				pct: (d.count / total) * 100
+			}));
+	});
 
 	// 4. Communications by country (horizontal bar).
 	const countryData = $derived<CountryCount[]>(
@@ -117,19 +150,15 @@
 	const getCountryName = (d: CountryCount) => d.country;
 	const getCountryCount = (d: CountryCount) => d.count;
 
-	// 5. & 6. Tag frequencies — shared by bubble chart and word cloud.
-	const tagFrequencyList = $derived<TagCount[]>(
+	// 5. Tag frequencies, scaled for the key-terms cloud. This replaces both the
+	// bubble pack and the word-cloud canvas, which drew the same tally twice.
+	const tagCounts = $derived(
 		tallyBy(allCommunications, (comm) => comm.tags).map(({ key, count }) => ({
-			tag: key,
+			word: key,
 			count
 		}))
 	);
-	const getTagName = (d: TagCount) => d.tag;
-	const getTagCount = (d: TagCount) => d.count;
-
-	const tagWordCloudData = $derived<WordFrequency[]>(
-		tagFrequencyList.map((t) => ({ word: t.tag, count: t.count }))
-	);
+	const tagTerms = $derived(scaleKeyTerms(tagCounts));
 
 	// 7. Co-presenter network — anchored on Frédérick Madore, radiating out to
 	// every co-author, panel participant, and paper author.
@@ -210,6 +239,109 @@
 		}))
 	);
 
+	// ---------- The record, in numbers ----------
+
+	const activityYears = $derived(allCommunications.map((comm) => comm.year));
+	const firstYear = $derived(Math.min(...activityYears));
+	const lastYear = $derived(Math.max(...activityYears));
+	const yearSpan = $derived(lastYear - firstYear + 1);
+
+	type CorpusStat = { label: string; value: string; accent?: boolean };
+
+	const corpusStats = $derived<CorpusStat[]>([
+		{ label: 'Activities', value: String(allCommunications.length), accent: true },
+		{ label: 'Years covered', value: `${firstYear}–${lastYear}` },
+		{ label: 'Countries', value: String(countryData.length) },
+		{ label: 'Co-presenters', value: String(copresenterCount) },
+		{ label: 'Institutions', value: String(institutionNetwork.nodes.length) },
+		{ label: 'Research projects', value: String(totalProjects) }
+	]);
+
+	// ---------- Section register ----------
+
+	/** `12 activities`, or an empty string when there is nothing to count. */
+	const countOf = (n: number, singular: string, plural = `${singular}s`) =>
+		n > 0 ? `${n} ${n === 1 ? singular : plural}` : '';
+
+	/**
+	 * One entry per section, in page order. `VizContents` renders it as the
+	 * contents ledger and each entry is spread into its own `VizSection`, so the
+	 * ledger and the section heads can never drift apart.
+	 */
+	const sections = $derived({
+		perYear: {
+			id: 'per-year',
+			no: '§ 1',
+			title: 'Activities per year, by type',
+			count: countOf(allCommunications.length, 'activity', 'activities')
+		},
+		byType: {
+			id: 'by-type',
+			no: '§ 2',
+			title: 'Activities by type',
+			count: countOf(typeDistribution.length, 'type')
+		},
+		languages: {
+			id: 'languages',
+			no: '§ 3',
+			title: 'Activities by language',
+			count: countOf(languageData.length, 'language')
+		},
+		countries: {
+			id: 'countries',
+			no: '§ 4',
+			title: 'Activities by country',
+			count: countOf(countryData.length, 'country', 'countries')
+		},
+		tags: {
+			id: 'tags',
+			no: '§ 5',
+			title: 'Tags, by frequency',
+			count: countOf(tagCounts.length, 'tag')
+		},
+		tagMatrix: {
+			id: 'tag-matrix',
+			no: '§ 6',
+			title: 'Tag co-occurrence matrix',
+			count: countOf(tagNetwork.nodes.length, 'tag')
+		},
+		copresenters: {
+			id: 'co-presenters',
+			no: '§ 7',
+			title: 'Co-presenter network',
+			count: countOf(copresenterCount, 'co-presenter')
+		},
+		institutions: {
+			id: 'institutions',
+			no: '§ 8',
+			title: 'Institution network',
+			count: countOf(institutionNetwork.nodes.length, 'institution')
+		},
+		projects: {
+			id: 'projects',
+			no: '§ 9',
+			title: 'Activities by research project',
+			count: countOf(totalProjects, 'project')
+		},
+		locations: {
+			id: 'venue-locations',
+			no: '§ 10',
+			title: 'Conference venue locations',
+			count:
+				locationMapData.length > 0
+					? `${locationMapData.length} countries, ${totalMapped} activities`
+					: ''
+		},
+		timeline: {
+			id: 'project-timeline',
+			no: '§ 11',
+			title: 'Research projects, over time',
+			count: countOf(projectTimelineData.length, 'project')
+		}
+	});
+
+	const contentsItems = $derived(Object.values(sections));
+
 	// ---------- Breadcrumbs + SEO ----------
 
 	const breadcrumbItems = createSubsectionBreadcrumbs(
@@ -224,26 +356,40 @@
 
 <SEO
 	title="Talks & Events Visualisations | Frédérick Madore"
-	description="Visualisations of academic conference activity: presentations per year, types, languages, countries, tag networks, research projects, and a geographic map of venues."
+	description="The communications record counted: activities per year and type, languages, countries, tags, co-presenters, institutions and venues."
 	keywords="conferences, presentations, visualisations, co-presenters, research projects, map, Frédérick Madore"
 />
 
 <JsonLd id="breadcrumb-json-ld-conf-activity-viz" json={breadcrumbJsonLd} />
 <div class="viz-page-container">
 	<Breadcrumb items={breadcrumbItems} />
-	<div class="">
-		<PageHeader title="Talks & Events Visualisations" />
+	<PageHeader title="Talks & Events Visualisations" />
+
+	<div class="viz-masthead">
+		<PageIntro>
+			The record of talks and events, counted: {allCommunications.length} activities over {yearSpan}
+			years, read by year, type, language, country and collaborator. Every figure below is computed from
+			the same data files that set the index.
+		</PageIntro>
+
+		<aside class="corpus-aside" aria-labelledby="record-in-numbers">
+			<h2 class="rail-label" id="record-in-numbers">The record, in numbers</h2>
+			<div class="stat-ledger">
+				{#each corpusStats as stat (stat.label)}
+					<div class="stat-row">
+						<span>{stat.label}</span>
+						<span class="stat-value" class:stat-value--accent={stat.accent}>{stat.value}</span>
+					</div>
+				{/each}
+			</div>
+		</aside>
 	</div>
 
-	<div class="">
-		<PageIntro>
-			This page presents visualisations of my academic conference activity: conference papers,
-			workshops, seminars, lectures, posters, panels organised, events organised, and podcasts.
-		</PageIntro>
-	</div>
+	<VizContents items={contentsItems} />
 
 	<VizSection
-		title="Conference activities per year by type"
+		{...sections.perYear}
+		description="Every activity counted in the year it took place and stacked by type, from the date and type recorded on each entry."
 		variant="stacked"
 		height="450px"
 		hasData={perYearStackedData.length > 0 && communicationTypes.length > 0}
@@ -252,44 +398,51 @@
 		<EChartsStackedBarChart
 			data={perYearStackedData}
 			keys={formattedTypes}
-			xAxisLabel="Year"
-			yAxisLabel="Number of activities"
+			colorMap={communicationTypeColors}
+			measure="Activities per year by type"
 		/>
 	</VizSection>
 
 	<VizSection
-		title="Activities by type"
-		count={typeDistribution.length > 0 ? `${typeDistribution.length} types` : ''}
-		height="480px"
+		{...sections.byType}
+		description="The whole record ranked by kind of activity, counted from the type recorded on each entry."
+		height="{Math.max(350, typeDistribution.length * 40 + 70)}px"
+		placeholderHeight="350px"
 		hasData={typeDistribution.length > 0}
 		empty="No type data available to display for this visualisation."
 	>
-		<EChartsDoughnutChart
+		<EChartsHorizontalBarChart
 			data={typeDistribution}
-			nameAccessor={getTypeName}
-			valueAccessor={getTypeCount}
-			title="Distribution of activities by type"
+			xAccessor={getTypeCount}
+			yAccessor={getTypeName}
+			measure="Activities by type"
 		/>
 	</VizSection>
 
 	<VizSection
-		title="Languages"
-		count={languageData.length > 0 ? `${languageData.length} languages` : ''}
-		height="480px"
-		hasData={languageData.length > 0}
-		empty="No language data available to display for this visualisation."
+		{...sections.languages}
+		description="The share of the record delivered in each language. An activity given in two languages is counted once in each, so the bars are shares of the language tally rather than of the activity count."
 	>
-		<EChartsDoughnutChart
-			data={languageData}
-			nameAccessor={getLanguageName}
-			valueAccessor={getLanguageCount}
-			title="Distribution of activities by language"
-		/>
+		{#if languageShares.length > 0}
+			<ul class="proportion-ledger">
+				{#each languageShares as row (row.language)}
+					<li>
+						<div class="proportion-row">
+							<span class="proportion-key">{row.language}</span>
+							<span class="hbar" style="--pct: {row.pct.toFixed(1)}%" aria-hidden="true"></span>
+							<span class="proportion-meta">{row.count} · {Math.round(row.pct)}%</span>
+						</div>
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<p class="viz-empty">No language data available to display for this visualisation.</p>
+		{/if}
 	</VizSection>
 
 	<VizSection
-		title="Activities by country"
-		count={countryData.length > 0 ? `${countryData.length} countries` : ''}
+		{...sections.countries}
+		description="Where the activities took place, counted from the country recorded on each entry."
 		height="{Math.max(350, countryData.length * 32 + 70)}px"
 		placeholderHeight="400px"
 		hasData={countryData.length > 0}
@@ -299,42 +452,34 @@
 			data={countryData}
 			xAccessor={getCountryCount}
 			yAccessor={getCountryName}
-			xAxisLabel="Number of activities"
-			barColor="var(--color-accent)"
+			measure="Activities by country"
 		/>
 	</VizSection>
 
 	<VizSection
-		title="Tag frequency"
-		count={tagFrequencyList.length > 0 ? `${tagFrequencyList.length} unique tags` : ''}
-		variant="bubble"
-		height="550px"
-		hasData={tagFrequencyList.length > 0}
-		empty="No tag data available to display for this visualisation."
+		{...sections.tags}
+		description="The tags assigned to the activities, the sixty most frequent set at a size proportional to the number of activities carrying each. Select a term to open the index filtered to it."
 	>
-		<D3BubbleChart data={tagFrequencyList} nameAccessor={getTagName} valueAccessor={getTagCount} />
+		{#if tagTerms.length > 0}
+			<div class="key-terms">
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- tag filter URLs -->
+				{#each tagTerms as term (term.word)}
+					<a
+						href="{base}/conference-activity?tag={encodeURIComponent(term.word)}"
+						style="font-size: {term.size}px;"
+						title="{term.count} activities">{term.word}</a
+					>
+				{/each}
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
+			</div>
+		{:else}
+			<p class="viz-empty">No tag data available to display for this visualisation.</p>
+		{/if}
 	</VizSection>
 
 	<VizSection
-		title="Tag cloud"
-		description="Tags scaled by the number of conference activities they appear in."
-		placeholderHeight="500px"
-		hasData={tagWordCloudData.length > 0}
-		empty="No tag data available to display for this visualisation."
-	>
-		<EChartsWordCloud
-			words={tagWordCloudData}
-			maxWords={100}
-			shape="circle"
-			minFontSize={12}
-			maxFontSize={60}
-		/>
-	</VizSection>
-
-	<VizSection
-		title="Tag co-occurrence matrix"
-		count={tagNetwork.nodes.length > 0 ? `${tagNetwork.nodes.length} tags` : ''}
-		description="Each cell is a pair of tags that appear together on the same conference activity; the darker the cell, the more activities carry both. Rows are ordered so related tags sit next to each other, gathering the thematic blocks along the diagonal. Singletons and one-off pairings are omitted."
+		{...sections.tagMatrix}
+		description="Each cell is a pair of tags that appear together on the same activity; the darker the cell, the more activities carry both. Rows are ordered so related tags sit next to each other, gathering the thematic blocks along the diagonal. Singletons and one-off pairings are omitted."
 		variant="matrix"
 		placeholderHeight="400px"
 		hasData={tagNetwork.nodes.length > 0}
@@ -368,8 +513,7 @@
 	</VizSection>
 
 	<VizSection
-		title="Co-presenter network"
-		count={copresenterCount > 0 ? `${copresenterCount} collaborators` : ''}
+		{...sections.copresenters}
 		description="People who have co-presented, co-organised panels, or contributed papers alongside me, ranked by how many communications we share. The arcs join pairs who appeared together in the same communication — my own link to each of them is a given, so it is not drawn."
 		variant="arc"
 		height="{copresenterArcHeight}px"
@@ -408,10 +552,7 @@
 	</VizSection>
 
 	<VizSection
-		title="Institution network"
-		count={institutionNetwork.nodes.length > 0
-			? `${institutionNetwork.nodes.length} institutions`
-			: ''}
+		{...sections.institutions}
 		description="Institutions are linked when their members appeared in the same panel, workshop, or event. Node size reflects how many activities each institution took part in. This one stays a map rather than a matrix: the question here is which institutions cluster together, and spatial grouping answers it more directly than a grid of pairs."
 		variant="network"
 		height="500px"
@@ -447,9 +588,8 @@
 	</VizSection>
 
 	<VizSection
-		title="Activities by research project"
-		count={totalProjects > 0 ? `${totalProjects} projects` : ''}
-		description="Each outer block is a research project; inner cells are the types of activity produced within that project, sized by count. Click to zoom into categories."
+		{...sections.projects}
+		description="Each outer block is a research project; the inner cells are the kinds of activity it produced, sized by count. Select a block to zoom into it."
 		variant="treemap"
 		placeholderHeight="500px"
 		hasData={projectTreemapData.length > 0}
@@ -459,11 +599,8 @@
 	</VizSection>
 
 	<VizSection
-		title="Conference venue locations"
-		count={locationMapData.length > 0
-			? `${locationMapData.length} countries, ${totalMapped} activities`
-			: ''}
-		description="Geographic distribution of conference venues. Switch between proportional markers and country shading; select a country to see individual titles and cities."
+		{...sections.locations}
+		description="The countries of the venues, taken from the location recorded on each activity. Switch between proportional markers and country shading; select a country to list its titles and cities."
 		variant="map"
 		height="500px"
 		placeholderHeight="400px"
@@ -474,15 +611,69 @@
 	</VizSection>
 
 	<VizSection
-		title="Research projects timeline"
-		count={projectTimelineData.length > 0 ? `${projectTimelineData.length} projects` : ''}
-		description="Project durations with conference-activity markers. Bars show project spans; circles mark individual activities."
+		{...sections.timeline}
+		description="Each research project drawn across the years it ran, with a marker for every activity delivered within it."
 		variant="gantt"
 		height="450px"
 		hasData={projectTimelineData.length > 0}
 		empty="No project data available to display for this visualisation."
-		last
 	>
 		<EChartsGanttChart data={projectTimelineData} />
 	</VizSection>
 </div>
+
+<style>
+	/*
+	 * Page container comes from viz-page.css; section chrome from VizSection;
+	 * the chart plate from VizChartCard. What is local here is the masthead
+	 * apparatus (standfirst beside the stat ledger) and the two typeset views
+	 * that replaced chart libraries: the key-terms cloud and the language
+	 * proportion ledger. Both are kept in step with the publications page.
+	 */
+
+	/* Standfirst left, "the record, in numbers" right — the masthead asserts,
+	   the apparatus reassures. Stacks below --lg. */
+	.viz-masthead {
+		display: grid;
+		gap: var(--space-lg);
+		margin-bottom: var(--space-2xl);
+	}
+
+	@media (--lg) {
+		.viz-masthead {
+			grid-template-columns: 1fr minmax(16rem, 22rem);
+			gap: var(--space-2xl);
+			align-items: start;
+		}
+	}
+
+	.corpus-aside {
+		border-top: var(--rule-hairline) solid var(--color-hairline);
+		padding-top: var(--rule-gap);
+	}
+
+	/* Key-terms cloud. `.key-terms` (ink-signal.css) sets the flow and the
+	   serif; the terms link to the filtered index and take the cloud's resting
+	   ink rather than the link ink. */
+	.key-terms a {
+		color: var(--color-text-soft);
+		text-decoration: none;
+	}
+
+	.key-terms a:hover,
+	.key-terms a:focus-visible {
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+	}
+
+	/* Empty state for the sections that are typeset rather than plated. */
+	.viz-empty {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		color: var(--color-text-light);
+		max-width: var(--measure-prose);
+		margin: 0;
+	}
+</style>

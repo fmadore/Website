@@ -122,6 +122,13 @@ export themselves via `downloadSvgAsImage`.
 </div>
 
 <style>
+	/*
+	 * Apparatus, not chrome: the toolbar is a small stamped control block sitting
+	 * in the plate's corner. It used to sit at 0.6 opacity and fade in on hover,
+	 * which is an app affordance — a printed page does not hide its apparatus —
+	 * and left the icons under the contrast floor at rest. Full opacity, quiet
+	 * ink, and hover is a border/colour change only.
+	 */
 	.chart-toolbar {
 		position: absolute;
 		top: var(--space-2);
@@ -129,25 +136,21 @@ export themselves via `downloadSvgAsImage`.
 		z-index: 10;
 		display: flex;
 		gap: var(--space-1);
-		opacity: 0.6;
-		transition: opacity var(--duration-fast) var(--ease-out);
-	}
-
-	.chart-toolbar:hover,
-	.chart-toolbar:focus-within {
-		opacity: 1;
 	}
 
 	.toolbar-btn {
+		/* WCAG 2.5.8 floor with room to spare; the glyph is 16px. */
 		width: var(--space-8);
 		height: var(--space-8);
+		min-width: var(--space-6);
+		min-height: var(--space-6);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background-color: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid var(--color-border);
 		border-radius: 0;
-		color: var(--color-text-light);
+		color: var(--color-text-soft);
 		cursor: pointer;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),
@@ -155,69 +158,46 @@ export themselves via `downloadSvgAsImage`.
 			border-color var(--duration-fast) var(--ease-out);
 	}
 
+	/* The house move on a quiet control: the edge darkens, the ink comes up.
+	   No pine — the accent marks the current thing, not the hovered one. */
 	.toolbar-btn:hover:not(:disabled) {
-		background-color: var(--color-accent);
-		color: var(--color-text-inverted);
-		border-color: var(--color-accent);
+		border-color: var(--color-border-dark);
+		color: var(--color-text-emphasis);
 	}
 
 	.toolbar-btn:focus-visible {
-		outline: 2px solid var(--color-accent);
-		outline-offset: 2px;
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-2xs);
 	}
 
 	.toolbar-btn:disabled {
-		opacity: 0.3;
+		opacity: 0.4;
 		cursor: not-allowed;
 	}
 
+	/* Engaged toggle — solid ink fill, exactly as a selected chip. */
 	.toolbar-btn.active {
-		background-color: var(--color-accent);
+		background-color: var(--color-primary);
 		color: var(--color-text-inverted);
-		border-color: var(--color-accent);
-		opacity: 1;
+		border-color: var(--color-primary);
 	}
 
 	.toolbar-btn.active:hover {
-		background-color: var(--color-accent-dark);
-		border-color: var(--color-accent-dark);
-	}
-
-	:global(html.dark) .toolbar-btn {
-		background-color: var(--color-surface-elevated);
-		color: var(--color-text-light);
+		background-color: var(--color-primary-dark);
+		border-color: var(--color-primary-dark);
+		color: var(--color-text-inverted);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.chart-toolbar {
-			opacity: 1;
-			transition: none !important;
-		}
-
 		.toolbar-btn {
 			transition: none !important;
 		}
-
-		.toolbar-btn:hover:not(:disabled) {
-			transform: none !important;
-		}
 	}
 
-	@media (--sm-down) {
+	@media (--touch) {
 		.toolbar-btn {
 			width: var(--space-9);
 			height: var(--space-9);
-		}
-
-		.chart-toolbar {
-			opacity: 1;
-		}
-	}
-
-	@media (--can-hover) {
-		.toolbar-btn {
-			width: var(--space-8);
-			height: var(--space-8);
 		}
 	}
 </style>

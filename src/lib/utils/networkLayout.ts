@@ -198,7 +198,7 @@ export function computeNetworkLayout(
 		// Centring is split into two axes with the horizontal pull weakened by
 		// the container's aspect ratio, so the cloud takes the shape of the box
 		// it lives in. A plain forceCenter pulls equally and leaves a wide plate
-		// with big empty margins either side. (Same trick as D3BubbleChart.)
+		// with big empty margins either side.
 		.force('x', forceX<SimNode>(width / 2).strength(0.07 / Math.max(1, width / height)))
 		.force('y', forceY<SimNode>(height / 2).strength(0.07))
 		// The +6 keeps a hairline of ground between adjacent discs.

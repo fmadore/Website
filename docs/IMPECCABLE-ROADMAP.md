@@ -182,7 +182,7 @@ the job-to-be-done: find and cite the work.
       the last `EntityDetailLayout` consumer moved to `RecordLayout`, the shell deleted.)_
 - [x] **2.8 Teaching + guest lectures.** _(Done 2026-09-08, 16/32 → 28/32; both pages now
       derive from the dataset instead of a drifted hardcoded copy.)_
-- [ ] **2.9 Visualisation pages** — critique the plate chrome, legends, and tooltips
+- [x] **2.9 Visualisation pages** — critique the plate chrome, legends, and tooltips
       against the brief ("data as ornament" means the viz itself must be exemplary). Pair
       with the `dataviz` skill for chart-internal review (palette from `--sys-viz-*`,
       axis/legend/tooltip discipline, both themes).
@@ -1101,5 +1101,90 @@ tracking (would fork the 1.4 scale for no gain the weight step does not already 
 body prose (impossible without regenerating the fonts — recorded as the one thing a future font
 regeneration could unlock, by widening the subset to 300–700); compensating Archivo (no evidence).
 **Left for later:** nothing from this item.
+
+**2026-09-09 — 2.9 visualisation pages (`/impeccable critique` → fix → polish, dual-agent
+critique plus a third isolated pass on the `dataviz` method; Fable judging captures, seven Opus
+agents on disjoint files) — 23/40 as found → about 33/40 by the same rubric (26/32 on the Phase 2 scale), re-scored by the orchestrator from the rebuilt pages rather than by a fresh dual-agent run.** Scored on all ten heuristics (18/32 on
+the Phase 2 scale); the snapshot is the first entry in `.impeccable/critique/`, now committed.
+Three routes: `/publications/visualisations`, `/conference-activity/visualisations`, `/cv/timeline`.
+
+**The verdict split down the middle.** The seriated co-occurrence matrix, the arc diagram's
+collaborator ledger and their standfirsts are unmistakably authored for this archive; everything
+else was a generic analytics page wearing the site's fonts — fourteen unruled heads over fourteen
+bordered rectangles, a rainbow bubble pack, a rotated word cloud that **rendered two of a hundred
+terms**, doughnuts for seven near-equal slices and for two-slice language splits, and a standfirst
+("offering insights into…") that PRODUCT.md forbids. The page that exists to demonstrate the
+computational method used none of the system's signature data components. **Pine scarcity was
+broken by an order of magnitude:** four charts passed `barColor="var(--color-accent)"` (12 + 30 +
+13 + 15 pine bars), the language toggle filled pine, and in midnight — where `--color-accent`
+brightens but the viz palette did not — those plates were the brightest objects on the page.
+**Midnight was an inversion for the data:** `--sys-viz-1..7` were declared only in `:root`. The
+dataviz validator, run rather than reasoned about, failed the seven in both modes: plum ↔ mauve
+at ΔE 5.0 (CVD) and 5.9 (normal vision, floor 15), plum ↔ slate collapsing to ΔE 1.0 under
+deutan, two slots under 3:1 on the film ground. The mechanical pass added what the design eye
+could not see: 20 console errors per page from a `<rect width="-78">` in the arc diagram's first
+paint, and axe on the timeline — `aria-command-name` ×166, `nested-interactive` ×1 (166 unnamed
+buttons inside `role="img"`), a 4.08:1 badge.
+
+**Fixed, by system rather than by page.** (1) **The palette is re-stepped and validated in both
+modes**: six daylight slots moved on an alternating lightness ladder (ochre's L is capped by the
+3:1 floor on warm paper, so plum went _up_ to a light lilac rather than down), and `dark.css` now
+carries a midnight step for all seven with viz-1 bound to `--sys-color-pine-bright`; adjacent-pair
+CVD ΔE ≥ 11.7, normal-vision floor ≥ 16.6, every slot ≥ 3:1, both surfaces. The chroma floor
+fails deliberately — muted earthy hues are the identity, saturated ones the anti-reference — and
+is documented as such. `chartColorUtils` gained the midnight fallback record (and a third
+hand-copied set in `getTimelinePalette()`, still on pre-2026-07 hexes, was found and retired);
+`designTokenParity.test.ts` now converts the OKLCH tokens in both files and binds both hex sets.
+The choropleth ramp's light end passes 2:1. Every ECharts gridline is solid. (2) **Bars are ink;
+pine marks the newest year and nothing else** — `accentKey` on the two bar charts, the Year-Bar
+Strip idiom; the language toggle is a house chip (solid ink when selected); the toolbar lost its
+0.6 opacity and its pine hover. (3) **The decorative charts are gone**: `D3BubbleChart`,
+`EChartsWordCloud` and `EChartsDoughnutChart` deleted, `echarts-wordcloud` removed from
+dependencies and overrides, `PieChart`/`LabelLayout` dropped from the ECharts registry. Keywords,
+tags and full-text terms are the brief's **Key-Terms Cloud** (`scaleKeyTerms`, sqrt-scaled,
+unit-tested; keywords link into the filtered index); activity types are a ranked horizontal bar;
+language shares are a **proportion ledger** of `.hbar` rows — no chart library for a two-figure
+split. (4) **Both pages are composed on the system**: a stat ledger ("The corpus, in numbers",
+the total in pine) and a **contents ledger** of `§`-numbered anchors under the masthead, every
+section through `VizSection` on the 3px section rule with its count in the data voice, sentence
+case throughout, a one-sentence apparatus line under every plate saying what it counts and from
+what, the bespoke 10%-opacity divider deleted. The stacked bars take an entity-keyed `colorMap`
+per page (the publication-type map had been applied to communication types), fold past seven
+into "Other", and cut a 2px paper gap between segments. (5) **The timeline is a record**: a
+hanging mono lane-key column with counts, hairlines between lanes, 166 marks named for AT inside
+a `role="group"`, Enter _and_ Space, a roving tabindex with arrow keys across lanes and Home/End,
+24px hit areas, a 2px surface ring, hover as a colour change, a single scroller, the badge text in
+ink beside a square swatch, no fly-in, British spelling. **The `-78` rect is guarded.**
+
+**Verified on the rebuilt production build** by capture in both themes at 1280/2× and 375/3×
+and by re-running the browser pass: console errors 20 → 0 per page (the four survivors are
+MapLibre WebGL driver notices), axe 0 violations on all three routes in both themes, no overflow,
+budgets with more headroom (heaviest route 728 → 723 KiB). **The one thing the agents could not
+see:** the rebuilt timeline threw `each_key_duplicate` at mount and blanked the page — ids repeat
+across the seven source datasets and the marks were keyed on `item.id` alone. Caught by the probe
+before the commit; keyed on category, id and index. **Polish round:** the horizontal bar now measures its longest label on a canvas in the resolved
+mono face (fonts-ready aware) instead of estimating it, so `association islamique` and
+`Academic event organised` print whole; the stacked chart moves its legend above the plot on a
+narrow plate, wrapped rather than scrolled, kept left of the toolbar's gutter, with the grid sized
+from the real legend and tick heights; every axis name that repeated its section title is gone
+(a `measure` prop keeps the tooltip series name and the PNG filename honest); `.proportion-ledger`
+is promoted into `ink-signal.css` beside the year meter and documented on `/style-guide` with a
+live three-row example from the publication languages; `useECharts` no longer cites a dependency
+that does not exist. Two regressions the agents' gates could not see, both caught by the e2e run
+and the mobile probe before the commit: the sentence-case section titles broke three smoke specs
+filtering on `Author Collaboration Network`, and the nowrap section count pushed two titles 26px
+past a phone's viewport — it now drops under the title below `--sm`.
+
+**Declined:** the validator's chroma floor (identity); the dataviz rounded data-ends (square
+corners); per-theme tracking; a table twin for every ECharts plate (the three SVG plates ship
+sr-only alternates; the ten canvas plates carry `aria` summaries — a `VizChartCard` table snippet
+is the honest follow-up, 3.2); URL sync for chart sliders and filters (3.2/4.1); a skeleton for
+the heavy plates (5.1). **Reported, not acted on:** `PRODUCT.md` still says 56 publications and
+84 communications where the datasets hold 44 works and 79 communications (33 activities against 35) — a `CONTEXT_STALE` fact for the next
+`init`, not this session's to repair. **Left for later:** `forced-colors` has no block anywhere in
+`src/styles/` (texture is the skill's backup channel; the ECharts decal toggle covers canvas
+charts manually); the all-pairs validator failures inherent to seven muted slots are reported for
+the treemap and map, which would need direct labels; `.viz-contents-link` is the candidate to
+promote if a third page grows a contents ledger.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

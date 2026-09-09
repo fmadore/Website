@@ -32,12 +32,24 @@ export function mixRgbColors(background: string, foreground: string, ratio: numb
 	return `rgb(${mix(from.r, to.r)}, ${mix(from.g, to.g)}, ${mix(from.b, to.b)})`;
 }
 
-/** A five-step sequential ramp derived from the current surface and accent tokens. */
+/**
+ * A five-step sequential ramp derived from the current surface and accent tokens.
+ *
+ * The ramp starts 45% of the way to the accent, not at the surface. A step that
+ * begins nearer the ground disappears into it: at the old 0.32 the lightest bin
+ * measured 1.59:1 against paper and 1.87:1 against film, under the 2:1 floor the
+ * dataviz validator sets for the end of an ordinal ramp — a country with data
+ * that reads as a country without. At 0.45 the same end clears 2.13:1 and
+ * 2.65:1, and the four inter-step lightness gaps stay above 0.06, so the ramp
+ * still reads as five distinct bins rather than four and a rumour.
+ */
+export const CHOROPLETH_RAMP_START = 0.45;
+
 export function buildChoroplethPalette(surface: string, accent: string, steps = 5): string[] {
 	if (steps <= 0) return [];
 	if (steps === 1) return [mixRgbColors(surface, accent, 1)];
 	return Array.from({ length: steps }, (_, index) => {
-		const ratio = 0.32 + (index / (steps - 1)) * 0.68;
+		const ratio = CHOROPLETH_RAMP_START + (index / (steps - 1)) * (1 - CHOROPLETH_RAMP_START);
 		return mixRgbColors(surface, accent, ratio);
 	});
 }

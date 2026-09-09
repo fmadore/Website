@@ -1,7 +1,6 @@
 <script lang="ts">
 	// Detail card + previous/next navigation of the CareerTimeline —
 	// split out of CareerTimeline.svelte.
-	import { fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 	import { type TimelineItem, getCategoryColor, getCategoryLabel } from '$lib/types/timeline';
 	import { getContrastLabelStyle, resolveColor } from '$lib/utils/chartColorUtils';
@@ -44,7 +43,7 @@
 	}
 </script>
 
-<div class="detail-card surface-card" in:fly={{ y: 20, duration: 300 }}>
+<div class="detail-card surface-card">
 	<!-- Category Icon & Header -->
 	<div class="card-content-wrapper">
 		<div class="category-icon-large" style="--_cat-color: {getCategoryColor(item.category)};">
@@ -58,14 +57,21 @@
 
 		<div class="card-main-info">
 			<div class="card-header-row">
-				<h3 class="detail-title">{item.title}</h3>
+				<h2 class="detail-title">{item.title}</h2>
 				<button class="close-btn-minimal" onclick={onclose} aria-label="Close">
 					<Icon icon="lucide:x" width="18" height="18" />
 				</button>
 			</div>
 
 			<div class="detail-meta-row">
-				<span class="meta-badge" style="--_cat-color: {getCategoryColor(item.category)};">
+				<!-- The badge text stays in ink; the category colour rides a swatch
+				     beside it, so no string wears a series colour. -->
+				<span class="meta-badge">
+					<span
+						class="meta-swatch"
+						style="--_cat-color: {getCategoryColor(item.category)};"
+						aria-hidden="true"
+					></span>
 					{item.startDate.getFullYear()}
 					{#if item.endDate && item.endDate.getFullYear() !== item.startDate.getFullYear()}
 						–{item.endDate.getFullYear()}
@@ -73,7 +79,7 @@
 						–Present
 					{/if}
 				</span>
-				<span class="meta-dot">•</span>
+				<span class="meta-dot" aria-hidden="true">•</span>
 				<span class="detail-subtitle">{item.subtitle || getCategoryLabel(item.category)}</span>
 			</div>
 
@@ -111,7 +117,7 @@
 		position: relative;
 		border-radius: 0;
 		margin-top: var(--space-md);
-		border: 1px solid var(--color-border);
+		border: var(--border-width-thin) solid var(--color-border);
 		overflow: hidden;
 		background: var(--color-surface-elevated);
 		backdrop-filter: none;
@@ -155,8 +161,10 @@
 	}
 
 	.detail-title {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-bold);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: var(--tracking-title);
 		color: var(--color-text);
 		margin: 0;
 		line-height: 1.3;
@@ -169,18 +177,21 @@
 		cursor: pointer;
 		padding: var(--space-1);
 		margin: calc(-1 * var(--space-1)) calc(-1 * var(--space-1)) 0 0;
-		border-radius: var(--border-radius-full);
+		/* Square, and no smaller than the 24px target floor. */
+		border-radius: 0;
+		min-width: var(--space-6);
+		min-height: var(--space-6);
 		transition:
-			color var(--duration-normal) var(--ease-out),
-			background-color var(--duration-normal) var(--ease-out);
+			color var(--duration-fast) var(--ease-out),
+			background-color var(--duration-fast) var(--ease-out);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
 
 	.close-btn-minimal:hover {
-		color: var(--color-danger);
-		background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+		color: var(--color-text-emphasis);
+		background: var(--color-surface-alt);
 	}
 
 	.close-btn-minimal:focus-visible {
@@ -197,15 +208,25 @@
 	}
 
 	.meta-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-1-5);
 		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
+		font-size: var(--font-size-2xs);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: var(--tracking-figures);
 		padding: var(--space-0-5) var(--space-2);
 		border-radius: 0;
-		border: var(--border-width-thin) solid
-			color-mix(in srgb, var(--_cat-color, var(--color-accent)) 40%, transparent);
-		background: color-mix(in srgb, var(--_cat-color, var(--color-accent)) 15%, transparent);
-		color: var(--_cat-color, var(--color-accent));
+		border: var(--border-width-thin) solid var(--color-border);
+		color: var(--color-text-soft);
 		font-weight: var(--font-weight-medium);
+	}
+
+	.meta-swatch {
+		width: var(--space-2);
+		height: var(--space-2);
+		flex: none;
+		background: var(--_cat-color, var(--color-accent));
 	}
 
 	.meta-dot {
@@ -214,15 +235,17 @@
 	}
 
 	.detail-subtitle {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
 		color: var(--color-text-light);
 	}
 
 	.detail-description {
-		font-size: var(--font-size-md);
-		color: var(--color-text-light);
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		color: var(--color-text-soft);
 		line-height: 1.6;
+		max-width: var(--measure-prose);
 		margin: 0;
 	}
 
@@ -231,8 +254,7 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: var(--space-md) var(--space-xl);
-		border-top: 1px solid var(--color-border);
-		background: color-mix(in srgb, var(--color-surface) 30%, transparent);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.nav-btn {
@@ -243,38 +265,42 @@
 		border: none;
 		color: var(--color-text);
 		cursor: pointer;
-		font-size: var(--font-size-sm);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
+		text-transform: uppercase;
+		letter-spacing: var(--tracking-caps);
 		padding: var(--space-2) var(--space-3);
 		border-radius: 0;
-		transition: all 0.2s ease;
+		transition:
+			color var(--duration-fast) var(--ease-out),
+			background-color var(--duration-fast) var(--ease-out);
 	}
 
 	.nav-btn:hover:not(:disabled) {
-		color: var(--color-primary);
-		background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+		color: var(--color-text-emphasis);
+		background: var(--color-surface-alt);
 	}
 
 	.nav-btn:disabled {
-		opacity: 0.4;
+		color: var(--color-text-light);
 		cursor: not-allowed;
 	}
 
 	.nav-count {
-		font-size: var(--font-size-sm);
-		color: var(--color-text-muted);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-variant-numeric: tabular-nums;
+		letter-spacing: var(--tracking-figures);
+		color: var(--color-text-light);
 		display: flex;
 		align-items: baseline;
 		gap: var(--space-1-5);
 	}
 
 	.nav-count .current {
-		color: var(--color-text);
+		color: var(--color-text-emphasis);
 		font-weight: var(--font-weight-bold);
-	}
-
-	.nav-count .total {
-		font-family: var(--font-family-mono);
 	}
 
 	/* Mobile Optimizations */
@@ -301,8 +327,7 @@
 	/* Reduced motion */
 	@media (prefers-reduced-motion: reduce) {
 		.nav-btn,
-		.close-btn-minimal,
-		.detail-card {
+		.close-btn-minimal {
 			transition: none !important;
 			animation: none !important;
 		}

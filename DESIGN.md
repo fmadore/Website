@@ -30,12 +30,12 @@ colors:
   danger-bright: '#d1553a'
   success: '#5c6b3a'
   viz-pine: '#1e6a56'
-  viz-slate: 'oklch(0.52 0.06 250)'
-  viz-olive: 'oklch(0.58 0.07 128)'
-  viz-ochre: 'oklch(0.66 0.09 72)'
-  viz-mauve: 'oklch(0.55 0.06 350)'
-  viz-plum: 'oklch(0.53 0.078 305)'
-  viz-umber: 'oklch(0.45 0.05 30)'
+  viz-slate: 'oklch(0.6 0.09 250)'
+  viz-olive: 'oklch(0.5 0.08 128)'
+  viz-ochre: 'oklch(0.65 0.09 72)'
+  viz-mauve: 'oklch(0.49 0.08 350)'
+  viz-plum: 'oklch(0.65 0.09 305)'
+  viz-umber: 'oklch(0.45 0.055 30)'
 typography:
   nameplate:
     fontFamily: 'Archivo, system-ui, Segoe UI, Helvetica Neue, Arial, sans-serif'
@@ -198,7 +198,7 @@ The single accent. There is no third colour role in the UI.
 
 ### Tertiary
 
-- **The visualisation palette** (`viz-slate`, `viz-olive`, `viz-ochre`, `viz-mauve`, `viz-plum`, `viz-umber`, anchored by pine): Seven muted, earthy hues derived in OKLCH from the ink and pine anchors, each holding up on both grounds. **Category encoding only.** These are data colours; they never become UI chrome, backgrounds, borders, or decoration.
+- **The visualisation palette** (`viz-slate`, `viz-olive`, `viz-ochre`, `viz-mauve`, `viz-plum`, `viz-umber`, anchored by pine): Seven muted, earthy hues derived in OKLCH from the ink and pine anchors, each holding up on both grounds. The seven carry a separate midnight step in `dark.css` and were re-stepped on 2026-09-09 into an alternating lightness ladder that clears adjacent-pair CVD separation on the dataviz validator, with chroma deliberately held below that validator's floor because saturated series colour is this brief's anti-reference. **Category encoding only.** These are data colours; they never become UI chrome, backgrounds, borders, or decoration.
 
 ### Neutral
 

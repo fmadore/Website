@@ -19,8 +19,8 @@
 
 <SEO
 	title="Career Timeline - Frédérick Madore"
-	description="Interactive timeline visualization of Frédérick Madore's academic career, including positions, education, grants, publications, and more."
-	keywords="career timeline, academic career, visualization, digital humanities, Islam, West Africa"
+	description="Interactive timeline visualisation of Frédérick Madore's academic career, including positions, education, grants, publications, and more."
+	keywords="career timeline, academic career, visualisation, digital humanities, Islam, West Africa"
 	canonical="https://www.frederickmadore.com/cv/timeline"
 	{breadcrumbs}
 />
@@ -44,7 +44,10 @@
 		     draws. It previously took `window.innerHeight * 0.7` as a min-height,
 		     re-measured on every resize event: on a 900px window that padded a
 		     ~380px chart out to 630px, so a third of the plate was empty paper
-		     and a listener ran to keep it that way. -->
+		     and a listener ran to keep it that way.
+
+		     This container is also the timeline's ONE horizontal scroller: the
+		     chart no longer hides a scroller of its own inside this one. -->
 		<div class="timeline-container">
 			<CareerTimeline {items} height={0} />
 		</div>

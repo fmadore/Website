@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { COLORS } from './pdfDesignTokens';
-import { CHART_COLOR_FALLBACKS } from './chartColorUtils';
+import { CHART_COLOR_FALLBACKS, CHART_COLOR_FALLBACKS_DARK } from './chartColorUtils';
 
 /**
  * Token parity guard.
@@ -27,6 +27,8 @@ import { CHART_COLOR_FALLBACKS } from './chartColorUtils';
 
 const cssPath = fileURLToPath(new URL('../../styles/base/variables.css', import.meta.url));
 const css = readFileSync(cssPath, 'utf8');
+const darkCssPath = fileURLToPath(new URL('../../styles/base/dark.css', import.meta.url));
+const darkCss = readFileSync(darkCssPath, 'utf8');
 
 /** Every `--token: value;` declaration in the file, last wins. */
 function parseTokens(source: string): Map<string, string> {
@@ -41,15 +43,60 @@ function parseTokens(source: string): Map<string, string> {
 }
 
 const tokens = parseTokens(css);
+/**
+ * The midnight sheet, read on top of the daylight one. `html.dark` only
+ * redeclares what it changes, so a token it does not mention resolves to its
+ * daylight value — exactly how the cascade sees it.
+ */
+const darkTokens = new Map([...tokens, ...parseTokens(darkCss)]);
 
 /** Resolve `var(--a)` chains down to a literal value. */
-function resolve(name: string, depth = 0): string {
-	const value = tokens.get(name);
-	if (value === undefined) throw new Error(`token ${name} is not defined in variables.css`);
+function resolveIn(table: Map<string, string>, name: string, depth = 0): string {
+	const value = table.get(name);
+	if (value === undefined) throw new Error(`token ${name} is not defined in the stylesheet`);
 	if (depth > 10) throw new Error(`token ${name} has a circular var() chain`);
 	const ref = value.match(/^var\((--[\w-]+)\)$/)?.[1];
-	return ref ? resolve(ref, depth + 1) : value;
+	return ref ? resolveIn(table, ref, depth + 1) : value;
 }
+
+const resolve = (name: string) => resolveIn(tokens, name);
+const resolveDark = (name: string) => resolveIn(darkTokens, name);
+
+/**
+ * OKLCH → sRGB hex, so the `--sys-viz-*` tokens can be compared with the hand-
+ * copied hexes in `chartColorUtils.ts` instead of merely being trusted. The
+ * conversion is the CSS Color 4 one (OKLab → linear sRGB → sRGB); nothing in
+ * the palette is out of gamut, so no clipping path is needed here.
+ */
+function oklchToHex(spec: string): string {
+	const [, l, c, h] = spec.match(/^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)$/) ?? [];
+	if (!l || !c || !h) throw new Error(`not an oklch() literal: ${spec}`);
+	const [L, C, H] = [Number(l), Number(c), (Number(h) * Math.PI) / 180];
+	const [a, b] = [C * Math.cos(H), C * Math.sin(H)];
+	const cube = (x: number) => x * x * x;
+	const lm = cube(L + 0.3963377774 * a + 0.2158037573 * b);
+	const mm = cube(L - 0.1055613458 * a - 0.0638541728 * b);
+	const sm = cube(L - 0.0894841775 * a - 1.291485548 * b);
+	const linear = [
+		4.0767416621 * lm - 3.3077115913 * mm + 0.2309699292 * sm,
+		-1.2684380046 * lm + 2.6097574011 * mm - 0.3413193965 * sm,
+		-0.0041960863 * lm - 0.7034186147 * mm + 1.707614701 * sm
+	];
+	return (
+		'#' +
+		linear
+			.map((v) => {
+				const encoded = v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055;
+				return Math.max(0, Math.min(255, Math.round(encoded * 255)))
+					.toString(16)
+					.padStart(2, '0');
+			})
+			.join('')
+	);
+}
+
+/** A token's literal hex, whether it is written as hex or as `oklch()`. */
+const hexOf = (value: string) => (value.startsWith('oklch(') ? oklchToHex(value) : value);
 
 const hexToRgb = (hex: string): [number, number, number] => {
 	const n = parseInt(hex.replace('#', ''), 16);
@@ -108,9 +155,6 @@ describe('PDF CV tokens match variables.css', () => {
 });
 
 describe('chart colour fallbacks match variables.css', () => {
-	// Only the fallbacks that mirror a literal-hex token. The viz series
-	// (plum, mauve, sage, slateBlue, ochre, umber) are hex approximations of
-	// OKLCH tokens and cannot be compared without a colour-space conversion.
 	const mapping: [keyof typeof CHART_COLOR_FALLBACKS, string][] = [
 		['primary', '--color-primary'],
 		['primaryDark', '--color-primary-dark'],
@@ -133,6 +177,83 @@ describe('chart colour fallbacks match variables.css', () => {
 	it('surfaceRgb is the warm paper ground as an rgb triple', () => {
 		const [r, g, b] = hexToRgb(resolve('--sys-color-paper'));
 		expect(CHART_COLOR_FALLBACKS.surfaceRgb).toBe(`${r}, ${g}, ${b}`);
+	});
+
+	/**
+	 * The viz series used to be exempt here: the tokens are written in
+	 * `oklch()` and the fallbacks in hex, so the two sides were never compared
+	 * and the 2026-09 re-step could have shipped with half the palette stale.
+	 * With the conversion above they are comparable, so they are compared.
+	 */
+	const vizMapping: [keyof typeof CHART_COLOR_FALLBACKS, string][] = [
+		['slateBlue', '--sys-viz-2'],
+		['sage', '--sys-viz-3'],
+		['ochre', '--sys-viz-4'],
+		['mauve', '--sys-viz-5'],
+		['plum', '--sys-viz-6'],
+		['umber', '--sys-viz-7']
+	];
+
+	for (const [key, token] of vizMapping) {
+		it(`${key} equals ${token}`, () => {
+			expect(CHART_COLOR_FALLBACKS[key]).toBe(hexOf(resolve(token)));
+		});
+	}
+
+	it('the signal series is the accent', () => {
+		expect(resolve('--sys-viz-1')).toBe(resolve('--color-accent'));
+		expect(resolveDark('--sys-viz-1')).toBe(resolveDark('--color-accent'));
+	});
+});
+
+describe('midnight chart fallbacks match dark.css', () => {
+	/**
+	 * `dark.css` re-steps the viz series for the film ground, so the fallbacks
+	 * fork too. Both halves are hand-copied and both are bound here: editing
+	 * one side of either theme without the other fails.
+	 */
+	const mapping: [keyof typeof CHART_COLOR_FALLBACKS, string][] = [
+		['primary', '--color-primary'],
+		['primaryDark', '--color-primary-dark'],
+		['text', '--color-text'],
+		['textLight', '--color-text-light'],
+		['border', '--color-border'],
+		['surface', '--color-surface'],
+		['accent', '--color-accent'],
+		['highlight', '--color-highlight'],
+		['success', '--color-success'],
+		['secondary', '--color-secondary'],
+		['slateBlue', '--sys-viz-2'],
+		['sage', '--sys-viz-3'],
+		['ochre', '--sys-viz-4'],
+		['mauve', '--sys-viz-5'],
+		['plum', '--sys-viz-6'],
+		['umber', '--sys-viz-7']
+	];
+
+	for (const [key, token] of mapping) {
+		it(`${key} equals ${token} under html.dark`, () => {
+			expect(CHART_COLOR_FALLBACKS_DARK[key]).toBe(hexOf(resolveDark(token)));
+		});
+	}
+
+	it('surfaceRgb is the film ground as an rgb triple', () => {
+		const [r, g, b] = hexToRgb(resolveDark('--sys-color-film-ground'));
+		expect(CHART_COLOR_FALLBACKS_DARK.surfaceRgb).toBe(`${r}, ${g}, ${b}`);
+	});
+
+	it('overrides only keys the daylight record already defines', () => {
+		for (const key of Object.keys(CHART_COLOR_FALLBACKS_DARK)) {
+			expect(CHART_COLOR_FALLBACKS).toHaveProperty(key);
+		}
+	});
+
+	it('binds every midnight override to a token', () => {
+		const mapped = new Set(mapping.map(([key]) => key));
+		mapped.add('surfaceRgb');
+		expect(Object.keys(CHART_COLOR_FALLBACKS_DARK).filter((k) => !mapped.has(k as never))).toEqual(
+			[]
+		);
 	});
 });
 

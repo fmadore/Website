@@ -72,12 +72,14 @@ export default defineConfig({
 
 						// Heavy charting library — dynamically imported, its own chunk.
 						// The test deliberately matches the tree-shaking wrapper
-						// (echartsCore.ts) and echarts-wordcloud too, so the glue rides
-						// with the library rather than with the pages.
+						// (echartsCore.ts) too, so the glue rides with the library
+						// rather than with the pages.
 						{ name: 'echarts', test: (id) => id.includes('echarts'), priority: 30 },
 
-						// D3 — split the DOM/interaction modules (only needed by the
-						// lazily-loaded D3BubbleChart) from the scale/math modules
+						// D3 — split the DOM/interaction modules (reached only by the
+						// lazily-loaded NetworkGraph: d3-force via networkLayout.ts,
+						// d3-zoom and d3-selection directly, and d3-transition/d3-drag
+						// as d3-zoom's own dependencies) from the scale/math modules
 						// (statically imported by CareerTimeline on /cv/timeline).
 						// A single merged 'd3' chunk made /cv/timeline eagerly download
 						// force/zoom/selection it never uses.

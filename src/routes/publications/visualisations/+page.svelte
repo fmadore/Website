@@ -13,15 +13,14 @@
 	import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
-	import EChartsDoughnutChart from '$lib/components/visualisations/EChartsDoughnutChart.svelte';
 	import NetworkMatrix from '$lib/components/visualisations/NetworkMatrix.svelte';
 	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
-	import D3BubbleChart from '$lib/components/visualisations/D3BubbleChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
+	import VizContents from '$lib/components/visualisations/VizContents.svelte';
 	import LanguageToggle from '$lib/components/visualisations/LanguageToggle.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import {
@@ -43,14 +42,13 @@
 	import type { TreemapNode } from '$lib/utils/vizAggregation';
 	import { author } from '$lib/data/siteConfig';
 	import type { LocationDatum } from '$lib/data/geo';
-	import EChartsWordCloud from '$lib/components/visualisations/EChartsWordCloud.svelte';
+	import { scaleKeyTerms } from '$lib/utils/keyTerms';
 	import { corpusAnalysis, getCombinedWordCloudData, getCombinedBigrams } from '$lib/data/analysis';
 	import type { NgramFrequency } from '$lib/types';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
 	type LanguageData = { language: string; count: number };
-	type KeywordData = { keyword: string; count: number };
 
 	// Calculate data reactively using $derived - optimized for performance
 	const citationsPerYearData = $derived<CitationYearData[]>(
@@ -83,13 +81,32 @@
 		}))
 	);
 
-	// Calculate keyword frequency data
-	const keywordData = $derived<KeywordData[]>(
-		tallyBy(allPublications, (pub) => pub.tags).map(({ key, count }) => ({
-			keyword: key,
-			count
-		}))
+	/**
+	 * Language shares as `.hbar` proportion rows. A two-value split is a
+	 * proportion, not a distribution: the sanctioned meter states it in one line
+	 * per language where a doughnut spent a whole plate on two arcs. The
+	 * denominator is the language tally rather than the work count, because a
+	 * bilingual work is counted once in each language.
+	 */
+	const languageShares = $derived.by(() => {
+		const total = languageData.reduce((sum, d) => sum + d.count, 0);
+		if (total === 0) return [];
+		return [...languageData]
+			.sort((a, b) => b.count - a.count || a.language.localeCompare(b.language))
+			.map((d) => ({
+				language: d.language,
+				count: d.count,
+				pct: (d.count / total) * 100
+			}));
+	});
+
+	// Keyword frequencies, scaled for the key-terms cloud. Each term links to the
+	// bibliography filtered to it — the cloud is an index, not an ornament.
+	const keywordCounts = $derived(
+		tallyBy(allPublications, (pub) => pub.tags).map(({ key, count }) => ({ word: key, count }))
 	);
+	const keywordTerms = $derived(scaleKeyTerms(keywordCounts));
+	const uniqueKeywordCount = $derived(keywordCounts.length);
 
 	// Helper function to format type labels for display
 	const formatTypeLabel = (type: string): string =>
@@ -100,6 +117,24 @@
 	// Formatted labels for display in the chart
 	const formattedPublicationTypes = $derived(
 		publicationTypesForStack.map((type) => formatTypeLabel(type))
+	);
+
+	/**
+	 * Categorical colours for the publication stack, keyed by the same label the
+	 * rows carry. The order is corpus size descending (journal article, book
+	 * chapter, bulletin article, book, blog post, special issue, working paper at
+	 * the time of writing), ties broken on the raw type key so a rebuild never
+	 * reshuffles the plate. Seven is the palette's length; every remaining type
+	 * folds into "Other" inside the chart. Deriving the order from the data keeps
+	 * the largest series on `--sys-viz-1` (pine) as the corpus grows.
+	 */
+	const publicationTypeColors = $derived(
+		Object.fromEntries(
+			Object.entries(publicationsByType)
+				.sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]))
+				.slice(0, 7)
+				.map(([type], i) => [formatTypeLabel(type), `var(--sys-viz-${i + 1})`])
+		)
 	);
 
 	// Stacked bar rows (Publications per Year by Type) via the shared aggregator.
@@ -132,10 +167,17 @@
 		})()
 	);
 
+	const totalPages = $derived(pagesPerYearData.reduce((sum, d) => sum + d.pages, 0));
+
 	// Calculate total citations reactively
 	const totalCitations = $derived(
 		citationsPerYearData.reduce((sum: number, item: CitationYearData) => sum + item.count, 0)
 	);
+
+	// The newest bar on a year axis takes pine — the Year-Bar Strip idiom. Every
+	// other bar on the page is ink.
+	const latestPagesYear = $derived(pagesPerYearData.at(-1)?.year);
+	const latestCitationYear = $derived(citationsPerYearData.at(-1)?.year);
 
 	// Author collaboration network (nodes + weighted edges), built by the shared
 	// tested aggregator. `collaborators` counts the non-centre nodes for the heading.
@@ -295,25 +337,15 @@
 		publisherLocationData.reduce((sum, loc) => sum + loc.count, 0)
 	);
 
-	// Accessor functions for the D3BarChart
+	// Accessor functions for the year-axis bar charts
 	const getYear = (d: CitationYearData) => d.year;
 	const getCitationCount = (d: CitationYearData) => d.count;
-
-	// Accessor functions for pages per year
 	const getPagesYear = (d: PagesPerYearData) => d.year;
 	const getPagesCount = (d: PagesPerYearData) => d.pages;
 
-	// Accessor functions for D3HorizontalBarChart
+	// Accessor functions for the horizontal bar charts
 	const getAuthorName = (d: CitedAuthorData) => d.author;
 	const getAuthorCitationCount = (d: CitedAuthorData) => d.count;
-
-	// Accessor functions for language doughnut chart
-	const getLanguageName = (d: LanguageData) => d.language;
-	const getLanguageCount = (d: LanguageData) => d.count;
-
-	// Accessor functions for keyword bubble chart
-	const getKeywordName = (d: KeywordData) => d.keyword;
-	const getKeywordCount = (d: KeywordData) => d.count;
 
 	// Pagination state for the cited-authors chart (1-based, Pagination component)
 	const AUTHORS_PER_PAGE = 15;
@@ -322,46 +354,155 @@
 		citedAuthorsData.slice((currentPage - 1) * AUTHORS_PER_PAGE, currentPage * AUTHORS_PER_PAGE)
 	);
 
-	// Word cloud language filter
-	type WordCloudLanguage = 'all' | 'en' | 'fr';
-	let wordCloudLanguage = $state<WordCloudLanguage>('all');
+	// Full-text language filter, shared by the term cloud and the bigrams chart.
+	type CorpusLanguage = 'all' | 'en' | 'fr';
+	let corpusLanguage = $state<CorpusLanguage>('all');
 
 	/** Reader-facing name of the current filter, for the empty-state messages. */
-	const languageLabel = (lang: WordCloudLanguage) =>
+	const languageLabel = (lang: CorpusLanguage) =>
 		lang === 'all' ? 'any' : lang === 'en' ? 'English' : 'French';
 
 	// Get publication IDs for the selected language
-	const wordCloudPublicationIds = $derived.by(() => {
-		if (wordCloudLanguage === 'en') {
+	const analysedPublicationIds = $derived.by(() => {
+		if (corpusLanguage === 'en') {
 			return corpusAnalysis.byLanguage.en;
-		} else if (wordCloudLanguage === 'fr') {
+		} else if (corpusLanguage === 'fr') {
 			return corpusAnalysis.byLanguage.fr;
 		}
 		return [...corpusAnalysis.byLanguage.en, ...corpusAnalysis.byLanguage.fr];
 	});
 
-	// Get word cloud data for selected language
-	const wordCloudData = $derived.by(() => {
-		if (wordCloudPublicationIds.length === 0) return [];
-		return getCombinedWordCloudData(wordCloudPublicationIds, { maxWords: 100 });
-	});
-
-	// Count of publications with text analysis
-	const wordCloudStats = $derived({
-		publicationCount: wordCloudPublicationIds.length,
-		wordCount: wordCloudData.reduce((sum, w) => sum + w.count, 0),
-		uniqueTerms: wordCloudData.length
+	// Lemmatised full-text terms, scaled for the key-terms cloud.
+	const fullTextTerms = $derived.by(() => {
+		if (analysedPublicationIds.length === 0) return [];
+		return scaleKeyTerms(getCombinedWordCloudData(analysedPublicationIds, { maxWords: 100 }));
 	});
 
 	// Get bigrams data for selected language
 	const bigramsData = $derived.by(() => {
-		if (wordCloudPublicationIds.length === 0) return [];
-		return getCombinedBigrams(wordCloudPublicationIds, 30);
+		if (analysedPublicationIds.length === 0) return [];
+		return getCombinedBigrams(analysedPublicationIds, 30);
 	});
 
 	// Accessor functions for bigrams chart
 	const getBigramName = (d: NgramFrequency) => d.ngram;
 	const getBigramCount = (d: NgramFrequency) => d.count;
+
+	// ---------- The corpus, in numbers ----------
+
+	const publicationYears = $derived(allPublications.map((pub) => pub.year));
+	const firstYear = $derived(Math.min(...publicationYears));
+	const lastYear = $derived(Math.max(...publicationYears));
+	const yearSpan = $derived(lastYear - firstYear + 1);
+
+	type CorpusStat = { label: string; value: string; accent?: boolean };
+
+	const corpusStats = $derived<CorpusStat[]>([
+		{ label: 'Works', value: String(allPublications.length), accent: true },
+		{ label: 'Years covered', value: `${firstYear}–${lastYear}` },
+		{ label: 'Languages', value: String(languageData.length) },
+		{ label: 'Keywords', value: String(uniqueKeywordCount) },
+		{ label: 'Co-authors and contributors', value: String(collaboratorCount) },
+		{ label: 'Citations recorded', value: String(totalCitations) },
+		{ label: 'Citing authors', value: String(citedAuthorsData.length) }
+	]);
+
+	// ---------- Section register ----------
+
+	/** `12 works`, or an empty string when there is nothing to count. */
+	const countOf = (n: number, singular: string, plural = `${singular}s`) =>
+		n > 0 ? `${n} ${n === 1 ? singular : plural}` : '';
+
+	/**
+	 * One entry per section, in page order. `VizContents` renders it as the
+	 * contents ledger and each entry is spread into its own `VizSection`, so the
+	 * ledger and the section heads can never drift apart.
+	 */
+	const sections = $derived({
+		perYear: {
+			id: 'per-year',
+			no: '§ 1',
+			title: 'Publications per year, by type',
+			count: countOf(allPublications.length, 'publication')
+		},
+		pages: {
+			id: 'pages-per-year',
+			no: '§ 2',
+			title: 'Pages published per year',
+			count: countOf(totalPages, 'page')
+		},
+		languages: {
+			id: 'languages',
+			no: '§ 3',
+			title: 'Publications by language',
+			count: countOf(languageData.length, 'language')
+		},
+		keywords: {
+			id: 'keywords',
+			no: '§ 4',
+			title: 'Keywords, by frequency',
+			count: countOf(uniqueKeywordCount, 'keyword')
+		},
+		keywordMatrix: {
+			id: 'keyword-matrix',
+			no: '§ 5',
+			title: 'Keyword co-occurrence matrix',
+			count: countOf(keywordNetwork.nodes.length, 'keyword')
+		},
+		fullText: {
+			id: 'full-text-terms',
+			no: '§ 6',
+			title: 'Full-text terms, by frequency',
+			count: countOf(analysedPublicationIds.length, 'publication analysed', 'publications analysed')
+		},
+		bigrams: {
+			id: 'bigrams',
+			no: '§ 7',
+			title: 'Two-word phrases, by frequency',
+			count: countOf(bigramsData.length, 'phrase')
+		},
+		collaborators: {
+			id: 'collaborators',
+			no: '§ 8',
+			title: 'Author collaboration network',
+			count: countOf(collaboratorCount, 'collaborator')
+		},
+		venues: {
+			id: 'venues',
+			no: '§ 9',
+			title: 'Publication venues',
+			count: countOf(totalVenues, 'venue')
+		},
+		projects: {
+			id: 'project-timeline',
+			no: '§ 10',
+			title: 'Research projects, over time',
+			count: countOf(projectTimelineData.length, 'project')
+		},
+		locations: {
+			id: 'publisher-locations',
+			no: '§ 11',
+			title: 'Publisher locations',
+			count:
+				publisherLocationData.length > 0
+					? `${publisherLocationData.length} countries, ${totalWithLocation} publications`
+					: ''
+		},
+		citationsPerYear: {
+			id: 'citations-per-year',
+			no: '§ 12',
+			title: 'Citations per year',
+			count: countOf(totalCitations, 'citation')
+		},
+		citingAuthors: {
+			id: 'citing-authors',
+			no: '§ 13',
+			title: 'Authors citing the work most often',
+			count: countOf(citedAuthorsData.length, 'author')
+		}
+	});
+
+	const contentsItems = $derived(Object.values(sections));
 
 	// Define breadcrumb items
 	const breadcrumbItems = createSubsectionBreadcrumbs(
@@ -378,26 +519,40 @@
 
 <SEO
 	title="Publication Visualisations | Frédérick Madore"
-	description="Visualisations of publication data, including citation trends and cited authors."
+	description="The publication record counted: works per year and type, languages, keywords, venues, collaborators and recorded citations."
 	keywords="publications, visualisations, citations, research analytics, Frédérick Madore"
 />
 
 <JsonLd id="breadcrumb-json-ld-pub-viz" json={breadcrumbJsonLd} />
 <div class="viz-page-container">
 	<Breadcrumb items={breadcrumbItems} />
-	<div class="">
-		<PageHeader title="Publication Visualisations" />
+	<PageHeader title="Publication Visualisations" />
+
+	<div class="viz-masthead">
+		<PageIntro>
+			The publication record, counted: {allPublications.length} works over {yearSpan} years, read by year,
+			language, keyword, venue and citation. Every figure below is computed from the same data files that
+			set the bibliography.
+		</PageIntro>
+
+		<aside class="corpus-aside" aria-labelledby="corpus-in-numbers">
+			<h2 class="rail-label" id="corpus-in-numbers">The corpus, in numbers</h2>
+			<div class="stat-ledger">
+				{#each corpusStats as stat (stat.label)}
+					<div class="stat-row">
+						<span>{stat.label}</span>
+						<span class="stat-value" class:stat-value--accent={stat.accent}>{stat.value}</span>
+					</div>
+				{/each}
+			</div>
+		</aside>
 	</div>
 
-	<div class="">
-		<PageIntro>
-			This page presents various visualisations of my publication data, offering insights into
-			citation trends, authorship patterns, and more.
-		</PageIntro>
-	</div>
+	<VizContents items={contentsItems} />
 
 	<VizSection
-		title="Publications per year by type"
+		{...sections.perYear}
+		description="Every publication counted in the year it appeared and stacked by type, from the year and type recorded on each work."
 		variant="stacked"
 		height="450px"
 		hasData={publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
@@ -406,13 +561,14 @@
 		<EChartsStackedBarChart
 			data={publicationsPerYearStackedData}
 			keys={formattedPublicationTypes}
-			xAxisLabel="Year"
-			yAxisLabel="Number of Publications"
+			colorMap={publicationTypeColors}
+			measure="Publications per year by type"
 		/>
 	</VizSection>
 
 	<VizSection
-		title="Number of pages per year"
+		{...sections.pages}
+		description="Pages published each year, counting only the works whose record carries a page count; the newest year is marked."
 		height="400px"
 		hasData={pagesPerYearData.length > 0}
 		empty="No page count data available to display for this visualisation."
@@ -421,44 +577,55 @@
 			data={pagesPerYearData}
 			xAccessor={getPagesYear}
 			yAccessor={getPagesCount}
-			xAxisLabel="Year"
-			yAxisLabel="Total pages published"
-			barColor="var(--color-accent)"
+			accentKey={latestPagesYear}
+			measure="Pages published per year"
 		/>
 	</VizSection>
 
 	<VizSection
-		title="Publication Languages"
-		height="480px"
-		hasData={languageData.length > 0}
-		empty="No language data available to display for this visualisation."
+		{...sections.languages}
+		description="The share of the record written in each language. A work declaring two languages is counted once in each, so the bars are shares of the language tally rather than of the work count."
 	>
-		<EChartsDoughnutChart
-			data={languageData}
-			nameAccessor={getLanguageName}
-			valueAccessor={getLanguageCount}
-			title="Distribution of Publications by Language"
-		/>
+		{#if languageShares.length > 0}
+			<ul class="proportion-ledger">
+				{#each languageShares as row (row.language)}
+					<li>
+						<div class="proportion-row">
+							<span class="proportion-key">{row.language}</span>
+							<span class="hbar" style="--pct: {row.pct.toFixed(1)}%" aria-hidden="true"></span>
+							<span class="proportion-meta">{row.count} · {Math.round(row.pct)}%</span>
+						</div>
+					</li>
+				{/each}
+			</ul>
+		{:else}
+			<p class="viz-empty">No language data available to display for this visualisation.</p>
+		{/if}
 	</VizSection>
 
 	<VizSection
-		title="Keyword Frequency"
-		count={keywordData.length > 0 ? `${keywordData.length} unique keywords` : ''}
-		variant="bubble"
-		height="550px"
-		hasData={keywordData.length > 0}
-		empty="No keyword data available to display for this visualisation."
+		{...sections.keywords}
+		description="The keywords assigned to the publications, the sixty most frequent set at a size proportional to the number of works carrying each. Select a term to open the bibliography filtered to it."
 	>
-		<D3BubbleChart
-			data={keywordData}
-			nameAccessor={getKeywordName}
-			valueAccessor={getKeywordCount}
-		/>
+		{#if keywordTerms.length > 0}
+			<div class="key-terms">
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- tag filter URLs -->
+				{#each keywordTerms as term (term.word)}
+					<a
+						href="{base}/publications?tag={encodeURIComponent(term.word)}"
+						style="font-size: {term.size}px;"
+						title="{term.count} publications">{term.word}</a
+					>
+				{/each}
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
+			</div>
+		{:else}
+			<p class="viz-empty">No keyword data available to display for this visualisation.</p>
+		{/if}
 	</VizSection>
 
 	<VizSection
-		title="Keyword co-occurrence matrix"
-		count={keywordNetwork.nodes.length > 0 ? `${keywordNetwork.nodes.length} keywords` : ''}
+		{...sections.keywordMatrix}
 		description="Each cell is a pair of keywords that appear together on the same publication; the darker the cell, the more publications carry both. Rows are ordered so related keywords sit next to each other, which gathers the thematic blocks along the diagonal. Singletons and one-off pairings are omitted."
 		variant="matrix"
 		placeholderHeight="400px"
@@ -493,45 +660,39 @@
 	</VizSection>
 
 	<VizSection
-		title="Text Analysis Word Cloud"
-		count={wordCloudStats.publicationCount > 0
-			? `${wordCloudStats.publicationCount} publications analysed`
-			: ''}
-		description="Most frequent terms extracted from full-text publications using lemmatisation."
-		placeholderHeight="500px"
-		hasData={corpusAnalysis.publicationCount > 0 && wordCloudData.length > 0}
+		{...sections.fullText}
+		description="The sixty most frequent terms in the full text of the publications that have been analysed, lemmatised so that inflected forms are counted together."
 	>
 		{#snippet controls()}
 			{#if corpusAnalysis.publicationCount > 0}
 				<LanguageToggle
-					bind:current={wordCloudLanguage}
+					bind:current={corpusLanguage}
 					enCount={corpusAnalysis.byLanguage.en.length}
 					frCount={corpusAnalysis.byLanguage.fr.length}
 				/>
 			{/if}
 		{/snippet}
-		{#snippet placeholder()}
-			<p class="text-light">
+		{#if fullTextTerms.length > 0}
+			<div class="key-terms">
+				{#each fullTextTerms as term (term.word)}
+					<span style="font-size: {term.size}px;" title="{term.count} occurrences">{term.word}</span
+					>
+				{/each}
+			</div>
+		{:else}
+			<p class="viz-empty">
 				{#if corpusAnalysis.publicationCount === 0}
-					No text analysis data available to display for this visualisation.
+					No full-text analysis is available for this visualisation.
 				{:else}
-					No text analysis data available for {languageLabel(wordCloudLanguage)} publications.
+					No full-text analysis is available for {languageLabel(corpusLanguage)} publications.
 				{/if}
 			</p>
-		{/snippet}
-		<EChartsWordCloud
-			words={wordCloudData}
-			maxWords={100}
-			shape="circle"
-			minFontSize={12}
-			maxFontSize={60}
-		/>
+		{/if}
 	</VizSection>
 
 	<VizSection
-		title="Common Phrases (Bigrams)"
-		count={bigramsData.length > 0 ? `${bigramsData.length} phrases` : ''}
-		description="Most frequent two-word phrases extracted from full-text publications."
+		{...sections.bigrams}
+		description="The most frequent two-word phrases in the same full-text corpus, counted after lemmatisation."
 		variant="bigrams"
 		height="{Math.max(400, bigramsData.length * 28 + 70)}px"
 		placeholderHeight="400px"
@@ -540,18 +701,18 @@
 		{#snippet controls()}
 			{#if corpusAnalysis.publicationCount > 0}
 				<LanguageToggle
-					bind:current={wordCloudLanguage}
+					bind:current={corpusLanguage}
 					enCount={corpusAnalysis.byLanguage.en.length}
 					frCount={corpusAnalysis.byLanguage.fr.length}
 				/>
 			{/if}
 		{/snippet}
 		{#snippet placeholder()}
-			<p class="text-light">
+			<p class="viz-empty">
 				{#if corpusAnalysis.publicationCount === 0}
-					No text analysis data available to display for this visualisation.
+					No full-text analysis is available for this visualisation.
 				{:else}
-					No bigram data available for {languageLabel(wordCloudLanguage)} publications.
+					No phrase data is available for {languageLabel(corpusLanguage)} publications.
 				{/if}
 			</p>
 		{/snippet}
@@ -559,14 +720,12 @@
 			data={bigramsData}
 			xAccessor={getBigramCount}
 			yAccessor={getBigramName}
-			xAxisLabel="Frequency"
-			barColor="var(--color-accent)"
+			measure="Two-word phrases by frequency"
 		/>
 	</VizSection>
 
 	<VizSection
-		title="Author Collaboration Network"
-		count={collaboratorCount > 0 ? `${collaboratorCount} collaborators` : ''}
+		{...sections.collaborators}
 		description="Collaborators ranked by how many publications we share. The arcs on the left join people who have worked with each other — my own link to each of them is a given, so it is not drawn."
 		variant="arc"
 		height="{collabArcHeight}px"
@@ -599,21 +758,19 @@
 	</VizSection>
 
 	<VizSection
-		title="Publication Venues"
-		count={totalVenues > 0 ? `${totalVenues} venues` : ''}
-		description="Where publications appear: journals, book publishers, and edited volumes. Click to zoom into categories."
+		{...sections.venues}
+		description="Where the work appears: journals and report series in one block, book publishers in the other, each venue sized by the number of works it carries. Select a block to zoom into it."
 		variant="treemap"
 		placeholderHeight="500px"
 		hasData={venueTreemapData.length > 0}
 		empty="No venue data available to display for this visualisation."
 	>
-		<EChartsTreemap data={venueTreemapData} title="Publication Venues" />
+		<EChartsTreemap data={venueTreemapData} title="Publication venues" />
 	</VizSection>
 
 	<VizSection
-		title="Research Projects Timeline"
-		count={projectTimelineData.length > 0 ? `${projectTimelineData.length} projects` : ''}
-		description="Project durations with publication output markers. Bars show project spans; circles mark individual publications."
+		{...sections.projects}
+		description="Each research project drawn across the years it ran, with a marker for every publication produced within it."
 		variant="gantt"
 		height="450px"
 		hasData={projectTimelineData.length > 0}
@@ -623,11 +780,8 @@
 	</VizSection>
 
 	<VizSection
-		title="Publisher Locations"
-		count={publisherLocationData.length > 0
-			? `${publisherLocationData.length} countries, ${totalWithLocation} publications`
-			: ''}
-		description="Geographic distribution of publication venues. Switch between proportional markers and country shading; select a country to see individual publications."
+		{...sections.locations}
+		description="The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications."
 		variant="map"
 		height="500px"
 		placeholderHeight="400px"
@@ -637,33 +791,27 @@
 		<LocationMap data={publisherLocationData} basePath="/publications" itemLabel="publication" />
 	</VizSection>
 
-	<div class="section-divider">
-		<h2 class="divider-heading">Citation statistics</h2>
-	</div>
-
 	<VizSection
-		title="Citations per year"
-		count={citationsPerYearData.length > 0 && totalCitations > 0 ? `Total: ${totalCitations}` : ''}
+		{...sections.citationsPerYear}
+		description="Citations counted in the year the citing work appeared. They are swept from OpenAlex and from full-text searches of Google Books, HAL and Wikipedia, then recorded against the work cited, so this counts what the record holds rather than what an index estimates."
 		height="400px"
 		hasData={citationsPerYearData.length > 0}
-		empty="No citation data available to display for this visualisation, or data is still loading."
+		empty="No citation data available to display for this visualisation."
 	>
 		<EChartsBarChart
 			data={citationsPerYearData}
 			xAccessor={getYear}
 			yAccessor={getCitationCount}
-			xAxisLabel="Year"
-			yAxisLabel="Number of citations"
-			barColor="var(--color-accent)"
+			accentKey={latestCitationYear}
+			measure="Citations per year"
 		/>
 	</VizSection>
 
 	<!-- Paginated: the chart is re-keyed per page and followed by the pager, so
 	     this section composes VizChartCard itself rather than delegating. -->
 	<VizSection
-		title="Authors citing my work most frequently"
-		count={citedAuthorsData.length > 0 ? `Total: ${citedAuthorsData.length} authors` : ''}
-		last
+		{...sections.citingAuthors}
+		description="The authors who cite the work most often, from the same recorded citations. The scale is fixed across pages so bars stay comparable."
 	>
 		{#if citedAuthorsData.length > 0}
 			{#snippet authorChart(authorsToShow: CitedAuthorData[])}
@@ -672,8 +820,7 @@
 						data={authorsToShow}
 						xAccessor={getAuthorCitationCount}
 						yAccessor={getAuthorName}
-						xAxisLabel="Number of citations"
-						barColor="var(--color-highlight)"
+						measure="Citations per author"
 						maxValue={maxCitationCount}
 					/>
 				</VizChartCard>
@@ -693,9 +840,7 @@
 		{:else}
 			<VizChartCard hasData={false}>
 				{#snippet placeholder()}
-					<p class="text-light">
-						No cited author data available to display for this visualisation.
-					</p>
+					<p class="viz-empty">No cited author data available to display for this visualisation.</p>
 				{/snippet}
 			</VizChartCard>
 		{/if}
@@ -703,43 +848,57 @@
 </div>
 
 <style>
-	/* Page container comes from viz-page.css; section heading/description
-	 * styles live in VizSection; chart-card surface rules in VizChartCard;
-	 * pagination in the shared Pagination component. Only the "Citation
-	 * statistics" divider is page-specific. */
+	/*
+	 * Page container comes from viz-page.css; section chrome from VizSection;
+	 * the chart plate from VizChartCard. What is local here is the masthead
+	 * apparatus (standfirst beside the stat ledger) and the two typeset views
+	 * that replaced chart libraries: the key-terms clouds and the language
+	 * proportion ledger.
+	 */
 
-	.section-divider {
-		margin: var(--space-reading-loose) 0;
-		padding-top: var(--space-lg);
-		border-top: var(--border-width-thin) solid
-			color-mix(in srgb, var(--color-primary) calc(var(--opacity-10) * 100%), transparent);
+	/* Standfirst left, "the corpus, in numbers" right — the masthead asserts,
+	   the apparatus reassures. Stacks below --lg. */
+	.viz-masthead {
+		display: grid;
+		gap: var(--space-lg);
+		margin-bottom: var(--space-2xl);
 	}
 
-	.divider-heading {
-		font-size: var(--font-size-heading-2);
-		font-weight: var(--font-weight-bold);
-		color: var(--color-text-emphasis);
+	@media (--lg) {
+		.viz-masthead {
+			grid-template-columns: 1fr minmax(16rem, 22rem);
+			gap: var(--space-2xl);
+			align-items: start;
+		}
+	}
+
+	.corpus-aside {
+		border-top: var(--rule-hairline) solid var(--color-hairline);
+		padding-top: var(--rule-gap);
+	}
+
+	/* Key-terms clouds. `.key-terms` (ink-signal.css) sets the flow and the
+	   serif; the terms that link to a filtered index need the resting colour of
+	   the rest of the cloud rather than the link ink. */
+	.key-terms a {
+		color: var(--color-text-soft);
+		text-decoration: none;
+	}
+
+	.key-terms a:hover,
+	.key-terms a:focus-visible {
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+	}
+
+	/* Empty state for the sections that are typeset rather than plated. */
+	.viz-empty {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		color: var(--color-text-light);
+		max-width: var(--measure-prose);
 		margin: 0;
-		line-height: var(--line-height-heading);
-	}
-
-	:global(html.dark) .section-divider {
-		border-top-color: color-mix(
-			in srgb,
-			var(--color-primary) calc(var(--opacity-15) * 100%),
-			transparent
-		);
-	}
-
-	@media (--md-down) {
-		.divider-heading {
-			font-size: var(--font-size-heading-3);
-		}
-	}
-
-	@media (--sm-down) {
-		.divider-heading {
-			font-size: var(--font-size-heading-4);
-		}
 	}
 </style>

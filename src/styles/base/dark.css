@@ -24,6 +24,40 @@ html.dark {
 	/* Highlight — accent */
 	--color-highlight: var(--sys-color-pine-bright);
 
+	/* ===== VISUALISATION PALETTE — THE MIDNIGHT STEP =====
+	 * The seven series hues are the daylight seven, re-stepped for the film
+	 * ground. Painting the daylight values on warm near-black was the bug this
+	 * block fixes: pine and umber sat at L 0.47/0.45, below the dark band's
+	 * 0.48 floor, and read at 2.86:1 and 2.42:1 against #171310.
+	 *
+	 * Slot 1 follows the accent — the signal series is the accent, so it
+	 * brightens with it rather than being stepped on its own. The rest hold
+	 * hue and keep the daylight alternation (light, dark, light, dark …), but
+	 * the whole ladder is compressed into the dark band: the dark rungs lift
+	 * most (umber +0.07, mauve +0.025) because the band floors at 0.48, while
+	 * the light rungs barely move because it ceilings at 0.67. Chroma lifts a
+	 * little across the board — a mark needs more colour to hold against a
+	 * near-black ground than against paper — but stays under the validator's
+	 * 0.10 floor for the same reason the daylight set does.
+	 *
+	 * Measured on the film ground: adjacent CVD ΔE 13.2 (protan) / 11.8
+	 * (tritan), normal-vision floor 16.6, every slot ≥3:1. The one check that
+	 * does not pass is the lightness band on slot 1: pine-bright is L 0.72
+	 * against a 0.67 ceiling. That is the accent's own value, tuned to clear
+	 * 4.5:1 as midnight link and label colour, and the series has to be the
+	 * same pine the rest of the page calls "current" — so the band loses that
+	 * argument. Nothing else is out of band.
+	 *
+	 * `--color-timeline-*` alias these tokens and are not re-declared here, so
+	 * the CV timeline follows automatically. */
+	--sys-viz-1: var(--sys-color-pine-bright);
+	--sys-viz-2: oklch(0.61 0.095 250); /* slate-blue */
+	--sys-viz-3: oklch(0.5 0.095 128); /* olive */
+	--sys-viz-4: oklch(0.665 0.09 72); /* ochre / gold */
+	--sys-viz-5: oklch(0.515 0.09 350); /* mauve */
+	--sys-viz-6: oklch(0.665 0.095 305); /* plum */
+	--sys-viz-7: oklch(0.52 0.09 30); /* umber / deep clay */
+
 	/* Functional states */
 	--color-success: var(--sys-color-success-bright);
 	--color-danger: var(--sys-color-danger-bright);

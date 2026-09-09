@@ -43,15 +43,30 @@
 	--sys-color-success-bright: #8a9a5b;
 
 	/* Visualisation palette — derived in OKLCH from the ink + pine
-	 * anchors. Muted, earthy, harmonised with warm paper; each holds up on
-	 * the microfilm ground too. Category encoding only — never UI chrome. */
+	 * anchors. Muted, earthy, harmonised with warm paper. Category encoding
+	 * only — never UI chrome. `dark.css` carries a midnight step of the same
+	 * seven hues; see the block there before touching either side.
+	 *
+	 * RE-STEPPED 2026-09-09. The seven hues are unchanged and the order is
+	 * fixed by entity, but the lightness ladder now alternates dark/light down
+	 * the list. The old ladder put mauve and plum 0.02 apart in L, which the
+	 * dataviz validator measured at ΔE 5.0 (protan) / 5.9 (normal) — two
+	 * adjacent series a reader could not tell apart. The alternation is what
+	 * buys the separation, because chroma cannot: these hold ~0.08–0.09, below
+	 * the validator's 0.10 chroma floor, and that shortfall is deliberate.
+	 * Saturated series colour is the anti-reference for this brief; muted
+	 * earths on warm paper are the point. So separation is carried by
+	 * lightness and hue, and the palette clears adjacent CVD ΔE 11.7 (protan)
+	 * / 12.1 (tritan), a normal-vision floor of 16.7, and ≥3:1 against paper
+	 * on every slot. Moving any L here re-opens that gate — re-run the
+	 * validator, do not eyeball it. */
 	--sys-viz-1: #1e6a56; /* pine — the accent anchor (signal series) */
-	--sys-viz-2: oklch(0.52 0.06 250); /* muted slate-blue */
-	--sys-viz-3: oklch(0.58 0.07 128); /* muted olive */
-	--sys-viz-4: oklch(0.66 0.09 72); /* ochre / gold */
-	--sys-viz-5: oklch(0.55 0.06 350); /* mauve */
-	--sys-viz-6: oklch(0.53 0.078 305); /* muted plum */
-	--sys-viz-7: oklch(0.45 0.05 30); /* umber / deep clay */
+	--sys-viz-2: oklch(0.6 0.09 250); /* slate-blue */
+	--sys-viz-3: oklch(0.5 0.08 128); /* olive */
+	--sys-viz-4: oklch(0.65 0.09 72); /* ochre / gold */
+	--sys-viz-5: oklch(0.49 0.08 350); /* mauve */
+	--sys-viz-6: oklch(0.65 0.09 305); /* plum */
+	--sys-viz-7: oklch(0.45 0.055 30); /* umber / deep clay */
 
 	/* ===== SEMANTIC COLOR TOKENS ===== */
 	/* Primary — INK. The dominant structural voice: body emphasis, rules,
