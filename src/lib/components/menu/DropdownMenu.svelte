@@ -98,7 +98,7 @@
 		font-variation-settings: normal;
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0;
+		letter-spacing: normal;
 		border-radius: 0;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),

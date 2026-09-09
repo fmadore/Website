@@ -170,7 +170,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
-		letter-spacing: var(--tracking-caps);
+		letter-spacing: var(--tracking-label);
 		color: var(--color-text-light);
 		margin-bottom: var(--space-sm);
 		line-height: var(--line-height-normal);
@@ -203,7 +203,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
-		letter-spacing: var(--tracking-eyebrow);
+		letter-spacing: var(--tracking-label);
 		color: var(--color-accent);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
@@ -274,13 +274,13 @@
 		font-size: var(--font-size-2xl);
 		font-weight: var(--font-weight-semibold);
 		line-height: var(--line-height-tight);
-		letter-spacing: var(--letter-spacing-tight);
+		letter-spacing: var(--tracking-title);
 		margin-bottom: var(--space-sm);
 	}
 
 	.card--editorial .card-subtitle {
 		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wider);
+		letter-spacing: var(--tracking-caps);
 		font-size: var(--font-size-xs);
 		color: var(--color-text-muted);
 		margin-bottom: var(--space-sm);

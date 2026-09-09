@@ -295,7 +295,7 @@
 		border-top: var(--rule-hairline) solid var(--color-hairline);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 	}
@@ -339,7 +339,7 @@
 		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-3xl);
 		font-weight: 780;
-		letter-spacing: -0.015em;
+		letter-spacing: var(--tracking-display);
 		line-height: 1.03;
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-sm);
@@ -361,7 +361,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.13em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-accent);
 		text-decoration: none;

@@ -39,7 +39,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.16em;
+		letter-spacing: var(--tracking-eyebrow);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 	}
@@ -59,7 +59,7 @@
 		font-weight: 850;
 		font-size: var(--font-size-nameplate);
 		line-height: 0.88;
-		letter-spacing: -0.02em;
+		letter-spacing: var(--tracking-display-lg);
 		text-transform: uppercase;
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-4);

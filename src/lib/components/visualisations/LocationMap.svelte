@@ -773,7 +773,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		margin-bottom: var(--space-xs);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-figures);
 	}
 
 	:global(.location-popup .item-list) {

@@ -97,7 +97,7 @@ nothing.
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.08em;
+		letter-spacing: var(--tracking-figures);
 		color: var(--color-text-light);
 		line-height: var(--line-height-snug);
 	}
@@ -114,7 +114,7 @@ nothing.
 		margin-top: var(--space-1);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.06em;
+		letter-spacing: var(--tracking-caps);
 		text-transform: uppercase;
 		color: var(--color-text-muted);
 	}

@@ -102,7 +102,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: 0.16em;
+		letter-spacing: var(--tracking-eyebrow);
 	}
 
 	.eyebrow-type {
@@ -124,7 +124,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
 		text-transform: uppercase;
-		letter-spacing: 0.14em;
+		letter-spacing: var(--tracking-label);
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1);
@@ -147,7 +147,7 @@
 		color: var(--color-text-emphasis);
 		line-height: 1;
 		font-weight: 820;
-		letter-spacing: -0.015em;
+		letter-spacing: var(--tracking-display);
 		margin: 0;
 		/* Mobile-first font size */
 		font-size: var(--font-size-3xl);

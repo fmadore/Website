@@ -49,7 +49,7 @@
 		font-variation-settings: var(--font-variation-display);
 		font-weight: 830;
 		font-size: var(--font-size-4xl);
-		letter-spacing: -0.015em;
+		letter-spacing: var(--tracking-display);
 		line-height: 1;
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-md);

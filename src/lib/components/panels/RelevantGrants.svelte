@@ -106,7 +106,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		color: var(--color-text-light);
 	}
 
@@ -138,7 +138,7 @@
 
 	.grant-date {
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.06em;
+		letter-spacing: var(--tracking-caps);
 		color: var(--color-text-muted);
 	}
 
@@ -153,7 +153,7 @@
 	.grant-status {
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		font-weight: var(--font-weight-semibold);
 	}
 
@@ -176,7 +176,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: var(--tracking-label);
 	}
 
 	.coapplicants-names {

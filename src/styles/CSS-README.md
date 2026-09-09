@@ -92,7 +92,8 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 - **Archivo width axis**: `--font-variation-nameplate/-display/-display-md/-display-sm/-wordmark` presets for the wide, heavy display cut
 - **Type scale**: Fluid `clamp()` steps with forked ratios — Minor Third (1.2) for body/UI, Major Third (1.25) for display; plus `--font-size-nameplate` and `--font-size-display` for mastheads and index heroes
 - **Semantic sizes**: `--font-size-2xs` through `--font-size-5xl`, `--font-size-heading-1..6`
-- **Line heights / tracking / weights**: `--line-height-*`, `--letter-spacing-*` and contextual aliases (`--tracking-eyebrow`, etc.)
+- **Line heights / weights**: `--line-height-*` (plus the contextual `--line-height-heading/-body/-caption`), `--font-weight-*`
+- **Tracking**: eight `--tracking-*` roles keyed to voice and size — no component writes a raw `em` value. Display (Archivo) tightens as it grows: `--tracking-display-lg` (nameplate, `--font-size-display`, 5xl), `--tracking-display` (h1–h2), `--tracking-display-sm` (h3 and below). Serif (Newsreader) titles take `--tracking-title`; prose sets none. The data voice (mono caps) loosens as it shrinks: `--tracking-eyebrow` (the 2xs bold kicker, one per module), `--tracking-label` (the 2xs caps default — stamps, nav, facet controls, datelines), `--tracking-caps` (the compact tier: caps at xs–sm, and dense 2xs caps in runs — chips, badges, chart chrome), `--tracking-figures` (mixed-case mono: DOIs, counts, years, meta values)
 
 #### Focus Ring (Accessibility)
 
@@ -130,7 +131,7 @@ Midnight is **the microfilm negative** — the same printed page photographed as
 - **Academic elements**: `.citation`, `.abstract` (a serif-italic standfirst, no box), `.keywords`
 - **`.editorial-section-title`**: Archivo section head over a hairline rule, shared by detail-page sections
 - **Prose class**: `.prose` for long-form content (reading measure, relaxed leading, heading rhythm)
-- **Utilities**: Font family/size/weight, alignment, leading, tracking, transforms, truncation
+- **Utilities**: Font family/size/weight, alignment, leading, transforms, truncation
 - **Selection**: Translucent pine `::selection`
 - **Print optimizations** for CV and publication pages
 

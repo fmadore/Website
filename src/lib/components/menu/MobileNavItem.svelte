@@ -97,7 +97,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.13em;
+		letter-spacing: var(--tracking-caps);
 		text-transform: uppercase;
 		line-height: var(--line-height-snug);
 		position: relative;
@@ -170,7 +170,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		line-height: var(--line-height-snug);
 		position: relative;

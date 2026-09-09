@@ -150,7 +150,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
 		font-variant-numeric: tabular-nums;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 		white-space: nowrap;

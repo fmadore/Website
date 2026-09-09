@@ -311,7 +311,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		padding-top: var(--space-xs);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-figures);
 		color: var(--color-text-light);
 	}
 

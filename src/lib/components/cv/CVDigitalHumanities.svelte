@@ -92,7 +92,7 @@
 		margin-top: var(--space-1);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.04em;
+		letter-spacing: var(--tracking-figures);
 		line-height: var(--line-height-snug);
 	}
 
@@ -101,7 +101,7 @@
 		margin-right: var(--space-2);
 		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: 0.14em;
+		letter-spacing: var(--tracking-eyebrow);
 		color: var(--color-text-light);
 	}
 

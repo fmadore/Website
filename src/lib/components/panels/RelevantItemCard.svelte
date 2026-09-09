@@ -74,7 +74,7 @@
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		color: var(--color-accent);
 	}
 
@@ -82,7 +82,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: var(--tracking-label);
 		color: var(--color-text-light);
 		min-width: 0;
 		line-height: var(--line-height-snug);
@@ -133,7 +133,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		font-weight: var(--font-weight-medium);
 		color: var(--color-accent);
 		text-decoration: none;

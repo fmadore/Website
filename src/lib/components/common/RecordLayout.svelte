@@ -222,7 +222,7 @@ Usage:
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 
@@ -382,7 +382,7 @@ Usage:
 		font-variation-settings: var(--font-variation-display);
 		font-size: var(--font-size-4xl);
 		font-weight: 820;
-		letter-spacing: -0.015em;
+		letter-spacing: var(--tracking-display);
 		line-height: 1.02;
 		color: var(--color-text-emphasis);
 		margin: 0;

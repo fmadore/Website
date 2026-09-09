@@ -158,7 +158,7 @@
 		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-2xl);
 		font-weight: 750;
-		letter-spacing: -0.01em;
+		letter-spacing: var(--tracking-display-sm);
 		line-height: 1.05;
 		margin-bottom: var(--space-md);
 		margin-top: var(--space-xl);
@@ -174,7 +174,7 @@
 		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-xl);
 		font-weight: 700;
-		letter-spacing: -0.01em;
+		letter-spacing: var(--tracking-display-sm);
 		line-height: 1.1;
 		margin-bottom: var(--space-sm);
 		margin-top: var(--space-lg);

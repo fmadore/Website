@@ -350,7 +350,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-text-soft);
 		background: none;
@@ -380,7 +380,7 @@
 		padding: var(--space-2xl) 0;
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 	}
@@ -398,7 +398,7 @@
 		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-xl);
 		font-weight: 750;
-		letter-spacing: -0.01em;
+		letter-spacing: var(--tracking-display-sm);
 		line-height: 1.05;
 		color: var(--color-text-emphasis);
 		margin: 0;
@@ -409,7 +409,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-variant-numeric: tabular-nums;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-text-muted);
 	}

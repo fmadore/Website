@@ -90,7 +90,7 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.08em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 	}

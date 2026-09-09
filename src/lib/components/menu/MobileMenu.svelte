@@ -189,7 +189,7 @@
 		font-variation-settings: var(--font-variation-wordmark);
 		font-size: clamp(1.15rem, 0.95rem + 0.9vw, 1.5rem);
 		font-weight: 830;
-		letter-spacing: -0.01em;
+		letter-spacing: var(--tracking-display-sm);
 		text-transform: uppercase;
 		line-height: 1;
 		color: var(--color-text-emphasis);
@@ -259,7 +259,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-bold);
-		letter-spacing: 0.16em;
+		letter-spacing: var(--tracking-eyebrow);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 		padding: var(--space-4) 0 var(--space-2);

@@ -379,7 +379,7 @@ own methods close the entry as apparatus.
 		font-variation-settings: var(--font-variation-display);
 		font-size: var(--font-size-display);
 		font-weight: 830;
-		letter-spacing: -0.02em;
+		letter-spacing: var(--tracking-display-lg);
 		line-height: 0.98;
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-md);
@@ -415,7 +415,7 @@ own methods close the entry as apparatus.
 		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-3xl);
 		font-weight: 780;
-		letter-spacing: -0.015em;
+		letter-spacing: var(--tracking-display);
 		line-height: 1.03;
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-sm);
@@ -438,7 +438,7 @@ own methods close the entry as apparatus.
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.13em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-accent);
 		text-decoration: none;
@@ -490,7 +490,7 @@ own methods close the entry as apparatus.
 		margin: 0 0 var(--space-md);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 	}
 
@@ -550,11 +550,12 @@ own methods close the entry as apparatus.
 		object-fit: cover;
 	}
 
-	/* .ledger-title carries the serif cast; the two declarations here undo what
-	 * the global h1–h3 rule adds on top of it (a display tracking and a width
-	 * axis that belong to Archivo, not to a serif record title). */
+	/* .ledger-title carries the serif cast; the two declarations here replace
+	 * what the global h1–h3 rule adds on top of it (a display tracking and a
+	 * width axis that belong to Archivo, not to a serif record title) with the
+	 * serif title tracking. */
 	.dh-entry-title {
-		letter-spacing: normal;
+		letter-spacing: var(--tracking-title);
 		font-variation-settings: normal;
 	}
 

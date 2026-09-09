@@ -149,7 +149,7 @@
 		font-variation-settings: var(--font-variation-wordmark);
 		font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
 		font-weight: 830;
-		letter-spacing: -0.01em;
+		letter-spacing: var(--tracking-display-sm);
 		text-transform: uppercase;
 		line-height: 0.95;
 		color: var(--color-footer-text);
@@ -185,7 +185,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: 0.16em;
+		letter-spacing: var(--tracking-eyebrow);
 		margin: 0 0 var(--space-4) 0;
 		padding-bottom: var(--space-2);
 		border-bottom: var(--border-width-thin) solid
@@ -264,7 +264,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.14em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-footer-text-muted);
 	}

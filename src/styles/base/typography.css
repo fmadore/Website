@@ -53,7 +53,7 @@ h6 {
 	font-family: var(--font-family-serif);
 	font-weight: var(--font-weight-bold);
 	line-height: var(--line-height-heading);
-	letter-spacing: var(--tracking-heading);
+	letter-spacing: var(--tracking-title);
 	color: var(--color-text-emphasis);
 }
 
@@ -63,7 +63,7 @@ h2,
 h3 {
 	font-family: var(--font-family-display);
 	font-weight: 800;
-	letter-spacing: -0.015em;
+	letter-spacing: var(--tracking-display);
 }
 
 /* A title or emphasised phrase inside a display heading stays in the display
@@ -115,6 +115,7 @@ h3 {
 	line-height: 1.05;
 	font-variation-settings: var(--font-variation-display-sm);
 	font-weight: 750;
+	letter-spacing: var(--tracking-display-sm);
 }
 
 h4 {
@@ -136,7 +137,7 @@ h6 {
 	font-family: var(--font-family-mono);
 	font-weight: var(--font-weight-semibold);
 	text-transform: uppercase;
-	letter-spacing: var(--tracking-eyebrow);
+	letter-spacing: var(--tracking-caps);
 }
 
 /* Paragraphs */
@@ -421,7 +422,7 @@ small {
 	font-variation-settings: var(--font-variation-display-sm);
 	font-size: var(--font-size-lg);
 	font-weight: 750;
-	letter-spacing: -0.01em;
+	letter-spacing: var(--tracking-display-sm);
 	color: var(--color-text-emphasis);
 	margin: 0 0 var(--space-md);
 	padding-bottom: var(--space-sm);

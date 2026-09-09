@@ -259,7 +259,7 @@
 		color: var(--color-danger);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.04em;
+		letter-spacing: var(--tracking-figures);
 		padding: 0 0.2em;
 		border-radius: 0;
 		cursor: not-allowed;

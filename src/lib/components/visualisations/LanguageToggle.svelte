@@ -52,7 +52,7 @@
 	.toggle-label {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-caps);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 		font-weight: var(--font-weight-medium);
@@ -75,7 +75,7 @@
 		border-radius: 0;
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-figures);
 		cursor: pointer;
 		transition:
 			background-color var(--duration-fast) var(--ease-out),

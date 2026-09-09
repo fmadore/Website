@@ -161,7 +161,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.04em;
+		letter-spacing: var(--tracking-figures);
 		color: var(--color-text-soft);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
@@ -183,7 +183,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.06em;
+		letter-spacing: var(--tracking-caps);
 		text-transform: uppercase;
 		color: var(--color-text-muted);
 		background-color: transparent;

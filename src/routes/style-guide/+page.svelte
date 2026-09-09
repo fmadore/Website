@@ -66,7 +66,83 @@
 		'--duration-slow'
 	];
 
-	const allResolvableTokens = [...colourGroups.flatMap((g) => g.tokens), ...durationTokens];
+	/* ===== Tracking — a role scale keyed to size.
+	 * Eight roles, three voices. Each row below is set in the token's own face,
+	 * at its own size, with its own tracking, so the specimen *is* the token
+	 * rather than a description of one. Values are read off `:root` by the same
+	 * reader as the colour swatches. ===== */
+	const trackingRoles = [
+		{
+			token: '--tracking-display-lg',
+			role: 'Display lg',
+			cast: 'tracking-specimen--display',
+			size: '--font-size-4xl',
+			specimen: 'Signal',
+			use: 'the nameplate, --font-size-display, 5xl'
+		},
+		{
+			token: '--tracking-display',
+			role: 'Display',
+			cast: 'tracking-specimen--display',
+			size: '--font-size-3xl',
+			specimen: 'Signal',
+			use: 'h1–h2 at 4xl and 3xl — page and record titles'
+		},
+		{
+			token: '--tracking-display-sm',
+			role: 'Display sm',
+			cast: 'tracking-specimen--display',
+			size: '--font-size-xl',
+			specimen: 'Publications',
+			use: 'h3 and below, 2xl → base — section heads, wordmarks'
+		},
+		{
+			token: '--tracking-title',
+			role: 'Title',
+			cast: 'tracking-specimen--title',
+			size: '--font-size-lg',
+			specimen: 'The archive, read closely',
+			use: 'every Newsreader title — h4–h5, ledger and bibliography rows'
+		},
+		{
+			token: '--tracking-eyebrow',
+			role: 'Eyebrow',
+			cast: 'eyebrow',
+			size: '--font-size-2xs',
+			specimen: '§ 2 — Typography',
+			use: 'the kicker: one per module — eyebrows, § numbers, facet heads'
+		},
+		{
+			token: '--tracking-label',
+			role: 'Label',
+			cast: 'dateline',
+			size: '--font-size-2xs',
+			specimen: 'Dossiers · 5 projects',
+			use: 'the 2xs default: stamps, kinds, nav, pager, datelines, actions'
+		},
+		{
+			token: '--tracking-caps',
+			role: 'Caps',
+			cast: 'chip',
+			size: '--font-size-2xs',
+			specimen: 'ISLAM 33',
+			use: 'the compact tier: buttons, h6, and dense caps set in runs'
+		},
+		{
+			token: '--tracking-figures',
+			role: 'Figures',
+			cast: 'tracking-specimen--figures',
+			size: '--font-size-2xs',
+			specimen: '10.1017/S0001972023000123',
+			use: 'mixed-case mono at any size — DOIs, counts, years, meta values'
+		}
+	];
+
+	const allResolvableTokens = [
+		...colourGroups.flatMap((g) => g.tokens),
+		...durationTokens,
+		...trackingRoles.map((r) => r.token)
+	];
 
 	// Resolved values, read client-side and re-read when the theme class flips —
 	// so the printed hex is always the value actually painting the swatch.
@@ -380,6 +456,32 @@
 							{measured[role.token]?.ch ?? '—'} ·
 							<strong>{measured[role.token]?.chars ?? '—'} chars</strong>
 						</span>
+					</div>
+				{/each}
+			</div>
+
+			<h3 class="eyebrow eyebrow--ink guide-subhead">Tracking — keyed to size</h3>
+			<p class="guide-note">
+				Tracking is set per voice, and within a voice it follows the size the string is set at: the
+				display face tightens as it grows, the data voice loosens as it shrinks. Serif prose never
+				sets tracking — a paragraph runs at its natural fit — and the floor is
+				<span class="data-voice">-0.02em</span>. Nothing in a component writes a raw
+				<span class="data-voice">em</span> value: the eight roles below are the entire vocabulary,
+				and <span class="data-voice">trackingScale.test.ts</span> fails the build on a ninth.
+			</p>
+			<div class="ledger ledger--ruled">
+				{#each trackingRoles as role (role.token)}
+					<div class="ledger-row ledger-row--meta">
+						<span class="ledger-key">{role.role}</span>
+						<span class="ledger-content">
+							<span
+								class="tracking-specimen {role.cast}"
+								style:letter-spacing="var({role.token})"
+								style:font-size="var({role.size})">{role.specimen}</span
+							>
+							<span class="ledger-desc">{role.use}</span>
+						</span>
+						<span class="ledger-meta">{role.token} · {resolved[role.token] ?? '—'}</span>
 					</div>
 				{/each}
 			</div>
@@ -946,7 +1048,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.02em;
+		letter-spacing: var(--tracking-figures);
 		color: var(--color-text-emphasis);
 		overflow-wrap: anywhere;
 	}
@@ -1027,7 +1129,7 @@
 	.scale-token {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.02em;
+		letter-spacing: var(--tracking-figures);
 		color: var(--color-text-light);
 	}
 
@@ -1041,10 +1143,45 @@
 		font-family: var(--font-family-display);
 		font-variation-settings: var(--font-variation-display);
 		font-weight: 750;
-		letter-spacing: -0.01em;
+		letter-spacing: var(--tracking-display-sm);
 		color: var(--color-text-emphasis);
 		line-height: var(--line-height-tight);
 		overflow-wrap: anywhere;
+	}
+
+	/* ===== Tracking specimens =====
+	 * Each row is set in the token's own face and size, with the token itself
+	 * supplying the tracking inline, so the specimen cannot drift from the value
+	 * printed beside it. `align-self` keeps the chip cast from stretching to the
+	 * width of the flex column it sits in. */
+	.tracking-specimen {
+		align-self: flex-start;
+		max-width: 100%;
+		margin: 0;
+		overflow-wrap: anywhere;
+		/* The chip cast borrows a control's styling but is inert here. */
+		cursor: default;
+	}
+
+	.tracking-specimen--display {
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display);
+		font-weight: 750;
+		line-height: var(--line-height-tight);
+		color: var(--color-text-emphasis);
+	}
+
+	.tracking-specimen--title {
+		font-family: var(--font-family-serif);
+		font-weight: var(--font-weight-semibold);
+		line-height: var(--line-height-snug);
+		color: var(--color-text-emphasis);
+	}
+
+	.tracking-specimen--figures {
+		font-family: var(--font-family-mono);
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-soft);
 	}
 
 	/* ===== Rule specimens ===== */
@@ -1059,7 +1196,7 @@
 		margin-top: var(--space-2);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.04em;
+		letter-spacing: var(--tracking-figures);
 		color: var(--color-text-light);
 	}
 
@@ -1103,7 +1240,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-text-emphasis);
 	}
@@ -1111,7 +1248,7 @@
 	.pairing-use {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.04em;
+		letter-spacing: var(--tracking-figures);
 		color: var(--color-text-light);
 	}
 
@@ -1170,7 +1307,7 @@
 	.space-token {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.02em;
+		letter-spacing: var(--tracking-figures);
 		color: var(--color-text-light);
 	}
 

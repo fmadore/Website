@@ -73,7 +73,7 @@
 		font-size: var(--font-size-xs);
 		font-weight: var(--font-weight-medium);
 		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-caps);
 		color: var(--color-text-light);
 	}
 

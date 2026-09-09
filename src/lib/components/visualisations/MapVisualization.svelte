@@ -453,7 +453,7 @@
 		padding: var(--space-2) var(--space-3);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-figures);
 		line-height: var(--line-height-normal);
 		color: var(--color-text-soft);
 		background-color: var(--color-surface-elevated);

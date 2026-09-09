@@ -460,7 +460,7 @@
 		font-weight: var(--font-weight-medium);
 		color: var(--color-text-light);
 		text-transform: uppercase;
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-caps);
 	}
 
 	/* Empty state */

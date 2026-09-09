@@ -126,7 +126,7 @@ One critique per family representative covers the family; spot-check the sibling
       alignment, hairline consistency, rule-weight hierarchy (5px/3px/1px used correctly),
       spacing scale adherence, density (peer-respecting, not padded). A fix here propagates
       to ~20 routes. _Done when:_ templates pass at all four breakpoints in both themes.
-- [ ] **1.4 Tracking scale.** Raised by 1.1, deliberately deferred to keep that commit
+- [x] **1.4 Tracking scale.** Raised by 1.1, deliberately deferred to keep that commit
       reviewable. The data voice carries **125 hardcoded `em` letter-spacing values across
       eleven distinct steps** (0.02, 0.04, 0.06, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14,
       0.16) while the three tracking tokens (`--tracking-heading/-eyebrow/-caps`) are
@@ -1005,5 +1005,51 @@ regression the agents' gates could not:** the new cite button reserves the width
 passed on the spacing exception. Fixed in a follow-up commit by giving `.bib-action` the 24px
 WCAG 2.5.8 floor on every pointer (the chips already do this), 12/12 a11y + filter specs green
 after a rebuild. Lesson for the orchestrator: read the e2e count before pushing, not after.
+
+**2026-09-09 — 1.4 tracking scale (`/impeccable extract`, orchestrated: Fable directing three
+Opus agents on disjoint file sets) — done.** The premise held exactly: **125 raw `em` values across
+eleven steps, and three aliases (`--tracking-heading/-eyebrow/-caps`) whose values matched nothing
+in use** — the shipped eyebrow was 0.16em while its token said 0.05em, and the same nameplate
+tracked -0.015em in the idiom and -0.02em on the home page that actually renders it. Inventory was
+taken with a block parser that read each declaration beside its own `font-size`, `font-family`,
+`text-transform` and weight, which is what let the scale be keyed to size rather than to the
+number.
+
+**The scale is eight roles in three voices, keyed to the size the string is set at.** Display
+(Archivo) tightens as it grows: `--tracking-display-lg` -0.02em (nameplate, `--font-size-display`),
+`--tracking-display` -0.015em (h1–h2), `--tracking-display-sm` -0.01em (h3 and below). Serif
+(Newsreader) prose never sets tracking; every serif title takes `--tracking-title` -0.01em. The data
+voice loosens as it shrinks: `--tracking-eyebrow` 0.16em (the kicker, one per module),
+`--tracking-label` 0.12em (the 2xs caps default), `--tracking-caps` 0.06em (the compact tier — caps at
+xs–sm, and 2xs caps set in runs: chips, badges, author runs, apparatus lines, chart chrome) and
+`--tracking-figures` 0.03em (mixed-case mono: DOIs, tokens, counts, years). The floor is -0.02em. The
+six `--letter-spacing-*` primitives are deleted, not aliased.
+
+**Migrated 58 style sources, about 160 declarations; zero raw values remain** (`normal`/`inherit` stay legal).
+Shipped changes a reader could notice, all deliberate: the mobile nav drops from 0.13em to 0.06em
+because it is set at `sm`, not `2xs`, and had copied the desktop nav's tracking without adjusting
+for size; `h4`/`h5` and `.bib-title` relax from -0.025em to -0.01em while `.ledger-title` gains the
+same, so the universal record title and the bibliography row title finally agree; the nameplate idiom
+moves to -0.02em to match the page that ships it; `.ledger-key` and `.btn` settle at 0.06em; the
+viz legends open from 0.025em to 0.06em; `.section-no` and `.facet-label` join the eyebrow at
+0.16em; the year-bars legend closes from 0.1em to 0.03em because it is figures. `.apparatus-line-sep`'s
+margin, which had restated the run's tracking arithmetically, is now `calc(0.6em + var(--tracking-caps))`
+so it follows the token. **Guard:** `src/styles/trackingScale.test.ts` reads every stylesheet and
+`<style>` block and fails on any `letter-spacing` outside the eight roles, on a reference to an
+undeclared token, and — the failure that let the aliases survive — on a declared token nothing uses;
+it also pins the role count at eight so a ninth is a documented decision. **Documented:** `/style-guide`
+§ 2 gained "Tracking — keyed to size", a ledger where each specimen is set in the token's own face and
+size with the token supplying the tracking inline, the live value printed beside it through the same
+`:root` reader as the colour swatches; `DESIGN.md` gained **The Tracked Size Rule** and the matching
+Don't, with the front matter and the sidecar corrected to shipped truth (label 0.12em, title -0.01em,
+nameplate -0.02em, buttons 0.06em). Verified on the production build in both themes by computed-style
+read: all eight tokens resolve identically on daylight and midnight and every specimen measures the
+value printed next to it. **Declined:** the craft floor's eyebrow ban and its 65–75ch measure (brief
+wins, as before). **Left for later:** `static/404.html` and `offline.html` carry their own inline
+mini-token set and already sit on the scale's values (0.12 / -0.01 / 0.06em) but cannot consume
+`variables.css`, so a future move of the scale would need a hand edit there; the PDF's `LETTER_SPACING`
+(mm) mirrors only eyebrow and label, which is all the document uses. **Ship gate:** `format`, `lint`,
+`check` (1092 files, 0 errors), `test` (774, +3), `build`, `check:build`; the detector's single finding
+is the known false positive from 2.7.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

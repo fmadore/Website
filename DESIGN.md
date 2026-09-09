@@ -42,7 +42,7 @@ typography:
     fontSize: 'clamp(2.5rem, 1.6rem + 4.2vw, 5rem)'
     fontWeight: 850
     lineHeight: 0.9
-    letterSpacing: '-0.015em'
+    letterSpacing: '-0.02em'
     fontVariation: "'wdth' 123"
   display:
     fontFamily: 'Archivo, system-ui, Segoe UI, Helvetica Neue, Arial, sans-serif'
@@ -63,7 +63,7 @@ typography:
     fontSize: 'clamp(1.5rem, 1.425rem + 0.375vw, 1.6875rem)'
     fontWeight: 500
     lineHeight: 1.35
-    letterSpacing: 'normal'
+    letterSpacing: '-0.01em'
   body:
     fontFamily: 'Newsreader, Georgia, Cambria, Times New Roman, Times, serif'
     fontSize: 'clamp(1.0625rem, 1.009rem + 0.268vw, 1.125rem)'
@@ -81,7 +81,7 @@ typography:
     fontSize: 'clamp(0.625rem, 0.595rem + 0.15vw, 0.6944rem)'
     fontWeight: 500
     lineHeight: 1.35
-    letterSpacing: '0.1em'
+    letterSpacing: '0.12em'
     fontFeature: "'tnum' 1"
   eyebrow:
     fontFamily: 'Spline Sans Mono, SF Mono, Consolas, Monaco, Courier New, monospace'
@@ -236,11 +236,13 @@ The scale is deliberately forked. Body and UI steps follow a minor third (1.2) t
 - **Title** (Newsreader, 500, `clamp(1.5rem, …, 1.6875rem)`, line-height 1.35): The record title inside a ledger row, and `h4`–`h5`.
 - **Body** (Newsreader, 400, `clamp(1.0625rem, …, 1.125rem)`, line-height 1.6): All prose, capped by the measure roles below.
 - **Standfirst** (Newsreader italic, `clamp(1.225rem, …, 1.35rem)`, line-height 1.5): The serif-italic deck under a page title, and plate captions at the small step.
-- **Label** (Spline Sans Mono, 500–700, `clamp(0.625rem, …, 0.6944rem)`, letter-spacing 0.06–0.16em, uppercase, tabular numerals): Every machine-indexed string — eyebrows, datelines, counts, navigation, filters, chips, DOIs, pagination, ledger keys, button text. **`h6` belongs to this tier, not to Title:** the smallest heading level in this system is functionally a metadata label, and `typography.css` casts it mono, uppercase, and letterspaced by design. It is the one heading element in the data voice, and the exception is deliberate rather than a violation of the Two Voices Rule.
+- **Label** (Spline Sans Mono, 500–700, `clamp(0.625rem, …, 0.6944rem)`, three tracking roles keyed to size — the eyebrow at 0.16em, the 2xs label default at 0.12em, and the compact caps tier at 0.06em, with 0.03em for mixed-case figures — uppercase, tabular numerals): Every machine-indexed string — eyebrows, datelines, counts, navigation, filters, chips, DOIs, pagination, ledger keys, button text. **`h6` belongs to this tier, not to Title:** the smallest heading level in this system is functionally a metadata label, and `typography.css` casts it mono, uppercase, and letterspaced by design. It is the one heading element in the data voice, and the exception is deliberate rather than a violation of the Two Voices Rule.
 
 ### Named Rules
 
 **The Measured Line Rule.** Reading measure is stated in characters, never in `ch`. A `ch` is the advance width of the digit zero; Newsreader's average character is only ~0.68–0.73 of that, so a cap written as `65ch` sets 87–95 characters — half again the intended line. Three calibrated roles own every prose cap: `--measure-prose` (50ch → ~69 characters) for body copy, ledger descriptions, abstracts and CV entries; `--measure-standfirst` (42ch → ~61) for the italic deck under a title; `--measure-note` (40ch → ~55) for captions and fine print. Never write a raw `ch` value into a component, and verify a change by counting characters in the rendered line — `/style-guide` measures all three live. Monospace is the exception: 1ch is exactly one character there, so ledger key columns may be sized in `ch` literally. Metadata that is scanned rather than read — bylines, citation and venue lines — is deliberately left uncapped.
+
+**The Tracked Size Rule.** Tracking is a role scale keyed to size, not a free numeric field. The display face tightens as it grows (-0.01em at h3 and below, -0.015em at h1–h2, -0.02em at the nameplate, which is the floor); the mono data voice loosens as it shrinks (0.06em for the compact caps tier at xs–sm, 0.12em for the 2xs label default), with the eyebrow at 0.16em as the one deliberate exception and 0.03em for mixed-case figures such as DOIs, counts and years. Serif prose sets no tracking at all, and a serif title takes -0.01em. Never write a raw `em` value: reach for one of the eight `--tracking-*` roles, and let a ninth step be a documented design decision rather than a patch — `trackingScale.test.ts` fails the build otherwise.
 
 **The Two Voices Rule.** Every string on every page belongs to exactly one voice. The document voice (Archivo, Newsreader) carries what the scholar writes; the data voice (Spline Sans Mono) carries what the machine indexes. If a string could plausibly be a database column, it is mono. No mono headlines, no serif metadata. Blurring the two is this system's only unforgivable error.
 
@@ -297,7 +299,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 
 ### Buttons
 
-- **Shape:** Square (0 radius), 1px border, inline-flex, uppercase mono text at the eyebrow tracking (0.05em).
+- **Shape:** Square (0 radius), 1px border, inline-flex, uppercase mono text at the compact caps tracking (0.06em).
 - **Primary:** Solid ink fill with paper text (`12px 20px`); on midnight the fill becomes cream with film-ground text. The standard primary action.
 - **Accent:** Solid pine with paper text — the **single hero call to action per screen**, governed by the Scarcity Rule.
 - **Hover / Focus:** Hover deepens the fill (ink → deep ink, pine → deep pine) with no movement whatsoever. Focus-visible draws a 2px pine outline at a 2px offset.
@@ -360,6 +362,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **Don't** set a headline in mono or metadata in serif, and don't let the mono face become a page-wide theme.
 - **Don't** introduce a second accent, or spend pine on large filled areas beyond the single hero button.
 - **Don't** use `rgba()` for transparency, hardcode a hex or spacing value, or write a pixel media query — use tokens, `color-mix()`, and custom media.
+- **Don't** write a raw `em` letter-spacing value anywhere outside the token block. Tracking is eight roles keyed to size; reach for the matching `--tracking-*` role, and treat a value that fits none of them as a design question rather than a new step.
 - **Don't** write a raw `ch` cap on prose, and don't read a `ch` number as a character count. Reach for `--measure-prose`, `--measure-standfirst`, or `--measure-note`, and check the result by counting characters in the rendered line.
 - **Don't** add a `border-left` accent stripe, a rounded card with a soft shadow, or any of the templated-academic-CMS patterns this system was built against.
 - **Don't** animate beyond an instant colour or border change; the register is print, and the most a page may do on arrival is a short fade.

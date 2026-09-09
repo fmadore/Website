@@ -283,7 +283,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-bold);
 		text-transform: uppercase;
-		letter-spacing: 0.14em;
+		letter-spacing: var(--tracking-eyebrow);
 		color: var(--color-text-muted);
 		margin: 0 0 var(--space-2);
 		padding: 0 var(--space-1) var(--space-2);
@@ -316,7 +316,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.06em;
+		letter-spacing: var(--tracking-caps);
 		text-transform: uppercase;
 		line-height: var(--line-height-snug);
 		color: var(--color-text-light);

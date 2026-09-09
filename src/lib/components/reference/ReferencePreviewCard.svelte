@@ -342,7 +342,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		color: var(--color-text-light);
 	}
 
@@ -363,7 +363,7 @@
 		font-weight: var(--font-weight-semibold);
 		line-height: 1;
 		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		color: var(--color-accent);
 	}
 
@@ -466,7 +466,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 	}
 
 	/* Enhanced focus states */

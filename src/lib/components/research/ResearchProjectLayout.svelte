@@ -343,7 +343,7 @@ co-director, programme or grant simply drop those rows.
 		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-2xl);
 		font-weight: 750;
-		letter-spacing: -0.01em;
+		letter-spacing: var(--tracking-display-sm);
 		line-height: 1.05;
 		color: var(--color-text-emphasis);
 	}

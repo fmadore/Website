@@ -148,7 +148,7 @@
 		color: var(--color-text-light);
 
 		/* Academic precision aesthetic */
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-figures);
 		font-weight: var(--font-weight-medium);
 
 		/* Enhanced typography */

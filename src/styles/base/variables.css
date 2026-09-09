@@ -236,18 +236,50 @@
 	--line-height-body: 1.6;
 	--line-height-caption: 1.45;
 
-	/* ===== LETTER SPACING ===== */
-	--letter-spacing-tighter: -0.05em;
-	--letter-spacing-tight: -0.025em;
-	--letter-spacing-normal: 0;
-	--letter-spacing-wide: 0.025em;
-	--letter-spacing-wider: 0.05em;
-	--letter-spacing-widest: 0.1em;
-
-	/* Contextual tracking */
-	--tracking-heading: var(--letter-spacing-tight);
-	--tracking-eyebrow: var(--letter-spacing-wider);
-	--tracking-caps: var(--letter-spacing-wide);
+	/* ===== TRACKING — a role scale keyed to size =====
+	 * Tracking is set per voice, and within a voice it follows the size the
+	 * string is set at: the display face tightens as it grows, the data voice
+	 * loosens as it shrinks. Eight roles cover every string on the site; no
+	 * component writes a raw `em` value (`trackingScale.test.ts` enforces it).
+	 *
+	 * Display voice — Archivo. Heavy wide cuts close up as they grow, so the
+	 * negative tracking deepens one step per size tier.
+	 *   --tracking-display-lg   nameplate, --font-size-display, 5xl
+	 *   --tracking-display      h1–h2: 4xl, 3xl — page and record titles
+	 *   --tracking-display-sm   h3 and below: 2xl → base — section heads,
+	 *                           wordmarks, deck and subhead labels
+	 *
+	 * Serif voice — Newsreader. Prose runs at its natural fit (no token: a
+	 * paragraph never sets tracking). Titles take one hair of tightening.
+	 *   --tracking-title        h4–h5, the ledger and bibliography row title,
+	 *                           card titles — every serif title at xl–lg
+	 *
+	 * Data voice — Spline Sans Mono, uppercase unless noted. Small caps need
+	 * air to stay legible; the smaller the size, the wider the track.
+	 *   --tracking-eyebrow      the kicker: 2xs, bold, one per module —
+	 *                           eyebrows, § numbers, facet/group/rail heads
+	 *   --tracking-label        2xs caps, the default: stamps, kinds, nav,
+	 *                           pager, facet controls, datelines, actions,
+	 *                           breadcrumbs, dates, notes, inputs, ledger keys
+	 *                           set at 2xs
+	 *   --tracking-caps         the compact tier: caps at xs–sm (buttons,
+	 *                           ledger keys at sm, mobile nav, h6) and dense
+	 *                           caps at 2xs where strings sit in runs — chips,
+	 *                           badges, author runs, apparatus lines, chart
+	 *                           chrome
+	 *   --tracking-figures      mixed-case mono at any size — DOIs, tokens,
+	 *                           tabular counts, years, meta values — opened
+	 *                           just enough to read as a string, never a label
+	 *
+	 * The floor is -0.02em: nothing in the system tracks tighter. */
+	--tracking-display-lg: -0.02em;
+	--tracking-display: -0.015em;
+	--tracking-display-sm: -0.01em;
+	--tracking-title: -0.01em;
+	--tracking-eyebrow: 0.16em;
+	--tracking-label: 0.12em;
+	--tracking-caps: 0.06em;
+	--tracking-figures: 0.03em;
 
 	/* ===== FONT WEIGHTS ===== */
 	--font-weight-normal: 400;

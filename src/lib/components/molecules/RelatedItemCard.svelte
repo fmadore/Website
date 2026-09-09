@@ -66,7 +66,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		color: var(--color-text-light);
 		text-transform: uppercase;
 		margin-bottom: var(--space-2);

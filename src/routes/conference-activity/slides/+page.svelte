@@ -90,7 +90,7 @@
 		font-variation-settings: var(--font-variation-display-sm);
 		font-size: var(--font-size-xl);
 		font-weight: 700;
-		letter-spacing: -0.01em;
+		letter-spacing: var(--tracking-display-sm);
 		color: var(--color-text-emphasis);
 		margin: 0 0 var(--space-2xs);
 	}

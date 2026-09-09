@@ -55,7 +55,7 @@
 		text-decoration: none;
 		font-weight: var(--font-weight-semibold);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.13em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		padding: var(--space-2) 0;
 		transition: color var(--duration-fast) var(--ease-out);

@@ -146,7 +146,7 @@
 	.control-label {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-caps);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 		font-weight: var(--font-weight-medium);
@@ -176,7 +176,7 @@
 		color: var(--color-text);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
-		letter-spacing: var(--letter-spacing-wide);
+		letter-spacing: var(--tracking-figures);
 		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 

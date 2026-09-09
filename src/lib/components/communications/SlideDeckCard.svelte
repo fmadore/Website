@@ -122,7 +122,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-label);
 		color: var(--color-accent);
 	}
 
@@ -131,7 +131,7 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-variant-numeric: tabular-nums;
-		letter-spacing: 0.12em;
+		letter-spacing: var(--tracking-figures);
 		color: var(--color-text-muted);
 	}
 
@@ -143,7 +143,7 @@
 		font-size: var(--font-size-xl);
 		font-weight: 700;
 		line-height: var(--line-height-snug);
-		letter-spacing: -0.01em;
+		letter-spacing: var(--tracking-display-sm);
 		color: var(--color-text-emphasis);
 		/* Full title, never truncated — the cover grows to fit it. */
 	}
@@ -179,7 +179,7 @@
 	.deck-card-date {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-text-light);
 	}
@@ -195,7 +195,7 @@
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
 		text-transform: uppercase;
-		letter-spacing: 0.1em;
+		letter-spacing: var(--tracking-label);
 		color: var(--color-accent);
 		text-decoration: none;
 		padding: var(--space-1) 0;
