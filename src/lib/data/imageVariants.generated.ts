@@ -583,11 +583,6 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceHeight: 300,
 		widths: [400]
 	},
-	'communications/responsible-ai-access-mcp-server-2026.webp': {
-		sourceWidth: 1200,
-		sourceHeight: 627,
-		widths: [400, 800]
-	},
 	'communications/SADILAR-hero.webp': {
 		sourceWidth: 940,
 		sourceHeight: 470,

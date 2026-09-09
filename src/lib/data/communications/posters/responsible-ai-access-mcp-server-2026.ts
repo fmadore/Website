@@ -33,10 +33,10 @@ export const responsibleAiAccessMcpServer2026: Communication = {
 	],
 	url: 'https://www.rais2.uni-bayreuth.de/en/events/ai_day_2026/index.html',
 	urlLabel: 'Event Website',
-	image: 'images/communications/responsible-ai-access-mcp-server-2026.webp',
+	image: 'images/communications/ubt-ai-day-2026-logo.svg',
 	heroImage: {
-		src: 'images/communications/responsible-ai-access-mcp-server-2026.webp',
-		alt: 'Social card for the AI Day 2026 of the University of Bayreuth: an aerial photograph of the campus, its buildings and lawns seen from above, with a green band across the foot carrying the title “AI Day 2026 der Universität Bayreuth” and the subtitle “Towards Responsible and Sovereign AI for Industry”. The RAIS² logo sits at the top left and the University of Bayreuth logo at the top right.'
+		src: 'images/communications/ubt-ai-day-2026-logo.svg',
+		alt: 'Logo of UBT AI Day 26, the University of Bayreuth’s AI Day: the letters set in a geometric sans over two lines, “UBT AI” above “DAY”, with the AI and the A of DAY picked out in green and the year 26 stacked sideways at the right.'
 	},
 	coordinates: {
 		latitude: 49.9427,
