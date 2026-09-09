@@ -1,19 +1,28 @@
-name: CI
+name: CI & Deploy
 
-# Runs the quality gate on every PR to main, and on main itself. Restricting
-# the push trigger to main keeps each push to a PR branch running CI exactly
-# once, via the PR's synchronize event — no duplicate runs. Deploy re-runs the
-# overlapping checks before publishing, but only the overlapping ones: the
-# audit, the MCP type-check and smoke test, the coverage floor, the research
-# prose freshness check and the Lighthouse budgets live here alone, so a commit
-# pushed straight to main used to reach production without ever meeting them.
+# One pipeline for both jobs a commit has to do: prove itself, then ship.
+#
+# These were two workflows until the checks drifted apart. Deploy re-ran lint,
+# type-check, unit tests, the build and the E2E suite on every push to main,
+# while the audit, the MCP checks, the coverage floor, the research prose
+# freshness check and the Lighthouse budgets lived only in CI — so main paid
+# for a second build of the same tree and still shipped without meeting half
+# its own gate. Now one build is produced once, the E2E suite exercises the
+# exact bytes the deploy job uploads, and publishing waits on that evidence.
+#
+# Restricting the push trigger to main keeps each push to a PR branch running
+# once, via the PR's synchronize event — no duplicate runs. `workflow_dispatch`
+# is inherited from the old deploy workflow: a manual run on main republishes.
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
-# Cancel superseded runs on the same ref to save CI minutes.
+# Cancel superseded runs on the same ref to save CI minutes. On main that also
+# cancels an in-flight deploy, which is what the deploy workflow's own `pages`
+# group did: the newer commit is the one worth publishing.
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -55,15 +64,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-img-variants-
 
+      - name: Setup Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v6
+
       - name: Install dependencies
         run: npm ci
-
-      # Tripwire for the hand-maintained `overrides` list in package.json:
-      # fail the PR gate on known high/critical advisories. (Deliberately not
-      # in the deploy workflow so a freshly published CVE can't block an
-      # urgent content deploy.)
-      - name: Audit dependencies
-        run: npm audit --audit-level=high
 
       - name: Lint (Prettier + ESLint)
         run: npm run lint
@@ -95,7 +101,9 @@ jobs:
 
       # Assertions about the build OUTPUT, so they have to follow the build:
       # that no heavy library has drifted into the static import graph, and that
-      # every URL the sitemap advertises actually ships as a page.
+      # every URL the sitemap advertises actually ships as a page. Kept before
+      # the upload so a build that would ship a sitemap full of 404s never
+      # reaches Pages.
       - name: Build output checks (bundle budget, prerender coverage)
         run: npm run check:build
 
@@ -113,12 +121,51 @@ jobs:
           path: mcp/dist/*.mcpb
           retention-days: 30
 
+      - name: Create .nojekyll file
+        run: touch build/.nojekyll
+
+      # sourcemap: 'hidden' still writes .map files; they only serve local
+      # debugging. Stripping them before either upload keeps the Pages artifact
+      # lean and means the E2E suite exercises the same bytes that ship.
+      - name: Strip source maps
+        run: find build -name '*.map' -o -name '*.map.gz' -o -name '*.map.br' | xargs -r rm --
+
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ./build
+
       - name: Upload build for E2E job
         uses: actions/upload-artifact@v7
         with:
           name: build
           path: build/
           retention-days: 1
+
+  # Tripwire for the hand-maintained `overrides` list in package.json. Kept as
+  # its own job, and deliberately out of the deploy job's `needs`, so that a
+  # freshly published CVE fails the run and stays visible without blocking an
+  # urgent content deploy — the property the old two-workflow split gave it by
+  # simply omitting it from the deploy path.
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Audit dependencies
+        run: npm audit --audit-level=high
 
   e2e:
     name: E2E smoke tests (Playwright)
@@ -179,6 +226,8 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
+  # Also out of the deploy job's `needs`: a performance budget is a standing
+  # measurement, not a release gate, and it never blocked a publish before.
   lighthouse:
     name: Lighthouse budgets (PageSpeed lab audit)
     runs-on: ubuntu-latest
@@ -215,3 +264,38 @@ jobs:
           configPath: ./lighthouserc.yml
           uploadArtifacts: true
           artifactName: lighthouse-results
+
+  deploy:
+    name: Deploy to GitHub Pages
+    # The evidence publishing waits on: the tree passed its checks, and the
+    # exact artifact about to be uploaded passed the E2E suite.
+    needs: [quality, e2e]
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+
+      - name: Purge Cloudflare cache
+        env:
+          CF_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CF_ZONE_ID" ] || [ -z "$CF_API_TOKEN" ]; then
+            echo "Cloudflare secrets not configured — skipping purge."
+            exit 0
+          fi
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/purge_cache" \
+            -H "Authorization: Bearer ${CF_API_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}' \
+            --fail --silent --show-error
+          echo "Cloudflare cache purged."

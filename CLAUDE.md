@@ -33,6 +33,7 @@ npm run check:lighthouse # Lighthouse (mobile, the PageSpeed Insights lab profil
                         # representative pages, asserted against lighthouserc.yml — score
                         # floors, Core Web Vitals and resource budgets. Serves `build/` with
                         # `serve` like the E2E suite; ci.yml runs it on every PR
+                        # and on main, alongside the deploy
 npm run check:links     # external links: DOIs via the Handle System, rest over HTTP
 npm run check:citations # OpenAlex sweep for new citations + works missing from the site,
                         # then a full-text sweep of Google Books, HAL and Wikipedia
@@ -118,10 +119,9 @@ generators alone are quicker:
 npm run gen:refs && npm run gen:summaries && npm run gen:prose && npm run gen:images
 ```
 
-`lint` and `check` pass on a stale index — CI does not. `deploy.yml` gates
-`referenceIndex` and the publication summaries, `ci.yml` gates those and
-`researchProse`, all by rerunning the same scripts under `--check`, before the
-SvelteKit build.
+`lint` and `check` pass on a stale index — CI does not. `ci.yml` gates all
+three by rerunning the same scripts under `--check`, before the SvelteKit
+build, on pull requests and on main alike.
 
 **Publication summaries**: `/publications`, `/cv`, the research pages and the
 style guide read `data/publications/summaries.ts` — a projection of every
