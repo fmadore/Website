@@ -118,8 +118,7 @@
 	 * corners, no blur, no shadow. Hierarchy is drawn in rules.
 	 *
 	 * Per-entry markup and styling live in MobileNavItem.svelte; this file
-	 * keeps the container, masthead strip and the staggered reveal (which
-	 * drives the child items from the container's `.active` state).
+	 * keeps the container and the masthead strip.
 	 */
 	.mobile-nav-container {
 		position: fixed;
@@ -135,8 +134,13 @@
 		width: 100%;
 		background: var(--color-background);
 		z-index: var(--z-modal);
-		transform: translateY(-100%);
-		transition: transform var(--duration-moderate) var(--ease-in-out);
+		/* The panel is the top of the page pulled down over the body: it is
+		 * there or it is not. One short fade, no slide, no per-item cascade. */
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			opacity var(--duration-fast) var(--ease-out),
+			visibility var(--duration-fast) var(--ease-out);
 		overflow-y: auto;
 		/* Respect the iOS home-indicator safe area so the last link never
 		 * sits flush against the gesture zone. */
@@ -144,7 +148,8 @@
 	}
 
 	.mobile-nav-container.active {
-		transform: translateY(0);
+		opacity: 1;
+		visibility: visible;
 	}
 
 	.mobile-nav {
@@ -279,89 +284,18 @@
 		border-top: var(--rule-section) solid var(--color-primary);
 	}
 
-	/* Staggered reveal — targets the items rendered by MobileNavItem. */
-	:global(.mobile-nav-item) {
-		opacity: 0;
-		transform: translateX(calc(-1 * var(--transform-distance-lg)));
-		transition:
-			transform var(--duration-moderate) var(--ease-out),
-			opacity var(--duration-moderate) var(--ease-out);
-	}
-
-	.mobile-nav-container.active :global(.mobile-nav-item) {
-		opacity: 1;
-		transform: translateX(0);
-	}
-
-	/* Staggered reveal for mobile nav items — modern stagger tokens. */
-	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(1)) {
-		transition-delay: var(--stagger-1);
-	}
-	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(2)) {
-		transition-delay: var(--stagger-2);
-	}
-	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(3)) {
-		transition-delay: var(--stagger-3);
-	}
-	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(4)) {
-		transition-delay: var(--stagger-4);
-	}
-	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(5)) {
-		transition-delay: var(--stagger-5);
-	}
-	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(6)) {
-		transition-delay: var(--stagger-6);
-	}
-	.mobile-nav-container.active :global(.mobile-nav-item:nth-child(n + 7)) {
-		transition-delay: calc(var(--stagger-6) + var(--stagger-1));
-	}
-
-	/* Hide mobile nav on desktop */
+	/* Hide the panel where the masthead nav takes over (--xl; see DesktopNav
+	 * for the measurement that pins the breakpoint there). */
 	@media (--xl) {
 		.mobile-nav-container {
 			display: none;
 		}
 	}
 
-	/* ===== MODERN ANIMATION SYSTEM ===== */
-	/* Panel slide-in. The per-item reveal is the staggered transition declared
-	 * above (opacity + translateX with per-item transition-delay) — one
-	 * mechanism, so items keep their one-after-another cascade. */
-	@keyframes mobileNavSlideIn {
-		from {
-			transform: translateY(-100%);
-		}
-		to {
-			transform: translateY(0);
-		}
-	}
-
-	.mobile-nav-container.active {
-		animation: mobileNavSlideIn var(--duration-moderate) var(--ease-out) forwards;
-	}
-
-	/* ===== REDUCED MOTION SUPPORT =====
-	 * Fully disable transitions/keyframes for users who ask for it. The
-	 * !important flags are intentional: they override the staggered transition
-	 * delays and the keyframe animations declared above. */
+	/* ===== REDUCED MOTION SUPPORT ===== */
 	@media (prefers-reduced-motion: reduce) {
 		.mobile-nav-container {
 			transition: none;
-			transform: translateY(-100%);
-		}
-
-		.mobile-nav-container.active {
-			animation: none !important;
-			transform: translateY(0);
-		}
-
-		:global(.mobile-nav-item),
-		.mobile-nav-container.active :global(.mobile-nav-item) {
-			animation: none !important;
-			opacity: 1 !important;
-			transform: none !important;
-			transition: none !important;
-			transition-delay: 0ms !important;
 		}
 
 		.mobile-close-line {

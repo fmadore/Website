@@ -20,7 +20,7 @@
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
-	import VizContents from '$lib/components/visualisations/VizContents.svelte';
+	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
 	import LanguageToggle from '$lib/components/visualisations/LanguageToggle.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import {
@@ -414,7 +414,7 @@
 		n > 0 ? `${n} ${n === 1 ? singular : plural}` : '';
 
 	/**
-	 * One entry per section, in page order. `VizContents` renders it as the
+	 * One entry per section, in page order. `ContentsLedger` renders it as the
 	 * contents ledger and each entry is spread into its own `VizSection`, so the
 	 * ledger and the section heads can never drift apart.
 	 */
@@ -548,7 +548,7 @@
 		</aside>
 	</div>
 
-	<VizContents items={contentsItems} />
+	<ContentsLedger items={contentsItems} />
 
 	<VizSection
 		{...sections.perYear}

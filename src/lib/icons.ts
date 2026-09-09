@@ -39,7 +39,6 @@ import mdiCheckboxBlankOutline from '@iconify-icons/mdi/checkbox-blank-outline';
 import mdiLoading from '@iconify-icons/mdi/loading';
 import mdiFilePdfBox from '@iconify-icons/mdi/file-pdf-box';
 import mdiWeb from '@iconify-icons/mdi/web';
-import mdiArrowUp from '@iconify-icons/mdi/arrow-up';
 
 // Academicons (academic identifiers and scholarly-infrastructure marks)
 import academiconsGoogleScholar from '@iconify-icons/academicons/google-scholar';
@@ -111,7 +110,6 @@ export function registerIcons(): void {
 	addIcon('mdi:loading', mdiLoading);
 	addIcon('mdi:file-pdf-box', mdiFilePdfBox);
 	addIcon('mdi:web', mdiWeb);
-	addIcon('mdi:arrow-up', mdiArrowUp);
 
 	// Simple Icons
 	addIcon('simple-icons:bluesky', blueskyIcon);

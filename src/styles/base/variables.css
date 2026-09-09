@@ -39,7 +39,7 @@
 	/* Functional states — errors/success only. Warm-tinted so they read as
 	 * ink annotations, not web toast. Used sparingly (form validation). */
 	--sys-color-danger: #a3341c; /* deep warm red for errors */
-	--sys-color-danger-bright: #d1553a;
+	--sys-color-danger-bright: #d65c41; /* the lightest warm-red step that clears 4.5:1 on the film ground (4.81) and under ink text (4.74) */
 	--sys-color-success-bright: #8a9a5b;
 
 	/* Visualisation palette — derived in OKLCH from the ink + pine
@@ -154,11 +154,25 @@
 	--color-black: #000000;
 
 	/* ===== COMPONENT COLOR LAYERS ===== */
-	/* Footer — the dark colophon "back page". Ink ground with cream type in
-	 * both themes (a printed endpaper), deeper on midnight. */
+	/* Footer — the colophon "back page". In daylight it inverts: the ink ground
+	 * with cream type, a printed endpaper. (Midnight cannot invert an inverted
+	 * block, so dark.css hands the footer the page ground instead — the reason
+	 * is written there.)
+	 * The muted tier is a mix of the footer's own two colours rather than a
+	 * literal outside the warm ramp: 68% cream over the ground measures 7.33:1
+	 * in daylight and 7.39:1 in midnight, headroom for 12px mono. */
 	--color-footer-bg: var(--sys-color-ink);
 	--color-footer-text: var(--sys-color-cream);
-	--color-footer-text-muted: #8a8170;
+	--color-footer-text-muted: color-mix(
+		in srgb,
+		var(--color-footer-text) 68%,
+		var(--color-footer-bg)
+	);
+	/* The footer's accent. Daylight's ground is ink, so the accent takes the
+	 * brightened (midnight) pine to hold against it — the one place the
+	 * daylight page uses the negative's cut. Components must consume this,
+	 * never `--sys-color-pine-bright` directly. */
+	--color-footer-accent: var(--sys-color-pine-bright);
 
 	/* ===== TYPOGRAPHY SCALE ===== */
 
@@ -512,33 +526,11 @@
 	--opacity-100: 1;
 
 	/* ===== TRANSFORMS ===== */
-	/* Scale transforms */
-	--scale-0: 0;
+	/* Two survivors of the pre-Ink+Signal motion vocabulary: the image hover
+	 * scale and the disclosure caret. The stagger scale, the transform and
+	 * animation distances went with the last staggered reveal (2.11). */
 	--scale-102: 1.02;
-
-	/* Rotation */
-	--rotate-45: 45deg;
 	--rotate-180: 180deg;
-
-	/* Transform distances for animations - differentiated by element type */
-	--transform-distance-xs: 4px;
-	--transform-distance-sm: 8px;
-	--transform-distance-md: 12px;
-	--transform-distance-lg: 16px;
-
-	/* Contextual animation distances */
-	--anim-distance-heading: 24px;
-	--anim-distance-body: 16px;
-	--anim-distance-card: 12px;
-	--anim-distance-micro: 4px;
-
-	/* Animation stagger delays - refined for visual rhythm */
-	--stagger-1: 40ms;
-	--stagger-2: 80ms;
-	--stagger-3: 120ms;
-	--stagger-4: 160ms;
-	--stagger-5: 200ms;
-	--stagger-6: 240ms;
 
 	/* ===== CARD TOKENS ===== */
 	--card-height-image: 14rem;

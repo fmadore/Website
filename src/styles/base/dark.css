@@ -95,9 +95,22 @@ html.dark {
 	--color-code-bg: var(--sys-color-film-100);
 
 	/* Component layers */
-	--color-footer-bg: #0f0c08;
+	/* Footer ground. Daylight's footer is an inverted ink block; the negative of
+	 * an inverted block is a bright cream slab, which the microfilm register
+	 * refuses. It was instead being drawn a shade darker than the page
+	 * (#0f0c08 = 1.06:1 against the ground) — neither inverted nor the page,
+	 * just a smudge. So in midnight the footer takes the page ground itself and
+	 * the 4px cream masthead rule plus the hairlines carry the boundary. */
+	--color-footer-bg: var(--color-background);
 	--color-footer-text: var(--sys-color-cream);
-	--color-footer-text-muted: #8a8170;
+	--color-footer-text-muted: color-mix(
+		in srgb,
+		var(--color-footer-text) 68%,
+		var(--color-footer-bg)
+	);
+	/* Midnight's accent is already the bright pine, so the footer takes the
+	 * page accent — the footer is the page here. */
+	--color-footer-accent: var(--color-accent);
 
 	/* ===== WEIGHT — THE MICROFILM COMPENSATION =====
 	 * Light type on a dark ground optically bolds: the bright glyph spreads into

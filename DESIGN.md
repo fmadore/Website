@@ -27,7 +27,7 @@ colors:
   cream-muted: '#b3a88d'
   cream-faint: '#948a73'
   danger: '#a3341c'
-  danger-bright: '#d1553a'
+  danger-bright: '#d65c41'
   success: '#5c6b3a'
   viz-pine: '#1e6a56'
   viz-slate: 'oklch(0.6 0.09 250)'
@@ -167,7 +167,7 @@ The register is print, not app. Depth is drawn rather than floated: a 5px rule o
 
 Both themes are first-class and both are warm. Daylight is warm paper struck by ink; midnight is the same printed page photographed as a microfilm negative, with grounds swapped to warm near-black, type to cream, and the pine accent brightened. It is not slate, not blue, and never an inversion filter. The confirmed anti-references are specific: templated academic CMS and faculty-directory defaults; the AI-slop tells (gradients, glassmorphism, glow, `border-left` accent stripes, rounded cards with soft shadows); code-editor and terminal aesthetics, since mono here is metadata and never a page theme; and soft-launch minimalism with acres of whitespace and hero photos under overlay text.
 
-The system renders itself: the `/style-guide` route is a living reference that reads the live token values off `:root` and re-documents itself when a token changes. Check a claim in this file against that page before trusting it, and when you add a reusable idiom, document it there in the same change. The idiom classes themselves live in `src/styles/components/ink-signal.css`.
+The system renders itself: the `/style-guide` route is a living reference that reads the live token values off `:root` and re-documents itself when a token changes. Check a claim in this file against that page before trusting it, and when you add a reusable idiom, document it there in the same change — `src/styles/styleGuideCoverage.test.ts` fails the build when a class in `ink-signal.css` appears neither on `/style-guide` nor in a component that page renders. The idiom classes themselves live in `src/styles/components/ink-signal.css`.
 
 **Key Characteristics:**
 
@@ -214,7 +214,7 @@ The single accent. There is no third colour role in the UI.
 
 **The Warm Ground Rule.** Grounds and type stay warm in both themes; the accent is the only cooler note in the system. Pure white, pure black, and any cool gray are outside the palette.
 
-**The Negative Rule.** Midnight is the same page photographed as a negative, designed as its own pass. Never ship a component specified in only one theme, and never reach for an inversion filter or a slate-blue dark palette. That pass carries exactly one typographic adjustment alongside the colour remap — the Microfilm Weight Rule below.
+**The Negative Rule.** Midnight is the same page photographed as a negative, designed as its own pass. Never ship a component specified in only one theme, and never reach for an inversion filter or a slate-blue dark palette. That pass carries exactly one typographic adjustment alongside the colour remap — the Microfilm Weight Rule below. **The midnight footer is the page:** daylight's footer is an inverted ink block, and the negative of an inverted block would be a bright cream slab, which the microfilm register refuses — so in midnight the footer takes the page ground itself (`--color-footer-bg: var(--color-background)`) and the 4px cream masthead rule plus the hairlines carry the boundary. Likewise the film ramp holds three steps for four paper roles, so `--color-background-muted` and `--color-surface-elevated` share the lightest step in midnight by design; the style guide records it rather than hiding it.
 
 ## Typography
 
@@ -236,7 +236,7 @@ The scale is deliberately forked. Body and UI steps follow a minor third (1.2) t
 - **Title** (Newsreader, 500, `clamp(1.5rem, …, 1.6875rem)`, line-height 1.35): The record title inside a ledger row, and `h4`–`h5`.
 - **Body** (Newsreader, 400, `clamp(1.0625rem, …, 1.125rem)`, line-height 1.6): All prose, capped by the measure roles below.
 - **Standfirst** (Newsreader italic, `clamp(1.225rem, …, 1.35rem)`, line-height 1.5): The serif-italic deck under a page title, and plate captions at the small step.
-- **Label** (Spline Sans Mono, 500–700, `clamp(0.625rem, …, 0.6944rem)`, three tracking roles keyed to size — the eyebrow at 0.16em, the 2xs label default at 0.12em, and the compact caps tier at 0.06em, with 0.03em for mixed-case figures — uppercase, tabular numerals): Every machine-indexed string — eyebrows, datelines, counts, navigation, filters, chips, DOIs, pagination, ledger keys, button text. **`h6` belongs to this tier, not to Title:** the smallest heading level in this system is functionally a metadata label, and `typography.css` casts it mono, uppercase, and letterspaced by design. It is the one heading element in the data voice, and the exception is deliberate rather than a violation of the Two Voices Rule.
+- **Label** (Spline Sans Mono, 500–700, `clamp(0.625rem, …, 0.6944rem)`, three tracking roles keyed to size — the eyebrow at 0.16em, the 2xs label default at 0.12em, and the compact caps tier at 0.06em, with 0.03em for mixed-case figures — uppercase, tabular numerals): Every machine-indexed string — eyebrows, datelines, counts, navigation, filters, chips, DOIs, pagination, ledger keys, button text. **A module label is a heading in this tier.** The one heading idiom in the data voice is `.rail-label` — an `h2` or `h3` cast mono, uppercase and letterspaced over a hairline, which opens the catalogue entry of every record rail, the contents ledger and the style guide's own sub-sections. `typography.css` casts `h6` the same way so the smallest heading level can never fall into the serif, but no page uses one; the exception is the label role, not an element, and it is deliberate rather than a violation of the Two Voices Rule.
 
 ### Named Rules
 
@@ -269,7 +269,7 @@ Density is a deliberate value. Scholars scan, and dense, well-set information re
 - a **rule** separates, and is the lightest mark on the page: `var(--rule-hairline) solid var(--color-hairline)`
 - a **box edge** encloses an object, and sits one step darker: `var(--border-width-thin) solid var(--color-border)`
 
-Never cross the pair. The failure is silent — a separator drawn in the edge colour simply reads as a plate and flattens the ramp, with nothing to catch it — which is exactly how the ledger, the bibliography and the facet rules spent three months one step too dark while the CV and the panels drew the same role correctly. `--rule-*` inside a `border:` shorthand is the tell that a box edge has borrowed the rule tier. The one sanctioned exception is `.bib-item--lead`, which marks the featured entry with a deliberately heavier `--color-border-dark` rule.
+Never cross the pair. The failure is silent — a separator drawn in the edge colour simply reads as a plate and flattens the ramp, with nothing to catch it — which is exactly how the ledger, the bibliography and the facet rules spent three months one step too dark while the CV and the panels drew the same role correctly. `--rule-*` inside a `border:` shorthand is the tell that a box edge has borrowed the rule tier. The one sanctioned exception is `.bib-item--lead`, which marks the featured entry with a deliberately heavier `--color-border-dark` rule. And one boundary takes one mark: where a `.meta-ledger` or a contents ledger follows a `.rail-label`, the label's hairline is the boundary and the first row gives up its own.
 
 **The Ledger Default Rule.** Anything dated or keyed — a publication, appointment, activity, metadata field, facet — renders as a ledger row, not a card. A card is the exception and needs a reason.
 
@@ -307,6 +307,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **Hover / Focus:** Hover deepens the fill (ink → deep ink, pine → deep pine) with no movement whatsoever. Focus-visible draws a 2px pine outline at a 2px offset.
 - **Secondary / Outline / Ghost:** Secondary is a transparent control with a strong-border edge that fills with the alt surface on hover. Outline variants (`primary`, `secondary`, `accent`) invert to a solid fill on hover. Ghost carries faint-ink text and no border.
 - **Sizes:** `sm` (8px 16px), default (12px 20px), `lg` (16px 28px). Icon-only variants are padded to stay square.
+- **Danger:** Warm red, reserved for a destructive action; no control on the site consumes it today. Its midnight fill was re-stepped to `#d65c41` on 2026-09-09 so the skin clears 4.5:1 on the film ground — `/style-guide` § 5 renders it and prints the measurement.
 - **Bare:** A zero-specificity `:where(.btn-bare)` primitive exists for controls that are semantically buttons but must not look like one (transport controls, close crosses). It carries only hit behaviour, a focus ring, and the native reset, so a consumer's own class styles it without `!important`.
 
 ### Chips
@@ -331,8 +332,11 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 
 ### Navigation
 
-- **Style:** Mono data voice, uppercase, letterspaced. The active item takes pine; the rest are ink.
-- **States:** Colour change only, instantly. No underline sweep, no sliding indicator, no scale.
+- **Style:** Mono data voice, uppercase, letterspaced. The active item takes pine and a 2px pine rule beneath; the rest are set in `--color-text-soft`, one step quieter than body ink (6.85:1 on paper), so the current section reads as the only lit label.
+- **States:** Colour change only, instantly. A hovered label answers with ink, never with a second rule beside the current one. No underline sweep, no sliding indicator, no scale; a submenu appears and disappears without reveal, stagger or nudge.
+- **A record title inside chrome keeps the document voice.** Submenu entries — research projects, collections, workshops — are set in Archivo at the text tier, sentence case, on the desktop dropdown and the mobile panel alike; only the section labels above them are mono. The desktop nav shows from 1280px because the seven labels, the wordmark and the toggle first fit on one line at 1180px; below that the masthead opens a full-bleed panel that prints the whole index, expanded.
+- **Externals are marked** with `↗` and a hidden "(Opens in new tab)", the same string the footer uses. Every page opens with a skip link to `#main`.
+- **The masthead retracts on scroll-down and returns on scroll-up.** A deliberate app gesture in a print system: the sticky record rail relies on the reclaimed space, and the masthead never retracts while a menu is open or focus is inside it.
 
 ### Signature components
 
@@ -342,6 +346,10 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **The Key-Terms Cloud:** A frequency-scaled serif term list where size encodes actual corpus frequency.
 - **The Drop Cap:** An Archivo initial at 4.4em, weight 850, in pine, floated into an abstract or standfirst.
 - **The Stat Ledger:** "The corpus, in numbers" — mono rows with tabular figures, the key figure in pine.
+- **The Contents Ledger** (`.contents-ledger`, `.contents-link`, rendered by `ContentsLedger.svelte`): what any document long enough to need one opens with — a `§`-keyed ledger of anchors with the machine's count per section in the meta column, quiet ink at rest and pine only under the pointer. The visualisation pages and the style guide open with it.
+- **The Specimen Frame** (`.specimen`, `.specimen-label`, `.specimen--flush`): frames a live demo of an idiom that is itself page chrome, so a documentation page can show a ruled section head without the reader mistaking the exhibit for the room — a plate, never a card: 1px box edge on `--color-surface`, square, no shadow, a data-voice caption as its first child closed by a hairline; the flush variant drops the inner padding so a demo's own full-width rules reach the frame's edge.
+- **`.ledger-meta--figures`:** a meta cell whose content is machine text rather than a stamp — a token name, a DOI, a count with a unit — printed case-intact on the figures tracking, because a custom-property name uppercased cannot be copied.
+- **The Colophon:** the footer is the record's endpaper — an inverted ink block in daylight closed by the 4px rule, a wordmark and serif-italic tagline, four mono link groups (contact, academic, social, and _the record_: RSS, sitemap, `llms.txt`, the MCP server, the style guide), an `<address>` set as text, and the signature strip of © and type credit over a hairline. No floating control of any kind.
 
 ## Do's and Don'ts
 

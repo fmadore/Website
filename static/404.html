@@ -10,13 +10,38 @@
 			Static 404 page. The site is fully prerendered (adapter-static), so
 			GitHub Pages serves this file with a real HTTP 404 for any unknown URL —
 			no SPA redirect, no soft-404. It is intentionally self-contained: the
-			SvelteKit app never boots here, so styles are inlined and theming follows
-			the OS via prefers-color-scheme (the app's theme toggle does not run).
-			All hrefs/assets are absolute because this page is served at the
-			(arbitrary) missing path. Fonts are the site's self-hosted files;
-			colours mirror src/styles/base/variables.css (Ink + Signal).
+			SvelteKit app never boots here, so styles are inlined and the theme is
+			resolved by the same bootstrap app.html uses (stored choice first, OS
+			preference second), because a reader who set the site to midnight should
+			not be flashed a white page by a typo. All hrefs/assets are absolute
+			because this page is served at the (arbitrary) missing path. Fonts are
+			the site's self-hosted files; colours mirror src/styles/base/variables.css
+			(Ink + Signal).
+
+			This page and src/routes/+error.svelte are one page in two runtimes —
+			same wordmark, eyebrow, headline, lede, chips and path echo. Edit them
+			together.
 		-->
 		<link rel="icon" type="image/png" href="/icons/favicon.png" />
+
+		<!-- Theme initialization — mirrors the bootstrap in src/app.html. -->
+		<script>
+			(function () {
+				var theme = null;
+				try {
+					theme = localStorage.getItem('theme');
+				} catch (e) {
+					/* storage blocked — fall through to the OS preference */
+				}
+				var initial =
+					theme === 'light' || theme === 'dark'
+						? theme
+						: window.matchMedia('(prefers-color-scheme: dark)').matches
+							? 'dark'
+							: 'light';
+				document.documentElement.classList.add(initial);
+			})();
+		</script>
 
 		<style>
 			@font-face {
@@ -48,18 +73,30 @@
 				--ink: #191509;
 				--muted: #5c5442;
 				--accent: #1e6a56;
+				--code-bg: #ece4d1;
 				--font-display: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 				--font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
 				--font-mono: 'Spline Sans Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
 			}
 
+			/* Midnight: the microfilm negative — warm film ground, cream type.
+			   The class is what the bootstrap above sets; the media query is the
+			   no-JavaScript fallback, scoped so it never fights an explicit choice. */
+			:root.dark {
+				--bg: #171310;
+				--ink: #efe7d6;
+				--muted: #b3a88d;
+				--accent: #4fbb99;
+				--code-bg: #1f1a14;
+			}
+
 			@media (prefers-color-scheme: dark) {
-				:root {
-					/* Midnight: the microfilm negative — warm film ground, cream type */
+				:root:not(.light):not(.dark) {
 					--bg: #171310;
 					--ink: #efe7d6;
 					--muted: #b3a88d;
 					--accent: #4fbb99;
+					--code-bg: #1f1a14;
 				}
 			}
 
@@ -80,8 +117,6 @@
 				background-color: var(--bg);
 				color: var(--ink);
 				min-height: 100vh;
-				display: flex;
-				align-items: center;
 				line-height: 1.6;
 				-webkit-font-smoothing: antialiased;
 			}
@@ -91,7 +126,22 @@
 				max-width: 40rem;
 				margin: 0 auto;
 				padding: 2rem 1.5rem 4rem;
-				/* Masthead rule: hierarchy is drawn in rules, not colour */
+			}
+
+			/* The masthead: whose archive this is, before what went wrong. */
+			.wordmark {
+				font-family: var(--font-display);
+				font-variation-settings: 'wdth' 122;
+				font-weight: 830;
+				font-size: clamp(1.15rem, 0.95rem + 0.9vw, 1.6rem);
+				letter-spacing: -0.01em;
+				text-transform: uppercase;
+				line-height: 1;
+				margin-bottom: 0.75rem;
+			}
+
+			/* Masthead rule: hierarchy is drawn in rules, not colour */
+			.sheet {
 				border-top: 5px solid var(--ink);
 			}
 
@@ -108,14 +158,15 @@
 
 			h1 {
 				font-family: var(--font-display);
-				font-weight: 700;
-				font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem);
-				line-height: 1.1;
-				letter-spacing: -0.01em;
+				font-variation-settings: 'wdth' 116;
+				font-weight: 830;
+				font-size: clamp(2.93rem, 2.784rem + 0.732vw, 3.296rem);
+				line-height: 1;
+				letter-spacing: -0.015em;
 				margin-bottom: 1.25rem;
 			}
 
-			p {
+			.lede {
 				font-size: 1.125rem;
 				color: var(--muted);
 				max-width: 34rem;
@@ -148,16 +199,49 @@
 				color: var(--bg);
 			}
 
+			/* The index the requested URL was already inside is the way out. */
+			.links a.is-current {
+				background-color: var(--ink);
+				color: var(--bg);
+			}
+
 			.links a:focus-visible {
 				outline: 2px solid var(--accent);
 				outline-offset: 2px;
 			}
 
+			/* The machine voice: what was asked for, printed back. */
+			.diagnostic {
+				font-family: var(--font-mono);
+				font-size: 0.8125rem;
+				letter-spacing: 0.03em;
+				color: var(--muted);
+				margin-top: 2.25rem;
+				display: flex;
+				flex-wrap: wrap;
+				align-items: baseline;
+				gap: 0.5rem;
+			}
+
+			.diagnostic-label {
+				text-transform: uppercase;
+				letter-spacing: 0.12em;
+				font-weight: 500;
+			}
+
+			.diagnostic code {
+				font-family: var(--font-mono);
+				color: var(--ink);
+				background-color: var(--code-bg);
+				padding: 0.125rem 0.375rem;
+				overflow-wrap: anywhere;
+			}
+
 			.home-link {
 				display: inline-block;
-				margin-top: 2.25rem;
+				margin-top: 1.5rem;
 				font-family: var(--font-mono);
-				font-size: 0.875rem;
+				font-size: 0.8125rem;
 				color: var(--ink);
 				text-decoration: underline;
 				text-decoration-color: var(--accent);
@@ -172,20 +256,46 @@
 	</head>
 	<body>
 		<main>
-			<p class="eyebrow">Error · 404</p>
-			<h1>This page couldn&rsquo;t be found.</h1>
-			<p>
-				The page you&rsquo;re looking for may have moved, been renamed, or never existed &mdash; and
-				the link you followed might be incomplete. Here are a few places to pick up the thread:
-			</p>
-			<ul class="links">
-				<li><a href="/publications">Publications</a></li>
-				<li><a href="/research">Research</a></li>
-				<li><a href="/conference-activity">Talks &amp; events</a></li>
-				<li><a href="/digital-humanities">Digital humanities</a></li>
-				<li><a href="/cv">CV</a></li>
-			</ul>
-			<a class="home-link" href="/">&larr; Back to the homepage</a>
+			<p class="wordmark">Frédérick Madore</p>
+			<div class="sheet">
+				<p class="eyebrow">Error &middot; 404</p>
+				<h1>This page couldn&rsquo;t be found.</h1>
+				<p class="lede">
+					The page you&rsquo;re looking for may have moved, been renamed, or never existed &mdash;
+					and the link you followed might be incomplete. Here are a few places to pick up the
+					thread:
+				</p>
+				<ul class="links">
+					<li><a href="/publications">Publications</a></li>
+					<li><a href="/research">Research</a></li>
+					<li><a href="/conference-activity">Talks &amp; events</a></li>
+					<li><a href="/digital-humanities">Digital humanities</a></li>
+					<li><a href="/cv">CV</a></li>
+				</ul>
+				<p class="diagnostic">
+					<span class="diagnostic-label">Requested</span>
+					<code id="requested-path"></code>
+				</p>
+				<a class="home-link" href="/">&larr; Back to the homepage</a>
+			</div>
 		</main>
+
+		<script>
+			// Echo the path that failed, and mark the index it was already inside.
+			// textContent, never innerHTML: the path is untrusted input.
+			(function () {
+				var path = window.location.pathname;
+				var slot = document.getElementById('requested-path');
+				if (slot) slot.textContent = path;
+				var chips = document.querySelectorAll('.links a');
+				for (var i = 0; i < chips.length; i++) {
+					var href = chips[i].getAttribute('href');
+					if (path === href || path.indexOf(href + '/') === 0) {
+						chips[i].className += ' is-current';
+						chips[i].setAttribute('aria-current', 'true');
+					}
+				}
+			})();
+		</script>
 	</body>
 </html>

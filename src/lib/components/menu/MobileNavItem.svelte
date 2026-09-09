@@ -1,8 +1,7 @@
 <script lang="ts">
-	// One entry of the mobile menu contents — the mono nav line plus its
-	// optional sub-menu index. Split out of MobileMenu.svelte; the parent keeps
-	// the container, masthead strip and the staggered reveal (which targets
-	// `.mobile-nav-item` from the container's `.active` state).
+	// One entry of the mobile menu contents — the mono section label plus its
+	// optional sub-index of record titles. Split out of MobileMenu.svelte, which
+	// keeps the container and the masthead strip.
 	import type { NavItem } from '$lib/types/navigation';
 	import { page } from '$app/state';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
@@ -32,6 +31,16 @@
 		return current === itemPath || current.startsWith(`${itemPath}/`);
 	}
 
+	// Sub-entries mark an exact match only, and never one that merely repeats
+	// the parent's own path ("All Publications" under "Publications"): that row
+	// is a shortcut back to the section its parent already marks, and lighting
+	// both cost the pine mark its meaning.
+	function isSubCurrent(path: string): boolean {
+		if (path.startsWith('http')) return false;
+		if (normalize(path) === normalize(item.path)) return false;
+		return normalize(path) === normalize(currentPath);
+	}
+
 	const current = $derived(isCurrent(item.path));
 </script>
 
@@ -51,7 +60,8 @@
 	{#if item.dropdown}
 		<ul class="mobile-dropdown">
 			{#each item.dropdown as subItem (subItem.path)}
-				{@const subCurrent = isCurrent(subItem.path)}
+				{@const subCurrent = isSubCurrent(subItem.path)}
+				{@const isExternal = subItem.path.startsWith('http')}
 				<li class="mobile-dropdown-item">
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- path pre-resolved in navigation data -->
 					<a
@@ -60,12 +70,13 @@
 						class:current={subCurrent}
 						aria-current={subCurrent ? 'page' : undefined}
 						onclick={onnavigate}
-						target={subItem.path.startsWith('http') ? '_blank' : null}
-						rel={subItem.path.startsWith('http')
-							? `noopener noreferrer${subItem.rel ? ` ${subItem.rel}` : ''}`
-							: null}
+						target={isExternal ? '_blank' : null}
+						rel={isExternal ? `noopener noreferrer${subItem.rel ? ` ${subItem.rel}` : ''}` : null}
 					>
-						{typesetQuotes(subItem.name)}
+						{typesetQuotes(subItem.name)}{#if isExternal}<span
+								class="external-mark"
+								aria-hidden="true">&nbsp;↗</span
+							><span class="sr-only"> (Opens in new tab)</span>{/if}
 					</a>
 					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				</li>
@@ -75,9 +86,7 @@
 </li>
 
 <style>
-	/* Each entry sits over a hairline rule — ink-coloured, never gray. The
-	 * reveal transition (opacity/transform + stagger) lives in MobileMenu,
-	 * driven by the container's `.active` class. */
+	/* Each entry sits over a hairline rule — ink-coloured, never gray. */
 	.mobile-nav-item {
 		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
@@ -141,9 +150,11 @@
 	}
 
 	/*
-	 * Sub-menu — the quieter apparatus: mono, smaller, faint ink, indented under
-	 * the parent with a hanging hairline. Sub-entries in a machine index, not
-	 * prose links.
+	 * Sub-menu — indented under the parent with a hanging hairline. The entries
+	 * are record titles (research projects, a collection, a workshop), so they
+	 * keep the DOCUMENT voice: Archivo at the text tier, sentence case, exactly
+	 * as the desktop dropdown sets them. Only the top-level rows above are
+	 * section labels, and only they stay in the mono data voice.
 	 */
 	.mobile-dropdown {
 		list-style: none;
@@ -167,14 +178,22 @@
 		padding: var(--space-2) 0 var(--space-2) var(--space-4);
 		color: var(--color-text-light);
 		text-decoration: none;
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
+		font-family: var(--font-family-display);
+		font-variation-settings: normal;
+		font-size: var(--font-size-sm);
 		font-weight: var(--font-weight-medium);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
+		/* Archivo at the text tier takes no tracking; the --tracking-display-*
+		 * roles start at `base` and above. */
+		letter-spacing: normal;
 		line-height: var(--line-height-snug);
 		position: relative;
 		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	/* Leaves the site — the same ↗ the desktop dropdown and the footer use. */
+	.external-mark {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 	}
 
 	/* Hanging index tick — a short accent rule at the indent, on hover/current. */

@@ -1,62 +1,21 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { resolve } from '$app/paths';
-	import { socialGroups, author } from '$lib/data/siteConfig';
-	import { prefersReducedMotion } from '$lib/utils/motion';
+	import { socialGroups, author, address } from '$lib/data/siteConfig';
 
 	const currentYear = new Date().getFullYear();
-
-	// Enhanced intersection observer for subtle animations
-	let footerElement: HTMLElement;
-	let isVisible = $state(false);
-	$effect(() => {
-		// Only run when footerElement is available
-		if (!footerElement) return;
-
-		// Debounce intersection updates for better performance
-		let timeoutId: ReturnType<typeof setTimeout>;
-
-		const observer = new IntersectionObserver(
-			(entries) => {
-				clearTimeout(timeoutId);
-				timeoutId = setTimeout(() => {
-					entries.forEach((entry) => {
-						isVisible = entry.isIntersecting;
-					});
-				}, 50);
-			},
-			{ threshold: 0.1, rootMargin: '50px' }
-		);
-
-		observer.observe(footerElement);
-
-		return () => {
-			clearTimeout(timeoutId);
-			observer.disconnect();
-		};
-	});
-
-	function scrollToTop() {
-		window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
-	}
-
-	// Handle keyboard events for scroll to top
-	function handleScrollKeydown(event: KeyboardEvent) {
-		if (event.key === 'Enter' || event.key === ' ') {
-			event.preventDefault();
-			scrollToTop();
-		}
-	}
 </script>
 
-<footer class="site-footer" bind:this={footerElement}>
+<footer class="site-footer">
 	<div class="footer-container">
 		<section class="footer-branding" aria-labelledby="footer-brand-heading">
-			<p class="footer-wordmark" id="footer-brand-heading">{author.fullName}</p>
+			<!-- The wordmark prints exactly what the masthead prints; the degree
+			     belongs to the © line, which is a rights statement, not a nameplate. -->
+			<p class="footer-wordmark" id="footer-brand-heading">{author.name}</p>
 			<p class="footer-tagline">{author.position}</p>
 		</section>
 
-		<nav class="footer-social-links" aria-label="Social and academic links">
+		<nav class="footer-link-groups" aria-label="Contact and profile links">
 			{#each socialGroups as group, groupIndex (group.title)}
 				<section class="footer-link-group" aria-labelledby="group-{groupIndex}-title">
 					<!-- h2, not h3: pages whose content has no h2 (e.g. /teaching) would
@@ -86,6 +45,27 @@
 							</li>
 						{/each}
 					</ul>
+
+					{#if group.withAddress}
+						<!-- The imprint. A postal address is a record to be read, not a
+						     six-line anchor: only the institution carries the map link. -->
+						<address class="footer-address">
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external map link -->
+							<a
+								class="footer-address-link no-underline"
+								href={address.mapsUrl}
+								target="_blank"
+								rel="external noopener noreferrer"
+								aria-label="{address.institution} on the map - Opens in new tab"
+							>
+								{address.institution}
+							</a>
+							{#if address.department}<span>{address.department}</span>{/if}
+							{#if address.street}<span>{address.street}</span>{/if}
+							<span>{address.postalCode}&nbsp;{address.city}, {address.country}</span>
+							{#if address.room}<span>{address.room}</span>{/if}
+						</address>
+					{/if}
 				</section>
 			{/each}
 		</nav>
@@ -95,29 +75,20 @@
 	<div class="footer-colophon">
 		<span class="footer-copyright">© {currentYear} {author.fullName}</span>
 		<!-- The type credit doubles as the door to the living style guide. -->
-		<a class="footer-typecredit" href={resolve('/style-guide')}>
+		<a class="footer-typecredit" href="{resolve('/style-guide')}#colophon">
 			Set in Archivo, Newsreader &amp; Spline Sans Mono.
 		</a>
 	</div>
-
-	<!-- Scroll indicator -->
-	<button
-		class="scroll-to-top"
-		class:visible={isVisible}
-		onclick={scrollToTop}
-		onkeydown={handleScrollKeydown}
-		aria-label="Scroll to top of page"
-		type="button"
-	>
-		<Icon icon="mdi:arrow-up" width="20" height="20" aria-hidden="true" />
-	</button>
 </footer>
 
 <style>
 	/*
-	 * Colophon footer — the printed endpaper. One dark ink ground (cream type
-	 * in both themes), heavy masthead rule on top, asymmetric editorial grid.
-	 * No boxes, no glass, no shadow: mono small-caps labels and rules alone.
+	 * Colophon footer — the printed endpaper. Heavy masthead rule on top, a
+	 * wordmark column and four ledger-style link groups, closed by the
+	 * signature line. Daylight inverts to the ink ground (cream type on ink);
+	 * midnight takes the page ground itself and lets the 4px cream rule carry
+	 * the boundary. No boxes, no glass, no shadow, and no controls: everything
+	 * here is a link or a record.
 	 */
 	.site-footer {
 		background: var(--color-footer-bg);
@@ -167,15 +138,16 @@
 		line-height: var(--line-height-snug);
 	}
 
-	.footer-social-links {
+	.footer-link-groups {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+		grid-template-columns: 1fr;
 		gap: var(--space-8) var(--space-6);
 	}
 
 	.footer-link-group {
 		display: flex;
 		flex-direction: column;
+		min-width: 0;
 	}
 
 	/* Group titles — the data voice: mono small-caps over a hairline. */
@@ -201,12 +173,14 @@
 		gap: var(--space-2);
 	}
 
-	/* Links — Archivo at text weight, a grotesque set of section names, warming
-	 * to the bright pine on hover. */
+	/* Links — the data voice. These are database columns ("ORCID", "RSS feed",
+	 * "llms.txt"), so they are mono at the small tier, mixed case: uppercase
+	 * would turn the imprint below into a wall. */
 	.footer-link {
 		display: inline-flex;
 		align-items: flex-start;
 		gap: var(--space-2);
+		font-family: var(--font-family-mono);
 		color: var(--color-footer-text-muted);
 		text-decoration: none;
 		padding: var(--space-1) 0;
@@ -231,19 +205,57 @@
 	}
 
 	.footer-link-name {
-		font-family: var(--font-family-display);
-		font-size: var(--font-size-base);
-		font-weight: var(--font-weight-normal);
-		white-space: pre-line;
+		font-size: var(--font-size-xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: var(--tracking-figures);
 		line-height: var(--line-height-snug);
+		/* Labels are short and are index keys: they break the column, not
+		 * themselves. The imprint below is the only wrapping text here. */
+		white-space: nowrap;
 	}
 
 	.footer-link:hover {
-		color: var(--sys-color-pine-bright);
+		color: var(--color-footer-accent);
 	}
 
 	.footer-link:hover .footer-link-icon {
 		opacity: 1;
+	}
+
+	/* The imprint — the postal record, set as the same data voice one step
+	 * quieter, hanging under the Contact group. */
+	.footer-address {
+		display: flex;
+		flex-direction: column;
+		font-family: var(--font-family-mono);
+		font-style: normal;
+		font-size: var(--font-size-xs);
+		letter-spacing: var(--tracking-figures);
+		line-height: var(--line-height-snug);
+		color: var(--color-footer-text-muted);
+		margin-top: var(--space-4);
+		padding-top: var(--space-3);
+		border-top: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-footer-text) 20%, transparent);
+		gap: var(--space-0-5);
+	}
+
+	.footer-address-link {
+		color: var(--color-footer-text);
+		text-decoration: none;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	@media (--touch) {
+		.footer-address-link {
+			display: inline-flex;
+			align-items: center;
+			min-height: var(--space-11);
+		}
+	}
+
+	.footer-address-link:hover {
+		color: var(--color-footer-accent);
 	}
 
 	/* Colophon rule — the signature line: © in mono, type credit in serif italic. */
@@ -279,50 +291,7 @@
 	}
 
 	.footer-typecredit:hover {
-		color: var(--sys-color-pine-bright);
-	}
-
-	.footer-typecredit:focus-visible {
-		outline: var(--border-width-medium) solid var(--sys-color-pine-bright);
-		outline-offset: var(--border-width-medium);
-	}
-
-	/* Scroll-to-top — a square ink control, no round, no shadow. */
-	.scroll-to-top {
-		position: fixed;
-		bottom: var(--space-6);
-		right: var(--space-6);
-		width: var(--space-11);
-		height: var(--space-11);
-		border: var(--border-width-thin) solid var(--color-primary);
-		border-radius: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--color-text-inverted);
-		background: var(--color-primary);
-		cursor: pointer;
-		box-shadow: none;
-		transform: translateY(calc(var(--space-24) + var(--space-2)));
-		opacity: 0;
-		transition:
-			transform var(--duration-moderate) var(--ease-out-quart),
-			opacity var(--duration-moderate) var(--ease-out),
-			background var(--duration-fast) var(--ease-out),
-			border-color var(--duration-fast) var(--ease-out);
-		z-index: var(--z-fixed);
-	}
-
-	.scroll-to-top.visible {
-		transform: translateY(0);
-		opacity: 1;
-	}
-
-	.scroll-to-top:hover {
-		background: var(--color-accent);
-		border-color: var(--color-accent);
-		/* Semantic inverted, not raw paper — the accent brightens on midnight. */
-		color: var(--color-text-inverted);
+		color: var(--color-footer-accent);
 	}
 
 	/* Responsive design improvements */
@@ -339,34 +308,34 @@
 			grid-template-columns: minmax(15rem, 1.2fr) 2fr;
 			gap: var(--space-12);
 		}
+
+		.footer-link-groups {
+			grid-template-columns: repeat(2, 1fr);
+		}
 	}
 
 	@media (--lg) {
 		.site-footer {
 			padding: var(--space-16) 0 var(--space-10) 0;
 		}
-	}
 
-	/* Accessibility improvements */
-	@media (prefers-reduced-motion: reduce) {
-		.footer-branding,
-		.footer-social-links,
-		.footer-link-item,
-		.footer-colophon {
-			transition: none;
-			opacity: 1;
-			transform: none;
+		.footer-container {
+			grid-template-columns: minmax(15rem, 1.2fr) 4fr;
+			gap: var(--space-10);
+		}
+
+		/* Four groups on one row. Contact carries the imprint, so it takes the
+		 * wider measure; the other three hold single-line labels. */
+		.footer-link-groups {
+			grid-template-columns: 1.3fr 1.1fr 0.95fr 1.1fr;
 		}
 	}
 
 	/* Focus states */
-	.footer-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--sys-color-pine-bright);
-		outline-offset: var(--border-width-medium);
-	}
-
-	.scroll-to-top:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
+	.footer-link:focus-visible,
+	.footer-address-link:focus-visible,
+	.footer-typecredit:focus-visible {
+		outline: var(--border-width-medium) solid var(--color-footer-accent);
 		outline-offset: var(--border-width-medium);
 	}
 </style>

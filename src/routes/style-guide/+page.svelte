@@ -1,11 +1,16 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
+	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
+	import type { ContentsLedgerItem } from '$lib/components/common/ContentsLedger.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
+	import RecordLedger from '$lib/components/molecules/RecordLedger.svelte';
+	import type { MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
 	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
+	import { scaleKeyTerms } from '$lib/utils/keyTerms';
 	import {
 		allPublicationSummaries as allPublications,
 		publicationSummariesByYear as publicationsByYear,
@@ -14,6 +19,10 @@
 	import { allCommunications } from '$lib/data/communications/index';
 	import { activitiesByDate } from '$lib/data/activities';
 	import { tallyBy } from '$lib/utils/vizAggregation';
+	/* The index pages' search field is documented in § 5, so the guide loads the
+	 * stylesheet that owns it rather than restating its declarations locally —
+	 * a restatement is exactly the drift this page exists to prevent. */
+	import '$styles/components/entity-index.css';
 
 	const breadcrumbs = createSectionBreadcrumbs('Style Guide', '/style-guide');
 
@@ -65,6 +74,16 @@
 		'--duration-normal',
 		'--duration-moderate',
 		'--duration-slow'
+	];
+
+	const spaceTokens = [
+		'--space-xs',
+		'--space-sm',
+		'--space-md',
+		'--space-lg',
+		'--space-xl',
+		'--space-2xl',
+		'--space-3xl'
 	];
 
 	/* ===== Tracking — a role scale keyed to size.
@@ -219,19 +238,19 @@
 			token: '--measure-prose',
 			role: 'Prose',
 			size: '--font-size-base',
-			use: 'body copy, ledger descriptions, abstracts, CV entries'
+			use: 'The reading default: body copy, ledger descriptions, abstracts and CV entries.'
 		},
 		{
 			token: '--measure-standfirst',
 			role: 'Standfirst',
 			size: '--font-size-lead',
-			use: 'the italic deck under a page title'
+			use: 'The italic deck under a page title, set one step short of the prose measure.'
 		},
 		{
 			token: '--measure-note',
 			role: 'Note',
 			size: '--font-size-sm',
-			use: 'captions, review sources, the footer'
+			use: 'Captions, review sources and the footer — the fine print, shortest of the three.'
 		}
 	];
 
@@ -271,6 +290,16 @@
 		measured = next;
 	});
 
+	/* ===== Drawn depth — the surface ramp.
+	 * Three grounds, deliberately close in value: separation is drawn by the
+	 * rule above a region, never by the step under it. Printed live so the
+	 * midnight collapse recorded beneath them can be read rather than asserted. */
+	const depthSteps = [
+		{ token: '--color-background', use: 'the page ground' },
+		{ token: '--color-surface', use: 'a plate, a panel, a combobox listbox' },
+		{ token: '--color-surface-elevated', use: 'the raised sheet — a card, a tile' }
+	];
+
 	/* ===== The hairline pairing =====
 	 * A rule and a box edge are different jobs on the same 1px width, and the
 	 * failure mode is silent: draw a separator in --color-border and it simply
@@ -300,6 +329,54 @@
 		{ class: 'rule-hairline', token: '--rule-hairline · 1px', use: 'ledger rows, entry separators' }
 	];
 
+	/* ===== The ledger family — every variant § 4 sets, named once so the
+	 * contents ledger's count cannot drift from what the section shows. ===== */
+	const ledgerVariants = [
+		'Two-column row',
+		'Three-column row',
+		'The row action',
+		'The tight ledger',
+		'The meta-ledger',
+		'The cite block'
+	];
+
+	/* ===== Controls — every button skin `buttons.css` defines, in the order it
+	 * defines them. Rendered as real controls, so each one is focusable and its
+	 * hover, focus and disabled states can be reached from this page. ===== */
+	const buttonSkins = [
+		{ variant: 'primary', note: 'The standard primary action — a solid ink fill with paper text.' },
+		{
+			variant: 'accent',
+			note: 'The single hero call to action per screen, governed by the Scarcity Rule.'
+		},
+		{ variant: 'secondary', note: 'Transparent, on the strong-border edge; fills on hover.' },
+		{
+			variant: 'outline-primary',
+			note: 'An ink outline that inverts to a solid ink fill on hover.'
+		},
+		{ variant: 'outline-secondary', note: 'The quiet outline — the second control in a stack.' },
+		{
+			variant: 'outline-accent',
+			note: 'A pine outline that inverts to a solid pine fill on hover.'
+		},
+		{ variant: 'ghost', note: 'Faint ink, no border: the tertiary tier.' },
+		{
+			variant: 'danger',
+			note:
+				'Destructive actions. Nothing on this site destroys anything, so it has no consumer — and ' +
+				'this specimen is why that matters: on the film ground the bright fill under inverted text ' +
+				'measures 4.46:1, just under the 4.5:1 floor. Daylight is fine at 6.4:1. Recorded here ' +
+				'rather than hidden; the skin needs a midnight step before anything adopts it.'
+		},
+		{ variant: 'surface', note: 'The flat outlined control that replaced the retired glass skin.' }
+	];
+
+	const buttonSizes = [
+		{ size: 'sm', label: 'Small' },
+		{ size: 'base', label: 'Default' },
+		{ size: 'lg', label: 'Large' }
+	];
+
 	/* ===== Real data — the only ornament this page is allowed. ===== */
 	const tagCounts: Record<string, number> = {};
 	for (const pub of allPublications) {
@@ -311,6 +388,20 @@
 		.sort((a, b) => b[1] - a[1])
 		.slice(0, 3);
 
+	/* The key-terms cloud, on the real publications keyword vocabulary. Sizes
+	 * come from `scaleKeyTerms` — a square-root scale, because type size reads
+	 * as area — so the cloud on this page is the one the visualisation pages
+	 * draw, at the same limit those pages would use for a rail-width column. */
+	const KEY_TERM_LIMIT_HERE = 40;
+	const keywordTerms = scaleKeyTerms(
+		Object.entries(tagCounts).map(([word, count]) => ({ word, count })),
+		{ limit: KEY_TERM_LIMIT_HERE }
+	);
+
+	/* A record's own keyword run, as `BibliographyRow` and /digital-humanities
+	 * set it: apparatus annotating an entry, not controls the reader operates. */
+	const apparatusTerms = topTags.map(([tag]) => tag);
+
 	// The facet combobox below runs on the real publications tag vocabulary; its
 	// picks narrow nothing here, they only demonstrate the selected state.
 	let demoFacetTags = $state<string[]>([]);
@@ -319,6 +410,14 @@
 			? demoFacetTags.filter((t) => t !== tag)
 			: [...demoFacetTags, tag];
 	}
+
+	// The chip row and the pager are real controls, so selected-by-interaction
+	// and the current page are reachable rather than merely drawn. They narrow
+	// and paginate nothing: this page is the specimen, not the list.
+	let demoChip = $state(0);
+	let demoPage = $state(1);
+	let demoSearch = $state('');
+	let demoField = $state('');
 
 	const pubYears = Object.keys(publicationsByYear)
 		.map(Number)
@@ -366,16 +465,191 @@
 		{ label: 'Tags in the corpus', value: allTags.length },
 		{ label: 'Colour tokens on this page', value: colourGroups.flatMap((g) => g.tokens).length }
 	];
+
+	/* The three idioms § 6 sets on real data, named once for the contents count. */
+	const dataIdioms = [
+		'Year-bar strip',
+		'Stat ledger',
+		'Year meter',
+		'Proportion ledger',
+		'Key-terms cloud'
+	];
+
+	/* ===== Plates — real covers from the publications record, not stock or a
+	 * portrait: DESIGN.md makes scans and covers from the corpus first-class
+	 * imagery and rules out stock photography of any kind. ===== */
+	const pagePlate = {
+		src: 'images/publications/Cahiers-détudes-africaines-229.webp',
+		width: 600,
+		height: 901,
+		alt: "Cover of Cahiers d'études africaines, issue 229"
+	};
+	const railPlate = {
+		src: 'images/publications/muslim-minorities-africa.webp',
+		width: 600,
+		height: 908,
+		alt: 'Cover of Islamic Africa, the Muslim minorities in Africa special issue'
+	};
+	const plates = [pagePlate, railPlate];
+
+	/* The meta-ledger demo is rendered by <RecordLedger> — the component every
+	 * record page uses — so the guide's catalogue entry cannot drift from the
+	 * one that ships, and its DOI is a real `.meta-link` rather than accent text. */
+	const demoMetaRows: MetaRow[] = [
+		{ key: 'Type', value: 'Journal Article' },
+		{ key: 'Journal', value: 'Islamic Africa' },
+		{ key: 'Date', value: '2026' },
+		{
+			key: 'DOI',
+			value: '10.1163/21540993-01201007',
+			href: 'https://doi.org/10.1163/21540993-01201007',
+			external: true,
+			accent: true,
+			icon: 'academicons:doi'
+		}
+	];
+
+	/* ===== Colophon — the three families, and where the system lives. ===== */
+	const typefaces = [
+		{
+			name: 'Archivo',
+			role: 'Display',
+			credit: 'Omnibus-Type · SIL Open Font License 1.1',
+			note: 'A grotesque drawn for newspaper headlines and high-performance typography, with a width axis this system runs from 100 to 125. It sets the nameplate, h1–h3, section heads and the big data numbers.'
+		},
+		{
+			name: 'Newsreader',
+			role: 'Prose',
+			credit: 'Production Type · SIL Open Font License 1.1',
+			note: 'A news serif with an optical-size axis and full Latin Extended coverage, which is what a corpus of French and English scholarship on West Africa actually needs. It sets all prose, h4–h5, standfirsts, captions and every italic.'
+		},
+		{
+			name: 'Spline Sans Mono',
+			role: 'Data',
+			credit: 'Eben Sorkin & Mirko Velimirović · SIL Open Font License 1.1',
+			note: 'The data voice: eyebrows, datelines, counts, navigation, filters, chips, DOIs, pagination and ledger keys. Never body copy, and never a page-wide treatment — a code-editor aesthetic is an anti-reference here, not an adjacent style.'
+		}
+	];
+
+	const systemFiles = [
+		{
+			key: 'Tokens',
+			title:
+				'Every colour, size, tracking, weight, rule and interval in the system, and the midnight remap of them.',
+			path: 'src/styles/base/variables.css · dark.css'
+		},
+		{
+			key: 'Idioms',
+			title:
+				'The structural vocabulary: sections, ledgers, chips, plates, meters, the specimen frame and this page’s contents ledger.',
+			path: 'src/styles/components/ink-signal.css'
+		},
+		{
+			key: 'Rules',
+			title:
+				'The fourteen named rules, written out with the reasoning behind each — the prose this page is the evidence for.',
+			path: 'DESIGN.md'
+		},
+		{
+			key: 'Reference',
+			title:
+				'The stylesheet map: import order, what each file owns, and which component imports it.',
+			path: 'src/styles/CSS-README.md'
+		},
+		{
+			key: 'This page',
+			title:
+				'The system demonstrated on itself, rendered from the live tokens and the site’s own data.',
+			path: 'src/routes/style-guide/+page.svelte'
+		}
+	];
+
+	/* ===== Contents =====
+	 * Nine sections, each with a count read off the arrays above rather than
+	 * typed, so the contents cannot drift from what the sections hold. The same
+	 * entries supply every section head, so a § number is stated exactly once. */
+	const sections: (ContentsLedgerItem & { title: string })[] = [
+		{
+			id: 'colour',
+			no: '§ 1',
+			title: 'Colour — two inks on two grounds, one accent',
+			count: `${colourGroups.flatMap((g) => g.tokens).length} tokens`
+		},
+		{
+			id: 'typography',
+			no: '§ 2',
+			title: 'Typography — two voices, strictly cast',
+			count: `${trackingRoles.length} tracking roles · ${weightSteps.length} weights`
+		},
+		{
+			id: 'rules',
+			no: '§ 3',
+			title: 'Rules — hierarchy is drawn, not floated',
+			count: `${ruleSpecs.length} rule weights`
+		},
+		{
+			id: 'ledger',
+			no: '§ 4',
+			title: 'The ledger — the universal record',
+			count: `${ledgerVariants.length} variants`
+		},
+		{
+			id: 'controls',
+			no: '§ 5',
+			title: 'Controls — chips, fields, pagination, buttons',
+			count: `${buttonSkins.length} skins · ${buttonSizes.length} sizes`
+		},
+		{
+			id: 'data',
+			no: '§ 6',
+			title: 'Data as ornament',
+			count: `${dataIdioms.length} idioms`
+		},
+		{
+			id: 'plates',
+			no: '§ 7',
+			title: 'Plates',
+			count: `${plates.length} plates`
+		},
+		{
+			id: 'spacing',
+			no: '§ 8',
+			title: 'Spacing & motion',
+			count: `${spaceTokens.length} steps`
+		},
+		{
+			id: 'colophon',
+			no: '§ 9',
+			title: 'Colophon — where the system lives',
+			count: `${typefaces.length} typefaces`
+		}
+	];
+
+	const sec = (id: string) => sections.find((s) => s.id === id)!;
 </script>
 
 <SEO
 	title="Style Guide | Frédérick Madore"
-	description="The living style guide for the Ink + Signal design system: colour tokens, the two typographic voices, the rule hierarchy, and the ledger, chip and plate idioms — rendered from the site's live design tokens."
+	description="The living style guide for the Ink + Signal design system: colour tokens, the two typographic voices, the rule hierarchy, the ledger, chip, control and plate idioms, and a colophon — rendered from the site's live design tokens."
 	keywords="style guide, design system, Ink + Signal, design tokens, typography, Frédérick Madore"
 	canonical="https://www.frederickmadore.com/style-guide"
 	{breadcrumbs}
 	pageType="WebPage"
 />
+
+<!-- Every section head is drawn from `sections`, so its § number, its id and
+     its row in the contents ledger are one string. The visible marker is
+     hidden from assistive technology and repeated inside the heading instead,
+     which puts the ordinal into the accessible name and the heading outline
+     without changing a pixel of the render. -->
+{#snippet sectionHead(s: (typeof sections)[number])}
+	<div class="section-head">
+		<span class="section-no" aria-hidden="true">{s.no}</span>
+		<h2 class="section-title" id="{s.id}-title">
+			<span class="sr-only">{`${s.no} — `}</span>{s.title}
+		</h2>
+	</div>
+{/snippet}
 
 <div class="container py-8">
 	<div class="max-w-6xl mx-auto">
@@ -388,14 +662,18 @@
 			toggle the theme to read this page as a microfilm negative.
 		</PageIntro>
 
+		<!-- The meta column is widened from the idiom's 12rem default: these counts
+		     are two-part where a visualisation page's are one word, and at 12rem
+		     § 2's wrapped onto a second line. -->
+		<div class="guide-contents">
+			<ContentsLedger items={sections} />
+		</div>
+
 		<!-- ================================================================
 		     § 1 · COLOUR
 		     ================================================================ -->
-		<section class="section">
-			<div class="section-head">
-				<span class="section-no">§ 1</span>
-				<h2 class="section-title">Colour — two inks on two grounds, one accent</h2>
-			</div>
+		<section id="colour" class="section section--flush" aria-labelledby="colour-title">
+			{@render sectionHead(sec('colour'))}
 			<p class="guide-note">
 				Grounds and ink stay warm in both themes; pine is the one cooler note and marks
 				<em>the current thing</em>. Applied by weight: ground ≫ ink ≫ accent. The value printed
@@ -403,7 +681,7 @@
 			</p>
 
 			{#each colourGroups as group (group.label)}
-				<h3 class="eyebrow eyebrow--ink guide-subhead">{group.label}</h3>
+				<h3 class="rail-label guide-subhead">{group.label}</h3>
 				<ul class="swatch-grid">
 					{#each group.tokens as token (token)}
 						<li class="swatch">
@@ -419,11 +697,8 @@
 		<!-- ================================================================
 		     § 2 · TYPOGRAPHY
 		     ================================================================ -->
-		<section class="section">
-			<div class="section-head">
-				<span class="section-no">§ 2</span>
-				<h2 class="section-title">Typography — two voices, strictly cast</h2>
-			</div>
+		<section id="typography" class="section" aria-labelledby="typography-title">
+			{@render sectionHead(sec('typography'))}
 			<p class="guide-note">
 				The document voice is what the scholar writes; the data voice is what the machine indexes.
 				Every string on the site belongs to exactly one. Blurring them is the system's only
@@ -432,7 +707,7 @@
 
 			<div class="voice-grid">
 				<div class="voice-specimen">
-					<h3 class="eyebrow eyebrow--ink">Archivo — display</h3>
+					<h3 class="rail-label">Archivo — display</h3>
 					<p class="nameplate voice-nameplate">Ink + Signal</p>
 					<p class="guide-caption">
 						Nameplate, h1–h3, section heads, big data numbers. Wide, heavy cuts via the
@@ -441,26 +716,108 @@
 				</div>
 
 				<div class="voice-specimen">
-					<h3 class="eyebrow eyebrow--ink">Newsreader — prose</h3>
+					<h3 class="rail-label">Newsreader — prose</h3>
 					<p class="voice-serif">
-						All prose, h4–h6, subtitles, captions and quotes are set in a news serif with optical
+						All prose, h4–h5, subtitles, captions and quotes are set in a news serif with optical
 						sizing and full Latin Extended — the reading default for a working archive.
 					</p>
 					<p class="standfirst">And the standfirst beneath a title is its italic register.</p>
 				</div>
 
 				<div class="voice-specimen">
-					<h3 class="eyebrow eyebrow--ink">Spline Sans Mono — data</h3>
+					<h3 class="rail-label">Spline Sans Mono — data</h3>
 					<p class="eyebrow voice-eyebrow-demo">Dossiers · 5 projects · 2013—2027</p>
+					<p class="eyebrow eyebrow--ink voice-eyebrow-demo">2013—2027 · Five dossiers</p>
 					<p class="dateline">17 Jun · Conference · Berlin</p>
 					<p class="guide-caption">
 						Metadata only, never body copy: eyebrows, datelines, counts, nav, filters, chips, DOIs,
-						pagination — anything that could be a database column.
+						pagination — anything that could be a database column. The eyebrow is pine when it marks
+						the current thing and takes <span class="data-voice">.eyebrow--ink</span> when it is only
+						a kicker.
 					</p>
 				</div>
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Type scale — forked ratios</h3>
+			<h3 class="rail-label guide-subhead">Heading tiers — where the voices divide</h3>
+			<p class="guide-note">
+				<span class="data-voice">h1</span>–<span class="data-voice">h3</span> are the display voice
+				and are documented by the section heads on this page. <span class="data-voice">h4</span> and
+				<span class="data-voice">h5</span> stay in Newsreader: quiet structural headings that read
+				as typeset prose rather than as display. The mono heading tier is where the guide has to be
+				exact, because <span class="data-voice">DESIGN.md</span> and the codebase disagree. The
+				idiom actually in use is <span class="data-voice">.rail-label</span>, a mono label cast on
+				an
+				<span class="data-voice">h2</span>
+				or <span class="data-voice">h3</span> in thirteen files — including every subhead on this
+				page.
+				<span class="data-voice">h6</span> is cast the same way in
+				<span class="data-voice">typography.css</span> and is used nowhere in the codebase. The
+				exception the Two Voices Rule really carries is <em>a module label at any tier</em>, not the
+				smallest heading level.
+			</p>
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — h4, h5 and the mono label tier</figcaption>
+				<h4>A structural heading, set in Newsreader</h4>
+				<p class="guide-caption">
+					Semibold, one tracking role tighter than prose, and no rule of its own — it divides a
+					reading column rather than opening a section.
+				</p>
+				<h5>One tier below it, in the same voice</h5>
+				<p class="guide-caption">The smallest heading still written rather than indexed.</p>
+				<p class="rail-label">Rail label — the mono heading in use</p>
+				<h6>h6 — cast identically, and used nowhere</h6>
+			</figure>
+
+			<h3 class="rail-label guide-subhead">The upright heading</h3>
+			<p class="guide-note">
+				An inline <span class="data-voice">&lt;em&gt;</span> inside
+				<span class="data-voice">h1</span>–<span class="data-voice">h3</span> stays upright in the display
+				face. A Newsreader italic bolted into a heavy Archivo head is a voice collision at display sizes,
+				so a work title quoted in a section head is set in the same face as the head around it. Genuine
+				serif italics belong in prose, standfirsts and captions — where the standfirst above shows them.
+			</p>
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — the upright heading rule</figcaption>
+				<h3>Reading <em>Fraternité Matin</em> against the grain</h3>
+				<p class="guide-caption">
+					The emphasised title inherits the head's face, weight, width axis and tracking; only the
+					markup distinguishes it.
+				</p>
+			</figure>
+
+			<h3 class="rail-label guide-subhead">Prose links</h3>
+			<p class="guide-note">
+				A bare <span class="data-voice">&lt;a&gt;</span> inside a
+				<span class="data-voice">&lt;p&gt;</span>, an <span class="data-voice">&lt;li&gt;</span> or
+				<span class="data-voice">.prose</span> takes ink text and a static pine underline — the most
+				frequent accent occurrence on the site, and the one place pine marks a live cross-reference
+				rather than a current state. The selector carries three
+				<span class="data-voice">:not()</span> clauses, so it outranks anything a component can
+				write: the opt-out is the class the selector itself names,
+				<span class="data-voice">.no-underline</span>, and apparatus runs, contents rows and chips
+				all take it.
+			</p>
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — the prose link and its opt-out</figcaption>
+				<p class="guide-note guide-specimen-prose">
+					The automatic treatment: <a href={resolve('/publications')}>a link in running prose</a>
+					underlined in pine at rest, thickening to two pixels and warming to pine on hover.
+				</p>
+				<p class="guide-note guide-specimen-prose">
+					The opt-out, and the one place it belongs — a link that is not running prose:
+				</p>
+				<p class="guide-specimen-prose">
+					<a class="no-underline" href={resolve('/publications')}>Publications</a>
+				</p>
+			</figure>
+			<p class="guide-caption">
+				<span class="data-voice">.no-underline</span> is for apparatus runs, contents rows and chips,
+				never for a link set inside a sentence: strip the underline there and colour alone distinguishes
+				it, which is a WCAG 1.4.1 failure rather than a style choice. Every opt-out on the site sits outside
+				running prose for that reason.
+			</p>
+
+			<h3 class="rail-label guide-subhead">Type scale — forked ratios</h3>
 			<div class="scale-ladder">
 				{#each bodyScale as token (token)}
 					<div class="scale-row">
@@ -480,7 +837,7 @@
 				{/each}
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Reading measure — counted, not assumed</h3>
+			<h3 class="rail-label guide-subhead">Reading measure — counted, not assumed</h3>
 			<p class="guide-note">
 				A <span class="data-voice">ch</span> is the advance width of the digit zero, not the width
 				of one character. Newsreader's average character measures about
@@ -490,23 +847,22 @@
 				arithmetic. The counts below are measured in your browser, in the live font, at each role's own
 				size.
 			</p>
-			<div class="ledger ledger--ruled">
+			<div class="ledger ledger--ruled" style="--ledger-meta-w: 17rem">
 				{#each measureRoles as role (role.token)}
 					<div class="ledger-row ledger-row--meta">
 						<span class="ledger-key">{role.role}</span>
 						<span class="ledger-content">
-							<span class="ledger-title">{role.token}</span>
-							<span class="ledger-desc">{role.use}</span>
+							<span class="ledger-title">{role.use}</span>
 						</span>
-						<span class="ledger-meta">
-							{measured[role.token]?.ch ?? '—'} ·
+						<span class="ledger-meta ledger-meta--figures">
+							{role.token} · {measured[role.token]?.ch ?? '—'} ·
 							<strong>{measured[role.token]?.chars ?? '—'} chars</strong>
 						</span>
 					</div>
 				{/each}
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Tracking — keyed to size</h3>
+			<h3 class="rail-label guide-subhead">Tracking — keyed to size</h3>
 			<p class="guide-note">
 				Tracking is set per voice, and within a voice it follows the size the string is set at: the
 				display face tightens as it grows, the data voice loosens as it shrinks. Serif prose never
@@ -527,14 +883,14 @@
 							>
 							<span class="ledger-desc">{role.use}</span>
 						</span>
-						<span class="ledger-meta">{role.token} · {resolved[role.token] ?? '—'}</span>
+						<span class="ledger-meta ledger-meta--figures"
+							>{role.token} · {resolved[role.token] ?? '—'}</span
+						>
 					</div>
 				{/each}
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">
-				Midnight weight — compensated, not inverted
-			</h3>
+			<h3 class="rail-label guide-subhead">Midnight weight — compensated, not inverted</h3>
 			<p class="guide-note">
 				Light type on the film ground optically bolds, and it does so most at the sizes the data
 				voice is set in — <span class="data-voice">10–14px</span> mono, where a stem gains more
@@ -561,12 +917,14 @@
 							>
 							<span class="ledger-desc">{step.use}</span>
 						</span>
-						<span class="ledger-meta">{step.token} · {resolved[step.token] ?? '—'}</span>
+						<span class="ledger-meta ledger-meta--figures"
+							>{step.token} · {resolved[step.token] ?? '—'}</span
+						>
 					</div>
 				{/each}
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Record prose — a narrative cast in rules</h3>
+			<h3 class="rail-label guide-subhead">Record prose — a narrative cast in rules</h3>
 			<p class="guide-note">
 				<span class="data-voice">.record-prose</span> is the reading column of a record whose body
 				is authored markup rather than fields — a research project's narrative, a digital-humanities
@@ -582,31 +940,35 @@
 				with one.
 			</p>
 
-			<div class="record-prose drop-cap guide-prose-demo">
-				<p>
-					The lead paragraph opens the record: one size up, one ink step darker, and an Archivo
-					initial floated into it. Everything after it returns to the reading tier and holds the
-					prose measure however wide the column gets.
-				</p>
-				<h2>A section head, opened by its rule</h2>
-				<p>
-					The head takes the same three-pixel rule and the same twelve-pixel interval as an
-					apparatus section further down the page, so a narrative and the record's Award or Reviews
-					blocks are drawn at one weight.
-				</p>
-				<h3>A subhead inside it</h3>
-				<p>Quiet serif, no rule: it divides a section rather than opening one.</p>
-			</div>
+			<!-- Framed: the demo raises a real section head under a real 3px rule,
+			     which read as a phantom § of the guide itself when set bare. The
+			     flush variant drops the frame's padding so the rule still runs the
+			     full width, which is the only way it reads as the rule it is. -->
+			<figure class="specimen specimen--flush">
+				<figcaption class="specimen-label">Specimen — record prose</figcaption>
+				<div class="record-prose drop-cap guide-prose-demo">
+					<p>
+						The lead paragraph opens the record: one size up, one ink step darker, and an Archivo
+						initial floated into it. Everything after it returns to the reading tier and holds the
+						prose measure however wide the column gets.
+					</p>
+					<h2>A section head, opened by its rule</h2>
+					<p>
+						The head takes the same three-pixel rule and the same twelve-pixel interval as an
+						apparatus section further down the page, so a narrative and the record's Award or
+						Reviews blocks are drawn at one weight.
+					</p>
+					<h3>A subhead inside it</h3>
+					<p>Quiet serif, no rule: it divides a section rather than opening one.</p>
+				</div>
+			</figure>
 		</section>
 
 		<!-- ================================================================
 		     § 3 · RULES
 		     ================================================================ -->
-		<section class="section">
-			<div class="section-head">
-				<span class="section-no">§ 3</span>
-				<h2 class="section-title">Rules — hierarchy is drawn, not floated</h2>
-			</div>
+		<section id="rules" class="section" aria-labelledby="rules-title">
+			{@render sectionHead(sec('rules'))}
 			<p class="guide-note">
 				Reach for the rule system before size or colour: the page should be navigable if all type
 				were one size. Rules are ink-coloured, never gray. Corners are square; shadows and glass do
@@ -622,14 +984,44 @@
 				{/each}
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">The rule → content interval</h3>
+			<h3 class="rail-label guide-subhead">The rule → content interval</h3>
 			<p class="guide-note">
 				Every ruled module — masthead, section, hairline — puts the same
-				<code>--rule-gap</code> between the rule and what it opens, so only the rule's
-				<em>weight</em> carries hierarchy. Vary the weight, never the gap.
+				<span class="data-voice">--rule-gap</span> between the rule and what it opens, so only the
+				rule's <em>weight</em> carries hierarchy. Vary the weight, never the gap. The interval
+				<em>above</em> a section is the one thing a consumer may set:
+				<span class="data-voice">.section--flush</span> drops it to zero for the first ruled module under
+				a masthead or a contents ledger, which is why § 1 above carries it and none of the others do.
 			</p>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">The section note</h3>
+			<h3 class="rail-label guide-subhead">Drawn depth — three grounds, one rule</h3>
+			<p class="guide-note">
+				There are no shadows and no glass. Depth comes from the weight of the rule between two
+				regions and the density of ink within them, so the surface ramp stays deliberately close in
+				value: a step alone never carries hierarchy, the rule above it does. The three grounds print
+				live below.
+			</p>
+			<ul class="depth-ramp">
+				{#each depthSteps as step (step.token)}
+					<li class="swatch">
+						<div class="swatch-chip" style="background: var({step.token})" aria-hidden="true"></div>
+						<span class="swatch-token">{step.token}</span>
+						<span class="swatch-value">{resolved[step.token] ?? ''}</span>
+						<span class="guide-caption depth-use">{step.use}</span>
+					</li>
+				{/each}
+			</ul>
+			<p class="guide-caption">
+				Recorded rather than hidden: in midnight <span class="data-voice"
+					>--color-background-muted</span
+				>
+				and <span class="data-voice">--color-surface-elevated</span> resolve to the same film step, as
+				the two adjacent hexes in § 1 show. The film ramp has three steps for four paper roles, so the
+				raised sheet has no midnight identity of its own — it is the sunken one. Daylight keeps them at
+				opposite ends of the ramp.
+			</p>
+
+			<h3 class="rail-label guide-subhead">The section note</h3>
 			<p class="guide-note">
 				<span class="data-voice">.section-note</span> is the one line of prose a two-word
 				<span class="data-voice">.section-title</span> cannot carry — it names what the records
@@ -642,21 +1034,24 @@
 
 			<!-- A span, not a heading: the demo should not add a phantom entry to
 			     the guide's own document outline. -->
-			<div class="section-head">
-				<span class="section-title">Guest lectures</span>
-				<span class="dateline">9 lectures · 2016–2022</span>
-			</div>
-			<p class="section-note">
-				Invited talks in colleagues’ courses, indexed here by host institution.
-			</p>
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — section head and note</figcaption>
+				<div class="section-head">
+					<span class="section-title">Guest lectures</span>
+					<span class="dateline">9 lectures · 2016–2022</span>
+				</div>
+				<p class="section-note">
+					Invited talks in colleagues’ courses, indexed here by host institution.
+				</p>
+			</figure>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">A rule is not a border</h3>
+			<h3 class="rail-label guide-subhead">A rule is not a border</h3>
 			<p class="guide-note">
 				The two share a 1px width and nothing else. A rule separates and is the lightest mark on the
 				page; a box edge encloses an object and sits one step darker. Crossing the pair fails
 				silently — a separator drawn in the edge colour just looks like a plate — so the tokens are
 				named to be paired, and the three heavy weights above take
-				<code>--color-primary</code> instead.
+				<span class="data-voice">--color-primary</span> instead.
 			</p>
 
 			<div class="pairing-specs">
@@ -676,11 +1071,8 @@
 		<!-- ================================================================
 		     § 4 · THE LEDGER
 		     ================================================================ -->
-		<section class="section">
-			<div class="section-head">
-				<span class="section-no">§ 4</span>
-				<h2 class="section-title">The ledger — the universal record</h2>
-			</div>
+		<section id="ledger" class="section" aria-labelledby="ledger-title">
+			{@render sectionHead(sec('ledger'))}
 			<p class="guide-note">
 				Any dated or keyed record renders as a hanging-column ledger row, not a card: mono key left,
 				serif content right, a hairline above each row.
@@ -717,7 +1109,40 @@
 				</div>
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">The row action — where the record goes</h3>
+			<h3 class="rail-label guide-subhead">The apparatus line — a record's own keywords</h3>
+			<p class="guide-note">
+				Chips are the <em>facet</em> idiom: a control the reader operates to narrow a list. A
+				record's own keyword list is something else — apparatus, metadata annotating the entry,
+				which merely happens to be linked. Setting apparatus as controls turned a thirteen-term
+				catalogue row into a 244px wall of boxes on a phone, taller than the title it annotated. So
+				<span class="data-voice">.apparatus-line</span> sets the terms as running mono type,
+				interpunct-separated, wrapping like the text they are; each term stays whole and the break
+				opportunities are the spaces flanking the separators. The terms carry
+				<span class="data-voice">.no-underline</span>, because without it the prose-link rule
+				pine-underlines every one of them. It is what
+				<span class="data-voice">BibliographyRow</span> prints under an entry's body, and what
+				<span class="data-voice">/digital-humanities</span> prints under a project's.
+			</p>
+			<!-- eslint-disable svelte/no-navigation-without-resolve -- tag filter URLs -->
+			<p class="apparatus-line">
+				{#each apparatusTerms as term, i (term)}
+					{#if i > 0}
+						<span class="apparatus-line-sep" aria-hidden="true">·</span>
+					{/if}
+					<a
+						class="no-underline"
+						rel="nofollow"
+						href="{base}/publications?tag={encodeURIComponent(term)}">{term}</a
+					>
+				{/each}
+			</p>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
+			<p class="guide-caption">
+				The three most frequent keywords in the publications corpus, each linking to the index
+				filtered to it.
+			</p>
+
+			<h3 class="rail-label guide-subhead">The row action — where the record goes</h3>
 			<p class="guide-note">
 				<span class="data-voice">.ledger-action</span> is the meta column’s link: a mono stamp
 				naming the destination, quiet ink at rest and pine only under the pointer. The rule it
@@ -745,9 +1170,7 @@
 			</div>
 			<span class="ledger-action ledger-action--standalone">All 9 guest lectures →</span>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">
-				The tight ledger — a page that is all ledger
-			</h3>
+			<h3 class="rail-label guide-subhead">The tight ledger — a page that is all ledger</h3>
 			<p class="guide-note">
 				<span class="data-voice">.ledger--tight</span> is the same idiom one density step down, for a
 				document whose whole body is records. The CV sets around 250 rows across seventeen sections on
@@ -778,50 +1201,39 @@
 				</div>
 			</div>
 			<p class="guide-caption">
-				The tight variant beside the default above: same key, same hairline, one step closer.
+				The tight variant below the default above: same key, same hairline, one step closer.
 			</p>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">The meta-ledger — a catalogue entry</h3>
+			<h3 class="rail-label guide-subhead">The meta-ledger — a catalogue entry</h3>
 			<p class="guide-note">
 				A distinct idiom, not a variant. The ledger above sets a <em>record</em>: mono key against
 				serif content, because the content is something the scholar wrote. The meta-ledger sets a
-				record’s <em>catalogue entry</em> — journal, DOI, place, date — where both columns are strings
-				a database could hold, so both are the data voice, over a key column narrowed to 5.5rem for the
-				380px metadata rail. It is what the “Record” block prints on a publication or a talk — and the
-				“Project” block on a research project, whose period, funder, programme, grant and regions are
-				a catalogue entry by the same test — above the rail’s label and action stack.
+				record’s <em>catalogue entry</em> — journal, DOI, place, date — where both columns are
+				strings a database could hold, so both are the data voice, over a key column narrowed to
+				5.5rem for the 380px metadata rail. It is what the “Record” block prints on a publication or
+				a talk — and the “Project” block on a research project, whose period, funder, programme,
+				grant and regions are a catalogue entry by the same test — above the rail’s label and action
+				stack. The block below is rendered by <span class="data-voice">RecordLedger</span> itself,
+				so the DOI is a real
+				<span class="data-voice">.meta-link</span> carrying the
+				<span class="data-voice">.meta-icon</span> identifier glyph, exactly as a record page ships it.
 			</p>
 
-			<div class="guide-rail">
-				<p class="rail-label">Record</p>
-				<dl class="meta-ledger">
-					<div class="meta-row">
-						<dt class="meta-key">Type</dt>
-						<dd class="meta-value">Journal Article</dd>
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — the metadata rail, at 380px</figcaption>
+				<div class="guide-rail">
+					<RecordLedger rows={demoMetaRows} />
+					<div class="rail-cta">
+						<button type="button" class="btn btn-accent btn-block">Access Publication ↗</button>
 					</div>
-					<div class="meta-row">
-						<dt class="meta-key">Journal</dt>
-						<dd class="meta-value">Islamic Africa</dd>
-					</div>
-					<div class="meta-row">
-						<dt class="meta-key">Date</dt>
-						<dd class="meta-value">2026</dd>
-					</div>
-					<div class="meta-row">
-						<dt class="meta-key">DOI</dt>
-						<dd class="meta-value meta-value--accent">10.1163/21540993-01201007 ↗</dd>
-					</div>
-				</dl>
-				<div class="rail-cta">
-					<span class="btn btn-accent btn-block">Access Publication ↗</span>
 				</div>
-			</div>
+			</figure>
 			<p class="guide-caption">
 				Pine marks only the row that leaves the record — a DOI, a live project page — and only one
 				control in the stack carries the accent fill.
 			</p>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">The cite block — the citation itself</h3>
+			<h3 class="rail-label guide-subhead">The cite block — the citation itself</h3>
 			<p class="guide-note">
 				A record page holds every field of its own citation, so it prints the citation. The
 				reference is set as real text in the document voice — the sentence a reader would type — and
@@ -830,19 +1242,22 @@
 				clipboard the browser denies still leaves something to select. Confirmation replaces the
 				label and takes pine for as long as it is true, then returns.
 			</p>
-			<div class="guide-rail">
-				<div class="cite-block">
-					<p class="rail-label">Cite</p>
-					<p class="cite-reference">
-						Madore, Frédérick. (2026). Muslim Minorities in Africa. Islamic Africa 12 (1): 1–24.
-						https://doi.org/10.1163/21540993-01201007
-					</p>
-					<div class="cite-actions">
-						<span class="btn btn-outline-primary btn-block">Copy reference</span>
-						<span class="btn btn-outline-secondary btn-block">Export BibTeX</span>
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — the cite block</figcaption>
+				<div class="guide-rail">
+					<div class="cite-block">
+						<p class="rail-label">Cite</p>
+						<p class="cite-reference">
+							Madore, Frédérick. (2026). Muslim Minorities in Africa. Islamic Africa 12 (1): 1–24.
+							https://doi.org/10.1163/21540993-01201007
+						</p>
+						<div class="cite-actions">
+							<Button variant="outline-primary" label="Copy reference" block />
+							<Button variant="outline-secondary" label="Export BibTeX" block />
+						</div>
 					</div>
 				</div>
-			</div>
+			</figure>
 			<p class="guide-caption">
 				The same reference string the MCP server returns for its <span class="data-voice"
 					>reference</span
@@ -851,30 +1266,40 @@
 		</section>
 
 		<!-- ================================================================
-		     § 5 · CHIPS, PAGINATION, BUTTONS
+		     § 5 · CONTROLS
 		     ================================================================ -->
-		<section class="section">
-			<div class="section-head">
-				<span class="section-no">§ 5</span>
-				<h2 class="section-title">Chips, pagination &amp; buttons</h2>
-			</div>
+		<section id="controls" class="section" aria-labelledby="controls-title">
+			{@render sectionHead(sec('controls'))}
 			<p class="guide-note">
-				Flat, square, mono caps, count appended; selected means a solid ink fill. The counts below
-				are real — the three most frequent tags in the publications corpus.
+				Controls are typeset, not manufactured: flat, square, mono caps, colour-only transitions, no
+				lift and no ripple. Every specimen below is a real control, so hover, focus and the selected
+				state can be reached from this page rather than described on it. They filter and paginate
+				nothing — the guide is the specimen, not the list.
 			</p>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Chips</h3>
+			<h3 class="rail-label guide-subhead">Chips</h3>
+			<p class="guide-note">
+				Flat, square, mono caps, count appended; selected means a solid ink fill. The counts below
+				are real — the three most frequent tags in the publications corpus. Pick one to see the
+				selected state.
+			</p>
 			<div class="chip-row">
 				{#each topTags as [tag, count], i (tag)}
-					<span class="chip" class:chip--selected={i === 0}>
+					<button
+						type="button"
+						class="chip"
+						class:chip--selected={i === demoChip}
+						aria-pressed={i === demoChip}
+						onclick={() => (demoChip = i)}
+					>
 						{tag}
 						<span class="chip-count">{count}</span>
-					</span>
+					</button>
 				{/each}
-				<span class="chip-more">All {allTags.length} tags ↓</span>
+				<button type="button" class="chip-more">All {allTags.length} tags ↓</button>
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Facet combobox</h3>
+			<h3 class="rail-label guide-subhead">Facet combobox</h3>
 			<p class="guide-note">
 				A chip row prints a closed list; an open one is reached by typing. The field is
 				machine-facing, so it takes the data voice and the square edge of the search field, and the
@@ -896,33 +1321,147 @@
 				Counts are real. Picks here narrow nothing — they only show the selected state.
 			</p>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Pagination</h3>
+			<h3 class="rail-label guide-subhead">Fields</h3>
+			<p class="guide-note">
+				The site ships exactly one field idiom: the index search box, square, on a 1px warm edge and
+				a surface ground, with the accent taken by the field's own edge on
+				<span class="data-voice">:focus-within</span> so the input inside it never draws a second
+				ring around the same box. It is machine-facing, so it is mono and uppercase. The first
+				specimen is the field as <span class="data-voice">EntityFilterBar</span> ships it, labelled
+				by its <span class="data-voice">aria-label</span>; the second pairs the same field with a
+				visible mono label, which is the pairing to use wherever the field is not self-evident from
+				its placeholder.
+			</p>
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — the index search field</figcaption>
+				<div class="guide-field">
+					<div class="pub-search">
+						<span class="pub-search-icon" aria-hidden="true">⌕</span>
+						<input
+							type="search"
+							class="pub-search-input"
+							placeholder="Search publications…"
+							aria-label="Search publications"
+							bind:value={demoSearch}
+						/>
+					</div>
+				</div>
+				<div class="guide-field">
+					<label class="dateline guide-field-label" for="guide-labelled-field">Keyword</label>
+					<div class="pub-search">
+						<span class="pub-search-icon" aria-hidden="true">⌕</span>
+						<input
+							id="guide-labelled-field"
+							type="text"
+							class="pub-search-input"
+							placeholder="e.g. Ouagadougou"
+							bind:value={demoField}
+						/>
+					</div>
+				</div>
+			</figure>
+			<p class="guide-caption">
+				No validation state is drawn here, and that is the honest reading:
+				<span class="data-voice">--color-danger</span> and
+				<span class="data-voice">--color-success</span> are swatched in § 1 and reserved for form
+				validation, but the site carries no form at all. Both tokens are spent today on status
+				instead — an offline banner, a media error — and
+				<span class="data-voice">.btn-danger</span> has no consumer.
+			</p>
+
+			<h3 class="rail-label guide-subhead">Pagination</h3>
+			<p class="guide-note">
+				The pager ships on <span class="data-voice">&lt;a&gt;</span> elements, so
+				<span class="data-voice">.pager-item</span> paints no ground of its own. Rendered as real
+				buttons here, the controls therefore also take
+				<span class="data-voice">.btn-bare</span> — the zero-specificity primitive that clears the user
+				agent's button chrome and leaves the idiom as the only thing styling them. Without it a native
+				button keeps its default face, which in midnight is a light fill under cream type.
+			</p>
 			<div class="pager">
-				<span class="pager-item pager-item--current">1</span>
-				<span class="pager-item">2</span>
-				<span class="pager-item">3</span>
-				<span class="pager-item">Next →</span>
+				{#each [1, 2, 3] as page (page)}
+					<button
+						type="button"
+						class="btn-bare pager-item"
+						class:pager-item--current={page === demoPage}
+						aria-current={page === demoPage ? 'page' : undefined}
+						onclick={() => (demoPage = page)}>{page}</button
+					>
+				{/each}
+				<button
+					type="button"
+					class="btn-bare pager-item"
+					onclick={() => (demoPage = Math.min(3, demoPage + 1))}>Next →</button
+				>
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Buttons</h3>
+			<h3 class="rail-label guide-subhead">Buttons — the nine skins</h3>
+			<p class="guide-note">
+				Two solid fills carry the hierarchy: ink for the standard primary action, pine for the
+				single hero call to action per screen. Everything else is outlined, ghosted or flat. Each
+				row below sets the live control beside the class that draws it.
+			</p>
+			<div class="ledger ledger--tight ledger--ruled" style="--ledger-meta-w: 11rem">
+				{#each buttonSkins as skin (skin.variant)}
+					<div class="ledger-row ledger-row--meta">
+						<span class="ledger-key">{skin.variant}</span>
+						<span class="ledger-content">
+							<span class="button-row">
+								<button type="button" class="btn btn-{skin.variant}">{skin.variant}</button>
+							</span>
+							<span class="ledger-desc">{skin.note}</span>
+						</span>
+						<span class="ledger-meta ledger-meta--figures">.btn-{skin.variant}</span>
+					</div>
+				{/each}
+			</div>
+
+			<h3 class="rail-label guide-subhead">Sizes and states</h3>
+			<p class="guide-note">
+				Three size steps, and the state modifiers that compose over any skin. Hover deepens the fill
+				with no movement whatsoever; focus-visible draws a two-pixel pine outline at a two-pixel
+				offset — tab into the row above to see it, or read it standing still in the specimen below.
+				The <span class="data-voice">--focus-ring</span> token exists as a three-pixel translucent accent
+				ring and is used by one visualisation card; controls take the flat outline instead.
+			</p>
 			<div class="button-row">
-				<Button variant="primary" label="The one primary CTA" />
-				<Button variant="outline-primary" label="Outline" />
-				<Button variant="ghost" label="Ghost" />
+				{#each buttonSizes as step (step.size)}
+					<Button
+						variant="secondary"
+						size={step.size as 'sm' | 'base' | 'lg'}
+						label="{step.label} · {step.size}"
+					/>
+				{/each}
+			</div>
+			<div class="button-row button-row--states">
+				<button type="button" class="btn btn-secondary focus-ring-specimen">Focus ring</button>
+				<Button variant="secondary" label="Disabled" disabled />
+				<Button variant="primary" label="Loading" ariaLabel="Loading" loading />
+				<Button variant="secondary" iconOnly ariaLabel="Search icon-only button">
+					{#snippet icon()}<span aria-hidden="true">⌕</span>{/snippet}
+				</Button>
+				<Button bare label="Bare — no skin at all" />
+			</div>
+			<div class="guide-field">
+				<Button variant="outline-primary" label="Block" block />
 			</div>
 			<p class="guide-caption">
-				The accent never fills large areas except the single primary button per screen.
+				The first control carries the exact <span class="data-voice">:focus-visible</span>
+				declaration as a static class, so the ring a keyboard user sees is legible without holding focus.
+				Then: the disabled state at half opacity; the loading state; an icon-only control padded square;
+				the bare primitive, which carries hit behaviour and a focus ring and nothing else; and the block
+				modifier, which takes the full width of its column. Recorded rather than hidden: the loading control
+				renders as an empty box, because
+				<span class="data-voice">.btn-loading</span> blanks the whole control's colour and the
+				spinner inside it is drawn in <span class="data-voice">currentColor</span>.
 			</p>
 		</section>
 
 		<!-- ================================================================
 		     § 6 · DATA AS ORNAMENT
 		     ================================================================ -->
-		<section class="section">
-			<div class="section-head">
-				<span class="section-no">§ 6</span>
-				<h2 class="section-title">Data as ornament</h2>
-			</div>
+		<section id="data" class="section" aria-labelledby="data-title">
+			{@render sectionHead(sec('data'))}
 			<p class="guide-note">
 				The only decoration permitted is real data made visible. These bars are the actual
 				publications-per-year distribution, {firstYear}–{lastYear}; the newest year carries the
@@ -950,6 +1489,9 @@
 						<span>{firstYear}</span>
 						<span>{lastYear}</span>
 					</div>
+					<p class="guide-caption">
+						A bar at the floor height is a single work; an empty slot is a year with none.
+					</p>
 				</div>
 
 				<div class="stat-ledger">
@@ -962,14 +1504,14 @@
 				</div>
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">The year meter</h3>
+			<h3 class="rail-label guide-subhead">The year meter</h3>
 			<p class="guide-note">
 				The same distribution read as a ledger rather than a strip: a mono year, an
-				<code>.hbar</code> proportion bar, a tabular count. The bar is one of the system's three
-				sanctioned gradients — a hard stop whose position <em>is</em> the value, set with
-				<code>style="--pct: 62%"</code> — so it encodes rather than decorates. The newest row takes pine
-				on both key and bar, which is the accent's own definition. Use it wherever a list of years would
-				otherwise be a row of buttons that says only which years exist.
+				<span class="data-voice">.hbar</span> proportion bar, a tabular count. The bar is one of the
+				system's three sanctioned gradients — a hard stop whose position <em>is</em> the value, set
+				with <code>style="--pct: 62%"</code> — so it encodes rather than decorates. The newest row takes
+				pine on both key and bar, which is the accent's own definition. Use it wherever a list of years
+				would otherwise be a row of buttons that says only which years exist.
 			</p>
 			<ul class="year-meter meter-demo">
 				{#each meterYears as row (row.year)}
@@ -990,12 +1532,12 @@
 				{/each}
 			</ul>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">The proportion ledger</h3>
+			<h3 class="rail-label guide-subhead">The proportion ledger</h3>
 			<p class="guide-note">
-				The same three columns and the same <code>.hbar</code> meter, keyed on a category rather than
-				a year — here the languages the publications are written in, counted once per language a work
-				declares. It is why a two-slice pie never needs to exist: the row prints the count and the share
-				the arc would have left the reader to estimate.
+				The same three columns and the same <span class="data-voice">.hbar</span> meter, keyed on a category
+				rather than a year — here the languages the publications are written in, counted once per language
+				a work declares. It is why a two-slice pie never needs to exist: the row prints the count and
+				the share the arc would have left the reader to estimate.
 			</p>
 			<ul class="proportion-ledger proportion-demo">
 				{#each languageShares as row (row.language)}
@@ -1008,53 +1550,99 @@
 					</li>
 				{/each}
 			</ul>
+
+			<h3 class="rail-label guide-subhead">The key-terms cloud</h3>
+			<p class="guide-note">
+				A frequency-scaled serif term list where the type size <em>is</em> the corpus frequency. It
+				replaced the bubble packs and the word-cloud canvas, both of which spent a great deal of ink
+				encoding nothing — rotation, hue, spiral position and disc packing are all decorative, and a
+				reader cannot compare two discs by area anyway. The scale is on the square root of the
+				count, not the count itself, because type size reads as area rather than as length; the
+				mapping lives in <span class="data-voice">scaleKeyTerms</span> so the two visualisation
+				pages and the publication rail agree about it. The {KEY_TERM_LIMIT_HERE} terms below are the real
+				publications keyword vocabulary, each linking to the index filtered to it.
+			</p>
+			<!-- eslint-disable svelte/no-navigation-without-resolve -- tag filter URLs -->
+			<div class="key-terms">
+				{#each keywordTerms as term (term.word)}
+					<a
+						href="{base}/publications?tag={encodeURIComponent(term.word)}"
+						rel="nofollow"
+						style="font-size: {term.size}px;"
+						title="{term.count} publications">{term.word}</a
+					>
+				{/each}
+			</div>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		</section>
 
 		<!-- ================================================================
 		     § 7 · PLATES
 		     ================================================================ -->
-		<section class="section">
-			<div class="section-head">
-				<span class="section-no">§ 7</span>
-				<h2 class="section-title">Plates</h2>
-			</div>
+		<section id="plates" class="section" aria-labelledby="plates-title">
+			{@render sectionHead(sec('plates'))}
 			<p class="guide-note">
-				Photographs, covers and scans are plates: square corners, a one-pixel border, and a
-				serif-italic caption below.
+				Photographs, covers and scans are plates: square corners, a one-pixel border, a muted ground
+				behind them, and a serif-italic caption below. Covers and scans from the corpus are
+				first-class imagery here and are preferred to stock photography of any kind, which is why
+				both specimens below are real covers from the publications record.
 			</p>
 
 			<figure class="plate-demo">
 				<img
-					src="{base}/images/Profile-picture.webp"
-					alt="Portrait of Frédérick Madore, set as a plate"
+					src="{base}/{pagePlate.src}"
+					alt={pagePlate.alt}
 					class="plate"
-					width="280"
-					height="280"
+					width={pagePlate.width}
+					height={pagePlate.height}
 					loading="lazy"
 				/>
 				<figcaption class="plate-caption">
-					Fig. 1 — Every image is a plate; the caption is set in the serif italic.
+					Fig. 1 — Cahiers d’études africaines 229 (2018), the issue carrying “L’organisation du
+					hadj en Côte d’Ivoire”. The caption is set in the serif italic.
 				</figcaption>
+			</figure>
+
+			<h3 class="rail-label guide-subhead">The rail plate</h3>
+			<p class="guide-note">
+				<span class="data-voice">.rail-plate</span> is the same plate set at the head of a metadata
+				rail — the cover, scan or venue photograph that opens the apparatus. It adds nothing to
+				<span class="data-voice">.plate</span> but the freedom to scale: the image takes the rail's
+				380px, or the full column once the rail dissolves under
+				<span class="data-voice">--lg</span>. Every record rail on the site opens with one.
+			</p>
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — the rail plate, at 380px</figcaption>
+				<div class="guide-rail">
+					<figure class="rail-plate">
+						<img
+							class="plate"
+							src="{base}/{railPlate.src}"
+							alt={railPlate.alt}
+							width={railPlate.width}
+							height={railPlate.height}
+							loading="lazy"
+						/>
+						<figcaption class="plate-caption">Fig. 2 — cover.</figcaption>
+					</figure>
+				</div>
 			</figure>
 		</section>
 
 		<!-- ================================================================
 		     § 8 · SPACING & MOTION
 		     ================================================================ -->
-		<section class="section">
-			<div class="section-head">
-				<span class="section-no">§ 8</span>
-				<h2 class="section-title">Spacing &amp; motion</h2>
-			</div>
+		<section id="spacing" class="section" aria-labelledby="spacing-title">
+			{@render sectionHead(sec('spacing'))}
 			<p class="guide-note">
 				An 8-point rhythm carries the density scholars expect — structured information over
 				whitespace. Motion is near-zero by design: instant state changes, at most a short fade on
 				page enter. The register is print, not app.
 			</p>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Semantic spacing</h3>
+			<h3 class="rail-label guide-subhead">Semantic spacing</h3>
 			<div class="space-specs">
-				{#each ['--space-xs', '--space-sm', '--space-md', '--space-lg', '--space-xl', '--space-2xl', '--space-3xl'] as token (token)}
+				{#each spaceTokens as token (token)}
 					<div class="space-spec">
 						<span class="space-token">{token}</span>
 						<div class="space-bar" style="width: var({token})"></div>
@@ -1062,7 +1650,7 @@
 				{/each}
 			</div>
 
-			<h3 class="eyebrow eyebrow--ink guide-subhead">Durations</h3>
+			<h3 class="rail-label guide-subhead">Durations</h3>
 			<div class="stat-ledger duration-ledger">
 				{#each durationTokens as token (token)}
 					<div class="stat-row">
@@ -1071,6 +1659,53 @@
 					</div>
 				{/each}
 			</div>
+		</section>
+
+		<!-- ================================================================
+		     § 9 · COLOPHON
+		     ================================================================ -->
+		<section id="colophon" class="section" aria-labelledby="colophon-title">
+			{@render sectionHead(sec('colophon'))}
+			<p class="guide-note">
+				Three families, one for each voice, all three under the SIL Open Font License and served
+				from this site rather than from a font network. They are subset per script and instanced to
+				the weight and width ranges the system actually sets, which is why the whole typographic
+				programme costs four files.
+			</p>
+
+			{#each typefaces as face (face.name)}
+				<h3 class="rail-label guide-subhead">{face.name} — {face.role}</h3>
+				<p class="guide-note">{face.note}</p>
+				<p class="dateline">{face.credit}</p>
+			{/each}
+
+			<h3 class="rail-label guide-subhead">Where the system lives</h3>
+			<p class="guide-note">
+				This page is the arbiter of what the system looks like; the files below are where it is
+				written. A value printed here is read live from the first of them, so the two cannot
+				disagree.
+			</p>
+			<div class="ledger ledger--tight ledger--ruled" style="--ledger-meta-w: 18rem">
+				{#each systemFiles as file (file.key)}
+					<div class="ledger-row ledger-row--meta">
+						<span class="ledger-key">{file.key}</span>
+						<span class="ledger-content">
+							<span class="ledger-desc">{file.title}</span>
+						</span>
+						<span class="ledger-meta ledger-meta--figures">{file.path}</span>
+					</div>
+				{/each}
+			</div>
+
+			<h3 class="rail-label guide-subhead">Adding an idiom</h3>
+			<p class="guide-note">
+				Put the class in <span class="data-voice">ink-signal.css</span> with the note explaining why
+				it exists, and document it on this page in the same change — not the next one. That is not a
+				convention held by goodwill:
+				<span class="data-voice">styleGuideCoverage.test.ts</span> reads every class the stylesheet declares
+				and fails the build if one of them appears neither on this page nor in a component this page renders.
+				The gap it was written for had stood for three weeks with nothing to catch it.
+			</p>
 		</section>
 	</div>
 </div>
@@ -1095,8 +1730,10 @@
 		margin: var(--space-sm) 0 0;
 	}
 
+	/* The subheads are `.rail-label`, which draws its own bottom hairline; a
+	 * ruled label needs the section interval above it rather than the note's. */
 	.guide-subhead {
-		margin-top: var(--space-xl);
+		margin-top: var(--space-2xl);
 	}
 
 	/* The demo's own first section head carries the idiom's 48px interval, which
@@ -1106,10 +1743,34 @@
 		margin-top: var(--space-lg);
 	}
 
+	/* Prose inside a specimen frame is the exhibit, not the section's own note. */
+	.guide-specimen-prose:last-child {
+		margin-bottom: 0;
+	}
+
+	.guide-contents {
+		--ledger-meta-w: 15rem;
+	}
+
 	/* The combobox fills its facet column on the index pages; here it gets a
 	 * column's worth of width so the demo reads at its real proportions. */
 	.guide-combobox {
 		max-width: 22rem;
+	}
+
+	/* Fields are laid out in their own column on the index pages; the specimens
+	 * take a comparable width so the mono placeholder reads at its real size. */
+	.guide-field {
+		max-width: 22rem;
+	}
+
+	.guide-field + .guide-field {
+		margin-top: var(--space-lg);
+	}
+
+	.guide-field-label {
+		display: block;
+		margin-bottom: var(--space-2);
 	}
 
 	/* The metadata rail is 380px on a record page; the demo is set at that width
@@ -1162,6 +1823,32 @@
 		min-height: 1.2em;
 	}
 
+	/* ===== The surface ramp =====
+	 * Three grounds shown at a size where a step of two or three per cent is
+	 * actually legible, which the 9.5rem swatch grid is not. */
+	.depth-ramp {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-lg);
+	}
+
+	@media (--md) {
+		.depth-ramp {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	.depth-ramp .swatch-chip {
+		height: var(--space-20);
+	}
+
+	.depth-use {
+		margin-top: var(--space-1);
+	}
+
 	/* ===== Typography specimens ===== */
 	.voice-grid {
 		display: grid;
@@ -1177,9 +1864,9 @@
 		}
 	}
 
+	/* The column's label is `.rail-label`, which draws the hairline that used to
+	 * be a border on this box — one boundary, one mark. */
 	.voice-specimen {
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-		padding-top: var(--space-sm);
 		min-width: 0;
 	}
 
@@ -1381,12 +2068,24 @@
 		color: var(--color-text-light);
 	}
 
-	/* ===== Buttons row ===== */
+	/* ===== Control rows ===== */
 	.button-row {
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-sm);
 		align-items: center;
+	}
+
+	.button-row--states {
+		margin-top: var(--space-lg);
+		margin-bottom: var(--space-lg);
+	}
+
+	/* The exact `.btn:focus-visible` declaration, drawn as a static class so the
+	 * ring a keyboard user sees can be read without holding focus on it. */
+	.focus-ring-specimen {
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--border-width-medium);
 	}
 
 	/* ===== Data as ornament ===== */
@@ -1419,10 +2118,6 @@
 	.plate-demo {
 		margin: 0;
 		max-width: 17.5rem;
-	}
-
-	.plate-demo .plate {
-		aspect-ratio: 1;
 	}
 
 	/* ===== Spacing specimens ===== */

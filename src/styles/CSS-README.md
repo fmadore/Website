@@ -51,6 +51,7 @@ A design token system with foundation → semantic layering:
 - **Viz palette**: Seven OKLCH-derived categorical hues (`--sys-viz-1..7`), pine-anchored, for data visualisation only — never UI chrome
 - **Success**: Muted olive (`#5c6b3a`); **Danger**: deep warm red (`#a3341c`)
 - **Grounds**: Warm paper scale (`--sys-color-paper*`, hairline/border steps) in daylight; warm film scale (`--sys-color-film-*`) at midnight — never pure white or pure black, never slate
+- **Footer tokens**: `--color-footer-bg` / `--color-footer-text` / `--color-footer-text-muted` / `--color-footer-accent` — the colophon is an inverted ink block in daylight and the page ground itself in midnight, so its type and its one accent take footer-scoped semantic tokens rather than the page's; nothing outside `Footer.svelte` reads them, and nothing in it reads a `--sys-*` primitive directly
 - **Dynamic opacity**: Use `color-mix()` for transparency (e.g., `color-mix(in srgb, var(--color-primary) 25%, transparent)`), not `rgba()`
 
 #### Rule Weights
@@ -103,7 +104,6 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 
 - **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms); decorative motion is essentially retired
 - **Easing**: `--ease-out`, `--ease-in-out`, `--ease-out-quart` — smooth decelerations only, nothing overshoots
-- **Stagger delays**: `--stagger-1` through `--stagger-6` (40ms step)
 
 Example usage:
 
@@ -168,9 +168,13 @@ The vocabulary of the design system, in one place. Every class belongs to exactl
 - **Nameplate**: `.nameplate` (the masthead wordmark, wide heavy Archivo caps)
 - **Section**: `.section` (3px ink rule + spacing — the standard content module), `.section-head`, `.section-no`, `.section-title`
 - **Ledger** — the universal record idiom: `.ledger`, `.ledger-row` (hanging mono key column left, serif content right, hairline per row; `--meta` three-column variant), `.ledger-key` / `--current`, `.ledger-status`, `.ledger-content`, `.ledger-title`, `.ledger-desc`, `.ledger-meta`. Column widths tune via `--ledger-key-w` / `--ledger-meta-w`
+- **Ledger meta, as machine text**: `.ledger-meta--figures` — a `.ledger-meta` cell holding a token name, a DOI or a count with a unit rather than a stamp. The column uppercases by default because a meta cell is normally a stamp; a CSS custom-property name is case-sensitive and a DOI is not a stamp, so this prints the string as written on `--tracking-figures`. Face, size and colour stay the column's own
+- **Contents ledger** — the table of contents a long document opens with: `.contents-ledger` (the `<nav>`, keyed at `--ledger-key-w: 4rem` for "§ 14") wrapping a `.ledger.ledger--ruled` of `.ledger-row--meta` rows, with `.contents-link` on the title (quiet ink at rest, pine underline on hover, 24px touch floor). One density step under a record ledger — it is apparatus pointing at the page, not the page itself. Rendered by `ContentsLedger.svelte`; used by both visualisation pages and `/style-guide`
 - **Chips**: `.chip` (flat, square, 1px border, mono caps, `.chip-count` appended; `.chip--selected` = solid ink fill), `.chip-more` (accent mono text action), `.chip-row`
 - **Data as ornament**: `.year-bars` / `.year-bar` / `.year-bar--current` (output distribution as ink bars, accent on the newest year), `.hbar` / `.hbar--current` (horizontal proportion meter — a hard-stop `linear-gradient` fill via `--pct`), `.key-terms` (frequency-scaled term cloud), `.stat-ledger` / `.stat-row` / `.stat-value`
 - **Editorial**: `.drop-cap` (accent Archivo initial), `.plate` / `.plate-caption` (images as plates: 1px border, square, serif-italic caption), `.standfirst` (serif-italic deck)
+- **Specimen frame**: `.specimen` — a `<figure>` framing a live demo of an idiom that is itself page chrome, so a documentation page can show a masthead or a ruled section head without the reader mistaking the exhibit for the room. Drawn as a plate (1px box edge, `--color-surface` ground, square, no shadow), never a card. `.specimen-label` is the first child, in the data voice, closed by a hairline; `.specimen--flush` drops the inner padding for demos whose own full-width rules must reach the frame's edge. Consumer: `/style-guide`
+- **Rail apparatus**: `.rail-label` (a mono section label closed by a hairline) over `.meta-ledger` / `.meta-row` / `.meta-key` / `.meta-value` (a record's catalogue entry — both columns are the data voice). The label's hairline and the first row's own top hairline are the same boundary, so `.rail-label + .meta-ledger .meta-row:first-child` drops the row's rule: one boundary, one mark. The selector is adjacent-sibling because every consumer sets the label immediately before the `<dl>`
 
 > **Gradients are permitted only where they encode data.** Three exist, all data
 > encodings: `.hbar` above, the `VolumeControl` track (same hard-stop technique,

@@ -168,18 +168,23 @@ export const socialLinks = {
 	} as SocialLink
 };
 
-// Pre-grouped social links for Footer component
-export const socialGroups = [
+// Pre-grouped links for the Footer colophon. Four groups, in reading order:
+// how to reach the person, where the scholarly record is indexed, where he
+// posts, and how a machine reads this site. `withAddress` marks the one group
+// that also prints the postal <address> block (rendered by Footer.svelte from
+// `address`, so the street lines stay a record rather than becoming one
+// six-line anchor). The Footer is the only consumer.
+export interface FooterGroup {
+	title: string;
+	links: SocialLink[];
+	withAddress?: boolean;
+}
+
+export const socialGroups: FooterGroup[] = [
 	{
 		title: 'Contact',
-		links: [
-			socialLinks.email,
-			{
-				name: `${address.institution}\n${address.department}\n${address.street}, ${address.postalCode} ${address.city}\n${address.room}`,
-				icon: 'mdi:map-marker',
-				url: address.mapsUrl
-			}
-		]
+		links: [socialLinks.email],
+		withAddress: true
 	},
 	{
 		title: 'Academic',
@@ -187,11 +192,23 @@ export const socialGroups = [
 	},
 	{
 		title: 'Social',
+		links: [socialLinks.linkedIn, socialLinks.github, socialLinks.bluesky]
+	},
+	{
+		// The machine-readable exits this site already ships — the colophon of a
+		// site that claims to be a structured record should say how to read it
+		// without a browser.
+		title: 'The record',
 		links: [
-			socialLinks.linkedIn,
-			socialLinks.github,
-			socialLinks.bluesky,
-			{ name: 'RSS Feed', url: website.rssPath, icon: 'mdi:rss' }
+			{ name: 'RSS feed', url: website.rssPath, icon: 'mdi:rss' },
+			{ name: 'Sitemap', url: '/sitemap.xml', icon: 'lucide:map' },
+			{ name: 'llms.txt', url: '/llms.txt', icon: 'lucide:file-text' },
+			{
+				name: 'MCP server',
+				url: 'https://github.com/fmadore/Website/tree/main/mcp',
+				icon: 'mdi:github'
+			},
+			{ name: 'Style guide', url: '/style-guide', icon: 'lucide:contrast' }
 		]
 	}
 ];

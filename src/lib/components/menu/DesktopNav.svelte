@@ -10,7 +10,8 @@
 		onMouseLeave,
 		onFocusIn,
 		onFocusOut,
-		onKeyDown,
+		onToggle,
+		onClose,
 		onDropdownItemClick
 	}: {
 		navItems: NavItem[];
@@ -20,7 +21,8 @@
 		onMouseLeave: () => void;
 		onFocusIn: (index: number) => void;
 		onFocusOut: () => void;
-		onKeyDown: (event: KeyboardEvent, index: number) => void;
+		onToggle: (index: number) => void;
+		onClose: () => void;
 		onDropdownItemClick: () => void;
 	} = $props();
 </script>
@@ -37,7 +39,8 @@
 				{onMouseLeave}
 				{onFocusIn}
 				{onFocusOut}
-				{onKeyDown}
+				{onToggle}
+				{onClose}
 				{onDropdownItemClick}
 			/>
 		{/each}
@@ -57,6 +60,11 @@
 		gap: var(--space-4);
 	}
 
+	/* The masthead nav waits for --xl because that is where it fits: the seven
+	 * mono labels plus the wordmark and the toggle measure 1105px of content
+	 * on one line, so the row needs a 1180px viewport (2px short at 1170) and
+	 * overflows a 1024px one by 105px. The 13" laptop keeps the panel until
+	 * the label set itself gets shorter. */
 	@media (--xl) {
 		.desktop-nav {
 			display: block;
@@ -69,36 +77,6 @@
 
 	/* Navigation item styles are defined in NavItemWithDropdown.svelte */
 	/* Focus styles are defined in their respective components (NavLink.svelte, DropdownMenu.svelte) */
-
-	/* Touch device optimizations */
-	@media (hover: none) {
-		:global(.nav-link:hover::after) {
-			width: 0;
-		}
-
-		:global(.nav-link:active::after) {
-			width: 100%;
-		}
-	}
-
-	/* ===== REDUCED MOTION SUPPORT ===== */
-	@media (prefers-reduced-motion: reduce) {
-		:global(.nav-link),
-		:global(.nav-link::after),
-		:global(.dropdown-icon),
-		:global(.dropdown-menu) {
-			transition: none !important;
-			animation: none !important;
-		}
-
-		:global(.nav-link:hover),
-		:global(.nav-link:focus) {
-			color: var(--color-primary);
-		}
-
-		:global(.nav-link:hover::after),
-		:global(.nav-link:focus::after) {
-			width: 100%;
-		}
-	}
+	/* Touch and reduced-motion handling lives with the rules it guards, in
+	 * NavLink.svelte and DropdownMenu.svelte. */
 </style>

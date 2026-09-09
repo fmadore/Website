@@ -45,35 +45,18 @@
 		align-self: center;
 		height: var(--border-width-medium);
 		background-color: var(--color-text);
-		transition:
-			transform var(--duration-normal) var(--ease-out),
-			opacity var(--duration-fast) var(--ease-out),
-			background-color var(--duration-fast) var(--ease-out);
-		transform-origin: center;
+		transition: background-color var(--duration-fast) var(--ease-out);
 	}
 
-	/* Hamburger to X animation */
-	.hamburger.active .hamburger-line:first-child {
-		transform: translateY(calc(var(--space-2) - var(--space-0-5))) rotate(var(--rotate-45));
-	}
-
-	.hamburger.active .hamburger-line:nth-child(2) {
-		opacity: var(--opacity-0);
-		transform: scaleX(var(--scale-0));
-	}
-
-	.hamburger.active .hamburger-line:last-child {
-		transform: translateY(calc(-1 * (var(--space-2) - var(--space-0-5))))
-			rotate(calc(-1 * var(--rotate-45)));
-	}
-
-	/* Hide hamburger completely when menu is active */
+	/* The open panel carries its own close control, so this one steps aside.
+	 * (There is no hamburger-to-X transform: the button is already hidden by
+	 * the time `.active` applies, so the crossed lines were never seen.) */
 	.hamburger.active {
 		opacity: var(--opacity-0);
 		pointer-events: none;
 	}
 
-	/* Hide hamburger on desktop */
+	/* Hide hamburger where the masthead nav takes over (--xl). */
 	@media (--xl) {
 		.hamburger {
 			display: none;

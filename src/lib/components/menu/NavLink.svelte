@@ -5,7 +5,6 @@
 		active = false,
 		hasDropdown = false,
 		onclick,
-		onkeydown,
 		// 'hover' (not 'eager'): eager preloading downloads EVERY nav target's
 		// route code immediately on load — even for the desktop nav that's
 		// display:none on mobile — pulling the whole app (incl. the full
@@ -20,7 +19,6 @@
 		active?: boolean;
 		hasDropdown?: boolean;
 		onclick?: (event: MouseEvent) => void;
-		onkeydown?: (event: KeyboardEvent) => void;
 		preloadStrategy?: 'eager' | 'hover' | 'tap' | 'off';
 		children?: Snippet;
 		[key: string]: unknown;
@@ -32,10 +30,9 @@
 	{href}
 	class="nav-link"
 	class:active
-	aria-haspopup={hasDropdown ? 'true' : 'false'}
+	aria-haspopup={hasDropdown ? 'true' : undefined}
 	data-sveltekit-preload-code={preloadStrategy}
 	{onclick}
-	{onkeydown}
 	{...restProps}
 >
 	{@render children?.()}
@@ -66,8 +63,8 @@
 		white-space: nowrap;
 	}
 
-	/* Underline — a square-cut pine rule that grows on hover and holds
-	 * on the active section. */
+	/* Underline — a square-cut pine rule that is either drawn or not. The
+	 * register is print: no sweep, no growth, no sliding indicator. */
 	.nav-link::after {
 		content: '';
 		position: absolute;
@@ -78,14 +75,14 @@
 		background-color: var(--color-accent);
 		transform: scaleX(0);
 		transform-origin: left center;
-		transition: transform var(--duration-fast) var(--ease-out);
 	}
 
 	.nav-link:hover {
 		color: var(--color-text-emphasis);
 	}
 
-	.nav-link:hover::after,
+	/* Only the current section draws the rule: a hovered label answers with
+	 * ink, never with a second "current" mark beside the real one. */
 	.nav-link.active::after {
 		transform: scaleX(1);
 	}
@@ -107,17 +104,6 @@
 		border-radius: 0;
 	}
 
-	@media (hover: none) {
-		/* Prevent hover state issues on touch devices */
-		.nav-link:hover::after {
-			width: 0;
-		}
-
-		.nav-link:active::after {
-			width: 100%;
-		}
-	}
-
 	/* High contrast mode support */
 	@media (prefers-contrast: high) {
 		.nav-link::after {
@@ -125,10 +111,10 @@
 		}
 	}
 
-	/* Reduced motion support */
+	/* Reduced motion support — the underline no longer animates; only the
+	 * colour shift and the disclosure caret still have anything to guard. */
 	@media (prefers-reduced-motion: reduce) {
 		.nav-link,
-		.nav-link::after,
 		.dropdown-icon {
 			transition: none;
 		}

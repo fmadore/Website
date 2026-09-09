@@ -58,9 +58,13 @@
 <JsonLd id="global-json-ld" json={globalJsonLd} />
 
 <div class="layout-container">
+	<!-- The first focusable element on every page: the masthead alone costs
+	     15–23 tab stops before the reading column starts. -->
+	<a class="skip-link" href="#main">Skip to content</a>
+
 	<Header />
 
-	<main class="main-content-area">
+	<main id="main" class="main-content-area" tabindex="-1">
 		<div class="container py-6 md:py-10">
 			<!-- Enter-only fade. An `out:` transition here kept the outgoing branch
 			     alive waiting for an outro that never completed — the snippet inside
@@ -97,5 +101,41 @@
 		/* Ensure main content (including sidebar dropdowns) appears above footer */
 		position: relative;
 		z-index: 2;
+	}
+
+	/* Skip link — a square ink stamp in the data voice, parked above the
+	 * viewport until it takes focus, then pinned over the masthead's top-left
+	 * corner. No radius, no shadow: it is a stamp, not a toast. */
+	.skip-link {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: calc(var(--z-modal) + 1);
+		/* Parked clear of the top edge — the extra step keeps a subpixel sliver
+		 * of the stamp from grazing the masthead at fractional device ratios. */
+		transform: translateY(calc(-100% - var(--space-2)));
+		padding: var(--space-2) var(--space-4);
+		background: var(--color-primary);
+		color: var(--color-background);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-bold);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		text-decoration: none;
+		border-radius: 0;
+	}
+
+	.skip-link:focus-visible {
+		transform: translateY(0);
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: calc(-1 * var(--border-width-medium));
+	}
+
+	/* The skip target is programmatically focusable only; a ring around the
+	 * whole reading column would be noise, and `:focus-visible` never fires
+	 * for a fragment jump. */
+	.main-content-area:focus {
+		outline: none;
 	}
 </style>

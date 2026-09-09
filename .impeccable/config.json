@@ -9,6 +9,21 @@
 	"detector": {
 		"ignoreRules": ["cream-palette"],
 		"ignoreFiles": [],
-		"ignoreValues": []
+		"ignoreValues": [
+			{
+				"rule": "flat-type-hierarchy",
+				"value": "*",
+				"files": ["static/404.html"],
+				"createdAt": "2026-09-09T10:47:23.289Z",
+				"reason": "orchestrator: the standalone sheet mirrors the site's type scale in literals; the detector cannot parse clamp(), so it sees only the 13px mono step, the implicit 16px body default and the 18px lede, not the clamp()ed wordmark and Display h1 (47-53px)"
+			},
+			{
+				"rule": "flat-type-hierarchy",
+				"value": "*",
+				"files": ["static/offline.html"],
+				"createdAt": "2026-09-09T10:47:23.508Z",
+				"reason": "orchestrator: same standalone sheet as static/404.html; the visible ladder is 13px mono / 18px lede / clamp()ed Display h1, which the detector cannot read"
+			}
+		]
 	}
 }

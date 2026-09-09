@@ -252,13 +252,12 @@
 	min-height: calc(var(--space-4) * 2 + var(--space-8));
 }
 
+/* The label is hidden by `.btn-text { visibility: hidden }` below, so the
+ * control keeps its real text colour — which is what the spinner's
+ * `currentColor` strokes paint with. A transparent colour here would blank
+ * the spinner the state exists to show. */
 .btn-loading {
-	color: transparent !important;
 	pointer-events: none;
-}
-
-.btn-loading .btn-content {
-	color: currentColor;
 }
 
 .btn-loading .btn-text {

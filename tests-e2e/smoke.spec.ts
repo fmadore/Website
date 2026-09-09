@@ -279,13 +279,52 @@ test('every top-level section path in the sitemap resolves (no advertised 404s)'
 });
 
 test('an unknown path renders the static 404 page', async ({ page }) => {
-	const response = await page.goto('/this-page-does-not-exist');
+	const response = await page.goto('/publications/no-such-record');
 	// `serve` (like GitHub Pages) responds with the prerendered 404.html and a
 	// real 404 status. The content assertions are the primary guard in case a
 	// different static server maps the error page to another status.
 	expect(response?.status()).toBe(404);
 	await expect(page).toHaveTitle(/Page not found/i);
 	await expect(page.getByRole('heading', { level: 1 })).toContainText(/couldn.t be found/i);
+	// The page says whose archive this is, echoes the path that failed, and
+	// marks the index the URL was already inside as the way out. All three come
+	// from static/404.html and its inline script, which the SvelteKit app never
+	// boots to supply — src/routes/+error.svelte renders the same three for the
+	// client-side case.
+	await expect(page.locator('.wordmark')).toHaveText('Frédérick Madore');
+	await expect(page.locator('#requested-path')).toHaveText('/publications/no-such-record');
+	await expect(page.locator('.links a[aria-current="true"]')).toHaveText('Publications');
+});
+
+test('the static 404 page honours a stored theme choice', async ({ page }) => {
+	// The app never boots here, so the page carries its own copy of app.html's
+	// theme bootstrap; without it a reader on midnight is flashed a white page
+	// by a typo.
+	await page.goto('/this-page-does-not-exist');
+	await page.evaluate(() => localStorage.setItem('theme', 'dark'));
+	await page.goto('/this-page-does-not-exist');
+	await expect(page.locator('html')).toHaveClass(/dark/);
+});
+
+test('the footer is a colophon: four groups, no controls', async ({ page }) => {
+	await page.goto('/cv');
+	const footer = page.locator('footer.site-footer');
+	// Every string in the footer is a link or a record — there is no control
+	// (the scroll-to-top button was removed: invisible in daylight, focusable
+	// while transparent, and only reachable once the scrolling was done).
+	await expect(footer.locator('button')).toHaveCount(0);
+	await expect(footer.getByRole('heading', { level: 2 })).toHaveText([
+		'Contact',
+		'Academic',
+		'Social',
+		'The record'
+	]);
+	// The machine-readable exits are what a structured record owes its readers.
+	for (const name of ['RSS feed', 'Sitemap', 'llms.txt', 'MCP server', 'Style guide']) {
+		await expect(footer.getByRole('link', { name, exact: false })).toHaveCount(1);
+	}
+	// The postal address is a record to be read, not one six-line anchor.
+	await expect(footer.locator('address a')).toHaveCount(1);
 });
 
 test('a publication detail page injects JSON-LD structured data', async ({ page }) => {

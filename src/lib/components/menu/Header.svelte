@@ -18,9 +18,6 @@
 	// reveals on scroll up. Disabled while a dropdown or mobile menu is open
 	// so the header can't vanish mid-interaction.
 	let headerHidden = $state(false);
-	// Solid-ish state once the user has scrolled past the very top, so the
-	// header is reliably readable over body copy and images.
-	let headerScrolled = $state(false);
 	let headerEl: HTMLElement | null = $state(null);
 
 	// Current pathname, used for highlighting the active nav link.
@@ -29,7 +26,6 @@
 	const HIDE_DELAY = 200;
 	const SCROLL_HIDE_THRESHOLD = 120; // px before we start hiding
 	const SCROLL_DELTA = 10; // min delta to consider a direction change
-	const SCROLLED_STATE_THRESHOLD = 8; // px to switch to solid-ish background
 
 	// Dropdown handlers
 	function showDropdown(index: number) {
@@ -51,6 +47,25 @@
 	}
 
 	function handleDropdownItemClick() {
+		activeDropdown = null;
+	}
+
+	// Disclosure toggling, driven from the keyboard (Space on a trigger) and
+	// from Escape anywhere inside a dropdown. The hover timer is cleared so a
+	// keyboard open is never cancelled by a stale pointer-leave.
+	function toggleDropdown(index: number) {
+		if (dropdownTimer) {
+			clearTimeout(dropdownTimer);
+			dropdownTimer = null;
+		}
+		activeDropdown = activeDropdown === index ? null : index;
+	}
+
+	function closeDropdown() {
+		if (dropdownTimer) {
+			clearTimeout(dropdownTimer);
+			dropdownTimer = null;
+		}
 		activeDropdown = null;
 	}
 
@@ -76,19 +91,6 @@
 		}
 	}
 
-	// Keyboard navigation
-	function handleKeyDown(event: KeyboardEvent, index: number) {
-		if (event.key === 'Escape' && activeDropdown !== null) {
-			activeDropdown = null;
-		} else if (event.key === 'Enter' || event.key === ' ') {
-			if (activeDropdown === index) {
-				activeDropdown = null;
-			} else {
-				activeDropdown = index;
-			}
-		}
-	}
-
 	// Click outside handler
 	function handleClickOutside(event: MouseEvent) {
 		const target = event.target as HTMLElement;
@@ -111,7 +113,7 @@
 
 	// Window resize handler
 	function handleResize() {
-		const mobileBreakpoint = 1280; // Match 80rem desktop breakpoint
+		const mobileBreakpoint = 1280; // Match the --xl desktop-nav breakpoint
 		if (window.innerWidth >= mobileBreakpoint && mobileMenuOpen) {
 			closeMobileMenu();
 		}
@@ -128,8 +130,6 @@
 		requestAnimationFrame(() => {
 			const currentY = window.scrollY;
 			const delta = currentY - lastScrollY;
-
-			headerScrolled = currentY > SCROLLED_STATE_THRESHOLD;
 
 			// Never hide while menus/dropdowns are open, near the top, or
 			// while keyboard focus lives inside the header.
@@ -159,10 +159,6 @@
 		window.addEventListener('resize', handleResize);
 		window.addEventListener('scroll', handleScroll, { passive: true });
 		lastScrollY = window.scrollY;
-		// Seed the scrolled state so pages opened at a non-zero scroll
-		// position (refresh with scroll restoration, deep-link hash, etc.)
-		// render with the correct header styling before any scroll event.
-		headerScrolled = window.scrollY > SCROLLED_STATE_THRESHOLD;
 
 		return () => {
 			if (dropdownTimer) {
@@ -181,12 +177,7 @@
 
 <svelte:window onclick={handleClickOutside} />
 
-<header
-	class="site-header"
-	class:header-hidden={headerHidden}
-	class:header-scrolled={headerScrolled}
-	bind:this={headerEl}
->
+<header class="site-header" class:header-hidden={headerHidden} bind:this={headerEl}>
 	<div class="container">
 		<div class="header-inner">
 			<div class="header-logo">
@@ -203,7 +194,8 @@
 					onMouseLeave={startHideTimer}
 					onFocusIn={showDropdown}
 					onFocusOut={startHideTimer}
-					onKeyDown={handleKeyDown}
+					onToggle={toggleDropdown}
+					onClose={closeDropdown}
 					onDropdownItemClick={handleDropdownItemClick}
 				/>
 
@@ -234,11 +226,6 @@
 		transition: transform var(--duration-normal) var(--ease-out);
 	}
 
-	/* Scrolled state — the masthead stays solid; no opacity or shadow change. */
-	:global(.site-header.header-scrolled) {
-		background: var(--color-background);
-	}
-
 	/* Scroll-direction hide: transform rather than top/display so the
 	 * sticky behaviour and layout are unaffected when revealed again. */
 	:global(.site-header.header-hidden) {
@@ -258,10 +245,6 @@
 		background: var(--color-background);
 		border-bottom: var(--rule-masthead) solid var(--color-primary);
 		box-shadow: none;
-	}
-
-	:global(html.dark .site-header.header-scrolled) {
-		background: var(--color-background);
 	}
 
 	.container {

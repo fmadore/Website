@@ -186,10 +186,13 @@ the job-to-be-done: find and cite the work.
       against the brief ("data as ornament" means the viz itself must be exemplary). Pair
       with the `dataviz` skill for chart-internal review (palette from `--sys-viz-*`,
       axis/legend/tooltip discipline, both themes).
-- [ ] **2.10 Style guide itself** — critique the guide as a page: is it navigable,
-      complete, and set in its own idioms?
-- [ ] **2.11 System chrome** — header/nav, footer, 404/error page. The error page is
-      part of the archive's voice too.
+- [x] **2.10 Style guide itself** — critique the guide as a page: is it navigable,
+      complete, and set in its own idioms? _(Done 2026-09-09, 20/36 → about 30/36 by the
+      same rubric; nine anchored sections behind a contents ledger, twelve missing
+      specimens added, a coverage test that fails the build on an undocumented idiom.)_
+- [x] **2.11 System chrome** — header/nav, footer, 404/error page. The error page is
+      part of the archive's voice too. _(Done 2026-09-09, 23/40 → about 32/40; skip link,
+      the nav's keyboard contract, one 404 voice, the footer as the record's colophon.)_
 
 ## Phase 3 — Language & edge cases
 
@@ -1186,5 +1189,181 @@ the heavy plates (5.1). **Reported, not acted on:** `PRODUCT.md` still says 56 p
 charts manually); the all-pairs validator failures inherent to seven muted slots are reported for
 the treemap and map, which would need direct labels; `.viz-contents-link` is the candidate to
 promote if a third page grows a contents ledger.
+
+**2026-09-09 — 2.10 the style guide as a page (`/impeccable critique` → fix → polish; Fable
+orchestrating, three isolated Opus critique agents, then Opus fix agents on disjoint files) —
+20/36 as found (heuristic 9 n/a) → about 30/36 by the same rubric, re-scored by the orchestrator
+from the rebuilt page.** Snapshot in `.impeccable/critique/`, first run for the slug.
+
+**The verdict split by layer.** On the specimen layer the page was the best-authored work on the
+site — the tracking ledger sets each role in its own face with the token supplying the tracking,
+the weight ledger carries no literal weight so it repaints on the theme flip, the reading-measure
+block counts characters in the live serif against a real French/English corpus line. On the
+document layer it failed: 1457 lines laid end to end with **zero `id`s, zero in-page anchors, no
+contents** (14,948px at 1280, 21,694px at 375 — § 5 began twenty screens down on a phone, and the
+roadmap's own six `§` citations of the guide were unlinkable); all eight `<section>`s unnamed
+landmarks; the `§` markers 11px, outside the heading's accessible name. **Incomplete in a way that
+made it an actively wrong source of truth:** DESIGN.md tells readers to check its claims against
+this page, and five shipped idioms were undocumented — `.key-terms` (a named signature component,
+logged as a gap in 0.3 on 2026-08-16, built out in 2.9, still absent), `.apparatus-line`,
+`.rail-plate`, `.meta-link`, `.section--flush` — plus 11 of 15 button skins and both sizes, the
+focus ring, inputs, validation, prose links, the Upright Heading and Drawn Depth rules; `h4`–`h6`
+never appeared as real elements; § 5's caption promised an accent button the row did not contain.
+**Not set in its own idioms:** 24 `h3.eyebrow` subheads that existed on no other page where
+`.rail-label` is the house mono heading in 13 files (and DESIGN.md's "h6 is the one heading element
+in the data voice" was false — `h6` is used nowhere); tinted `code` beside plain `.data-voice` in
+adjacent paragraphs; token names uppercased by `.ledger-meta` (`--TRACKING-CAPS` — custom
+properties are case-sensitive, so the page's most-copied strings could not be copied) and set in
+serif in the measure ledger; the `.record-prose` demo raising a full-width 3px rule and a
+section-scale `h2` that read as a phantom § between 2 and 3. Four focusable elements in `main`, so
+the documented focus ring was unreachable on the page that specifies it. The mechanical pass was
+clean throughout — detector 0 (verified healthy on the known false-positive control), 0 console
+errors, 0 axe, 0 overflow in both themes — which is the point: nothing of substance here was
+something a gate checks.
+
+**Fixed, by system rather than by page.** (1) **Navigable:** `VizContents` promoted to
+`common/ContentsLedger.svelte` with its CSS in `ink-signal.css` as `.contents-ledger` /
+`.contents-link` (the two visualisation pages re-pointed, the old names gone); the guide opens
+with it under the intro, nine rows with counts derived from the page's own arrays (`21 tokens`,
+`8 tracking roles · 4 weights`, `9 skins · 3 sizes` …); every section carries a stable `id`
+(`colour` … `colophon`) and `aria-labelledby`; the `§` number is folded into each heading's
+accessible name with the visual marker `aria-hidden`, render pixel-identical. (2) **Complete:**
+real `h4`/`h5` and the `.rail-label`/`h6` specimen stated honestly; the Upright Heading specimen;
+prose links with the `.no-underline` opt-out; the Drawn Depth surface ramp with the midnight
+collapse of `--color-background-muted` and `--color-surface-elevated` recorded in words (three film
+steps for four paper roles — documented, not retuned); `.apparatus-line` on real tag links; the
+meta-ledger demo is `RecordLedger` itself so the DOI is a real `.meta-link`; § 5 rebuilt as
+**Controls** — all nine skins and `bare` as a ledger of real controls, three sizes, a states row
+with a static focus-ring specimen, `disabled`, `loading`, `icon-only`, chips and the pager as real
+buttons, the `.pub-search` field as `EntityFilterBar` ships it, validation stated honestly (no form
+on the site); the **Key-Terms Cloud** on forty real keywords; the headshot replaced by two
+publication covers as plates plus the **rail plate** at its 380px width; and a new **§ 9
+Colophon** — the three families with foundry and licence, a ledger of where the system lives, and
+how to add an idiom — so the page closes instead of stopping. (3) **Set in its own idioms:** every
+subhead is `h3.rail-label`; `code` survives only for the two copyable declarations; token names
+print case-intact through the new **`.ledger-meta--figures`**; the measure ledger's token moved to
+the mono cell; the two chrome-scale demos sit in the new **specimen frame** (`.specimen`,
+`.specimen-label`, `--flush`) — a plate, never a card. (4) **Two system defects the render
+surfaced, fixed at the source:** `.rail-label`'s bottom hairline met the first `.meta-row`'s top
+hairline 44px apart on every record rail site-wide — one boundary now takes one mark (and the same
+rule scoped to the contents ledger); `.pager-item` was not button-ready (a native `<button>` kept
+the UA face) and now carries the same reset as `.chip`. Two more found by the rebuilt page:
+`.btn-loading` blanked its own spinner (`color: transparent !important` cascaded into the
+`currentColor` strokes) and `--sys-color-danger-bright` sat at 4.46:1 on the film ground — the
+loading rule is gone (the label is already `visibility: hidden`) and midnight danger is re-stepped
+to `#d65c41` (4.81:1). (5) **The coverage guard:** `styleGuideCoverage.test.ts` parses every class
+`ink-signal.css` declares and fails when one appears neither on the guide nor in a component the
+guide imports; the allowlist is empty, and it earned its keep on the first run by catching
+`.eyebrow--ink` after the subhead sweep removed it. **Documented:** DESIGN.md's Label tier now
+names `.rail-label` as the mono heading idiom (the h6 sentence corrected), the Signature
+components gain the Contents Ledger, the Specimen Frame and `.ledger-meta--figures`, the Hairline
+Pairing Rule gains "one boundary takes one mark", the Negative Rule records the shared film step,
+and the overview names the coverage test; `CSS-README.md` gains the four idioms.
+
+**Verified on the rebuilt production build** in both themes at 1280 and 375: 9 `section[id]`, 9
+anchors that all resolve, **85 focusable elements in `main`** (was 4), 0 uppercase token names, 21
+swatch values populated, 0 console errors, 0 axe (wcag2a→22aa), 0 overflow; captures read back for
+the contents ledger, controls, key terms, plates and colophon. Page height is now 26,405px at 1280
+— what a complete guide costs, and why it opens with its contents. **Declined:** a sticky or
+scroll-spy contents panel (a glass or floating panel is banned; the static ledger under the intro is
+the print answer), copy-to-clipboard chips, reveal motion, a second accent for specimen framing;
+the detector's `tiny-text` on the 11px 2xs specimens (the label tier is pinned) and
+`em-dash-overuse` ×158 (house punctuation). **Left for later:** the film ramp's three steps for
+four roles is recorded, not resolved; `Button.svelte`'s `variant` union lacks `accent`,
+`outline-accent` and `surface`, so those skins render as raw `<button class="btn btn-…">`.
+
+**2026-09-09 — 2.11 system chrome: header/nav, footer, error pages (`/impeccable critique` →
+harden / distill / clarify / layout → polish; same orchestration) — 23/40 as found → about 32/40 by
+the same rubric, re-scored by the orchestrator from the rebuilt build.** Snapshot in
+`.impeccable/critique/`, first run for the slug.
+
+**The masthead was a masthead; the colophon was half a colophon; there were two 404s and they
+disagreed.** The header passed outright — measured `backdrop-filter: none`, `opacity: 1`, the
+ground exactly `--color-background` in both scroll states and both themes, one pine mark for the
+current section. Everything around it broke the consistency rule: **21 pine underlines in the
+mobile menu** (21 of 22 links, both themes — `typography.css` exempted `.nav-link` and
+`.dropdown-item` by name and never learned the mobile classes, so the prose-link idiom outranked
+the components' own `text-decoration: none`); the same six research-project titles set in Archivo
+sentence case on desktop and 10px uppercase mono on mobile; **no skip link anywhere and 15–23 tab
+stops to content on every page**; Space on a nav trigger scrolling the page 787px (no
+`preventDefault`); Escape inert once focus entered a dropdown; `role="menu"`/`menuitem` promising
+arrow-key semantics that did not exist while stripping the link role from fourteen links;
+`aria-expanded="false"` on three links that expand nothing; no `aria-controls`; a `header-scrolled`
+class whose declarations were identical to the resting ones, maintained by a rAF listener; a
+dropdown with a 200ms reveal, a per-item stagger to ~440ms, a `translateX` nudge and an accent
+wash; a hamburger→X transform that could never run. The footer: a scroll-to-top button painted
+`--color-primary` on a `--color-primary` ground (invisible in daylight), sliding in over 300ms,
+**focusable at tab position 165 of 165 while `opacity: 0`**, and appearing only once the scrolling
+was done; the midnight ground at 1.06:1 against the page — neither an inverted block nor the page;
+40% of the width empty; three link groups ragging into a two-column grid; "Google Scholar" and
+"ORCID" in Archivo (document voice) for database-column strings; the postal address as one six-line
+anchor whose `aria-label` was the whole address; the only component consuming a `--sys-*` primitive
+directly; and the record's only exits pointing at the aggregators PRODUCT.md positions it against.
+The error page: `static/404.html` (what a mistyped URL gets — the app never boots) in the archive's
+voice with five flat chips but no site identity, no path echo and OS-only theming; `+error.svelte`
+(reached by client-side navigation into a matched route with a missing record) saying "Sorry, we
+couldn't find…", echoing the path, offering one pine button home, and printing a raw framework
+string as the lede on the non-404 branch. Detector 0, axe 0 in 28 runs, 0 overflow, 0 sub-44px
+targets on a coarse pointer — again, nothing above was something a gate could see.
+
+**Fixed.** (1) **Header/nav** (`menu/*`, `+layout.svelte`, `typography.css`): a skip link as the
+first focusable element on every page, styled as a square ink stamp in the data voice, with
+`id="main"`; the prose-link exemption now excludes the masthead **by ancestry**
+(`:not(.site-header *)`) so a panel built later cannot fall behind it — verified harmless across
+nine routes (0 underlines lost, 0 gained in `main`); Space toggles the disclosure and prevents
+default, Escape closes from anywhere inside and returns focus to the trigger, ArrowDown/ArrowUp
+walk trigger → items → wrap, Home/End inside the sheet; the menu roles retired for a plain labelled
+list; `aria-haspopup`/`aria-expanded` only on real triggers, `aria-controls` on each; externals
+marked `↗` with a hidden "(Opens in new tab)" — the footer's own string; **a record title inside
+chrome keeps the document voice** — the mobile sub-entries are Archivo at the text tier, sentence
+case, matching the desktop sheet, and a sub-entry is current only on an exact match; motion
+distilled to the brief's ceiling (the dropdown appears, the panel takes a `--duration-fast` fade,
+the underline holds without a sweep, the stagger scale and the transform/animation distance tokens
+deleted with it); the dead `header-scrolled` state and the unreachable X transform gone; a hovered
+label no longer draws a second "current" rule. **The 1280 cliff stays, on measurement:** the seven
+labels, wordmark and toggle first fit at 1180px (105px over at 1024), recorded in `DesktopNav`'s
+comment. **The retracting masthead is a deliberate keep:** the sticky record rail relies on the
+reclaimed space, and it never retracts with a menu open or focus inside. (2) **Footer:** the
+scroll-to-top button deleted whole, with its observer, slide-in and smooth scroll; in midnight the
+footer takes the page ground and the 4px cream rule carries the boundary (the negative of an
+inverted block would be a cream slab); the link list recast in the data voice (mono, xs, mixed
+case on the figures tracking) with the family on the right selector; the address an `<address>`
+block with the map link on the institution alone; a fourth group, **"The record"** — RSS, sitemap,
+`llms.txt`, the MCP server, the style guide — fills the empty quadrant and moves RSS out of
+"Social"; four groups on a real grid; `--color-footer-accent` replaces the four direct
+`--sys-color-pine-bright` uses and `--color-footer-text-muted` is a `color-mix()` of the footer's
+own text and ground (7.33:1 daylight, 7.39:1 midnight — was 4.73/4.80); the wordmark prints the
+header's name; the type credit now opens the guide's colophon. (3) **One 404 voice, the static
+page's:** both pages say "This page couldn't be found." with the "pick up the thread" lede, five
+flat chips **with the index the URL was already inside marked current** (solid ink,
+`aria-current`) — a missing `/publications/<id>` is a search of `/publications`, not a trip home —
+the requested path as a mono diagnostic line, the home link quiet below; the static page gains a
+wordmark above its 5px rule, the app's theme bootstrap (stored choice, then OS) with the media
+query kept as the no-JS fallback, a three-line inline script for the path and the chip, the
+Display cast on its `h1` (`wdth` 116 — the declared axis was never used), top alignment instead of
+vertical centring; `offline.html` brought into the same family; `+error.svelte` loses its second
+wordmark (the header already prints it) and its non-404 branch gets a designed sentence with the
+message as a `Reported` diagnostic, never the lede. **Documented:** DESIGN.md § Navigation
+rewritten (the rest colour corrected to `--color-text-soft`, the record-title rule, externals, the
+skip link, the retract as a decision), the Colophon added to Signature components, the midnight
+footer under the Negative Rule; `CSS-README.md` gains the footer tokens and loses the stagger line;
+three smoke specs (the static 404's identity, path and current chip; the stored theme; the
+four-group footer with no controls).
+
+**Verified on the rebuilt production build** in both themes at 1280 and 375 with the menu open:
+tab order `skip link → wordmark → Research ▾ → items…`; Space/Escape/ArrowDown on the trigger with
+`scrollY` unchanged; **mobile menu 0 underlined links, 2–4 pine marks** (the current entry and its
+marker), 0 sub-44px targets, 0 overflow; header pine = the active item only, footer pine 0; the
+static 404 and the in-app error page both titled `Page not found · Frédérick Madore`, the in-app
+one marking Publications current for `/publications/no-such-record` with the header and footer in
+place; 0 console errors and 0 axe on every route; e2e 35 passed; bundle 723 → 721 KiB. **Reported,
+not acted on:** `/cv` fails `target-size` on 25 inline digital-humanities links under the WCAG 2.2
+tags — reproduced on the untouched build, so it belongs to the CV page, filed as its own task.
+**Declined:** collapsing the mobile sub-lists (an index prints everything; the print answer is
+voice and density, not an accordion); a global search (the 404's signposting carries that weight
+for now); `:not(nav a)` as the underline exemption (the masthead is the true boundary, and other
+navs — breadcrumbs, the contents ledger — opt out themselves). **Left for later:** a shorter
+label set would bring the desktop nav to 1024; the footer's `h2` group titles still sit in every
+page's outline (the inline comment explains why).
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

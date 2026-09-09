@@ -29,7 +29,7 @@ Sections that need their own structure (the paginated cited-authors chart)
 omit `hasData` and get their children rendered raw, exactly as before — they
 can still compose `VizChartCard` themselves.
 
-The `id` is the anchor `VizContents` links to, so every section on a page must
+The `id` is the anchor `ContentsLedger` links to, so every section on a page must
 carry a unique one.
 -->
 <script lang="ts">
@@ -60,7 +60,7 @@ carry a unique one.
 	}: {
 		/** Section marker in the data voice, e.g. "§ 3". */
 		no: string;
-		/** Anchor id, set on the <section> and linked from VizContents. */
+		/** Anchor id, set on the <section> and linked from ContentsLedger. */
 		id: string;
 		title: string;
 		/** The machine's count for this section, e.g. "117 keywords". Hidden when empty. */

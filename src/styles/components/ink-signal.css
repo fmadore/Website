@@ -251,6 +251,20 @@
 	text-align: right;
 }
 
+/* Meta that is machine text rather than a stamp — a custom-property name, a
+ * DOI, a count with a unit. The column uppercases by default because what
+ * normally sits in it is a stamp ("META →", a record type, a status), and a
+ * stamp is louder in caps. Some strings are not stamps and cannot survive the
+ * transform: CSS custom-property names are case-sensitive, so the style guide
+ * printed `--TRACKING-CAPS` beside a specimen and offered the reader a token
+ * name that cannot be copied. This prints the string as written, on the
+ * figures tracking the rest of the machine text uses. Face, size and colour
+ * are the column's own — this is a modifier, not a second meta style. */
+.ledger-meta--figures {
+	text-transform: none;
+	letter-spacing: var(--tracking-figures);
+}
+
 /* The row's action — where the record's address goes, stamped in the data
  * voice. It is a destination, not a fact about the record, which is why it
  * lives in the meta column and never in the key: a fact belongs in the key or
@@ -328,6 +342,88 @@
 	/* Right-aligned meta reads as a stray fragment once stacked. */
 	.ledger-meta {
 		text-align: left;
+	}
+}
+
+/* ---------------------------------------------------------------------------
+ * CONTENTS LEDGER — the table of contents a long document opens with.
+ *
+ * A page deep enough to be read as a document rather than scanned as a screen
+ * opens with its contents, and a contents list is a keyed record list like any
+ * other, so it is a ledger: § number in the mono key, section title in serif,
+ * the machine's count for that section closing the row in the meta column.
+ *
+ * One density step under a record ledger — this is apparatus pointing at the
+ * page, not the page itself — so the row padding drops and the title sits at
+ * the base step rather than the ledger's xl.
+ *
+ * Links are quiet ink at rest and take the pine underline only under the
+ * pointer, following `.ledger-action` rather than the prose-link idiom: a
+ * static accent underline on fourteen stacked rows would stripe the block in
+ * pine and spend the Scarcity Rule on a navigation aid.
+ *
+ * Rendered by <ContentsLedger>. Consumers: both visualisation pages and
+ * /style-guide.
+ * ------------------------------------------------------------------------- */
+
+.contents-ledger {
+	/* Just wide enough for "§ 14" in the mono key. */
+	--ledger-key-w: 4rem;
+	margin-bottom: var(--space-2xl);
+}
+
+.contents-ledger .ledger {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.contents-ledger .ledger-row {
+	padding: var(--space-2) 0;
+}
+
+/* One boundary, one mark — the same pairing the rail's meta-ledger takes below.
+ * `.rail-label` closes itself with a hairline and every `.ledger-row` opens with
+ * one, so the block began with two 1px rules a row's leading apart. The label's
+ * rule is the boundary; the first row gives it up. */
+.contents-ledger .rail-label + .ledger > .ledger-row:first-child {
+	border-top: 0;
+}
+
+.contents-ledger .ledger-title {
+	font-size: var(--font-size-base);
+}
+
+.contents-link {
+	display: block;
+	color: var(--color-text-emphasis);
+	text-decoration: none;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+.contents-link:hover {
+	color: var(--color-accent);
+	text-decoration: underline;
+	text-decoration-color: var(--color-accent);
+	text-decoration-thickness: var(--border-width-thin);
+	text-underline-offset: 3px;
+}
+
+.contents-link:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-2xs);
+}
+
+/* A 17px serif line on a phone still has to clear the 24px target floor. */
+@media (--touch) {
+	.contents-link {
+		min-height: var(--space-6);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.contents-link {
+		transition: none;
 	}
 }
 
@@ -428,6 +524,20 @@
 /* Close the ledger with a hairline under the last row. */
 .meta-row:last-child {
 	border-bottom: var(--rule-hairline) solid var(--color-hairline);
+}
+
+/* One boundary, one mark. `.rail-label` closes itself with a hairline and every
+ * `.meta-row` opens with one, so a rail that labels its catalogue entry — which
+ * is every record rail on the site — drew two 1px rules 44px apart across the
+ * label's own leading, reading as a rule that had been struck twice rather than
+ * as a heading over a ledger. The label's rule is the boundary; the first row
+ * gives it up.
+ *
+ * Adjacent-sibling, because that is the real DOM: <RecordLedger>, the
+ * digital-humanities "Addresses" block and the /style-guide demonstration all
+ * set the label immediately before the <dl>, with no wrapper between them. */
+.rail-label + .meta-ledger .meta-row:first-child {
+	border-top: 0;
 }
 
 .meta-key {
@@ -968,6 +1078,77 @@
 }
 
 /* ===========================================================================
+ * SPECIMEN FRAME — a demonstrated idiom, framed as a specimen
+ *
+ * A documentation page has a problem no other page has: it must set a live
+ * demo of an idiom that is itself page chrome. A ruled section head or a
+ * masthead demonstrated bare reads as the page's own head, and the reader
+ * cannot tell the exhibit from the room it hangs in.
+ *
+ * So the demo is framed the way this system frames anything shown rather than
+ * said: as a PLATE. A 1px box edge, the raised paper ground, square corners,
+ * no shadow — the same drawn object as `.plate`, `.facet-combobox-panel` and
+ * the panels. Not a card: a card is a bounded record you can click into, and
+ * an exhibit is neither bounded content nor a destination.
+ *
+ * The caption comes FIRST, before the demo, and is the data voice: it names
+ * what is being shown ("Specimen — record prose"), which is a label a database
+ * could hold, not a sentence the scholar wrote. Its hairline separates the
+ * apparatus from the exhibit; the frame's own edge encloses both.
+ *
+ *   <figure class="specimen">
+ *     <figcaption class="specimen-label">Specimen — record prose</figcaption>
+ *     …the demo…
+ *   </figure>
+ *
+ * Consumer: /style-guide.
+ * =========================================================================== */
+
+.specimen {
+	margin: 0;
+	padding: var(--space-lg);
+	border: var(--border-width-thin) solid var(--color-border);
+	border-radius: 0;
+	background: var(--color-surface);
+}
+
+.specimen-label {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	text-transform: uppercase;
+	letter-spacing: var(--tracking-label);
+	color: var(--color-text-light);
+	padding-bottom: var(--space-sm);
+	border-bottom: var(--rule-hairline) solid var(--color-hairline);
+	margin-bottom: var(--space-lg);
+}
+
+/* Some idioms draw their own full-width rules — a section head is opened by a
+ * 3px rule that has to run to the frame's edge to read as the rule it is, and
+ * an inset one reads as a stray underline. Those demos take the flush variant,
+ * which drops the frame's padding. The label is apparatus rather than exhibit,
+ * so it keeps its own inset; only its hairline runs the full width, like every
+ * other rule in the system. */
+.specimen--flush {
+	padding: 0;
+}
+
+.specimen--flush > .specimen-label {
+	padding: var(--space-md) var(--space-md) var(--space-sm);
+}
+
+@media (--sm-down) {
+	.specimen {
+		padding: var(--space-md);
+	}
+
+	.specimen--flush {
+		padding: 0;
+	}
+}
+
+/* ===========================================================================
  * STANDFIRST — the serif-italic deck under a page title
  * =========================================================================== */
 
@@ -1281,6 +1462,11 @@
 }
 
 .pager-item {
+	/* Button-ready like .chip: a native <button> must not keep the UA face. */
+	appearance: none;
+	background: transparent;
+	font: inherit;
+	cursor: pointer;
 	padding: var(--space-1-5) var(--space-2-5);
 	border: var(--border-width-thin) solid var(--color-border);
 	color: var(--color-text-soft);

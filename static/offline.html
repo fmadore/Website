@@ -9,12 +9,34 @@
 		<!--
 			PWA offline fallback. Served by the service worker when a navigation
 			request fails with no network. Like 404.html it is self-contained: the
-			SvelteKit app may not boot, so styles are inlined, theming follows the OS
-			via prefers-color-scheme, and all hrefs are absolute. Fonts are the
-			site's self-hosted files (cached by the service worker); colours mirror
-			src/styles/base/variables.css (Ink + Signal).
+			SvelteKit app may not boot, so styles are inlined and all hrefs are
+			absolute — and, like 404.html, the theme is resolved by the same
+			bootstrap app.html uses (stored choice first, OS preference second) and
+			the page opens on the wordmark, so the three standalone pages read as
+			one family. Fonts are the site's self-hosted files (cached by the
+			service worker); colours mirror src/styles/base/variables.css
+			(Ink + Signal).
 		-->
 		<link rel="icon" type="image/png" href="/icons/favicon.png" />
+
+		<!-- Theme initialization — mirrors the bootstrap in src/app.html. -->
+		<script>
+			(function () {
+				var theme = null;
+				try {
+					theme = localStorage.getItem('theme');
+				} catch (e) {
+					/* storage blocked — fall through to the OS preference */
+				}
+				var initial =
+					theme === 'light' || theme === 'dark'
+						? theme
+						: window.matchMedia('(prefers-color-scheme: dark)').matches
+							? 'dark'
+							: 'light';
+				document.documentElement.classList.add(initial);
+			})();
+		</script>
 
 		<style>
 			@font-face {
@@ -51,9 +73,18 @@
 				--font-mono: 'Spline Sans Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
 			}
 
+			/* Midnight: the microfilm negative — warm film ground, cream type.
+			   The class is what the bootstrap above sets; the media query is the
+			   no-JavaScript fallback, scoped so it never fights an explicit choice. */
+			:root.dark {
+				--bg: #171310;
+				--ink: #efe7d6;
+				--muted: #b3a88d;
+				--accent: #4fbb99;
+			}
+
 			@media (prefers-color-scheme: dark) {
-				:root {
-					/* Midnight: the microfilm negative — warm film ground, cream type */
+				:root:not(.light):not(.dark) {
 					--bg: #171310;
 					--ink: #efe7d6;
 					--muted: #b3a88d;
@@ -78,8 +109,6 @@
 				background-color: var(--bg);
 				color: var(--ink);
 				min-height: 100vh;
-				display: flex;
-				align-items: center;
 				line-height: 1.6;
 				-webkit-font-smoothing: antialiased;
 			}
@@ -89,7 +118,23 @@
 				max-width: 40rem;
 				margin: 0 auto;
 				padding: 2rem 1.5rem 4rem;
-				/* Masthead rule: hierarchy is drawn in rules, not colour */
+			}
+
+			/* The masthead: whose archive this is, before what went wrong. */
+			.wordmark {
+				font-family: var(--font-display);
+				font-variation-settings: 'wdth' 122;
+				font-weight: 830;
+				color: var(--ink);
+				font-size: clamp(1.15rem, 0.95rem + 0.9vw, 1.6rem);
+				letter-spacing: -0.01em;
+				text-transform: uppercase;
+				line-height: 1;
+				margin-bottom: 0.75rem;
+			}
+
+			/* Masthead rule: hierarchy is drawn in rules, not colour */
+			.sheet {
 				border-top: 5px solid var(--ink);
 			}
 
@@ -106,10 +151,11 @@
 
 			h1 {
 				font-family: var(--font-display);
-				font-weight: 700;
-				font-size: clamp(2rem, 1.5rem + 2.5vw, 3rem);
-				line-height: 1.1;
-				letter-spacing: -0.01em;
+				font-variation-settings: 'wdth' 116;
+				font-weight: 830;
+				font-size: clamp(2.93rem, 2.784rem + 0.732vw, 3.296rem);
+				line-height: 1;
+				letter-spacing: -0.015em;
 				margin-bottom: 1.25rem;
 			}
 
@@ -165,18 +211,21 @@
 	</head>
 	<body>
 		<main>
-			<p class="eyebrow">Offline</p>
-			<h1>You&rsquo;re currently offline.</h1>
-			<p>
-				There&rsquo;s no network connection right now. This site works offline, so pages
-				you&rsquo;ve already visited remain available from your device&rsquo;s cache.
-			</p>
-			<ul class="notes">
-				<li>Browse previously visited pages</li>
-				<li>Revisit cached research and publications</li>
-				<li>The site will reconnect automatically when you&rsquo;re back online</li>
-			</ul>
-			<a href="/" class="retry-btn" onclick="window.location.reload()">Try again</a>
+			<p class="wordmark">Frédérick Madore</p>
+			<div class="sheet">
+				<p class="eyebrow">Offline</p>
+				<h1>You&rsquo;re currently offline.</h1>
+				<p>
+					There&rsquo;s no network connection right now. This site works offline, so pages
+					you&rsquo;ve already visited remain available from your device&rsquo;s cache.
+				</p>
+				<ul class="notes">
+					<li>Browse previously visited pages</li>
+					<li>Revisit cached research and publications</li>
+					<li>The site will reconnect automatically when you&rsquo;re back online</li>
+				</ul>
+				<a href="/" class="retry-btn" onclick="window.location.reload()">Try again</a>
+			</div>
 		</main>
 
 		<script>
