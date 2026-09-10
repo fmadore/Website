@@ -196,11 +196,13 @@ the job-to-be-done: find and cite the work.
 
 ## Phase 3 — Language & edge cases
 
-- [ ] **3.1 Microcopy.** `/impeccable clarify` across the interface strings: filter and
+- [x] **3.1 Microcopy.** `/impeccable clarify` across the interface strings: filter and
       facet labels, empty states ("no results" under active filters), pagination, 404 copy,
       aria-labels, footer legal, RSS link text. Register: academic, precise, British
       English, no marketing voice. _Done when:_ every user-facing string reads as the
       archive's voice and e2e tests still pass (they locate by accessible name).
+      _(Done 2026-09-10: ~760 strings read across three page families, 93 findings, 88 acted
+      on; one glossary now binding in DESIGN.md § Voice & Copy; e2e 35 passed.)_
 - [ ] **3.2 Harden.** `/impeccable harden` (new in v4) on the entity index and detail
       templates: error and empty states, offline behaviour (NetworkStatusIndicator, PWA),
       French titles and West African diacritics in every voice, and content edge cases —
@@ -1365,5 +1367,89 @@ for now); `:not(nav a)` as the underline exemption (the masthead is the true bou
 navs — breadcrumbs, the contents ledger — opt out themselves). **Left for later:** a shorter
 label set would bring the desktop nav to 1024; the footer's `h2` group titles still sit in every
 page's outline (the inline comment explains why).
+
+**2026-09-10 — 3.1 microcopy (`/impeccable clarify` across the interface, three page families in
+parallel; Fable orchestrating, Opus critique agents then Opus fix agents on disjoint file sets, each
+on its own dev server) — ~760 strings read, 93 findings, 88 acted on.** No heuristic score: `clarify`
+produces findings, not a scale. The critique read every visible string, accessible name, `title`,
+`placeholder`, `alt`, `<title>`, live-region payload, empty and error state in source, then extracted
+what the browser actually announces (Playwright `ariaSnapshot`, live-region text, count readouts,
+canvas `aria-label`s) in the default, filtered, zero-result, paginated and error states. The headline
+was not register but **truth**: the apparatus contradicted itself on the pages whose purpose is to be
+countable (`/activities` printed `All 9` and `All 64`, the number of facet _values_, beside
+`34 entries`; `/conference-activity` printed 79 entries, 74 past and `OF 74 TALKS` with no
+reconciliation; `/digital-humanities` printed `All 16` over `14 projects`), the shared chart
+components said `publications` on the talks page in a legend, two tooltips and a screen-reader summary,
+and four of five canvas chart types handed screen readers ECharts' auto-generated dump (2,400
+characters, `NaN` included). **Fixed:** (1) **one glossary**, now DESIGN.md § Voice & Copy with seven
+named rules and a one-paragraph Interface Copy convention in CLAUDE.md — sentence case outside nav and
+breadcrumbs; the code's nouns never reaching the reader (`communication` → `talk`, `node` → the entity,
+`choropleth` → `country shading`, `decal` → `pattern fill`; on the talks visualisation page the
+counted noun is `talks`, since `Activities` is the separate log); one count noun (`entry` /
+`entries`, singular-guarded, with the corpus stated in every empty result); the verb pair `Open …`
+external / `View …` internal; `Cite` → `Copied` → `Copy failed` in the row and `Copy reference` →
+`Reference copied` → `Copy failed. Select the text above.` in the rail; `Download BibTeX` /
+`Download PDF` / `Download failed. Try again.`; `Clear all` / `Clear years` / `Clear search` with
+exactly one clear control in any empty state; `More filters` for the panel and its toggle; `n.d.`
+for a missing date; `…`, closed-up en-dash ranges, `|` as the one `<title>` separator, no em dashes.
+(2) **The index family:** the `All` chips count records; `Index · 79 entries · 2012–2026` with
+`74 past · 5 upcoming` on the record head; one live readout on all three indexes
+(`1 filter active · 3 of 44 entries`) with the clear button moved outside the live region; empty
+states that say `No publications match.` and `The index holds 44 entries, 2013–2026.`; the map's
+missing error branch; `Previous` / `Next` and a `role="status"` pager readout; the year thumbs named
+`Earliest year` / `Latest year`; `aria-pressed` on every facet button; the two `All` chips named
+`All types` / `All languages`; the combobox listbox named `Matching tags` with a live `No tags match
+“…”.`; three type-label maps collapsed into `COMMUNICATION_TYPE_LIST_LABELS`; the aside heads
+`Years` / `Types` / `Tags`; the search-result descriptions `Conference insights` / `Workshop
+highlights` / `Seminar takeaways` and the `Read insights →` / `Discover details →` calls to action
+retired from `seoUtils`; `Date ↓`; `Entries by year`; `PhD` without points. (3) **Records and
+chrome:** ~20 `[Link]` anchors on `/cv` named `Link to {title}`; the CV table of contents now names
+its seventeen headings verbatim (with `Awards & Honours` and `Organisation of Academic Events`
+respelt); `View all →` → `All work in this project`; `Access Publication` / `Visit Activity` /
+`Explore project` → `Open publication` / `Open the source` / `View project`; `Fig. 1. Caption`;
+`1 works` guarded; `offline.html`'s `Try again` that navigated home and `Go to the homepage` that
+reloaded replaced by one `Reload the site`; `Back online! Content updated.` → `Back online.`;
+`Email - Opens in new tab` on a `mailto:` removed with its `target`; the hamburger named for its
+outcome (`Open` / `Close navigation menu`); `Item Preview` → `Preview: {title}`; the podcast heading
+disclosing `(AI-generated)`; the truncated `<title>`s' `...` → `…` with the stray space before a
+French colon trimmed; the home kicker moved into `siteConfig` as `author.kicker`. (4)
+**Visualisations and media:** computed one-sentence summaries for every canvas chart (`Talks per
+year by type, 2012 to 2026, in 7 types. Busiest year: 2025, 15 talks.`) from a pure, unit-tested
+`chartDescriptions.ts`; the item noun as a prop on the Gantt, treemap and stacked bar; `Co-presenters`
+on the talks page; the seek bar announcing `0:00 of 14:33` and the volume `70%`; the top-N slider
+named for its entity with `12 of 77 institutions` as value text (a new `ariaValueText` prop on
+`RangeSlider`); a live `No institutions match “…”.` under the network search; `Country shading` with
+an honest failure (`The marker view still works.`); twenty empty states cut to the fact (`No page
+counts recorded.`); the timeline's `Previous record` / `Next record` / `Close record details`, its
+selected record in a labelled region with the paper title demoted from the page's only `h2`;
+`2018 –2020` from split template lines healed. (5) **New-tab notice everywhere:** every
+`target="_blank"` link on the site now carries one hidden ` (opens in new tab)` (rails, CV, prose on
+the home and research pages, reviews, cited-by), the arrow glyph `aria-hidden`; the PDF CV extractors
+learnt to drop `.sr-only` and `aria-hidden` text so the notice never prints. **Tests:**
+`filters.spec.ts` asserts `N of` instead of `N matches`, `responsive.spec.ts` matches `/navigation
+menu/i`, `seoUtils.test.ts` pins the `…` and the CTA-free leads, `citationFormatter.test.ts` pins
+`PhD`, `chartDescriptions.test.ts` is new (10). **Declined:** the theme toggle keeps `Switch to dark
+theme` (a visitor has no product knowledge of "midnight"; the tooltip now matches the name); the
+`Mobile navigation` landmark name (spec cost over an invisible gain); `Encyclopedia` →
+`Encyclopaedia` (modern British usage, MCP consumer, pinned test); the owner's first-person
+standfirst on `/digital-humanities`; American spellings and Title Case `urlLabel`s inside data files
+(`Explore AMIRA`, `Conference Website`, `Analyzing`, `Data Visualization`) — content, reported here for
+the owner; the `?skill=` URL key (link-rot cost). **Left for 3.2:** twelve permanent polite live
+regions per index (one per `Cite` button) and SvelteKit's assertive route announcer firing on every
+filter click because `urlFilterSync` replaces the URL; `Fig. 1` hardcoded on pages carrying a second
+plate; the year-strip tallies reachable only by hover; the CV's staged load (a `Loading remaining
+sections…` dateline now covers it); the timeline's auto-selected record; `position` /
+`positionShort` / `tagline` / `kicker` as four variants of the role string; the `/cv` SEO description
+still naming ZMO as the current post. **Verified on the rebuilt production build:** in both themes at 1280 across 21 routes (every index, a record of each kind, research,
+teaching, CV, the three visualisation pages and the in-app 404), a Playwright probe reading every
+control's accessible name: **0 console errors** (the 404's own missing asset excepted), **0
+horizontal overflow**, **0 accessible names carrying a glyph**, 0 reader-facing "communication"
+(the remaining hits are real titles — _Communication Technologies_), the live readout
+`1 filter active · 3 of 44 entries`, every canvas chart's summary computed; **0 axe violations
+under the WCAG 2.2 AA tags except seven pre-existing `target-size` failures on the IWAC project
+rail's `.meta-link`s** (the CV's fix in 3d7be108 is the model; filed for 3.2). Unit 832 passed
+(49 files); e2e 35 passed, 1 skipped — a theme-toggle click timed out once while the 42-page axe
+probe ran on the same machine and passed alone in 17s; bundle 24.3 KiB of 850, prerender 196 of 196. The two `...` and the `Ph.D.` the probe still finds are inside the owner's records (a workshop
+abstract, a degree title, four citing dissertations), not interface copy.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

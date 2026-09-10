@@ -119,7 +119,7 @@
 		currentItemId={publication.id}
 		filterKey="project"
 		filterValue={publication.project}
-		title="More in this Project"
+		title="More in this project"
 		itemComponent={RelatedItemCard as unknown as ComponentType}
 		baseItemUrl="/publications/"
 		viewAllUrl="{base}/publications"

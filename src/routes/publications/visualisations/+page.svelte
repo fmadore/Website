@@ -556,13 +556,15 @@
 		variant="stacked"
 		height="450px"
 		hasData={publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
-		empty="No publication data available to display for this visualisation."
+		empty="No publication years recorded."
 	>
 		<EChartsStackedBarChart
 			data={publicationsPerYearStackedData}
 			keys={formattedPublicationTypes}
 			colorMap={publicationTypeColors}
 			measure="Publications per year by type"
+			itemSingular="publication"
+			itemPlural="publications"
 		/>
 	</VizSection>
 
@@ -571,7 +573,7 @@
 		description="Pages published each year, counting only the works whose record carries a page count; the newest year is marked."
 		height="400px"
 		hasData={pagesPerYearData.length > 0}
-		empty="No page count data available to display for this visualisation."
+		empty="No page counts recorded."
 	>
 		<EChartsBarChart
 			data={pagesPerYearData}
@@ -579,6 +581,8 @@
 			yAccessor={getPagesCount}
 			accentKey={latestPagesYear}
 			measure="Pages published per year"
+			itemSingular="page"
+			itemPlural="pages"
 		/>
 	</VizSection>
 
@@ -599,7 +603,7 @@
 				{/each}
 			</ul>
 		{:else}
-			<p class="viz-empty">No language data available to display for this visualisation.</p>
+			<p class="viz-empty">No languages recorded.</p>
 		{/if}
 	</VizSection>
 
@@ -615,13 +619,13 @@
 						href="{base}/publications?tag={encodeURIComponent(term.word)}"
 						rel="nofollow"
 						style="font-size: {term.size}px;"
-						title="{term.count} publications">{term.word}</a
+						title={countOf(term.count, 'publication')}>{term.word}</a
 					>
 				{/each}
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</div>
 		{:else}
-			<p class="viz-empty">No keyword data available to display for this visualisation.</p>
+			<p class="viz-empty">No keywords recorded.</p>
 		{/if}
 	</VizSection>
 
@@ -641,6 +645,8 @@
 					maxN={keywordNetwork.nodes.length}
 					minN={10}
 					searchLabel="Search keywords"
+					searchPlaceholder="Type a keyword…"
+					entityLabel="keywords"
 					suggestions={keywordSuggestions}
 				/>
 			{/if}
@@ -676,7 +682,8 @@
 		{#if fullTextTerms.length > 0}
 			<div class="key-terms">
 				{#each fullTextTerms as term (term.word)}
-					<span style="font-size: {term.size}px;" title="{term.count} occurrences">{term.word}</span
+					<span style="font-size: {term.size}px;" title={countOf(term.count, 'occurrence')}
+						>{term.word}</span
 					>
 				{/each}
 			</div>
@@ -722,17 +729,19 @@
 			xAccessor={getBigramCount}
 			yAccessor={getBigramName}
 			measure="Two-word phrases by frequency"
+			itemSingular="phrase"
+			itemPlural="phrases"
 		/>
 	</VizSection>
 
 	<VizSection
 		{...sections.collaborators}
-		description="Collaborators ranked by how many publications we share. The arcs on the left join people who have worked with each other — my own link to each of them is a given, so it is not drawn."
+		description="Collaborators ranked by how many publications we share. The arcs on the left join people who have worked with each other. My own link to each of them is a given, so it is not drawn."
 		variant="arc"
 		height="{collabArcHeight}px"
 		placeholderHeight="400px"
 		hasData={collaboratorCount > 0}
-		empty="No collaboration data available to display for this visualisation."
+		empty="No collaborators recorded."
 	>
 		{#snippet controls()}
 			{#if collaboratorCount > 0}
@@ -743,6 +752,8 @@
 					maxN={collaboratorCount}
 					edgeKindOptions={collaborationEdgeOptions}
 					searchLabel="Search collaborators"
+					searchPlaceholder="Type a name…"
+					entityLabel="collaborators"
 					suggestions={collaborationSuggestions}
 				/>
 			{/if}
@@ -764,7 +775,7 @@
 		variant="treemap"
 		placeholderHeight="500px"
 		hasData={venueTreemapData.length > 0}
-		empty="No venue data available to display for this visualisation."
+		empty="No venues recorded."
 	>
 		<EChartsTreemap data={venueTreemapData} title="Publication venues" />
 	</VizSection>
@@ -775,7 +786,7 @@
 		variant="gantt"
 		height="450px"
 		hasData={projectTimelineData.length > 0}
-		empty="No project data available to display for this visualisation."
+		empty="No project data recorded."
 	>
 		<EChartsGanttChart data={projectTimelineData} />
 	</VizSection>
@@ -787,7 +798,7 @@
 		height="500px"
 		placeholderHeight="400px"
 		hasData={publisherLocationData.length > 0}
-		empty="No publisher location data available to display for this visualisation."
+		empty="No publisher locations recorded."
 	>
 		<LocationMap data={publisherLocationData} basePath="/publications" itemLabel="publication" />
 	</VizSection>
@@ -797,7 +808,7 @@
 		description="Citations counted in the year the citing work appeared. They are swept from OpenAlex and from full-text searches of Google Books, HAL and Wikipedia, then recorded against the work cited, so this counts what the record holds rather than what an index estimates."
 		height="400px"
 		hasData={citationsPerYearData.length > 0}
-		empty="No citation data available to display for this visualisation."
+		empty="No citations recorded."
 	>
 		<EChartsBarChart
 			data={citationsPerYearData}
@@ -805,6 +816,8 @@
 			yAccessor={getCitationCount}
 			accentKey={latestCitationYear}
 			measure="Citations per year"
+			itemSingular="citation"
+			itemPlural="citations"
 		/>
 	</VizSection>
 
@@ -823,6 +836,9 @@
 						yAccessor={getAuthorName}
 						measure="Citations per author"
 						maxValue={maxCitationCount}
+						itemSingular="author"
+						itemPlural="authors"
+						descriptionLead="Most citations"
 					/>
 				</VizChartCard>
 			{/snippet}
@@ -841,7 +857,7 @@
 		{:else}
 			<VizChartCard hasData={false}>
 				{#snippet placeholder()}
-					<p class="viz-empty">No cited author data available to display for this visualisation.</p>
+					<p class="viz-empty">No citing authors recorded.</p>
 				{/snippet}
 			</VizChartCard>
 		{/if}

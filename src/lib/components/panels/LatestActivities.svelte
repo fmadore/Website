@@ -87,7 +87,7 @@
 
 		<div class="view-all-container">
 			<Button href={resolve('/activities')} variant="outline-secondary" size="base">
-				View all activities →
+				View all activities <span aria-hidden="true">→</span>
 			</Button>
 		</div>
 	{/if}

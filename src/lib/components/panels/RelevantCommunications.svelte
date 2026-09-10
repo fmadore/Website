@@ -48,9 +48,10 @@
 
 <div>
 	<RelevantItemsList
-		title="Relevant Communications"
+		title="Related talks & events"
 		items={filteredList}
-		itemTypePlural="communications"
+		collectionLabel="talks & events"
+		emptyLabel="talks or events"
 		basePath="/communications"
 		viewAllPath="/conference-activity"
 		{projectName}

@@ -26,7 +26,7 @@
 
 <SEO
 	title="Slides | Frédérick Madore"
-	description="Slide decks from conference papers, lectures, and workshops by Frédérick Madore — step through any deck in the browser or follow through to the full talk."
+	description="Slide decks from conference papers, lectures and workshops by Frédérick Madore."
 	keywords="slides, presentations, slide decks, conference papers, lectures, reveal.js, Frédérick Madore"
 />
 

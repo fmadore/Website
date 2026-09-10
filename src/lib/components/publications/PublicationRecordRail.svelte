@@ -149,8 +149,8 @@ The other half of the old <PublicationAside> — tags and key terms — is
 
 	const COPY_LABELS = {
 		idle: 'Copy reference',
-		copied: 'Reference copied ✓',
-		failed: 'Copy failed — select the text above'
+		copied: 'Reference copied',
+		failed: 'Copy failed. Select the text above.'
 	} as const;
 
 	async function copyReference() {
@@ -189,7 +189,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 			loading="lazy"
 			decoding="async"
 		/>
-		<figcaption class="plate-caption">Fig. 1 — cover.</figcaption>
+		<figcaption class="plate-caption">Fig. 1. Cover.</figcaption>
 	</figure>
 {/if}
 
@@ -207,7 +207,9 @@ The other half of the old <PublicationAside> — tags and key terms — is
 				rel="noopener noreferrer"
 				class="btn btn-accent btn-block"
 			>
-				Access Publication ↗
+				Open publication<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
+					(opens in new tab)</span
+				>
 			</a>
 		{/if}
 		{#each extraLinks as link (link.url)}
@@ -217,7 +219,9 @@ The other half of the old <PublicationAside> — tags and key terms — is
 				rel="noopener noreferrer"
 				class="btn btn-outline-secondary btn-block"
 			>
-				{link.label} ↗
+				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
+					(opens in new tab)</span
+				>
 			</a>
 		{/each}
 	</div>
@@ -245,7 +249,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 			onclick={downloadBibtex}
 			class="btn btn-outline-secondary btn-block cursor-pointer"
 		>
-			Export BibTeX
+			Download BibTeX
 		</button>
 	</div>
 </div>

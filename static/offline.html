@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="robots" content="noindex, follow" />
-		<title>Offline · Frédérick Madore</title>
+		<title>Offline | Frédérick Madore</title>
 
 		<!--
 			PWA offline fallback. Served by the service worker when a navigation
@@ -224,7 +224,12 @@
 					<li>Revisit cached research and publications</li>
 					<li>The site will reconnect automatically when you&rsquo;re back online</li>
 				</ul>
-				<a href="/" class="retry-btn" onclick="window.location.reload()">Try again</a>
+				<!-- One honest control. It said "Try again" and then rewrote itself to
+				     "Go to the homepage" depending on navigator.onLine, so the same
+				     button promised two different things; and its onclick reloaded
+				     *this* page rather than following its own href. What it does is
+				     load the site's front page, so that is what it says. -->
+				<a href="/" class="retry-btn">Reload the site</a>
 			</div>
 		</main>
 
@@ -233,12 +238,6 @@
 			window.addEventListener('online', () => {
 				window.location.reload();
 			});
-
-			// If we're already back online, make the button go home rather than retry.
-			if (navigator.onLine) {
-				var btn = document.querySelector('.retry-btn');
-				if (btn) btn.textContent = 'Go to the homepage';
-			}
 		</script>
 	</body>
 </html>

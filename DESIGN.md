@@ -335,7 +335,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **Style:** Mono data voice, uppercase, letterspaced. The active item takes pine and a 2px pine rule beneath; the rest are set in `--color-text-soft`, one step quieter than body ink (6.85:1 on paper), so the current section reads as the only lit label.
 - **States:** Colour change only, instantly. A hovered label answers with ink, never with a second rule beside the current one. No underline sweep, no sliding indicator, no scale; a submenu appears and disappears without reveal, stagger or nudge.
 - **A record title inside chrome keeps the document voice.** Submenu entries — research projects, collections, workshops — are set in Archivo at the text tier, sentence case, on the desktop dropdown and the mobile panel alike; only the section labels above them are mono. The desktop nav shows from 1280px because the seven labels, the wordmark and the toggle first fit on one line at 1180px; below that the masthead opens a full-bleed panel that prints the whole index, expanded.
-- **Externals are marked** with `↗` and a hidden "(Opens in new tab)", the same string the footer uses. Every page opens with a skip link to `#main`.
+- **Externals are marked** with an `aria-hidden` `↗` and a hidden " (opens in new tab)", the same markup the footer and every record rail use. Every page opens with a skip link to `#main`.
 - **The masthead retracts on scroll-down and returns on scroll-up.** A deliberate app gesture in a print system: the sticky record rail relies on the reclaimed space, and the masthead never retracts while a menu is open or focus is inside it.
 
 ### Signature components
@@ -351,6 +351,28 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **`.ledger-meta--figures`:** a meta cell whose content is machine text rather than a stamp — a token name, a DOI, a count with a unit — printed case-intact on the figures tracking, because a custom-property name uppercased cannot be copied.
 - **The Colophon:** the footer is the record's endpaper — an inverted ink block in daylight closed by the 4px rule, a wordmark and serif-italic tagline, four mono link groups (contact, academic, social, and _the record_: RSS, sitemap, `llms.txt`, the MCP server, the style guide), an `<address>` set as text, and the signature strip of © and type credit over a hairline. No floating control of any kind.
 
+## Voice & Copy
+
+Interface copy is set in the archive's own register: **academic, precise, British English** (visualisation, catalogue, organisation, honours), understated, never promotional. The reader is a peer scanning for a record, so every string states a fact, names an action, or names a state — and says it once. Established in the 3.1 `clarify` pass (2026-09-10); the glossary below is binding for every string a reader sees.
+
+### Named Rules
+
+**The Sentence-Case Rule.** Navigation items and breadcrumbs are section names and keep Title Case (`Talks & Events`, `Digital Humanities`, `All Publications`). Everything else — headings, labels, buttons, empty states, captions — is sentence case with proper nouns intact (`Cited by`, `Key terms`, `More in this project`, `Talks & events`). The CV's own section headings are the one document-level exception: they are the owner's document and the PDF prints them.
+
+**The Reader's Noun Rule.** The code's nouns never reach the reader. `communication` is always `talk` / `talks & events`; a chart's `node` is always the entity it stands for (keywords, tags, co-presenters, institutions); a `choropleth` is `country shading`; a `decal` is a `pattern fill`. On the talks visualisation page the counted noun is `talks`; `Activities` belongs to the separate `/activities` log.
+
+**The Count Rule.** Every count readout uses one noun, `entry` / `entries`, singular-guarded (`Showing 1–12 of 44 entries`, `3 of 34 entries`, `1 filter active · 1 of 79 entries`), and an empty result still states the corpus (`The index holds 44 entries, 2013–2026.`). Chart summaries and tooltips take their noun from a prop, so the same component says `publications` on one page and `talks` on the other.
+
+**The Verb Pair.** `Open …` leads to an external destination (a new tab); `View …` leads to an internal page. `Explore`, `Visit`, `Access`, `Discover` and `Read` do not label links. Citation controls are `Cite` → `Copied` → `Copy failed` in the index row and `Copy reference` → `Reference copied` → `Copy failed. Select the text above.` in the record rail, under a heading `Cite`. Files are `Download BibTeX` and `Download PDF`; a failed download says `Download failed. Try again.`
+
+**The Clearing Rule.** `Clear all` clears the whole filter state; `Clear years` resets the range alone; `Clear search` empties the search box. The panel of additional facets and the button that opens it are both named `More filters`. Exactly one clear control exists in any empty state.
+
+**The Glyph Rule.** `↗ → ← ↓ ▾ ▴ ✕ ✓ ×` are decoration and sit inside `aria-hidden` spans; an accessible name never contains one. A visible label begins its accessible name (WCAG 2.5.3): `Open deck: {title} (opens in new tab)`, `Link to {title}`, `Previous record`. Every `target="_blank"` link carries one visually hidden ` (opens in new tab)`; a `mailto:` link opens no tab and says so nowhere.
+
+**The Punctuation Rule.** `…` never `...`; year ranges are an en dash closed up (`2013–2026`); no em dashes in interface copy (a full stop or a colon does the work); a quoted value takes typographic quotes (`No tags match “zzz”.`); a missing date is `n.d.` and a missing author is omitted, never `N/A`. The `<title>` separator is `|` on every page.
+
+**The Honest-State Rule.** A state names what happened and what still works: `The map could not be loaded. The talks below are the same records.`; `Country shading could not be loaded. The marker view still works.`; `Offline. Cached pages remain available.`; `Loading map…`. Internal error text stays in the console. A canvas chart hands the screen reader a computed one-sentence summary (`Publications per year by type, 2013 to 2026, in 8 types. Busiest year: 2016, 6 publications.`), never the renderer's auto-generated dump.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -364,6 +386,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **Do** use real data as the only ornament: year-bars, counts, frequency-scaled terms, corpus figures.
 - **Do** set imagery as plates — 1px border, square corners, serif-italic caption below — and prefer corpus scans to stock imagery.
 - **Do** address breakpoints through PostCSS custom media (`@media (--md)`) and colours through `color-mix()` with design tokens.
+- **Do** write interface copy in the archive's voice — British English, sentence case, one noun per concept, the reader's noun rather than the code's — and check a new string against the Voice & Copy glossary before shipping it.
 
 ### Don't:
 

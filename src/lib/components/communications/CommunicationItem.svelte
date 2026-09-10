@@ -6,6 +6,7 @@
 	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
 	import { titleLangAttr } from '$lib/utils/languageUtils';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { COMMUNICATION_TYPE_LIST_LABELS } from '$lib/utils/typeUtils';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
 	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
@@ -56,18 +57,6 @@
 	// Optimize loading for above-the-fold images (first 3 items)
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
 
-	// Human-readable labels for communication types
-	const typeLabels: { [key: string]: string } = {
-		conference: 'Conference',
-		workshop: 'Workshop',
-		seminar: 'Seminar',
-		lecture: 'Lecture',
-		panel: 'Panel',
-		poster: 'Poster',
-		event: 'Academic Event',
-		podcast: 'Podcast'
-	};
-
 	// Helper to format language display
 	const languageDisplay = $derived.by(() => {
 		if (!communication?.language) return null;
@@ -93,7 +82,7 @@
 
 	// The card branch renders the title and abstract directly; the bibliography
 	// branch hands them to BibliographyRow, which typesets what it prints.
-	const displayTitle = $derived(typesetQuotes(communication?.title) || 'Untitled Communication');
+	const displayTitle = $derived(typesetQuotes(communication?.title) || 'Untitled talk');
 	const displayAbstract = $derived(
 		communication?.abstract ? typesetQuotes(truncateAbstract(communication.abstract)) : ''
 	);
@@ -106,25 +95,36 @@
 	const CARD_COVER_SIZES = '(max-width: 640px) 144px, 192px';
 	const coverSrc = $derived(resolveImagePath(communication.image, base));
 	const coverSrcset = $derived(buildSrcset(coverSrc));
-	const kindLabel = $derived(typeLabels[communication.type ?? 'conference'] ?? 'Talk');
+	const kindLabel = $derived(
+		COMMUNICATION_TYPE_LIST_LABELS[communication.type ?? 'conference'] ?? 'Academic event'
+	);
 	// Venue line (conference · city · country) — the finding-aid byline.
 	const venueLine = $derived(citationDetails);
 	// A one-line standfirst for the featured lead: a trimmed abstract if present.
 	const bibStandfirst = $derived(
 		communication.abstract ? truncateAbstract(communication.abstract, 180) : ''
 	);
+	/** Fallback label for an unlabelled address: its host, never "Link 2". */
+	function hostLabel(url: string): string {
+		try {
+			return new URL(url).hostname.replace(/^www\./, '');
+		} catch {
+			return url;
+		}
+	}
+
 	// Right-aligned action column: primary material (slides/other), an optional
 	// DOI; BibliographyRow appends the internal "Details" link.
 	const bibActions = $derived.by(() => {
 		const list: BibliographyAction[] = [];
 		if (communication.slidesUrl)
-			list.push({ href: communication.slidesUrl, label: 'Slides ↗', primary: true });
+			list.push({ href: communication.slidesUrl, label: 'Slides', primary: true });
 		else if (communication.url)
-			list.push({ href: communication.url, label: 'Materials ↗', primary: true });
+			list.push({ href: communication.url, label: 'Materials', primary: true });
 		if (communication.doi)
 			list.push({
 				href: `https://doi.org/${communication.doi}`,
-				label: 'DOI ↗',
+				label: 'DOI',
 				icon: 'academicons:doi',
 				// The first action in the column is the primary one (as before).
 				primary: list.length === 0
@@ -144,13 +144,12 @@
 		byline={venueLine}
 		standfirst={bibStandfirst}
 		image={communication.image}
-		imageAlt="Illustration — {communication.title}"
+		imageAlt=""
 		imageWidth={200}
 		imageHeight={200}
 		plateAspect="1 / 1"
 		loading={imageLoading}
 		actions={bibActions}
-		detailLabel="Details"
 		{yearLabel}
 		{featured}
 	/>
@@ -163,15 +162,20 @@
 			<div class="entity-grid">
 				{#if communication?.image}
 					<div class="entity-image-container">
+						<!-- The plate is a second route to the page the headline links; it
+						     stays clickable for the mouse and leaves the tab order and the
+						     accessibility tree, so the destination is announced once. -->
 						<a
 							href={resolve(`/communications/${communication.id}`)}
 							data-sveltekit-preload-code="tap"
+							tabindex="-1"
+							aria-hidden="true"
 						>
 							<img
 								src={coverSrc}
 								srcset={coverSrcset}
 								sizes={coverSrcset ? CARD_COVER_SIZES : undefined}
-								alt={displayTitle}
+								alt=""
 								class="entity-cover-image"
 								width="200"
 								height="280"
@@ -185,9 +189,8 @@
 				<div class="entity-content">
 					<div class="entity-meta">
 						<span class="entity-type"
-							>{typeLabels[communication?.type || 'conference'] ||
-								communication?.type ||
-								'Conference'}</span
+							>{COMMUNICATION_TYPE_LIST_LABELS[communication?.type || 'conference'] ??
+								'Academic event'}</span
 						>
 						{#if languageDisplay}
 							<span class="entity-language">({languageDisplay})</span>
@@ -245,11 +248,12 @@
 								>
 									<Icon icon="academicons:doi" aria-hidden="true" />
 									DOI
-								</a>
+									<span class="sr-only"> (opens in new tab)</span></a
+								>
 								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							{/if}
 							{#if communication?.additionalUrls}
-								{#each communication.additionalUrls as url, i (url.url)}
+								{#each communication.additionalUrls as url (url.url)}
 									<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 									<a
 										href={url.url}
@@ -257,8 +261,9 @@
 										rel="noopener noreferrer"
 										class="entity-link-btn btn btn-outline-primary btn-sm"
 									>
-										{url.label || `Link ${i + 1}`}
-									</a>
+										{url.label || hostLabel(url.url)}
+										<span class="sr-only"> (opens in new tab)</span></a
+									>
 									<!-- eslint-enable svelte/no-navigation-without-resolve -->
 								{/each}
 							{/if}

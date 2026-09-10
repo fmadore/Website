@@ -92,8 +92,8 @@ export themselves via `downloadSvgAsImage`.
 			class="toolbar-btn"
 			class:active={showDecal}
 			onclick={toggleDecal}
-			title={showDecal ? 'Hide decal patterns' : 'Show decal patterns for accessibility'}
-			aria-label={showDecal ? 'Hide decal patterns' : 'Show decal patterns for accessibility'}
+			title={showDecal ? 'Remove pattern fills' : 'Add pattern fills'}
+			aria-label={showDecal ? 'Remove pattern fills' : 'Add pattern fills'}
 			aria-pressed={showDecal}
 		>
 			<Icon icon="lucide:contrast" width="16" height="16" />

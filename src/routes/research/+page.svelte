@@ -187,7 +187,7 @@
 						<p class="dossier-desc">{leadProject.shortDescription}</p>
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
 						<a class="dossier-action" href={resolvePath(`/research/${leadProject.id}`)}>
-							Explore project →
+							View project<span aria-hidden="true">&nbsp;→</span>
 						</a>
 					</div>
 				</article>

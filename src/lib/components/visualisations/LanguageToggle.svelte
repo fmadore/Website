@@ -16,7 +16,7 @@
 		current = $bindable<Lang>('all'),
 		enCount,
 		frCount,
-		label = 'Filter by language:'
+		label = 'Language'
 	}: {
 		current?: Lang;
 		enCount: number;

@@ -12,6 +12,18 @@
 	}
 
 	let { item, x, y, placement = 'above' }: Props = $props();
+
+	/**
+	 * Built in one expression so the en dash stays closed up: split across
+	 * template lines, Svelte's whitespace handling rendered "2018 –2020".
+	 */
+	const formatRange = (entry: TimelineItem): string => {
+		const start = entry.startDate.getFullYear();
+		const end = entry.endDate?.getFullYear();
+		if (end !== undefined && end !== start) return `${start}–${end}`;
+		if (entry.isOngoing) return `${start}–present`;
+		return String(start);
+	};
 </script>
 
 <div
@@ -31,14 +43,7 @@
 	{#if item.subtitle}
 		<div class="tooltip-subtitle">{item.subtitle}</div>
 	{/if}
-	<div class="tooltip-date">
-		{item.startDate.getFullYear()}
-		{#if item.endDate && item.endDate.getFullYear() !== item.startDate.getFullYear()}
-			–{item.endDate.getFullYear()}
-		{:else if item.isOngoing}
-			–Present
-		{/if}
-	</div>
+	<div class="tooltip-date">{formatRange(item)}</div>
 </div>
 
 <style>

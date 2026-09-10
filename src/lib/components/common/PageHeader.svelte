@@ -33,9 +33,9 @@
 <header class="page-header mb-8 {additionalClasses}">
 	{#if backLinkHref}
 		<!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic path resolved at runtime -->
-		<a href={resolve(`/${backLinkHref}` as any)} class="back-link mb-4 inline-block">
-			{backLinkLabel}
-		</a>
+		<a href={resolve(`/${backLinkHref}` as any)} class="back-link mb-4 inline-block"
+			><span aria-hidden="true">← </span>{backLinkLabel.replace(/^←s*/, '')}</a
+		>
 	{/if}
 
 	<div class="header-content">

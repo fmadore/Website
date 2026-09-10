@@ -4,7 +4,7 @@ test('mobile navigation is usable without horizontal overflow', async ({ page, i
 	test.skip(!isMobile, 'Covered by the mobile Chromium project');
 
 	await page.goto('/');
-	const menuButton = page.getByRole('button', { name: /toggle navigation menu/i });
+	const menuButton = page.getByRole('button', { name: /navigation menu/i });
 	await expect(menuButton).toBeVisible();
 	// 44x44 is the platform touch-target guideline (WCAG 2.2 SC 2.5.8 requires
 	// only 24x24; this is deliberately above the floor for the primary nav).

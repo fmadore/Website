@@ -23,8 +23,11 @@
 {#if sortedCitedBy && sortedCitedBy.length > 0}
 	<section class="cited-by-section section">
 		<div class="section-head">
-			<h2 class="section-title">Cited By</h2>
-			<span class="dateline cited-by-count">{sortedCitedBy.length} works</span>
+			<h2 class="section-title">Cited by</h2>
+			<span class="dateline cited-by-count"
+				>{sortedCitedBy.length}
+				{sortedCitedBy.length === 1 ? 'work' : 'works'}</span
+			>
 		</div>
 
 		<!-- Each citing work is a ledger record: mono year key left, serif
@@ -38,7 +41,7 @@
 							{#if citingWork.url}
 								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 								<a href={citingWork.url} target="_blank" rel="noopener" class="citation-link"
-									>{citingWork.title}</a
+									>{citingWork.title}<span class="sr-only"> (opens in new tab)</span></a
 								>
 							{:else}
 								{citingWork.title}

@@ -34,6 +34,7 @@
 	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
 	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 	import MetaTags from '$lib/components/activities/MetaTags.svelte';
+	import { author } from '$lib/data/siteConfig';
 
 	// Get data from the load function
 	let { data }: { data: PageData } = $props();
@@ -154,7 +155,7 @@
 
 <!-- SEO Component with blog post optimizations -->
 <SEO
-	title={activity.title}
+	title="{truncateTitle(activity.title)} | {author.name}"
 	description={seoDescription}
 	keywords={seoKeywords}
 	type="article"
@@ -224,13 +225,13 @@
 			<section class="section act-section" id="document" aria-labelledby="act-document-head">
 				<div class="section-head">
 					<h2 id="act-document-head" class="section-title">
-						{typesetQuotes(activity.pdfTitle) || 'Associated Document'}
+						{typesetQuotes(activity.pdfTitle) || 'Document'}
 					</h2>
 				</div>
 				<IframeRenderer
 					id="activity-pdf-{activity.id}"
 					src="{base}/{activity.pdfPath}"
-					title="{activity.title} PDF Document"
+					title="PDF document: {activity.title}"
 					height="800px"
 					variant="document"
 					sandbox={null}

@@ -50,7 +50,7 @@
 
 	<div class="relevant-item-action">
 		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-		<a href={itemLink} class="relevant-item-link"> View details → </a>
+		<a href={itemLink} class="relevant-item-link">View record <span aria-hidden="true">→</span></a>
 	</div>
 </div>
 

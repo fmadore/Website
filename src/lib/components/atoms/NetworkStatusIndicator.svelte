@@ -40,18 +40,11 @@
 		aria-live="polite"
 	>
 		<div class="status-content">
-			<div class="status-icon">
-				{#if globalState.isOnline}
-					🟢
-				{:else}
-					🔴
-				{/if}
-			</div>
 			<div class="status-text">
 				{#if globalState.isOnline}
-					<span>Back online! Content updated.</span>
+					<span>Back online.</span>
 				{:else}
-					<span>You're offline. Cached content available.</span>
+					<span>Offline. Cached pages remain available.</span>
 				{/if}
 			</div>
 			<button
@@ -59,7 +52,7 @@
 				onclick={dismissMessage}
 				aria-label="Dismiss network status message"
 			>
-				×
+				<span aria-hidden="true">×</span>
 			</button>
 		</div>
 	</div>
@@ -124,22 +117,6 @@
 		gap: var(--space-xs);
 	}
 
-	.status-icon {
-		/* Mobile-first font size */
-		font-size: var(--font-size-sm);
-		animation: pulse 2s infinite;
-	}
-
-	@keyframes pulse {
-		0%,
-		100% {
-			opacity: var(--opacity-100);
-		}
-		50% {
-			opacity: var(--opacity-70);
-		}
-	}
-
 	.status-text {
 		flex: 1;
 		/* Mobile-first font size */
@@ -185,19 +162,11 @@
 		.status-text {
 			font-size: var(--font-size-sm);
 		}
-
-		.status-icon {
-			font-size: var(--font-size-base);
-		}
 	}
 
 	/* Reduce animations for users who prefer reduced motion */
 	@media (prefers-reduced-motion: reduce) {
 		.network-status-indicator {
-			animation: none;
-		}
-
-		.status-icon {
 			animation: none;
 		}
 	}

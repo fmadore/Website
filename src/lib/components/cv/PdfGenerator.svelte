@@ -47,7 +47,7 @@
 		<Icon icon="mdi:file-pdf-box" width="20" height="20" aria-hidden="true" />
 		<!-- Carried by words, not by colour: DESIGN restricts --color-danger to
 		     form validation, and the recovery is simply to try again. -->
-		<span>Export failed — retry</span>
+		<span>Download failed. Try again.</span>
 	{:else}
 		<Icon icon="mdi:file-pdf-box" width="20" height="20" aria-hidden="true" />
 		<span>Download PDF</span>

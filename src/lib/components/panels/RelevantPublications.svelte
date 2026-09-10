@@ -80,9 +80,10 @@
 	{/snippet}
 
 	<RelevantItemsList
-		title="Relevant Publications"
+		title="Related publications"
 		items={filteredList}
-		itemTypePlural="publications"
+		collectionLabel="publications"
+		emptyLabel="publications"
 		basePath="/publications"
 		viewAllPath="/publications"
 		{projectName}

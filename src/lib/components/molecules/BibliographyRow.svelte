@@ -185,7 +185,7 @@
 
 	const CITE_LABELS = {
 		idle: 'Cite',
-		copied: 'Copied ✓',
+		copied: 'Copied',
 		failed: 'Copy failed'
 	} as const;
 
@@ -212,7 +212,16 @@
 	<div class="bib-plate-col">
 		{#if image}
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-			<a {href} data-sveltekit-preload-code="tap" class="bib-plate-link">
+			<!-- The title link beside the plate already names the record; the plate is a
+			     second route to the same page, so it leaves the tab order and the
+			     accessibility tree (the pattern the DH catalogue set). -->
+			<a
+				{href}
+				data-sveltekit-preload-code="tap"
+				class="bib-plate-link"
+				tabindex="-1"
+				aria-hidden="true"
+			>
 				<img
 					class="plate bib-plate"
 					src={plateSrc}
@@ -297,7 +306,11 @@
 				{#if action.icon}
 					<Icon icon={action.icon} class="bib-action-icon" aria-hidden="true" />
 				{/if}
-				{action.label}
+				<!-- The arrow marks the leaving link; the accessible name says so in
+				     words, since a glyph is not one. -->
+				{action.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
+					(opens in new tab)</span
+				>
 			</a>
 		{/each}
 		{#if reference}
@@ -314,7 +327,7 @@
 			<a {href} class="bib-action" data-sveltekit-preload-code="tap">{detailLabel}</a>
 		{/if}
 		{#if citedCount > 0}
-			<span class="bib-cited">Cited {citedCount}×</span>
+			<span class="bib-cited">Cited by {citedCount}</span>
 		{/if}
 	</div>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->

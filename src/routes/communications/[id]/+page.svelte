@@ -192,7 +192,7 @@
 		currentItemId={communication.id}
 		filterKey="project"
 		filterValue={communication.project}
-		title="More in this Project"
+		title="More in this project"
 		itemComponent={RelatedItemCard as unknown as ComponentType}
 		baseItemUrl="/communications/"
 		viewAllUrl="{base}/conference-activity"
@@ -245,7 +245,7 @@
 			<section class="section comm-section" aria-labelledby="comm-papers-head">
 				<div class="section-head">
 					<h2 id="comm-papers-head" class="section-title">
-						{communication.type === 'panel' ? 'Papers in this Panel' : 'Papers'}
+						{communication.type === 'panel' ? 'Papers in this panel' : 'Papers'}
 					</h2>
 				</div>
 				<div class="ledger ledger--ruled comm-papers">

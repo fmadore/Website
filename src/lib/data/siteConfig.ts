@@ -32,6 +32,7 @@ export interface AuthorInfo {
 	position: string;
 	positionShort: string; // Without institution name
 	jobTitle: string; // Precise current role for Person JSON-LD
+	kicker: string; // Two-word standing epithet — the masthead dateline and the home <title>
 	tagline: string; // Descriptive hero standfirst — subject + affiliation, not a role list
 	nationality: string; // Used in Person JSON-LD structured data
 }
@@ -42,6 +43,7 @@ export const author: AuthorInfo = {
 	position: 'Historian | Digital Humanities & AI | Data Curator, University of Bayreuth',
 	positionShort: 'Historian & Data Curator',
 	jobTitle: 'Data Curator',
+	kicker: 'Historian & Digital Humanist',
 	tagline:
 		'Historian of Islam in francophone West Africa, working with digital humanities and AI · Data Curator, Cluster of Excellence “Africa Multiple”, University of Bayreuth',
 	nationality: 'Canada'

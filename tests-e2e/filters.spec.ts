@@ -94,7 +94,7 @@ test('type counts remain selectable totals when another type is active', async (
 	await expect(page).toHaveURL(/type=book/);
 	await expect(page).toHaveURL(/type=chapter/);
 	const combinedCount = bookCount + chapterCount;
-	await expect(page.locator('.facet-summary-stat')).toContainText(`${combinedCount} matches`);
+	await expect(page.locator('.facet-summary-stat')).toContainText(`${combinedCount} of`);
 	// The bibliography paginates at 12 while the summary reports the complete set.
 	await expect(page.locator(bibItems)).toHaveCount(Math.min(combinedCount, 12));
 });

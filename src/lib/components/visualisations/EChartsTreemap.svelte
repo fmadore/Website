@@ -13,6 +13,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
+	import { describeTreemap } from '$lib/utils/chartDescriptions';
 	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
 
 	// Types for treemap data
@@ -31,12 +32,42 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	let {
 		data = [] as TreemapNode[],
 		title = '',
-		colors = CHART_CATEGORICAL_COLORS
+		colors = CHART_CATEGORICAL_COLORS,
+		itemSingular = 'publication',
+		itemPlural = 'publications',
+		entrySingular = 'venue',
+		entryPlural = 'venues',
+		description = undefined
 	}: {
 		data?: TreemapNode[];
 		title?: string;
 		colors?: string[];
+		/** What each tile counts on this page: publications, or talks. */
+		itemSingular?: string;
+		itemPlural?: string;
+		/** What one leaf tile *is* — a venue, a kind of talk. */
+		entrySingular?: string;
+		entryPlural?: string;
+		/** Overrides the computed accessible description. */
+		description?: string;
 	} = $props();
+
+	/**
+	 * The sentence a screen reader gets in place of ECharts' auto-generated
+	 * tile dump. Computed from the same tree the tiles are drawn from.
+	 */
+	const ariaDescription = $derived(
+		description ??
+			describeTreemap(
+				title || 'Treemap',
+				data.map((node) => ({
+					label: node.name,
+					children: node.children.map((child) => ({ label: child.name, value: child.value }))
+				})),
+				{ singular: entrySingular, plural: entryPlural },
+				{ singular: itemSingular, plural: itemPlural }
+			)
+	);
 
 	// Container reference
 	let outerEl: HTMLDivElement;
@@ -89,6 +120,9 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	});
 
 	// Calculate total publications for percentage calculations
+	/** Tooltip heading noun, capitalised: "Publications", "Talks". */
+	const itemNoun = $derived(itemPlural.charAt(0).toUpperCase() + itemPlural.slice(1));
+
 	const totalPublications = $derived(
 		data.reduce((sum, node) => {
 			return sum + node.children.reduce((childSum, child) => childSum + child.value, 0);
@@ -208,17 +242,17 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						0
 					);
 					const percentage = ((categoryTotal / totalPublications) * 100).toFixed(1);
-					return `<strong>${params.name}</strong><br/>Publications: ${categoryTotal} (${percentage}%)`;
+					return `<strong>${params.name}</strong><br/>${itemNoun}: ${categoryTotal} (${percentage}%)`;
 				} else {
 					// Venue node (leaf)
 					const percentage = (((params.value as number) / totalPublications) * 100).toFixed(1);
 					const leafData = params.data as TreemapChild;
-					let tooltip = `<strong>${params.name}</strong><br/>Publications: ${params.value} (${percentage}%)`;
+					let tooltip = `<strong>${params.name}</strong><br/>${itemNoun}: ${params.value} (${percentage}%)`;
 					if (leafData.publications && leafData.publications.length <= 5) {
 						tooltip += '<br/><br/><em>Titles:</em>';
 						leafData.publications.forEach((pub: string) => {
 							// Truncate long titles
-							const truncated = pub.length > 50 ? pub.substring(0, 50) + '...' : pub;
+							const truncated = pub.length > 50 ? pub.substring(0, 50) + '…' : pub;
 							tooltip += `<br/>• ${truncated}`;
 						});
 					}
@@ -366,7 +400,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				colorMappingBy: 'id'
 			}
 		],
-		aria: getAriaConfig(showDecal),
+		aria: getAriaConfig(showDecal, ariaDescription),
 		backgroundColor: 'transparent'
 	});
 

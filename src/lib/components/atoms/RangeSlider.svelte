@@ -12,6 +12,8 @@
 		last = undefined,
 		float = false,
 		ariaLabel = undefined,
+		minAriaLabel = 'Minimum value',
+		ariaValueText = undefined,
 		onchange
 	}: {
 		min?: number;
@@ -31,6 +33,10 @@
 		float?: boolean;
 		/** Accessible label for the (max) handle. */
 		ariaLabel?: string;
+		/** Accessible label for the min handle (range mode only). */
+		minAriaLabel?: string;
+		/** Spoken value for the (max) handle, e.g. `12 of 77 institutions`; a bare number otherwise. */
+		ariaValueText?: string;
 		onchange?: (event: CustomEvent<{ values: [number, number] }>) => void;
 	} = $props();
 
@@ -229,7 +235,7 @@
 			aria-valuemin={min}
 			aria-valuemax={values[1]}
 			aria-valuenow={values[0]}
-			aria-label="Minimum value"
+			aria-label={minAriaLabel}
 			onmousedown={(e) => handleMouseDown(e, 'min')}
 			ontouchstart={(e) => handleTouchStart(e, 'min')}
 			onkeydown={(e) => handleKeyDown(e, 'min')}
@@ -253,6 +259,7 @@
 		aria-valuemax={max}
 		aria-valuenow={values[1]}
 		aria-label={ariaLabel ?? (single ? 'Value' : 'Maximum value')}
+		aria-valuetext={ariaValueText}
 		onmousedown={(e) => handleMouseDown(e, 'max')}
 		ontouchstart={(e) => handleTouchStart(e, 'max')}
 		onkeydown={(e) => handleKeyDown(e, 'max')}

@@ -433,11 +433,6 @@
 					onclose={closeDetailCard}
 				/>
 			</div>
-		{:else}
-			<!-- Clean prompt to select an item if nothing selected (though we try to auto-select) -->
-			<div class="empty-selection-hint">
-				<p>Select an item from the timeline to view details</p>
-			</div>
 		{/if}
 
 		<!-- Key to the mark forms; the lanes name their own categories. -->
@@ -556,19 +551,9 @@
 	/* The plate is the only thing that scrolls sideways in the route's single
 	   scroller; the apparatus below it stays put at the left edge. */
 	.detail-slot,
-	.empty-selection-hint,
 	.timeline-key {
 		position: sticky;
 		left: 0;
-	}
-
-	.empty-selection-hint {
-		text-align: center;
-		padding: var(--space-xl);
-		border: var(--border-width-thin) solid var(--color-border);
-		color: var(--color-text-light);
-		font-family: var(--font-family-serif);
-		font-style: italic;
 	}
 
 	/* Key to the mark forms */

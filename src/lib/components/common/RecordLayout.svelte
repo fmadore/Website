@@ -130,7 +130,9 @@ Usage:
 		     detail page. -->
 		<nav class="record-breadcrumb" aria-label="Breadcrumb">
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed path -->
-			<a href={section.href} class="record-breadcrumb-link">← {section.label}</a>
+			<a href={section.href} class="record-breadcrumb-link"
+				><span aria-hidden="true">← </span>{section.label}</a
+			>
 			{#if breadcrumbCurrent}
 				<span class="record-breadcrumb-sep" aria-hidden="true">/</span>
 				<span class="record-breadcrumb-current">{breadcrumbCurrent}</span>

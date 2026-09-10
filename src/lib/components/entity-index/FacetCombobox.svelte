@@ -168,7 +168,7 @@
 			aria-autocomplete="list"
 			aria-activedescendant={activeId}
 			aria-label={fieldLabel}
-			placeholder="{fieldLabel}…"
+			placeholder="Type to find…"
 			onfocus={() => (open = true)}
 			onclick={() => (open = true)}
 			oninput={() => {
@@ -180,7 +180,13 @@
 	</div>
 
 	<div class="facet-combobox-panel" hidden={!open}>
-		<ul bind:this={list} id={listId} class="facet-combobox-list" role="listbox" aria-label={label}>
+		<ul
+			bind:this={list}
+			id={listId}
+			class="facet-combobox-list"
+			role="listbox"
+			aria-label="Matching {label}"
+		>
 			<!-- Populated only while open: the closed list is an empty box the
 			     field can keep pointing `aria-controls` at, not 95 hidden rows. -->
 			{#each rows as option, index (option)}
@@ -206,7 +212,7 @@
 			{/each}
 		</ul>
 		{#if open && matches.length === 0}
-			<p class="facet-combobox-empty">No match</p>
+			<p class="facet-combobox-empty" role="status">No {label} match “{query}”.</p>
 		{/if}
 	</div>
 </div>

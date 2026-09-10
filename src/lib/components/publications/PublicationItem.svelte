@@ -142,7 +142,7 @@
 			case 'blogpost':
 				return 'Blog Post';
 			case 'phd-dissertation':
-				return 'Ph.D. Dissertation';
+				return 'PhD Dissertation';
 			case 'masters-thesis':
 				return "Master's Thesis";
 			case 'conference-proceedings':
@@ -187,15 +187,24 @@
 		!openHref
 			? null
 			: publication.doi
-				? { href: openHref, label: 'DOI ↗', primary: true, icon: 'academicons:doi' }
+				? { href: openHref, label: 'DOI', primary: true, icon: 'academicons:doi' }
 				: {
 						href: openHref,
-						label: isOpenAccess ? 'Full Text ↗' : 'Publisher ↗',
+						label: isOpenAccess ? 'Full text' : 'Publisher',
 						primary: true,
 						icon: 'mdi:web'
 					}
 	);
 	const bibActions = $derived<BibliographyAction[]>(bibAction ? [bibAction] : []);
+
+	/** Fallback label for an unlabelled address: its host, never "Link 2". */
+	function hostLabel(url: string): string {
+		try {
+			return new URL(url).hostname.replace(/^www\./, '');
+		} catch {
+			return url;
+		}
+	}
 	interface DisplayListItem {
 		name: string;
 		isClickable: boolean;
@@ -330,7 +339,7 @@
 								title="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
 								aria-label="Cited by {citationCount} {citationCount === 1 ? 'work' : 'works'}"
 							>
-								Cited {citationCount}×
+								Cited by {citationCount}
 							</span>
 						{/if}
 					</div>
@@ -431,8 +440,9 @@
 									rel="external noopener noreferrer"
 									class="entity-link-btn btn btn-outline-primary btn-sm"
 								>
-									{url.label || `Link ${i + 1}`}
-								</a>
+									{url.label || hostLabel(url.url)}
+									<span class="sr-only"> (opens in new tab)</span></a
+								>
 							{/each}
 						</div>
 					{/if}

@@ -32,10 +32,15 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	// Props
 	let {
 		data = [] as ProjectData[],
-		colors = CHART_CATEGORICAL_COLORS
+		colors = CHART_CATEGORICAL_COLORS,
+		itemSingular = 'publication',
+		itemPlural = 'publications'
 	}: {
 		data?: ProjectData[];
 		colors?: string[];
+		/** What each marker counts on this page: a publication, or a talk. */
+		itemSingular?: string;
+		itemPlural?: string;
 	} = $props();
 
 	// Container reference
@@ -58,7 +63,9 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 					.map(
 						(p) =>
 							`${p.name} from ${p.startYear} to ${p.endYear}` +
-							(p.publications.length > 0 ? ` with ${p.publications.length} publications` : '')
+							(p.publications.length > 0
+								? ` with ${p.publications.length} ${p.publications.length === 1 ? itemSingular : itemPlural}`
+								: '')
 					)
 					.join('; ')}.`
 	);
@@ -119,8 +126,9 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 					const project = params.data as { name: string; value: number[] };
 					const duration = project.value[2]! - project.value[1]!;
 					let tooltip = `<strong>${project.name}</strong><br/>`;
-					tooltip += `Period: ${project.value[1]} – ${project.value[2]} (${duration + 1} years)<br/>`;
-					tooltip += `Publications: ${project.value[3]}`;
+					const years = duration + 1;
+					tooltip += `Period: ${project.value[1]}–${project.value[2]} (${years} ${years === 1 ? 'year' : 'years'})<br/>`;
+					tooltip += `${itemPlural.charAt(0).toUpperCase() + itemPlural.slice(1)}: ${project.value[3]}`;
 					return tooltip;
 				} else {
 					// Publication marker tooltip
@@ -186,14 +194,14 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 				fontFamily: resolvedColors.fontFamily,
 				width: isMobile ? 100 : 180,
 				overflow: 'truncate',
-				ellipsis: '...',
+				ellipsis: '…',
 				formatter: function (value: string) {
 					// Wrap long project names
 					if (isMobile && value.length > 20) {
-						return value.substring(0, 20) + '...';
+						return value.substring(0, 20) + '…';
 					}
 					if (!isMobile && value.length > 35) {
-						return value.substring(0, 35) + '...';
+						return value.substring(0, 35) + '…';
 					}
 					return value;
 				}
@@ -284,7 +292,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		</span>
 		<span class="legend-item">
 			<span class="legend-marker"></span>
-			Publication
+			{itemSingular.charAt(0).toUpperCase() + itemSingular.slice(1)}
 		</span>
 	</div>
 </div>

@@ -78,7 +78,7 @@
 					href={viewAllLink}
 					rel={filterValue ? 'nofollow' : undefined}
 					variant="outline-secondary"
-					size="base">View all →</Button
+					size="base">All work in this project<span aria-hidden="true">&nbsp;→</span></Button
 				>
 			</div>
 		{/if}

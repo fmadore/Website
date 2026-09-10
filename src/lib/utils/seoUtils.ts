@@ -232,18 +232,22 @@ export function createCommunicationSEOKeywords(communication: Communication): st
 export function truncateTitle(title: string, maxLength: number = 50): string {
 	if (title.length <= maxLength) return title;
 
+	// A single ellipsis character, not three periods, and the stem is trimmed
+	// first: French titles space their colon ("Sécularisme : …"), which would
+	// otherwise leave the ellipsis floating a space away from the last word.
+
 	// Check for natural break points like colons
 	const colonIndex = title.indexOf(':');
 	if (colonIndex > 0 && colonIndex < maxLength) {
-		return title.substring(0, colonIndex) + '...';
+		return title.substring(0, colonIndex).trimEnd() + '…';
 	}
 
 	// Otherwise truncate at word boundary
 	const truncated = title.substring(0, maxLength);
 	const lastSpace = truncated.lastIndexOf(' ');
 	return lastSpace > maxLength * 0.6
-		? title.substring(0, lastSpace) + '...'
-		: title.substring(0, maxLength - 3) + '...';
+		? title.substring(0, lastSpace).trimEnd() + '…'
+		: title.substring(0, maxLength - 3).trimEnd() + '…';
 }
 
 // ============================================================================
@@ -365,11 +369,11 @@ const ACTIVITY_SEO_DESCRIPTION: SeoDescriptionConfig<Activity> = {
 			const typeLabel = getBlogTypeLabel(type);
 			const yearText = year ? ` (${year})` : '';
 
-			// Create engaging blog-style description
+			// A factual lead: the type label, the year, the title. No call to action.
 			if (type === 'publication') {
-				seoDescription = `Latest publication update${yearText}: ${title}`;
+				seoDescription = `Publication${yearText}: ${title}`;
 			} else if (type === 'grant') {
-				seoDescription = `Research funding news${yearText}: ${title}`;
+				seoDescription = `Research grant${yearText}: ${title}`;
 			} else if (['conference', 'workshop', 'panel'].includes(type || '')) {
 				seoDescription = `${typeLabel} from ${title}${yearText}`;
 			} else {
@@ -397,21 +401,6 @@ const ACTIVITY_SEO_DESCRIPTION: SeoDescriptionConfig<Activity> = {
 					if (tagText.length <= remainingSpace) {
 						return tagText;
 					}
-				}
-			}
-			return '';
-		},
-		// Engaging call-to-action if space allows
-		({ type }, current) => {
-			if (current.length < 140) {
-				// Choose CTA based on activity type
-				let cta = 'Learn more →';
-				if (type === 'publication') cta = 'Read details →';
-				else if (type === 'conference' || type === 'workshop') cta = 'Read insights →';
-				else if (type === 'grant') cta = 'Discover details →';
-
-				if (current.length + cta.length + 1 <= SEO_DESCRIPTION_LIMIT) {
-					return ` ${cta}`;
 				}
 			}
 			return '';

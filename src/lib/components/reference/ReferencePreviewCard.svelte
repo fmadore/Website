@@ -117,7 +117,7 @@
 	style:overflow-y="auto"
 	role="dialog"
 	tabindex="-1"
-	aria-label="Item Preview"
+	aria-label="Preview: {item.title}"
 	aria-modal="false"
 	onpointerenter={handlePointerEnter}
 	onpointerleave={handlePointerLeave}
@@ -168,7 +168,7 @@
 									? 'Event'
 									: item.type === 'podcast'
 										? 'Podcast'
-										: 'Communication'}</span
+										: 'Talk'}</span
 							>
 						</p>
 					{/if}

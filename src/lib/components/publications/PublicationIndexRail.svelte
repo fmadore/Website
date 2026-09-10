@@ -73,7 +73,7 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 <!-- Key terms — real full-text frequencies, sized by rank. -->
 {#if keyTerms.length > 0}
 	<div class="pub-key-terms">
-		<h2 class="rail-label">Key Terms</h2>
+		<h2 class="rail-label">Key terms</h2>
 		<div class="key-terms">
 			{#each keyTerms as term (term.word)}
 				<span style="font-size: {term.size.toFixed(1)}px;">{term.word}</span>

@@ -5,7 +5,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import { base, resolve } from '$app/paths';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
-	import { profile } from '$lib/data/siteConfig';
+	import { author, profile } from '$lib/data/siteConfig';
 	import type { PageData } from './$types';
 
 	let { data } = $props<{ data: PageData }>();
@@ -20,7 +20,7 @@
 </script>
 
 <SEO
-	title="Frédérick Madore | Historian | Digital Humanist"
+	title="{author.name} | {author.kicker}"
 	description="Frédérick Madore, historian of Islam in francophone West Africa and Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot;, University of Bayreuth. He builds open digital collections with Omeka S and AI, including the Islam West Africa Collection (IWAC) and AMIRA."
 	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Artificial Intelligence, Omeka S, Islam West Africa Collection, IWAC, AMIRA, Africa Multiple Interactive Research Atlas, data curation, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
 	canonical="https://www.frederickmadore.com"
@@ -51,7 +51,10 @@
 					I am a Data Curator at the <a
 						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
 						target="_blank"
-						rel="noopener noreferrer">Cluster of Excellence “Africa Multiple”</a
+						rel="noopener noreferrer"
+						>Cluster of Excellence “Africa Multiple”<span class="sr-only">
+							(opens in new tab)</span
+						></a
 					>, University of Bayreuth (Germany), where I work at the point where research
 					infrastructure meets African Studies. I help design the systems that make research data
 					more findable and reusable under the FAIR and CARE principles, and I work with colleagues
@@ -68,21 +71,24 @@
 					with politics, education, and the public sphere in Benin, Burkina Faso, Côte d’Ivoire, and
 					Togo since the 1960s. Before Bayreuth, I was a Research Fellow at
 					<a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
-						>Leibniz-Zentrum Moderner Orient (ZMO)</a
+						>Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only">
+							(opens in new tab)</span
+						></a
 					>
 					in Berlin, and before that a
 					<a
 						href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
 						target="_blank"
-						rel="noopener noreferrer">Banting Postdoctoral Fellow</a
+						rel="noopener noreferrer"
+						>Banting Postdoctoral Fellow<span class="sr-only"> (opens in new tab)</span></a
 					>
 					at the
 					<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
-						>University of Florida</a
+						>University of Florida<span class="sr-only"> (opens in new tab)</span></a
 					>.
 				</p>
 
-				<h2>Digital Humanities and AI in African Studies</h2>
+				<h2>Digital humanities and AI in African studies</h2>
 				<p>
 					More recently, I have started applying computational methods and AI to that material, to
 					see what they turn up once a corpus outgrows close reading, and where they mislead. The
@@ -113,13 +119,17 @@
 					Since 2023, I have been developing the <a
 						href="https://islam.zmo.de/s/westafrica/"
 						target="_blank"
-						rel="noopener noreferrer"><em>Islam West Africa Collection</em> (IWAC)</a
+						rel="noopener noreferrer"
+						><em>Islam West Africa Collection</em> (IWAC)<span class="sr-only">
+							(opens in new tab)</span
+						></a
 					>, an open-access collection of more than 17,500 items on Islam across Benin, Burkina
 					Faso, Côte d’Ivoire, Niger, Nigeria, and Togo.
 					<a
 						href="https://github.com/fmadore/iwac-ai-pipelines"
 						target="_blank"
-						rel="noopener noreferrer">AI-assisted workflows</a
+						rel="noopener noreferrer"
+						>AI-assisted workflows<span class="sr-only"> (opens in new tab)</span></a
 					>
 					carry the heavy processing: OCR and handwriting recognition, audio transcription, named-entity
 					recognition, summarisation. Results are written back into the collection itself, so the machine-generated
@@ -127,24 +137,27 @@
 					<a
 						href="https://iwac.frederickmadore.com/sentiment-analysis/"
 						target="_blank"
-						rel="noopener noreferrer">how three AI models read the tone</a
+						rel="noopener noreferrer"
+						>how three AI models read the tone<span class="sr-only"> (opens in new tab)</span></a
 					> of press coverage of Islam.
 				</p>
 
-				<h2>Omeka S Development & AMIRA</h2>
+				<h2>Omeka S development & AMIRA</h2>
 				<p>
 					IWAC runs on <a href="https://omeka.org/s/" target="_blank" rel="noopener noreferrer"
-						>Omeka S</a
+						>Omeka S<span class="sr-only"> (opens in new tab)</span></a
 					>, an open-source platform for digital collections, and so does most of my other digital
 					work. I design custom modules and themes for it: search layers, visualisations, structured
 					metadata, bilingual interfaces. All of it is open source, on
-					<a href="https://github.com/fmadore" target="_blank" rel="noopener noreferrer">GitHub</a>.
+					<a href="https://github.com/fmadore" target="_blank" rel="noopener noreferrer"
+						>GitHub<span class="sr-only"> (opens in new tab)</span></a
+					>.
 				</p>
 				<p>
 					At Bayreuth I built <a
 						href="https://data.africamultiple.uni-bayreuth.de/s/amira"
 						target="_blank"
-						rel="noopener noreferrer">AMIRA</a
+						rel="noopener noreferrer">AMIRA<span class="sr-only"> (opens in new tab)</span></a
 					>, the Africa Multiple Interactive Research Atlas, on
 					<a
 						href={resolve('/digital-humanities/amira' as `/digital-humanities/${string}`)}
@@ -158,12 +171,13 @@
 					<a
 						href="https://islam.zmo.de/s/westafrica/page/explore"
 						target="_blank"
-						rel="noopener noreferrer">interactive views</a
+						rel="noopener noreferrer"
+						>interactive views<span class="sr-only"> (opens in new tab)</span></a
 					>: maps, networks of people and organisations, machine-derived themes, and charts of how
 					words rise and fall across the decades.
 				</p>
 
-				<h2>Books & Publications</h2>
+				<h2>Books & publications</h2>
 				<p>
 					My latest book, <em>Religious Activism on Campuses in Togo and Benin</em>
 					<ItemReference id="religious-activism-campuses" />, examines the emergence of Christian
@@ -187,7 +201,8 @@
 					Beyond academia, I work with <a
 						href="https://communitology.co/"
 						target="_blank"
-						rel="noopener noreferrer">Communitology</a
+						rel="noopener noreferrer"
+						>Communitology<span class="sr-only"> (opens in new tab)</span></a
 					>
 					to produce specialised Country of Origin Information (COI) reports for asylum and immigration
 					cases involving Benin, Côte d’Ivoire, and Togo.

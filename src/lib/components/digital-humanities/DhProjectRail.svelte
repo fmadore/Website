@@ -69,7 +69,7 @@ accent, which is correct: a repository is not "the current thing".
 
 	// A bare URL is the project's own address, so the button names the errand;
 	// an authored label already names the destination, so it is kept.
-	const ctaLabel = $derived(ctaLink?.label ? typesetQuotes(ctaLink.label) : 'Visit the project');
+	const ctaLabel = $derived(ctaLink?.label ? typesetQuotes(ctaLink.label) : 'Open project');
 </script>
 
 {#if plateSrc}
@@ -104,7 +104,11 @@ accent, which is correct: a repository is not "the current thing".
 						{#each group.links as link (link.url)}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
 							<a class="meta-link" href={link.url} target="_blank" rel="noopener noreferrer"
-								>{typesetQuotes(projectLinkText(link))} ↗</a
+								>{typesetQuotes(projectLinkText(link))}<span aria-hidden="true">&nbsp;↗</span><span
+									class="sr-only"
+								>
+									(opens in new tab)</span
+								></a
 							>
 						{/each}
 					</dd>
@@ -123,7 +127,9 @@ accent, which is correct: a repository is not "the current thing".
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			{ctaLabel} ↗
+			{ctaLabel}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
+				(opens in new tab)</span
+			>
 		</a>
 		<!-- eslint-enable svelte/no-navigation-without-resolve -->
 	</div>

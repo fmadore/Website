@@ -12,7 +12,7 @@
 	class="hamburger"
 	class:active={isActive}
 	onclick={onClick}
-	aria-label="Toggle navigation menu"
+	aria-label={isActive ? 'Close navigation menu' : 'Open navigation menu'}
 	aria-expanded={isActive ? 'true' : 'false'}
 	aria-controls="mobile-menu"
 >

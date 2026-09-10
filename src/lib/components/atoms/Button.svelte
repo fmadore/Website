@@ -77,10 +77,11 @@
 			.join(' ')
 	);
 
-	// Determine if we have content for aria-label fallback. Children count as
-	// content: a generic fallback label would override the visible text as the
-	// accessible name (WCAG 2.5.3 Label in Name failure).
-	const hasContent = $derived(!!label || !!ariaLabel || !!children);
+	// No generic fallback name. A control with neither `label`, `children` nor
+	// `ariaLabel` used to be announced as "Link button" or "Button", which names
+	// the widget rather than the errand and tells a screen-reader user nothing
+	// they could not already hear from the role. Silence is the honest report,
+	// and the caller supplies `ariaLabel` for an icon-only control.
 
 	function handleClick(event: MouseEvent) {
 		if (!disabled && !loading && onclick) {
@@ -96,7 +97,7 @@
 		class={buttonClasses}
 		role="button"
 		aria-disabled={disabled || loading}
-		aria-label={ariaLabel || (hasContent ? undefined : 'Link button')}
+		aria-label={ariaLabel}
 		{...rest}
 	>
 		<span class="btn-content">
@@ -140,7 +141,7 @@
 		class={buttonClasses}
 		disabled={disabled || loading}
 		onclick={handleClick}
-		aria-label={ariaLabel || (hasContent ? undefined : 'Button')}
+		aria-label={ariaLabel}
 		aria-busy={loading}
 		{...rest}
 	>

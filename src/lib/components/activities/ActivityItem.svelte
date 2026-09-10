@@ -58,7 +58,9 @@ Two differences from its siblings, both of them the record's own:
 
 	// The plate: prefer the hero image, fall back to the small image.
 	const plateSrc = $derived(activity.heroImage?.src || activity.image || null);
-	const plateAlt = $derived(activity.heroImage?.alt || `Illustration — ${activity.title}`);
+	// The plate sits beside the linked title it would only repeat, so it is
+	// decorative unless the record supplies a description of its own.
+	const plateAlt = $derived(activity.heroImage?.alt ?? '');
 
 	// Where the record goes, if it goes anywhere. Facts belong in the kind
 	// eyebrow and destinations in the action column (the rule 2.2 settled on the
@@ -66,8 +68,10 @@ Two differences from its siblings, both of them the record's own:
 	// episode or a published piece could only be reached through its record page.
 	const actions = $derived.by((): BibliographyAction[] => {
 		if (!activity.url) return [];
-		const label = activity.urlLabel ?? (activity.type === 'publication' ? 'Read' : 'Visit');
-		return [{ href: activity.url, label: `${label} ↗`, primary: true }];
+		// "Open" is the verb for a destination that leaves the site; the row
+		// draws the arrow and says "opens in new tab" in words.
+		const label = activity.urlLabel ?? 'Open';
+		return [{ href: activity.url, label, primary: true }];
 	});
 
 	// Tag run — uppercase mono, interpunct-separated, capped with "+N" overflow.

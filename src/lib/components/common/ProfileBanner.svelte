@@ -9,7 +9,7 @@
 <header class="nameplate-hero">
 	<div class="hero-topbar">
 		<span class="hero-url">{siteLabel}</span>
-		<span class="hero-kicker">Historian &amp; Digital Humanist</span>
+		<span class="hero-kicker">{author.kicker}</span>
 	</div>
 	<h1 class="nameplate">{author.fullName}</h1>
 	<p class="hero-standfirst">{author.tagline}</p>

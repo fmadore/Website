@@ -4,25 +4,28 @@
 
 	/**
 	 * Static source of truth for all CV sections.
-	 * Order matches the rendering order in +page.svelte.
+	 * Order matches the rendering order in +page.svelte. Each label repeats its
+	 * section heading verbatim: a contents list that renames its targets makes
+	 * the reader translate, and a shortened label ("Events") no longer matches
+	 * the heading they land on ("Organisation of Academic Events").
 	 */
 	const TOC_SECTIONS = [
-		{ id: 'cv-appointments', label: 'Appointments' },
+		{ id: 'cv-appointments', label: 'Professional Appointments' },
 		{ id: 'cv-education', label: 'Education' },
 		{ id: 'cv-publications', label: 'Publications' },
-		{ id: 'cv-grants', label: 'Grants' },
-		{ id: 'cv-awards', label: 'Awards' },
-		{ id: 'cv-digital-humanities', label: 'Digital Humanities' },
+		{ id: 'cv-grants', label: 'Grants & Fellowships' },
+		{ id: 'cv-awards', label: 'Awards & Honours' },
+		{ id: 'cv-digital-humanities', label: 'Digital Humanities Projects' },
 		{ id: 'cv-invited-talks', label: 'Invited Talks' },
-		{ id: 'cv-conferences', label: 'Conferences' },
-		{ id: 'cv-events', label: 'Events' },
-		{ id: 'cv-teaching', label: 'Teaching' },
+		{ id: 'cv-conferences', label: 'Conference Participation' },
+		{ id: 'cv-events', label: 'Organisation of Academic Events' },
+		{ id: 'cv-teaching', label: 'Teaching Experience' },
 		{ id: 'cv-research-experience', label: 'Research Experience' },
-		{ id: 'cv-service', label: 'Service' },
-		{ id: 'cv-consulting', label: 'Consulting' },
-		{ id: 'cv-media', label: 'Media' },
+		{ id: 'cv-service', label: 'Service to Profession' },
+		{ id: 'cv-consulting', label: 'Consulting and Legal Expertise' },
+		{ id: 'cv-media', label: 'Media Appearances' },
 		{ id: 'cv-languages', label: 'Languages' },
-		{ id: 'cv-affiliations', label: 'Affiliations' },
+		{ id: 'cv-affiliations', label: 'Professional Affiliations' },
 		{ id: 'cv-computer-skills', label: 'Computer Skills' }
 	] as const;
 
@@ -191,6 +194,12 @@
 	{#if isOpen}
 		<nav class="cv-toc-panel" aria-label="CV table of contents">
 			<p class="cv-toc-title">Contents</p>
+			<!-- The lower sections mount lazily, so an open panel can list nine of
+			     seventeen with nothing to say why. The dateline says so until the
+			     last one has reported in. -->
+			{#if visibleSections.length < TOC_SECTIONS.length}
+				<p class="dateline" role="status">Loading remaining sections…</p>
+			{/if}
 			<ul class="cv-toc-list">
 				{#each visibleSections as section (section.id)}
 					<li>
@@ -202,7 +211,13 @@
 						>
 							<span class="cv-toc-label">{section.label}</span>
 							{#if entryCounts.get(section.id)}
-								<span class="cv-toc-count">{entryCounts.get(section.id)}</span>
+								{@const count = entryCounts.get(section.id) ?? 0}
+								<!-- The figure is the visible mark; speech gets the noun it counts,
+								     so the button announces "Publications 42 entries" rather than
+								     "Publications 42". -->
+								<span class="cv-toc-count"
+									>{count}<span class="sr-only"> {count === 1 ? 'entry' : 'entries'}</span></span
+								>
 							{/if}
 						</button>
 					</li>

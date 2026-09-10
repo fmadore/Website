@@ -40,6 +40,19 @@ const extractDoiFromUrl = (href: string): string => {
  * Returns an array of TextFragments suitable for rich text rendering.
  * Normalizes whitespace (collapses newlines and tabs to single spaces).
  */
+/**
+ * The text a sighted reader sees: drops screen-reader-only spans (the
+ * " (opens in new tab)" notice on external links), `aria-hidden` glyphs
+ * (the ↗ marker) and anything already excluded from the PDF.
+ */
+export const visibleText = (el: Element): string => {
+	const clone = el.cloneNode(true) as Element;
+	clone
+		.querySelectorAll('.sr-only, [aria-hidden="true"], [data-pdf-hide]')
+		.forEach((n) => n.remove());
+	return (clone.textContent || '').replace(/s+/g, ' ').trim();
+};
+
 export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 	const fragments: TextFragment[] = [];
 
@@ -73,8 +86,14 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 		// Node.ELEMENT_NODE
 		const el = node as Element;
 
-		// Skip elements marked for PDF exclusion
-		if (el.hasAttribute('data-pdf-hide')) return fragments;
+		// Skip elements marked for PDF exclusion, screen-reader-only text and
+		// aria-hidden glyphs: none of them is part of the printed record.
+		if (
+			el.hasAttribute('data-pdf-hide') ||
+			el.classList.contains('sr-only') ||
+			el.getAttribute('aria-hidden') === 'true'
+		)
+			return fragments;
 
 		const tagName = el.tagName;
 

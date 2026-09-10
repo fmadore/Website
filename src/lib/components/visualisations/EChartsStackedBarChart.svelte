@@ -15,6 +15,7 @@ ECharts Stacked Bar Chart component
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
+	import { describeStack } from '$lib/utils/chartDescriptions';
 	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
 
 	/** Series beyond this count are folded into "Other" rather than given hues. */
@@ -28,7 +29,10 @@ ECharts Stacked Bar Chart component
 		xAxisLabel = '',
 		yAxisLabel = '',
 		measure = '',
-		colorMap
+		colorMap,
+		itemSingular = 'publication',
+		itemPlural = 'publications',
+		description = undefined
 	}: {
 		data?: DataItem[];
 		keys?: string[];
@@ -60,6 +64,11 @@ ECharts Stacked Bar Chart component
 		 * stable for a fixed key set but not across one that grows.
 		 */
 		colorMap?: Record<string, string>;
+		/** What one segment counts — publications, or talks. */
+		itemSingular?: string;
+		itemPlural?: string;
+		/** Overrides the computed accessible description. */
+		description?: string;
 	} = $props();
 
 	// Container reference
@@ -146,6 +155,23 @@ ECharts Stacked Bar Chart component
 
 	const valueOf = (d: DataItem, key: string) =>
 		((d as Record<string, unknown>)[key] as number) || 0;
+
+	/**
+	 * The sentence a screen reader gets in place of ECharts' auto-generated
+	 * series dump, which walked every stack and read `NaN` at every gap.
+	 */
+	const ariaDescription = $derived(
+		description ??
+			describeStack(
+				measure || 'Chart',
+				data.map((d, i) => ({
+					label: chartCategories[i]!,
+					value: keys.reduce((sum, key) => sum + valueOf(d, key), 0)
+				})),
+				keys.length,
+				{ singular: itemSingular, plural: itemPlural }
+			)
+	);
 
 	const segmentStyle = $derived({
 		borderColor: resolvedColors.background,
@@ -272,7 +298,7 @@ ECharts Stacked Bar Chart component
 				const nonZeroParams = paramsArray.filter((param) => (param.value as number) > 0);
 
 				if (nonZeroParams.length === 0) {
-					return `${paramsArray[0]?.name ?? ''}<br/>No publications`;
+					return `${paramsArray[0]?.name ?? ''}<br/>No ${itemPlural}`;
 				}
 
 				let result = `${nonZeroParams[0]!.name}<br/>`;
@@ -364,7 +390,7 @@ ECharts Stacked Bar Chart component
 			splitLine: getEChartsSplitLineStyle(resolvedColors)
 		},
 		series: seriesData,
-		aria: getAriaConfig(showDecal),
+		aria: getAriaConfig(showDecal, ariaDescription),
 		backgroundColor: 'transparent',
 		...getChartMotion('settle')
 	});

@@ -14,7 +14,7 @@
 	<section class="upcoming-section">
 		<div class="upcoming-header">
 			<Icon icon="lucide:calendar" width="15" height="15" aria-hidden="true" />
-			<span class="eyebrow upcoming-header-label">Upcoming Talks and Events</span>
+			<h2 class="eyebrow upcoming-header-label">Upcoming</h2>
 		</div>
 
 		<ul class="entity-list">

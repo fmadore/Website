@@ -34,6 +34,7 @@ import {
 	renderRichText,
 	measureRichTextHeight,
 	trimFragments,
+	visibleText,
 	setPdfBaseFont,
 	type TextFragment
 } from '$lib/utils/pdfRichText';
@@ -188,7 +189,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	linkItems?.forEach((item) => {
 		const anchor = item.querySelector('a');
 		if (anchor) {
-			const label = anchor.textContent?.trim() || '';
+			const label = visibleText(anchor);
 			const href = anchor.getAttribute('href') || '';
 			const contact = classifyContactLink(href, label);
 

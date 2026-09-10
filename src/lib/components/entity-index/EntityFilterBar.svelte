@@ -61,6 +61,7 @@
 				type="button"
 				class="chip"
 				class:chip--selected={af.types.length === 0}
+				aria-label="All types"
 				onclick={() => filters.setValues('types', [])}
 			>
 				All <span class="chip-count">{totalEntries}</span>
@@ -70,6 +71,7 @@
 					type="button"
 					class="chip"
 					class:chip--selected={af.types.includes(type)}
+					aria-pressed={af.types.includes(type)}
 					onclick={() => filters.toggle('types', type)}
 					title={typeLabels[type] ?? type}
 				>
@@ -87,6 +89,7 @@
 				type="button"
 				class="language-opt"
 				class:language-opt--active={af.languages.length === 0}
+				aria-label="All languages"
 				onclick={() => filters.setValues('languages', [])}
 			>
 				All
@@ -111,7 +114,7 @@
 				aria-expanded={facetsOpen}
 				onclick={() => (facetsOpen = !facetsOpen)}
 			>
-				Advanced filters {facetsOpen ? '▴' : '▾'}
+				More filters <span aria-hidden="true">{facetsOpen ? '▴' : '▾'}</span>
 			</button>
 			{@render extraControls?.()}
 			<div class="sort-control" role="group" aria-label={sortAriaLabel}>
@@ -123,7 +126,7 @@
 					aria-pressed={activeSort === 'date'}
 					onclick={() => (activeSort = 'date')}
 				>
-					Year ↓
+					Date <span aria-hidden="true">↓</span>
 				</button>
 				<span class="sort-sep" aria-hidden="true">·</span>
 				<button

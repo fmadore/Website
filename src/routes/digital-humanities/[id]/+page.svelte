@@ -121,7 +121,8 @@
 										loading="lazy"
 										decoding="async"
 									/>
-								</a>
+									<span class="sr-only"> (opens in new tab)</span></a
+								>
 							{:else}
 								<img
 									src={item.src}
@@ -182,7 +183,9 @@
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 					<!-- eslint-disable svelte/no-at-html-tags -->
 					<a href={project.publication.url} target="_blank" rel="noopener noreferrer"
-						>{@html typesetQuotesInHtml(project.publication.text)}</a
+						>{@html typesetQuotesInHtml(project.publication.text)}<span class="sr-only">
+							(opens in new tab)</span
+						></a
 					>
 					<!-- eslint-enable svelte/no-at-html-tags -->
 					<!-- eslint-enable svelte/no-navigation-without-resolve -->
@@ -206,7 +209,9 @@
 									<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 									<!-- eslint-disable svelte/no-at-html-tags -->
 									<a href={review.url} target="_blank" rel="noopener noreferrer"
-										>{@html typesetQuotesInHtml(review.text)}</a
+										>{@html typesetQuotesInHtml(review.text)}<span class="sr-only">
+											(opens in new tab)</span
+										></a
 									>
 									<!-- eslint-enable svelte/no-at-html-tags -->
 									<!-- eslint-enable svelte/no-navigation-without-resolve -->

@@ -11,14 +11,18 @@
 		perPage = 10,
 		total = 0,
 		onchange,
-		label = 'entries',
+		// Accepted for call-site compatibility; the rendered noun is always "entries".
+		label: _label = 'entries',
 		scrollTargetId
 	}: {
 		page?: number;
 		perPage?: number;
 		total?: number;
 		onchange: (page: number) => void;
-		/** Plural noun for the count readout, e.g. "publications". */
+		/**
+		 * Accepted for call-site compatibility only: the count readout always
+		 * says "entries" (or "entry"), one noun across every index.
+		 */
 		label?: string;
 		/** Optional element id to scroll to the top of on page change. */
 		scrollTargetId?: string;
@@ -62,9 +66,9 @@
 
 {#if totalPages > 1}
 	<nav class="pagination" aria-label="Pagination">
-		<p class="pagination-status">
+		<p class="pagination-status" role="status">
 			Showing {from}–{to} of {total}
-			{label}
+			{total === 1 ? 'entry' : 'entries'}
 		</p>
 		<div class="pagination-controls">
 			<button
@@ -72,9 +76,8 @@
 				class="page-btn page-btn--step"
 				disabled={page <= 1}
 				onclick={() => go(page - 1)}
-				aria-label="Previous page"
 			>
-				← Prev
+				<span aria-hidden="true">←</span> Previous
 			</button>
 			{#each pages as p, i (p === null ? `gap-${i}` : p)}
 				{#if p === null}
@@ -97,9 +100,8 @@
 				class="page-btn page-btn--step page-btn--next"
 				disabled={page >= totalPages}
 				onclick={() => go(page + 1)}
-				aria-label="Next page"
 			>
-				Next →
+				Next <span aria-hidden="true">→</span>
 			</button>
 		</div>
 	</nav>

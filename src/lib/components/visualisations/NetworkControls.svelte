@@ -19,6 +19,8 @@
 		visibleKinds = $bindable<NetworkEdgeKind[]>([]),
 		searchQuery = $bindable(''),
 		searchLabel = 'Search',
+		searchPlaceholder = 'Type a name…',
+		entityLabel = 'nodes',
 		suggestions = []
 	}: {
 		topN?: number;
@@ -29,6 +31,10 @@
 		visibleKinds?: NetworkEdgeKind[];
 		searchQuery?: string;
 		searchLabel?: string;
+		/** Placeholder for the search field, in the section's own noun. */
+		searchPlaceholder?: string;
+		/** Plural noun for what this network counts: keywords, tags, collaborators… */
+		entityLabel?: string;
 		/** Node ids offered as <datalist> autocompletions. */
 		suggestions?: string[];
 	} = $props();
@@ -47,6 +53,22 @@
 			: [...visibleKinds, kind];
 	}
 
+	// Diacritic-insensitive matching, the same fold the network components use,
+	// applied to the vocabulary this control actually offers. A query that hits
+	// nothing gets said out loud rather than leaving the chart silently unchanged.
+	function fold(value: string): string {
+		return value
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/\p{Diacritic}/gu, '');
+	}
+	const trimmedQuery = $derived(searchQuery.trim());
+	const noMatches = $derived.by(() => {
+		const folded = fold(trimmedQuery);
+		if (!folded) return false;
+		return !suggestions.some((s) => fold(s).includes(folded));
+	});
+
 	// Stable across SSR/hydration (unlike Math.random()) — these pages prerender.
 	const uid = $props.id();
 	const datalistId = 'network-search-' + uid;
@@ -64,7 +86,8 @@
 			max={upperBound}
 			values={sliderValues}
 			onchange={(e) => (topN = e.detail.values[1])}
-			ariaLabel="Number of nodes to show"
+			ariaLabel="Number of {entityLabel} to show"
+			ariaValueText="{clampedTopN} of {maxN} {entityLabel}"
 		/>
 	</div>
 
@@ -100,7 +123,7 @@
 				type="text"
 				class="search-input"
 				list={datalistId}
-				placeholder="Type a name…"
+				placeholder={searchPlaceholder}
 				bind:value={searchQuery}
 				autocomplete="off"
 			/>
@@ -111,7 +134,7 @@
 					aria-label="Clear search"
 					onclick={() => (searchQuery = '')}
 				>
-					×
+					<span aria-hidden="true">×</span>
 				</button>
 			{/if}
 			<datalist id={datalistId}>
@@ -120,6 +143,9 @@
 				{/each}
 			</datalist>
 		</div>
+		<p class="dateline search-status" aria-live="polite">
+			{#if noMatches}No {entityLabel} match &ldquo;{trimmedQuery}&rdquo;.{/if}
+		</p>
 	</div>
 </div>
 
@@ -157,6 +183,13 @@
 		color: var(--color-accent);
 		font-weight: var(--font-weight-semibold);
 		font-variant-numeric: tabular-nums;
+	}
+
+	/* Zero-result note: sits under the field in the mono dateline voice, and
+	   stays in the DOM while empty so the live region can announce. */
+	.search-status {
+		margin: 0;
+		text-transform: none;
 	}
 
 	.search-field {

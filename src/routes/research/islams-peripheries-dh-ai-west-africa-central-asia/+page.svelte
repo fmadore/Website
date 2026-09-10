@@ -9,7 +9,8 @@
 		Co-directed with <a
 			href="https://www.zmo.de/en/people/dr-aksana-ismailbekova"
 			target="_blank"
-			rel="noopener noreferrer">Aksana Ismailbekova</a
+			rel="noopener noreferrer"
+			>Aksana Ismailbekova<span class="sr-only"> (opens in new tab)</span></a
 		>, this project tests what artificial intelligence (AI) can do with two multilingual collections
 		on Islamic communities in West Africa and Central Asia. Between them they hold thousands of
 		documents whose volume and range of languages have kept most of the material out of reach.
@@ -23,7 +24,7 @@
 		and post-Soviet secularism in Central Asia.
 	</p>
 
-	<h2>Three Aims</h2>
+	<h2>Three aims</h2>
 	<ol>
 		<li>
 			<strong>From documents to structured data.</strong> Multimodal LLMs now outperform specialised OCR
@@ -34,7 +35,7 @@
 		<li>
 			<strong>Access through MCP and a chatbot.</strong> We plan a
 			<a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer"
-				>Model Context Protocol</a
+				>Model Context Protocol<span class="sr-only"> (opens in new tab)</span></a
 			> (MCP) server that gives any AI assistant a single interface onto both collections, with a companion
 			“skill” that encodes curatorial judgement: search strategies, transliteration variants, documented
 			bias. A researcher should then be able to put one question in natural language to both collections
@@ -49,21 +50,22 @@
 			<a
 				href="https://github.com/fmadore/AI-NER-Validator"
 				target="_blank"
-				rel="noopener noreferrer">human-in-the-loop validation</a
+				rel="noopener noreferrer"
+				>human-in-the-loop validation<span class="sr-only"> (opens in new tab)</span></a
 			>, and all code, data, and publications are to be released open access under FAIR principles.
 		</li>
 	</ol>
 
-	<h2>Two “Peripheral” Collections</h2>
+	<h2>Two “peripheral” collections</h2>
 	<p>
 		Both are held at <a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
-			>Leibniz-Zentrum Moderner Orient (ZMO)</a
+			>Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only"> (opens in new tab)</span></a
 		>:
 	</p>
 	<ul>
 		<li>
 			The <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
-				><em>Islam West Africa Collection</em></a
+				><em>Islam West Africa Collection</em><span class="sr-only"> (opens in new tab)</span></a
 			>: 14,700+ items (newspapers, Islamic publications, 9,315 minutes of Hausa audio, photographs)
 			covering Islam and Muslim communities in six West African countries from the 1960s onward.
 		</li>
@@ -71,7 +73,8 @@
 			The <a
 				href="https://www.zmo.de/en/library/special-collection-1/translate-to-english-reinhard-eisener-bestand"
 				target="_blank"
-				rel="noopener noreferrer"><em>Reinhard Eisener Collection</em></a
+				rel="noopener noreferrer"
+				><em>Reinhard Eisener Collection</em><span class="sr-only"> (opens in new tab)</span></a
 			>: 1,546 documents across 50 archival boxes in eight languages (Russian, Uzbek, Tajik,
 			Persian, Turki, English, German, French), on the Emirate of Bukhara (1917&ndash;30), early
 			Soviet governance, and the Tajik civil war (1992&ndash;97).

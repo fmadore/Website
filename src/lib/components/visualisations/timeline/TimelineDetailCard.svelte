@@ -18,6 +18,18 @@
 
 	let { item, index, total, onprevious, onnext, onclose }: Props = $props();
 
+	/**
+	 * Built in one expression so the en dash stays closed up: split across
+	 * template lines, Svelte's whitespace handling rendered "2018 –2020".
+	 */
+	const formatRange = (entry: TimelineItem): string => {
+		const start = entry.startDate.getFullYear();
+		const end = entry.endDate?.getFullYear();
+		if (end !== undefined && end !== start) return `${start}–${end}`;
+		if (entry.isOngoing) return `${start}–present`;
+		return String(start);
+	};
+
 	// Contrast-aware ink/paper icon color for the category tile (no hardcoded
 	// white). Tracks the theme so the resolved --color-timeline-* value is
 	// re-read when daylight/midnight toggles.
@@ -43,7 +55,7 @@
 	}
 </script>
 
-<div class="detail-card surface-card">
+<div class="detail-card surface-card" role="region" aria-label="Selected record">
 	<!-- Category Icon & Header -->
 	<div class="card-content-wrapper">
 		<div class="category-icon-large" style="--_cat-color: {getCategoryColor(item.category)};">
@@ -57,8 +69,8 @@
 
 		<div class="card-main-info">
 			<div class="card-header-row">
-				<h2 class="detail-title">{item.title}</h2>
-				<button class="close-btn-minimal" onclick={onclose} aria-label="Close">
+				<h3 class="detail-title">{item.title}</h3>
+				<button class="close-btn-minimal" onclick={onclose} aria-label="Close record details">
 					<Icon icon="lucide:x" width="18" height="18" />
 				</button>
 			</div>
@@ -71,14 +83,8 @@
 						class="meta-swatch"
 						style="--_cat-color: {getCategoryColor(item.category)};"
 						aria-hidden="true"
-					></span>
-					{item.startDate.getFullYear()}
-					{#if item.endDate && item.endDate.getFullYear() !== item.startDate.getFullYear()}
-						–{item.endDate.getFullYear()}
-					{:else if item.isOngoing}
-						–Present
-					{/if}
-				</span>
+					></span>{formatRange(item)}</span
+				>
 				<span class="meta-dot" aria-hidden="true">•</span>
 				<span class="detail-subtitle">{item.subtitle || getCategoryLabel(item.category)}</span>
 			</div>
@@ -91,7 +97,12 @@
 
 	<!-- Navigation Footer -->
 	<div class="detail-navigation">
-		<button class="nav-btn previous" onclick={onprevious} disabled={index === 0}>
+		<button
+			class="nav-btn previous"
+			onclick={onprevious}
+			disabled={index === 0}
+			aria-label="Previous record"
+		>
 			<Icon icon="lucide:chevron-left" width="18" height="18" />
 			<span>Previous</span>
 		</button>
@@ -102,7 +113,12 @@
 			<span class="total">{total}</span>
 		</span>
 
-		<button class="nav-btn next" onclick={onnext} disabled={index === total - 1}>
+		<button
+			class="nav-btn next"
+			onclick={onnext}
+			disabled={index === total - 1}
+			aria-label="Next record"
+		>
 			<span>Next</span>
 			<Icon icon="lucide:chevron-right" width="18" height="18" />
 		</button>

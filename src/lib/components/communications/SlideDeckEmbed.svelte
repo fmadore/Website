@@ -82,7 +82,7 @@
 			</button>
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external deck on the slides subdomain -->
 			<a class="deck-chrome-btn" href={src} target="_blank" rel="noopener noreferrer">
-				<span>Open deck</span>
+				<span>Open deck<span class="sr-only"> (opens in new tab)</span></span>
 				<Icon icon="lucide:arrow-up-right" width="13" height="13" aria-hidden="true" />
 			</a>
 		</span>
@@ -103,7 +103,7 @@
 				type="button"
 				class="deck-facade"
 				onclick={activate}
-				aria-label="Load and view the slide deck for {title}"
+				aria-label="View slides: {title}"
 			>
 				<span class="deck-facade-plate">
 					{#if posterSrc}

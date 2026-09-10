@@ -98,8 +98,8 @@
 </script>
 
 <SEO
-	title="Curriculum Vitae - Frédérick Madore"
-	description="Curriculum Vitae of Frédérick Madore, Research Fellow at ZMO, detailing publications, communications, activities, and fieldwork in West Africa."
+	title="Curriculum Vitae | Frédérick Madore"
+	description="Curriculum Vitae of Frédérick Madore, Research Fellow at ZMO, detailing publications, talks, activities, and fieldwork in West Africa."
 	keywords="CV, curriculum vitae, Frédérick Madore, research fellow, publications, academic career, Islam, West Africa"
 	canonical="https://www.frederickmadore.com/cv"
 	{breadcrumbs}

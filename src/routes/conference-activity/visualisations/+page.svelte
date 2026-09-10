@@ -249,7 +249,7 @@
 	type CorpusStat = { label: string; value: string; accent?: boolean };
 
 	const corpusStats = $derived<CorpusStat[]>([
-		{ label: 'Activities', value: String(allCommunications.length), accent: true },
+		{ label: 'Talks', value: String(allCommunications.length), accent: true },
 		{ label: 'Years covered', value: `${firstYear}–${lastYear}` },
 		{ label: 'Countries', value: String(countryData.length) },
 		{ label: 'Co-presenters', value: String(copresenterCount) },
@@ -259,7 +259,7 @@
 
 	// ---------- Section register ----------
 
-	/** `12 activities`, or an empty string when there is nothing to count. */
+	/** `12 talks`, or an empty string when there is nothing to count. */
 	const countOf = (n: number, singular: string, plural = `${singular}s`) =>
 		n > 0 ? `${n} ${n === 1 ? singular : plural}` : '';
 
@@ -272,25 +272,25 @@
 		perYear: {
 			id: 'per-year',
 			no: '§ 1',
-			title: 'Activities per year, by type',
-			count: countOf(allCommunications.length, 'activity', 'activities')
+			title: 'Talks per year, by type',
+			count: countOf(allCommunications.length, 'talk')
 		},
 		byType: {
 			id: 'by-type',
 			no: '§ 2',
-			title: 'Activities by type',
+			title: 'Talks by type',
 			count: countOf(typeDistribution.length, 'type')
 		},
 		languages: {
 			id: 'languages',
 			no: '§ 3',
-			title: 'Activities by language',
+			title: 'Talks by language',
 			count: countOf(languageData.length, 'language')
 		},
 		countries: {
 			id: 'countries',
 			no: '§ 4',
-			title: 'Activities by country',
+			title: 'Talks by country',
 			count: countOf(countryData.length, 'country', 'countries')
 		},
 		tags: {
@@ -320,7 +320,7 @@
 		projects: {
 			id: 'projects',
 			no: '§ 9',
-			title: 'Activities by research project',
+			title: 'Talks by research project',
 			count: countOf(totalProjects, 'project')
 		},
 		locations: {
@@ -329,7 +329,7 @@
 			title: 'Conference venue locations',
 			count:
 				locationMapData.length > 0
-					? `${locationMapData.length} countries, ${totalMapped} activities`
+					? `${countOf(locationMapData.length, 'country', 'countries')}, ${countOf(totalMapped, 'talk')}`
 					: ''
 		},
 		timeline: {
@@ -356,7 +356,7 @@
 
 <SEO
 	title="Talks & Events Visualisations | Frédérick Madore"
-	description="The communications record counted: activities per year and type, languages, countries, tags, co-presenters, institutions and venues."
+	description="The record of talks and events counted: talks per year and type, languages, countries, tags, co-presenters, institutions and venues."
 	keywords="conferences, presentations, visualisations, co-presenters, research projects, map, Frédérick Madore"
 />
 
@@ -367,9 +367,9 @@
 
 	<div class="viz-masthead">
 		<PageIntro>
-			The record of talks and events, counted: {allCommunications.length} activities over {yearSpan}
-			years, read by year, type, language, country and collaborator. Every figure below is computed from
-			the same data files that set the index.
+			The record of talks and events, counted: {allCommunications.length} talks over {yearSpan} years,
+			read by year, type, language, country and collaborator. Every figure below is computed from the
+			same data files that set the index.
 		</PageIntro>
 
 		<aside class="corpus-aside" aria-labelledby="record-in-numbers">
@@ -389,39 +389,44 @@
 
 	<VizSection
 		{...sections.perYear}
-		description="Every activity counted in the year it took place and stacked by type, from the date and type recorded on each entry."
+		description="Every talk counted in the year it took place and stacked by type, from the date and type recorded on each entry."
 		variant="stacked"
 		height="450px"
 		hasData={perYearStackedData.length > 0 && communicationTypes.length > 0}
-		empty="No activity data available to display for this visualisation."
+		empty="No talks recorded."
 	>
 		<EChartsStackedBarChart
 			data={perYearStackedData}
 			keys={formattedTypes}
 			colorMap={communicationTypeColors}
-			measure="Activities per year by type"
+			measure="Talks per year by type"
+			itemSingular="talk"
+			itemPlural="talks"
 		/>
 	</VizSection>
 
 	<VizSection
 		{...sections.byType}
-		description="The whole record ranked by kind of activity, counted from the type recorded on each entry."
+		description="The whole record ranked by kind of talk, counted from the type recorded on each entry."
 		height="{Math.max(350, typeDistribution.length * 40 + 70)}px"
 		placeholderHeight="350px"
 		hasData={typeDistribution.length > 0}
-		empty="No type data available to display for this visualisation."
+		empty="No talk types recorded."
 	>
 		<EChartsHorizontalBarChart
 			data={typeDistribution}
 			xAccessor={getTypeCount}
 			yAccessor={getTypeName}
-			measure="Activities by type"
+			measure="Talks by type"
+			itemSingular="type"
+			itemPlural="types"
+			descriptionLead="Most talks"
 		/>
 	</VizSection>
 
 	<VizSection
 		{...sections.languages}
-		description="The share of the record delivered in each language. An activity given in two languages is counted once in each, so the bars are shares of the language tally rather than of the activity count."
+		description="The share of the record delivered in each language. A talk given in two languages is counted once in each, so the bars are shares of the language tally rather than of the talk count."
 	>
 		{#if languageShares.length > 0}
 			<ul class="proportion-ledger">
@@ -436,29 +441,32 @@
 				{/each}
 			</ul>
 		{:else}
-			<p class="viz-empty">No language data available to display for this visualisation.</p>
+			<p class="viz-empty">No languages recorded.</p>
 		{/if}
 	</VizSection>
 
 	<VizSection
 		{...sections.countries}
-		description="Where the activities took place, counted from the country recorded on each entry."
+		description="Where the talks took place, counted from the country recorded on each entry."
 		height="{Math.max(350, countryData.length * 32 + 70)}px"
 		placeholderHeight="400px"
 		hasData={countryData.length > 0}
-		empty="No country data available to display for this visualisation."
+		empty="No countries recorded."
 	>
 		<EChartsHorizontalBarChart
 			data={countryData}
 			xAccessor={getCountryCount}
 			yAccessor={getCountryName}
-			measure="Activities by country"
+			measure="Talks by country"
+			itemSingular="country"
+			itemPlural="countries"
+			descriptionLead="Most talks"
 		/>
 	</VizSection>
 
 	<VizSection
 		{...sections.tags}
-		description="The tags assigned to the activities, the sixty most frequent set at a size proportional to the number of activities carrying each. Select a term to open the index filtered to it."
+		description="The tags assigned to the talks, the sixty most frequent set at a size proportional to the number of talks carrying each. Select a term to open the index filtered to it."
 	>
 		{#if tagTerms.length > 0}
 			<div class="key-terms">
@@ -468,19 +476,19 @@
 						href="{base}/conference-activity?tag={encodeURIComponent(term.word)}"
 						rel="nofollow"
 						style="font-size: {term.size}px;"
-						title="{term.count} activities">{term.word}</a
+						title={countOf(term.count, 'talk')}>{term.word}</a
 					>
 				{/each}
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</div>
 		{:else}
-			<p class="viz-empty">No tag data available to display for this visualisation.</p>
+			<p class="viz-empty">No tags recorded.</p>
 		{/if}
 	</VizSection>
 
 	<VizSection
 		{...sections.tagMatrix}
-		description="Each cell is a pair of tags that appear together on the same activity; the darker the cell, the more activities carry both. Rows are ordered so related tags sit next to each other, gathering the thematic blocks along the diagonal. Singletons and one-off pairings are omitted."
+		description="Each cell is a pair of tags that appear together on the same talk; the darker the cell, the more talks carry both. Rows are ordered so related tags sit next to each other, gathering the thematic blocks along the diagonal. Singletons and one-off pairings are omitted."
 		variant="matrix"
 		placeholderHeight="400px"
 		hasData={tagNetwork.nodes.length > 0}
@@ -494,6 +502,8 @@
 					maxN={tagNetwork.nodes.length}
 					minN={10}
 					searchLabel="Search tags"
+					searchPlaceholder="Type a tag…"
+					entityLabel="tags"
 					suggestions={tagSuggestions}
 				/>
 			{/if}
@@ -505,22 +515,22 @@
 			highlightQuery={tagSearch}
 			filename="tag-cooccurrence-matrix"
 			labels={{
-				itemSingular: 'activity',
-				itemPlural: 'Activities',
+				itemSingular: 'talk',
+				itemPlural: 'Talks',
 				entityNode: 'Tags',
-				sharedLabel: 'Activities sharing both'
+				sharedLabel: 'Talks sharing both'
 			}}
 		/>
 	</VizSection>
 
 	<VizSection
 		{...sections.copresenters}
-		description="People who have co-presented, co-organised panels, or contributed papers alongside me, ranked by how many communications we share. The arcs join pairs who appeared together in the same communication — my own link to each of them is a given, so it is not drawn."
+		description="People who have co-presented, co-organised panels, or contributed papers alongside me, ranked by how many talks we share. The arcs join pairs who appeared together in the same talk. My own link to each of them is a given, so it is not drawn."
 		variant="arc"
 		height="{copresenterArcHeight}px"
 		placeholderHeight="400px"
 		hasData={copresenterCount > 0}
-		empty="No co-presenter data available to display for this visualisation."
+		empty="No co-presenters recorded."
 	>
 		{#snippet controls()}
 			{#if copresenterCount > 0}
@@ -531,6 +541,8 @@
 					maxN={copresenterCount}
 					edgeKindOptions={copresenterEdgeOptions}
 					searchLabel="Search co-presenters"
+					searchPlaceholder="Type a name…"
+					entityLabel="co-presenters"
 					suggestions={copresenterSuggestions}
 				/>
 			{/if}
@@ -544,21 +556,22 @@
 			highlightQuery={copresenterSearch}
 			filename="copresenter-arcs"
 			labels={{
-				itemSingular: 'communication',
-				itemPlural: 'Communications',
+				itemSingular: 'talk',
+				itemPlural: 'Talks',
+				collaboratorNode: 'Co-presenters',
 				peerEdge: 'Co-presenter connection',
-				peerShared: 'Shared communications'
+				peerShared: 'Shared talks'
 			}}
 		/>
 	</VizSection>
 
 	<VizSection
 		{...sections.institutions}
-		description="Institutions are linked when their members appeared in the same panel, workshop, or event. Node size reflects how many activities each institution took part in. This one stays a map rather than a matrix: the question here is which institutions cluster together, and spatial grouping answers it more directly than a grid of pairs."
+		description="Institutions are linked when their members appeared in the same panel, workshop, or event. Node size reflects how many talks each institution took part in. This one stays a map rather than a matrix: the question here is which institutions cluster together, and spatial grouping answers it more directly than a grid of pairs."
 		variant="network"
 		height="500px"
 		hasData={institutionNetwork.nodes.length > 0}
-		empty="No institution data available to display for this visualisation."
+		empty="No institutions recorded."
 	>
 		{#snippet controls()}
 			{#if institutionNetwork.nodes.length > 0}
@@ -567,6 +580,8 @@
 					bind:searchQuery={institutionSearch}
 					maxN={institutionNetwork.nodes.length}
 					searchLabel="Search institutions"
+					searchPlaceholder="Type an institution…"
+					entityLabel="institutions"
 					suggestions={institutionSuggestions}
 				/>
 			{/if}
@@ -579,47 +594,54 @@
 			highlightQuery={institutionSearch}
 			filename="institution-network"
 			labels={{
-				itemSingular: 'activity',
-				itemPlural: 'Activities',
+				itemSingular: 'talk',
+				itemPlural: 'Talks',
 				entityNode: 'Institutions',
 				cooccurrenceEdge: 'Shared event',
-				cooccurrenceShared: 'Activities in common'
+				cooccurrenceShared: 'Talks in common'
 			}}
 		/>
 	</VizSection>
 
 	<VizSection
 		{...sections.projects}
-		description="Each outer block is a research project; the inner cells are the kinds of activity it produced, sized by count. Select a block to zoom into it."
+		description="Each outer block is a research project; the inner cells are the kinds of talk it produced, sized by count. Select a block to zoom into it."
 		variant="treemap"
 		placeholderHeight="500px"
 		hasData={projectTreemapData.length > 0}
-		empty="No project data available to display for this visualisation."
+		empty="No project data recorded."
 	>
-		<EChartsTreemap data={projectTreemapData} title="Activities by research project" />
+		<EChartsTreemap
+			data={projectTreemapData}
+			title="Talks by research project"
+			itemSingular="talk"
+			itemPlural="talks"
+			entrySingular="type"
+			entryPlural="types"
+		/>
 	</VizSection>
 
 	<VizSection
 		{...sections.locations}
-		description="The countries of the venues, taken from the location recorded on each activity. Switch between proportional markers and country shading; select a country to list its titles and cities."
+		description="The countries of the venues, taken from the location recorded on each talk. Switch between proportional markers and country shading; select a country to list its titles and cities."
 		variant="map"
 		height="500px"
 		placeholderHeight="400px"
 		hasData={locationMapData.length > 0}
-		empty="No location data available to display for this visualisation."
+		empty="No venue locations recorded."
 	>
-		<LocationMap data={locationMapData} basePath="/communications" itemLabel="activity" />
+		<LocationMap data={locationMapData} basePath="/communications" itemLabel="talk" />
 	</VizSection>
 
 	<VizSection
 		{...sections.timeline}
-		description="Each research project drawn across the years it ran, with a marker for every activity delivered within it."
+		description="Each research project drawn across the years it ran, with a marker for every talk delivered within it."
 		variant="gantt"
 		height="450px"
 		hasData={projectTimelineData.length > 0}
-		empty="No project data available to display for this visualisation."
+		empty="No project data recorded."
 	>
-		<EChartsGanttChart data={projectTimelineData} />
+		<EChartsGanttChart data={projectTimelineData} itemSingular="talk" itemPlural="talks" />
 	</VizSection>
 </div>
 

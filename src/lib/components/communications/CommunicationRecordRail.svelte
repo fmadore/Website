@@ -101,6 +101,15 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	const additionalUrls = $derived(
 		communication.additionalUrls?.filter((link) => link.url && link.label) ?? []
 	);
+
+	// Plate caption — "Fig. 1." is the figure's number, so the stop belongs to it
+	// and the caption follows as its own sentence. Authored captions that already
+	// end in punctuation keep theirs rather than collecting a second full stop.
+	const plateFigCaption = $derived(
+		plateCaption
+			? `Fig. 1. ${plateCaption}${/[.!?…]$/.test(plateCaption.trim()) ? '' : '.'}`
+			: undefined
+	);
 </script>
 
 {#if plateSrc}
@@ -116,8 +125,8 @@ to emit, and widening it for one button would be the wrong place to decide that.
 			loading="lazy"
 			decoding="async"
 		/>
-		{#if plateCaption}
-			<figcaption class="plate-caption">Fig. 1 — {plateCaption}.</figcaption>
+		{#if plateFigCaption}
+			<figcaption class="plate-caption">{plateFigCaption}</figcaption>
 		{/if}
 	</figure>
 {/if}
@@ -136,11 +145,17 @@ to emit, and widening it for one button would be the wrong place to decide that.
 				rel="noopener noreferrer"
 				class="btn btn-accent btn-block"
 			>
-				{communication.urlLabel ?? 'Access Presentation'} ↗
+				{communication.urlLabel ?? 'Open presentation'}<span aria-hidden="true">&nbsp;↗</span><span
+					class="sr-only"
+				>
+					(opens in new tab)</span
+				>
 			</a>
 		{/if}
 		{#if hasSlides}
-			<a href="#slides" class="btn btn-outline-primary btn-block">View slides ↓</a>
+			<a href="#slides" class="btn btn-outline-primary btn-block"
+				>View slides<span aria-hidden="true">&nbsp;↓</span></a
+			>
 		{/if}
 		{#each additionalUrls as link (link.url)}
 			<a
@@ -149,7 +164,9 @@ to emit, and widening it for one button would be the wrong place to decide that.
 				rel="noopener noreferrer"
 				class="btn btn-outline-secondary btn-block"
 			>
-				{link.label} ↗
+				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
+					(opens in new tab)</span
+				>
 			</a>
 		{/each}
 	</div>

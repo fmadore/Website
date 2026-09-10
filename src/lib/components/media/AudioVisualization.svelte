@@ -27,14 +27,12 @@
 
 	{#if title}
 		<div class="audio-content">
-			<h4 class="audio-title">{title}</h4>
 			<p class="audio-description">
 				<a href="https://notebooklm.google/audio" target="_blank" rel="noopener noreferrer"
-					>Google NotebookLM</a
+					>Google NotebookLM<span class="sr-only"> (opens in new tab)</span></a
 				>
-				is an AI-powered research assistant that can generate podcast-style discussions from uploaded
-				documents. All the publications from this research project were fed into NotebookLM to create
-				this AI-generated conversation.
+				generates spoken discussions from uploaded documents. This conversation was generated from the
+				publications of this project; it is synthetic, not a recorded interview.
 			</p>
 		</div>
 	{/if}
@@ -92,15 +90,6 @@
 	/* Content styling */
 	.audio-content {
 		text-align: center;
-	}
-
-	.audio-title {
-		color: var(--color-text-emphasis);
-		font-family: var(--font-family-display);
-		font-size: var(--font-size-xl);
-		font-weight: var(--font-weight-semibold);
-		margin: 0 0 var(--space-2) 0;
-		line-height: var(--line-height-tight);
 	}
 
 	.audio-description {
@@ -166,10 +155,6 @@
 
 		.waveform {
 			margin-bottom: var(--space-6);
-		}
-
-		.audio-title {
-			font-size: var(--font-size-lg);
 		}
 
 		.audio-description {

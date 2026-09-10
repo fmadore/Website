@@ -240,12 +240,12 @@ co-director, programme or grant simply drop those rows.
 			<section class="section">
 				<div class="section-head">
 					<span class="section-no" aria-hidden="true">♪</span>
-					<h2 class="section-title">Podcast discussion</h2>
+					<h2 class="section-title">Podcast discussion (AI-generated)</h2>
 				</div>
 				<MediaPlayer
 					src="{base}/{audioSrc}"
 					type="audio"
-					title="Google NotebookLM Podcast Discussion"
+					title="Google NotebookLM discussion"
 					surface=""
 					showControls={true}
 				/>

@@ -119,10 +119,12 @@ its share — so the step is a convenience, not the only route.
 					<div class="log-empty">
 						<p class="log-empty-line">No activities are filed under {year}.</p>
 						<p class="log-empty-note">
-							The log runs {allYears[allYears.length - 1]} — {allYears[0]}.
+							The log runs {allYears[allYears.length - 1]}–{allYears[0]}.
 						</p>
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-						<a class="log-empty-clear" href={resolve('/activities')}>All activities →</a>
+						<a class="log-empty-clear" href={resolve('/activities')}>
+							All activities <span aria-hidden="true">→</span>
+						</a>
 					</div>
 				{/if}
 
@@ -136,7 +138,8 @@ its share — so the step is a convenience, not the only route.
 							class="year-step-link"
 							href={resolve('/activities/year/[year]', { year: String(olderYear) })}
 						>
-							← {olderYear}
+							<span aria-hidden="true">←</span>
+							{olderYear}
 						</a>
 					{:else}
 						<span class="year-step-gap" aria-hidden="true">← {year}</span>
@@ -151,7 +154,8 @@ its share — so the step is a convenience, not the only route.
 							class="year-step-link"
 							href={resolve('/activities/year/[year]', { year: String(newerYear) })}
 						>
-							{newerYear} →
+							{newerYear}
+							<span aria-hidden="true">→</span>
 						</a>
 					{:else}
 						<span class="year-step-gap" aria-hidden="true">{year} →</span>
@@ -164,7 +168,7 @@ its share — so the step is a convenience, not the only route.
 			     thing, and here the current thing is where the reader is. -->
 			<aside class="activities-aside">
 				<section class="aside-block">
-					<h2 class="aside-title">Browse by year</h2>
+					<h2 class="aside-title">Years</h2>
 					<ul class="year-meter">
 						{#each allYears as y (y)}
 							{@const count = countForYear(y)}
@@ -193,9 +197,9 @@ its share — so the step is a convenience, not the only route.
 
 				<section class="aside-block aside-footer">
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->
-					<a href="{base}/rss.xml" class="aside-rss">RSS Feed ↗</a>
+					<a href="{base}/rss.xml" class="aside-rss">RSS feed</a>
 					{#if updatedLabel}
-						<span class="aside-updated">Updated {updatedLabel}</span>
+						<span class="aside-updated">Last entry {updatedLabel}</span>
 					{/if}
 				</section>
 			</aside>

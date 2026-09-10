@@ -48,7 +48,7 @@
 </script>
 
 <SEO
-	title="Guest Lectures | Frédérick Madore"
+	title="Guest lectures | Frédérick Madore"
 	description="Guest lectures and invited talks on Islam, West Africa and historical research methods, delivered by Frédérick Madore in colleagues' undergraduate and graduate courses."
 	keywords="guest lectures, invited talks, teaching, African history, Islam, West Africa, Frédérick Madore"
 	pageType="CollectionPage"
@@ -58,7 +58,7 @@
 
 <div class="container py-8">
 	<Breadcrumb items={breadcrumbItems} />
-	<PageHeader title="Guest Lectures" />
+	<PageHeader title="Guest lectures" />
 
 	<PageIntro>
 		Invited talks and lectures delivered in colleagues’ courses, listed by host institution and

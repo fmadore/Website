@@ -55,7 +55,6 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	let activePopup: Popup | null = null;
 	let viewMode = $state<MapViewMode>('markers');
 	let choroplethStatus = $state<ChoroplethStatus>('idle');
-	let choroplethError = $state<string | null>(null);
 	let boundaryCache: CountryBoundaryCollection | null = null;
 	let boundaryPromise: Promise<CountryBoundaryCollection> | null = null;
 	let viewRenderId = 0;
@@ -370,7 +369,6 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		// Markers remain as a useful fallback while the lazy boundary request is in flight.
 		if (!boundaryCache) addMarkers();
 		choroplethStatus = 'loading';
-		choroplethError = null;
 
 		try {
 			const boundaries = await loadCountryBoundaries();
@@ -439,8 +437,9 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		} catch (error) {
 			if (renderId !== viewRenderId || viewMode !== 'choropleth') return;
 			choroplethStatus = 'error';
-			choroplethError =
-				error instanceof Error ? error.message : 'Country boundaries could not be loaded.';
+			// The reader is told what still works; the raw failure is a developer's
+			// concern, not a sentence to put on the plate.
+			if (import.meta.env.DEV) console.error('Country boundaries failed to load:', error);
 		}
 	}
 
@@ -448,7 +447,6 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		const renderId = ++viewRenderId;
 		if (viewMode === 'markers') {
 			choroplethStatus = 'idle';
-			choroplethError = null;
 			addMarkers();
 			return;
 		}
@@ -514,7 +512,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 						type="button"
 						class:active={viewMode === 'choropleth'}
 						aria-pressed={viewMode === 'choropleth'}
-						onclick={() => selectViewMode('choropleth')}>Choropleth</button
+						onclick={() => selectViewMode('choropleth')}>Country shading</button
 					>
 				</div>
 
@@ -522,7 +520,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 					<p class="map-mode-status" aria-live="polite">Loading country boundaries…</p>
 				{:else if viewMode === 'choropleth' && choroplethStatus === 'error'}
 					<div class="map-mode-status map-mode-error" aria-live="polite">
-						<span>Country shading is unavailable. {choroplethError}</span>
+						<span>Country shading could not be loaded. The marker view still works.</span>
 						<button type="button" onclick={retryChoropleth}>Try again</button>
 					</div>
 				{/if}
@@ -550,11 +548,10 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		{/if}
 	</div>
 	{#if data.length > 0 && mappableData.length < data.length}
+		{@const unmapped = data.length - mappableData.length}
 		<p class="unmapped-note">
-			Note: {data.length - mappableData.length} location{data.length - mappableData.length > 1
-				? 's'
-				: ''}
-			not shown (coordinates not available)
+			{unmapped}
+			{unmapped === 1 ? 'location' : 'locations'} not shown: no coordinates recorded.
 		</p>
 	{/if}
 </div>

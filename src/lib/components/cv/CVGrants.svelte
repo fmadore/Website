@@ -17,7 +17,8 @@
 				href={grant.url}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="font-medium">{typesetQuotes(grant.title)}</a
+				class="font-medium"
+				>{typesetQuotes(grant.title)}<span class="sr-only"> (opens in new tab)</span></a
 			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="font-medium"
 				>{typesetQuotes(grant.title)}</span
 			>{/if}, {typesetQuotes(grant.funder)}.

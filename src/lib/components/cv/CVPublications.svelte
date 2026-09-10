@@ -92,13 +92,15 @@
 									class="doi-link"
 									><Icon icon="academicons:doi" class="doi-link-icon" aria-hidden="true" /><span
 										class="doi-link-text">doi:{pub.doi}</span
-									></a
+									><span class="sr-only"> (opens in new tab)</span></a
 								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.url && !pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="ml-1 text-primary hover:underline text-sm">[Link]</a
+									aria-label="Link to {pub.title} (opens in new tab)"
+									class="ml-1 text-primary hover:underline text-sm"
+									>Link<span aria-hidden="true">&nbsp;↗</span></a
 								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.reviewedBy && pub.reviewedBy.length > 0}
 								<p class="text-sm mt-1">
@@ -110,7 +112,9 @@
 											target="_blank"
 											rel="noopener noreferrer"
 											class="text-primary review-link no-underline"
-											>{typesetQuotes(review.journal)}</a
+											>{typesetQuotes(review.journal)}<span class="sr-only">
+												(opens in new tab)</span
+											></a
 										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
 									{/each}
 								</p>
@@ -135,7 +139,9 @@
 									href={pub.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="ml-1 text-primary hover:underline text-sm">[Link]</a
+									aria-label="Link to {pub.title} (opens in new tab)"
+									class="ml-1 text-primary hover:underline text-sm"
+									>Link<span aria-hidden="true">&nbsp;↗</span></a
 								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 						</CVEntry>
 					{/each}

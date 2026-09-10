@@ -128,7 +128,9 @@
 	// project, so a filtered catalogue really does reach one — and "1 projects"
 	// on the page that exists to look precise is not a rounding error.
 	const catalogueCount = $derived(
-		`${catalogueProjects.length} ${catalogueProjects.length === 1 ? 'project' : 'projects'}`
+		selectedSkill
+			? `${catalogueProjects.length} ${catalogueProjects.length === 1 ? 'project' : 'projects'}`
+			: `${catalogueProjects.length} of ${projectCount} projects`
 	);
 
 	// Client-side pagination over the catalogue. Reset to page 1 whenever the
@@ -219,7 +221,9 @@
 						</h3>
 						<p class="dossier-desc">{leadProject.shortDescription}</p>
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved route -->
-						<a class="dossier-action" href={leadProject.href}>Explore project →</a>
+						<a class="dossier-action" href={leadProject.href}>
+							View project <span aria-hidden="true">→</span>
+						</a>
 					</div>
 				</article>
 
@@ -289,12 +293,15 @@
 				<p class="filter-note">
 					<span class="filter-note-label">Filtered by method</span>
 					<span class="filter-note-value">{selectedSkill}</span>
-					<a href={resolve('/digital-humanities')} class="filter-note-clear">Clear ✕</a>
+					<a href={resolve('/digital-humanities')} class="filter-note-clear">
+						Clear all <span aria-hidden="true">✕</span>
+					</a>
 				</p>
 			{/if}
 
 			{#if catalogueProjects.length === 0}
-				<p class="catalogue-empty">No projects use this method.</p>
+				<p class="catalogue-empty">No projects are filed under “{selectedSkill}”.</p>
+				<p class="catalogue-empty">The catalogue holds {projectCount} projects.</p>
 			{:else}
 				<div class="ledger ledger--ruled" id="dh-catalogue">
 					{#each pagedProjects as project (project.id)}

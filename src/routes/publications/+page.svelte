@@ -158,12 +158,12 @@
 	<header class="index-hero rule-masthead">
 		<div class="index-hero-lede">
 			<p class="eyebrow index-eyebrow">
-				Index · {totalEntries} Entries · {minYear} — {maxYear}
+				Index · {totalEntries} entries · {minYear}–{maxYear}
 			</p>
 			<h1 class="index-title">Publications</h1>
 			<p class="standfirst">
 				Books, journal articles, chapters, special issues, working papers and reports on Islam and
-				Muslim societies in West Africa — the full record, set as a working bibliography.
+				Muslim societies in West Africa, set as a working bibliography.
 			</p>
 		</div>
 
@@ -180,7 +180,7 @@
 			</div>
 			<div class="year-bars-legend">
 				<span>{minYear}</span>
-				<span>Output by year</span>
+				<span>Entries by year</span>
 				<span>{maxYear}</span>
 			</div>
 		</div>
@@ -193,8 +193,8 @@
 		{typeLabels}
 		{typeChipLabels}
 		ariaLabel="Filter publications"
-		searchPlaceholder="Filter — title, co-author, tag, venue, year…"
-		searchAriaLabel="Filter publications by title, co-author, tag, venue or year"
+		searchPlaceholder="Title, co-author, tag, venue, year…"
+		searchAriaLabel="Filter publications"
 		sortAriaLabel="Sort publications"
 		bind:searchTerm
 		bind:facetsOpen
@@ -241,8 +241,10 @@
 			/>
 		{:else}
 			<div class="bib-empty">
-				<p class="bib-empty-line">No publications match the current filters.</p>
-				<button type="button" class="facet-clear" onclick={clearAllNarrowing}>Clear all ✕</button>
+				<p class="bib-empty-line">No publications match.</p>
+				<p class="bib-empty-line">
+					The index holds {totalEntries} entries, {minYear}–{maxYear}.
+				</p>
 			</div>
 		{/if}
 	</section>

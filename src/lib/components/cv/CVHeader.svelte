@@ -51,7 +51,9 @@
 			<div class="cv-link-item">
 				<Icon icon={link.icon} class="text-light shrink-0" width="16" height="16" />
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-				<a href={link.url} target="_blank" rel="noopener noreferrer">{link.displayUrl}</a>
+				<a href={link.url} target="_blank" rel="noopener noreferrer"
+					>{link.displayUrl}<span class="sr-only"> (opens in new tab)</span></a
+				>
 			</div>
 		{/each}
 	</div>

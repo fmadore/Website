@@ -3,6 +3,7 @@
 	import { resolve } from '$app/paths';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import Icon from '@iconify/svelte';
+	import { COMMUNICATION_TYPE_LIST_LABELS } from '$lib/utils/typeUtils';
 
 	interface Props {
 		communication: Communication;
@@ -12,18 +13,9 @@
 
 	let { communication, index = 0 }: Props = $props();
 
-	const typeLabels: Record<string, string> = {
-		conference: 'Conference paper',
-		workshop: 'Workshop',
-		seminar: 'Seminar',
-		lecture: 'Lecture',
-		panel: 'Panel',
-		poster: 'Poster',
-		event: 'Academic event',
-		podcast: 'Podcast'
-	};
-
-	const typeLabel = $derived(typeLabels[communication.type ?? 'conference'] ?? 'Talk');
+	const typeLabel = $derived(
+		COMMUNICATION_TYPE_LIST_LABELS[communication.type ?? 'conference'] ?? 'Academic event'
+	);
 	const detailHref = $derived(resolve(`/communications/${communication.id}`));
 	const slideNo = $derived(String(index + 1).padStart(2, '0'));
 	const displayTitle = $derived(typesetQuotes(communication.title));
@@ -59,7 +51,7 @@
 				href={communication.slidesUrl}
 				target="_blank"
 				rel="noopener noreferrer"
-				aria-label="Open the slide deck for {displayTitle} in a new tab"
+				aria-label="Open deck: {displayTitle} (opens in new tab)"
 			>
 				<span>Open deck</span>
 				<Icon icon="lucide:arrow-up-right" width="13" height="13" />

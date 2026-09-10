@@ -14,6 +14,7 @@ ECharts Horizontal Bar Chart component
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
+	import { describeRanked } from '$lib/utils/chartDescriptions';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -26,7 +27,11 @@ ECharts Horizontal Bar Chart component
 		measure = '',
 		barColor = 'var(--color-primary)',
 		accentKey,
-		maxValue
+		maxValue,
+		itemSingular = 'entry',
+		itemPlural = 'entries',
+		descriptionLead = 'Most frequent',
+		description = undefined
 	}: {
 		data?: DataItem[];
 		xAccessor: (d: DataItem) => number;
@@ -56,7 +61,28 @@ ECharts Horizontal Bar Chart component
 		 */
 		accentKey?: string | number;
 		maxValue?: number;
+		/** What one bar is — a phrase, an author, a country. */
+		itemSingular?: string;
+		itemPlural?: string;
+		/** Lead-in for the leading bar in the accessible description. */
+		descriptionLead?: string;
+		/** Overrides the computed accessible description. */
+		description?: string;
 	} = $props();
+
+	/**
+	 * The sentence a screen reader gets in place of ECharts' auto-generated
+	 * series dump. Computed from the same data the bars are drawn from.
+	 */
+	const ariaDescription = $derived(
+		description ??
+			describeRanked(
+				measure || 'Chart',
+				data.map((d) => ({ label: yAccessor(d), value: xAccessor(d) })),
+				{ singular: itemSingular, plural: itemPlural },
+				descriptionLead
+			)
+	);
 
 	// Container reference
 	let chartContainer: HTMLDivElement;
@@ -304,7 +330,7 @@ ECharts Horizontal Bar Chart component
 				}
 			}
 		],
-		aria: getAriaConfig(showDecal),
+		aria: getAriaConfig(showDecal, ariaDescription),
 		backgroundColor: 'transparent',
 		...getChartMotion('settle')
 	});

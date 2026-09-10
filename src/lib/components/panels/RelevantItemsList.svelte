@@ -23,7 +23,8 @@
 	let {
 		title,
 		items,
-		itemTypePlural,
+		collectionLabel,
+		emptyLabel,
 		basePath,
 		viewAllPath,
 		projectName,
@@ -31,9 +32,12 @@
 		formatAuthors,
 		filters
 	}: {
-		title: string; // e.g., "Relevant Publications", "Relevant Communications"
+		title: string; // e.g., "Related publications", "Related talks & events"
 		items: RelevantItem[];
-		itemTypePlural: string; // e.g., "publications", "communications"
+		/** Reader-facing plural for the link, e.g. "publications", "talks & events". */
+		collectionLabel: string;
+		/** Same set in a negative sentence, e.g. "publications", "talks or events". */
+		emptyLabel: string;
 		basePath: string; // Base path for individual item links e.g., "/publications", "/communications"
 		viewAllPath: string; // Path for the "View all" link e.g., "/publications", "/conference-activity"
 		projectName?: string; // Project name to use as a filter parameter
@@ -63,7 +67,7 @@
 
 {#snippet panelContent()}
 	{#if items.length === 0}
-		<p class="no-items">No {itemTypePlural} found for this project.</p>
+		<p class="no-items">No {emptyLabel} are filed under this project.</p>
 	{:else}
 		<ul class="item-list">
 			{#each items as item (item.id)}
@@ -80,7 +84,7 @@
 				variant="outline-secondary"
 				size="base"
 			>
-				View all {itemTypePlural} →
+				All {collectionLabel} in this project<span aria-hidden="true">&nbsp;→</span>
 			</Button>
 		</div>
 	{/if}

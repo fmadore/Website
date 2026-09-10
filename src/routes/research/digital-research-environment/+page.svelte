@@ -9,23 +9,25 @@
 		The Digital Research Environment (DRE) is the digital infrastructure unit of the <a
 			href="https://www.africamultiple.uni-bayreuth.de/"
 			target="_blank"
-			rel="noopener noreferrer">Africa Multiple Cluster of Excellence</a
+			rel="noopener noreferrer"
+			>Africa Multiple Cluster of Excellence<span class="sr-only"> (opens in new tab)</span></a
 		>
 		at the University of Bayreuth. We design, build, and maintain the data systems that connect researchers
 		across the
 		<a
 			href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html"
 			target="_blank"
-			rel="noopener noreferrer">Africa Multiple Research Centres</a
+			rel="noopener noreferrer"
+			>Africa Multiple Research Centres<span class="sr-only"> (opens in new tab)</span></a
 		>
 		(AMRCs) and partner institutions worldwide: research data management, knowledge-graph development,
 		AI-assisted processing, and digital literacy, grounded in the
 		<a href="https://www.go-fair.org/fair-principles/" target="_blank" rel="noopener noreferrer"
-			>FAIR</a
+			>FAIR<span class="sr-only"> (opens in new tab)</span></a
 		>
 		and
 		<a href="https://www.gida-global.org/careprinciples" target="_blank" rel="noopener noreferrer"
-			>CARE</a
+			>CARE<span class="sr-only"> (opens in new tab)</span></a
 		> principles. I joined as Data Curator in 2026.
 	</p>
 
@@ -40,7 +42,8 @@
 		That metadata layer is public as the <a
 			href="https://data.africamultiple.uni-bayreuth.de/s/amira"
 			target="_blank"
-			rel="noopener noreferrer">Africa Multiple Interactive Research Atlas</a
+			rel="noopener noreferrer"
+			>Africa Multiple Interactive Research Atlas<span class="sr-only"> (opens in new tab)</span></a
 		>
 		(AMIRA), an Omeka S site that makes the collections searchable from one place
 		<ItemReference id="reconfiguring-archive-amira-2026" />: nearly 4,000 research items, more than
@@ -85,7 +88,8 @@
 		<a
 			href="https://data.africamultiple.uni-bayreuth.de/s/amira/page/visualisations"
 			target="_blank"
-			rel="noopener noreferrer">dashboards, network graphs, and maps</a
+			rel="noopener noreferrer"
+			>dashboards, network graphs, and maps<span class="sr-only"> (opens in new tab)</span></a
 		> that foreground connections: the subjects that co-occur across collections, the collaboration networks
 		no single catalogue record makes visible.
 	</p>
@@ -94,7 +98,7 @@
 		Users increasingly put their questions to an AI assistant instead of searching a catalogue. The <a
 			href="https://github.com/AM-Digital-Research-Environment/amira-mcp-server"
 			target="_blank"
-			rel="noopener noreferrer">AMIRA MCP server</a
+			rel="noopener noreferrer">AMIRA MCP server<span class="sr-only"> (opens in new tab)</span></a
 		> lets an assistant query the collection directly, so answers are drawn from the records and cite
 		them, which reduces the hallucination that comes from asking a model what it already knows. Building
 		and evaluating that layer is the current strand of the work.

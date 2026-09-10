@@ -64,6 +64,7 @@
 				background: linear-gradient(to right, var(--slider-color) 0%, var(--slider-color) var(--volume-percentage), color-mix(in srgb, var(--color-text) 20%, transparent) var(--volume-percentage), color-mix(in srgb, var(--color-text) 20%, transparent) 100%);
 			"
 			aria-label="Volume"
+			aria-valuetext="{Math.round((isMuted ? 0 : volume) * 100)}%"
 		/>
 	</div>
 </div>

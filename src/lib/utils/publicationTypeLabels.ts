@@ -6,7 +6,7 @@
  * intentionally kept distinct — each targets a different output vocabulary
  * and must NOT be merged or cross-derived:
  *  - BADGE    — Title Case, detail-page badges/titles
- *  - CITATION — citation-style labels (e.g. "Ph.D. Dissertation"), bibliographies
+ *  - CITATION — citation-style labels (e.g. "PhD Dissertation"), bibliographies
  *  - SEO      — sentence case, meta descriptions
  *  - CV       — plural section headings on the CV page
  *  - FILTER   — sentence-case facet labels on the publications index
@@ -44,7 +44,7 @@ export const PUBLICATION_TYPE_CITATION_LABELS: Record<string, string> = {
 	report: 'Report',
 	encyclopedia: 'Encyclopedia Entry',
 	blogpost: 'Blog Post',
-	'phd-dissertation': 'Ph.D. Dissertation',
+	'phd-dissertation': 'PhD Dissertation',
 	'masters-thesis': "Master's Thesis",
 	'conference-proceedings': 'Conference Proceedings',
 	'working-paper': 'Working Paper'
@@ -92,7 +92,7 @@ export const PUBLICATION_TYPE_FILTER_LABELS: Record<string, string> = {
 	encyclopedia: 'Encyclopedia entry',
 	article: 'Journal article',
 	'masters-thesis': "Master's thesis",
-	'phd-dissertation': 'Ph.D. dissertation',
+	'phd-dissertation': 'PhD dissertation',
 	report: 'Report',
 	'special-issue': 'Special issue',
 	'working-paper': 'Working paper'
@@ -105,7 +105,7 @@ export const PUBLICATION_TYPE_CHIP_LABELS: Record<string, string> = {
 	'bulletin-article': 'Bulletins',
 	chapter: 'Chapters',
 	'conference-proceedings': 'Proceedings',
-	encyclopedia: 'Encyclopedia',
+	encyclopedia: 'Encyclopedia entries',
 	article: 'Articles',
 	'masters-thesis': 'Theses',
 	'phd-dissertation': 'Dissertations',

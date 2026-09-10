@@ -85,10 +85,20 @@ place to decide that.
 		activity.additionalUrls?.filter((link) => link.url && link.label) ?? []
 	);
 
-	// The primary action's label follows the record: a published piece is read,
-	// everything else is visited, unless the data names the destination itself.
+	// The primary action's label follows the record: a published piece names
+	// itself, everything else opens the source it was filed from, unless the data
+	// names the destination itself.
 	const primaryLabel = $derived(
-		activity.urlLabel ?? (activity.type === 'publication' ? 'Read Publication' : 'Visit Activity')
+		activity.urlLabel ?? (activity.type === 'publication' ? 'Open publication' : 'Open the source')
+	);
+
+	// Plate caption — "Fig. 1." is the figure's number, so the stop belongs to it
+	// and the caption follows as its own sentence. Authored captions that already
+	// end in punctuation keep theirs rather than collecting a second full stop.
+	const plateFigCaption = $derived(
+		plateCaption
+			? `Fig. 1. ${plateCaption}${/[.!?…]$/.test(plateCaption.trim()) ? '' : '.'}`
+			: undefined
 	);
 </script>
 
@@ -105,8 +115,8 @@ place to decide that.
 			fetchpriority="high"
 			decoding="async"
 		/>
-		{#if plateCaption}
-			<figcaption class="plate-caption">Fig. 1 — {plateCaption}.</figcaption>
+		{#if plateFigCaption}
+			<figcaption class="plate-caption">{plateFigCaption}</figcaption>
 		{/if}
 	</figure>
 {/if}
@@ -125,11 +135,15 @@ place to decide that.
 				rel="noopener noreferrer"
 				class="btn btn-accent btn-block"
 			>
-				{primaryLabel} ↗
+				{primaryLabel}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
+					(opens in new tab)</span
+				>
 			</a>
 		{/if}
 		{#if hasDocument}
-			<a href="#document" class="btn btn-outline-primary btn-block">View document ↓</a>
+			<a href="#document" class="btn btn-outline-primary btn-block"
+				>View document<span aria-hidden="true">&nbsp;↓</span></a
+			>
 		{/if}
 		{#each additionalUrls as link (link.url)}
 			<a
@@ -138,7 +152,9 @@ place to decide that.
 				rel="noopener noreferrer"
 				class="btn btn-outline-secondary btn-block"
 			>
-				{link.label} ↗
+				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
+					(opens in new tab)</span
+				>
 			</a>
 		{/each}
 	</div>

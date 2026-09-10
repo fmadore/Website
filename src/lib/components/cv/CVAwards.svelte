@@ -5,7 +5,7 @@
 </script>
 
 <CVSection
-	title="Awards & Honors"
+	title="Awards & Honours"
 	items={awardsByDate}
 	year={(award) => award.year}
 	key={(award) => award.id}
@@ -16,7 +16,8 @@
 				href={award.url}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="font-medium">{typesetQuotes(award.title)}</a
+				class="font-medium"
+				>{typesetQuotes(award.title)}<span class="sr-only"> (opens in new tab)</span></a
 			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="font-medium"
 				>{typesetQuotes(award.title)}</span
 			>{/if}, {typesetQuotes(award.institution)}.

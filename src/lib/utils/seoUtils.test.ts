@@ -238,21 +238,27 @@ describe('truncateTitle', () => {
 	it('breaks at a colon when one occurs before the limit', () => {
 		expect(
 			truncateTitle('Religious Activism: Muslim Students and State Politics in Togo and Benin')
-		).toBe('Religious Activism...');
+		).toBe('Religious Activism…');
+	});
+
+	it('trims the space a French colon leaves behind the stem', () => {
+		expect(
+			truncateTitle('Sécularisme et islam : les associations musulmanes du Burkina Faso')
+		).toBe('Sécularisme et islam…');
 	});
 
 	it('truncates at a word boundary when there is no colon', () => {
 		expect(truncateTitle('The Politics of Islamic Associations in Contemporary Burkina Faso')).toBe(
-			'The Politics of Islamic Associations in...'
+			'The Politics of Islamic Associations in…'
 		);
 	});
 
 	it('hard-truncates when no acceptable word boundary exists', () => {
-		expect(truncateTitle('A'.repeat(60))).toBe('A'.repeat(47) + '...');
+		expect(truncateTitle('A'.repeat(60))).toBe('A'.repeat(47) + '…');
 	});
 
 	it('honours a custom maxLength', () => {
-		expect(truncateTitle('one two three four', 10)).toBe('one two...');
+		expect(truncateTitle('one two three four', 10)).toBe('one two…');
 	});
 });
 
@@ -260,32 +266,32 @@ describe('truncateTitle', () => {
 // of the shared config-driven builders can be verified against exact strings.
 
 describe('createActivitySEODescription', () => {
-	it('uses a 50+ char description as-is and appends the type-specific CTA', () => {
+	it('uses a 50+ char description as-is, with no call to action', () => {
 		const description = 'A hands-on workshop on mapping Islamic associations in Benin.';
 		const result = createActivitySEODescription(act({ type: 'workshop', description }));
-		expect(result).toBe(`${description} Read insights →`);
+		expect(result).toBe(description);
 	});
 
-	it('synthesizes a publication-update lead when the description is too short', () => {
+	it('synthesizes a publication lead when the description is too short', () => {
 		const result = createActivitySEODescription(
 			act({ type: 'publication', title: 'New Article Out', description: 'Short.' })
 		);
-		expect(result).toBe('Latest publication update (2024): New Article Out Read details →');
+		expect(result).toBe('Publication (2024): New Article Out');
 	});
 
-	it('synthesizes a funding-news lead for grants', () => {
+	it('synthesizes a research-grant lead for grants', () => {
 		const result = createActivitySEODescription(act({ type: 'grant' }));
-		expect(result).toBe('Research funding news (2024): Sample Activity Discover details →');
+		expect(result).toBe('Research grant (2024): Sample Activity');
 	});
 
 	it('uses the "<label> from <title>" form for conference-like types', () => {
 		const result = createActivitySEODescription(act({ type: 'conference', title: 'ECAS 2025' }));
-		expect(result).toBe('Conference insights from ECAS 2025 (2024) Read insights →');
+		expect(result).toBe('Conference paper from ECAS 2025 (2024)');
 	});
 
 	it('falls back to "Academic update" for unknown types', () => {
 		const result = createActivitySEODescription(act({ type: 'something-else' }));
-		expect(result).toBe('Academic update (2024): Sample Activity Learn more →');
+		expect(result).toBe('Academic update (2024): Sample Activity');
 	});
 
 	it('appends up to two subject-matter tags as "Topics:" when they fit', () => {
@@ -293,7 +299,7 @@ describe('createActivitySEODescription', () => {
 		const result = createActivitySEODescription(
 			act({ description, tags: ['Islam in Benin', 'West Africa press', 'Other topic'] })
 		);
-		expect(result).toBe(`${description} Topics: Islam in Benin, West Africa press. Learn more →`);
+		expect(result).toBe(`${description} Topics: Islam in Benin, West Africa press.`);
 	});
 
 	it('caps overlong descriptions at 160 chars via smart truncation', () => {

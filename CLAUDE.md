@@ -256,6 +256,10 @@ For non-critical `catch` blocks (analytics, PWA, fullscreen), use empty catch wi
 
 Always import author info from `$lib/data/siteConfig` (`author`, `address`, `website`). Never hardcode name, position, or institution strings in JSON-LD or SEO metadata.
 
+### Interface Copy
+
+Every string a reader sees follows the glossary in `DESIGN.md` § Voice & Copy: British English, sentence case outside nav and breadcrumbs, one noun per concept (`entries` in counts, `talk` never `communication`, `Open …` external / `View …` internal, `Clear all` / `Clear years` / `Clear search`, `More filters`), glyphs inside `aria-hidden` spans, one visually hidden ` (opens in new tab)` on every `target="_blank"` link, `…` and closed-up en dashes, no em dashes. The e2e suite locates elements by accessible name, so a renamed control needs its spec updated in the same commit.
+
 ### Formatting
 
 Run `npm run format` before committing. CI enforces Prettier + ESLint via `npm run lint`.

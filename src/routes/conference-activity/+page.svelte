@@ -20,11 +20,10 @@
 	import { organisedWorkshopsJsonLd } from '$lib/data/organisedWorkshops';
 	import type { Communication } from '$lib/types/communication';
 
-	// The runed filter system: `af` is the stable deep-reactive filter state,
-	// `options` the static facet vocabularies. (Mirrors the /publications page.)
+	// The runed filter system: `af` is the stable deep-reactive filter state.
+	// (Mirrors the /publications page.)
 	const filters = communicationFilters;
 	const af = filters.activeFilters;
-	const options = filters.filterOptions;
 
 	// Breadcrumbs + organiser-role schema.org Event graph.
 	const breadcrumbs = createSectionBreadcrumbs('Talks & Events', '/conference-activity');
@@ -36,7 +35,6 @@
 		.filter((y): y is number => Number.isFinite(y));
 	const minYear = allYears.length ? Math.min(...allYears) : new Date().getFullYear();
 	const maxYear = allYears.length ? Math.max(...allYears) : new Date().getFullYear();
-	const countryCount = options.countries.length;
 
 	// Per-year output counts → a continuous run of bars minYear..maxYear.
 	const yearBars = (() => {
@@ -220,13 +218,12 @@
 	<header class="index-hero rule-masthead">
 		<div class="index-hero-lede">
 			<p class="eyebrow index-eyebrow">
-				Index · {totalEntries} Entries · {minYear} — {maxYear}
+				Index · {totalEntries} entries · {minYear}–{maxYear}
 			</p>
 			<h1 class="index-title">Talks &amp; Events</h1>
 			<p class="standfirst">
 				Conference papers, workshops, seminars, lectures, posters and panels given since {minYear} to
-				audiences in {countryCount} countries across Africa, Europe and North America — the full speaking
-				record.
+				audiences across Africa, Europe and North America.
 			</p>
 		</div>
 
@@ -243,7 +240,7 @@
 			</div>
 			<div class="year-bars-legend">
 				<span>{minYear}</span>
-				<span>Talks by year</span>
+				<span>Entries by year</span>
 				<span>{maxYear}</span>
 			</div>
 		</div>
@@ -256,8 +253,8 @@
 		{typeLabels}
 		{typeChipLabels}
 		ariaLabel="Filter talks and events"
-		searchPlaceholder="Filter — title, venue, city, co-author, tag, year…"
-		searchAriaLabel="Filter talks by title, venue, city, co-author, tag or year"
+		searchPlaceholder="Title, venue, city, co-author, tag, year…"
+		searchAriaLabel="Filter talks and events"
 		sortAriaLabel="Sort talks"
 		bind:searchTerm
 		bind:facetsOpen
@@ -271,7 +268,7 @@
 				aria-pressed={showMap}
 				onclick={toggleMap}
 			>
-				Map {showMap ? '▾' : '▸'}
+				Map <span aria-hidden="true">{showMap ? '▾' : '▸'}</span>
 			</button>
 		{/snippet}
 	</EntityFilterBar>
@@ -294,8 +291,12 @@
 		<section class="map-section" aria-label="Map of talks and events">
 			<MapVisualization markersData={mapMarkers} showLegend />
 		</section>
-	{:else if showMap && !MapVisualization && !mapLoadError}
-		<section class="map-section map-section--loading">Loading map…</section>
+	{:else if showMap && mapLoadError}
+		<section class="map-section map-section--loading">
+			<p role="status">The map could not be loaded. The talks below are the same records.</p>
+		</section>
+	{:else if showMap && !MapVisualization}
+		<section class="map-section map-section--loading" role="status">Loading map…</section>
 	{/if}
 
 	<!-- ═══ UPCOMING (only when nothing is narrowing the list) ═══ -->
@@ -308,7 +309,9 @@
 		{#if shouldShowUpcoming}
 			<div class="record-head">
 				<h2 class="record-head-title">The record</h2>
-				<span class="record-head-count">{matchCount} past</span>
+				<span class="record-head-count"
+					>{matchCount} past · {upcomingCommunications.length} upcoming</span
+				>
 			</div>
 		{/if}
 
@@ -337,8 +340,10 @@
 			/>
 		{:else}
 			<div class="bib-empty">
-				<p class="bib-empty-line">No talks or events match the current filters.</p>
-				<button type="button" class="facet-clear" onclick={clearAllNarrowing}>Clear all ✕</button>
+				<p class="bib-empty-line">No talks or events match.</p>
+				<p class="bib-empty-line">
+					The index holds {totalEntries} entries, {minYear}–{maxYear}.
+				</p>
 			</div>
 		{/if}
 	</section>

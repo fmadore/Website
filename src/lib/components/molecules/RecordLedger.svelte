@@ -57,11 +57,15 @@ DOI would break the link.
 										icon={row.icon}
 										class="meta-icon"
 										aria-hidden="true"
-									/>{/if}{row.value} ↗</a
+									/>{/if}{row.value}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
+									(opens in new tab)</span
+								></a
 							>
 						{:else if row.href}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed internal path -->
-							<a href={row.href} class="meta-link">{row.value} →</a>
+							<a href={row.href} class="meta-link"
+								>{row.value}<span aria-hidden="true">&nbsp;→</span></a
+							>
 						{:else}
 							{row.value}
 						{/if}

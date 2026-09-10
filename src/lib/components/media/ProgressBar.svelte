@@ -62,10 +62,11 @@
 		onkeydown={handleProgressKeydown}
 		role="slider"
 		tabindex="0"
-		aria-label="Seek"
+		aria-label="Seek position"
 		aria-valuemin="0"
 		aria-valuemax={duration}
 		aria-valuenow={currentTime}
+		aria-valuetext="{formatTime(currentTime)} of {formatTime(duration)}"
 	>
 		<div class="progress-fill" style:--progress={duration > 0 ? currentTime / duration : 0}></div>
 		<div

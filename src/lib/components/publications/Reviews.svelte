@@ -44,7 +44,8 @@
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 							<a href={review.url} target="_blank" rel="noopener" class="review-link">
 								{review.author}<span class="review-cite-arrow"> ↗</span>
-							</a>
+								<span class="sr-only"> (opens in new tab)</span></a
+							>
 						{:else}
 							<span>{review.author}</span>
 						{/if}
@@ -60,7 +61,11 @@
 								target="_blank"
 								rel="noopener"
 								class="review-doi"
-								><Icon icon="academicons:doi" class="review-doi-icon" aria-hidden="true" />DOI ↗</a
+								><Icon icon="academicons:doi" class="review-doi-icon" aria-hidden="true" />DOI ↗<span
+									class="sr-only"
+								>
+									(opens in new tab)</span
+								></a
 							>
 						{/if}
 					</p>
@@ -70,7 +75,7 @@
 						{#if review.url}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 							<a href={review.url} target="_blank" rel="noopener" class="review-ref-link"
-								>{review.title}</a
+								>{review.title}<span class="sr-only"> (opens in new tab)</span></a
 							>
 						{:else}
 							{review.title}

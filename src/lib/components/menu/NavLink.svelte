@@ -37,7 +37,7 @@
 >
 	{@render children?.()}
 	{#if hasDropdown}
-		<span class="dropdown-icon">▾</span>
+		<span class="dropdown-icon" aria-hidden="true">▾</span>
 	{/if}
 </a>
 

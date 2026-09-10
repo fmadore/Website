@@ -9,7 +9,7 @@
 </script>
 
 <CVSection
-	title="Organization of Academic Events"
+	title="Organisation of Academic Events"
 	items={organizedEvents}
 	year={(comm) => new Date(comm.dateISO).getFullYear()}
 	key={(comm) => comm.id}

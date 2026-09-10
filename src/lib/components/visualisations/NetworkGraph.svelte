@@ -354,7 +354,14 @@ no two channels carry the same value.
 			edge.kind === 'direct'
 				? { heading: labelCopy.directEdge, shared: labelCopy.itemPlural }
 				: edgeHeading(edge.kind);
-		return `${heading}: ${edge.source} and ${edge.target} — ${shared}: ${edge.weight}`;
+		// The shared label carries the item noun in the plural; the singular comes
+		// from the same pair of nouns rather than from chopping an "s".
+		const phrase = shared.toLowerCase();
+		const counted =
+			edge.weight === 1
+				? phrase.replace(labelCopy.itemPlural.toLowerCase(), labelCopy.itemSingular)
+				: phrase;
+		return `${heading}: ${edge.source} and ${edge.target}, ${edge.weight} ${counted}.`;
 	}
 
 	function edgeTooltip(edge: NetworkEdge): TooltipContent {
@@ -412,9 +419,10 @@ no two channels carry the same value.
 			.slice(0, 3)
 			.map((n) => `${n.id} (${n.weight})`)
 			.join(', ');
+		const entity = labelCopy.entityNode.toLowerCase();
 		return centerId
-			? `Network centred on ${centerId} with ${others.length} connected nodes. Strongest connections: ${top}.`
-			: `Network of ${others.length} nodes. Largest: ${top}.`;
+			? `Network centred on ${centerId} with ${others.length} connected ${entity}. Strongest connections: ${top}.`
+			: `Network of ${others.length} ${entity}. Largest: ${top}.`;
 	});
 
 	// --- Legend -------------------------------------------------------------
@@ -508,24 +516,24 @@ no two channels carry the same value.
 		<button
 			class="viz-zoom-btn"
 			onclick={() => zoomBy(1.25)}
-			title="Zoom In"
-			aria-label="Zoom in on network graph"
+			title="Zoom in on the network"
+			aria-label="Zoom in on the network"
 		>
 			<Icon icon="lucide:zoom-in" width="20" height="20" />
 		</button>
 		<button
 			class="viz-zoom-btn"
 			onclick={applyFit}
-			title="Reset Zoom"
-			aria-label="Reset network graph zoom"
+			title="Reset the network view"
+			aria-label="Reset the network view"
 		>
 			<Icon icon="lucide:maximize-2" width="20" height="20" />
 		</button>
 		<button
 			class="viz-zoom-btn"
 			onclick={() => zoomBy(0.8)}
-			title="Zoom Out"
-			aria-label="Zoom out on network graph"
+			title="Zoom out of the network"
+			aria-label="Zoom out of the network"
 		>
 			<Icon icon="lucide:zoom-out" width="20" height="20" />
 		</button>

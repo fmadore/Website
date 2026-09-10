@@ -89,16 +89,16 @@ export const ACTIVITY_TYPE_BADGE_LABELS: Record<string, string> = {
 };
 
 export const ACTIVITY_TYPE_SEO_LABELS: Record<string, string> = {
-	conference: 'Conference insights',
-	workshop: 'Workshop highlights',
-	seminar: 'Seminar takeaways',
+	conference: 'Conference paper',
+	workshop: 'Workshop',
+	seminar: 'Seminar',
 	lecture: 'Lecture summary',
 	panel: 'Panel discussion',
-	grant: 'Research funding',
-	publication: 'Publication update',
+	grant: 'Research grant',
+	publication: 'Publication',
 	event: 'Academic event',
 	visit: 'Academic visit',
-	news: 'Latest news'
+	news: 'News'
 };
 
 /**

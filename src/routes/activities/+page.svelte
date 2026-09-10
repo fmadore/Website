@@ -38,6 +38,10 @@
 	let filtered = $derived(filters.filteredItems);
 	const anyFiltering = $derived(areFiltersActive(af));
 
+	// Count of active filter dimensions, for the "N filters active" readout the
+	// three indexes share.
+	const activeFilterCount = $derived(af.types.length + af.tags.length);
+
 	// Human-readable list of the active filters for the log's filter note. Tag
 	// values are authored strings and carry apostrophes, so they are typeset
 	// here exactly as the chips that switch them off are.
@@ -146,7 +150,7 @@
 		     second copy of the same data would be ornament rather than apparatus. -->
 		<header class="activities-hero">
 			<p class="eyebrow activities-hero-eyebrow">
-				Log · {totalCount} entries · {minYear} — {maxYear}
+				Log · {totalCount} entries · {minYear}–{maxYear}
 			</p>
 			<h1 class="activities-hero-title">Activities</h1>
 			<p class="standfirst">
@@ -166,12 +170,18 @@
 				     missing — a filtered log that reports no match figure leaves the
 				     reader to count the rows themselves. -->
 				{#if anyFiltering}
-					<p class="filter-note" aria-live="polite">
+					<p class="filter-note">
 						<span class="filter-note-label">Filtered by</span>
 						<span class="filter-note-value">{activeFilterLabels.join(' · ')}</span>
-						<span class="filter-note-count">{filtered.length} of {totalCount}</span>
+						<!-- The count alone is the live region: with the button inside it, every
+						     narrowing re-announced the control along with the figure. -->
+						<span class="filter-note-count" aria-live="polite">
+							{activeFilterCount}
+							{activeFilterCount === 1 ? 'filter' : 'filters'} active · {filtered.length} of {totalCount}
+							{totalCount === 1 ? 'entry' : 'entries'}
+						</span>
 						<button type="button" class="filter-note-clear" onclick={filters.clearAllFilters}>
-							Clear ✕
+							Clear all <span aria-hidden="true">✕</span>
 						</button>
 					</p>
 				{/if}
@@ -181,13 +191,10 @@
 					     control back to it. The filter note above also clears, but it is
 					     scrolled past on a phone, where the log is the whole column. -->
 					<div class="log-empty">
-						<p class="log-empty-line">No activities match the current filters.</p>
+						<p class="log-empty-line">No activities match.</p>
 						<p class="log-empty-note">
-							The log holds {totalCount} entries, {minYear} — {maxYear}.
+							The log holds {totalCount} entries, {minYear}–{maxYear}.
 						</p>
-						<button type="button" class="log-empty-clear" onclick={filters.clearAllFilters}>
-							Clear all ✕
-						</button>
 					</div>
 				{:else}
 					{#each pageGroups as group, groupIndex (group.year)}
@@ -228,7 +235,7 @@
 			<!-- ASIDE — browse-by-year meter, tag facet, RSS/updated footer. -->
 			<aside class="activities-aside">
 				<section class="aside-block">
-					<h2 class="aside-title">Browse by year</h2>
+					<h2 class="aside-title">Years</h2>
 					<ul class="year-meter">
 						{#each yearsDesc as year (year)}
 							{@const count = countForYear(year)}
@@ -253,15 +260,16 @@
 
 				{#if typeOptions.length > 0}
 					<section class="aside-block">
-						<h2 class="aside-title">Filter by type</h2>
+						<h2 class="aside-title">Types</h2>
 						<div class="chip-row aside-tags">
 							<button
 								type="button"
 								class="chip"
 								class:chip--selected={af.types.length === 0}
+								aria-label="All types"
 								onclick={() => filters.setValues('types', [])}
 							>
-								All <span class="chip-count">{typeOptions.length}</span>
+								All <span class="chip-count">{totalCount}</span>
 							</button>
 							{#each typeOptions as type (type)}
 								<button
@@ -281,15 +289,16 @@
 
 				{#if tagCounts.length > 0}
 					<section class="aside-block">
-						<h2 class="aside-title">Explore by tag</h2>
+						<h2 class="aside-title">Tags</h2>
 						<div class="chip-row aside-tags">
 							<button
 								type="button"
 								class="chip"
 								class:chip--selected={af.tags.length === 0}
+								aria-label="All tags"
 								onclick={() => filters.setValues('tags', [])}
 							>
-								All <span class="chip-count">{tagCounts.length}</span>
+								All <span class="chip-count">{totalCount}</span>
 							</button>
 							{#each visibleTags as tag (tag)}
 								<button
@@ -318,9 +327,9 @@
 
 				<section class="aside-block aside-footer">
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->
-					<a href="{base}/rss.xml" class="aside-rss">RSS Feed ↗</a>
+					<a href="{base}/rss.xml" class="aside-rss">RSS feed</a>
 					{#if updatedLabel}
-						<span class="aside-updated">Updated {updatedLabel}</span>
+						<span class="aside-updated">Log updated {updatedLabel}</span>
 					{/if}
 				</section>
 			</aside>

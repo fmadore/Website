@@ -126,9 +126,9 @@
 									href={`${base}${course.syllabusUrl}`}
 									target="_blank"
 									rel="noopener noreferrer"
-									aria-label={`Syllabus PDF — ${course.title}`}
+									aria-label={`Syllabus PDF: ${course.title} (opens in new tab)`}
 								>
-									Syllabus PDF ↗
+									Syllabus PDF<span aria-hidden="true">&nbsp;↗</span>
 								</a>
 								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							{/if}
@@ -170,7 +170,7 @@
 
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved URL -->
 			<a class="ledger-action ledger-action--standalone" href={guestLecturesHref}>
-				All {guestLectures.length} guest lectures →
+				All {guestLectures.length} guest lectures <span aria-hidden="true">→</span>
 			</a>
 		</section>
 	</div>

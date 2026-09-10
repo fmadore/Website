@@ -33,7 +33,7 @@
 </script>
 
 <svelte:head>
-	<title>{isNotFound ? 'Page not found' : `Error ${page.status}`} · {author.name}</title>
+	<title>{isNotFound ? 'Page not found' : `Error ${page.status}`} | {author.name}</title>
 </svelte:head>
 
 <div class="error-page">
@@ -43,14 +43,14 @@
 		{#if isNotFound}
 			<h1 class="error-title">This page couldn&rsquo;t be found.</h1>
 			<p class="error-lede">
-				The page you&rsquo;re looking for may have moved, been renamed, or never existed &mdash; and
-				the link you followed might be incomplete. Here are a few places to pick up the thread:
+				This page may have moved, been renamed, or never existed. A few places to pick up the
+				thread:
 			</p>
 		{:else}
 			<h1 class="error-title">Something went wrong on this page.</h1>
 			<p class="error-lede">
-				The record itself is unaffected &mdash; only this rendering of it failed. Reload, or pick up
-				the thread from one of the indexes below:
+				The record itself is unaffected; only this rendering of it failed. Reload, or pick up the
+				thread from one of the indexes below:
 			</p>
 		{/if}
 
@@ -81,7 +81,9 @@
 			</p>
 		{/if}
 
-		<a class="error-home" href={resolve('/')}>&larr; Back to the homepage</a>
+		<a class="error-home" href={resolve('/')}
+			><span aria-hidden="true">&larr; </span>Back to the homepage</a
+		>
 	</div>
 </div>
 

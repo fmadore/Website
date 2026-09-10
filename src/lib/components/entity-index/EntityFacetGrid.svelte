@@ -72,7 +72,7 @@
 	}
 </script>
 
-<section class="facet-grid rule-hairline" class:facet-grid--open={open} aria-label="Facets">
+<section class="facet-grid rule-hairline" class:facet-grid--open={open} aria-label="More filters">
 	<!-- PROJECTS -->
 	{#if options.projects.length > 0}
 		<div class="facet-col">
@@ -85,6 +85,7 @@
 							type="button"
 							class="facet-row facet-row--marker"
 							class:facet-row--active={active}
+							aria-pressed={active}
 							onclick={() => filters.toggle('projects', project)}
 						>
 							<span class="facet-marker" class:facet-marker--on={active} aria-hidden="true"></span>
@@ -108,6 +109,7 @@
 							type="button"
 							class="facet-row"
 							class:facet-row--active={af.authors.includes(author)}
+							aria-pressed={af.authors.includes(author)}
 							onclick={() => filters.toggle('authors', author)}
 						>
 							<span class="facet-name">{typesetQuotes(author)}</span>
@@ -139,6 +141,7 @@
 							type="button"
 							class="facet-row"
 							class:facet-row--active={af.countries.includes(country)}
+							aria-pressed={af.countries.includes(country)}
 							onclick={() => filters.toggle('countries', country)}
 						>
 							<span class="facet-name">{typesetQuotes(country)}</span>
@@ -153,7 +156,8 @@
 					class="facet-more"
 					onclick={() => (showAllCountries = !showAllCountries)}
 				>
-					{showAllCountries ? 'Show fewer ↑' : `All ${options.countries.length} ↓`}
+					{showAllCountries ? 'Show fewer' : `All ${options.countries.length}`}
+					<span aria-hidden="true">{showAllCountries ? '↑' : '↓'}</span>
 				</button>
 			{/if}
 		{/if}
@@ -168,6 +172,8 @@
 						max={maxYear}
 						step={1}
 						values={yearRangeValues}
+						minAriaLabel="Earliest year"
+						ariaLabel="Latest year"
 						onchange={handleYearChange}
 					/>
 				</div>
@@ -175,7 +181,7 @@
 			</div>
 			{#if af.yearRange}
 				<button type="button" class="facet-more" onclick={filters.resetYearRange}>
-					Reset years ✕
+					Clear years <span aria-hidden="true">✕</span>
 				</button>
 			{/if}
 		{/if}
@@ -191,6 +197,7 @@
 						type="button"
 						class="chip"
 						class:chip--selected={af.tags.includes(tag)}
+						aria-pressed={af.tags.includes(tag)}
 						onclick={() => filters.toggle('tags', tag)}
 					>
 						{typesetQuotes(tag)} <span class="chip-count">{filters.counts.tags[tag] ?? 0}</span>
@@ -223,12 +230,16 @@
 			<span class="facet-summary-count">{activeFilterCount}</span>
 			{activeFilterCount === 1 ? 'filter' : 'filters'} active ·
 			<span class="facet-summary-count">{matchCount}</span>
-			{matchCount === 1 ? 'match' : 'matches'}
+			of {totalEntries}
+			{totalEntries === 1 ? 'entry' : 'entries'}
 		{:else}
-			{totalEntries} entries
+			{totalEntries}
+			{totalEntries === 1 ? 'entry' : 'entries'}
 		{/if}
 	</span>
 	{#if anyNarrowing}
-		<button type="button" class="facet-clear" onclick={onclearall}>Clear all ✕</button>
+		<button type="button" class="facet-clear" onclick={onclearall}>
+			Clear all <span aria-hidden="true">✕</span>
+		</button>
 	{/if}
 </div>

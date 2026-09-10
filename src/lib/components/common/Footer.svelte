@@ -15,7 +15,7 @@
 			<p class="footer-tagline">{author.position}</p>
 		</section>
 
-		<nav class="footer-link-groups" aria-label="Contact and profile links">
+		<nav class="footer-link-groups" aria-label="Contact, profiles and the record">
 			{#each socialGroups as group, groupIndex (group.title)}
 				<section class="footer-link-group" aria-labelledby="group-{groupIndex}-title">
 					<!-- h2, not h3: pages whose content has no h2 (e.g. /teaching) would
@@ -26,7 +26,9 @@
 					<!-- Use proper semantic list structure -->
 					<ul class="footer-links-grid">
 						{#each group.links as link (link.url)}
-							{@const isExternal = link.url.startsWith('http') || link.url.startsWith('mailto:')}
+							<!-- A `mailto:` hands off to a mail client; it opens no tab, so it
+							     takes neither the target nor the new-tab notice. -->
+							{@const isExternal = link.url.startsWith('http')}
 							<li class="footer-link-item">
 								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 								<a
@@ -34,12 +36,12 @@
 									class="footer-link no-underline"
 									target={isExternal ? '_blank' : undefined}
 									rel={isExternal ? 'external noopener noreferrer' : undefined}
-									aria-label={isExternal ? `${link.name} - Opens in new tab` : link.name}
 								>
 									<span class="footer-link-icon" aria-hidden="true">
 										<Icon icon={link.icon} width="15" height="15" />
 									</span>
 									<span class="footer-link-name">{link.name}</span>
+									{#if isExternal}<span class="sr-only"> (opens in new tab)</span>{/if}
 								</a>
 								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							</li>
@@ -56,7 +58,7 @@
 								href={address.mapsUrl}
 								target="_blank"
 								rel="external noopener noreferrer"
-								aria-label="{address.institution} on the map - Opens in new tab"
+								aria-label="{address.institution} on the map (opens in new tab)"
 							>
 								{address.institution}
 							</a>

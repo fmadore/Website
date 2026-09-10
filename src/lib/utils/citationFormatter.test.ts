@@ -204,8 +204,8 @@ describe('formatCitation — dissertations and theses', () => {
 		const result = formatCitation(
 			pub({ type: 'phd-dissertation', department: 'History', university: 'Université Laval' })
 		);
-		expect(result.typeLabel).toBe('Ph.D. Dissertation');
-		expect(result.detailsHtml).toBe('Ph.D. Dissertation, History, Université Laval.');
+		expect(result.typeLabel).toBe('PhD Dissertation');
+		expect(result.detailsHtml).toBe('PhD Dissertation, History, Université Laval.');
 		expect(result.year).toBe(2024);
 	});
 
@@ -219,9 +219,7 @@ describe('formatCitation — dissertations and theses', () => {
 	});
 
 	it('falls back to the bare type label when no institution fields exist', () => {
-		expect(formatCitation(pub({ type: 'phd-dissertation' })).detailsHtml).toBe(
-			'Ph.D. Dissertation.'
-		);
+		expect(formatCitation(pub({ type: 'phd-dissertation' })).detailsHtml).toBe('PhD Dissertation.');
 	});
 });
 

@@ -77,7 +77,7 @@ background texture is now the whole subject of the chart.
 		peerEdge: labels.peerEdge ?? 'Co-author connection',
 		peerShared: labels.peerShared ?? 'Shared publications',
 		contributorEdge: labels.contributorEdge ?? 'Contributor connection',
-		contributorShared: labels.contributorShared ?? 'Shared edited volumes/special issues'
+		contributorShared: labels.contributorShared ?? 'Shared edited volumes and special issues'
 	});
 
 	let outerContainer = $state<HTMLDivElement>(undefined!);
@@ -215,6 +215,17 @@ background texture is now the whole subject of the chart.
 			: { heading: copy.peerEdge, shared: copy.peerShared };
 	}
 
+	/**
+	 * `3 shared publications` / `1 shared publication`. The label carries the
+	 * item noun in the plural, so the singular is recovered from the same pair
+	 * of nouns the rest of the copy uses rather than by chopping an "s".
+	 */
+	function sharedCount(kind: NetworkEdgeKind, weight: number): string {
+		const phrase = arcCopy(kind).shared.toLowerCase();
+		if (weight !== 1) return `${weight} ${phrase}`;
+		return `${weight} ${phrase.replace(copy.itemPlural.toLowerCase(), copy.itemSingular)}`;
+	}
+
 	function place(event: PointerEvent | FocusEvent, content: TooltipContent) {
 		if (!plotArea) return;
 		const rect = plotArea.getBoundingClientRect();
@@ -334,9 +345,10 @@ background texture is now the whole subject of the chart.
 						stroke="transparent"
 						stroke-width={Math.max(10, arcWidth(arc.weight) + 8)}
 						role="img"
-						aria-label="{arcCopy(arc.kind).heading}: {arc.source} and {arc.target} — {arcCopy(
-							arc.kind
-						).shared}: {arc.weight}"
+						aria-label="{arcCopy(arc.kind).heading}: {arc.source} and {arc.target}, {sharedCount(
+							arc.kind,
+							arc.weight
+						)}."
 						onpointerenter={(e) => showArc(e, arc)}
 						onpointermove={(e) => showArc(e, arc)}
 						onpointerleave={clearHover}
@@ -458,7 +470,7 @@ background texture is now the whole subject of the chart.
 			</span>
 		{/if}
 		{#if centerId}
-			<span class="viz-legend-entry">Centre ({centerId}) omitted — joined to all</span>
+			<span class="viz-legend-entry">{centerId} omitted: joined to every row.</span>
 		{/if}
 	</div>
 

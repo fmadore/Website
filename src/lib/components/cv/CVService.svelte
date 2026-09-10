@@ -61,7 +61,8 @@
 								aria-hidden="true"
 							/>
 							<span>Verified on Web of Science</span>
-						</a>
+							<span class="sr-only"> (opens in new tab)</span></a
+						>
 						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}
 				</CVEntry>

@@ -14,6 +14,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
+	import { describeSeries } from '$lib/utils/chartDescriptions';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -25,7 +26,10 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		yAxisLabel = '',
 		measure = '',
 		barColor = 'var(--color-primary)',
-		accentKey
+		accentKey,
+		itemSingular = 'publication',
+		itemPlural = 'publications',
+		description = undefined
 	}: {
 		data?: DataItem[];
 		xAccessor: (d: DataItem) => string | number;
@@ -56,7 +60,28 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		 * and no pine appears on the chart at all (the Scarcity Rule).
 		 */
 		accentKey?: string | number;
+		/**
+		 * What one bar's value counts — pages, citations, talks. Read only by
+		 * the accessible description; the canvas itself says nothing.
+		 */
+		itemSingular?: string;
+		itemPlural?: string;
+		/** Overrides the computed accessible description. */
+		description?: string;
 	} = $props();
+
+	/**
+	 * The sentence a screen reader gets in place of ECharts' auto-generated
+	 * series dump. Computed from the same data the bars are drawn from.
+	 */
+	const ariaDescription = $derived(
+		description ??
+			describeSeries(
+				measure || 'Chart',
+				data.map((d) => ({ label: String(xAccessor(d)), value: yAccessor(d) })),
+				{ singular: itemSingular, plural: itemPlural }
+			)
+	);
 
 	// Container reference
 	let chartContainer: HTMLDivElement;
@@ -162,7 +187,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 				}
 			}
 		],
-		aria: getAriaConfig(showDecal),
+		aria: getAriaConfig(showDecal, ariaDescription),
 		backgroundColor: 'transparent', // Let the container handle background
 		...getChartMotion('settle')
 	});

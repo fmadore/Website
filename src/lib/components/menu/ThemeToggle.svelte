@@ -20,7 +20,7 @@
 	class="theme-toggle"
 	onclick={toggleTheme}
 	aria-label={currentTheme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
-	title={currentTheme === 'light' ? 'Midnight' : 'Daylight'}
+	title={currentTheme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
 >
 	<span class="icon-stack">
 		<span class="icon-slot icon-slot--moon">

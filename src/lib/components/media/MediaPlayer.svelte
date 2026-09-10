@@ -78,7 +78,7 @@
 	};
 
 	const handleError = () => {
-		error = 'Failed to load media file';
+		error = 'The audio file could not be loaded. Reload the page to try again.';
 		isLoading = false;
 	};
 
@@ -185,7 +185,11 @@
 	};
 </script>
 
-<div class="media-player {surface} " role="region" aria-label="Media Player">
+<div
+	class="media-player {surface} "
+	role="region"
+	aria-label={title ? `Audio player: ${title}` : 'Audio player'}
+>
 	{#if title}
 		<div class="player-header">
 			<h3 class="player-title">{title}</h3>
@@ -232,6 +236,7 @@
 			{#if isLoading}
 				<div class="loading-overlay">
 					<div class="loading-spinner"></div>
+					<p class="sr-only" aria-live="polite">Loading audio…</p>
 				</div>
 			{/if}
 		</div>
@@ -293,6 +298,9 @@
 						</Button>
 					{/if}
 				</div>
+				<p class="dateline keyboard-hint">
+					Space to play, arrow keys to skip 10 seconds, M to mute.
+				</p>
 			</div>
 		{/if}
 	{/if}
@@ -405,6 +413,14 @@
 		padding: var(--space-3);
 		margin: var(--space-1) 0 0 0;
 		transition: border-color var(--duration-normal) var(--ease-out);
+	}
+
+	/* Keyboard contract, stamped under the transport as a mono dateline. */
+	.keyboard-hint {
+		margin: var(--space-2) 0 0;
+		text-align: center;
+		/* A sentence, not a stamp: the dateline's caps are for one-word labels. */
+		text-transform: none;
 	}
 
 	.control-buttons {
