@@ -57,9 +57,11 @@
 		if (clamped === page) return;
 		onchange(clamped);
 		if (scrollTargetId && typeof document !== 'undefined') {
-			document
-				.getElementById(scrollTargetId)
-				?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			// No `behavior: 'smooth'`: that is a script overriding the reader's
+			// stated preference, since a JS scroll behaviour ignores
+			// `prefers-reduced-motion` while `scroll-behavior` in CSS honours it.
+			// Leaving it to CSS means the page scrolls the way the reader asked.
+			document.getElementById(scrollTargetId)?.scrollIntoView({ block: 'start' });
 		}
 	}
 </script>

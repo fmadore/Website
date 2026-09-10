@@ -6,6 +6,8 @@ import {
 	computeDisjunctiveFacetCounts,
 	toggleArrayValue,
 	normalizeYearRange,
+	clampYearRange,
+	truncateSearchTerm,
 	type EntityArrayDimension,
 	type EntityArrayFilterKey,
 	type EntityIndexFilters
@@ -234,5 +236,80 @@ describe('normalizeYearRange', () => {
 
 	it('accepts equal bounds', () => {
 		expect(normalizeYearRange(2005, 2005)).toEqual({ min: 2005, max: 2005 });
+	});
+});
+
+describe('clampYearRange', () => {
+	it('returns the corpus span when no range is set', () => {
+		expect(clampYearRange(null, 2013, 2026)).toEqual({ min: 2013, max: 2026 });
+		expect(clampYearRange(undefined, 2013, 2026)).toEqual({ min: 2013, max: 2026 });
+	});
+
+	it('leaves a range already inside the corpus alone', () => {
+		expect(clampYearRange({ min: 2018, max: 2020 }, 2013, 2026)).toEqual({
+			min: 2018,
+			max: 2020
+		});
+	});
+
+	it('pulls a deep link wider than the corpus back to the bounds', () => {
+		expect(clampYearRange({ min: 1900, max: 2100 }, 2013, 2026)).toEqual({
+			min: 2013,
+			max: 2026
+		});
+	});
+
+	it('collapses a range that falls entirely outside the corpus onto the nearest bound', () => {
+		expect(clampYearRange({ min: 1990, max: 2000 }, 2013, 2026)).toEqual({
+			min: 2013,
+			max: 2013
+		});
+		expect(clampYearRange({ min: 2030, max: 2040 }, 2013, 2026)).toEqual({
+			min: 2026,
+			max: 2026
+		});
+	});
+
+	it('keeps a collapsed range collapsed', () => {
+		expect(clampYearRange({ min: 2018, max: 2018 }, 2013, 2026)).toEqual({
+			min: 2018,
+			max: 2018
+		});
+	});
+
+	it('orders the result even when handed inverted bounds', () => {
+		expect(clampYearRange({ min: 2020, max: 2015 }, 2013, 2026)).toEqual({
+			min: 2015,
+			max: 2020
+		});
+	});
+
+	it('hands back an inverted corpus rather than inventing a span', () => {
+		expect(clampYearRange({ min: 2018, max: 2018 }, 2026, 2013)).toEqual({
+			min: 2026,
+			max: 2013
+		});
+	});
+});
+
+describe('truncateSearchTerm', () => {
+	it('returns a short term trimmed and unchanged', () => {
+		expect(truncateSearchTerm('  Islam  ')).toBe('Islam');
+	});
+
+	it('cuts at 60 characters and closes with an ellipsis', () => {
+		const term = 'a'.repeat(80);
+		const result = truncateSearchTerm(term);
+		expect(result).toBe(`${'a'.repeat(60)}…`);
+		expect(result).toHaveLength(61);
+	});
+
+	it('leaves a term of exactly the limit intact', () => {
+		const term = 'b'.repeat(60);
+		expect(truncateSearchTerm(term)).toBe(term);
+	});
+
+	it('honours a custom limit', () => {
+		expect(truncateSearchTerm('abcdef', 3)).toBe('abc…');
 	});
 });

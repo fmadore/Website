@@ -1,12 +1,40 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { browser, dev } from '$app/environment';
+	import { page } from '$app/state';
+	import { untrack } from 'svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 
-	let showUpdatePrompt = $state(false);
+	let updateReady = $state(false);
+	let deferredAt = $state<number | null>(null);
 	let registration = $state<ServiceWorkerRegistration | null>(null);
 	let updateAccepted = false;
 	let isReloading = false;
+
+	/* The prompt shows while an update is waiting and the reader has not put it
+	 * off. `Later` is a deferral, not a refusal: the old code hid the prompt for
+	 * the life of the tab, so a reader who dismissed it once kept running the old
+	 * build until they closed the tab, which is the outcome the prompt exists to
+	 * prevent. It comes back at the next route change, where the reader is
+	 * between tasks and losing the current view costs least. */
+	const showUpdatePrompt = $derived(updateReady && deferredAt === null);
+
+	$effect(() => {
+		// Reading the path is what subscribes this effect to navigation; the
+		// deferral is read untracked so clearing it cannot re-trigger the effect
+		// that clears it.
+		void page.url.pathname;
+		if (untrack(() => deferredAt) !== null) deferredAt = null;
+	});
+
+	function laterApp() {
+		deferredAt = Date.now();
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		// Escape is the keyboard's "not now"; it does what Later does.
+		if (event.key === 'Escape') laterApp();
+	}
 
 	$effect(() => {
 		if (!browser || !('serviceWorker' in navigator)) return;
@@ -30,7 +58,7 @@
 				if (!worker || workerListeners.some(([registered]) => registered === worker)) return;
 				const handleStateChange = () => {
 					if (worker.state === 'installed' && navigator.serviceWorker.controller) {
-						showUpdatePrompt = true;
+						updateReady = true;
 					}
 				};
 				worker.addEventListener('statechange', handleStateChange);
@@ -47,7 +75,7 @@
 			current.addEventListener('updatefound', handleUpdateFound);
 			navigator.serviceWorker.addEventListener('controllerchange', handleControllerChange);
 			inspectWorker(current.installing);
-			if (current.waiting) showUpdatePrompt = true;
+			if (current.waiting) updateReady = true;
 
 			return () => {
 				current.removeEventListener('updatefound', handleUpdateFound);
@@ -77,30 +105,25 @@
 		if (!registration?.waiting) return;
 		updateAccepted = true;
 		registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-		showUpdatePrompt = false;
+		updateReady = false;
 	}
 </script>
 
+<svelte:window onkeydown={showUpdatePrompt ? handleKeydown : undefined} />
+
 {#if showUpdatePrompt}
-	<aside
-		class="pwa-update-prompt"
-		aria-labelledby="update-title"
-		aria-describedby="update-description"
-		aria-live="polite"
-	>
+	<aside class="pwa-update-prompt" aria-labelledby="update-title">
 		<div class="update-content">
-			<div class="update-text">
+			<!-- role="status" on the text pair alone. On the whole panel it made the
+			     two buttons part of the announcement, so the reader heard the
+			     controls read out before the sentence that explains them. -->
+			<div class="update-text" role="status">
 				<h3 id="update-title">Update available</h3>
-				<p id="update-description">A new version is ready.</p>
+				<p>A new version is ready. Reloading will lose the filters you have set.</p>
 			</div>
 			<div class="update-actions">
-				<Button variant="primary" size="sm" onclick={updateApp} label="Update" />
-				<Button
-					variant="ghost"
-					size="sm"
-					onclick={() => (showUpdatePrompt = false)}
-					label="Later"
-				/>
+				<Button variant="primary" size="sm" onclick={updateApp} label="Reload" />
+				<Button variant="ghost" size="sm" onclick={laterApp} label="Later" />
 			</div>
 		</div>
 	</aside>

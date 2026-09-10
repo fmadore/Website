@@ -623,6 +623,10 @@
 	color: var(--color-text-soft);
 	text-decoration: none;
 	cursor: pointer;
+	/* Tags are authored strings, and a few are single tokens longer than a 375px
+	 * column ("Sociabilité intellectuelle"); mono caps do not hyphenate, so the
+	 * chip breaks inside the word rather than pushing the rail off-screen. */
+	overflow-wrap: anywhere;
 	transition:
 		border-color var(--duration-fast) var(--ease-out),
 		color var(--duration-fast) var(--ease-out),
@@ -638,6 +642,14 @@
 .chip .chip-count {
 	font-weight: var(--font-weight-semibold);
 	color: var(--color-text-muted);
+}
+
+/* A chip that would return nothing under the current narrowing: quietest ink,
+ * still clickable (swapping one value for another is a click, not a dead end).
+ * A selected chip keeps its ink fill — it is why the others read zero. */
+.chip[data-count='0']:not(.chip--selected),
+.chip[data-count='0']:not(.chip--selected) .chip-count {
+	color: var(--color-text-light);
 }
 
 /* Selected — solid ink fill, paper text. */
@@ -1558,4 +1570,245 @@
 		padding: var(--space-2-5) 0;
 		min-height: 44px;
 	}
+}
+
+/* ===========================================================================
+ * STATE NOTE — the honest state
+ *
+ * What a component prints when it could not load. Apparatus, not alarm: a mono
+ * dateline naming the state, one serif sentence naming what still works. The
+ * panel is flat and draws no edge of its own, because it sits inside the plate
+ * or the container that failed and that container is already a box.
+ *
+ * `--color-danger` is reserved for form validation, so a failed fetch is never
+ * red — nothing here is the reader's mistake — and the renderer's own message
+ * (a WebGL string, a media element's code) stays in the DEV console.
+ * =========================================================================== */
+
+.state-note {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-2xs);
+	padding: var(--space-md);
+	background: var(--color-surface);
+	text-align: start;
+}
+
+.state-note p {
+	margin: 0;
+	max-width: var(--measure-note);
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-normal);
+	color: var(--color-text-muted);
+}
+
+/* ===========================================================================
+ * FILTER NOTE — what is currently narrowing a list
+ *
+ * The data voice stating the narrowing in the reader's own words: a quiet mono
+ * label, then the raw facet values they picked, set in emphasis ink. It is the
+ * one part of a filter summary a reader can check against what they clicked, so
+ * it prints the values verbatim rather than a count of them.
+ *
+ * Self-sufficient by design: /activities sets it above the log, the two index
+ * pages set it inside `.facet-summary`, and it must read the same in both.
+ * =========================================================================== */
+
+.filter-note-label,
+.filter-note-value {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	letter-spacing: var(--tracking-label);
+	text-transform: uppercase;
+}
+
+.filter-note-label {
+	color: var(--color-text-light);
+}
+
+.filter-note-value {
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-text-emphasis);
+}
+
+/* ===========================================================================
+ * CHART TABLE — the figures behind a plate
+ *
+ * A canvas chart hands a screen reader one computed sentence, and hands a
+ * sighted reader who wants the actual number nothing at all: hovering forty
+ * bars to read forty tooltips is not reading the data. So every plate carries
+ * its own figures underneath, closed by default — a closed `<details>` is out
+ * of the accessibility tree, which is exactly why the three SVG plates keep
+ * their `sr-only` tables instead of relying on this.
+ *
+ * The rows are the ledger idiom rather than the ledger classes: the category
+ * hangs in a mono key column, the figure sits right-aligned in the meta
+ * column, a hairline separates entries. `.ledger` itself is `display: block`,
+ * and a table that gives up `display: table` gives up its semantics with it in
+ * some screen readers, so this draws the same rhythm on real table rows.
+ * =========================================================================== */
+
+.chart-table {
+	margin-top: var(--space-sm);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
+}
+
+.chart-table > summary {
+	padding: var(--space-2) 0;
+	color: var(--color-text-light);
+	cursor: pointer;
+	/* The disclosure triangle is drawn below, in the data voice. */
+	list-style: none;
+}
+
+.chart-table > summary::-webkit-details-marker {
+	display: none;
+}
+
+/* Decoration, and generated content is not exposed as an accessible name. */
+.chart-table > summary::before {
+	content: '▸';
+	display: inline-block;
+	width: 1em;
+	color: var(--color-text-muted);
+}
+
+.chart-table[open] > summary::before {
+	content: '▾';
+}
+
+.chart-table > summary:hover {
+	color: var(--color-text-emphasis);
+}
+
+.chart-table > summary:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-2xs);
+}
+
+/* A long table scrolls inside its own box; the page never scrolls sideways. */
+.chart-table-scroll {
+	max-height: 22rem;
+	overflow: auto;
+	padding-bottom: var(--space-2);
+}
+
+.chart-table table {
+	width: 100%;
+	margin: 0;
+	border-collapse: collapse;
+}
+
+/* The document `th` is a filled band closed by a box-edge rule (typography.css)
+ * — right for a table set inside prose, wrong here, where a filled key column
+ * would read as a second surface and the Hairline Pairing Rule wants a rule,
+ * not an edge, between entries. Both are cleared before the ledger is drawn. */
+.chart-table th,
+.chart-table td {
+	background: transparent;
+	border-bottom: 0;
+	padding: var(--space-2) 0;
+	border-top: var(--rule-hairline) solid var(--color-hairline);
+	vertical-align: baseline;
+}
+
+.chart-table thead th {
+	border-top: 0;
+}
+
+/* The category. Machine text printed case-intact, on the figures tracking:
+ * a venue or a keyword uppercased is a venue or a keyword shouted, and the
+ * ledger's key column exists for dates and stamps, which these are not. */
+.chart-table-key {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: var(--tracking-figures);
+	color: var(--color-text-soft);
+	text-align: start;
+}
+
+.chart-table-figure {
+	width: 6rem;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-semibold);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: var(--tracking-figures);
+	color: var(--color-text-emphasis);
+	text-align: end;
+	white-space: nowrap;
+}
+
+.chart-table thead .chart-table-key,
+.chart-table thead .chart-table-figure {
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: var(--tracking-label);
+	text-transform: uppercase;
+	color: var(--color-text-light);
+}
+
+/* ===========================================================================
+ * VIZ EMPTY — a plate with nothing to draw
+ *
+ * The empty state used to be a serif sentence floated in the middle of a 450px
+ * plate, which reads as an apology for the page rather than as a fact about
+ * the record. Set it where a first line goes — top left, a mono label naming
+ * the state over one serif sentence naming what the record holds.
+ * =========================================================================== */
+
+.viz-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--space-2xs);
+	text-align: start;
+}
+
+.viz-empty p {
+	margin: 0;
+	max-width: var(--measure-prose);
+	font-family: var(--font-family-serif);
+	font-size: var(--font-size-base);
+	line-height: var(--line-height-normal);
+	color: var(--color-text-light);
+}
+
+/* ===========================================================================
+ * PLATE — MISSING (see `.plate`, above)
+ *
+ * What a plate becomes when its image never arrives. The browser's own answer
+ * is the broken-image glyph and the alt string, still sitting under a caption
+ * that reads `Fig. 1 — …`: a numbered figure with no figure in it. So the
+ * box is redrawn as what it now is — a 1px edge on the surface ground with a
+ * centred `Image unavailable.` in the data voice, the image dropped and the
+ * caption suppressed, since a caption describes a plate and there is none.
+ *
+ * Applied by `use:plateFallback` (src/lib/actions/plateFallback.ts) on the
+ * image's `error`; the action also inserts the note, so the string is real
+ * text rather than CSS `content`.
+ * =========================================================================== */
+
+.plate--missing {
+	display: grid;
+	place-items: center;
+	min-height: var(--space-4xl);
+	padding: var(--space-lg) var(--space-md);
+	background: var(--color-surface);
+	border: var(--border-width-thin) solid var(--color-border);
+}
+
+/* The image and its caption are both about a plate that is not there. */
+.plate--missing > img,
+.plate--missing > a,
+.plate--missing > figcaption {
+	display: none;
+}
+
+.plate--missing-note {
+	margin: 0;
+	text-align: center;
 }

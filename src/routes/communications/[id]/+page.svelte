@@ -29,11 +29,17 @@
 	const seoDescription = $derived(createCommunicationSEODescription(communication));
 	const seoKeywords = $derived(createCommunicationSEOKeywords(communication));
 
+	const displayTitle = $derived(typesetQuotes(communication.title));
+
 	// Define breadcrumb items (used for JSON-LD structured data)
+	// The trail feeds the BreadcrumbList structured data, where the name is a
+	// machine-read label rather than a line of chrome with a width to keep, so
+	// it takes the record's whole title. Only the <title> element below stays
+	// truncated: that one is rendered in a tab.
 	const breadcrumbItems = $derived([
 		{ label: 'Talks & Events', href: `${base}/conference-activity` },
 		{
-			label: truncateTitle(communication.title),
+			label: displayTitle,
 			href: `${base}/communications/${communication.id}`
 		}
 	]);
@@ -52,7 +58,6 @@
 		return tokens;
 	});
 
-	const displayTitle = $derived(typesetQuotes(communication.title));
 	const byline = $derived(formatByline(communication.authors));
 
 	// Internal research page for this talk's project, when the name matches one.
@@ -74,6 +79,18 @@
 	const participants = $derived(communication.participants ?? []);
 	const tags = $derived(communication.tags?.filter(Boolean) ?? []);
 
+	// Does this record have a document at all? A talk with no abstract, no deck,
+	// no programme and no venue prints only its masthead and rail; the reading
+	// column is withheld rather than opening an empty grid interval. The five
+	// clauses mirror the column's five sections.
+	const hasDocument = $derived(
+		abstractParagraphs.length > 0 ||
+			Boolean(communication.slidesUrl) ||
+			papers.length > 0 ||
+			participants.length > 0 ||
+			Boolean(communication.coordinates)
+	);
+
 	// Related talks in the same project (excluding the current one).
 	const relatedInProject = $derived(
 		communication.project
@@ -91,14 +108,23 @@
 		typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
 		$state(null);
 	let mapLoaded = $state(false);
+	let mapLoadError = $state(false);
 	let mapSectionEl = $state<HTMLElement>();
 
 	function loadMap() {
 		if (mapLoaded) return;
 		mapLoaded = true;
-		import('$lib/components/visualisations/MapVisualization.svelte').then((module) => {
-			MapVisualization = module.default;
-		});
+		import('$lib/components/visualisations/MapVisualization.svelte')
+			.then((module) => {
+				MapVisualization = module.default;
+			})
+			.catch((error) => {
+				// The chunk can fail on a cold offline load or a stale service-worker
+				// manifest. The venue is already printed in the rail, so the section
+				// says so rather than spinning on "Loading map…" for ever.
+				mapLoadError = true;
+				if (import.meta.env.DEV) console.error('map chunk failed to load:', error);
+			});
 	}
 
 	// Defer the maplibre-gl import until the map section approaches the viewport
@@ -158,6 +184,7 @@
 
 <SEO
 	title="{truncateTitle(communication.title)} | Frédérick Madore"
+	schemaName={communication.title}
 	description={seoDescription}
 	keywords={seoKeywords}
 	ogImage="{base}/{communication.image}"
@@ -165,9 +192,9 @@
 
 <MetaTags {communication} />
 
-<!-- The tag block and the sibling-work block are grid children with their own
-     gap, so each is passed only when it prints something: an empty block would
-     read as a stray interval in the column. -->
+<!-- The document column, the tag block and the sibling-work block are grid
+     children with their own gap, so each is passed only when it prints
+     something: an empty block would read as a stray interval in the column. -->
 {#snippet indexRail()}
 	<div class="comm-tags">
 		<h2 class="rail-label">Tags</h2>
@@ -184,6 +211,105 @@
 			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		</div>
 	</div>
+{/snippet}
+
+{#snippet documentColumn()}
+	<!-- Abstract -->
+	{#if abstractParagraphs.length > 0}
+		<section class="section comm-section" aria-labelledby="comm-abstract-head">
+			<div class="section-head">
+				<h2 id="comm-abstract-head" class="section-title">Abstract</h2>
+			</div>
+			<div class="comm-abstract">
+				{#each abstractParagraphs as paragraph, index (index)}
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
+					<p class="comm-abstract-p" class:drop-cap={index === 0}>{@html paragraph}</p>
+				{/each}
+			</div>
+		</section>
+	{/if}
+
+	<!-- Slides — embedded inline when an embeddable deck URL is set. -->
+	{#if communication.slidesUrl}
+		<section class="section comm-section" id="slides" aria-labelledby="comm-slides-head">
+			<div class="section-head">
+				<h2 id="comm-slides-head" class="section-title">Slides</h2>
+			</div>
+			<SlideDeckEmbed src={communication.slidesUrl} title={communication.title} />
+		</section>
+	{/if}
+
+	<!-- Papers — a ledger keyed by programme order, not a grid of cards. -->
+	{#if papers.length > 0}
+		<section class="section comm-section" aria-labelledby="comm-papers-head">
+			<div class="section-head">
+				<h2 id="comm-papers-head" class="section-title">
+					{communication.type === 'panel' ? 'Papers in this panel' : 'Papers'}
+				</h2>
+			</div>
+			<div class="ledger ledger--ruled comm-papers">
+				{#each papers as paper, index (paper.title + index)}
+					<div class="ledger-row">
+						<span class="ledger-key">{runningOrder(index)}</span>
+						<span class="ledger-content">
+							<span class="ledger-title">{typesetQuotes(paper.title)}</span>
+							{#if paper.authors && paper.authors.length > 0}
+								<span class="comm-paper-byline">{paperByline(paper.authors)}</span>
+							{/if}
+							{#if paper.abstract}
+								<span class="ledger-desc">{typesetQuotes(paper.abstract)}</span>
+							{/if}
+						</span>
+					</div>
+				{/each}
+			</div>
+		</section>
+	{/if}
+
+	<!-- Participants — role as the hanging key; an unroled name keys to the
+	     generic role, since the column is a label and a dash names nothing. -->
+	{#if participants.length > 0}
+		<section class="section comm-section" aria-labelledby="comm-participants-head">
+			<div class="section-head">
+				<h2 id="comm-participants-head" class="section-title">Participants</h2>
+			</div>
+			<div class="ledger ledger--ruled comm-participants">
+				{#each participants as participant, index (participant.name + index)}
+					<div class="ledger-row">
+						<span class="ledger-key"
+							>{participant.role ? typesetQuotes(participant.role) : 'Participant'}</span
+						>
+						<span class="ledger-content">
+							<span class="ledger-title">{typesetQuotes(participant.name)}</span>
+							{#if participant.affiliation}
+								<span class="comm-affiliation">{typesetQuotes(participant.affiliation)}</span>
+							{/if}
+						</span>
+					</div>
+				{/each}
+			</div>
+		</section>
+	{/if}
+
+	<!-- Location — the venue as a plate. -->
+	{#if communication.coordinates}
+		<section class="section comm-section" aria-labelledby="comm-location-head">
+			<div class="section-head">
+				<h2 id="comm-location-head" class="section-title">Location</h2>
+			</div>
+			<div class="comm-map" bind:this={mapSectionEl}>
+				{#if MapVisualization}
+					<MapVisualization markersData={singleMarkerData} />
+				{:else if mapLoadError}
+					<p class="comm-map-loading" role="status">
+						The map could not be loaded. The venue is named in the record.
+					</p>
+				{:else}
+					<p class="comm-map-loading">Loading map…</p>
+				{/if}
+			</div>
+		</section>
+	{/if}
 {/snippet}
 
 {#snippet relatedBlock()}
@@ -211,103 +337,10 @@
 	{breadcrumbItems}
 	jsonLdScriptId="communication-json-ld"
 	{jsonLdString}
+	main={hasDocument ? documentColumn : undefined}
 	railSecondary={tags.length > 0 ? indexRail : undefined}
 	related={relatedInProject.length > 0 ? relatedBlock : undefined}
 >
-	{#snippet main()}
-		<!-- Abstract -->
-		{#if abstractParagraphs.length > 0}
-			<section class="section comm-section" aria-labelledby="comm-abstract-head">
-				<div class="section-head">
-					<h2 id="comm-abstract-head" class="section-title">Abstract</h2>
-				</div>
-				<div class="comm-abstract">
-					{#each abstractParagraphs as paragraph, index (index)}
-						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
-						<p class="comm-abstract-p" class:drop-cap={index === 0}>{@html paragraph}</p>
-					{/each}
-				</div>
-			</section>
-		{/if}
-
-		<!-- Slides — embedded inline when an embeddable deck URL is set. -->
-		{#if communication.slidesUrl}
-			<section class="section comm-section" id="slides" aria-labelledby="comm-slides-head">
-				<div class="section-head">
-					<h2 id="comm-slides-head" class="section-title">Slides</h2>
-				</div>
-				<SlideDeckEmbed src={communication.slidesUrl} title={communication.title} />
-			</section>
-		{/if}
-
-		<!-- Papers — a ledger keyed by programme order, not a grid of cards. -->
-		{#if papers.length > 0}
-			<section class="section comm-section" aria-labelledby="comm-papers-head">
-				<div class="section-head">
-					<h2 id="comm-papers-head" class="section-title">
-						{communication.type === 'panel' ? 'Papers in this panel' : 'Papers'}
-					</h2>
-				</div>
-				<div class="ledger ledger--ruled comm-papers">
-					{#each papers as paper, index (paper.title + index)}
-						<div class="ledger-row">
-							<span class="ledger-key">{runningOrder(index)}</span>
-							<span class="ledger-content">
-								<span class="ledger-title">{typesetQuotes(paper.title)}</span>
-								{#if paper.authors && paper.authors.length > 0}
-									<span class="comm-paper-byline">{paperByline(paper.authors)}</span>
-								{/if}
-								{#if paper.abstract}
-									<span class="ledger-desc">{typesetQuotes(paper.abstract)}</span>
-								{/if}
-							</span>
-						</div>
-					{/each}
-				</div>
-			</section>
-		{/if}
-
-		<!-- Participants — role as the hanging key; an unroled name keys to an em dash. -->
-		{#if participants.length > 0}
-			<section class="section comm-section" aria-labelledby="comm-participants-head">
-				<div class="section-head">
-					<h2 id="comm-participants-head" class="section-title">Participants</h2>
-				</div>
-				<div class="ledger ledger--ruled comm-participants">
-					{#each participants as participant, index (participant.name + index)}
-						<div class="ledger-row">
-							<span class="ledger-key"
-								>{participant.role ? typesetQuotes(participant.role) : '—'}</span
-							>
-							<span class="ledger-content">
-								<span class="ledger-title">{typesetQuotes(participant.name)}</span>
-								{#if participant.affiliation}
-									<span class="comm-affiliation">{typesetQuotes(participant.affiliation)}</span>
-								{/if}
-							</span>
-						</div>
-					{/each}
-				</div>
-			</section>
-		{/if}
-
-		<!-- Location — the venue as a plate. -->
-		{#if communication.coordinates}
-			<section class="section comm-section" aria-labelledby="comm-location-head">
-				<div class="section-head">
-					<h2 id="comm-location-head" class="section-title">Location</h2>
-				</div>
-				<div class="comm-map" bind:this={mapSectionEl}>
-					{#if MapVisualization}
-						<MapVisualization markersData={singleMarkerData} />
-					{:else}
-						<p class="comm-map-loading">Loading map…</p>
-					{/if}
-				</div>
-			</section>
-		{/if}
-	{/snippet}
-
 	{#snippet railPrimary()}
 		<CommunicationRecordRail
 			{communication}

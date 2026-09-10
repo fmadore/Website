@@ -131,3 +131,36 @@ export function toggleArrayValue(current: string[], value: string): string[] {
 export function normalizeYearRange(min: number, max: number): YearRange {
 	return { min: Math.min(min, max), max: Math.max(min, max) };
 }
+
+/**
+ * Clamps a year range to the corpus bounds for *display*. A `?year_min=1900`
+ * deep link is honoured by the filter state exactly as the URL gave it — the
+ * predicate is a comparison and a wider window narrows nothing — but the
+ * slider, its read-out and its ARIA values describe a track that only spans the
+ * corpus, and printing `1900–2026` beside a handle parked on 2013 is the
+ * control lying about where it is. Returns the corpus span itself when the
+ * range is absent.
+ */
+export function clampYearRange(
+	range: YearRange | null | undefined,
+	min: number,
+	max: number
+): YearRange {
+	// A corpus with inverted bounds is not a range to clamp into; hand it back
+	// rather than inventing one.
+	if (min > max) return { min, max };
+	if (!range) return { min, max };
+	const lo = Math.min(Math.max(range.min, min), max);
+	const hi = Math.min(Math.max(range.max, min), max);
+	return lo <= hi ? { min: lo, max: hi } : { min: hi, max: lo };
+}
+
+/**
+ * The reader's search term as it is quoted back in an empty state. Long terms
+ * are cut at `maxLength` and closed with an ellipsis, so a pasted paragraph
+ * cannot push the rest of the sentence off the line.
+ */
+export function truncateSearchTerm(term: string, maxLength = 60): string {
+	const trimmed = term.trim();
+	return trimmed.length <= maxLength ? trimmed : `${trimmed.slice(0, maxLength)}…`;
+}

@@ -152,32 +152,27 @@
 	let tooltipY = $state(0);
 	let tooltipPlacement = $state<'above' | 'below'>('above');
 	let tooltipItem = $state<TimelineItem | null>(null);
-	let selectedItem = $state<TimelineItem | null>(null);
-	let selectedIndex = $state(0);
+	/**
+	 * The selection is an index into `marks`, not into `items`.
+	 *
+	 * `items` arrives in the order the data files were aggregated; `marks` is
+	 * the order the plate is drawn in, lane by lane and then chronological. Two
+	 * orders meant Previous and Next walked a sequence the reader could not see
+	 * — pressing Next from the first record in a lane could land three lanes
+	 * away — and the count under them ("4 of 31") was counting a third thing
+	 * again. One index, keyed to what is on screen, and the roving tabindex
+	 * follows it so the keyboard and the buttons never disagree about where the
+	 * reader is.
+	 *
+	 * Nothing is selected on arrival. The effect that opened the most recent
+	 * record for the reader put a card between them and the plate before they
+	 * had asked a question of it, and it fought every attempt to close it.
+	 */
+	let selectedIndex = $state<number | null>(null);
 	let focusIndex = $state(0);
 
 	const rovingIndex = $derived(Math.min(focusIndex, Math.max(0, marks.length - 1)));
-
-	// Initialize with the most recent item selected for better discovery
-	$effect(() => {
-		if (items.length > 0 && !selectedItem) {
-			// Try to find the most recent items
-			// Since items might not be sorted by date, let's find the one with the max start date
-			let maxDate = -1;
-			let maxIndex = 0;
-
-			items.forEach((item, index) => {
-				const time = item.startDate.getTime();
-				if (time > maxDate) {
-					maxDate = time;
-					maxIndex = index;
-				}
-			});
-
-			selectedIndex = maxIndex;
-			selectedItem = items[maxIndex] ?? null;
-		}
-	});
+	const selectedMark = $derived(selectedIndex === null ? null : (marks[selectedIndex] ?? null));
 
 	function placeTooltip(x: number, y: number) {
 		tooltipX = x;
@@ -209,9 +204,12 @@
 		tooltipItem = null;
 	}
 
-	function selectItem(item: TimelineItem) {
-		selectedItem = item;
-		selectedIndex = items.findIndex((i) => i.id === item.id);
+	function selectMark(index: number) {
+		if (index < 0 || index >= marks.length) return;
+		selectedIndex = index;
+		// The roving tabindex follows the selection, so tabbing back into the
+		// plate returns to the record the card is showing.
+		focusIndex = index;
 
 		// Scroll detailed card into view on mobile. `scrollIntoView({ behavior:
 		// 'smooth' })` ignores `prefers-reduced-motion`; feature-detect and
@@ -251,7 +249,7 @@
 			case 'Spacebar':
 				// Space must activate as well as Enter, without scrolling the page.
 				event.preventDefault();
-				selectItem(mark.item);
+				selectMark(index);
 				break;
 			case 'ArrowRight':
 				event.preventDefault();
@@ -283,22 +281,15 @@
 	}
 
 	function goToPrevious() {
-		// Find previous item logically (based on current index)
-		if (selectedIndex > 0) {
-			selectedIndex--;
-			selectedItem = items[selectedIndex] ?? null;
-		}
+		if (selectedIndex !== null) selectMark(selectedIndex - 1);
 	}
 
 	function goToNext() {
-		if (selectedIndex < items.length - 1) {
-			selectedIndex++;
-			selectedItem = items[selectedIndex] ?? null;
-		}
+		if (selectedIndex !== null) selectMark(selectedIndex + 1);
 	}
 
 	function closeDetailCard() {
-		selectedItem = null;
+		selectedIndex = null;
 	}
 </script>
 
@@ -382,19 +373,16 @@
 							: mark.x - 12}
 						<g
 							class="mark"
-							class:selected={selectedItem?.id === mark.item.id}
+							class:selected={selectedIndex === index}
 							data-mark={index}
 							style="--_mark-colour: {mark.colour};"
 							role="button"
 							tabindex={index === rovingIndex ? 0 : -1}
 							aria-label={mark.name}
-							aria-pressed={selectedItem?.id === mark.item.id}
+							aria-pressed={selectedIndex === index}
 							onpointermove={(e) => showTooltip(e, mark.item)}
 							onpointerleave={hideTooltip}
-							onclick={() => {
-								focusIndex = index;
-								selectItem(mark.item);
-							}}
+							onclick={() => selectMark(index)}
 							onkeydown={(e) => onMarkKeydown(e, mark, index)}
 							onfocus={() => {
 								focusIndex = index;
@@ -421,13 +409,13 @@
 			</g>
 		</svg>
 
-		<!-- Detail Card (Always rendered if selectedItem exists) -->
-		{#if selectedItem}
+		<!-- Detail Card — only once the reader has opened a record. -->
+		{#if selectedMark && selectedIndex !== null}
 			<div class="detail-slot">
 				<TimelineDetailCard
-					item={selectedItem}
+					item={selectedMark.item}
 					index={selectedIndex}
-					total={items.length}
+					total={marks.length}
 					onprevious={goToPrevious}
 					onnext={goToNext}
 					onclose={closeDetailCard}
@@ -453,7 +441,7 @@
 		</div>
 	{:else}
 		<div class="empty-state">
-			<p class="text-muted">No timeline data available</p>
+			<p class="text-muted">No records to plot.</p>
 		</div>
 	{/if}
 </div>

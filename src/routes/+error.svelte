@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { resolve } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import { author } from '$lib/data/siteConfig';
+	import { getGlobalState } from '$lib/stores/globalState.svelte';
 
 	/*
 	 * The in-app error page. It is reached only by client-side navigation into a
@@ -10,37 +11,86 @@
 	 * app and is served static/404.html with a real HTTP 404. The two pages are
 	 * therefore kept deliberately identical in voice and composition — headline,
 	 * lede, chips and the path echo all match static/404.html. Edit them together.
+	 * The offline branch below is the one exception: only the booted app knows the
+	 * connection dropped, and static/404.html is never reached without a network.
 	 */
 
-	/** The five indexes a lost reader can pick up the thread from. */
+	/** The six indexes a lost reader can pick up the thread from. `also` names a
+	 * record family whose index lives under another path: /communications/<id>
+	 * is filed under Talks & events. Mirrored in static/404.html. */
 	const ways = [
 		{ href: resolve('/publications'), label: 'Publications' },
 		{ href: resolve('/research'), label: 'Research' },
-		{ href: resolve('/conference-activity'), label: 'Talks & events' },
+		{
+			href: resolve('/conference-activity'),
+			label: 'Talks & events',
+			also: [`${base}/communications`]
+		},
+		{ href: resolve('/activities'), label: 'Activities' },
 		{ href: resolve('/digital-humanities'), label: 'Digital humanities' },
 		{ href: resolve('/cv'), label: 'CV' }
 	];
 
+	/** What the reader asked for, not its percent-encoding: /publications/émancipation,
+	 * not /publications/%C3%A9mancipation. A malformed sequence throws, so the raw
+	 * path is the fallback. */
+	const requestedPath = $derived.by(() => {
+		try {
+			return decodeURIComponent(page.url.pathname);
+		} catch {
+			return page.url.pathname;
+		}
+	});
+
+	const globalState = getGlobalState();
+
+	/* Offline outranks the status code. A client-side navigation into a record
+	 * the runtime cache never saw fails as a load error, and reporting that as
+	 * "something went wrong on this page" sends the reader to reload a page the
+	 * network cannot serve. Naming the real cause first is the honest state. */
+	const isOffline = $derived(!globalState.isOnline);
 	const isNotFound = $derived(page.status === 404);
+
+	/* When the connection comes back while this branch is showing, the record is
+	 * fetchable again: reload once so the reader lands on it rather than on a
+	 * stale error. Only a page that actually rendered the offline branch may
+	 * reload itself, and `reloaded` guards the flip so a flapping connection
+	 * cannot loop the page. */
+	let wasOffline = $state(false);
+	let reloaded = false;
+
+	$effect(() => {
+		if (isOffline) {
+			wasOffline = true;
+		} else if (wasOffline && !reloaded) {
+			reloaded = true;
+			location.reload();
+		}
+	});
 
 	/* The index the requested URL was already inside is the primary way out —
 	 * a missing /publications/<id> is a search of /publications, not a trip home. */
-	const currentWay = $derived(
-		ways.find(
-			(way) => page.url.pathname === way.href || page.url.pathname.startsWith(`${way.href}/`)
-		)?.href
-	);
+	const inside = (root: string) =>
+		page.url.pathname === root || page.url.pathname.startsWith(`${root}/`);
+	const currentWay = $derived(ways.find((way) => inside(way.href) || way.also?.some(inside))?.href);
 </script>
 
 <svelte:head>
-	<title>{isNotFound ? 'Page not found' : `Error ${page.status}`} | {author.name}</title>
+	<title
+		>{isOffline ? 'Offline' : isNotFound ? 'Page not found' : `Error ${page.status}`} | {author.name}</title
+	>
 </svelte:head>
 
 <div class="error-page">
 	<div class="error-block">
-		<p class="eyebrow">Error · {page.status}</p>
+		<p class="eyebrow">Error · {isOffline ? 'Offline' : page.status}</p>
 
-		{#if isNotFound}
+		{#if isOffline}
+			<h1 class="error-title">This record is not in the offline cache.</h1>
+			<p class="error-lede">
+				You are offline. Pages you opened before the connection dropped are still available:
+			</p>
+		{:else if isNotFound}
 			<h1 class="error-title">This page couldn&rsquo;t be found.</h1>
 			<p class="error-lede">
 				This page may have moved, been renamed, or never existed. A few places to pick up the
@@ -71,10 +121,10 @@
 
 		<p class="error-diagnostic">
 			<span class="error-diagnostic-label">Requested</span>
-			<code>{page.url.pathname}</code>
+			<code>{requestedPath}</code>
 		</p>
 
-		{#if !isNotFound && page.error?.message}
+		{#if !isOffline && !isNotFound && page.error?.message}
 			<p class="error-diagnostic">
 				<span class="error-diagnostic-label">Reported</span>
 				<code>{page.error.message}</code>

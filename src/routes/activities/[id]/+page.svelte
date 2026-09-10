@@ -45,10 +45,16 @@
 	const seoDescription = $derived(createActivitySEODescription(activity));
 	const seoKeywords = $derived(createActivitySEOKeywords(activity));
 
-	// Define breadcrumb items - reactive to activity changes
+	const displayTitle = $derived(typesetQuotes(activity.title));
+
+	// Breadcrumb items - reactive to activity changes.
+	// The trail feeds the BreadcrumbList structured data, where the name is a
+	// machine-read label rather than a line of chrome with a width to keep, so
+	// it takes the record's whole title. Only the <title> element below stays
+	// truncated: that one is rendered in a tab.
 	const breadcrumbItems = $derived([
 		{ label: 'Activities', href: `${base}/activities` },
-		{ label: truncateTitle(activity.title), href: `${base}/activities/${activity.id}` }
+		{ label: displayTitle, href: `${base}/activities/${activity.id}` }
 	]);
 
 	// Breadcrumb + activity JSON-LD injection is handled by RecordLayout, under
@@ -67,7 +73,6 @@
 		return tokens;
 	});
 
-	const displayTitle = $derived(typesetQuotes(activity.title));
 	// The one-sentence description the log prints beside every entry. The record
 	// page had been dropping it entirely — the summary was visible on the index
 	// and on nothing else.
@@ -142,6 +147,11 @@
 	// --- End Content Parsing Logic ---
 
 	const tags = $derived(activity.tags?.filter(Boolean) ?? []);
+
+	// Does this entry have a body at all? A log entry that is only a headline and
+	// a standfirst prints the masthead and its rail; the reading column is
+	// withheld rather than opening an empty grid interval under the deck.
+	const hasBody = $derived(contentSegments.length > 0 || Boolean(activity.pdfPath));
 </script>
 
 <svelte:head>
@@ -156,6 +166,7 @@
 <!-- SEO Component with blog post optimizations -->
 <SEO
 	title="{truncateTitle(activity.title)} | {author.name}"
+	schemaName={activity.title}
 	description={seoDescription}
 	keywords={seoKeywords}
 	type="article"
@@ -167,11 +178,51 @@
 <!-- MetaTags Component for Zotero blog post detection -->
 <MetaTags {activity} />
 
-<!-- The tag block is a grid child with its own gap, so it is passed only when it
-     prints something: an empty block would read as a stray interval. -->
+<!-- The document column and the tag block are grid children with their own gap,
+     so each is passed only when it prints something: an empty block would read
+     as a stray interval. -->
 {#snippet deck()}
 	{#if displayDescription}
 		<p class="standfirst record-deck">{displayDescription}</p>
+	{/if}
+{/snippet}
+
+{#snippet documentColumn()}
+	<!-- The entry itself, set as prose on the paper rather than inside a
+	     bordered wrapper: `.prose` carries the site's reading measure, heading
+	     rhythm and link idiom, and starts flush with the masthead's rule. -->
+	{#if contentSegments.length > 0}
+		<div class="prose">
+			{#each contentSegments as segment, segmentIndex (segmentIndex)}
+				{#if segment.type === 'html'}
+					<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+					{@html segment.value}
+				{:else if segment.type === 'ItemReference' && segment.id}
+					<ItemReference id={segment.id} />
+				{/if}
+			{/each}
+		</div>
+	{/if}
+
+	<!-- An associated document, embedded. The rail's "View document ↓" jumps
+	     here; before, the section had no anchor and nothing linked to it. -->
+	{#if activity.pdfPath}
+		<section class="section act-section" id="document" aria-labelledby="act-document-head">
+			<div class="section-head">
+				<h2 id="act-document-head" class="section-title">
+					{typesetQuotes(activity.pdfTitle) || 'Document'}
+				</h2>
+			</div>
+			<IframeRenderer
+				id="activity-pdf-{activity.id}"
+				src="{base}/{activity.pdfPath}"
+				title="PDF document: {activity.title}"
+				height="800px"
+				variant="document"
+				sandbox={null}
+			/>
+		</section>
 	{/if}
 {/snippet}
 
@@ -199,47 +250,9 @@
 	{breadcrumbItems}
 	jsonLdScriptId="activity-json-ld"
 	{jsonLdString}
+	main={hasBody ? documentColumn : undefined}
 	railSecondary={tags.length > 0 ? indexRail : undefined}
 >
-	{#snippet main()}
-		<!-- The entry itself, set as prose on the paper rather than inside a
-		     bordered wrapper: `.prose` carries the site's reading measure, heading
-		     rhythm and link idiom, and starts flush with the masthead's rule. -->
-		{#if contentSegments.length > 0}
-			<div class="prose">
-				{#each contentSegments as segment, segmentIndex (segmentIndex)}
-					{#if segment.type === 'html'}
-						<!-- Safe: content is from trusted activity data files in src/lib/data/activities/ -->
-						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						{@html segment.value}
-					{:else if segment.type === 'ItemReference' && segment.id}
-						<ItemReference id={segment.id} />
-					{/if}
-				{/each}
-			</div>
-		{/if}
-
-		<!-- An associated document, embedded. The rail's "View document ↓" jumps
-		     here; before, the section had no anchor and nothing linked to it. -->
-		{#if activity.pdfPath}
-			<section class="section act-section" id="document" aria-labelledby="act-document-head">
-				<div class="section-head">
-					<h2 id="act-document-head" class="section-title">
-						{typesetQuotes(activity.pdfTitle) || 'Document'}
-					</h2>
-				</div>
-				<IframeRenderer
-					id="activity-pdf-{activity.id}"
-					src="{base}/{activity.pdfPath}"
-					title="PDF document: {activity.title}"
-					height="800px"
-					variant="document"
-					sandbox={null}
-				/>
-			</section>
-		{/if}
-	{/snippet}
-
 	{#snippet railPrimary()}
 		<ActivityRecordRail {activity} {kindLabel} hasDocument={Boolean(activity.pdfPath)} />
 	{/snippet}

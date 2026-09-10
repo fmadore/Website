@@ -162,14 +162,9 @@
 	text-transform: uppercase;
 }
 
-.filter-note-label {
-	color: var(--color-text-light);
-}
-
-.filter-note-value {
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-text-emphasis);
-}
+/* `.filter-note-label` / `.filter-note-value` live in ink-signal.css: the two
+ * index pages print the same pair inside their facet summary, and a shared
+ * idiom cannot be owned by the sheet only one of the three pages loads. */
 
 /* How much of the log survived the narrowing — tabular so the figure holds its
  * column as the reader toggles chips. */

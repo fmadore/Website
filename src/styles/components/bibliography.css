@@ -353,6 +353,20 @@
 	}
 }
 
+/* Below --md the row has no spare width to give an action that will not break.
+ * `white-space: nowrap` holds the action column's right edge on a wide screen,
+ * but on a phone a single long label ("Programme", a deck title) pushed the
+ * grid wider than the viewport and put a horizontal scrollbar on the whole
+ * document — /activities at 375 scrolled sideways by the width of one word.
+ * Let them wrap, and break inside a word rather than past the edge. */
+@media (--md-down) {
+	.bib-action {
+		white-space: normal;
+		overflow-wrap: anywhere;
+		max-width: 100%;
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.bib-title-link,
 	.bib-action {

@@ -56,6 +56,7 @@ carry a unique one.
 		controls,
 		// Aliased: the local `{#snippet placeholder()}` below would shadow it.
 		placeholder: placeholderSnippet,
+		table,
 		children
 	}: {
 		/** Section marker in the data voice, e.g. "§ 3". */
@@ -86,6 +87,8 @@ carry a unique one.
 		controls?: Snippet;
 		/** Empty state for the few sections whose message interpolates state. */
 		placeholder?: Snippet;
+		/** The plate's own figures, printed under it (see VizChartCard). */
+		table?: Snippet;
 		children?: Snippet;
 	} = $props();
 </script>
@@ -105,13 +108,16 @@ carry a unique one.
 	{#if hasData === undefined}
 		{@render children?.()}
 	{:else}
-		<VizChartCard {variant} {height} {placeholderHeight} {hasData}>
+		<VizChartCard {variant} {height} {placeholderHeight} {hasData} {table}>
 			{@render children?.()}
 			{#snippet placeholder()}
 				{#if placeholderSnippet}
 					{@render placeholderSnippet()}
 				{:else}
-					<p class="text-light">{empty}</p>
+					<div class="viz-empty">
+						<span class="dateline">No data</span>
+						<p>{empty}</p>
+					</div>
 				{/if}
 			{/snippet}
 		</VizChartCard>

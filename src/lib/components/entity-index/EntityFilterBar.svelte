@@ -5,7 +5,9 @@
 	// by the page). Page-specific controls (e.g. the map toggle) render through
 	// the `extraControls` snippet, between the facet toggle and the sort group.
 	import type { Snippet } from 'svelte';
+	import { browser } from '$app/environment';
 	import type { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
+	import { FACET_GRID_ID } from './EntityFacetGrid.svelte';
 
 	interface Props {
 		filters: EntityFilterSystem<TItem>;
@@ -41,6 +43,23 @@
 
 	const af = $derived(filters.activeFilters);
 	const options = $derived(filters.filterOptions);
+
+	/* The toggle only exists below --lg; above it the grid is always laid out and
+	 * the button is `display: none`. A hidden control still reachable by an
+	 * assistive technology that ignores CSS reported `aria-expanded="false"`
+	 * over a facet grid that was fully open, so the attribute is rendered only
+	 * while the control it describes is. Mirrors `--lg-down` in media.css. */
+	const COLLAPSIBLE_QUERY = '(max-width: 1023px)';
+	let collapsible = $state(false);
+
+	$effect(() => {
+		if (!browser) return;
+		const mql = window.matchMedia(COLLAPSIBLE_QUERY);
+		collapsible = mql.matches;
+		const onChange = (event: MediaQueryListEvent) => (collapsible = event.matches);
+		mql.addEventListener('change', onChange);
+		return () => mql.removeEventListener('change', onChange);
+	});
 </script>
 
 <section class="filter-bar" aria-label={ariaLabel}>
@@ -72,6 +91,7 @@
 					class="chip"
 					class:chip--selected={af.types.includes(type)}
 					aria-pressed={af.types.includes(type)}
+					data-count={filters.counts.types[type] ?? 0}
 					onclick={() => filters.toggle('types', type)}
 					title={typeLabels[type] ?? type}
 				>
@@ -90,6 +110,7 @@
 				class="language-opt"
 				class:language-opt--active={af.languages.length === 0}
 				aria-label="All languages"
+				aria-pressed={af.languages.length === 0}
 				onclick={() => filters.setValues('languages', [])}
 			>
 				All
@@ -99,6 +120,8 @@
 					type="button"
 					class="language-opt"
 					class:language-opt--active={af.languages.includes(lang)}
+					aria-pressed={af.languages.includes(lang)}
+					data-count={filters.counts.languages[lang] ?? 0}
 					onclick={() => filters.toggle('languages', lang)}
 				>
 					{lang}
@@ -111,7 +134,8 @@
 			<button
 				type="button"
 				class="facet-toggle"
-				aria-expanded={facetsOpen}
+				aria-expanded={collapsible ? facetsOpen : undefined}
+				aria-controls={FACET_GRID_ID}
 				onclick={() => (facetsOpen = !facetsOpen)}
 			>
 				More filters <span aria-hidden="true">{facetsOpen ? '▴' : '▾'}</span>

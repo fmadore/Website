@@ -267,7 +267,8 @@
 				<ul class="links">
 					<li><a href="/publications">Publications</a></li>
 					<li><a href="/research">Research</a></li>
-					<li><a href="/conference-activity">Talks &amp; events</a></li>
+					<li><a href="/conference-activity" data-also="/communications">Talks &amp; events</a></li>
+					<li><a href="/activities">Activities</a></li>
 					<li><a href="/digital-humanities">Digital humanities</a></li>
 					<li><a href="/cv">CV</a></li>
 				</ul>
@@ -286,12 +287,27 @@
 			// textContent, never innerHTML: the path is untrusted input.
 			(function () {
 				var path = window.location.pathname;
+				// Print what the reader asked for, not its percent-encoding
+				// (/publications/émancipation, not /publications/%C3%A9mancipation);
+				// a malformed sequence throws, so the raw path is the fallback.
+				var shown = path;
+				try {
+					shown = decodeURIComponent(path);
+				} catch (e) {
+					/* keep the raw path */
+				}
 				var slot = document.getElementById('requested-path');
-				if (slot) slot.textContent = path;
+				if (slot) slot.textContent = shown;
 				var chips = document.querySelectorAll('.links a');
 				for (var i = 0; i < chips.length; i++) {
 					var href = chips[i].getAttribute('href');
-					if (path === href || path.indexOf(href + '/') === 0) {
+					// data-also: a record family whose index lives under another
+					// path (/communications/* are filed under Talks & events).
+					var also = chips[i].getAttribute('data-also');
+					var inside = function (root) {
+						return path === root || path.indexOf(root + '/') === 0;
+					};
+					if (inside(href) || (also && inside(also))) {
 						chips[i].className += ' is-current';
 						chips[i].setAttribute('aria-current', 'true');
 					}

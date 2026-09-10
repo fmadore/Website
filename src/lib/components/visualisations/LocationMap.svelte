@@ -41,15 +41,23 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		basePath,
 		/** Singular label for the popup count line ("2 publications" / "2 activities"). */
 		itemLabel,
-		initialZoom = 2
+		initialZoom = 2,
+		/**
+		 * Set to true when the map could not be initialised, so the section around
+		 * it can stop promising controls that are not there (bindable, read-only
+		 * from the consumer's side).
+		 */
+		failed = $bindable(false)
 	}: {
 		data?: LocationDatum[];
 		basePath: string;
 		itemLabel: string;
 		initialZoom?: number;
+		failed?: boolean;
 	} = $props();
 
 	let mapContainer: HTMLElement;
+	let choroplethStatusRegion = $state<HTMLElement | null>(null);
 
 	// State
 	let activePopup: Popup | null = null;
@@ -467,6 +475,9 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		boundaryPromise = null;
 		boundaryCache = null;
 		renderMapView();
+		// The button the reader just pressed is replaced by the status line that
+		// answers it, so move focus there rather than losing it to <body>.
+		queueMicrotask(() => choroplethStatusRegion?.focus());
 	}
 
 	// Shared MapLibre lifecycle (WebGL guard, dynamic import, controls, theme
@@ -494,38 +505,48 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			if (ml.map) clearChoropleth(ml.map);
 		}
 	});
-	const importError = $derived(ml.importError);
+	// The raw string is a renderer diagnostic (a WebGL message, a layout
+	// failure); the reader gets the honest state, the console gets the rest, and
+	// `failed` is the one flag both this template and the section around it read.
+	$effect(() => {
+		failed = ml.importError !== null;
+	});
 </script>
 
 <div class="map-wrapper">
-	<div bind:this={mapContainer} class="map-container">
-		{#if data.length > 0 && !importError}
-			<div class="map-mode-panel">
-				<div class="map-mode-toggle" role="group" aria-label="Map display mode">
-					<button
-						type="button"
-						class:active={viewMode === 'markers'}
-						aria-pressed={viewMode === 'markers'}
-						onclick={() => selectViewMode('markers')}>Markers</button
-					>
-					<button
-						type="button"
-						class:active={viewMode === 'choropleth'}
-						aria-pressed={viewMode === 'choropleth'}
-						onclick={() => selectViewMode('choropleth')}>Country shading</button
-					>
-				</div>
+	{#if data.length > 0 && !failed}
+		<div class="map-mode-panel">
+			<div class="map-mode-toggle" role="group" aria-label="Map display mode">
+				<button
+					type="button"
+					class:active={viewMode === 'markers'}
+					aria-pressed={viewMode === 'markers'}
+					onclick={() => selectViewMode('markers')}>Markers</button
+				>
+				<button
+					type="button"
+					class:active={viewMode === 'choropleth'}
+					aria-pressed={viewMode === 'choropleth'}
+					onclick={() => selectViewMode('choropleth')}>Country shading</button
+				>
+			</div>
 
+			<!-- One persistent region, so "Try again" has somewhere to send focus
+			     and the live region is not re-created between states. -->
+			<div bind:this={choroplethStatusRegion} class="map-mode-region" tabindex="-1" role="status">
 				{#if viewMode === 'choropleth' && choroplethStatus === 'loading'}
-					<p class="map-mode-status" aria-live="polite">Loading country boundaries…</p>
+					<p class="map-mode-status">Loading country boundaries…</p>
 				{:else if viewMode === 'choropleth' && choroplethStatus === 'error'}
-					<div class="map-mode-status map-mode-error" aria-live="polite">
+					<div class="map-mode-status map-mode-error">
 						<span>Country shading could not be loaded. The marker view still works.</span>
 						<button type="button" onclick={retryChoropleth}>Try again</button>
 					</div>
 				{/if}
 			</div>
-
+		</div>
+	{/if}
+	<div bind:this={mapContainer} class="map-container">
+		{#if data.length > 0 && !failed}
 			{#if viewMode === 'choropleth' && choroplethStatus === 'ready' && choroplethBins.length > 0}
 				<div class="choropleth-legend" aria-label={legendTitle}>
 					<span class="legend-title">{legendTitle}</span>
@@ -541,9 +562,12 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			{/if}
 		{/if}
 
-		{#if importError}
-			<div class="map-error">
-				<p>Error loading map: {importError}</p>
+		{#if failed}
+			<div class="state-note map-state-note" role="status">
+				<span class="dateline">Map unavailable</span>
+				<p>
+					The map could not be loaded. The {itemLabel} counts below are the same records.
+				</p>
 			</div>
 		{/if}
 	</div>
@@ -557,11 +581,14 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 </div>
 
 <style>
+	/* The mode panel is a sibling of the map rather than a child of it, so the
+	 * narrow breakpoint can drop it out of the plate without moving markup. */
 	.map-wrapper {
 		width: 100%;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		position: relative;
 	}
 
 	.map-container {
@@ -625,6 +652,11 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		z-index: 1;
 	}
 
+	.map-mode-region:focus-visible {
+		outline: 2px solid var(--color-focus);
+		outline-offset: 2px;
+	}
+
 	.map-mode-status {
 		margin: var(--space-2xs) 0 0;
 		padding: var(--space-xs) var(--space-sm);
@@ -632,15 +664,17 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		border: var(--border-width-thin) solid var(--color-border);
 		color: var(--color-text-muted);
 		line-height: var(--line-height-normal);
+		text-align: start;
 		overflow-wrap: anywhere;
 	}
 
+	/* A failed fetch is not the reader's mistake, so the panel keeps the
+	 * apparatus ink; --color-danger belongs to form validation. */
 	.map-mode-error {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
 		gap: var(--space-2xs);
-		color: var(--color-danger);
 	}
 
 	.map-mode-status button {
@@ -696,16 +730,11 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		border-block: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
 	}
 
-	.map-error {
+	/* The honest state fills the plate the map would have occupied; the panel
+	 * itself is the shared `.state-note` idiom (ink-signal.css). */
+	.map-state-note {
 		width: 100%;
 		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: color-mix(in srgb, var(--color-danger) 10%, transparent);
-		color: var(--color-danger);
-		padding: var(--space-md);
-		text-align: center;
 	}
 
 	.unmapped-note {
@@ -715,15 +744,26 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		text-align: center;
 	}
 
-	/* Custom marker styles */
+	/* Custom marker styles. The print register allows no transform on hover, so
+	 * the marker answers in ink: the disc goes opaque and its ring steps to the
+	 * ink colour. Nothing moves, and nothing reflows the neighbouring discs. */
 	:global(.location-marker) {
 		cursor: pointer;
-		transition: transform var(--duration-fast) var(--ease-out);
+	}
+
+	:global(.location-marker circle) {
+		transition:
+			fill-opacity var(--duration-fast) var(--ease-out),
+			stroke var(--duration-fast) var(--ease-out);
 	}
 
 	:global(.location-marker:hover) {
-		transform: scale(1.15);
 		z-index: var(--z-dropdown) !important;
+	}
+
+	:global(.location-marker:hover circle) {
+		fill-opacity: 1;
+		stroke: var(--color-primary);
 	}
 
 	/* Popup styles — flat archival card: square, hairline, no shadow. */
@@ -862,10 +902,14 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			min-height: 300px;
 		}
 
+		/* A phone plate has no room for a panel floating over it: the mode
+		 * control leaves the map and becomes a right-aligned control row above
+		 * it, clear of the navigation buttons in the map's own top corner. */
 		.map-mode-panel {
-			inset-block-start: var(--space-xs);
-			inset-inline-start: var(--space-xs);
-			max-width: calc(100% - 4.5rem);
+			position: static;
+			max-width: none;
+			margin-bottom: var(--space-xs);
+			text-align: end;
 		}
 
 		.map-mode-toggle button {
@@ -880,7 +924,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		:global(.location-marker) {
+		:global(.location-marker circle) {
 			transition: none;
 		}
 	}

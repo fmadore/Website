@@ -19,6 +19,26 @@
 	let activated = $state(false);
 	let stageEl = $state<HTMLDivElement | null>(null);
 
+	// The deck is served from a separate site on its own deploy schedule, so the
+	// frame can sit blank for ever without erroring: a cross-origin iframe that
+	// 404s or times out fires no event this page can see. A watchdog is the only
+	// signal available. Six seconds is well past a warm load and short enough
+	// that a reader has not yet decided the page is broken.
+	const DECK_LOAD_TIMEOUT_MS = 6000;
+	let loadFailed = $state(false);
+	let watchdog: ReturnType<typeof setTimeout> | undefined;
+
+	function clearWatchdog() {
+		if (watchdog !== undefined) {
+			clearTimeout(watchdog);
+			watchdog = undefined;
+		}
+	}
+
+	// Teardown: a reader who navigates away mid-load must not have the failure
+	// state written into a component that is gone.
+	$effect(() => clearWatchdog);
+
 	// Host for the faux-chrome bar (echoes the .site-frame motif used in decks).
 	const host = $derived.by(() => {
 		try {
@@ -56,11 +76,25 @@
 	const POSTER_SIZES = '(min-width: 1024px) 580px, 90vw';
 
 	function activate() {
+		loadFailed = false;
 		activated = true;
+		clearWatchdog();
+		watchdog = setTimeout(() => {
+			watchdog = undefined;
+			// Nothing loaded. Drop the frame and give the reader back the cover
+			// plate, with the deck's own address printed under it.
+			activated = false;
+			loadFailed = true;
+		}, DECK_LOAD_TIMEOUT_MS);
+	}
+
+	/** The frame reported a load, so the deck is there: stand the watchdog down. */
+	function onFrameLoad() {
+		clearWatchdog();
 	}
 
 	function enterFullscreen() {
-		activated = true;
+		activate();
 		// stageEl is already in the DOM, so requesting fullscreen stays inside the
 		// click gesture even though the iframe mounts on the next tick.
 		stageEl?.requestFullscreen?.().catch(() => {
@@ -68,6 +102,27 @@
 		});
 	}
 </script>
+
+<!-- The cover plate is printed by both stage states that are not the frame, so
+     it is authored once. -->
+{#snippet posterPlate()}
+	<span class="deck-facade-plate">
+		{#if posterSrc}
+			<!-- Decorative: the surrounding control or note already names the deck. -->
+			<img
+				class="deck-poster"
+				src={posterSrc}
+				srcset={posterSrcset}
+				sizes={posterSrcset ? POSTER_SIZES : undefined}
+				alt=""
+				width="1280"
+				height="720"
+				loading="lazy"
+				decoding="async"
+			/>
+		{/if}
+	</span>
+{/snippet}
 
 <figure class="deck-embed" class:is-active={activated}>
 	<div class="deck-chrome">
@@ -97,7 +152,23 @@
 				loading="lazy"
 				allow="fullscreen"
 				allowfullscreen
+				onload={onFrameLoad}
 			></iframe>
+		{:else if loadFailed}
+			<!-- The frame never loaded. The stage keeps the cover plate — the deck's
+			     own title slide is still information — and its caption strip says so
+			     over the address the reader can open directly. -->
+			<div class="deck-facade deck-facade--failed">
+				{@render posterPlate()}
+				<span class="deck-facade-bar deck-facade-bar--failed">
+					<span class="dateline">The deck could not be loaded.</span>
+					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external deck on the slides subdomain -->
+					<a class="deck-chrome-btn" href={src} target="_blank" rel="noopener noreferrer">
+						<span>Open deck<span class="sr-only"> (opens in new tab)</span></span>
+						<Icon icon="lucide:arrow-up-right" width="13" height="13" aria-hidden="true" />
+					</a>
+				</span>
+			</div>
 		{:else}
 			<button
 				type="button"
@@ -105,22 +176,7 @@
 				onclick={activate}
 				aria-label="View slides: {title}"
 			>
-				<span class="deck-facade-plate">
-					{#if posterSrc}
-						<!-- Decorative: the button's aria-label already names the deck. -->
-						<img
-							class="deck-poster"
-							src={posterSrc}
-							srcset={posterSrcset}
-							sizes={posterSrcset ? POSTER_SIZES : undefined}
-							alt=""
-							width="1280"
-							height="720"
-							loading="lazy"
-							decoding="async"
-						/>
-					{/if}
-				</span>
+				{@render posterPlate()}
 				<!-- Caption strip, the plate idiom: the affordance sits below the
 				     image on its own ground rather than washing over it. -->
 				<span class="deck-facade-bar">
@@ -241,6 +297,12 @@
 		background: var(--color-surface-alt);
 	}
 
+	/* The failed stage is the same object without the affordance: a plate the
+	   reader looks at, not a control. */
+	.deck-facade--failed {
+		cursor: default;
+	}
+
 	.deck-facade:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: -4px;
@@ -276,7 +338,15 @@
 		transition: background-color var(--duration-fast) var(--ease-out);
 	}
 
-	.deck-facade:hover .deck-facade-bar {
+	/* Failure strip — the note takes the space the label had, the address sits at
+	   the end where the hint did. */
+	.deck-facade-bar--failed {
+		flex-wrap: wrap;
+		justify-content: space-between;
+		row-gap: var(--space-2);
+	}
+
+	.deck-facade:not(.deck-facade--failed):hover .deck-facade-bar {
 		background: color-mix(in srgb, var(--color-accent) 6%, var(--color-surface-alt));
 	}
 

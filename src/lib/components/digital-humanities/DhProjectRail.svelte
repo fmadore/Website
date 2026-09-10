@@ -32,6 +32,7 @@ accent, which is correct: a repository is not "the current thing".
 	import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
 	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { plateFallback } from '$lib/actions/plateFallback';
 
 	// The rail is 380px wide from --lg up; below that the plate spans the single
 	// column. Same contract as the record rails.
@@ -86,6 +87,7 @@ accent, which is correct: a repository is not "the current thing".
 			alt=""
 			loading="lazy"
 			decoding="async"
+			use:plateFallback
 		/>
 	</figure>
 {/if}
@@ -142,6 +144,24 @@ accent, which is correct: a repository is not "the current thing".
 	.address-stack {
 		display: flex;
 		flex-direction: column;
-		gap: var(--space-1);
+		/* Sized so that two addresses on successive lines sit one hit box apart:
+		 * the 24px target below overhangs its line by half the difference on
+		 * each side, and this gap is exactly that difference, so neighbouring
+		 * targets touch but never overlap. */
+		gap: calc(var(--space-6) - 1lh);
+	}
+
+	/* Every address is a 24px-tall target on every pointer (WCAG 2.5.8): the
+	 * mono value line is ~15px on its own. The box grows through padding and
+	 * gives the growth back through margin, so a single-address row keeps the
+	 * ledger's rhythm and the row height is untouched; only a stack of several
+	 * opens up, by the gap above. The 44px coarse-pointer floor that
+	 * `.ledger-action` takes is deliberately not applied here: these are
+	 * addresses that wrap, and 44px boxes on a 24px pitch would overlap each
+	 * other and the key beside them. */
+	.address-stack a {
+		display: block;
+		padding-block: calc((var(--space-6) - 1lh) / 2);
+		margin-block: calc((1lh - var(--space-6)) / 2);
 	}
 </style>

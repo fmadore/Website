@@ -3,6 +3,7 @@ import {
 	ARRAY_FILTER_PARAMS,
 	serializeFiltersToQuery,
 	parseArrayFilterParam,
+	parseSearchParam,
 	parseYearRangeParams,
 	arrayValuesEqual,
 	yearRangesEqual,
@@ -59,6 +60,18 @@ describe('serializeFiltersToQuery', () => {
 		);
 	});
 
+	it('serializes the search term as q, and only when it holds something', () => {
+		expect(serializeFiltersToQuery({}, 'islam')).toBe('q=islam');
+		expect(serializeFiltersToQuery({}, '')).toBe('');
+		expect(serializeFiltersToQuery({}, '   ')).toBe('');
+		expect(serializeFiltersToQuery({ types: ['book'] }, 'islam')).toBe('type=book&q=islam');
+	});
+
+	it('never serializes a page number', () => {
+		// The page is a position in the list the filters define, not a filter.
+		expect(serializeFiltersToQuery({ types: ['book'] }, 'islam')).not.toContain('page');
+	});
+
 	it('URL-encodes values that need it', () => {
 		const query = serializeFiltersToQuery({ tags: ['Côte d’Ivoire & more'] });
 		const parsed = new URLSearchParams(query);
@@ -90,6 +103,24 @@ describe('parseArrayFilterParam', () => {
 
 	it('drops empty entries (malformed ?tag=&tag=a)', () => {
 		expect(parseArrayFilterParam(new URLSearchParams('tag=&tag=a&tag='), 'tag')).toEqual(['a']);
+	});
+});
+
+describe('parseSearchParam', () => {
+	it('returns an empty string when q is absent or empty', () => {
+		expect(parseSearchParam(new URLSearchParams(''))).toBe('');
+		expect(parseSearchParam(new URLSearchParams('q='))).toBe('');
+		expect(parseSearchParam(new URLSearchParams('q=%20%20'))).toBe('');
+	});
+
+	it('reads the term back, trimmed', () => {
+		expect(parseSearchParam(new URLSearchParams('q=islam'))).toBe('islam');
+		expect(parseSearchParam(new URLSearchParams('q=+islam+'))).toBe('islam');
+	});
+
+	it('round-trips a term with spaces and punctuation', () => {
+		const query = serializeFiltersToQuery({}, 'Côte d’Ivoire & Islam');
+		expect(parseSearchParam(new URLSearchParams(query))).toBe('Côte d’Ivoire & Islam');
 	});
 });
 

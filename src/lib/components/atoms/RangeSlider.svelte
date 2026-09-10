@@ -1,5 +1,7 @@
 <!-- Custom Range Slider Component for Svelte 5 - Panel Style -->
 <script lang="ts">
+	import { targetHandle } from './rangeSliderMath';
+
 	let {
 		min = 0,
 		max = 100,
@@ -14,6 +16,7 @@
 		ariaLabel = undefined,
 		minAriaLabel = 'Minimum value',
 		ariaValueText = undefined,
+		minAriaValueText = undefined,
 		onchange
 	}: {
 		min?: number;
@@ -37,6 +40,12 @@
 		minAriaLabel?: string;
 		/** Spoken value for the (max) handle, e.g. `12 of 77 institutions`; a bare number otherwise. */
 		ariaValueText?: string;
+		/**
+		 * Spoken value for the min handle. Two handles that together select one
+		 * window should say the same thing: a screen-reader user arriving on
+		 * either handle needs the window, not half of it.
+		 */
+		minAriaValueText?: string;
 		onchange?: (event: CustomEvent<{ values: [number, number] }>) => void;
 	} = $props();
 
@@ -155,19 +164,13 @@
 		document.addEventListener('touchend', handleTouchEnd);
 	}
 
-	// Which handle a track interaction at `newValue` should drive. Single mode
-	// always drives the max handle; otherwise pick the closest.
-	function targetHandle(newValue: number): 'min' | 'max' {
-		if (single) return 'max';
-		const distanceToMin = Math.abs(newValue - values[0]);
-		const distanceToMax = Math.abs(newValue - values[1]);
-		return distanceToMin <= distanceToMax ? 'min' : 'max';
-	}
+	// Which handle a track interaction drives — see `rangeSliderMath.ts`.
+	const handleFor = (newValue: number) => targetHandle(newValue, values, single);
 
 	function handleTrackClick(event: MouseEvent) {
 		if (isDragging) return;
 		const newValue = getValueFromPosition(event.clientX);
-		updateValue(targetHandle(newValue), newValue);
+		updateValue(handleFor(newValue), newValue);
 	}
 
 	function handleTrackTouch(event: TouchEvent) {
@@ -175,7 +178,7 @@
 		const touch = event.touches[0];
 		if (touch) {
 			const newValue = getValueFromPosition(touch.clientX);
-			updateValue(targetHandle(newValue), newValue);
+			updateValue(handleFor(newValue), newValue);
 		}
 	}
 
@@ -236,6 +239,7 @@
 			aria-valuemax={values[1]}
 			aria-valuenow={values[0]}
 			aria-label={minAriaLabel}
+			aria-valuetext={minAriaValueText}
 			onmousedown={(e) => handleMouseDown(e, 'min')}
 			ontouchstart={(e) => handleTouchStart(e, 'min')}
 			onkeydown={(e) => handleKeyDown(e, 'min')}

@@ -13,8 +13,11 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	import { base } from '$app/paths';
 	import type { Communication } from '$lib/types/communication';
 	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
+	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
+	import { copyText } from '$lib/utils/clipboard';
 	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { plateFallback } from '$lib/actions/plateFallback';
 
 	// The rail is 380px wide from --lg up; below that the plate spans the single
 	// column. The intrinsic size reserves the plate's box before the lazily
@@ -110,6 +113,48 @@ to emit, and widening it for one button would be the wrong place to decide that.
 			? `Fig. 1. ${plateCaption}${/[.!?…]$/.test(plateCaption.trim()) ? '' : '.'}`
 			: undefined
 	);
+
+	/**
+	 * The talk's own reference, in the shape `formatReferenceText` gives a
+	 * publication: `Authors. (Year). Title. Venue details.` with a resolvable DOI
+	 * where there is one.
+	 *
+	 * Composed here rather than called, because `formatReferenceText` takes a
+	 * `Publication` and reads publication-only fields through `formatCitation`.
+	 * The venue half still comes from `formatCommunicationCitation`, which is
+	 * what the talks index row prints under every title, so the page and the row
+	 * cannot disagree about the same talk.
+	 */
+	const reference = $derived(
+		[
+			formatAuthorList(communication.authors) && `${formatAuthorList(communication.authors)}.`,
+			communication.year && `(${communication.year}).`,
+			`${typesetQuotes(communication.title)}.`,
+			formatCommunicationCitation(communication),
+			communication.doi ? `https://doi.org/${communication.doi}` : ''
+		]
+			.filter(Boolean)
+			.join(' ')
+			.replace(/\s+/g, ' ')
+			.trim()
+	);
+
+	let copyState = $state<'idle' | 'copied' | 'failed'>('idle');
+	let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
+	const COPY_LABELS = {
+		idle: 'Copy reference',
+		copied: 'Reference copied',
+		failed: 'Copy failed. Select the text above.'
+	} as const;
+
+	async function copyReference() {
+		copyState = (await copyText(reference)) ? 'copied' : 'failed';
+		clearTimeout(resetTimer);
+		resetTimer = setTimeout(() => (copyState = 'idle'), 2400);
+	}
+
+	$effect(() => () => clearTimeout(resetTimer));
 </script>
 
 {#if plateSrc}
@@ -124,6 +169,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 			alt={plateAlt}
 			loading="lazy"
 			decoding="async"
+			use:plateFallback
 		/>
 		{#if plateFigCaption}
 			<figcaption class="plate-caption">{plateFigCaption}</figcaption>
@@ -172,3 +218,23 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	</div>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 {/if}
+
+<!-- ═══ CITE ═══
+     The same block the publication rail carries, minus the BibTeX export: a
+     talk citation is the errand this site exists to serve, and a reader who
+     wanted the reference had to retype it off the masthead. See the header note
+     for why `generateBibtex` stays out. -->
+<div class="cite-block">
+	<h2 class="rail-label">Cite</h2>
+	<p class="cite-reference">{reference}</p>
+	<div class="cite-actions">
+		<button
+			type="button"
+			onclick={copyReference}
+			aria-live="polite"
+			class="btn btn-outline-primary btn-block cursor-pointer"
+		>
+			{COPY_LABELS[copyState]}
+		</button>
+	</div>
+</div>

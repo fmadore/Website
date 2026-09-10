@@ -20,6 +20,11 @@ const RUNTIME_CACHE = `runtime-v${version}`;
 // initial load and ballooned the network dependency tree. The fetch handler
 // below already caches JS/CSS/assets cache-first and navigations network-first
 // on demand, so any visited page still works offline without the upfront bulk.
+// "Network-first" includes the navigation-preload response: that is the body a
+// preload-enabled browser actually serves, so it is cached on the same terms as
+// a plain fetch — otherwise every navigation made while preload was active
+// returned a page that was never written to the runtime cache, and the sentence
+// above was false for exactly the pages a reader had visited.
 // Fonts are deliberately absent: see the note on CACHE_FIRST_ROUTES below —
 // nothing here serves them, so precaching them would only cost install traffic.
 const ASSETS_TO_CACHE = ['/', '/offline.html', '/manifest.webmanifest'];
@@ -69,8 +74,15 @@ sw.addEventListener('install', (event) => {
 			.then(async (cache) => {
 				console.log('[SW] Pre-caching offline assets');
 				// Add assets individually so a single 404 doesn't abort the whole install
-				// (cache.addAll is atomic — any failure rejects the entire operation).
-				const results = await Promise.allSettled(ASSETS_TO_CACHE.map((asset) => cache.add(asset)));
+				// (cache.addAll is atomic — any failure rejects the entire operation),
+				// and store an un-redirected copy rather than using cache.add: a host
+				// that answers '/offline.html' through a redirect gives cache.add a
+				// response with redirected === true, and respondWith() refuses to
+				// serve such a response to a navigation, so the offline fallback
+				// failed precisely when it was needed.
+				const results = await Promise.allSettled(
+					ASSETS_TO_CACHE.map((asset) => precacheAsset(cache, asset))
+				);
 				const failed = results.filter((r) => r.status === 'rejected').length;
 				if (failed > 0) {
 					console.warn(`[SW] ${failed}/${ASSETS_TO_CACHE.length} assets failed to precache`);
@@ -79,6 +91,25 @@ sw.addEventListener('install', (event) => {
 			.then(() => console.log('[SW] Installation complete'))
 	);
 });
+
+// Fetch one precache asset and store a copy whose `redirected` flag is false.
+// A Response constructed from a body is never marked redirected, which is what
+// makes it legal to hand back from respondWith() during a navigation.
+async function precacheAsset(cache, asset) {
+	const response = await fetch(asset, { cache: 'reload' });
+	if (!response.ok || response.status >= 400) {
+		throw new Error(`[SW] ${asset} responded ${response.status}`);
+	}
+	const body = await response.blob();
+	// Only the content type is carried over. `blob()` hands back decoded bytes,
+	// so copying the original headers wholesale would keep a `Content-Encoding:
+	// gzip` that no longer describes the body, and the browser would try to
+	// inflate plain HTML.
+	const headers = new Headers();
+	const type = response.headers.get('Content-Type');
+	if (type) headers.set('Content-Type', type);
+	await cache.put(asset, new Response(body, { status: 200, statusText: 'OK', headers }));
+}
 
 // Activate event: Clean up old caches, enable navigation preload, and claim clients
 sw.addEventListener('activate', (event) => {
@@ -193,6 +224,12 @@ async function handleNetworkFirst(request, event) {
 		// Use navigation preload response if available
 		const preloadResponse = event ? await event.preloadResponse : null;
 		if (preloadResponse) {
+			// The preload response IS the navigation's response, so it earns a
+			// place in the runtime cache on exactly the terms a fetch() would.
+			if (preloadResponse.ok && preloadResponse.status < 400) {
+				const cache = await caches.open(RUNTIME_CACHE);
+				await putRuntime(cache, request, preloadResponse.clone());
+			}
 			return preloadResponse;
 		}
 
@@ -219,16 +256,19 @@ async function handleNetworkFirst(request, event) {
 		// the promise and the fallback below was unreachable — when offline.html
 		// was missing from the cache that resolved to undefined, and
 		// respondWith(undefined) fails the navigation outright.
+		// A redirected response cannot be handed to a navigation: respondWith()
+		// rejects it and the tab shows a network error instead of the fallback.
+		// Better an honest 503 body than a failed navigation.
 		if (request.destination === 'document') {
 			const offline = await caches.match('/offline.html');
-			return (
-				offline ||
-				new Response('You are offline', {
-					status: 503,
-					statusText: 'Service Unavailable',
-					headers: { 'Content-Type': 'text/html' }
-				})
-			);
+			if (offline && !offline.redirected) {
+				return offline;
+			}
+			return new Response('You are offline', {
+				status: 503,
+				statusText: 'Service Unavailable',
+				headers: { 'Content-Type': 'text/html' }
+			});
 		}
 
 		throw error;

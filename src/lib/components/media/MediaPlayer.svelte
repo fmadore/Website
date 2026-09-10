@@ -39,7 +39,7 @@
 	// eslint-disable-next-line svelte/prefer-writable-derived -- also written by toggleMute()
 	let isMuted = $state(false);
 	let isFullscreen = $state(false);
-	let error = $state<string>('');
+	let hasError = $state(false);
 	let isLoading = $state(true);
 
 	// Sync isMuted with the muted prop
@@ -78,8 +78,10 @@
 	};
 
 	const handleError = () => {
-		error = 'The audio file could not be loaded. Reload the page to try again.';
+		hasError = true;
 		isLoading = false;
+		// The element's own MediaError code is a diagnostic, not interface copy.
+		if (import.meta.env.DEV) console.error('Media unavailable:', mediaElement?.error);
 	};
 
 	const handleFullscreenChange = () => {
@@ -99,7 +101,11 @@
 		el.addEventListener('ended', handleEnded);
 		el.addEventListener('error', handleError);
 
-		if (el.readyState >= 1) handleLoadedMetadata();
+		// A 404 can resolve before this effect runs, in which case neither `error`
+		// nor `loadedmetadata` will fire again and the player would sit on its
+		// spinner for ever. Read the element's settled state instead.
+		if (el.error) handleError();
+		else if (el.readyState >= 1) handleLoadedMetadata();
 
 		return () => {
 			el.removeEventListener('loadedmetadata', handleLoadedMetadata);
@@ -183,11 +189,28 @@
 				break;
 		}
 	};
+
+	// The shortcuts belong to the whole player, not to the media element alone:
+	// a reader whose focus is on the progress bar or the mute button still
+	// expects Space, the arrows and M to work. A focused control keeps the keys
+	// it owns, so the slider keeps its arrows and a button keeps its space bar.
+	const handleRegionKeydown = (event: KeyboardEvent) => {
+		if (event.defaultPrevented) return;
+		const target = event.target;
+		if (target instanceof HTMLElement) {
+			if (event.code.startsWith('Arrow') && target.closest('input, [role="slider"]')) return;
+			if (event.code === 'Space' && target.closest('button')) return;
+		}
+		handleKeydown(event);
+	};
 </script>
 
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div
 	class="media-player {surface} "
 	role="region"
+	tabindex="-1"
+	onkeydown={handleRegionKeydown}
 	aria-label={title ? `Audio player: ${title}` : 'Audio player'}
 >
 	{#if title}
@@ -196,9 +219,10 @@
 		</div>
 	{/if}
 
-	{#if error}
-		<div class="error-message">
-			{error}
+	{#if hasError}
+		<div class="state-note" role="status">
+			<span class="dateline">Recording unavailable</span>
+			<p>The recording could not be loaded. The project text above is unaffected.</p>
 		</div>
 	{:else}
 		<div class="media-container">
@@ -213,7 +237,6 @@
 					{width}
 					{height}
 					class="media-element"
-					onkeydown={handleKeydown}
 					tabindex="0"
 					playsinline
 				></video>
@@ -226,8 +249,6 @@
 					{muted}
 					preload="metadata"
 					class="media-element"
-					onkeydown={handleKeydown}
-					tabindex="0"
 				></audio>
 
 				<AudioVisualization {title} />
@@ -335,17 +356,6 @@
 		font-weight: var(--font-weight-semibold);
 		color: var(--color-text-emphasis);
 		margin: 0;
-	}
-
-	.error-message {
-		background: color-mix(in srgb, var(--color-danger) calc(var(--opacity-5) * 100%), transparent);
-		border: var(--border-width-thin) solid var(--color-danger);
-		border-radius: var(--border-radius);
-		padding: var(--space-4);
-		margin-bottom: var(--space-4);
-		color: var(--color-danger);
-		font-size: var(--font-size-sm);
-		font-weight: var(--font-weight-medium);
 	}
 
 	.media-container {

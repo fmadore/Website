@@ -126,6 +126,14 @@
 		headingLevel?: 2 | 3;
 		/** The current/featured lead — pine eyebrow, larger year, standfirst. */
 		featured?: boolean;
+		/**
+		 * Called after each copy attempt. The row's own button changes its label,
+		 * which is the sighted confirmation; the announcement belongs to one live
+		 * region owned by the list, not to a dozen rows each carrying their own
+		 * (a live region that appears at the moment its text does announces
+		 * nothing, and twelve of them are twelve chances to announce it twice).
+		 */
+		oncopystate?: (state: 'copied' | 'failed') => void;
 	}
 
 	let {
@@ -153,7 +161,8 @@
 		citedCount = 0,
 		yearLabel = null,
 		headingLevel = 2,
-		featured = false
+		featured = false,
+		oncopystate
 	}: Props = $props();
 
 	// Every string this row prints is prose from a data file, spelled however
@@ -192,6 +201,7 @@
 	async function copyReference() {
 		if (!reference) return;
 		copyState = (await copyText(reference())) ? 'copied' : 'failed';
+		oncopystate?.(copyState);
 		clearTimeout(resetTimer);
 		resetTimer = setTimeout(() => (copyState = 'idle'), 2400);
 	}
@@ -211,10 +221,10 @@
 
 	<div class="bib-plate-col">
 		{#if image}
-			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
 			<!-- The title link beside the plate already names the record; the plate is a
 			     second route to the same page, so it leaves the tab order and the
 			     accessibility tree (the pattern the DH catalogue set). -->
+			<!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved via resolve(); the tag wraps, so the rule's report lands on `{href}` rather than on `<a`, and disable-next-line cannot reach it -->
 			<a
 				{href}
 				data-sveltekit-preload-code="tap"
@@ -234,6 +244,7 @@
 					decoding="async"
 				/>
 			</a>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		{/if}
 	</div>
 
@@ -319,7 +330,6 @@
 				class="bib-action bib-cite"
 				additionalClasses={copyState === 'copied' ? 'bib-cite--confirmed' : ''}
 				onclick={copyReference}
-				aria-live="polite"
 				label={CITE_LABELS[copyState]}
 			/>
 		{/if}

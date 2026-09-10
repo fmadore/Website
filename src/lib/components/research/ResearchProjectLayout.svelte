@@ -43,8 +43,12 @@ co-director, programme or grant simply drop those rows.
 	 * stays in the route page because it embeds components.
 	 */
 	interface Props extends ResearchProject {
-		/** Content snippet for the main body */
-		children: Snippet;
+		/**
+		 * Content snippet for the main body. Optional so that a dossier with no
+		 * narrative and no podcast prints its masthead and rail rather than an
+		 * empty reading column; every project on file supplies one.
+		 */
+		children?: Snippet;
 	}
 
 	let {
@@ -164,6 +168,9 @@ co-director, programme or grant simply drop those rows.
 	const hasCommunications = $derived(
 		allCommunications.some((communication) => communication.project === projectName)
 	);
+
+	/** Whether the reading column would print anything at all. */
+	const hasDocument = $derived(Boolean(children) || Boolean(audioSrc));
 </script>
 
 <!-- Research pages were the one detail type shipping no `ogImage`, so a shared
@@ -216,6 +223,33 @@ co-director, programme or grant simply drop those rows.
 	</div>
 {/snippet}
 
+{#snippet documentColumn()}
+	<!-- Project narrative. Prose arrives through the slot; scoped styles
+	     below turn its <h2> headings into ruled section heads and
+	     drop-cap the opening paragraph. -->
+	{#if children}
+		<div class="project-prose">
+			{@render children()}
+		</div>
+	{/if}
+
+	{#if audioSrc}
+		<section class="section">
+			<div class="section-head">
+				<span class="section-no" aria-hidden="true">♪</span>
+				<h2 class="section-title">Podcast discussion (AI-generated)</h2>
+			</div>
+			<MediaPlayer
+				src="{base}/{audioSrc}"
+				type="audio"
+				title="Google NotebookLM discussion"
+				surface=""
+				showControls={true}
+			/>
+		</section>
+	{/if}
+{/snippet}
+
 <RecordLayout
 	section={{ label: 'Research', href: `${base}/research` }}
 	breadcrumbCurrent="Project"
@@ -225,34 +259,10 @@ co-director, programme or grant simply drop those rows.
 	{breadcrumbItems}
 	jsonLdScriptId={GRANTS_SCRIPT_ID}
 	jsonLdString={grantsJsonLd ?? undefined}
+	main={hasDocument ? documentColumn : undefined}
 	{railPrimary}
 	related={hasPublications || hasCommunications ? related : undefined}
->
-	{#snippet main()}
-		<!-- Project narrative. Prose arrives through the slot; scoped styles
-		     below turn its <h2> headings into ruled section heads and
-		     drop-cap the opening paragraph. -->
-		<div class="project-prose">
-			{@render children()}
-		</div>
-
-		{#if audioSrc}
-			<section class="section">
-				<div class="section-head">
-					<span class="section-no" aria-hidden="true">♪</span>
-					<h2 class="section-title">Podcast discussion (AI-generated)</h2>
-				</div>
-				<MediaPlayer
-					src="{base}/{audioSrc}"
-					type="audio"
-					title="Google NotebookLM discussion"
-					surface=""
-					showControls={true}
-				/>
-			</section>
-		{/if}
-	{/snippet}
-</RecordLayout>
+/>
 
 <style>
 	/* ==========================================================================

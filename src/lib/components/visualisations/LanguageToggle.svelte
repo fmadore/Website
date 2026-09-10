@@ -1,3 +1,27 @@
+<script module lang="ts">
+	export type Lang = 'all' | 'en' | 'fr';
+
+	export type LanguageOption = { value: Lang; label: string; count: number };
+
+	/**
+	 * The options a corpus actually offers.
+	 *
+	 * A three-way toggle drawn over a corpus with one language in it is three
+	 * buttons for one answer: two of them are dead and the third repeats the
+	 * default. So the list is derived from the counts — a language appears only
+	 * when it has works, and `All` appears only when there is something for it
+	 * to be the alternative to. Exported so a call site can ask how many options
+	 * there are and drop the control rather than render a control of one.
+	 */
+	export function languageToggleOptions(enCount: number, frCount: number): LanguageOption[] {
+		const languages: LanguageOption[] = [];
+		if (enCount > 0) languages.push({ value: 'en', label: 'English', count: enCount });
+		if (frCount > 0) languages.push({ value: 'fr', label: 'French', count: frCount });
+		if (languages.length < 2) return languages;
+		return [{ value: 'all', label: 'All', count: enCount + frCount }, ...languages];
+	}
+</script>
+
 <script lang="ts">
 	/**
 	 * Three-way All / English / French toggle used by the corpus word-cloud
@@ -10,8 +34,6 @@
 	 *
 	 * Two-way bind via $bindable: `<LanguageToggle bind:current={...} ... />`.
 	 */
-	type Lang = 'all' | 'en' | 'fr';
-
 	let {
 		current = $bindable<Lang>('all'),
 		enCount,
@@ -24,11 +46,7 @@
 		label?: string;
 	} = $props();
 
-	const options = $derived([
-		{ value: 'all' as const, label: 'All', count: enCount + frCount },
-		{ value: 'en' as const, label: 'English', count: enCount },
-		{ value: 'fr' as const, label: 'French', count: frCount }
-	]);
+	const options = $derived(languageToggleOptions(enCount, frCount));
 </script>
 
 <div class="language-toggle">

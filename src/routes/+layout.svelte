@@ -64,6 +64,10 @@
 
 	<Header />
 
+	<!-- In flow directly under the masthead: an offline notice is part of the
+	     page's own record, not a floating toast over it. -->
+	<NetworkStatusIndicator />
+
 	<main id="main" class="main-content-area" tabindex="-1">
 		<div class="container py-6 md:py-10">
 			<!-- Enter-only fade. An `out:` transition here kept the outgoing branch
@@ -86,7 +90,6 @@
 
 	<Footer />
 	<PWAUpdatePrompt />
-	<NetworkStatusIndicator />
 </div>
 
 <style>

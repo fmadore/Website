@@ -8,6 +8,7 @@
 	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 
 	import { base } from '$app/paths';
+	import { plateFallback } from '$lib/actions/plateFallback';
 
 	import type { PageData } from './$types';
 
@@ -38,10 +39,23 @@
 	const embeds = $derived(project.embeddableContent ?? []);
 	const reviews = $derived(project.reviews ?? []);
 	const skills = $derived(project.skills ?? []);
+
+	// Does this record have a document at all? Every project on file carries a
+	// narrative, but the column is passed conditionally like every other grid
+	// child so a record without one prints its rail rather than an empty
+	// reading interval.
+	const hasDocument = $derived(
+		Boolean(project.description?.trim()) ||
+			embeds.length > 0 ||
+			Boolean(project.award) ||
+			Boolean(project.publication) ||
+			reviews.length > 0
+	);
 </script>
 
 <SEO
 	title={project.seoTitle || `${project.title} | Digital Humanities | Frédérick Madore`}
+	schemaName={project.title}
 	description={project.seoDescription || project.shortDescription}
 	keywords={project.seoKeywords?.join(', ') ||
 		[project.title, 'Digital Humanities', 'Frédérick Madore', ...(project.skills || [])].join(', ')}
@@ -77,53 +91,30 @@
 	</div>
 {/snippet}
 
-<RecordLayout
-	section={{ label: 'Digital Humanities', href: `${base}/digital-humanities` }}
-	breadcrumbCurrent="Project"
-	{eyebrow}
-	title={displayTitle}
-	{breadcrumbItems}
-	jsonLdScriptId="dh-project-json-ld"
-	{jsonLdString}
-	{railPrimary}
-	railSecondary={skills.length > 0 ? railSecondary : undefined}
->
-	{#snippet main()}
-		<!-- ═══ NARRATIVE ═══
-		     Authored markup from the record, cast into ruled sections by the
-		     `.record-prose` idiom and opened by a drop cap. Markup-bearing prose,
-		     so typesetQuotesInHtml, never typesetQuotes. -->
-		<!-- Safe: project.description is trusted data in src/lib/data/digital-humanities/ -->
-		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-		<div class="record-prose drop-cap">{@html typesetQuotesInHtml(project.description)}</div>
+{#snippet documentColumn()}
+	<!-- ═══ NARRATIVE ═══
+	     Authored markup from the record, cast into ruled sections by the
+	     `.record-prose` idiom and opened by a drop cap. Markup-bearing prose,
+	     so typesetQuotesInHtml, never typesetQuotes. -->
+	<!-- Safe: project.description is trusted data in src/lib/data/digital-humanities/ -->
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+	<div class="record-prose drop-cap">{@html typesetQuotesInHtml(project.description)}</div>
 
-		<!-- ═══ EMBEDDED WORK ═══
-		     The project shown rather than described: a live visualisation, a
-		     timeline, a scan. Each item keeps its own id, so the embed markup and
-		     the sandboxing are exactly what <IframeRenderer> shipped before. -->
-		{#if embeds.length > 0}
-			<div class="embeds">
-				{#each embeds as item, index (item.id)}
-					{@const figure = `Fig. ${index + 1}`}
-					<figure class="embed">
-						{#if item.type === 'iframe'}
-							<IframeRenderer {...item} />
-						{:else if item.type === 'image'}
-							{#if item.linkUrl}
-								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-								<a href={item.linkUrl} target="_blank" rel="noopener noreferrer" class="embed-link">
-									<img
-										src={item.src}
-										alt={item.alt}
-										class="plate"
-										width="800"
-										height="600"
-										loading="lazy"
-										decoding="async"
-									/>
-									<span class="sr-only"> (opens in new tab)</span></a
-								>
-							{:else}
+	<!-- ═══ EMBEDDED WORK ═══
+	     The project shown rather than described: a live visualisation, a
+	     timeline, a scan. Each item keeps its own id, so the embed markup and
+	     the sandboxing are exactly what <IframeRenderer> shipped before. -->
+	{#if embeds.length > 0}
+		<div class="embeds">
+			{#each embeds as item, index (item.id)}
+				{@const figure = `Fig. ${index + 1}`}
+				<figure class="embed">
+					{#if item.type === 'iframe'}
+						<IframeRenderer {...item} />
+					{:else if item.type === 'image'}
+						{#if item.linkUrl}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
+							<a href={item.linkUrl} target="_blank" rel="noopener noreferrer" class="embed-link">
 								<img
 									src={item.src}
 									alt={item.alt}
@@ -132,101 +123,127 @@
 									height="600"
 									loading="lazy"
 									decoding="async"
+									use:plateFallback
 								/>
-							{/if}
+								<span class="sr-only"> (opens in new tab)</span></a
+							>
+						{:else}
+							<img
+								src={item.src}
+								alt={item.alt}
+								class="plate"
+								width="800"
+								height="600"
+								loading="lazy"
+								decoding="async"
+								use:plateFallback
+							/>
 						{/if}
+					{/if}
 
-						<!-- Title and description sit *under* the embed, as a plate's
-						     caption does: the figure is the primary source and the words
-						     annotate it. The stamp numbers the figures of this record,
-						     which is real information rather than a fabricated caption —
-						     eight of them on the longest page. -->
-						<figcaption class="embed-caption">
-							<p class="embed-title">
-								{#if item.showTitle && item.title}
-									{figure} — {typesetQuotes(item.title)}
-								{:else}
-									{figure}
-								{/if}
-							</p>
-							{#if item.description}
-								<!-- Safe: item.description is trusted project data -->
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								<div class="embed-desc">{@html typesetQuotesInHtml(item.description)}</div>
+					<!-- Title and description sit *under* the embed, as a plate's
+					     caption does: the figure is the primary source and the words
+					     annotate it. The stamp numbers the figures of this record,
+					     which is real information rather than a fabricated caption —
+					     eight of them on the longest page. -->
+					<figcaption class="embed-caption">
+						<p class="embed-title">
+							{#if item.showTitle && item.title}
+								{figure} — {typesetQuotes(item.title)}
+							{:else}
+								{figure}
 							{/if}
-						</figcaption>
-					</figure>
+						</p>
+						{#if item.description}
+							<!-- Safe: item.description is trusted project data -->
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+							<div class="embed-desc">{@html typesetQuotesInHtml(item.description)}</div>
+						{/if}
+					</figcaption>
+				</figure>
+			{/each}
+		</div>
+	{/if}
+
+	<!-- ═══ APPARATUS ═══ what the project earned, cited and was reviewed in.
+	     Each block prints only when the record carries it. -->
+	{#if project.award}
+		<section class="section">
+			<div class="section-head">
+				<h2 class="section-title">Award</h2>
+			</div>
+			<!-- Safe: project.award is trusted project data -->
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			<p class="apparatus-text">{@html typesetQuotesInHtml(project.award)}</p>
+		</section>
+	{/if}
+
+	{#if project.publication}
+		<section class="section">
+			<div class="section-head">
+				<h2 class="section-title">Related publication</h2>
+			</div>
+			<p class="apparatus-text">
+				<!-- Safe: project.publication.text is trusted project data -->
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+				<!-- eslint-disable svelte/no-at-html-tags -->
+				<a href={project.publication.url} target="_blank" rel="noopener noreferrer"
+					>{@html typesetQuotesInHtml(project.publication.text)}<span class="sr-only">
+						(opens in new tab)</span
+					></a
+				>
+				<!-- eslint-enable svelte/no-at-html-tags -->
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
+			</p>
+		</section>
+	{/if}
+
+	{#if reviews.length > 0}
+		<section class="section">
+			<div class="section-head">
+				<h2 class="section-title">Reviews</h2>
+			</div>
+			<!-- A review is a dated record of somebody else's judgement, so it is
+			     set as a ledger entry: the reference, then the passage quoted. -->
+			<div class="ledger ledger--ruled">
+				{#each reviews as review (review.url)}
+					<article class="ledger-row review-row">
+						<div class="ledger-content">
+							<p class="apparatus-text">
+								<!-- Safe: review.text is trusted project data -->
+								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+								<!-- eslint-disable svelte/no-at-html-tags -->
+								<a href={review.url} target="_blank" rel="noopener noreferrer"
+									>{@html typesetQuotesInHtml(review.text)}<span class="sr-only">
+										(opens in new tab)</span
+									></a
+								>
+								<!-- eslint-enable svelte/no-at-html-tags -->
+								<!-- eslint-enable svelte/no-navigation-without-resolve -->
+							</p>
+							{#if review.quote}
+								<blockquote class="review-quote">{typesetQuotes(review.quote)}</blockquote>
+							{/if}
+						</div>
+					</article>
 				{/each}
 			</div>
-		{/if}
+		</section>
+	{/if}
+{/snippet}
 
-		<!-- ═══ APPARATUS ═══ what the project earned, cited and was reviewed in.
-		     Each block prints only when the record carries it. -->
-		{#if project.award}
-			<section class="section">
-				<div class="section-head">
-					<h2 class="section-title">Award</h2>
-				</div>
-				<!-- Safe: project.award is trusted project data -->
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				<p class="apparatus-text">{@html typesetQuotesInHtml(project.award)}</p>
-			</section>
-		{/if}
-
-		{#if project.publication}
-			<section class="section">
-				<div class="section-head">
-					<h2 class="section-title">Related publication</h2>
-				</div>
-				<p class="apparatus-text">
-					<!-- Safe: project.publication.text is trusted project data -->
-					<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-					<!-- eslint-disable svelte/no-at-html-tags -->
-					<a href={project.publication.url} target="_blank" rel="noopener noreferrer"
-						>{@html typesetQuotesInHtml(project.publication.text)}<span class="sr-only">
-							(opens in new tab)</span
-						></a
-					>
-					<!-- eslint-enable svelte/no-at-html-tags -->
-					<!-- eslint-enable svelte/no-navigation-without-resolve -->
-				</p>
-			</section>
-		{/if}
-
-		{#if reviews.length > 0}
-			<section class="section">
-				<div class="section-head">
-					<h2 class="section-title">Reviews</h2>
-				</div>
-				<!-- A review is a dated record of somebody else's judgement, so it is
-				     set as a ledger entry: the reference, then the passage quoted. -->
-				<div class="ledger ledger--ruled">
-					{#each reviews as review (review.url)}
-						<article class="ledger-row review-row">
-							<div class="ledger-content">
-								<p class="apparatus-text">
-									<!-- Safe: review.text is trusted project data -->
-									<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-									<!-- eslint-disable svelte/no-at-html-tags -->
-									<a href={review.url} target="_blank" rel="noopener noreferrer"
-										>{@html typesetQuotesInHtml(review.text)}<span class="sr-only">
-											(opens in new tab)</span
-										></a
-									>
-									<!-- eslint-enable svelte/no-at-html-tags -->
-									<!-- eslint-enable svelte/no-navigation-without-resolve -->
-								</p>
-								{#if review.quote}
-									<blockquote class="review-quote">{typesetQuotes(review.quote)}</blockquote>
-								{/if}
-							</div>
-						</article>
-					{/each}
-				</div>
-			</section>
-		{/if}
-	{/snippet}
-</RecordLayout>
+<RecordLayout
+	section={{ label: 'Digital Humanities', href: `${base}/digital-humanities` }}
+	breadcrumbCurrent="Project"
+	{eyebrow}
+	title={displayTitle}
+	{breadcrumbItems}
+	jsonLdScriptId="dh-project-json-ld"
+	{jsonLdString}
+	main={hasDocument ? documentColumn : undefined}
+	{railPrimary}
+	railSecondary={skills.length > 0 ? railSecondary : undefined}
+></RecordLayout>
 
 <style>
 	/* ═══ EMBEDDED WORK ═══

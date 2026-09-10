@@ -212,6 +212,11 @@
 	color: var(--color-text-muted);
 }
 
+.language-opt[data-count='0']:not(.language-opt--active),
+.language-opt[data-count='0']:not(.language-opt--active) .language-count {
+	color: var(--color-text-light);
+}
+
 .filter-bar-controls {
 	display: flex;
 	align-items: baseline;
@@ -455,6 +460,16 @@
 	text-align: right;
 }
 
+/* A facet that would return nothing under the current narrowing. It stays a
+ * control — clicking it is how a reader swaps one value for another, and a
+ * disabled row would trap them — but it drops to the quietest ink so the eye
+ * skips it. The zero beside the name is the reason, already printed. A row that
+ * is itself selected keeps its accent: it is why the others read zero. */
+.facet-row[data-count='0']:not(.facet-row--active),
+.facet-row[data-count='0']:not(.facet-row--active) .facet-count {
+	color: var(--color-text-light);
+}
+
 /* "All N ↓" overflow affordance — accent mono, sits under the list. */
 .facet-more {
 	margin-top: var(--space-2);
@@ -473,6 +488,13 @@
 
 .facet-more:hover {
 	color: var(--color-accent-dark);
+}
+
+/* The live read-out of the two handles, printed where a caption belongs: under
+ * the label, above the track it describes. */
+.facet-years-readout {
+	margin: 0 0 var(--space-2);
+	font-variant-numeric: tabular-nums;
 }
 
 .facet-years {
@@ -519,6 +541,18 @@
 .facet-summary-count {
 	font-variant-numeric: tabular-nums;
 	color: var(--color-text-emphasis);
+}
+
+/* The active values take the whole first line of the summary: a tag run is as
+ * long as the reader made it, and wrapping it against the stat would leave the
+ * two readings interleaved. `.filter-note-label` / `.filter-note-value` are the
+ * shared idiom (ink-signal.css); /activities prints the same pair. */
+.facet-summary-active {
+	flex: 1 0 100%;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: var(--space-2);
 }
 
 .facet-clear {

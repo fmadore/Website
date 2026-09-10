@@ -17,10 +17,11 @@
  *
  * Modes:
  *   node scripts/generate-reference-index.mjs          # (re)write the index
- *   node scripts/generate-reference-index.mjs --check  # CI freshness check:
- *       regenerate in memory and exit 1 if the committed file is stale.
+ *   node scripts/generate-reference-index.mjs --check  # CI gate: exit 1 if the
+ *       committed file is stale, OR if any `<ItemReference id="…">` in the site
+ *       source names an id the index cannot resolve.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { globSync, readFileSync, writeFileSync } from 'node:fs';
 import { collectRecords } from './lib/data-records.mjs';
 
 const OUT_FILE = 'src/lib/data/referenceIndex.generated.ts';
@@ -84,6 +85,35 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = `;
 
 const output = banner + JSON.stringify(index, null, '\t') + ';\n';
 
+/**
+ * Every literal `<ItemReference id="…">` in the site source, as
+ * `{ file, id }` pairs. Same shape the activities route parses out of its
+ * authored content, so the two cannot disagree about what an occurrence is.
+ * A dynamic `id={…}` binding has no literal to resolve and is not matched.
+ */
+export function collectReferenceUsages(sources) {
+	const pattern = /<ItemReference\s+[^>]*?\bid="([^"]+)"/g;
+	const usages = [];
+	for (const { file, text } of sources) {
+		for (const match of text.matchAll(pattern)) {
+			usages.push({ file, id: match[1] });
+		}
+	}
+	return usages;
+}
+
+/**
+ * Read the source files an occurrence can appear in: the routes, and the
+ * library outside the reference components themselves — `ItemReference.svelte`
+ * documents its own usage in a comment, which is a mention, not a citation.
+ */
+function readReferenceSources() {
+	const files = globSync(['src/routes/**/*.svelte', 'src/lib/**/*.{svelte,ts}']).filter(
+		(file) => !/[\\/]components[\\/]reference[\\/]/.test(file)
+	);
+	return files.map((file) => ({ file, text: readFileSync(file, 'utf8') }));
+}
+
 if (CHECK_MODE) {
 	let committed = null;
 	try {
@@ -98,8 +128,25 @@ if (CHECK_MODE) {
 		);
 		process.exit(1);
 	}
+	// A citation the index cannot resolve renders as bare prose to the reader
+	// and logs to a console nobody is watching in production. It is an authoring
+	// fault with a build-time answer, so the build is where it is caught.
+	const usages = collectReferenceUsages(readReferenceSources());
+	const unresolved = usages.filter(({ id }) => !(id in index));
+	if (unresolved.length > 0) {
+		for (const { file, id } of unresolved) {
+			console.error(`[gen:refs] ERROR: ${file} references unknown id "${id}".`);
+		}
+		console.error(
+			`[gen:refs] ${unresolved.length} unresolved <ItemReference> id(s). ` +
+				'Fix the id, or add the record under src/lib/data/.'
+		);
+		process.exit(1);
+	}
+
 	console.log(
-		`[gen:refs] --check OK: ${OUT_FILE} is up to date (${Object.keys(index).length} entries).`
+		`[gen:refs] --check OK: ${OUT_FILE} is up to date (${Object.keys(index).length} entries); ` +
+			`${usages.length} <ItemReference> id(s) resolve.`
 	);
 } else {
 	writeFileSync(OUT_FILE, output, 'utf8');

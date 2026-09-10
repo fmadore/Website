@@ -39,10 +39,16 @@
 	const seoDescription = $derived(createPublicationSEODescription(publication));
 	const seoKeywords = $derived(createPublicationSEOKeywords(publication));
 
+	const displayTitle = $derived(typesetQuotes(publication.title));
+
 	// Define breadcrumb items (used for JSON-LD structured data)
+	// The trail feeds the BreadcrumbList structured data, where the name is a
+	// machine-read label rather than a line of chrome with a width to keep, so
+	// it takes the record's whole title. Only the <title> element below stays
+	// truncated: that one is rendered in a tab.
 	let breadcrumbItems = $derived([
 		{ label: 'Publications', href: `${base}/publications` },
-		{ label: truncateTitle(publication.title), href: `${base}/publications/${publication.id}` }
+		{ label: displayTitle, href: `${base}/publications/${publication.id}` }
 	]);
 
 	// "Master's Thesis" carries an apostrophe, and this label prints in the
@@ -72,8 +78,6 @@
 	const displayPrefacedBy = $derived(typesetQuotes(publication.prefacedBy));
 	const bylineSuffix = $derived(displayPrefacedBy ? `Preface by ${displayPrefacedBy}` : undefined);
 
-	const displayTitle = $derived(typesetQuotes(publication.title));
-
 	// Abstract → paragraphs. Rendered via {@html} because abstracts carry inline
 	// markup, so they take the HTML-aware typesetter — `typesetQuotes` would curl
 	// quotes inside any attribute.
@@ -88,6 +92,20 @@
 	const reviews = $derived(publication.reviewedBy ?? []);
 	const citedBy = $derived(publication.citedBy ?? []);
 
+	// Does this record have a document at all? Three of the publications carry
+	// no abstract, no contents, no reviews and no citations, and the reading
+	// column printed as an empty grid interval under the masthead. The four
+	// clauses mirror what the column's four children each render on: the
+	// contents test repeats PublicationToc's own gate, since only books and
+	// special issues print one.
+	const hasContents = $derived(
+		(publication.type === 'book' || publication.type === 'special-issue') &&
+			(publication.tableOfContents?.length ?? 0) > 0
+	);
+	const hasDocument = $derived(
+		abstractParagraphs.length > 0 || hasContents || reviews.length > 0 || citedBy.length > 0
+	);
+
 	// Related publications in the same project (excluding the current one).
 	const relatedInProject = $derived(
 		publication.project
@@ -98,6 +116,7 @@
 
 <SEO
 	title={truncateTitle(publication.title) + ' | Frédérick Madore'}
+	schemaName={publication.title}
 	description={seoDescription}
 	keywords={seoKeywords}
 	ogImage={publication.image ? `${base}/${publication.image}` : undefined}
@@ -106,11 +125,37 @@
 
 <MetaTags {publication} />
 
-<!-- Both rail blocks and the sibling-work block are grid children with their own
-     gap, so each is passed only when it prints something: an empty block would
-     read as a stray interval in the column. -->
+<!-- The document column, both rail blocks and the sibling-work block are grid
+     children with their own gap, so each is passed only when it prints
+     something: an empty block would read as a stray interval in the column. -->
 {#snippet indexRail()}
 	<PublicationIndexRail {publication} />
+{/snippet}
+
+{#snippet documentColumn()}
+	<!-- Abstract -->
+	{#if abstractParagraphs.length > 0}
+		<section class="section pub-section" aria-labelledby="pub-abstract-head">
+			<div class="section-head">
+				<h2 id="pub-abstract-head" class="section-title">Abstract</h2>
+			</div>
+			<div class="pub-abstract">
+				{#each abstractParagraphs as paragraph, index (index)}
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
+					<p class="pub-abstract-p" class:drop-cap={index === 0}>{@html paragraph}</p>
+				{/each}
+			</div>
+		</section>
+	{/if}
+
+	<!-- Table of contents -->
+	<PublicationToc {publication} />
+
+	<!-- Reviews -->
+	<Reviews reviewedBy={reviews} />
+
+	<!-- Cited by -->
+	<CitedBy {citedBy} />
 {/snippet}
 
 {#snippet relatedBlock()}
@@ -139,35 +184,10 @@
 	{breadcrumbItems}
 	jsonLdScriptId="publication-json-ld"
 	{jsonLdString}
+	main={hasDocument ? documentColumn : undefined}
 	railSecondary={hasIndexApparatus(publication) ? indexRail : undefined}
 	related={relatedInProject.length > 0 ? relatedBlock : undefined}
 >
-	{#snippet main()}
-		<!-- Abstract -->
-		{#if abstractParagraphs.length > 0}
-			<section class="section pub-section" aria-labelledby="pub-abstract-head">
-				<div class="section-head">
-					<h2 id="pub-abstract-head" class="section-title">Abstract</h2>
-				</div>
-				<div class="pub-abstract">
-					{#each abstractParagraphs as paragraph, index (index)}
-						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
-						<p class="pub-abstract-p" class:drop-cap={index === 0}>{@html paragraph}</p>
-					{/each}
-				</div>
-			</section>
-		{/if}
-
-		<!-- Table of contents -->
-		<PublicationToc {publication} />
-
-		<!-- Reviews -->
-		<Reviews reviewedBy={reviews} />
-
-		<!-- Cited by -->
-		<CitedBy {citedBy} />
-	{/snippet}
-
 	{#snippet railPrimary()}
 		<PublicationRecordRail {publication} {typeLabel} {projectUrl} />
 	{/snippet}

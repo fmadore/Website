@@ -17,6 +17,7 @@
 	import { buildSrcset } from '$lib/utils/imageVariants';
 	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { plateFallback } from '$lib/actions/plateFallback';
 
 	// The rail is 380px wide from --lg up; below that the plate spans the single
 	// column. Same contract as the record rails.
@@ -119,6 +120,7 @@
 			alt={displayPlateAlt}
 			loading="lazy"
 			decoding="async"
+			use:plateFallback
 		/>
 		{#if displayPlateCaption}
 			<figcaption class="plate-caption">Fig. 1 — {displayPlateCaption}</figcaption>

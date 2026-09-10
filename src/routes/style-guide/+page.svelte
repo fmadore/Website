@@ -10,6 +10,7 @@
 	import RecordLedger from '$lib/components/molecules/RecordLedger.svelte';
 	import type { MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
 	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
+	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
 	import { scaleKeyTerms } from '$lib/utils/keyTerms';
 	import {
 		allPublicationSummaries as allPublications,
@@ -1455,6 +1456,19 @@
 				<span class="data-voice">.btn-loading</span> blanks the whole control's colour and the
 				spinner inside it is drawn in <span class="data-voice">currentColor</span>.
 			</p>
+
+			<h3 class="rail-label guide-subhead">The filter note</h3>
+			<p class="guide-note">
+				What is currently narrowing a list, stated in the data voice: a quiet mono label, then the
+				reader's own facet values in emphasis ink. It prints the values verbatim rather than a count
+				of them, because it is the one line a reader can check against what they clicked. All three
+				indexes set it — <span class="data-voice">/activities</span> above its log, the two entity indexes
+				inside the facet summary.
+			</p>
+			<p class="guide-field">
+				<span class="filter-note-label">Filtered by</span>
+				<span class="filter-note-value">Books · Benin · 2018–2020</span>
+			</p>
 		</section>
 
 		<!-- ================================================================
@@ -1574,6 +1588,50 @@
 				{/each}
 			</div>
 			<!-- eslint-enable svelte/no-navigation-without-resolve -->
+
+			<h3 class="rail-label guide-subhead">The chart table</h3>
+			<p class="guide-note">
+				Every canvas plate on the visualisation pages carries its own figures underneath, closed. A
+				chart hands a screen reader one computed sentence and a sighted reader one tooltip per mark,
+				and neither of those is the data; the table is built from the same array the chart is drawn
+				from, so the two can never disagree. Rows take the ledger's rhythm — category hanging left
+				in the data voice, figure right-aligned on tabular numerals, a hairline between entries — on
+				real table rows rather than the <span class="data-voice">.ledger</span> classes, because a
+				table that gives up <code>display: table</code> gives up its semantics with it. The three
+				SVG network plates do not use it: a closed
+				<code>&lt;details&gt;</code> is outside the accessibility tree, so they keep their
+				<span class="data-voice">sr-only</span> tables instead.
+			</p>
+			<details class="chart-table guide-chart-table">
+				<summary class="dateline">Data table</summary>
+				<VizDataTable
+					rows={meterYears.map((row) => ({ label: String(row.year), value: row.count }))}
+					keyLabel="Year"
+					valueLabel="Publications"
+					caption="Publications per year, the same distribution the strip above draws."
+				/>
+			</details>
+
+			<h3 class="rail-label guide-subhead">The empty plate and the honest state</h3>
+			<p class="guide-note">
+				Two states, one register. <span class="data-voice">.viz-empty</span> is what a plate prints
+				when the record holds nothing to draw; <span class="data-voice">.state-note</span> is what a
+				component prints when it could not load at all — a failed map, a recording that 404s. Both
+				set a mono label naming the state over one serif sentence naming what still works, both
+				left-aligned at the top edge rather than floated in the middle of the plate, and neither is
+				red: <span class="data-voice">--color-danger</span> is reserved for form validation, and a fetch
+				that failed is not the reader's mistake. The renderer's own message goes to the console.
+			</p>
+			<div class="state-demo">
+				<div class="viz-empty">
+					<span class="dateline">No data</span>
+					<p>No publisher locations recorded.</p>
+				</div>
+				<div class="state-note" role="status">
+					<span class="dateline">Map unavailable</span>
+					<p>The map could not be loaded. The publication counts below are the same records.</p>
+				</div>
+			</div>
 		</section>
 
 		<!-- ================================================================
@@ -1624,6 +1682,24 @@
 							loading="lazy"
 						/>
 						<figcaption class="plate-caption">Fig. 2 — cover.</figcaption>
+					</figure>
+				</div>
+			</figure>
+
+			<h3 class="rail-label guide-subhead">The missing plate</h3>
+			<p class="guide-note">
+				When the bytes never arrive, <span class="data-voice">use:plateFallback</span> gives the
+				enclosing figure <span class="data-voice">.plate--missing</span>: the box stays, the image
+				and its numbered caption go, and a centred
+				<span class="data-voice">.plate--missing-note</span> states the fact in the data voice. A caption
+				describes a plate, and a broken-image glyph sitting under “Fig. 1 — …” numbers a figure that is
+				not there.
+			</p>
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — a plate whose image failed</figcaption>
+				<div class="guide-rail">
+					<figure class="rail-plate plate--missing">
+						<p class="dateline plate--missing-note">Image unavailable.</p>
 					</figure>
 				</div>
 			</figure>
@@ -2112,6 +2188,34 @@
 	   rather than four figures, and the bar must still have room to be read. */
 	.proportion-demo {
 		max-width: 26rem;
+	}
+
+	/* The chart table is a plate's footnote, so it is demonstrated at the width
+	   a plate actually gives it rather than at page width. */
+	.guide-chart-table {
+		max-width: 26rem;
+	}
+
+	/* The two states side by side, so the shared register is visible at a
+	   glance: same label voice, same sentence voice, different ground. */
+	.state-demo {
+		display: grid;
+		gap: var(--space-lg);
+		margin-top: var(--space-md);
+	}
+
+	@media (--md) {
+		.state-demo {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			align-items: start;
+		}
+	}
+
+	/* The empty plate is drawn inside a plate on the real pages; the frame here
+	   stands in for it so the specimen is not a sentence floating on paper. */
+	.state-demo > .viz-empty {
+		padding: var(--space-md);
+		border: var(--border-width-thin) solid var(--color-border);
 	}
 
 	/* ===== Plate ===== */

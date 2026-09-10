@@ -188,6 +188,17 @@ export themselves via `downloadSvgAsImage`.
 		color: var(--color-text-inverted);
 	}
 
+	/* Below --sm the toolbar leaves the drawing area for a right-aligned control
+	 * row above it; the plate turns itself into a column to receive it (see
+	 * VizChartCard). Nothing here knows how tall the plate is. */
+	@media (--sm-down) {
+		.chart-toolbar {
+			position: static;
+			align-self: flex-end;
+			margin-bottom: var(--space-2);
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
 		.toolbar-btn {
 			transition: none !important;

@@ -83,7 +83,7 @@ export function stripHtml(html: string): string {
 export function truncateAbstract(text: string | undefined, maxLength: number = 200): string {
 	if (!text) return '';
 	if (text.length <= maxLength) return text;
-	return text.substring(0, maxLength) + '...';
+	return text.substring(0, maxLength) + '…';
 }
 
 /**
@@ -133,7 +133,9 @@ export function smartTruncate(
 
 	// Otherwise, truncate at word boundary and add ellipsis
 	const lastSpace = truncated.lastIndexOf(' ');
+	// The ellipsis is one character, not three: `…` never `...` (DESIGN.md,
+	// The Punctuation Rule), so the hard-truncation budget gives back one.
 	return lastSpace > minBreakPosition
-		? text.substring(0, lastSpace) + '...'
-		: text.substring(0, maxLength - 3) + '...';
+		? text.substring(0, lastSpace) + '…'
+		: text.substring(0, maxLength - 1) + '…';
 }

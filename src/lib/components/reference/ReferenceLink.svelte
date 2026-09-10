@@ -4,9 +4,8 @@
 	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
 
 	let {
-		item = undefined,
-		itemType = undefined,
-		id,
+		item,
+		itemType,
 		label = undefined,
 		hasPopup = false,
 		isActive = false,
@@ -19,9 +18,12 @@
 		onpointerenter = undefined,
 		onpointerleave = undefined
 	}: {
-		item?: ReferenceIndexEntry | undefined;
-		itemType?: 'publication' | 'communication' | undefined;
-		id: string;
+		// Both required: `<ItemReference>` renders this component only inside its
+		// resolved branch, so there is no such thing here as a link to a record
+		// the index does not hold. The `href="#"` / `(id)` fallback this used to
+		// carry was unreachable, and printed a dead anchor if it ever was not.
+		item: ReferenceIndexEntry;
+		itemType: 'publication' | 'communication';
 		label?: string;
 		hasPopup?: boolean;
 		isActive?: boolean;
@@ -81,26 +83,18 @@
 	// The inline citation sits in running prose, so it takes the same register as
 	// the sentence around it — "(N'Dri, 2024)" would otherwise be the one
 	// straight apostrophe in a typeset paragraph.
-	const referenceText = $derived(
-		typesetQuotes(label ? label : item ? inlineCitation(item) : `(${id})`)
-	);
+	const referenceText = $derived(typesetQuotes(label ? label : inlineCitation(item)));
 
 	const itemUrl = $derived(
-		item && itemType
-			? resolve(`/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`)
-			: '#'
+		resolve(`/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`)
 	);
 
 	// WCAG 2.5.3 (Label in Name): the accessible name must contain the visible
 	// link text, so the label leads with referenceText before the full title.
 	// "Communication" is the internal noun for the record; the reader is told
 	// what they will land on, which is a talk.
-	const kindNoun = $derived(
-		itemType === 'communication' ? 'talk' : itemType === 'publication' ? 'publication' : 'item'
-	);
-	const ariaLabel = $derived(
-		item ? `${referenceText}, view ${kindNoun}: ${typesetQuotes(item.title)}` : `Reference ${id}`
-	);
+	const kindNoun = $derived(itemType === 'communication' ? 'talk' : 'publication');
+	const ariaLabel = $derived(`${referenceText}, view ${kindNoun}: ${typesetQuotes(item.title)}`);
 </script>
 
 <!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->

@@ -129,6 +129,16 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 		}, 0)
 	);
 
+	/**
+	 * Truncation belongs to the label, not to its rich fragments.
+	 *
+	 * A `rich` fragment measures itself against its own text, so `overflow`
+	 * declared there never sees the tile: a name wider than its tile simply
+	 * overran the fill and collided with the neighbouring one. Set on the label,
+	 * ECharts measures against the layout rect and prints `Émula…` instead.
+	 */
+	const TRUNCATE = { overflow: 'truncate', ellipsis: '…' } as const;
+
 	// Build the rich-text label fragments for a tile, coloured for readable
 	// contrast against that tile's fill. Data voice: mono, medium weight, no
 	// glowing shadow — getContrastLabelStyle adds a minimal hairline stroke only
@@ -145,9 +155,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 				...shared,
 				fontSize: isMobile ? 11 : 13,
 				fontWeight: 600,
-				lineHeight: isMobile ? 16 : 20,
-				overflow: 'truncate',
-				ellipsis: '…'
+				lineHeight: isMobile ? 16 : 20
 			},
 			count: {
 				...shared,
@@ -210,12 +218,12 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 			return {
 				...node,
 				itemStyle: { color: fill },
-				label: { rich },
+				label: { rich, ...TRUNCATE },
 				upperLabel,
 				children: node.children.map((child) => ({
 					...child,
 					itemStyle: { color: fill },
-					label: { rich, show: leafLabelFits(child.name, child.value) }
+					label: { rich, ...TRUNCATE, show: leafLabelFits(child.name, child.value) }
 				}))
 			};
 		})
@@ -319,9 +327,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 							fontWeight: 600,
 							fontFamily: resolvedColors.fontFamily,
 							color: resolvedColors.text,
-							lineHeight: isMobile ? 16 : 20,
-							overflow: 'truncate',
-							ellipsis: '…'
+							lineHeight: isMobile ? 16 : 20
 						},
 						count: {
 							fontSize: isMobile ? 10 : 12,
@@ -331,7 +337,8 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 						}
 					},
 					position: 'insideTopLeft',
-					padding: [4, 6]
+					padding: [4, 6],
+					...TRUNCATE
 				},
 				upperLabel: {
 					show: true,

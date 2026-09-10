@@ -29,7 +29,8 @@
 		maxClusterZoom: _maxClusterZoom = 18,
 		preferDarkMode = null as boolean | null,
 		restrictBounds: _restrictBounds = true,
-		showLegend = false
+		showLegend = false,
+		noun = 'talk'
 	}: {
 		markersData?: MarkerData[];
 		initialView?: [number, number];
@@ -40,6 +41,8 @@
 		restrictBounds?: boolean;
 		/** When true, renders a colour legend for the activity-type markers. */
 		showLegend?: boolean;
+		/** Reader-facing noun for the honest state when the map cannot load. */
+		noun?: string;
 	} = $props();
 
 	const SOURCE_ID = 'activities';
@@ -374,8 +377,9 @@
 
 <div bind:this={mapContainer} class="map-container">
 	{#if importError}
-		<div class="map-error">
-			<p>Error loading map: {importError}</p>
+		<div class="state-note map-state-note" role="status">
+			<span class="dateline">Map unavailable</span>
+			<p>The map could not be loaded. The {noun} records on this page are unaffected.</p>
 		</div>
 	{/if}
 	{#if showLegend && legendEntries.length > 0}
@@ -525,16 +529,12 @@
 		visibility: hidden;
 	}
 
-	.map-error {
+	/* The honest state fills the plate the map would have occupied; the panel
+	 * itself is the shared `.state-note` idiom (ink-signal.css). A failed fetch
+	 * is not the reader's mistake, so it is set in apparatus ink, not danger. */
+	.map-state-note {
 		width: 100%;
 		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: color-mix(in srgb, var(--color-danger) 10%, transparent);
-		color: var(--color-danger);
-		padding: var(--space-4);
-		text-align: center;
 	}
 
 	/* Custom Popup Styles — flat archival card: square, hairline, no glass. */

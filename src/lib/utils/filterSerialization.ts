@@ -31,13 +31,22 @@ export const ARRAY_FILTER_PARAMS = [
 	['project', 'projects']
 ] as const satisfies ReadonlyArray<readonly [string, keyof UrlSyncableFilters]>;
 
+/** URL query parameter carrying the page-local free-text search. */
+export const SEARCH_PARAM = 'q';
+
 /**
  * Serializes active filters into a URL query string (no leading `?`; empty
  * string when nothing is active). Array filters use one entry per value
  * (`?tag=a&tag=b`) so individual values can safely contain commas; the year
- * range serializes as `year_min`/`year_max`.
+ * range serializes as `year_min`/`year_max`; the free-text search serializes as
+ * `q`, and only when it holds something.
+ *
+ * The page number is deliberately absent. It is a position in a list the
+ * filters define, not a narrowing of the corpus, and every narrowing resets it
+ * to 1 — so a `?page=` in a shared link would be honoured by nothing and would
+ * only make two URLs for the same view.
  */
-export function serializeFiltersToQuery(filters: UrlSyncableFilters): string {
+export function serializeFiltersToQuery(filters: UrlSyncableFilters, searchTerm = ''): string {
 	const urlParams = new URLSearchParams();
 
 	for (const [param, key] of ARRAY_FILTER_PARAMS) {
@@ -51,7 +60,17 @@ export function serializeFiltersToQuery(filters: UrlSyncableFilters): string {
 		urlParams.set('year_max', filters.yearRange.max.toString());
 	}
 
+	// An empty search is no search: `?q=` would survive `Clear all` and leave a
+	// query string on a page that is not narrowed by anything.
+	const trimmed = searchTerm.trim();
+	if (trimmed) urlParams.set(SEARCH_PARAM, trimmed);
+
 	return urlParams.toString();
+}
+
+/** Reads the free-text search back out of a URL; absent means empty. */
+export function parseSearchParam(searchParams: URLSearchParams): string {
+	return searchParams.get(SEARCH_PARAM)?.trim() ?? '';
 }
 
 /**

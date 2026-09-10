@@ -196,9 +196,11 @@
 			<p class="cv-toc-title">Contents</p>
 			<!-- The lower sections mount lazily, so an open panel can list nine of
 			     seventeen with nothing to say why. The dateline says so until the
-			     last one has reported in. -->
+			     last one has reported in. It is a caption, not a live region: the
+			     counted line at the foot of the sheet is the one that announces,
+			     and two status regions saying the same thing announce it twice. -->
 			{#if visibleSections.length < TOC_SECTIONS.length}
-				<p class="dateline" role="status">Loading remaining sections…</p>
+				<p class="dateline">Loading remaining sections…</p>
 			{/if}
 			<ul class="cv-toc-list">
 				{#each visibleSections as section (section.id)}

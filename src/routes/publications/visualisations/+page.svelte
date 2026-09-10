@@ -20,8 +20,11 @@
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
+	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
 	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
-	import LanguageToggle from '$lib/components/visualisations/LanguageToggle.svelte';
+	import LanguageToggle, {
+		languageToggleOptions
+	} from '$lib/components/visualisations/LanguageToggle.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import {
 		buildLocationData,
@@ -347,6 +350,51 @@
 	const getAuthorName = (d: CitedAuthorData) => d.author;
 	const getAuthorCitationCount = (d: CitedAuthorData) => d.count;
 
+	/*
+	 * The figures behind each plate.
+	 *
+	 * A canvas chart gives a screen reader one sentence and a sighted reader a
+	 * tooltip per mark; neither is the data. Each plate carries its own table
+	 * under it, closed, built from the same array the chart is drawn from — so
+	 * a reader who wants the number for 2019 reads it rather than hovering for
+	 * it, and the two can never disagree.
+	 */
+	const perYearTableRows = $derived(
+		publicationsPerYearStackedData.map((row) => ({
+			label: String(row.year ?? ''),
+			value: Object.entries(row).reduce(
+				(sum, [key, value]) => (key === 'year' ? sum : sum + value),
+				0
+			)
+		}))
+	);
+	const pagesTableRows = $derived(
+		pagesPerYearData.map((d) => ({ label: String(d.year), value: d.pages }))
+	);
+	const venueTableRows = $derived(
+		venueTreemapData.flatMap((category) =>
+			category.children.map((child) => ({ label: child.name, value: child.value }))
+		)
+	);
+	const projectTableRows = $derived(
+		projectTimelineData.map((entry) => ({ label: entry.name, value: entry.publications.length }))
+	);
+	const locationTableRows = $derived(
+		publisherLocationData.map((d) => ({ label: d.country, value: d.count }))
+	);
+
+	// When the map cannot load there are no view modes to switch between, so the
+	// section's note must stop promising them.
+	let publisherMapFailed = $state(false);
+	const locationDescription = $derived(
+		publisherMapFailed
+			? 'The countries of the publishers and journals, taken from the place of publication recorded on each work.'
+			: 'The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications.'
+	);
+	const citationsTableRows = $derived(
+		citationsPerYearData.map((d) => ({ label: String(d.year), value: d.count }))
+	);
+
 	// Pagination state for the cited-authors chart (1-based, Pagination component)
 	const AUTHORS_PER_PAGE = 15;
 	let currentPage = $state(1);
@@ -357,6 +405,13 @@
 	// Full-text language filter, shared by the term cloud and the bigrams chart.
 	type CorpusLanguage = 'all' | 'en' | 'fr';
 	let corpusLanguage = $state<CorpusLanguage>('all');
+
+	// A toggle is only worth drawing when the corpus has something to toggle
+	// between; with one language analysed it is three buttons for one answer.
+	const languageOptions = $derived(
+		languageToggleOptions(corpusAnalysis.byLanguage.en.length, corpusAnalysis.byLanguage.fr.length)
+	);
+	const showLanguageToggle = $derived(languageOptions.length > 1);
 
 	/** Reader-facing name of the current filter, for the empty-state messages. */
 	const languageLabel = (lang: CorpusLanguage) =>
@@ -566,6 +621,14 @@
 			itemSingular="publication"
 			itemPlural="publications"
 		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={perYearTableRows}
+				keyLabel="Year"
+				valueLabel="Publications"
+				caption="Publications per year, all types combined."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
@@ -584,6 +647,14 @@
 			itemSingular="page"
 			itemPlural="pages"
 		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={pagesTableRows}
+				keyLabel="Year"
+				valueLabel="Pages"
+				caption="Pages published per year."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
@@ -603,7 +674,10 @@
 				{/each}
 			</ul>
 		{:else}
-			<p class="viz-empty">No languages recorded.</p>
+			<div class="viz-empty">
+				<span class="dateline">No data</span>
+				<p>No languages recorded.</p>
+			</div>
 		{/if}
 	</VizSection>
 
@@ -625,7 +699,10 @@
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</div>
 		{:else}
-			<p class="viz-empty">No keywords recorded.</p>
+			<div class="viz-empty">
+				<span class="dateline">No data</span>
+				<p>No keywords recorded.</p>
+			</div>
 		{/if}
 	</VizSection>
 
@@ -671,7 +748,7 @@
 		description="The sixty most frequent terms in the full text of the publications that have been analysed, lemmatised so that inflected forms are counted together."
 	>
 		{#snippet controls()}
-			{#if corpusAnalysis.publicationCount > 0}
+			{#if showLanguageToggle}
 				<LanguageToggle
 					bind:current={corpusLanguage}
 					enCount={corpusAnalysis.byLanguage.en.length}
@@ -688,13 +765,16 @@
 				{/each}
 			</div>
 		{:else}
-			<p class="viz-empty">
-				{#if corpusAnalysis.publicationCount === 0}
-					No full-text analysis is available for this visualisation.
-				{:else}
-					No full-text analysis is available for {languageLabel(corpusLanguage)} publications.
-				{/if}
-			</p>
+			<div class="viz-empty">
+				<span class="dateline">No data</span>
+				<p>
+					{#if corpusAnalysis.publicationCount === 0}
+						No full-text analysis is available for this visualisation.
+					{:else}
+						No full-text analysis is available for {languageLabel(corpusLanguage)} publications.
+					{/if}
+				</p>
+			</div>
 		{/if}
 	</VizSection>
 
@@ -707,7 +787,7 @@
 		hasData={corpusAnalysis.publicationCount > 0 && bigramsData.length > 0}
 	>
 		{#snippet controls()}
-			{#if corpusAnalysis.publicationCount > 0}
+			{#if showLanguageToggle}
 				<LanguageToggle
 					bind:current={corpusLanguage}
 					enCount={corpusAnalysis.byLanguage.en.length}
@@ -716,13 +796,16 @@
 			{/if}
 		{/snippet}
 		{#snippet placeholder()}
-			<p class="viz-empty">
-				{#if corpusAnalysis.publicationCount === 0}
-					No full-text analysis is available for this visualisation.
-				{:else}
-					No phrase data is available for {languageLabel(corpusLanguage)} publications.
-				{/if}
-			</p>
+			<div class="viz-empty">
+				<span class="dateline">No data</span>
+				<p>
+					{#if corpusAnalysis.publicationCount === 0}
+						No full-text analysis is available for this visualisation.
+					{:else}
+						No phrase data is available for {languageLabel(corpusLanguage)} publications.
+					{/if}
+				</p>
+			</div>
 		{/snippet}
 		<EChartsHorizontalBarChart
 			data={bigramsData}
@@ -732,6 +815,14 @@
 			itemSingular="phrase"
 			itemPlural="phrases"
 		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={bigramsData.map((d) => ({ label: d.ngram, value: d.count }))}
+				keyLabel="Phrase"
+				valueLabel="Occurrences"
+				caption="Two-word phrases by frequency in the analysed full text."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
@@ -778,6 +869,14 @@
 		empty="No venues recorded."
 	>
 		<EChartsTreemap data={venueTreemapData} title="Publication venues" />
+		{#snippet table()}
+			<VizDataTable
+				rows={venueTableRows}
+				keyLabel="Venue"
+				valueLabel="Publications"
+				caption="Every journal, report series and book publisher in the record, with the number of works it carries."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
@@ -789,18 +888,39 @@
 		empty="No project data recorded."
 	>
 		<EChartsGanttChart data={projectTimelineData} />
+		{#snippet table()}
+			<VizDataTable
+				rows={projectTableRows}
+				keyLabel="Project"
+				valueLabel="Publications"
+				caption="Publications produced within each research project."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
 		{...sections.locations}
-		description="The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications."
+		description={locationDescription}
 		variant="map"
 		height="500px"
 		placeholderHeight="400px"
 		hasData={publisherLocationData.length > 0}
 		empty="No publisher locations recorded."
 	>
-		<LocationMap data={publisherLocationData} basePath="/publications" itemLabel="publication" />
+		<LocationMap
+			data={publisherLocationData}
+			basePath="/publications"
+			itemLabel="publication"
+			bind:failed={publisherMapFailed}
+		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={locationTableRows}
+				keyLabel="Country"
+				valueLabel="Publications"
+				caption="Publisher and journal locations by country."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
@@ -819,6 +939,14 @@
 			itemSingular="citation"
 			itemPlural="citations"
 		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={citationsTableRows}
+				keyLabel="Year"
+				valueLabel="Citations"
+				caption="Recorded citations counted in the year the citing work appeared."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<!-- Paginated: the chart is re-keyed per page and followed by the pager, so
@@ -840,6 +968,14 @@
 						itemPlural="authors"
 						descriptionLead="Most citations"
 					/>
+					{#snippet table()}
+						<VizDataTable
+							rows={authorsToShow.map((d) => ({ label: d.author, value: d.count }))}
+							keyLabel="Author"
+							valueLabel="Citations"
+							caption="The authors on this page of the chart, with the number of times each cites the record."
+						/>
+					{/snippet}
 				</VizChartCard>
 			{/snippet}
 
@@ -857,7 +993,10 @@
 		{:else}
 			<VizChartCard hasData={false}>
 				{#snippet placeholder()}
-					<p class="viz-empty">No citing authors recorded.</p>
+					<div class="viz-empty">
+						<span class="dateline">No data</span>
+						<p>No citing authors recorded.</p>
+					</div>
 				{/snippet}
 			</VizChartCard>
 		{/if}
@@ -911,11 +1050,4 @@
 	}
 
 	/* Empty state for the sections that are typeset rather than plated. */
-	.viz-empty {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-base);
-		color: var(--color-text-light);
-		max-width: var(--measure-prose);
-		margin: 0;
-	}
 </style>

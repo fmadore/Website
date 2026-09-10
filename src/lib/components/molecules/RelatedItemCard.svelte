@@ -81,6 +81,10 @@
 		color: var(--color-text-emphasis);
 		margin: 0;
 		margin-bottom: var(--space-xs);
+		/* Titles carry URLs, DOIs and long transliterated compounds that the
+		   serif will not hyphenate; the card is a fixed track, so an unbreakable
+		   run would overflow it rather than wrap. */
+		overflow-wrap: anywhere;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 

@@ -107,10 +107,12 @@
 			<span>Previous</span>
 		</button>
 
+		<!-- The Count Rule: one noun, stated. "4 of 31" alone left the reader to
+		     guess what was being counted. -->
 		<span class="nav-count">
 			<span class="current">{index + 1}</span>
 			<span class="separator">of</span>
-			<span class="total">{total}</span>
+			<span class="total">{total} records</span>
 		</span>
 
 		<button

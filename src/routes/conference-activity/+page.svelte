@@ -15,6 +15,7 @@
 		COMMUNICATION_TYPE_CHIP_LABELS
 	} from '$lib/utils/typeUtils';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
+	import { truncateSearchTerm } from '$lib/utils/entityFilterCore';
 	import { allCommunications, communicationsByYear } from '$lib/data/communications';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import { organisedWorkshopsJsonLd } from '$lib/data/organisedWorkshops';
@@ -57,6 +58,18 @@
 
 	// ── Local presentation state (does NOT touch the filter store) ──────────────
 	let searchTerm = $state('');
+
+	// The search box is page-local state, so `urlFilterSync` reaches it through
+	// an accessor pair rather than through the filter system. It syncs as `q`,
+	// which is what makes a searched view shareable.
+	const search = {
+		get value() {
+			return searchTerm;
+		},
+		set value(next: string) {
+			searchTerm = next;
+		}
+	};
 	let activeSort = $state<'date' | 'title'>('date');
 	let currentPage = $state(1);
 	const PER_PAGE = 15;
@@ -213,7 +226,7 @@
 
 <JsonLd id="organised-workshops-json-ld" json={organisedWorkshopsJsonLd} />
 
-<div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters }}>
+<div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters, search }}>
 	<!-- ═══ INDEX HERO ═══ -->
 	<header class="index-hero rule-masthead">
 		<div class="index-hero-lede">
@@ -283,6 +296,7 @@
 		{matchCount}
 		{activeFilterCount}
 		{anyNarrowing}
+		{typeLabels}
 		onclearall={clearAllNarrowing}
 	/>
 
@@ -313,6 +327,13 @@
 					>{matchCount} past · {upcomingCommunications.length} upcoming</span
 				>
 			</div>
+		{:else if !anyNarrowing}
+			<!-- The unnarrowed index with nothing ahead of it. Saying so is the
+			     answer to the question the upcoming block would have answered;
+			     silence leaves the reader to infer it from an absence. -->
+			<div class="record-head">
+				<p class="dateline">No forthcoming talks are scheduled.</p>
+			</div>
 		{/if}
 
 		{#if bibRows.length > 0}
@@ -340,7 +361,13 @@
 			/>
 		{:else}
 			<div class="bib-empty">
-				<p class="bib-empty-line">No talks or events match.</p>
+				<p class="bib-empty-line">
+					{#if searchTerm.trim()}
+						No entries match &ldquo;{truncateSearchTerm(searchTerm)}&rdquo;.
+					{:else}
+						No entries match.
+					{/if}
+				</p>
 				<p class="bib-empty-line">
 					The index holds {totalEntries} entries, {minYear}–{maxYear}.
 				</p>

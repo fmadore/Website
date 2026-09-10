@@ -33,6 +33,35 @@
 
 	let componentsStartedLoading = $state(false);
 
+	/**
+	 * The CV is seventeen sections; three are in the bundle and fourteen arrive
+	 * in four timed batches. Between mount and the last batch the sheet simply
+	 * ends, and a reader looking for Service or Languages has no way to tell a
+	 * section that is still coming from one that does not exist. The count is
+	 * derived from the slots themselves, so it cannot drift from what is drawn.
+	 */
+	const EAGER_SECTIONS = 3; // Appointments, Education, Publications.
+	const lazySections = $derived([
+		CVGrants,
+		CVAwards,
+		CVDigitalHumanities,
+		CVInvitedTalks,
+		CVConferences,
+		CVEvents,
+		CVTeaching,
+		CVResearchExperience,
+		CVService,
+		CVConsulting,
+		CVMedia,
+		CVLanguages,
+		CVAffiliations,
+		CVComputerSkills
+	]);
+	const totalSections = $derived(EAGER_SECTIONS + lazySections.length);
+	const loadedSections = $derived(
+		EAGER_SECTIONS + lazySections.filter((section) => section !== undefined).length
+	);
+
 	onMount(() => {
 		// Start loading components immediately after mount
 		// This still provides performance benefits by:
@@ -198,6 +227,15 @@
 			<CVComputerSkills />
 		</div>
 	{/if}
+
+	<!-- The foot of the sheet, so a reader who has scrolled to the end knows the
+	     end has not arrived yet. Inside #cv-content on purpose: a PDF taken mid
+	     load prints the same caveat. -->
+	{#if loadedSections < totalSections}
+		<p class="dateline cv-loading-note" role="status">
+			Loading remaining sections… {loadedSections} of {totalSections} shown.
+		</p>
+	{/if}
 </div>
 
 <CVTableOfContents />
@@ -214,6 +252,15 @@
 		position: relative;
 		margin-top: var(--space-lg);
 		margin-bottom: var(--space-2xl);
+	}
+
+	/* The lazy-load caveat: apparatus, so it takes the dateline voice and sits
+	 * on the sheet's own hairline rather than drawing a panel of its own. */
+	.cv-loading-note {
+		margin: var(--space-lg) 0 0;
+		padding-top: var(--space-sm);
+		border-top: var(--rule-hairline) solid var(--color-hairline);
+		text-transform: none;
 	}
 
 	/* Action buttons — document chrome, tucked to the top right of the sheet

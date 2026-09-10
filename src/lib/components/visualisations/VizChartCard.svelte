@@ -17,6 +17,7 @@
 		placeholderHeight,
 		hasData = true,
 		placeholder,
+		table,
 		children
 	}: {
 		variant?: Variant;
@@ -26,6 +27,13 @@
 		placeholderHeight?: string;
 		hasData?: boolean;
 		placeholder?: Snippet;
+		/**
+		 * The plate's own figures, printed under it in a closed `<details>`.
+		 * Pass a `<VizDataTable>` built from the same data the chart receives.
+		 * The SVG plates do not use it — a closed `<details>` is outside the
+		 * accessibility tree, so they keep their `sr-only` tables instead.
+		 */
+		table?: Snippet;
 		children?: Snippet;
 	} = $props();
 
@@ -37,6 +45,12 @@
 	<div class={wrapperClass} style:height>
 		{@render children?.()}
 	</div>
+	{#if table}
+		<details class="chart-table">
+			<summary class="dateline">Data table</summary>
+			{@render table()}
+		</details>
+	{/if}
 {:else}
 	<div class="placeholder-message" style:height={emptyHeight}>
 		{@render placeholder?.()}
@@ -117,13 +131,11 @@
 		contain: layout style;
 	}
 
+	/* The empty plate sets its message where a first line goes — top left — not
+	 * floating in the middle of 450px of paper. See `.viz-empty`. */
 	.placeholder-message {
 		padding: var(--space-lg);
 		min-height: var(--iframe-height-xs);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
 		contain: layout style;
 	}
 
@@ -160,6 +172,36 @@
 	@media (--sm-down) {
 		.chart-wrapper {
 			padding: var(--space-sm);
+		}
+
+		/*
+		 * Below --sm the toolbar floats over the top right of a 350px plate and
+		 * covers the data it acts on — on the horizontal bar charts, the longest
+		 * bar's own label. So the plate becomes a column and the toolbar leaves
+		 * the drawing area for a right-aligned control row above it.
+		 *
+		 * Matched with `:has()` rather than each chart's own container class:
+		 * every one of them wraps the toolbar the same way (`.echarts-container`,
+		 * `.viz-plate`, `.map-wrapper`), and none of them should have to know
+		 * about this breakpoint. `.viz-plate` is already a column, so the rule
+		 * only restates what it does.
+		 */
+		.chart-wrapper {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.chart-wrapper > :global(*),
+		.chart-wrapper :global(:has(> .chart-toolbar)) {
+			display: flex;
+			flex-direction: column;
+			flex: 1 1 auto;
+			min-height: 0;
+		}
+
+		.chart-wrapper :global(:has(> .chart-toolbar) > :not(.chart-toolbar)) {
+			flex: 1 1 auto;
+			min-height: 0;
 		}
 
 		.stacked-chart {

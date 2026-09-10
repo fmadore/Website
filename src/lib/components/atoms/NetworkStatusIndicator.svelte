@@ -1,173 +1,131 @@
 <script lang="ts">
 	import { getGlobalState } from '$lib/stores/globalState.svelte';
+	import Button from '$lib/components/atoms/Button.svelte';
+
+	/*
+	 * The connection strip. It sits in flow directly under the masthead rather
+	 * than floating over the page: a notice about what the reader can still do
+	 * is part of the record, and a toast that covers the first line of it is not.
+	 *
+	 * Two states, deliberately asymmetric. Offline is a standing condition, so it
+	 * is a solid ink strip that persists for as long as it is true (the old
+	 * three-second auto-hide removed the notice while the fact remained, which is
+	 * the one thing a status message must not do); the reader may dismiss it.
+	 * Back online is an event, so it is quiet pine on the page ground and clears
+	 * itself after two seconds. Neither uses --color-danger: offline is a state
+	 * of the network, not a validation failure.
+	 *
+	 * One element carries role="status" for the life of the layout, so the text
+	 * that appears inside it is announced. Mounting the live region together with
+	 * its text is the classic way to have nothing announced at all.
+	 */
 
 	const globalState = getGlobalState();
-	let showOfflineMessage = $state(false);
-	let hideTimeout: ReturnType<typeof setTimeout> | null = null;
 
-	// Show offline message when connection is lost
+	const BACK_ONLINE_MS = 2000;
+
+	// Plain, not `$state`: the effect below both reads and writes it, and a
+	// reactive read would re-run the effect on its own write — which tore down
+	// the auto-hide timer in the same tick it was set, so `Back online.` never
+	// cleared. Nothing renders from it, so it needs no reactivity.
+	let wasOffline = false;
+	let dismissed = $state(false);
+	let showBackOnline = $state(false);
+
+	const isOffline = $derived(!globalState.isOnline);
+	const showOffline = $derived(isOffline && !dismissed);
+
 	$effect(() => {
-		if (!globalState.isOnline) {
-			showOfflineMessage = true;
-			// Auto-hide after 3 seconds
-			if (hideTimeout) clearTimeout(hideTimeout);
-			hideTimeout = setTimeout(() => {
-				showOfflineMessage = false;
-			}, 3000);
-		} else if (showOfflineMessage) {
-			// Connection restored - show briefly then hide
-			if (hideTimeout) clearTimeout(hideTimeout);
-			hideTimeout = setTimeout(() => {
-				showOfflineMessage = false;
-			}, 2000);
+		if (isOffline) {
+			wasOffline = true;
+			showBackOnline = false;
+			dismissed = false;
+			return;
 		}
 
-		return () => {
-			if (hideTimeout) clearTimeout(hideTimeout);
-		};
-	});
+		if (!wasOffline) return;
 
-	function dismissMessage() {
-		showOfflineMessage = false;
-		if (hideTimeout) clearTimeout(hideTimeout);
-	}
+		wasOffline = false;
+		showBackOnline = true;
+		const timeout = setTimeout(() => {
+			showBackOnline = false;
+		}, BACK_ONLINE_MS);
+
+		return () => clearTimeout(timeout);
+	});
 </script>
 
-{#if showOfflineMessage}
-	<div
-		class="network-status-indicator {globalState.isOnline ? 'online' : 'offline'}"
-		role="status"
-		aria-live="polite"
-	>
-		<div class="status-content">
-			<div class="status-text">
-				{#if globalState.isOnline}
-					<span>Back online.</span>
-				{:else}
-					<span>Offline. Cached pages remain available.</span>
-				{/if}
-			</div>
-			<button
-				class="dismiss-btn"
-				onclick={dismissMessage}
-				aria-label="Dismiss network status message"
-			>
-				<span aria-hidden="true">×</span>
-			</button>
-		</div>
-	</div>
-{/if}
+<div
+	class="network-status"
+	class:is-offline={showOffline}
+	class:is-online={!showOffline && showBackOnline}
+	role="status"
+>
+	{#if showOffline}
+		<p class="network-status-text">Offline. Cached pages remain available.</p>
+		<Button
+			bare
+			class="network-status-dismiss"
+			ariaLabel="Dismiss the connection notice"
+			onclick={() => (dismissed = true)}
+		>
+			<span aria-hidden="true">✕</span>
+		</Button>
+	{:else if showBackOnline}
+		<p class="network-status-text">Back online.</p>
+	{/if}
+</div>
 
 <style>
-	.network-status-indicator {
-		position: fixed;
-		top: var(--space-md);
-		/* Mobile-first positioning */
-		left: var(--space-xs);
-		right: var(--space-xs);
-		max-width: none;
-		transform: none;
-
-		border-radius: 0;
-		z-index: var(--z-popover);
-		animation: slideInMobile var(--duration-moderate) var(--ease-out);
-		/* Flat status bar — square, no shadow. The solid danger/success fill and
-		 * the hairline border carry it against the page. */
-	}
-
-	.network-status-indicator.offline {
-		background: color-mix(in srgb, var(--color-danger) 95%, transparent);
-		color: var(--color-white);
-		border: 1px solid color-mix(in srgb, var(--color-danger) 30%, transparent);
-	}
-
-	.network-status-indicator.online {
-		background: color-mix(in srgb, var(--color-success) 95%, transparent);
-		color: var(--color-white);
-		border: 1px solid color-mix(in srgb, var(--color-success) 30%, transparent);
-	}
-
-	@keyframes slideInMobile {
-		from {
-			transform: translateY(-100%);
-			opacity: 0;
-		}
-		to {
-			transform: translateY(0);
-			opacity: 1;
-		}
-	}
-
-	@keyframes slideInDesktop {
-		from {
-			transform: translateX(-50%) translateY(-100%);
-			opacity: 0;
-		}
-		to {
-			transform: translateX(-50%) translateY(0);
-			opacity: 1;
-		}
-	}
-
-	.status-content {
+	/* Nothing is drawn until there is something to say: the element stays in the
+	 * DOM so the live region is registered, but an empty strip has no box. */
+	.network-status {
 		display: flex;
 		align-items: center;
-		/* Mobile-first padding/gap */
-		padding: var(--space-xs) var(--space-sm);
-		gap: var(--space-xs);
-	}
-
-	.status-text {
-		flex: 1;
-		/* Mobile-first font size */
-		font-size: var(--font-size-xs);
+		justify-content: space-between;
+		gap: var(--space-3);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
 	}
 
-	.dismiss-btn {
-		background: none;
-		border: none;
-		color: inherit;
-		font-size: var(--font-size-xl);
-		cursor: pointer;
-		padding: 0;
-		width: var(--space-lg);
-		height: var(--space-lg);
-		display: flex;
+	.network-status-text {
+		margin: 0;
+	}
+
+	/* Full-bleed ink strip: opaque, square, no animation of any kind. */
+	.network-status.is-offline,
+	.network-status.is-online {
+		padding: var(--space-2) var(--space-4);
+	}
+
+	.network-status.is-offline {
+		background-color: var(--color-primary);
+		color: var(--color-background);
+	}
+
+	/* The transient reads as a note on the page, not as a second bar. */
+	.network-status.is-online {
+		background-color: var(--color-background);
+		color: var(--color-accent);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
+	}
+
+	.network-status :global(.network-status-dismiss) {
+		flex: none;
+		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: 0;
-		transition: background-color var(--duration-fast) var(--ease-in-out);
+		width: var(--space-6);
+		height: var(--space-6);
+		color: inherit;
+		font-size: var(--font-size-xs);
+		line-height: 1;
 	}
 
-	.dismiss-btn:hover {
-		background: color-mix(in srgb, var(--color-white) 20%, transparent);
-	}
-
-	/* Desktop responsive */
-	@media (--sm) {
-		.network-status-indicator {
-			left: 50%;
-			right: auto;
-			transform: translateX(-50%);
-			max-width: var(--content-width-xs);
-			animation-name: slideInDesktop;
-		}
-
-		.status-content {
-			padding: var(--space-sm) var(--space-md);
-			gap: var(--space-sm);
-		}
-
-		.status-text {
-			font-size: var(--font-size-sm);
-		}
-	}
-
-	/* Reduce animations for users who prefer reduced motion */
-	@media (prefers-reduced-motion: reduce) {
-		.network-status-indicator {
-			animation: none;
-		}
+	.network-status :global(.network-status-dismiss:hover) {
+		color: var(--color-accent);
 	}
 </style>

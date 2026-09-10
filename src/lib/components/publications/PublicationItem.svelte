@@ -12,6 +12,7 @@
 	import { formatAuthorsWithEtAl } from '$lib/utils/nameUtils';
 	import { author as siteAuthor } from '$lib/data/siteConfig';
 	import { titleLangAttr } from '$lib/utils/languageUtils';
+	import { isForthcoming } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import TagList from '$lib/components/molecules/TagList.svelte';
 	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
@@ -62,6 +63,12 @@
 		 * an inline plate. Reserved for the newest/featured record.
 		 */
 		featured?: boolean;
+		/**
+		 * Forwarded to `BibliographyRow`: the list owns the one live region that
+		 * announces the result of a copy, so the row reports upward instead of
+		 * carrying a live region of its own.
+		 */
+		oncopystate?: (state: 'copied' | 'failed') => void;
 	}
 
 	let {
@@ -72,7 +79,8 @@
 		row = false,
 		bibliography = false,
 		yearLabel = null,
-		featured = false
+		featured = false,
+		oncopystate
 	}: Props = $props();
 
 	// Optimize loading for above-the-fold images (first 3 items)
@@ -175,9 +183,14 @@
 	// beside the type — exactly where the record page's masthead prints it. As
 	// an action label it could only appear when there was no DOI to name
 	// instead, which silently withheld it from 21 of the 27 open-access records.
-	const bibNotes = $derived<BibliographyNote[]>(
-		isOpenAccess ? [{ label: 'Open Access', icon: 'academicons:open-access' }] : []
-	);
+	// Forthcoming is a fact of the same kind, and the one the reader most needs
+	// before citing: the row's year column prints the publication year of a work
+	// that has not appeared yet, so without the note the eyebrow says nothing
+	// the record page says plainly.
+	const bibNotes = $derived<BibliographyNote[]>([
+		...(isOpenAccess ? [{ label: 'Open Access', icon: 'academicons:open-access' }] : []),
+		...(isForthcoming(publication) ? [{ label: 'Forthcoming' }] : [])
+	]);
 
 	// Right-aligned action column: one primary action naming where the link
 	// actually goes, marked for the kind of address it is — the DOI glyph for a
@@ -297,6 +310,7 @@
 		citedCount={citationCount}
 		{yearLabel}
 		{featured}
+		{oncopystate}
 	/>
 {:else}
 	<!-- li, not article: this branch renders as a direct child of the

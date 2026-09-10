@@ -23,6 +23,7 @@
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
+	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
 	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
 	import {
 		buildLocationData,
@@ -239,6 +240,48 @@
 		}))
 	);
 
+	/*
+	 * The figures behind each plate.
+	 *
+	 * A canvas chart gives a screen reader one sentence and a sighted reader a
+	 * tooltip per mark; neither is the data. Each plate carries its own table
+	 * under it, closed, built from the same array the chart is drawn from — so
+	 * a reader who wants the number for 2019 reads it rather than hovering for
+	 * it, and the two can never disagree.
+	 */
+	const perYearTableRows = $derived(
+		perYearStackedData.map((row) => ({
+			label: String(row.year ?? ''),
+			value: Object.entries(row).reduce(
+				(sum, [key, value]) => (key === 'year' ? sum : sum + value),
+				0
+			)
+		}))
+	);
+	const typeTableRows = $derived(typeDistribution.map((d) => ({ label: d.type, value: d.count })));
+	const countryTableRows = $derived(countryData.map((d) => ({ label: d.country, value: d.count })));
+	const projectTreemapTableRows = $derived(
+		projectTreemapData.map((node) => ({
+			label: node.name,
+			value: node.children.reduce((sum, child) => sum + child.value, 0)
+		}))
+	);
+	const locationTableRows = $derived(
+		locationMapData.map((d) => ({ label: d.country, value: d.count }))
+	);
+	const projectTimelineTableRows = $derived(
+		projectTimelineData.map((entry) => ({ label: entry.name, value: entry.publications.length }))
+	);
+
+	// When the map cannot load there are no view modes to switch between, so the
+	// section's note must stop promising them.
+	let venueMapFailed = $state(false);
+	const locationDescription = $derived(
+		venueMapFailed
+			? 'The countries of the venues, taken from the location recorded on each talk.'
+			: 'The countries of the venues, taken from the location recorded on each talk. Switch between proportional markers and country shading; select a country to list its titles and cities.'
+	);
+
 	// ---------- The record, in numbers ----------
 
 	const activityYears = $derived(allCommunications.map((comm) => comm.year));
@@ -403,6 +446,14 @@
 			itemSingular="talk"
 			itemPlural="talks"
 		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={perYearTableRows}
+				keyLabel="Year"
+				valueLabel="Talks"
+				caption="Talks per year, all types combined."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
@@ -422,6 +473,14 @@
 			itemPlural="types"
 			descriptionLead="Most talks"
 		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={typeTableRows}
+				keyLabel="Type"
+				valueLabel="Talks"
+				caption="The record ranked by kind of talk."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
@@ -441,7 +500,10 @@
 				{/each}
 			</ul>
 		{:else}
-			<p class="viz-empty">No languages recorded.</p>
+			<div class="viz-empty">
+				<span class="dateline">No data</span>
+				<p>No languages recorded.</p>
+			</div>
 		{/if}
 	</VizSection>
 
@@ -462,6 +524,14 @@
 			itemPlural="countries"
 			descriptionLead="Most talks"
 		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={countryTableRows}
+				keyLabel="Country"
+				valueLabel="Talks"
+				caption="Talks by the country recorded on each entry."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
@@ -482,7 +552,10 @@
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</div>
 		{:else}
-			<p class="viz-empty">No tags recorded.</p>
+			<div class="viz-empty">
+				<span class="dateline">No data</span>
+				<p>No tags recorded.</p>
+			</div>
 		{/if}
 	</VizSection>
 
@@ -619,18 +692,39 @@
 			entrySingular="type"
 			entryPlural="types"
 		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={projectTreemapTableRows}
+				keyLabel="Project"
+				valueLabel="Talks"
+				caption="Talks delivered within each research project."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
 		{...sections.locations}
-		description="The countries of the venues, taken from the location recorded on each talk. Switch between proportional markers and country shading; select a country to list its titles and cities."
+		description={locationDescription}
 		variant="map"
 		height="500px"
 		placeholderHeight="400px"
 		hasData={locationMapData.length > 0}
 		empty="No venue locations recorded."
 	>
-		<LocationMap data={locationMapData} basePath="/communications" itemLabel="talk" />
+		<LocationMap
+			data={locationMapData}
+			basePath="/communications"
+			itemLabel="talk"
+			bind:failed={venueMapFailed}
+		/>
+		{#snippet table()}
+			<VizDataTable
+				rows={locationTableRows}
+				keyLabel="Country"
+				valueLabel="Talks"
+				caption="Conference venue locations by country."
+			/>
+		{/snippet}
 	</VizSection>
 
 	<VizSection
@@ -642,6 +736,14 @@
 		empty="No project data recorded."
 	>
 		<EChartsGanttChart data={projectTimelineData} itemSingular="talk" itemPlural="talks" />
+		{#snippet table()}
+			<VizDataTable
+				rows={projectTimelineTableRows}
+				keyLabel="Project"
+				valueLabel="Talks"
+				caption="Talks delivered within each research project, over its span."
+			/>
+		{/snippet}
 	</VizSection>
 </div>
 
@@ -692,11 +794,4 @@
 	}
 
 	/* Empty state for the sections that are typeset rather than plated. */
-	.viz-empty {
-		font-family: var(--font-family-serif);
-		font-size: var(--font-size-base);
-		color: var(--color-text-light);
-		max-width: var(--measure-prose);
-		margin: 0;
-	}
 </style>

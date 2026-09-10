@@ -203,12 +203,15 @@ the job-to-be-done: find and cite the work.
       archive's voice and e2e tests still pass (they locate by accessible name).
       _(Done 2026-09-10: ~760 strings read across three page families, 93 findings, 88 acted
       on; one glossary now binding in DESIGN.md § Voice & Copy; e2e 35 passed.)_
-- [ ] **3.2 Harden.** `/impeccable harden` (new in v4) on the entity index and detail
+- [x] **3.2 Harden.** `/impeccable harden` (new in v4) on the entity index and detail
       templates: error and empty states, offline behaviour (NetworkStatusIndicator, PWA),
       French titles and West African diacritics in every voice, and content edge cases —
       very long titles, items with thin metadata, zero-result filter combinations, the
       year-range slider at its extremes. _Done when:_ each edge case has a designed state,
       not an accidental one.
+      _(Done 2026-09-10: 43 findings, 42 acted on; the service worker had never cached a
+      visited page; four new idioms — `.state-note`, `.chart-table`, `.viz-empty`,
+      `.plate--missing` — on the sheet and the guide.)_
 
 ## Phase 4 — Character calibration (constrained, evidence-led)
 
@@ -1451,5 +1454,93 @@ rail's `.meta-link`s** (the CV's fix in 3d7be108 is the model; filed for 3.2). U
 (49 files); e2e 35 passed, 1 skipped — a theme-toggle click timed out once while the 42-page axe
 probe ran on the same machine and passed alone in 17s; bundle 24.3 KiB of 850, prerender 196 of 196. The two `...` and the `Ph.D.` the probe still finds are inside the owner's records (a workshop
 abstract, a degree title, four citing dissertations), not interface copy.
+
+**2026-09-10 — 3.2 harden (`/impeccable harden` on the index, record and visualisation
+templates plus the offline layer; three Opus critique agents then three Opus fix agents on
+disjoint file sets, Fable orchestrating) — 43 findings, 42 acted on.** No heuristic score:
+`harden` produces designed states, not a scale. Each critique drove its own dev server with
+Playwright through hostile URL state (`?type=zzz`, `?year_min=2030&year_max=2050`, `?page=-1`, a
+500-character `q`), the year slider at both ends and collapsed, zero results three ways, the
+longest real titles (201 characters, French, with `:`) and a synthetic 300-character one, the
+thinnest record of each kind (three publications with no document at all), diacritics in every
+voice at 3–5×, aborted images / deck host / audio / MapLibre chunk / boundary request,
+`setOffline`, the clipboard removed, reduced motion, 320–1440 and the 200% reflow case, and axe
+under WCAG 2.2 AA; agent B swept all 183 record URLs; agent A served the committed build to read
+the service worker's caches from inside the worker. **The headline was the offline layer:**
+`handleNetworkFirst` returned the navigation-preload response _before_ the runtime-cache write,
+so after browsing the site no runtime cache existed and the worker's own header and
+`offline.html` both promised visited pages the site could not serve; offline, an unvisited record
+became a 500 that said `Something went wrong … Reload` and never said _offline_; and the offline
+notice itself was the clearest guardrail breach of the whole roadmap — translucent (glass),
+Newsreader (wrong voice), `--color-danger` (a retired second accent over a full-width bar),
+animated in, fixed over the masthead, auto-hiding after 3 s while still offline, with
+`Back online.` unreachable once that timer had fired. **Fixed:** (1) **offline** — the preload
+response cached on the same terms as a network response, precached assets stored un-redirected
+(a host that 301s `/offline.html` had been voiding the fallback), an `Error · Offline` branch in
+`+error.svelte` (`This record is not in the offline cache.` with the six index chips and a
+reload on reconnect), `offline.html` reduced to a two-row ledger of what a reader can do from
+there, the notice recast as an opaque in-flow ink strip in the data voice that persists while
+offline with `Back online.` as a 2 s pine transient, and the update prompt given `Escape`, a
+`Later` that re-offers on the next route, and `A new version is ready. Reloading will lose the
+filters you have set.` with `Reload` / `Later`. (2) **Indexes** — filter clicks are shallow
+`replaceState` (SvelteKit's assertive announcer no longer barks the page title over the polite
+result count); one page-level `role="status"` per index replaces twelve per-row live regions; the
+year facet prints the years it selected (`2018–2020`, a collapsed range as one year) with the
+same text as both thumbs' value text, the collapsed range is no longer a pointer trap
+(`targetHandle` lifted into a pure helper with the tie broken outward, tested), and an
+out-of-corpus deep link no longer draws the handles 191 px past the track with invalid ARIA
+(clamped in `entityFilterCore`, tested); the facet summary names the active raw values so
+`?type=zzz` explains its empty index; zero-count controls read as unavailable; `No entries
+match “…”.` quotes the search; the search term travels as `q` (the page number deliberately does
+not); a forthcoming chapter prints `FORTHCOMING` instead of posing as the newest published
+record; `Seminar Series Website ↗` no longer overflows 375; the pager's scroll defers to CSS under
+reduced motion; `aria-controls` and `aria-pressed` on the language row; `No forthcoming talks are
+scheduled.` when nothing is upcoming. (3) **Records** — `main` is optional on `RecordLayout`, so
+the three documentless publications read as masthead + rail instead of a blank column beside an
+857 px rail; every plate has a failure state (`use:plateFallback` → `.plate--missing`,
+`Image unavailable.`, the `Fig. N` caption withheld because an absent figure has no number); the
+deck embed fails honestly after a 6 s watchdog with the poster recoverable; the record page's map
+import gets the index page's honest state; the 404 chips light for `/communications/*` and
+`/activities/*` and the path echo is decoded (`/publications/émancipation`, not `%C3%A9`); the DH
+rail's stacked addresses clear 24 px (the CV's `3d7be108` idiom); 32 participants keyed by a bare
+em dash are keyed `Participant`; the teaching templates guard `0 courses · undefined–undefined`
+and `1 courses`; an unresolved inline reference is plain prose instead of `[Ref: id?]` in red
+mono, and `gen:refs --check` now fails the build on one; `…` never `...` in meta descriptions,
+RSS and the baked abstract excerpts (summaries regenerated), and JSON-LD names take the
+untruncated, unsuffixed title; `CVTeaching` stops sorting shared arrays in place; the home log's
+empty state is `The log is empty.`; `overflow-wrap: anywhere` on chips, related-card titles and
+the breadcrumb (synthetic only: the longest real unbroken token is 23 characters); the talk rail
+gains a `Cite` block composed from the same venue formatter the index row prints; JSON-LD
+`WebPage.name` takes the untruncated title through a new `schemaName` prop on `SEO`. (4) **Visualisations and media** — one `.state-note` honest-state idiom
+(mono label, serif sentence, `--color-surface`, `role="status"`) replaces the site's only two
+danger-coloured blocks (the map had been printing `Failed to fetch dynamically imported module:
+…/maplibre-gl.js?v=…` at the reader); a fast audio 404 reaches the designed state (`el.error`
+checked on attach); the player's keys work anywhere inside its region; every section that draws a canvas or map
+plate (eight on publications, six on talks) offers its rows as a `Data table` `<details>` set as a `.ledger` (the SVG plates keep
+their sr-only tables, since a closed details is outside the accessibility tree); one `.viz-empty`
+replaces two page-local idioms and the 400 px centred box; the timeline no longer auto-selects
+its 166th record, its card walks the plate's own sequence and counts `of 166 records`; the CV
+prints `Loading remaining sections… n of 17 shown.` inside the sheet so an early print says it is
+partial; treemap tiles truncate with `…`; the bigrams axis draws four ticks at 375 instead of a
+smear of eleven; the toolbar and the map's mode panel leave the plate below `--sm`; the boundary
+retry keeps focus on the status; the marker hover scale is gone; a sparse network prints
+`Showing all n` instead of a slider; a one-language corpus hides the toggle. **Documented:**
+`.state-note`, `.chart-table`, `.viz-empty`, `.plate--missing` in `ink-signal.css` and on
+`/style-guide`; DESIGN.md gains them under Signature components. **Declined / deferred:** URL sync
+for chart controls (a feature: `shape` first, then 4.1); the `?page=` parameter (a shared link
+carries the search, not the position); the non-404 branch's `Reported` diagnostic (designed in
+2.11); the two long-facet idioms side by side (4.x). **Verified on the rebuilt production
+build:** in both themes at 1280 and 375 across 23 routes (every index, a record of each kind including
+the 201-character French title, research, teaching, CV, the three visualisation pages and the
+in-app 404), a Playwright probe reading every control's accessible name: **0 console errors**
+(the 404's own missing asset excepted), **0 horizontal overflow at 375**, **0 axe violations under
+the WCAG 2.2 AA tags** (the IWAC rail's seven `target-size` failures are gone), 0 accessible names
+carrying a glyph, 0 glass or shadow surfaces, 0 stray tokens; live regions per index page 5,
+down from 15. Agent A additionally served the rebuilt worker and read its caches from inside it:
+the runtime cache holds `/publications` after one visit, an offline reload returns the page, an
+offline hard navigation to an unvisited route returns `offline.html` (not `ERR_FAILED`), and an
+offline client-side navigation into an unvisited record shows `Error · Offline` and reloads onto
+the record on reconnect. Unit 863 passed (51 files, three new); e2e 35 passed, 1 skipped, 52 s;
+bundle 729 of 850 KiB on the heaviest route, prerender 196 of 196.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

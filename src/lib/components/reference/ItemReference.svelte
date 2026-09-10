@@ -43,6 +43,19 @@
 	const item = $derived(entry);
 	const itemType = $derived(entry?.itemType);
 
+	/**
+	 * An id the index cannot resolve is an authoring fault, not a reader's
+	 * problem: the reader gets the citation as plain prose and the fault goes to
+	 * the console, where the person who can fix it will see it. It should never
+	 * reach production at all — `npm run gen:refs -- --check` resolves every
+	 * `<ItemReference id>` in the source and fails CI on an unknown one.
+	 */
+	$effect(() => {
+		if (!entry && import.meta.env.DEV) {
+			console.error(`ItemReference: no record in the reference index for id "${id}"`);
+		}
+	});
+
 	/* ──────────────────────── Local state ────────────────────────────── */
 	let showPreview = $state(false); // Preview visibility state
 	let viaClick = $state(false); // True if preview opened with click/tap
@@ -190,7 +203,6 @@
 		><ReferenceLink
 			{item}
 			{itemType}
-			{id}
 			{label}
 			hasPopup
 			isActive={showPreview}
@@ -226,10 +238,13 @@
 				/>
 			</div>{/if}</span
 	>
-{:else}
-	<!-- Fallback if the ID is unknown -->
-	<span class="item-reference-error">[Ref: {id}?]</span>
-{/if}
+	<!-- Unresolved: the sentence keeps its citation, set as the prose around it.
+	     No stamp, no brackets, no `--color-danger` — that ink is reserved for
+	     form validation, and a citation the reader cannot act on is not their
+	     error. The console carries the id; see the effect above. Written tight
+	     for the same reason the branch above is: this sits inline in running
+	     prose and any newline renders as a space before the next comma. -->
+{:else}{label ?? id}{/if}
 
 <style>
 	.item-reference {
@@ -252,17 +267,6 @@
 	 * shove characters around when it appears. */
 	.reference-preview-wrapper {
 		display: contents;
-	}
-
-	/* Unknown-reference marker — a plain flat stamp, no glass/blur/shadow. */
-	.item-reference-error {
-		color: var(--color-danger);
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		letter-spacing: var(--tracking-figures);
-		padding: 0 0.2em;
-		border-radius: 0;
-		cursor: not-allowed;
 	}
 
 	/* Focus states */

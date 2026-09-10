@@ -33,6 +33,7 @@ place to decide that.
 	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
 	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { plateFallback } from '$lib/actions/plateFallback';
 
 	interface Props {
 		activity: Activity;
@@ -114,6 +115,7 @@ place to decide that.
 			alt={plateAlt}
 			fetchpriority="high"
 			decoding="async"
+			use:plateFallback
 		/>
 		{#if plateFigCaption}
 			<figcaption class="plate-caption">{plateFigCaption}</figcaption>

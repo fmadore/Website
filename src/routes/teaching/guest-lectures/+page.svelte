@@ -44,7 +44,9 @@
 	);
 
 	const years = guestLectures.map((lecture) => lecture.year).sort();
-	const span = `${years[0]}–${years[years.length - 1]}`;
+	// An empty dataset has no first and no last year, and printing the span
+	// anyway is how a page ends up advertising “undefined–undefined”.
+	const span = years.length > 0 ? `${years[0]}–${years[years.length - 1]}` : '';
 </script>
 
 <SEO
@@ -66,10 +68,18 @@
 	</PageIntro>
 
 	<!-- The whole list, counted: the same figures /teaching prints in its index
-	     of this page, read off the same dataset rather than restated. -->
-	<p class="dateline lecture-tally">
-		{guestLectures.length} lectures · {byInstitution.length} institutions · {span}
-	</p>
+	     of this page, read off the same dataset rather than restated. With
+	     nothing on record there is no tally to print, so the page states that
+	     instead. -->
+	{#if guestLectures.length === 0}
+		<p class="dateline lecture-tally">No guest lectures on record.</p>
+	{:else}
+		<p class="dateline lecture-tally">
+			{guestLectures.length}
+			{guestLectures.length === 1 ? 'lecture' : 'lectures'} · {byInstitution.length}
+			{byInstitution.length === 1 ? 'institution' : 'institutions'} · {span}
+		</p>
+	{/if}
 
 	{#each byInstitution as group, i (group.institution)}
 		<section class="section {i === 0 ? 'section--flush' : ''}">

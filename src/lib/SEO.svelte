@@ -40,6 +40,12 @@
 		 * the sitemap is generated separately and cannot read this prop.
 		 */
 		noindex?: boolean;
+		/**
+		 * The WebPage schema's `name`, when it should differ from the browser
+		 * title: a record page truncates its `<title>` and appends the site
+		 * name, but structured data wants the untruncated, unsuffixed title.
+		 */
+		schemaName?: string;
 	}
 
 	let {
@@ -56,7 +62,8 @@
 		dateModified,
 		additionalSchemas = [],
 		includeRSSLink = true,
-		noindex = false
+		noindex = false,
+		schemaName
 	}: Props = $props();
 
 	/**
@@ -100,7 +107,7 @@
 		// Add WebPage schema — every page has a canonical URL, so every page gets one.
 		schemas.push(
 			createWebPageSchema({
-				name: title,
+				name: schemaName ?? title,
 				description,
 				path: new URL(canonicalUrl).pathname,
 				type: pageType,

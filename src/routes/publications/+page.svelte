@@ -10,6 +10,7 @@
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
+	import { truncateSearchTerm } from '$lib/utils/entityFilterCore';
 	import { getAuthorsArray } from '$lib/utils/citationFormatter';
 	import {
 		allPublicationSummaries as allPublications,
@@ -61,12 +62,37 @@
 	// Free-text filter over title / co-authors / tags / venue / year, applied on
 	// top of the store's filteredPublications. Purely client-side and additive.
 	let searchTerm = $state('');
+
+	// The search box is page-local state, so `urlFilterSync` reaches it through
+	// an accessor pair rather than through the filter system. It syncs as `q`,
+	// which is what makes a searched view shareable.
+	const search = {
+		get value() {
+			return searchTerm;
+		},
+		set value(next: string) {
+			searchTerm = next;
+		}
+	};
 	let activeSort = $state<'date' | 'title'>('date');
 	let currentPage = $state(1);
 	const PER_PAGE = 12;
 
 	// Mobile: the whole facet apparatus collapses behind a toggle.
 	let facetsOpen = $state(false);
+
+	// One live region for the whole list. Each row's Cite button changes its own
+	// label, which is the sighted confirmation; the announcement is made once,
+	// here, by an element that was in the DOM before there was anything to say.
+	let copyAnnouncement = $state('');
+	let announcementTimer: ReturnType<typeof setTimeout> | undefined;
+	function announceCopy(state: 'copied' | 'failed') {
+		clearTimeout(announcementTimer);
+		copyAnnouncement = state === 'copied' ? 'Reference copied.' : 'Copy failed.';
+		// Clearing lets a second copy of the same reference be announced again.
+		announcementTimer = setTimeout(() => (copyAnnouncement = ''), 2400);
+	}
+	$effect(() => () => clearTimeout(announcementTimer));
 
 	// Clears the system's filters plus the page-local free-text search.
 	function clearAllNarrowing() {
@@ -153,7 +179,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters }}>
+<div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters, search }}>
 	<!-- ═══ INDEX HERO ═══ -->
 	<header class="index-hero rule-masthead">
 		<div class="index-hero-lede">
@@ -211,11 +237,14 @@
 		{matchCount}
 		{activeFilterCount}
 		{anyNarrowing}
+		{typeLabels}
 		onclearall={clearAllNarrowing}
 	/>
 
 	<!-- ═══ BIBLIOGRAPHY ═══ -->
 	<section class="bibliography rule-section" id="bibliography" aria-label="Bibliography">
+		<p class="sr-only" role="status">{copyAnnouncement}</p>
+
 		{#if bibRows.length > 0}
 			<ol class="bib-list">
 				{#each bibRows as { pub, yearLabel, isLead }, i (pub.id)}
@@ -226,6 +255,7 @@
 							{yearLabel}
 							featured={isLead}
 							index={i}
+							oncopystate={announceCopy}
 						/>
 					</li>
 				{/each}
@@ -241,7 +271,13 @@
 			/>
 		{:else}
 			<div class="bib-empty">
-				<p class="bib-empty-line">No publications match.</p>
+				<p class="bib-empty-line">
+					{#if searchTerm.trim()}
+						No entries match &ldquo;{truncateSearchTerm(searchTerm)}&rdquo;.
+					{:else}
+						No entries match.
+					{/if}
+				</p>
 				<p class="bib-empty-line">
 					The index holds {totalEntries} entries, {minYear}–{maxYear}.
 				</p>

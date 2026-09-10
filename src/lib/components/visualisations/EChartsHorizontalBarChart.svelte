@@ -15,6 +15,7 @@ ECharts Horizontal Bar Chart component
 	import ChartToolbar from './ChartToolbar.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
 	import { describeRanked } from '$lib/utils/chartDescriptions';
+	import { niceTickInterval, tickBudgetForWidth } from '$lib/utils/chartAxis';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -233,17 +234,19 @@ ECharts Horizontal Bar Chart component
 	/** Labels plus the tick gap; `containLabel` is off, so the grid owns it. */
 	const gridLeft = $derived(labelWidth + 20);
 
-	// Calculate smart x-axis interval based on max value
+	/**
+	 * The x-axis interval, chosen for the plate's actual width.
+	 *
+	 * The staircase this replaced answered only to the data, so a plate at
+	 * 375px drew the same ten labels a 900px plate did and printed them as a
+	 * gray smear along the baseline. The tick budget now comes from the grid's
+	 * own width and the interval from the 1–2–5 ladder, so a phone gets four
+	 * intervals on round numbers rather than ten on top of each other.
+	 */
 	const xAxisInterval = $derived.by(() => {
 		const values = chartData.map((d) => d.value);
 		const maxVal = maxValue ?? Math.max(...values, 1);
-		// Aim for approximately 5-8 tick marks
-		if (maxVal <= 10) return 1;
-		if (maxVal <= 20) return 2;
-		if (maxVal <= 50) return 5;
-		if (maxVal <= 100) return 10;
-		if (maxVal <= 200) return 20;
-		return Math.ceil(maxVal / 5 / 10) * 10; // Round to nice intervals
+		return niceTickInterval(maxVal, tickBudgetForWidth(containerWidth - gridLeft - 24));
 	});
 	// Chart options - reactive to all dependencies
 	const chartOption = $derived({

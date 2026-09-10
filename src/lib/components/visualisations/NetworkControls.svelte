@@ -76,19 +76,26 @@
 
 <div class="network-controls">
 	<div class="control control-slider">
-		<span class="control-label">
-			Showing top <span class="control-value">{clampedTopN}</span> / {maxN}
-		</span>
-		<RangeSlider
-			single
-			float
-			min={minN}
-			max={upperBound}
-			values={sliderValues}
-			onchange={(e) => (topN = e.detail.values[1])}
-			ariaLabel="Number of {entityLabel} to show"
-			ariaValueText="{clampedTopN} of {maxN} {entityLabel}"
-		/>
+		{#if maxN <= minN}
+			<!-- A slider whose two ends are the same number is a control that
+			     cannot be operated: it offers a choice the corpus does not have.
+			     State the count instead, in the label's own voice. -->
+			<span class="control-label">Showing all {maxN} {entityLabel}</span>
+		{:else}
+			<span class="control-label">
+				Showing top <span class="control-value">{clampedTopN}</span> / {maxN}
+			</span>
+			<RangeSlider
+				single
+				float
+				min={minN}
+				max={upperBound}
+				values={sliderValues}
+				onchange={(e) => (topN = e.detail.values[1])}
+				ariaLabel="Number of {entityLabel} to show"
+				ariaValueText="{clampedTopN} of {maxN} {entityLabel}"
+			/>
+		{/if}
 	</div>
 
 	{#if edgeKindOptions.length > 0}

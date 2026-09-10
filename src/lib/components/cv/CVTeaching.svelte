@@ -5,15 +5,17 @@
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
-	// Sort teaching by year (most recent first)
-	const sortedTeaching = teaching.sort((a, b) => {
+	// Sort teaching by year (most recent first). Copied first: `sort` mutates,
+	// and the imported array is the shared dataset every other page reads.
+	const sortedTeaching = [...teaching].sort((a, b) => {
 		const yearA = parseInt(a.year.split('-')[0] ?? a.year);
 		const yearB = parseInt(b.year.split('-')[0] ?? b.year);
 		return yearB - yearA;
 	});
 
-	// Sort guest lectures by year (most recent first)
-	const sortedGuestLectures = guestLectures.sort((a, b) => {
+	// Sort guest lectures by year (most recent first), on a copy for the same
+	// reason.
+	const sortedGuestLectures = [...guestLectures].sort((a, b) => {
 		const yearA = parseInt(a.year);
 		const yearB = parseInt(b.year);
 		return yearB - yearA;

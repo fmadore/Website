@@ -87,8 +87,13 @@ Usage:
 		jsonLdScriptId: string;
 		/** Precomputed JSON-LD string from the route's load function. */
 		jsonLdString?: string;
-		/** The reading column. */
-		main: Snippet;
+		/**
+		 * The reading column. Optional: a record whose document is empty — a
+		 * bibliographic stub with no abstract and no contents — prints the
+		 * masthead and its rail rather than an empty column, so the page never
+		 * opens a reading interval over nothing.
+		 */
+		main?: Snippet;
 		/** Rail block one — identification and access; sits with the masthead. */
 		railPrimary?: Snippet;
 		/** Rail block two — indexing; falls past the document in one column. */
@@ -144,7 +149,7 @@ Usage:
 		     block of the body column) so that below the two-column breakpoint the
 		     rail's blocks can order themselves against it — plate and Record next
 		     to the title, ahead of the document. -->
-		<article class="record-grid">
+		<article class="record-grid" class:record-grid--no-main={!main}>
 			<!-- ═══ MASTHEAD ═══ -->
 			<header class="record-header">
 				{#if eyebrow.length > 0}
@@ -179,9 +184,11 @@ Usage:
 			</header>
 
 			<!-- ═══ MAIN COLUMN ═══ -->
-			<div class="record-main">
-				{@render main()}
-			</div>
+			{#if main}
+				<div class="record-main">
+					{@render main()}
+				</div>
+			{/if}
 
 			<!-- ═══ ASIDE — THE METADATA RAIL ═══ -->
 			{#if hasRail}
@@ -242,8 +249,12 @@ Usage:
 		color: var(--color-text-muted);
 	}
 
+	/* The trailing segment is an unbroken type label on most records but a raw
+	   identifier on some, and the mono caps do not hyphenate: let it break
+	   inside a word rather than push the breadcrumb past the viewport. */
 	.record-breadcrumb-current {
 		color: var(--color-text-muted);
+		overflow-wrap: anywhere;
 	}
 
 	/* ── Two-column grid: masthead + main + 380px metadata rail ───────────── */
@@ -325,6 +336,14 @@ Usage:
 		.record-related-block {
 			grid-column: 1;
 			grid-row: 3;
+		}
+
+		/* With no document, row 2 collapses to nothing but still charges its two
+		   gaps, which would open a 96px hole under the masthead. Sibling work
+		   takes row 2 instead; the rail still spans rows 1–2 in column two, so
+		   the two never meet. */
+		.record-grid--no-main .record-related-block {
+			grid-row: 2;
 		}
 
 		/* The rail occupies column two across both rows of the page grid

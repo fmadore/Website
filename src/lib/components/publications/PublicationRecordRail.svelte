@@ -17,6 +17,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	import { copyText } from '$lib/utils/clipboard';
 	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { plateFallback } from '$lib/actions/plateFallback';
 
 	// The rail is 380px wide from --lg up; below that the cover spans the
 	// single column. The intrinsic size reserves the plate's box before the
@@ -188,6 +189,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 			alt={coverAlt}
 			loading="lazy"
 			decoding="async"
+			use:plateFallback
 		/>
 		<figcaption class="plate-caption">Fig. 1. Cover.</figcaption>
 	</figure>

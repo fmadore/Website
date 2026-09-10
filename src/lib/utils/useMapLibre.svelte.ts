@@ -75,7 +75,10 @@ export interface UseMapLibreReturn {
 	readonly maplibregl: MapLibreModule | null;
 	/** True once the initial style has loaded (reactive). */
 	readonly isMapLoaded: boolean;
-	/** Human-readable initialization error, if any (reactive). */
+	/**
+	 * Initialization diagnostic, if any (reactive). Treat it as a boolean at the
+	 * call site: the string is for the DEV console, never for the reader.
+	 */
 	readonly importError: string | null;
 }
 
@@ -110,16 +113,22 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 
 		(async () => {
 			try {
+				// `importError` is a diagnostic, not interface copy: the component
+				// renders the honest state (`.state-note`) and the raw reason stays
+				// in the DEV console, where the person who can act on it will look.
 				if (!hasWebGLSupport()) {
-					importError =
-						'WebGL 2 is not supported in your browser. Please enable hardware acceleration or try a different browser.';
+					importError = 'WebGL 2 is unavailable in this browser.';
+					if (import.meta.env.DEV)
+						console.error('Map unavailable: WebGL 2 is not supported in this browser.');
 					return;
 				}
 
 				const ready = await waitForContainerLayout(container);
 				if (cancelled) return;
 				if (!ready) {
-					importError = 'Map container has no dimensions. Please try refreshing the page.';
+					importError = 'Map container has no dimensions.';
+					if (import.meta.env.DEV)
+						console.error('Map unavailable: the container never took layout dimensions.');
 					return;
 				}
 

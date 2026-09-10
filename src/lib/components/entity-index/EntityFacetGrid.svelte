@@ -1,3 +1,8 @@
+<script lang="ts" module>
+	/** The grid the filter bar's `More filters` toggle controls. */
+	export const FACET_GRID_ID = 'entity-facet-grid';
+</script>
+
 <script lang="ts" generics="TItem">
 	// Facet grid (finding-aid apparatus) of the entity-index pages:
 	// projects · co-authors · countries · year slider · tags, with the narrowing
@@ -12,6 +17,7 @@
 	// Facet *labels* are typeset; the raw value stays the toggle key and the URL
 	// parameter, so filtering and deep links keep matching the data.
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { clampYearRange } from '$lib/utils/entityFilterCore';
 
 	interface Props {
 		filters: EntityFilterSystem<TItem>;
@@ -28,6 +34,8 @@
 		anyNarrowing: boolean;
 		/** Clears the system's filters plus page-local narrowing (search). */
 		onclearall: () => void;
+		/** Display labels for the type codes, so the summary never prints one. */
+		typeLabels?: Record<string, string>;
 	}
 
 	let {
@@ -39,7 +47,8 @@
 		matchCount,
 		activeFilterCount,
 		anyNarrowing,
-		onclearall
+		onclearall,
+		typeLabels
 	}: Props = $props();
 
 	const af = $derived(filters.activeFilters);
@@ -61,18 +70,51 @@
 		showAllCountries ? options.countries : options.countries.slice(0, COUNTRY_LIMIT)
 	);
 
-	// The active year window (or the full span when unset).
-	const yearRangeValues = $derived<[number, number]>([
-		af.yearRange?.min ?? minYear,
-		af.yearRange?.max ?? maxYear
-	]);
+	// The active year window (or the full span when unset), clamped to the
+	// corpus: a `?year_min=1900` deep link filters exactly as the URL asked, but
+	// the slider only spans 2013–2026 and must not caption a handle with a year
+	// its track cannot reach.
+	const displayedYears = $derived(clampYearRange(af.yearRange, minYear, maxYear));
+	const yearRangeValues = $derived<[number, number]>([displayedYears.min, displayedYears.max]);
+
+	// The read-out: what the two handles currently mean, in words, live. A pair
+	// of handles on a bare track states the window nowhere, and the bounds
+	// printed either side of it are the corpus, not the selection.
+	const yearReadout = $derived(
+		!af.yearRange
+			? `All years · ${minYear}–${maxYear}`
+			: displayedYears.min === displayedYears.max
+				? `${displayedYears.min}`
+				: `${displayedYears.min}–${displayedYears.max}`
+	);
+
 	function handleYearChange(event: CustomEvent<{ values: [number, number] }>) {
 		const [min, max] = event.detail.values;
 		filters.updateYearRange(min, max);
 	}
+
+	/* What is narrowing the list, in the reader's own words. The stat says how
+	 * much survived; without the values beside it the reader has to go back up
+	 * to the facets to find out what they clicked — and below --lg those facets
+	 * are collapsed behind a toggle. Type codes go through the page's labels;
+	 * everything else is the authored value, typeset. */
+	const activeFilterLabels = $derived([
+		...af.types.map((type) => typeLabels?.[type] ?? type),
+		...af.languages,
+		...af.projects.map(typesetQuotes),
+		...af.authors.map(typesetQuotes),
+		...af.countries.map(typesetQuotes),
+		...af.tags.map(typesetQuotes),
+		...(af.yearRange ? [yearReadout] : [])
+	]);
 </script>
 
-<section class="facet-grid rule-hairline" class:facet-grid--open={open} aria-label="More filters">
+<section
+	id={FACET_GRID_ID}
+	class="facet-grid rule-hairline"
+	class:facet-grid--open={open}
+	aria-label="More filters"
+>
 	<!-- PROJECTS -->
 	{#if options.projects.length > 0}
 		<div class="facet-col">
@@ -86,6 +128,7 @@
 							class="facet-row facet-row--marker"
 							class:facet-row--active={active}
 							aria-pressed={active}
+							data-count={filters.counts.projects[project] ?? 0}
 							onclick={() => filters.toggle('projects', project)}
 						>
 							<span class="facet-marker" class:facet-marker--on={active} aria-hidden="true"></span>
@@ -110,6 +153,7 @@
 							class="facet-row"
 							class:facet-row--active={af.authors.includes(author)}
 							aria-pressed={af.authors.includes(author)}
+							data-count={filters.counts.authors[author] ?? 0}
 							onclick={() => filters.toggle('authors', author)}
 						>
 							<span class="facet-name">{typesetQuotes(author)}</span>
@@ -142,6 +186,7 @@
 							class="facet-row"
 							class:facet-row--active={af.countries.includes(country)}
 							aria-pressed={af.countries.includes(country)}
+							data-count={filters.counts.countries[country] ?? 0}
 							onclick={() => filters.toggle('countries', country)}
 						>
 							<span class="facet-name">{typesetQuotes(country)}</span>
@@ -164,6 +209,7 @@
 
 		{#if options.years.length > 1}
 			<h2 class="facet-label facet-label--years">Years</h2>
+			<p class="dateline facet-years-readout">{yearReadout}</p>
 			<div class="facet-years">
 				<span class="facet-years-bound">{minYear}</span>
 				<div class="facet-years-slider">
@@ -174,6 +220,8 @@
 						values={yearRangeValues}
 						minAriaLabel="Earliest year"
 						ariaLabel="Latest year"
+						minAriaValueText={yearReadout}
+						ariaValueText={yearReadout}
 						onchange={handleYearChange}
 					/>
 				</div>
@@ -198,6 +246,7 @@
 						class="chip"
 						class:chip--selected={af.tags.includes(tag)}
 						aria-pressed={af.tags.includes(tag)}
+						data-count={filters.counts.tags[tag] ?? 0}
 						onclick={() => filters.toggle('tags', tag)}
 					>
 						{typesetQuotes(tag)} <span class="chip-count">{filters.counts.tags[tag] ?? 0}</span>
@@ -224,6 +273,12 @@
      "Clear all" affordance down with it on exactly the viewport where the
      reader most needs to know how many records are left. -->
 <div class="facet-summary">
+	{#if activeFilterLabels.length > 0}
+		<span class="facet-summary-active">
+			<span class="filter-note-label">Filtered by</span>
+			<span class="filter-note-value">{activeFilterLabels.join(' · ')}</span>
+		</span>
+	{/if}
 	<!-- Announce filter-result changes to screen readers -->
 	<span class="facet-summary-stat" aria-live="polite">
 		{#if activeFilterCount > 0}

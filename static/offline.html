@@ -13,9 +13,12 @@
 			absolute — and, like 404.html, the theme is resolved by the same
 			bootstrap app.html uses (stored choice first, OS preference second) and
 			the page opens on the wordmark, so the three standalone pages read as
-			one family. Fonts are the site's self-hosted files (cached by the
-			service worker); colours mirror src/styles/base/variables.css
-			(Ink + Signal).
+			one family. Fonts are the site's self-hosted files served from the
+			browser's HTTP cache — the service worker deliberately does not handle
+			them — so a reader who has been here before gets Archivo, Newsreader
+			and Spline Sans Mono, and a first-time offline reader gets the fallback
+			stack below, which is the designed degradation rather than an
+			accident. Colours mirror src/styles/base/variables.css (Ink + Signal).
 		-->
 		<link rel="icon" type="image/png" href="/icons/favicon.png" />
 
@@ -68,6 +71,7 @@
 				--ink: #191509;
 				--muted: #5c5442;
 				--accent: #1e6a56;
+				--rule: #dcd4be;
 				--font-display: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 				--font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
 				--font-mono: 'Spline Sans Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
@@ -81,6 +85,7 @@
 				--ink: #efe7d6;
 				--muted: #b3a88d;
 				--accent: #4fbb99;
+				--rule: #383126;
 			}
 
 			@media (prefers-color-scheme: dark) {
@@ -89,6 +94,7 @@
 					--ink: #efe7d6;
 					--muted: #b3a88d;
 					--accent: #4fbb99;
+					--rule: #383126;
 				}
 			}
 
@@ -166,19 +172,43 @@
 				margin-bottom: 2rem;
 			}
 
-			/* Ledger-style notes: hairline-separated rows, not bullets */
+			/* The ledger: hanging mono key, serif value, hairline between rows.
+			   The rules are separators, so they take the hairline tier and not
+			   full ink — see the Hairline Pairing Rule in DESIGN.md. */
 			.notes {
 				list-style: none;
 				margin-bottom: 2.25rem;
 				max-width: 34rem;
-				border-top: 1px solid var(--ink);
+				border-top: 1px solid var(--rule);
 			}
 
 			.notes li {
-				padding: 0.5rem 0;
-				border-bottom: 1px solid var(--ink);
-				color: var(--muted);
+				display: grid;
+				grid-template-columns: 1fr;
+				gap: 0.125rem 1rem;
+				padding: 0.625rem 0;
+				border-bottom: 1px solid var(--rule);
 				font-size: 1rem;
+			}
+
+			@media (min-width: 30rem) {
+				.notes li {
+					grid-template-columns: 13rem 1fr;
+					align-items: baseline;
+				}
+			}
+
+			.notes .key {
+				font-family: var(--font-mono);
+				font-size: 0.8125rem;
+				font-weight: 500;
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+				color: var(--ink);
+			}
+
+			.notes .value {
+				color: var(--muted);
 			}
 
 			/* Flat chip: 1px ink border, square corners, mono caps */
@@ -220,9 +250,14 @@
 					you&rsquo;ve already visited remain available from your device&rsquo;s cache.
 				</p>
 				<ul class="notes">
-					<li>Browse previously visited pages</li>
-					<li>Revisit cached research and publications</li>
-					<li>The site will reconnect automatically when you&rsquo;re back online</li>
+					<li>
+						<span class="key">Pages you already opened</span>
+						<span class="value">available from this device</span>
+					</li>
+					<li>
+						<span class="key">Everything else</span>
+						<span class="value">needs the network</span>
+					</li>
 				</ul>
 				<!-- One honest control. It said "Try again" and then rewrote itself to
 				     "Go to the homepage" depending on navigator.onLine, so the same

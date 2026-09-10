@@ -34,7 +34,10 @@
 	 * and it makes the two section datelines parallel, count then span.
 	 */
 	const courseYears = courses.flatMap((course) => course.year.split('-')).sort();
-	const courseSpan = `${courseYears[0]}–${courseYears[courseYears.length - 1]}`;
+	// An empty dataset has no first and no last year, and printing the span
+	// anyway is how a page ends up advertising “undefined–undefined”.
+	const courseSpan =
+		courseYears.length > 0 ? `${courseYears[0]}–${courseYears[courseYears.length - 1]}` : '';
 
 	/**
 	 * Guest lectures are indexed here by host institution rather than listed:
@@ -62,7 +65,8 @@
 	}, []);
 
 	const lectureYears = guestLectures.map((lecture) => lecture.year).sort();
-	const lectureSpan = `${lectureYears[0]}–${lectureYears[lectureYears.length - 1]}`;
+	const lectureSpan =
+		lectureYears.length > 0 ? `${lectureYears[0]}–${lectureYears[lectureYears.length - 1]}` : '';
 
 	const guestLecturesHref = resolve('/teaching/guest-lectures');
 </script>
@@ -92,50 +96,59 @@
 		<section class="section section--flush">
 			<div class="section-head">
 				<h2 class="section-title">Courses taught</h2>
-				<span class="dateline">{courses.length} courses · {courseSpan}</span>
+				{#if courses.length > 0}
+					<span class="dateline"
+						>{courses.length}
+						{courses.length === 1 ? 'course' : 'courses'} · {courseSpan}</span
+					>
+				{/if}
 			</div>
 
-			<div class="ledger ledger--ruled course-ledger">
-				{#each courses as course (course.id)}
-					<div class="ledger-row ledger-row--meta">
-						<span class="ledger-key">
-							{course.period ?? course.year}
-							<span class="ledger-status"
-								>{course.level}{#if course.sections}
-									· {course.sections}{/if}</span
-							>
-						</span>
+			{#if courses.length === 0}
+				<p class="dateline teaching-empty">No courses on record.</p>
+			{:else}
+				<div class="ledger ledger--ruled course-ledger">
+					{#each courses as course (course.id)}
+						<div class="ledger-row ledger-row--meta">
+							<span class="ledger-key">
+								{course.period ?? course.year}
+								<span class="ledger-status"
+									>{course.level}{#if course.sections}
+										· {course.sections}{/if}</span
+								>
+							</span>
 
-						<span class="ledger-content">
-							<span class="ledger-title">{typesetQuotes(course.title)}</span>
-							<span class="course-institution">{course.institution}</span>
-							{#if course.description}
-								<span class="ledger-desc">{course.description}</span>
-							{/if}
-						</span>
+							<span class="ledger-content">
+								<span class="ledger-title">{typesetQuotes(course.title)}</span>
+								<span class="course-institution">{course.institution}</span>
+								{#if course.description}
+									<span class="ledger-desc">{course.description}</span>
+								{/if}
+							</span>
 
-						<span class="ledger-meta">
-							{#if course.syllabusUrl}
-								<!-- eslint-disable svelte/no-navigation-without-resolve -- base-prefixed static asset -->
-								<!-- Named for the record it belongs to: two rows carry the same
+							<span class="ledger-meta">
+								{#if course.syllabusUrl}
+									<!-- eslint-disable svelte/no-navigation-without-resolve -- base-prefixed static asset -->
+									<!-- Named for the record it belongs to: two rows carry the same
 								     visible stamp, and a link list that reads "Syllabus PDF"
 								     twice names neither course. The visible label leads the
 								     accessible name, so speech input still matches it. -->
-								<a
-									class="ledger-action"
-									href={`${base}${course.syllabusUrl}`}
-									target="_blank"
-									rel="noopener noreferrer"
-									aria-label={`Syllabus PDF: ${course.title} (opens in new tab)`}
-								>
-									Syllabus PDF<span aria-hidden="true">&nbsp;↗</span>
-								</a>
-								<!-- eslint-enable svelte/no-navigation-without-resolve -->
-							{/if}
-						</span>
-					</div>
-				{/each}
-			</div>
+									<a
+										class="ledger-action"
+										href={`${base}${course.syllabusUrl}`}
+										target="_blank"
+										rel="noopener noreferrer"
+										aria-label={`Syllabus PDF: ${course.title} (opens in new tab)`}
+									>
+										Syllabus PDF<span aria-hidden="true">&nbsp;↗</span>
+									</a>
+									<!-- eslint-enable svelte/no-navigation-without-resolve -->
+								{/if}
+							</span>
+						</div>
+					{/each}
+				</div>
+			{/if}
 		</section>
 
 		<!-- GUEST LECTURES — the second view of the same section. Indexed by host
@@ -144,34 +157,43 @@
 		<section class="section">
 			<div class="section-head">
 				<h2 class="section-title">Guest lectures</h2>
-				<span class="dateline">{guestLectures.length} lectures · {lectureSpan}</span>
+				{#if guestLectures.length > 0}
+					<span class="dateline"
+						>{guestLectures.length}
+						{guestLectures.length === 1 ? 'lecture' : 'lectures'} · {lectureSpan}</span
+					>
+				{/if}
 			</div>
 
 			<p class="section-note">
 				Invited talks in colleagues’ courses, indexed here by host institution.
 			</p>
 
-			<div class="ledger ledger--ruled host-ledger">
-				{#each hosts as host (host.institution)}
-					<div class="ledger-row ledger-row--meta">
-						<span class="ledger-key">
-							{host.from === host.to ? host.from : `${host.from}–${host.to}`}
-						</span>
-						<span class="ledger-content">
-							<span class="ledger-title">{host.institution}</span>
-						</span>
-						<span class="ledger-meta">
-							{host.count}
-							{host.count === 1 ? 'lecture' : 'lectures'}
-						</span>
-					</div>
-				{/each}
-			</div>
+			{#if hosts.length === 0}
+				<p class="dateline teaching-empty">No guest lectures on record.</p>
+			{:else}
+				<div class="ledger ledger--ruled host-ledger">
+					{#each hosts as host (host.institution)}
+						<div class="ledger-row ledger-row--meta">
+							<span class="ledger-key">
+								{host.from === host.to ? host.from : `${host.from}–${host.to}`}
+							</span>
+							<span class="ledger-content">
+								<span class="ledger-title">{host.institution}</span>
+							</span>
+							<span class="ledger-meta">
+								{host.count}
+								{host.count === 1 ? 'lecture' : 'lectures'}
+							</span>
+						</div>
+					{/each}
+				</div>
 
-			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved URL -->
-			<a class="ledger-action ledger-action--standalone" href={guestLecturesHref}>
-				All {guestLectures.length} guest lectures <span aria-hidden="true">→</span>
-			</a>
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved URL -->
+				<a class="ledger-action ledger-action--standalone" href={guestLecturesHref}>
+					All {guestLectures.length} guest lectures <span aria-hidden="true">→</span>
+				</a>
+			{/if}
 		</section>
 	</div>
 </div>
@@ -198,6 +220,12 @@
 			--ledger-key-w: 8.5rem;
 			--ledger-meta-w: 7rem;
 		}
+	}
+
+	/* Empty section — the state named where the ledger would have been, on the
+	 * same interval the first ledger row takes under the section rule. */
+	.teaching-empty {
+		margin: var(--space-md) 0 0;
 	}
 
 	/* Institution — serif byline under the course title. */

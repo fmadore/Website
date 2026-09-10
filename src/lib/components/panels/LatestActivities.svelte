@@ -64,7 +64,7 @@
 
 {#snippet panelContent()}
 	{#if activityList.length === 0}
-		<p class="no-activities">No recent activities found.</p>
+		<p class="no-activities">The log is empty.</p>
 	{:else}
 		<ol class="ledger log-ledger">
 			{#each activityList as activity (activity.id)}
@@ -102,7 +102,7 @@
 					<a
 						class="year-meter-row"
 						href={resolve(`/activities/year/${row.year}` as `/activities/year/${string}`)}
-						aria-label="{row.year} — {row.count} {row.count === 1 ? 'activity' : 'activities'}"
+						aria-label="{row.year}, {row.count} {row.count === 1 ? 'activity' : 'activities'}"
 					>
 						<span class="year-meter-key" class:year-meter-key--current={row.year === newestYear}>
 							{row.year}
