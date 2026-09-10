@@ -18,7 +18,7 @@ export const nouveauDynamismeSalafismeCoteDIvoire: Communication = {
 	tags: [
 		'MANSA',
 		'Salafism',
-		'Radicalization',
+		'Radicalisation',
 		"Côte d'Ivoire",
 		'Islam',
 		'Religious Dynamics',

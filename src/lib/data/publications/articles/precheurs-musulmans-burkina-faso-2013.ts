@@ -84,7 +84,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			year: 2020,
 			title:
 				"Contribution de l'approche relationnelle à la compréhension de la conversion religieuse",
-			source: 'Ph.D. dissertation, Laurentian University, 2020',
+			source: 'PhD dissertation, Laurentian University, 2020',
 			url: 'https://zone.biblio.laurentian.ca/jspui/handle/10219/3606'
 		},
 		{
@@ -131,7 +131,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			year: 2023,
 			title:
 				"Analyse des dynamiques religieuses à l'Université Abdou Moumouni de Niamey (UAM) à travers les interactions entre les étudiants salafis et pentecôtistes",
-			source: 'Ph.D. dissertation, Université Abdou Moumouni, 2023'
+			source: 'PhD dissertation, Université Abdou Moumouni, 2023'
 		},
 		{
 			authors: ['Mahamadou Bello Adamou'],

@@ -28,7 +28,7 @@ export const launchIslamWestAfricaCollection: Communication = {
 	participants: [
 		{
 			name: 'Frédérick Madore',
-			role: 'Speaker and Organizer',
+			role: 'Speaker and Organiser',
 			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		},
 		{ name: 'Ulrike Freitag', role: 'Speaker', affiliation: 'Leibniz-Zentrum Moderner Orient' },

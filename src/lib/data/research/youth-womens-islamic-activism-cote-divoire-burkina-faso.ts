@@ -7,7 +7,7 @@ export const youthWomensIslamicActivism: ResearchProject = {
 	years: '2013-2018',
 	order: 6,
 	shortDescription:
-		"Analyzing the evolving roles of youth and women in Islamic movements and organizations in Côte d'Ivoire and Burkina Faso.",
+		"Analysing the evolving roles of youth and women in Islamic movements and organisations in Côte d'Ivoire and Burkina Faso.",
 	imageSrc: 'youth-women-activism.webp',
 	imageAlt: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	projectName: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",

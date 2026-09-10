@@ -5,15 +5,15 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 	title: 'IWAC Sentiment Analysis',
 	years: '2025',
 	shortDescription:
-		'Interactive visualization of sentiment patterns in 12,280+ West African press articles on Islam, with multi-model comparison (ChatGPT, Gemini, Mistral) and third-party arbitration.',
+		'Interactive visualisation of sentiment patterns in 12,280+ West African press articles on Islam, with multi-model comparison (ChatGPT, Gemini, Mistral) and third-party arbitration.',
 	description: `
-		<p>An interactive dashboard exploring how West African newspapers portray Islam and Muslims, using AI-powered sentiment analysis of the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer">Islam West Africa Collection (IWAC)</a> corpus. Three large language models (LLMs) analyzed over 12,000 Francophone press articles to assess their tone, objectivity, and thematic focus on Islam.</p>
+		<p>An interactive dashboard exploring how West African newspapers portray Islam and Muslims, using AI-powered sentiment analysis of the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer">Islam West Africa Collection (IWAC)</a> corpus. Three large language models (LLMs) analysed over 12,000 Francophone press articles to assess their tone, objectivity, and thematic focus on Islam.</p>
 
 		<h2>Corpus</h2>
 		<p><strong>12,280+ articles</strong> from <strong>56 newspapers</strong> across <strong>5 countries</strong> (Benin, Burkina Faso, Côte d'Ivoire, Niger, Togo), sourced from the <a href="https://huggingface.co/datasets/fmadore/islam-west-africa-collection" target="_blank" rel="noopener noreferrer">IWAC Hugging Face dataset</a>.</p>
 
 		<h2>Methodology</h2>
-		<p>Each article was analyzed by three LLMs using a task-specific French-language prompt:</p>
+		<p>Each article was analysed by three LLMs using a task-specific French-language prompt:</p>
 		<ul>
 			<li><strong>OpenAI GPT-5 mini</strong> (ChatGPT)</li>
 			<li><strong>Google Gemini 3.0 Flash</strong></li>
@@ -29,7 +29,7 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 		<p><strong>Cost</strong>: ~€16 each for Gemini and ChatGPT, €6 for Mistral, with 24 hours of batch processing—replacing months of potential manual coding.</p>
 
 		<h2>Features</h2>
-		<h3>Eight visualization views</h3>
+		<h3>Eight visualisation views</h3>
 		<ol>
 			<li><strong>Charts</strong>: Polarity and subjectivity distribution by newspaper</li>
 			<li><strong>Trends</strong>: Temporal evolution of sentiments over the decades</li>

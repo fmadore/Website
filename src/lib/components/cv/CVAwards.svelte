@@ -9,7 +9,7 @@
 	items={awardsByDate}
 	year={(award) => award.year}
 	key={(award) => award.id}
-	emptyMessage="No awards or honors listed."
+	emptyMessage="No awards or honours listed."
 >
 	{#snippet entry(award)}
 		{#if award.url}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a

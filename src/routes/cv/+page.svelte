@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getCvDescription } from '$lib/utils/siteHelpers';
 	import { onMount, type Component } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import SEO from '$lib/SEO.svelte';
@@ -128,7 +129,7 @@
 
 <SEO
 	title="Curriculum Vitae | Frédérick Madore"
-	description="Curriculum Vitae of Frédérick Madore, Research Fellow at ZMO, detailing publications, talks, activities, and fieldwork in West Africa."
+	description={getCvDescription()}
 	keywords="CV, curriculum vitae, Frédérick Madore, research fellow, publications, academic career, Islam, West Africa"
 	canonical="https://www.frederickmadore.com/cv"
 	{breadcrumbs}

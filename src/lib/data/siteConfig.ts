@@ -1,5 +1,5 @@
 /**
- * Centralized site configuration
+ * Centralised site configuration
  * Single source of truth for contact info, social links, and author details
  */
 
@@ -30,20 +30,18 @@ export interface AuthorInfo {
 	name: string;
 	fullName: string; // With title
 	position: string;
-	positionShort: string; // Without institution name
+	positionShort: string; // Two-word standing epithet: the masthead dateline and the home <title>
 	jobTitle: string; // Precise current role for Person JSON-LD
-	kicker: string; // Two-word standing epithet — the masthead dateline and the home <title>
 	tagline: string; // Descriptive hero standfirst — subject + affiliation, not a role list
 	nationality: string; // Used in Person JSON-LD structured data
 }
 
 export const author: AuthorInfo = {
 	name: 'Frédérick Madore',
-	fullName: 'Frédérick Madore, Ph.D.',
+	fullName: 'Frédérick Madore, PhD',
 	position: 'Historian | Digital Humanities & AI | Data Curator, University of Bayreuth',
-	positionShort: 'Historian & Data Curator',
+	positionShort: 'Historian & Digital Humanist',
 	jobTitle: 'Data Curator',
-	kicker: 'Historian & Digital Humanist',
 	tagline:
 		'Historian of Islam in francophone West Africa, working with digital humanities and AI · Data Curator, Cluster of Excellence “Africa Multiple”, University of Bayreuth',
 	nationality: 'Canada'

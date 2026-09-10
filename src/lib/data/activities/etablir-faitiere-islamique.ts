@@ -12,7 +12,7 @@ export const etablirFaitiereIslamique: Activity = {
 	date: formatDisplayDate(activityDateISO),
 	year: 2025,
 	description:
-		'Comparative analysis of national Islamic umbrella organizations in four West African countries.',
+		'Comparative analysis of national Islamic umbrella organisations in four West African countries.',
 	content: `
         <p>On 4 March, I had the opportunity to present my paper, "<a href="/communications/etablir-faitiere-islamique">L'ambition fédératrice à l'épreuve de la diversité: étude comparative des faîtières islamiques au Burkina Faso, Togo, Bénin et Côte d'Ivoire</a>", at the workshop <em>Religiosités et vies associatives en Afrique: entre stratégies d'organisation et vies en mouvement</em>.</p>
         

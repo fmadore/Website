@@ -31,7 +31,7 @@ export const amiraLaunch2026: Activity = {
 		'Africa Multiple',
 		'University of Bayreuth',
 		'Data Curation',
-		'Data Visualization',
+		'Data Visualisation',
 		'Metadata'
 	],
 	type: 'news',

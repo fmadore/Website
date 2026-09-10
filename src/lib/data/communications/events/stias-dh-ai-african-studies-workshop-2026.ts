@@ -35,12 +35,12 @@ export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {
 		longitude: 18.8602
 	},
 	participants: [
-		{ name: 'Frédérick Madore', role: 'Organizer', affiliation: 'University of Bayreuth' },
-		{ name: 'Vincent Hiribarren', role: 'Organizer', affiliation: "King's College London" },
-		{ name: 'Emmanuel Ngue Um', role: 'Organizer', affiliation: 'University of Yaoundé 1' },
+		{ name: 'Frédérick Madore', role: 'Organiser', affiliation: 'University of Bayreuth' },
+		{ name: 'Vincent Hiribarren', role: 'Organiser', affiliation: "King's College London" },
+		{ name: 'Emmanuel Ngue Um', role: 'Organiser', affiliation: 'University of Yaoundé 1' },
 		{
 			name: 'Menno van Zaanen',
-			role: 'Organizer',
+			role: 'Organiser',
 			affiliation: 'South African Centre for Digital Language Resources (SADiLaR)'
 		},
 		{ name: 'Aminata Kane', affiliation: 'Cheikh Anta Diop University' },

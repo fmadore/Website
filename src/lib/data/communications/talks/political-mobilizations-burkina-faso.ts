@@ -12,7 +12,7 @@ export const politicalMobilizationsBurkinaFaso: Communication = {
 	country: 'Canada',
 	type: 'workshop',
 	language: 'English',
-	tags: ['Political Mobilization', 'Burkina Faso', 'West Africa', 'Political Studies'],
+	tags: ['Political Mobilisation', 'Burkina Faso', 'West Africa', 'Political Studies'],
 	coordinates: {
 		latitude: 45.4231,
 		longitude: -75.6831

@@ -12,5 +12,5 @@ test('the app owns exactly one service-worker registration', async ({ page }) =>
 		const items = await navigator.serviceWorker.getRegistrations();
 		return items.map(({ scope }) => scope);
 	});
-	expect(registrations).toEqual(['http://localhost:4173/']);
+	expect(registrations).toEqual([new URL(page.url()).origin + '/']);
 });

@@ -73,7 +73,15 @@ export function getEmailLink(): string {
  * Get default SEO description
  */
 export function getDefaultDescription(): string {
-	return `Personal website of ${author.name}, ${author.position}, specializing in Islam and digital humanities in West Africa.`;
+	return `Personal website of ${author.name}, ${author.position}, specialising in Islam and digital humanities in West Africa.`;
+}
+
+/**
+ * SEO description of the CV page, composed from siteConfig so the current
+ * post never has to be retyped here.
+ */
+export function getCvDescription(): string {
+	return `Curriculum vitae of ${author.name}, ${author.position}: publications, talks, activities, teaching and fieldwork in West Africa.`;
 }
 
 /**

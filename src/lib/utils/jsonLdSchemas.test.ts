@@ -230,7 +230,7 @@ describe('createFullPersonSchema', () => {
 			'@type': 'EducationalOccupationalCredential',
 			credentialCategory: 'degree',
 			educationalLevel: 'Doctorate',
-			name: 'Ph.D. in History'
+			name: 'PhD in History'
 		});
 		// Degrees only — training and certificates are not credentials here
 		expect(full.hasCredential?.every((c) => c.credentialCategory === 'degree')).toBe(true);

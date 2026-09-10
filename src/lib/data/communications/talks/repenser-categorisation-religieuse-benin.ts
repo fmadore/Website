@@ -12,7 +12,7 @@ export const repenserCategorisationReligieuse: Communication = {
 	country: 'France',
 	type: 'workshop',
 	language: 'French',
-	tags: ['Benin', 'Religious Categorization', 'Vodun', 'West Africa', 'Religion', 'Islam'],
+	tags: ['Benin', 'Religious Categorisation', 'Vodun', 'West Africa', 'Religion', 'Islam'],
 	image: 'images/communications/paris-cite.webp',
 	heroImage: {
 		src: 'images/communications/paris-cite-hero.webp',

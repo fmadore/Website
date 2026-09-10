@@ -109,7 +109,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			authors: ['Aala Abdelgadir'],
 			year: 2021,
 			title: 'Islamic Identity and Politics in Muslim-Minority Contexts',
-			source: 'Ph.D. dissertation, Stanford University, 2021',
+			source: 'PhD dissertation, Stanford University, 2021',
 			url: 'https://purl.stanford.edu/kx926tq7022'
 		},
 		{

@@ -8,7 +8,8 @@ import { defineConfig, devices } from '@playwright/test';
  * prerendered home route under preview, so `/` would never boot the app.
  * Run with `npm run test:e2e`.
  */
-const PORT = 4173;
+// Overridable so a preview of another project on 4173 cannot be mistaken for ours.
+const PORT = Number(process.env.PLAYWRIGHT_PORT) || 4173;
 
 export default defineConfig({
 	testDir: 'tests-e2e',

@@ -18,7 +18,7 @@ export const islamBurkinaCoteIvoire: Communication = {
 		'Islam',
 		'Burkina Faso',
 		"Côte d'Ivoire",
-		'Radicalization',
+		'Radicalisation',
 		'Religious Awakening',
 		'West Africa'
 	],

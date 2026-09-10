@@ -53,7 +53,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			year: 2023,
 			title:
 				"L'impossible alternance politique au Togo de 1990 à 2020 : institutions, idées et intérêts dans la reproduction du pouvoir",
-			source: 'Ph.D. dissertation, Université de Montréal, 2023',
+			source: 'PhD dissertation, Université de Montréal, 2023',
 			url: 'http://hdl.handle.net/1866/31946'
 		},
 		{
@@ -81,7 +81,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			authors: ['Vanessa Watters Opalo'],
 			year: 2022,
 			title: 'Credit Worthy: Pentecostal Finance in West Africa',
-			source: 'Ph.D. dissertation, Northwestern University, 2022',
+			source: 'PhD dissertation, Northwestern University, 2022',
 			url: 'https://www.proquest.com/openview/10eaa1c3593da0ae30f6d83521838696/'
 		},
 		{

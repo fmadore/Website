@@ -40,7 +40,7 @@ export const hackettInterviewDigitalMedia: Publication = {
 			year: 2022,
 			title:
 				'Communicating the Gospel in a Digital Age: A Case Study of the Dioceses of Kampala and Namirembe in the Anglican Church of Uganda',
-			source: 'Ph.D. dissertation, Stellenbosch University',
+			source: 'PhD dissertation, Stellenbosch University',
 			url: 'https://scholar.sun.ac.za/handle/10019.1/126133'
 		},
 		{
@@ -48,7 +48,7 @@ export const hackettInterviewDigitalMedia: Publication = {
 			year: 2020,
 			title:
 				'Nollywood And Popular Religion: Productions Of Prosperity, Gender, And The Supernatural In Nigerian Cinema',
-			source: 'Ph.D. dissertation, University of Pennsylvania',
+			source: 'PhD dissertation, University of Pennsylvania',
 			url: 'https://repository.upenn.edu/edissertations/4030'
 		},
 		{

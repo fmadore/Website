@@ -218,6 +218,7 @@ export function createPersonSchema(): PersonSchema {
 
 /** Maps a degree-name prefix to a schema.org educationalLevel label. */
 const DEGREE_LEVELS: ReadonlyArray<readonly [prefix: string, level: string]> = [
+	['PhD', 'Doctorate'],
 	['Ph.D.', 'Doctorate'],
 	['M.A.', 'Master'],
 	['B.A.', 'Bachelor']

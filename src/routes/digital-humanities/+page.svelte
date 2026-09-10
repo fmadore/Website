@@ -160,8 +160,8 @@
 
 <SEO
 	title="Digital Humanities | Frédérick Madore"
-	description="Digital humanities projects by Frédérick Madore including the Islam West Africa Collection (IWAC), AI-assisted workflows, and data visualization."
-	keywords="digital humanities, IWAC, Islam West Africa Collection, AI, machine learning, data visualization, Frédérick Madore"
+	description="Digital humanities projects by Frédérick Madore including the Islam West Africa Collection (IWAC), AI-assisted workflows, and data visualisation."
+	keywords="digital humanities, IWAC, Islam West Africa Collection, AI, machine learning, data visualisation, Frédérick Madore"
 	canonical="https://www.frederickmadore.com/digital-humanities"
 	{breadcrumbs}
 	pageType="CollectionPage"

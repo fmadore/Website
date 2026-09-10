@@ -62,7 +62,7 @@ export const dhAiAfricanStudies: DigitalHumanitiesProject = {
 		'scoping workshop',
 		'VolkswagenStiftung',
 		'concept map',
-		'network visualization',
+		'network visualisation',
 		'bibliography',
 		'data sovereignty',
 		'digital colonialism',

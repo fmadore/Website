@@ -19,7 +19,7 @@ export const evolutionsNouvellesFormesIslamAfriqueOuest: Communication = {
 	tags: [
 		'Islam',
 		'West Africa',
-		'Radicalization',
+		'Radicalisation',
 		'CIRAM',
 		'Roundtable',
 		'Burkina Faso',

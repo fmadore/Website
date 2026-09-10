@@ -69,8 +69,8 @@ export const publicationSummaries: PublicationSummary[] = [
 		"tags": [
 			"Islam",
 			"West Africa",
-			"Religious Organizations",
-			"Umbrella Organizations",
+			"Religious Organisations",
+			"Umbrella Organisations",
 			"Burkina Faso",
 			"Togo",
 			"Benin",
@@ -454,7 +454,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Côte d'Ivoire",
 			"Hajj",
 			"Muslim Communities",
-			"Religious Organization",
+			"Religious Organisation",
 			"Pilgrimage",
 			"State-Religion Relations",
 			"Islam",
@@ -737,7 +737,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Humanitarian Assistance",
 			"Islamic Leadership",
 			"Religious Entrepreneurship",
-			"Transnational Organizations",
+			"Transnational Organisations",
 			"Islam",
 			"West Africa"
 		],
@@ -1544,7 +1544,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Benin",
 			"Vodun",
 			"Christianity",
-			"Religious Categorization",
+			"Religious Categorisation",
 			"West Africa",
 			"Islam"
 		],
@@ -1622,7 +1622,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"tags": [
 			"Côte d'Ivoire",
 			"Salafism",
-			"Radicalization",
+			"Radicalisation",
 			"Civic Engagement",
 			"Islam",
 			"Religious Movements",
@@ -1656,7 +1656,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"tags": [
 			"Salafism",
 			"Côte d'Ivoire",
-			"Radicalization",
+			"Radicalisation",
 			"Civic Engagement",
 			"Islam",
 			"West Africa"

@@ -22,7 +22,7 @@ export const hajjOrganizationStateCoteDIvoire: Communication = {
 		'Hajj',
 		'State-Religion Relations',
 		"Côte d'Ivoire",
-		'Muslim Organizations',
+		'Muslim Organisations',
 		'Religious Authority',
 		'Islam',
 		'West Africa'

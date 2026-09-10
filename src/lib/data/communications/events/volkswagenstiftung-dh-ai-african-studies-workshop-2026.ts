@@ -33,12 +33,12 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 	participants: [
 		{
 			name: 'Frédérick Madore',
-			role: 'Co-organizer',
+			role: 'Co-organiser',
 			affiliation: 'University of Bayreuth'
 		},
 		{
 			name: 'Vincent Hiribarren',
-			role: 'Co-organizer',
+			role: 'Co-organiser',
 			affiliation: "King's College London"
 		},
 		{

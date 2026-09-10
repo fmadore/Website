@@ -17,9 +17,9 @@ export const etablirFaitiereIslamique: Communication = {
 	tags: [
 		'Islam',
 		'West Africa',
-		'Religious Organizations',
+		'Religious Organisations',
 		'Francophone',
-		'Umbrella Organizations',
+		'Umbrella Organisations',
 		'Burkina Faso',
 		'Togo',
 		'Benin',

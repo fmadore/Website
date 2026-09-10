@@ -20,7 +20,7 @@ export const amira: DigitalHumanitiesProject = {
 		<ul>
 			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRE-theme" target="_blank" rel="noopener noreferrer">DRE-theme</a></strong> — a custom Omeka S theme. A "Scholarly Modernism" design system in the Cluster's Uni-Grün identity, built on OKLCH design tokens, with first-class light and dark modes.</li>
 			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRESearch" target="_blank" rel="noopener noreferrer">DRE Search</a></strong> — a Typesense-backed search layer. Full-text search with autocomplete and faceted filtering across ten corpora (research items, projects, publications, people, research sections, organisations, genres, languages, locations, and subjects &amp; tags), plus a single federated search bar that queries all of them at once and groups suggestions by type.</li>
-			<li><strong><a href="https://github.com/fmadore/ResourceVisualizations" target="_blank" rel="noopener noreferrer">Resource Visualizations</a></strong> — an Omeka S module that adds interactive charts, maps, and network graphs (ECharts and MapLibre GL) to every resource page and to collection-wide overviews. These are the same visualisations developed for the Cluster's research dashboard, ported to Omeka S.</li>
+			<li><strong><a href="https://github.com/fmadore/ResourceVisualizations" target="_blank" rel="noopener noreferrer">Resource Visualisations</a></strong> — an Omeka S module that adds interactive charts, maps, and network graphs (ECharts and MapLibre GL) to every resource page and to collection-wide overviews. These are the same visualisations developed for the Cluster's research dashboard, ported to Omeka S.</li>
 		</ul>
 
 		<h2>Querying AMIRA from an AI assistant</h2>
@@ -86,7 +86,7 @@ export const amira: DigitalHumanitiesProject = {
 		'MapLibre GL',
 		'MongoDB',
 		'Model Context Protocol',
-		'Data visualization',
+		'Data visualisation',
 		'Network graphs'
 	]
 };

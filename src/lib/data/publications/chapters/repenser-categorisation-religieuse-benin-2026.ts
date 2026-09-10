@@ -23,7 +23,7 @@ export const repenserCategorisationReligieuseBenin2026: Publication = {
 		'Benin',
 		'Vodun',
 		'Christianity',
-		'Religious Categorization',
+		'Religious Categorisation',
 		'West Africa',
 		'Islam'
 	],

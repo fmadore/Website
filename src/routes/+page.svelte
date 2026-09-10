@@ -20,7 +20,7 @@
 </script>
 
 <SEO
-	title="{author.name} | {author.kicker}"
+	title="{author.name} | {author.positionShort}"
 	description="Frédérick Madore, historian of Islam in francophone West Africa and Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot;, University of Bayreuth. He builds open digital collections with Omeka S and AI, including the Islam West Africa Collection (IWAC) and AMIRA."
 	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Artificial Intelligence, Omeka S, Islam West Africa Collection, IWAC, AMIRA, Africa Multiple Interactive Research Atlas, data curation, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
 	canonical="https://www.frederickmadore.com"

@@ -1543,4 +1543,14 @@ offline client-side navigation into an unvisited record shows `Error · Offline`
 the record on reconnect. Unit 863 passed (51 files, three new); e2e 35 passed, 1 skipped, 52 s;
 bundle 729 of 850 KiB on the heaviest route, prerender 196 of 196.
 
+**2026-09-10 — follow-up to 3.1 (owner's ruling, no skill).** The owner ruled British English for
+the data files too, abstracts excepted: project descriptions, tags (`Religious Organisation`,
+`Radicalisation`, `Data Visualisation`), skills, keywords, translated course and award titles,
+participant roles and degree names now read analyse / organisation / visualisation / Honour Roll /
+PhD; abstracts, published titles, citing works, reviewers' quotes, proper nouns (Center for African
+Studies, ADHO) and schema.org vocabulary stay verbatim, URLs and ids untouched, the reference index
+and summaries regenerated. `siteConfig`'s four role strings are three with distinct jobs
+(`position`, `positionShort` = the masthead epithet, `jobTitle`; `tagline` is a standfirst, not a
+role) and the CV's SEO description is composed from `author.position` instead of naming ZMO.
+
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

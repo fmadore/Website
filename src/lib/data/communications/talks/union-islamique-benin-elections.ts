@@ -17,7 +17,7 @@ export const unionIslamiqueBenin: Communication = {
 		'Benin',
 		'Islamic Union',
 		'Elections',
-		'Religious Organizations',
+		'Religious Organisations',
 		'Politics',
 		'Islam',
 		'West Africa'

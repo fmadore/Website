@@ -23,7 +23,7 @@ export const salafismCoteDIvoire: Publication = {
 	tags: [
 		"Côte d'Ivoire",
 		'Salafism',
-		'Radicalization',
+		'Radicalisation',
 		'Civic Engagement',
 		'Islam',
 		'Religious Movements',
@@ -143,7 +143,7 @@ export const salafismCoteDIvoire: Publication = {
 			authors: ['Aala Abdelgadir'],
 			year: 2021,
 			title: 'Islamic Identity and Politics in Muslim-Minority Contexts',
-			source: 'Ph.D. dissertation, Stanford University, 2021',
+			source: 'PhD dissertation, Stanford University, 2021',
 			url: 'https://purl.stanford.edu/kx926tq7022'
 		},
 		{
@@ -158,7 +158,7 @@ export const salafismCoteDIvoire: Publication = {
 			year: 2023,
 			title:
 				"Analyse des dynamiques religieuses à l'Université Abdou Moumouni de Niamey (UAM) à travers les interactions entre les étudiants salafis et pentecôtistes",
-			source: 'Ph.D. dissertation, Université Abdou Moumouni, 2023'
+			source: 'PhD dissertation, Université Abdou Moumouni, 2023'
 		},
 		{
 			authors: ['International Crisis Group'],

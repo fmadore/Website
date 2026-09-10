@@ -23,7 +23,7 @@ export const hadjCoteDIvoire: Publication = {
 		"Côte d'Ivoire",
 		'Hajj',
 		'Muslim Communities',
-		'Religious Organization',
+		'Religious Organisation',
 		'Pilgrimage',
 		'State-Religion Relations',
 		'Islam',

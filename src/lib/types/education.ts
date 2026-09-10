@@ -1,7 +1,7 @@
 // src/lib/types/education.ts
 export interface Education {
 	id: string; // Unique identifier (e.g., 'phd-pol-sci-uo')
-	degree: string; // e.g., 'Ph.D. in Political Science' or 'Digital Humanities Winter School'
+	degree: string; // e.g., 'PhD in Political Science' or 'Digital Humanities Winter School'
 	institution: string; // e.g., 'Université Laval' or 'Hebrew University'
 	institutionUrl?: string; // Optional institution homepage (used for JSON-LD alumniOf)
 	location?: string; // e.g., 'Québec City, QC, Canada' or 'Mount Scopus Campus (Israel)'

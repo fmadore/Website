@@ -18,8 +18,8 @@ export const ambitionFederatriceFaitieresIslamiques2026: Publication = {
 	tags: [
 		'Islam',
 		'West Africa',
-		'Religious Organizations',
-		'Umbrella Organizations',
+		'Religious Organisations',
+		'Umbrella Organisations',
 		'Burkina Faso',
 		'Togo',
 		'Benin',
