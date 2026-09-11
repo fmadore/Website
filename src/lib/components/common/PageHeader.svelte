@@ -13,6 +13,7 @@
 		typeBadgeText = undefined, // e.g., "Journal Article", "Conference Paper"
 		authors = undefined,
 		editors = undefined, // For publications
+		tier = 'record',
 		additionalClasses = ''
 	}: {
 		title: string;
@@ -23,14 +24,31 @@
 		typeBadgeText?: string | undefined;
 		authors?: string[] | undefined;
 		editors?: string | string[] | undefined;
+		/**
+		 * Which masthead tier this page opens on.
+		 *
+		 * `record` (the default) is the detail-page head every existing consumer
+		 * gets: the 4xl title on the wide display axis, closed by a hairline box
+		 * edge. `index` is the section-index masthead — the shared
+		 * `.index-masthead` rule and `.index-title` of `ink-signal.css`, the same
+		 * one /publications, /activities and /digital-humanities set directly. A
+		 * section index and its own sub-pages are meant to fork here: the rule
+		 * above says which of the two a reader is on before they read a word.
+		 */
+		tier?: 'record' | 'index';
 		additionalClasses?: string;
 	} = $props();
 
 	// The masthead title — the one string every detail route funnels through here.
 	const displayTitle = $derived(typesetQuotes(title));
+	const isIndex = $derived(tier === 'index');
 </script>
 
-<header class="page-header mb-8 {additionalClasses}">
+<header
+	class="page-header mb-8 {additionalClasses}"
+	class:page-header--index={isIndex}
+	class:index-masthead={isIndex}
+>
 	{#if backLinkHref}
 		<!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic path resolved at runtime -->
 		<a href={resolve(`/${backLinkHref}` as any)} class="back-link mb-4 inline-block"
@@ -47,7 +65,11 @@
 			</p>
 		{/if}
 
-		<h1 class="page-title">{displayTitle}</h1>
+		<!-- One title, two tiers. The classes are exclusive rather than layered:
+		     a scoped `.page-title` selector outranks the global `.index-title`
+		     by a class, so keeping both would silently leave the index masthead
+		     at the record tier's size. -->
+		<h1 class:page-title={!isIndex} class:index-title={isIndex}>{displayTitle}</h1>
 
 		{#if authors && authors.length > 0}
 			<div class="authors">
@@ -83,6 +105,17 @@
 		padding-bottom: var(--space-lg);
 		border-bottom: var(--border-width-thin) solid var(--color-border);
 		margin-bottom: var(--space-xl);
+	}
+
+	/* The section-index tier. The masthead rule above the header — drawn by the
+	 * global `.index-masthead` — is what closes this module off from the page
+	 * above it, so the box edge underneath goes: two boundaries around one head
+	 * is the templated-CMS "title in a panel" the record tier already retired,
+	 * and the rule is the heavier, more legible of the two. The record tier is
+	 * untouched; the ten pages that never opt in look exactly as they did. */
+	.page-header--index {
+		padding-bottom: 0;
+		border-bottom: 0;
 	}
 
 	.header-content {

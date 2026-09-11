@@ -1,58 +1,24 @@
 <script lang="ts">
 	import type { Communication } from '$lib/types/communication';
-	import { base, resolve } from '$app/paths';
-	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
+	import { resolve } from '$app/paths';
 	import { truncateAbstract } from '$lib/utils/textUtils';
-	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
+	import { formatCommunicationCitation } from '$lib/utils/citationFormatter';
 	import { titleLangAttr } from '$lib/utils/languageUtils';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { COMMUNICATION_TYPE_LIST_LABELS } from '$lib/utils/typeUtils';
-	import TagList from '$lib/components/molecules/TagList.svelte';
 	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
 	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
-	import Icon from '@iconify/svelte';
-	// Entity-card styles (relocated from the global app.css so they only load on
-	// pages that render publication/communication list items).
-	import '$styles/components/entity-cards.css';
 
 	interface Props {
 		communication: Communication;
+		/** Position in the list, used only to load the first plates eagerly. */
 		index?: number;
-		/**
-		 * Render this item as the editorial "lead" of a featured block:
-		 * no card chrome, serif display title, larger image, longer-form
-		 * abstract treatment. Mirrors the publications-list lead-story
-		 * pattern; styled by `.entity-card--editorial` in entity-cards.css.
-		 */
-		editorial?: boolean;
-		/**
-		 * Render as a quiet list row (no card chrome, hairline separator) —
-		 * used by the long main lists so cards stay reserved for featured
-		 * material. Styled by `.entity-card--row` in entity-cards.css.
-		 */
-		row?: boolean;
-		/**
-		 * Render as a typeset bibliography entry (Ink + Signal), matching the
-		 * /publications finding-aid list: a hanging year column (owned by the
-		 * parent), a square cover plate, a mono kind eyebrow, a serif title, the
-		 * venue line, and a right-aligned mono action column.
-		 */
-		bibliography?: boolean;
-		/** In bibliography mode: the hanging year, printed once per year-group. */
+		/** The hanging year, printed once per year-group by the parent. */
 		yearLabel?: string | number | null;
-		/** In bibliography mode: mark this entry as the featured lead. */
+		/** Mark this entry as the featured lead of the list. */
 		featured?: boolean;
 	}
 
-	let {
-		communication,
-		index,
-		editorial = false,
-		row = false,
-		bibliography = false,
-		yearLabel = null,
-		featured = false
-	}: Props = $props();
+	let { communication, index, yearLabel = null, featured = false }: Props = $props();
 
 	// Optimize loading for above-the-fold images (first 3 items)
 	const imageLoading = $derived((index ?? 0) < 3 ? 'eager' : 'lazy');
@@ -80,21 +46,8 @@
 	// output, so the venue line arrives in the display register already).
 	const citationDetails = $derived(formatCommunicationCitation(communication));
 
-	// The card branch renders the title and abstract directly; the bibliography
-	// branch hands them to BibliographyRow, which typesets what it prints.
-	const displayTitle = $derived(typesetQuotes(communication?.title) || 'Untitled talk');
-	const displayAbstract = $derived(
-		communication?.abstract ? typesetQuotes(truncateAbstract(communication.abstract)) : ''
-	);
-
-	// ── Bibliography mode (Ink + Signal finding-aid row, shared with publications) ──
 	const detailHref = $derived(resolve(`/communications/${communication.id}`));
 
-	// Card cover: the plate column is capped at 12rem (9rem under --sm-down),
-	// so the 400w derivative covers every pixel density; `sizes` says so.
-	const CARD_COVER_SIZES = '(max-width: 640px) 144px, 192px';
-	const coverSrc = $derived(resolveImagePath(communication.image, base));
-	const coverSrcset = $derived(buildSrcset(coverSrc));
 	const kindLabel = $derived(
 		COMMUNICATION_TYPE_LIST_LABELS[communication.type ?? 'conference'] ?? 'Academic event'
 	);
@@ -104,15 +57,6 @@
 	const bibStandfirst = $derived(
 		communication.abstract ? truncateAbstract(communication.abstract, 180) : ''
 	);
-	/** Fallback label for an unlabelled address: its host, never "Link 2". */
-	function hostLabel(url: string): string {
-		try {
-			return new URL(url).hostname.replace(/^www\./, '');
-		} catch {
-			return url;
-		}
-	}
-
 	// Right-aligned action column: primary material (slides/other), an optional
 	// DOI; BibliographyRow appends the internal "Details" link.
 	const bibActions = $derived.by(() => {
@@ -133,144 +77,22 @@
 	});
 </script>
 
-{#if bibliography}
-	<!-- Square plate (conference logos/seals, not portrait covers) via plateAspect. -->
-	<BibliographyRow
-		href={detailHref}
-		{kindLabel}
-		languageNote={languageDisplay}
-		title={communication.title}
-		titleLang={titleLangAttr(communication.language)}
-		byline={venueLine}
-		standfirst={bibStandfirst}
-		image={communication.image}
-		imageAlt=""
-		imageWidth={200}
-		imageHeight={200}
-		plateAspect="1 / 1"
-		loading={imageLoading}
-		actions={bibActions}
-		{yearLabel}
-		{featured}
-	/>
-{:else}
-	<!-- li, not article: this branch renders as a direct child of the
-	     <ul class="entity-list"> in UpcomingCommunications, and a ul may only
-	     contain li children. -->
-	<li class="entity-list-item" class:editorial>
-		<div class="entity-card" class:entity-card--editorial={editorial} class:entity-card--row={row}>
-			<div class="entity-grid">
-				{#if communication?.image}
-					<div class="entity-image-container">
-						<!-- The plate is a second route to the page the headline links; it
-						     stays clickable for the mouse and leaves the tab order and the
-						     accessibility tree, so the destination is announced once. -->
-						<a
-							href={resolve(`/communications/${communication.id}`)}
-							data-sveltekit-preload-code="tap"
-							tabindex="-1"
-							aria-hidden="true"
-						>
-							<img
-								src={coverSrc}
-								srcset={coverSrcset}
-								sizes={coverSrcset ? CARD_COVER_SIZES : undefined}
-								alt=""
-								class="entity-cover-image"
-								width="200"
-								height="280"
-								loading={imageLoading}
-								decoding="async"
-							/>
-						</a>
-					</div>
-				{/if}
-
-				<div class="entity-content">
-					<div class="entity-meta">
-						<span class="entity-type"
-							>{COMMUNICATION_TYPE_LIST_LABELS[communication?.type || 'conference'] ??
-								'Academic event'}</span
-						>
-						{#if languageDisplay}
-							<span class="entity-language">({languageDisplay})</span>
-						{/if}
-					</div>
-
-					<!-- h2: these cards sit under the page h1 with only a non-heading
-					     eyebrow above them, so h3 would skip a level. -->
-					<h2 class="entity-title">
-						<a
-							href={resolve(`/communications/${communication.id}`)}
-							class="entity-title-link"
-							data-sveltekit-preload-code="tap"
-						>
-							{displayTitle}
-						</a>
-					</h2>
-					<div class="entity-details">
-						{#if communication?.authors && communication.authors.length > 0}
-							<div>
-								{formatAuthorList(communication.authors)}
-							</div>
-						{/if}
-
-						{#if citationDetails}
-							<div>{citationDetails}</div>
-						{/if}
-					</div>
-
-					{#if displayAbstract}
-						<div class="entity-abstract">
-							{displayAbstract}
-						</div>
-					{/if}
-
-					{#if communication?.tags && communication.tags.length > 0}
-						<div class="entity-tags">
-							<TagList
-								tags={communication.tags}
-								baseUrl="/conference-activity?tag="
-								showTitle={false}
-							/>
-						</div>
-					{/if}
-
-					{#if (communication?.additionalUrls && communication.additionalUrls.length > 0) || communication?.doi}
-						<div class="entity-links">
-							{#if communication?.doi}
-								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-								<a
-									href={`https://doi.org/${communication.doi}`}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="entity-link-btn btn btn-outline-primary btn-sm"
-								>
-									<Icon icon="academicons:doi" aria-hidden="true" />
-									DOI
-									<span class="sr-only"> (opens in new tab)</span></a
-								>
-								<!-- eslint-enable svelte/no-navigation-without-resolve -->
-							{/if}
-							{#if communication?.additionalUrls}
-								{#each communication.additionalUrls as url (url.url)}
-									<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-									<a
-										href={url.url}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="entity-link-btn btn btn-outline-primary btn-sm"
-									>
-										{url.label || hostLabel(url.url)}
-										<span class="sr-only"> (opens in new tab)</span></a
-									>
-									<!-- eslint-enable svelte/no-navigation-without-resolve -->
-								{/each}
-							{/if}
-						</div>
-					{/if}
-				</div>
-			</div>
-		</div>
-	</li>
-{/if}
+<!-- Square plate (conference logos/seals, not portrait covers) via plateAspect. -->
+<BibliographyRow
+	href={detailHref}
+	{kindLabel}
+	languageNote={languageDisplay}
+	title={communication.title}
+	titleLang={titleLangAttr(communication.language)}
+	byline={venueLine}
+	standfirst={bibStandfirst}
+	image={communication.image}
+	imageAlt=""
+	imageWidth={200}
+	imageHeight={200}
+	plateAspect="1 / 1"
+	loading={imageLoading}
+	actions={bibActions}
+	{yearLabel}
+	{featured}
+/>

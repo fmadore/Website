@@ -71,6 +71,17 @@ accent, which is correct: a repository is not "the current thing".
 	// A bare URL is the project's own address, so the button names the errand;
 	// an authored label already names the destination, so it is kept.
 	const ctaLabel = $derived(ctaLink?.label ? typesetQuotes(ctaLink.label) : 'Open project');
+
+	/**
+	 * A record whose whole address list *is* the button below it prints no
+	 * ledger. Six of the sixteen projects have exactly one public address, and
+	 * the rail set it twice — a one-row `Addresses` ledger with a single link,
+	 * then the same URL as the accent button under it. A ledger of one row that
+	 * restates its own call to action is apparatus about nothing.
+	 */
+	const ledgerIsTheCta = $derived(
+		Boolean(ctaLink) && linkGroups.length === 1 && (linkGroups[0]?.links.length ?? 0) === 1
+	);
 </script>
 
 {#if plateSrc}
@@ -92,7 +103,7 @@ accent, which is correct: a repository is not "the current thing".
 	</figure>
 {/if}
 
-{#if linkGroups.length > 0}
+{#if linkGroups.length > 0 && !ledgerIsTheCta}
 	<div>
 		<h2 class="rail-label">Addresses</h2>
 		<dl class="meta-ledger">

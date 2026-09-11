@@ -228,7 +228,7 @@
 
 <div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters, search }}>
 	<!-- ═══ INDEX HERO ═══ -->
-	<header class="index-hero rule-masthead">
+	<header class="index-hero index-masthead">
 		<div class="index-hero-lede">
 			<p class="eyebrow index-eyebrow">
 				Index · {totalEntries} entries · {minYear}–{maxYear}
@@ -251,10 +251,11 @@
 					></span>
 				{/each}
 			</div>
+			<!-- The legend names what the bars encode and nothing else: the
+			     eyebrow above already prints the span, and the strip reprinted
+			     its two end years under it. -->
 			<div class="year-bars-legend">
-				<span>{minYear}</span>
 				<span>Entries by year</span>
-				<span>{maxYear}</span>
 			</div>
 		</div>
 	</header>
@@ -323,8 +324,12 @@
 		{#if shouldShowUpcoming}
 			<div class="record-head">
 				<h2 class="record-head-title">The record</h2>
+				<!-- Both figures on the screen, reconciled: the pager below counts
+				     the past record, the hero and the facet summary count the whole
+				     index, and a reader who saw 74 against 79 had nothing to tell
+				     them where the other five went. -->
 				<span class="record-head-count"
-					>{matchCount} past · {upcomingCommunications.length} upcoming</span
+					>{matchCount} of {totalEntries} entries · {upcomingCommunications.length} forthcoming above</span
 				>
 			</div>
 		{:else if !anyNarrowing}
@@ -340,13 +345,7 @@
 			<ol class="bib-list">
 				{#each bibRows as { comm, yearLabel, isLead }, i (comm.id)}
 					<li class="bib-item" class:bib-item--lead={isLead}>
-						<CommunicationItem
-							communication={comm}
-							bibliography
-							{yearLabel}
-							featured={isLead}
-							index={i}
-						/>
+						<CommunicationItem communication={comm} {yearLabel} featured={isLead} index={i} />
 					</li>
 				{/each}
 			</ol>

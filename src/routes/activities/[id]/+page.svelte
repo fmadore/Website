@@ -243,7 +243,6 @@
 
 <RecordLayout
 	section={{ label: 'Activities', href: `${base}/activities` }}
-	breadcrumbCurrent={kindLabel}
 	{eyebrow}
 	title={displayTitle}
 	{deck}

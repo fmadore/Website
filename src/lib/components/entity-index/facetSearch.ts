@@ -73,18 +73,34 @@ export function matchFacetOptions(
 }
 
 /**
- * The first `limit` options, plus any selected value that the cut would have
- * hidden (in the option order, after the head). Without this a deep-linked or
- * combobox-picked rarity would filter the list while being invisible — active
- * with no way to switch it off.
+ * Does a facet of `total` values need the combobox behind its printed head?
+ *
+ * The rule, in one place, because it is two decisions that must agree: how many
+ * rows `visibleFacetOptions()` prints, and whether the component renders a
+ * `FacetCombobox` under them. A facet only one value over the limit is printed
+ * whole — hiding a single row behind a control costs the reader more than the
+ * row costs the page, and it was exactly that case (Countries, 9 values over a
+ * limit of 8) that grew a second long-facet idiom beside this one.
+ */
+export function needsFacetCombobox(total: number, limit: number): boolean {
+	return total > limit + 1;
+}
+
+/**
+ * The options to print: the whole list when it is at most one value over the
+ * limit (see `needsFacetCombobox`), otherwise the first `limit` plus any
+ * selected value that the cut would have hidden (in the option order, after the
+ * head). Without that merge a deep-linked or combobox-picked rarity would
+ * filter the list while being invisible — active with no way to switch it off.
  */
 export function visibleFacetOptions(
 	options: readonly string[],
 	limit: number,
 	selected: readonly string[]
 ): string[] {
+	if (!needsFacetCombobox(options.length, limit)) return [...options];
 	const head = options.slice(0, limit);
-	if (selected.length === 0 || options.length <= limit) return head;
+	if (selected.length === 0) return head;
 	const hidden = options.slice(limit).filter((option) => selected.includes(option));
 	return hidden.length > 0 ? [...head, ...hidden] : head;
 }

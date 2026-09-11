@@ -132,6 +132,10 @@
 	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 45%, transparent);
 
 	/* ===== ACADEMIC-SPECIFIC COLORS ===== */
+	/* Kept as a named alias of the accent. It is no longer what an inline
+	 * citation is set in: a citation is a prose link with a softer rule, so it
+	 * takes ink text and pine only on the underline and on hover (see the
+	 * prose-link idiom in `typography.css` and `ReferenceLink.svelte`). */
 	--color-citation: var(--color-accent);
 
 	--color-code-bg: var(--sys-color-paper-200);

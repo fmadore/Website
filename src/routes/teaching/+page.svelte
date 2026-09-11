@@ -82,7 +82,22 @@
 
 <div class="container py-8">
 	<div class="max-w-6xl mx-auto">
-		<PageHeader title="Teaching" />
+		<!-- The section masthead, on the index tier: /teaching is a sibling of
+		     /research and /publications and opens on the same rule and the same
+		     display size. The eyebrow states what the page holds, counted off
+		     the dataset the ledger below renders.
+
+		     No data ornament beside the standfirst, unlike /research: a course
+		     list of this size has no honest distribution to draw, and inventing
+		     one is exactly the decoration the brief forbids. The empty half of
+		     the hero closes instead — `.page-intro` already caps the standfirst
+		     at `--measure-standfirst`, so the measure is the module's width. -->
+		<PageHeader
+			tier="index"
+			title="Teaching"
+			typeBadgeText="Courses"
+			date="{courses.length} entries"
+		/>
 
 		<PageIntro>
 			Teaching interests: African History (pre-modern and modern periods), Islam in sub-Saharan
@@ -99,7 +114,7 @@
 				{#if courses.length > 0}
 					<span class="dateline"
 						>{courses.length}
-						{courses.length === 1 ? 'course' : 'courses'} · {courseSpan}</span
+						{courses.length === 1 ? 'entry' : 'entries'} · {courseSpan}</span
 					>
 				{/if}
 			</div>

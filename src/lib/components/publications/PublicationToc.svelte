@@ -6,6 +6,27 @@ two-column ledger of numbered entries. Only books and special issues that
 actually carry a tableOfContents render anything — everything else emits
 nothing.
 -->
+<script module lang="ts">
+	import type { Publication as PublicationType } from '$lib/types';
+
+	/**
+	 * Does this record print a contents section?
+	 *
+	 * Exported because the route needs the same answer to decide whether the
+	 * reading column has anything in it at all, and it used to answer it with a
+	 * second copy of this condition. Two copies of a gate are two gates: the day
+	 * one of them learns about a new type and the other does not, the page opens
+	 * an empty reading interval under the masthead — the exact failure the
+	 * column's `hasDocument` test exists to prevent.
+	 */
+	export function hasToc(publication: PublicationType): boolean {
+		return (
+			(publication.type === 'book' || publication.type === 'special-issue') &&
+			(publication.tableOfContents?.length ?? 0) > 0
+		);
+	}
+</script>
+
 <script lang="ts">
 	import type { Publication } from '$lib/types';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
@@ -17,13 +38,7 @@ nothing.
 	let { publication }: Props = $props();
 
 	// Table of contents — only for edited volumes / special issues that carry it.
-	const tocEntries = $derived(
-		(publication.type === 'book' || publication.type === 'special-issue') &&
-			publication.tableOfContents &&
-			publication.tableOfContents.length > 0
-			? publication.tableOfContents
-			: []
-	);
+	const tocEntries = $derived(hasToc(publication) ? (publication.tableOfContents ?? []) : []);
 
 	// "A, B and C" — same casting as the page byline.
 	function formatNameList(names: string[] | undefined): string {

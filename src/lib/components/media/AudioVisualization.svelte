@@ -69,11 +69,13 @@
 		opacity: 0.75;
 	}
 
-	/* Flat ink plate with a hairline rule — no glass, no shadow. */
+	/* Flat ink plate with a hairline rule — no glass, no shadow. The glyph is
+	 * quiet ink: a media placeholder is a permanent fixture of the record, not
+	 * the current thing. Pine arrives on hover, with the border. */
 	.audio-icon {
 		position: relative;
 		margin-bottom: var(--space-2);
-		color: var(--color-accent);
+		color: var(--color-text-muted);
 		background: var(--color-surface);
 		padding: var(--space-2);
 		border: var(--border-width-thin) solid var(--color-border);
@@ -83,7 +85,7 @@
 	}
 
 	.audio-icon:hover {
-		color: var(--color-accent-dark);
+		color: var(--color-accent);
 		border-color: var(--color-accent);
 	}
 
@@ -103,17 +105,11 @@
 		margin-right: auto;
 	}
 
-	.audio-description a {
-		color: var(--color-primary);
-		text-decoration: underline;
-		font-weight: var(--font-weight-semibold);
-		transition: color var(--duration-fast) var(--ease-out);
-	}
-
-	.audio-description a:hover {
-		color: var(--color-accent);
-		text-decoration: underline;
-	}
+	/* The description is running prose, so `.audio-description` is one of the
+	 * containers that opt into the prose-link idiom in `base/typography.css`:
+	 * ink text, a 1px pine underline, pine and 2px on hover or focus. The
+	 * semibold weight this used to add was a second emphasis on top of a rule
+	 * that already says "link". */
 
 	/* Dark mode — warm microfilm negative: cream type on near-black ground. */
 	:global(html.dark) .audio-visualization {

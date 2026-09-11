@@ -90,12 +90,12 @@ its share — so the step is a convenience, not the only route.
 
 		<!-- HERO — the index masthead, scoped: mono log eyebrow with this year's
 		     tally, Archivo masthead, serif standfirst. -->
-		<header class="activities-hero">
+		<header class="activities-hero index-masthead">
 			<p class="eyebrow activities-hero-eyebrow">
 				Log · {filteredActivities.length}
 				{filteredActivities.length === 1 ? 'entry' : 'entries'} · {year}
 			</p>
-			<h1 class="activities-hero-title">Activities in {year}</h1>
+			<h1 class="index-title">Activities in {year}</h1>
 			<p class="standfirst">Every entry filed under {year}, most recent first.</p>
 		</header>
 
@@ -122,7 +122,7 @@ its share — so the step is a convenience, not the only route.
 							The log runs {allYears[allYears.length - 1]}–{allYears[0]}.
 						</p>
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-						<a class="log-empty-clear" href={resolve('/activities')}>
+						<a class="mono-action" href={resolve('/activities')}>
 							All activities <span aria-hidden="true">→</span>
 						</a>
 					</div>

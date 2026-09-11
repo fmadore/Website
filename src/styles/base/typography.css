@@ -159,9 +159,28 @@ a:hover {
 }
 
 /*
- * Prose / content links carry the pine underline automatically.
- * Outside prose, opt in with `.link-animated` for a quiet hover-to-accent
- * response WITHOUT the underline (card/ledger titles, inline apparatus).
+ * THE PROSE LINK — ink text, a 1px pine underline at a 3px offset; hover and
+ * focus-visible warm the text to pine and thicken the rule to 2px. It is the
+ * one place pine marks a live cross-reference rather than a current state.
+ *
+ * The idiom is OPT-IN BY CONTAINER, and that is the whole point. It used to
+ * carry bare `p a` and `li a` arms, which at 0,3,2 outranked every component
+ * that had written `text-decoration: none` for its own links — so 209 of the
+ * site's 246 pine underlines landed outside running prose: chips, bibliography
+ * titles, plate links, breadcrumbs, ledger-row anchors whose whole row is the
+ * anchor (the mono date key came out underlined), related-item actions, review
+ * attributions, "cited by" rows. Components had stated their intent and lost
+ * silently. A container list cannot leak that way: a paragraph is not prose
+ * because it is a `<p>`, it is prose because it sits in a reading column.
+ *
+ * The list is every container on the site that holds running prose with links,
+ * verified by sweeping all 196 sitemap routes for pine-underlined anchors and
+ * grouping them by nearest classed ancestor. Apparatus outside these containers
+ * owns its own links. `.no-underline` remains the opt-out for an apparatus link
+ * that happens to sit inside one (a chip in a prose column).
+ *
+ * `:is()` takes the specificity of its most specific argument, so the selector
+ * still weighs 0,4,1 — exactly what the `.prose` arm weighed before.
  *
  * The masthead is exempt by ANCESTRY, not by class name. Every chrome link —
  * desktop nav, its dropdowns, the mobile panel and its sub-index — lives
@@ -171,10 +190,19 @@ a:hover {
  * when the mobile panel was built. `:not(.site-header *)` carries the same
  * 0,1,0 as the class exemption it replaces, so nothing else shifts.
  */
-.prose a:not(.btn):not(.no-underline):not(.site-header *),
-.content-body a:not(.btn):not(.no-underline):not(.site-header *),
-p a:not(.btn):not(.no-underline):not(.site-header *),
-li a:not(.btn):not(.no-underline):not(.site-header *) {
+:is(
+		.prose,
+		.content-body,
+		.page-intro,
+		.record-prose,
+		.project-prose,
+		.abstract,
+		.apparatus-text,
+		.audio-description,
+		.embed-desc,
+		.guide-note
+	)
+	a:not(.btn):not(.no-underline):not(.site-header *) {
 	text-decoration: underline;
 	text-decoration-color: var(--color-accent);
 	text-decoration-thickness: 1px;
@@ -184,16 +212,41 @@ li a:not(.btn):not(.no-underline):not(.site-header *) {
 		text-decoration-thickness var(--duration-fast) var(--ease-out);
 }
 
-.prose a:not(.btn):not(.no-underline):not(.site-header *):hover,
-.content-body a:not(.btn):not(.no-underline):not(.site-header *):hover,
-p a:not(.btn):not(.no-underline):not(.site-header *):hover,
-li a:not(.btn):not(.no-underline):not(.site-header *):hover,
-.prose a:not(.btn):not(.no-underline):not(.site-header *):focus-visible,
-.content-body a:not(.btn):not(.no-underline):not(.site-header *):focus-visible,
-p a:not(.btn):not(.no-underline):not(.site-header *):focus-visible,
-li a:not(.btn):not(.no-underline):not(.site-header *):focus-visible {
+:is(
+		.prose,
+		.content-body,
+		.page-intro,
+		.record-prose,
+		.project-prose,
+		.abstract,
+		.apparatus-text,
+		.audio-description,
+		.embed-desc,
+		.guide-note
+	)
+	a:not(.btn):not(.no-underline):not(.site-header *):is(:hover, :focus-visible) {
 	color: var(--color-accent);
 	text-decoration-thickness: 2px;
+}
+
+/* The idiom carries its own reduced-motion guard now that it is the single
+ * owner; the component copies that used to carry one are gone. */
+@media (prefers-reduced-motion: reduce) {
+	:is(
+			.prose,
+			.content-body,
+			.page-intro,
+			.record-prose,
+			.project-prose,
+			.abstract,
+			.apparatus-text,
+			.audio-description,
+			.embed-desc,
+			.guide-note
+		)
+		a:not(.btn):not(.no-underline):not(.site-header *) {
+		transition: none;
+	}
 }
 
 /* Chrome links (card/ledger titles, inline apparatus) — quiet hover to accent. */
@@ -209,7 +262,6 @@ li a:not(.btn):not(.no-underline):not(.site-header *):focus-visible {
 
 /* Special cases without underlines */
 .card a,
-.entity-card a,
 .nav-link,
 .btn,
 .header-logo a {
@@ -444,14 +496,23 @@ small {
 	}
 }
 
-/* Academic-specific elements */
+/* Academic-specific elements.
+ *
+ * An inline citation is a prose link with a softer rule, not a pine word: it
+ * takes ink text like the sentence it sits in, and pine arrives on hover the
+ * way it does for any cross-reference. It used to read `var(--color-citation)`,
+ * which aliases the accent, so every citation in a paragraph was a pine word —
+ * and `ReferenceLink` (the component that actually renders one) said the same
+ * thing a second time. The token stays declared for a consumer that wants the
+ * accent by that name; this rule no longer is one. */
 .citation {
-	color: var(--color-citation);
+	color: var(--color-primary);
 	font-style: italic;
 	transition: color var(--duration-moderate) var(--ease-in-out);
 }
 
-.citation:hover {
+.citation:hover,
+.citation:focus-visible {
 	color: var(--color-accent);
 }
 

@@ -98,9 +98,17 @@
 </script>
 
 <!-- eslint-disable svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
+<!--
+	`no-underline` opts out of the prose-link idiom, which this link always sits
+	inside (a citation is only ever set in a sentence). The component draws its
+	own, softer rule in the style block below — 55% pine at a 0.18em offset —
+	and the idiom's 100% / 3px arm would otherwise overrule it. This is the
+	opt-out working as designed, an apparatus link inside a prose container, and
+	never a bare coloured word: the underline stays, it is just quieter.
+-->
 <a
 	href={itemUrl}
-	class="reference-link {hasPopup ? 'has-popup' : ''} {isActive ? 'is-active' : ''}"
+	class="reference-link no-underline {hasPopup ? 'has-popup' : ''} {isActive ? 'is-active' : ''}"
 	aria-label={ariaLabel}
 	aria-haspopup={hasPopup ? 'dialog' : undefined}
 	aria-expanded={hasPopup ? ariaExpanded : undefined}
@@ -118,13 +126,20 @@
 <!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 <style>
-	/* An inline citation reads as text with a pine underline — the accent
-	 * marking a link — not a tinted chip. Colour and underline only; no box,
-	 * no fill, no shadow. */
+	/* An inline citation is a prose link with a softer rule: ink text like the
+	 * sentence it sits in, marked by a pine underline held at 55% and set
+	 * closer to the baseline than the prose idiom's — the citation is
+	 * apparatus inside the sentence, and a run of them in one paragraph should
+	 * not out-shout the paragraph. Pine arrives on hover, focus and while the
+	 * preview is open. Colour and underline only; no box, no fill, no shadow.
+	 *
+	 * Its own decoration used to lose to the prose-link rule's 100% / 3px arm
+	 * whenever the citation sat in a `<p>`; the idiom is opt-in by container
+	 * now, and a component that writes its own underline keeps it. */
 	.reference-link {
 		display: inline;
 		position: relative;
-		color: var(--color-accent);
+		color: var(--color-primary);
 		text-decoration: underline;
 		text-decoration-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
 		text-decoration-thickness: var(--border-width-thin);
@@ -142,11 +157,12 @@
 		pointer-events: auto;
 	}
 
-	/* Hover / active — the underline firms up to full pine. */
+	/* Hover / active — the text warms to pine and the underline firms up to
+	 * full pine, the same response the prose-link idiom gives. */
 	.reference-link:hover,
 	.reference-link:focus-visible,
 	.reference-link.is-active {
-		color: var(--color-accent-dark);
+		color: var(--color-accent);
 		text-decoration-color: var(--color-accent);
 	}
 

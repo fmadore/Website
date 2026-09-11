@@ -6,10 +6,11 @@ the access stack. Rendered into <RecordLayout>'s `railPrimary` snippet, so below
 --lg it sits with the masthead, ahead of the document.
 
 Thinner than its siblings by the record's own nature — an activity carries a
-kind, a date and a year, and nothing that resembles a venue or an identifier —
-which is why the Year row is a link: it is the one ledger value that goes
-somewhere, and it is what makes /activities/year/[year] reachable from a record
-rather than only from the index aside.
+kind and a date, and nothing that resembles a venue or an identifier. The year's
+archive is reachable from every record, but as an action rather than a ledger
+row: the date already prints the year, the eyebrow prints kind and date again,
+and a row whose value is a link to somewhere else is a destination wearing a
+catalogue entry's clothes.
 
 No BibTeX and no cite block. A log entry is a note about work, not a
 bibliographic record; `generateBibtex` is the publication export format and is
@@ -73,11 +74,9 @@ place to decide that.
 
 		push('Type', kindLabel);
 		push('Date', activity.date);
-		// The one row that leaves the record: the year's own archive page.
-		push('Year', activity.year != null ? String(activity.year) : undefined, {
-			href: yearHref,
-			accent: true
-		});
+		// No Year row: the date above it already prints the year, and the eyebrow
+		// prints both again. The archive it used to reach is a destination, not a
+		// fact about the record, so it is an action in the stack below.
 
 		return rows;
 	});
@@ -125,9 +124,9 @@ place to decide that.
 
 <RecordLedger rows={metadataRows} />
 
-<!-- CTAs — the one pine fill is the record's own destination; the document jump
-     and every mirror below it are outlines. -->
-{#if activity.url || additionalUrls.length > 0 || hasDocument}
+<!-- CTAs — the one pine fill is the record's own destination; the document jump,
+     the year archive and every mirror below them are outlines. -->
+{#if activity.url || additionalUrls.length > 0 || hasDocument || activity.year != null}
 	<!-- eslint-disable svelte/no-navigation-without-resolve -- external activity links, plus an in-page anchor -->
 	<div class="rail-cta">
 		{#if activity.url}
@@ -159,6 +158,14 @@ place to decide that.
 				>
 			</a>
 		{/each}
+		{#if activity.year != null}
+			<!-- The year's own archive: the one place this record goes that is not
+			     the work itself. It was a ledger row until the ledger stopped
+			     restating the eyebrow; as a destination it belongs in the stack. -->
+			<a href={yearHref} class="btn btn-outline-secondary btn-block"
+				>View the {activity.year} log<span aria-hidden="true">&nbsp;→</span></a
+			>
+		{/if}
 	</div>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 {/if}

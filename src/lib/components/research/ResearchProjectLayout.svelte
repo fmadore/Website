@@ -252,7 +252,6 @@ co-director, programme or grant simply drop those rows.
 
 <RecordLayout
 	section={{ label: 'Research', href: `${base}/research` }}
-	breadcrumbCurrent="Project"
 	{eyebrow}
 	title={displayTitle}
 	{deck}

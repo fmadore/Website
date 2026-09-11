@@ -234,7 +234,6 @@
 
 <RecordLayout
 	section={{ label: 'Digital Humanities', href: `${base}/digital-humanities` }}
-	breadcrumbCurrent="Project"
 	{eyebrow}
 	title={displayTitle}
 	{breadcrumbItems}

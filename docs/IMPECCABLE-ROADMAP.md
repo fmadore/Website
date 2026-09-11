@@ -215,14 +215,23 @@ the job-to-be-done: find and cite the work.
 
 ## Phase 4 — Character calibration (constrained, evidence-led)
 
-- [ ] **4.1 Distill.** `/impeccable distill` on any page Phase 2 flagged as cluttered —
+- [x] **4.1 Distill.** `/impeccable distill` on any page Phase 2 flagged as cluttered —
       candidates usually: detail pages with thin metadata, over-faceted filter bars.
-- [ ] **4.2 Quieter.** `/impeccable quieter` wherever the pine-scarcity count (standing
+      _(Done 2026-09-11: no facet failed to discriminate; the clutter was idiom duplication —
+      forthcoming talks as cards beside ledger rows, five copies of the clear control, two
+      long-facet idioms, the type printed three times per record. −691 lines.)_
+- [x] **4.2 Quieter.** `/impeccable quieter` wherever the pine-scarcity count (standing
       rule 4) failed — demote accent uses until pine again means "the current thing."
-- [ ] **4.3 Bolder — narrow scope only.** If any page reads as "templated academic site"
+      _(Done 2026-09-11: the prose-link rule's bare `p a` / `li a` arms had put 209 of the
+      site's 246 pine underlines on data-voice anchors; now opt-in by container. Home 54 → 19
+      marks, one of them pine text.)_
+- [x] **4.3 Bolder — narrow scope only.** If any page reads as "templated academic site"
       (the brief's named failure), apply `/impeccable bolder` with hard constraints:
       amplitude comes from Archivo scale, rule weight, and information density — never new
       colour, motion, or effects. Expected candidates: none until Phase 2 says otherwise.
+      _(Done 2026-09-11: two candidates survived the gate — the deck gallery, the one route
+      with no rule above 1px, and the `/research` / `/teaching` mastheads a tier below their
+      siblings. One index-masthead idiom extracted; the gallery is a plate-carrying ledger.)_
 
 ## Phase 5 — Performance
 
@@ -1552,5 +1561,88 @@ Studies, ADHO) and schema.org vocabulary stay verbatim, URLs and ids untouched, 
 and summaries regenerated. `siteConfig`'s four role strings are three with distinct jobs
 (`position`, `positionShort` = the masthead epithet, `jobTitle`; `tagline` is a standfirst, not a
 role) and the CV's SEO description is composed from `author.position` instead of naming ZMO.
+
+**2026-09-11 — Phase 4 in one session: 4.2 quieter, 4.1 distill, 4.3 bolder-narrow (three
+Opus critique agents → three Opus fix agents on disjoint file sets, Fable orchestrating; no
+heuristic score — all three commands produce findings, not a scale).** Snapshots in
+`.impeccable/critique/2026-09-11T06-01-5*`. The three critiques were run as instruments rather
+than opinions: a scripted pine census over 15 routes × both themes × 1440/375 recording every
+element whose computed colour, background, border, underline, outline, fill or stroke resolves to
+pine; a sweep of all 174 records for rail thickness, section count and repeated values plus a
+control census of the four indexes at 375 under touch; a masthead sweep of 37 routes and a
+60-run axe/overflow/console baseline. **4.2 — the failure was one selector, not many
+decisions.** No first screen on any route overspent pine; every first-screen mark was a sanctioned
+one. Below the fold, `typography.css`'s prose-link rule carried bare `p a` / `li a` arms at
+0,4,1, so **209 of the site's 246 pine underlines landed on data-voice anchors** — chips,
+bibliography titles, cover-plate wrappers, breadcrumbs, the home log's mono date key, related-item
+cards, review links — every one of whose components had written `text-decoration: none` and
+silently lost. Meanwhile `ContentBody` won the colour fight and lost the decoration fight, so the
+home page's 26 prose links were pine text under a full-strength pine rule, a hybrid neither author
+wrote, while the same sentence on a DH record rendered ink + hairline. The rule is now **opt-in by
+container** (`.prose`, `.content-body`, `.page-intro`, `.record-prose`, `.project-prose`,
+`.abstract`, `.apparatus-text`, `.audio-description`, `.embed-desc`, `.guide-note` — the list
+derived from a 196-route sweep, not guessed), `ContentBody` and `PageIntro` lost their copies,
+and the inline citation is ruled a prose link with a softer rule rather than a pine word (recorded
+in DESIGN.md). Static stamps demoted: `.section-no`, the related-item type and `View record`
+action, `Awarded`, the RSS link, the audio icon, `More filters`; the selected facet marker is now
+solid ink like a selected chip. Outside-prose pine underlines **209 → 0**; home **54 → 19** marks,
+exactly one of them pine text (the newest year); `/research/<longest>` 79 → 5;
+`/conference-activity` 87 → 14. Every prose link still carries its underline (verified: one
+unruled anchor site-wide, the guide's own opt-out specimen). **4.1 — the clutter was duplication,
+not facets.** No facet on any page fails to discriminate, so the anticipated "over-faceted"
+verdict was declined on measurement. What earned its place least: five forthcoming talks as retired
+`.entity-card` tiles above 74 ledger rows (2.9× the height for the same fields; 3764px before the
+first list record at 375) — now `BibliographyRow`s, and with them `PublicationItem`'s
+unreachable card branch, `CommunicationItem`'s live one and the 434-line `entity-cards.css` are
+gone; **five** implementations of "state the narrowing, clear it", one a 16px `<a>` failing
+2.5.8 at 375 — now one `.mono-action` primitive (was the guide-only `.chip-more`); two long-facet
+idioms — now one rule, `total ≤ LIMIT + 1` prints the whole list, else the combobox, unit-tested;
+the record type printed three times and the date twice on 157 of 157 records — the breadcrumb
+node (a type is not a place) is gone and the activity rail's `Year →` row became a `View the 2025
+log` action; the `/activities` apparatus at y=5588 on a phone, after the entire log — now first in
+source behind the shared `More filters` disclosure (y=310); a raw `conference-proceedings` key
+printed in all three places because one of eleven label registers lacked it — filled, with a test
+that every corpus type is in every register; the 11 talks whose only reading-column section was a
+venue map restating two rail rows — the map now lives in the rail under the rows it illustrates,
+on every talk, and those records are honestly masthead + rail; `hasToc()` exported once; a
+`View all publications →` on the home page, which had reached the record only through the word
+"published" in the eighth paragraph; `Master's theses` / `PhD dissertations` chips; the
+`/conference-activity` head now says `74 of 79 entries · 5 forthcoming above` where the pager and
+the summary had disagreed. **4.3 — two candidates survived the gate, both opting out of the
+system's own moves.** The 37-route masthead sweep found the seven research projects and sixteen
+DH records byte-identical (no drift) and the 404 at full strength; but `/conference-activity/
+slides` was the only route on the site with **no rule above 1px** — six equal tiles with ragged
+bottoms, a `01 02 03` stamp encoding list position, and six mirrored cover posters the page never
+showed — and `/research` and `/teaching` opened on `PageHeader` at 52.7px with no masthead rule
+while their five siblings opened at 72px under 4px. One `.index-masthead` + `.index-title` idiom
+extracted from four copies (entity-index, activities, DH, PageHeader's new opt-in `tier="index"`)
+and documented on the guide; the gallery is a plate-carrying ledger (`.ledger-row` with the
+talk's date as the hanging key, the poster as the plate, `Open deck ↗` as the action; poster
+resolution shared with the embed via `slidePoster.ts`); the period strip extracted from the
+research route into the idiom sheet and drawn beside the standfirst on `/research` and over the
+sixteen DH records' years; the eight `target="_blank"` links without ` (opens in new tab)` fixed,
+two of them MapLibre's own attribution anchors, annotated after `styledata`; the CV title's
+mid-word break at 375 fixed with a mobile step. `cards.css` folded into its one consumer.
+**Declined:** the three playbooks' generic moves — one font, thinner rules, more whitespace,
+desaturation, lighter weights, no sidebar, fewer facets, a muted-pine token, larger poster
+imagery as a hero grid, enlarging every h1; `Open publication ↗` stays the publication rail's
+primary over `Copy reference` (access to the work is the record's purpose; the reference is one
+click either way); the drop cap keeps its pine in midnight (a signature component, one per
+record, marking the start); the JSON-LD `BreadcrumbList` keeps the full record title as its last
+node (a machine trail ends at the page it describes; only the visible back-pointer lost the type).
+**Left for later:** the CV title still breaks mid-word at **320** (the gutter — 96px of a 320px
+viewport — not the type; needs a `--2xs-down` custom media or a phone step on the CV container
+padding); `RelevantItemsList` on the research project pages is the last card grid of dated
+records on the site (Ledger Default Rule; a `shape`-sized change, 6.1); `.guide-note` is a
+route-local class named in a base sheet (the alternative was a class on another agent's
+paragraphs — swap for `.prose` on the guide in 6.1); `--color-citation` is declared but no
+longer what a citation is set in (retire in 6.1). **Ship gate on the rebuilt production build:**
+format, lint, check 0/0 over 1055 files; unit 893 passed (52 files, 34 new tests); bundle 724 of
+850 KiB on the heaviest route, 108.9 of 140 KiB shared entry, prerender 196 of 196; e2e 35 passed,
+1 skipped; a Playwright probe across 15 routes × 1440/375 × both themes: **0 console errors**
+(the 404's own missing asset excepted), **0 horizontal overflow**, **0 axe violations under WCAG
+2.2 AA**, **0 new-tab links without the hidden label** (was 8). 60 files, +2,129 / −1,994 including
+this entry and the guide's three new specimens; the source itself shed the 434-line card sheet,
+two card branches and four masthead copies.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

@@ -26,8 +26,11 @@
 			{#each visibleTags as tag (tag)}
 				<!-- The label is typeset ("Côte d’Ivoire"); the href keeps the raw tag,
 				     since that string is what the filter on the target page matches. -->
+				<!-- `.no-underline`: a chip is apparatus, and a tag list can sit inside a
+				     prose container, where the prose-link idiom would otherwise draw a pine
+				     rule through the inside of the chip's box. -->
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-				<a class="chip" rel="nofollow" href="{base}{baseUrl}{encodeURIComponent(tag)}"
+				<a class="chip no-underline" rel="nofollow" href="{base}{baseUrl}{encodeURIComponent(tag)}"
 					>{typesetQuotes(tag)}</a
 				>
 			{/each}

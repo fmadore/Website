@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
 	foldFacetText,
 	matchFacetOptions,
+	needsFacetCombobox,
 	rankFacetOptions,
 	visibleFacetOptions
 } from './facetSearch';
@@ -105,5 +106,44 @@ describe('visibleFacetOptions', () => {
 
 	it('returns the whole list when it is shorter than the limit', () => {
 		expect(visibleFacetOptions(options, 10, ['e'])).toEqual(options);
+	});
+
+	it('prints the whole list when it is exactly one value over the limit', () => {
+		// The rule that retired the second long-facet idiom: hiding a single row
+		// behind a control costs the reader more than the row costs the page.
+		expect(visibleFacetOptions(options, 4, [])).toEqual(options);
+	});
+
+	it('caps as soon as the list is two values over the limit', () => {
+		expect(visibleFacetOptions(options, 3, [])).toEqual(['a', 'b', 'c']);
+	});
+
+	it('never hands back the caller its own array', () => {
+		const printed = visibleFacetOptions(options, 10, []);
+		expect(printed).toEqual(options);
+		expect(printed).not.toBe(options);
+	});
+});
+
+describe('needsFacetCombobox', () => {
+	it('is false while the whole list is printed', () => {
+		expect(needsFacetCombobox(8, 8)).toBe(false);
+		expect(needsFacetCombobox(9, 8)).toBe(false);
+	});
+
+	it('is true from two values over the limit', () => {
+		expect(needsFacetCombobox(10, 8)).toBe(true);
+		expect(needsFacetCombobox(95, 12)).toBe(true);
+	});
+
+	it('agrees with what visibleFacetOptions prints, at every size', () => {
+		// The two halves of one rule: the component renders a combobox exactly
+		// when the printed head is shorter than the option list.
+		const limit = 8;
+		for (let total = 0; total <= 20; total++) {
+			const all = Array.from({ length: total }, (_, i) => `v${i}`);
+			const printed = visibleFacetOptions(all, limit, []);
+			expect(needsFacetCombobox(total, limit)).toBe(printed.length < total);
+		}
 	});
 });

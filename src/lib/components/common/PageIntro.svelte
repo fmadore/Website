@@ -74,22 +74,11 @@
 		margin-top: var(--space-md);
 	}
 
-	.page-intro :global(a) {
-		color: var(--color-primary);
-		text-decoration: underline;
-		text-decoration-color: var(--color-accent);
-		text-decoration-thickness: 1px;
-		text-underline-offset: 3px;
-		font-weight: var(--font-weight-medium);
-		transition:
-			color var(--duration-fast) var(--ease-out),
-			text-decoration-thickness var(--duration-fast) var(--ease-out);
-	}
-
-	.page-intro :global(a:hover) {
-		color: var(--color-accent);
-		text-decoration-thickness: 2px;
-	}
+	/* Prose links: `.page-intro` opts into the prose-link idiom in
+	 * `base/typography.css` (ink text, 1px pine underline, pine + 2px on
+	 * hover/focus), which owns it alone. This block was a third verbatim copy
+	 * of that idiom — the kind that drifts one declaration at a time. The
+	 * focus outline below is this component's own and stays. */
 
 	.page-intro :global(a:focus-visible) {
 		outline: var(--border-width-medium) solid var(--color-accent);
@@ -135,10 +124,6 @@
 		}
 	}
 
-	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
-		.page-intro :global(a) {
-			transition: none;
-		}
-	}
+	/* Motion: the prose-link idiom carries its own reduced-motion guard in
+	 * `base/typography.css`; this component sets no transition of its own. */
 </style>

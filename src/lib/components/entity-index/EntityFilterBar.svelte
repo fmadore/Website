@@ -5,8 +5,8 @@
 	// by the page). Page-specific controls (e.g. the map toggle) render through
 	// the `extraControls` snippet, between the facet toggle and the sort group.
 	import type { Snippet } from 'svelte';
-	import { browser } from '$app/environment';
 	import type { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
+	import { createFacetCollapsible } from '$lib/utils/facetDisclosure.svelte';
 	import { FACET_GRID_ID } from './EntityFacetGrid.svelte';
 
 	interface Props {
@@ -44,22 +44,11 @@
 	const af = $derived(filters.activeFilters);
 	const options = $derived(filters.filterOptions);
 
-	/* The toggle only exists below --lg; above it the grid is always laid out and
-	 * the button is `display: none`. A hidden control still reachable by an
-	 * assistive technology that ignores CSS reported `aria-expanded="false"`
-	 * over a facet grid that was fully open, so the attribute is rendered only
-	 * while the control it describes is. Mirrors `--lg-down` in media.css. */
-	const COLLAPSIBLE_QUERY = '(max-width: 1023px)';
-	let collapsible = $state(false);
-
-	$effect(() => {
-		if (!browser) return;
-		const mql = window.matchMedia(COLLAPSIBLE_QUERY);
-		collapsible = mql.matches;
-		const onChange = (event: MediaQueryListEvent) => (collapsible = event.matches);
-		mql.addEventListener('change', onChange);
-		return () => mql.removeEventListener('change', onChange);
-	});
+	/* The toggle only exists below --lg; above it the grid is always laid out
+	 * and the button is `display: none`. /activities opens its browse aside
+	 * behind the same disclosure, so the breakpoint state is shared rather than
+	 * written twice (`facetDisclosure.svelte.ts`). */
+	const collapsible = createFacetCollapsible();
 </script>
 
 <section class="filter-bar" aria-label={ariaLabel}>
@@ -134,7 +123,7 @@
 			<button
 				type="button"
 				class="facet-toggle"
-				aria-expanded={collapsible ? facetsOpen : undefined}
+				aria-expanded={collapsible.current ? facetsOpen : undefined}
 				aria-controls={FACET_GRID_ID}
 				onclick={() => (facetsOpen = !facetsOpen)}
 			>

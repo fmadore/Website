@@ -5,6 +5,7 @@
 	import SEO from '$lib/SEO.svelte';
 	import { base, resolve } from '$app/paths';
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
+	import Button from '$lib/components/atoms/Button.svelte';
 	import { author, profile } from '$lib/data/siteConfig';
 	import type { PageData } from './$types';
 
@@ -195,6 +196,15 @@
 					<a href={resolve('/publications')} data-sveltekit-preload-data>published</a> in eleven peer-reviewed
 					journals and seven edited volumes.
 				</p>
+				<!-- The section's own way into the index. The word "published" in the
+				     paragraph above was the only route to the bibliography from this
+				     page, eight paragraphs down; the activities rail beside it has
+				     carried a named control to its index all along. -->
+				<p class="home-section-cta">
+					<Button href={resolve('/publications')} variant="outline-secondary" size="base">
+						View all publications <span aria-hidden="true">→</span>
+					</Button>
+				</p>
 
 				<h2>Consulting</h2>
 				<p>
@@ -272,6 +282,13 @@
 			grid-template-columns: minmax(0, 1fr) 22rem;
 			column-gap: var(--space-3xl);
 		}
+	}
+
+	/* The section's trailing control. A paragraph, so it keeps the prose
+	 * rhythm around it; the control inside is the same outline button the
+	 * activities rail closes with. */
+	.home-main :global(.home-section-cta) {
+		margin-top: var(--space-lg);
 	}
 
 	/* The prose sits directly on the paper, so ContentBody's inset is pure

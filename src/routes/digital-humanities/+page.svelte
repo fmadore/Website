@@ -43,6 +43,53 @@
 	})();
 
 	/**
+	 * The hero's period strip: one Gantt bar per record across one shared axis.
+	 *
+	 * The axis is read off the records, never hardcoded — a constant end year is
+	 * how a bar ends up overshooting the axis it is drawn on. A record's `years`
+	 * is one of three shapes: a point (`2026`), a closed range (`2018-2023`) or
+	 * an open one (`2026-`), and only the last is running work, which is what
+	 * takes the accent. A record whose `years` parses to nothing simply draws no
+	 * bar; the strip states what the catalogue records and invents no span.
+	 *
+	 * Sorted by start year so the strip reads as a chronology rather than as the
+	 * catalogue's own order, which is a relevance ranking.
+	 */
+	const parseSpan = (years: string) => {
+		const [rawStart = '', rawEnd] = years.split('-');
+		const start = parseInt(rawStart, 10);
+		if (Number.isNaN(start)) return null;
+		// `2026-` splits to ['2026', ''] — open-ended, still running.
+		const open = rawEnd !== undefined && rawEnd.trim() === '';
+		const end = rawEnd ? parseInt(rawEnd, 10) : start;
+		return { start, end: Number.isNaN(end) ? start : end, open };
+	};
+	const spans = allDhProjects
+		.map((project) => ({ id: project.id, span: parseSpan(project.years) }))
+		.filter((row): row is { id: string; span: NonNullable<ReturnType<typeof parseSpan>> } =>
+			Boolean(row.span)
+		);
+	const AXIS_START = spans.length > 0 ? Math.min(...spans.map((row) => row.span.start)) : 0;
+	const AXIS_END = Math.max(
+		new Date().getFullYear(),
+		...spans.map((row) => (row.span.open ? 0 : row.span.end))
+	);
+	const AXIS_SPAN = Math.max(1, AXIS_END - AXIS_START);
+	const periodBars = spans
+		.slice()
+		.sort((a, b) => a.span.start - b.span.start || a.span.end - b.span.end)
+		.map(({ id, span }) => {
+			const end = span.open ? AXIS_END : span.end;
+			return {
+				id,
+				current: span.open,
+				left: ((span.start - AXIS_START) / AXIS_SPAN) * 100,
+				// A single year is a point on the axis; the floor keeps it visible.
+				width: Math.max(((end - span.start) / AXIS_SPAN) * 100, 3)
+			};
+		});
+
+	/**
 	 * Every project, in the display register, prepared once for both modules.
 	 *
 	 * `period` is formatted by the shared `formatProjectPeriod`, the same
@@ -129,8 +176,8 @@
 	// on the page that exists to look precise is not a rounding error.
 	const catalogueCount = $derived(
 		selectedSkill
-			? `${catalogueProjects.length} ${catalogueProjects.length === 1 ? 'project' : 'projects'}`
-			: `${catalogueProjects.length} of ${projectCount} projects`
+			? `${catalogueProjects.length} ${catalogueProjects.length === 1 ? 'entry' : 'entries'}`
+			: `${catalogueProjects.length} of ${projectCount} entries`
 	);
 
 	// Client-side pagination over the catalogue. Reset to page 1 whenever the
@@ -156,6 +203,12 @@
 		// eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed query string
 		void goto(href, { keepFocus: true, noScroll: true });
 	}
+
+	/** The filter note's way out — the same action the three sibling indexes fire. */
+	function clearSkill() {
+		// eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed path
+		void goto(`${base}/digital-humanities`, { keepFocus: true, noScroll: true });
+	}
 </script>
 
 <SEO
@@ -169,19 +222,55 @@
 
 <div class="container py-8">
 	<div class="max-w-6xl mx-auto">
-		<!-- HERO — mono infrastructure eyebrow, Archivo masthead, serif standfirst. -->
-		<header class="dh-hero">
-			<p class="eyebrow dh-hero-eyebrow">
-				Infrastructure · {projectCount} projects · {corpusPeriod}
-			</p>
-			<h1 class="dh-hero-title">Digital Humanities</h1>
-			<p class="standfirst">
-				Not an end in itself, but a response to a concrete problem. After years of fieldwork across
-				West Africa, I had accumulated thousands of documents that exceeded what traditional methods
-				could process. These projects turn that accumulation into open research infrastructure —
-				digital archives, AI-assisted pipelines, interactive visualisations, and conversational
-				interfaces — so that African historical sources are not only preserved but made usable.
-			</p>
+		<!-- HERO — the 4px masthead rule, a mono infrastructure eyebrow, the
+		     shared Archivo `.index-title`, a serif standfirst, and the record's
+		     own project periods drawn beside it. The head previously carried no
+		     rule at all and sat on the wide display axis, so the one index page
+		     that is entirely about structured data opened as the least-drawn
+		     masthead on the site. -->
+		<header class="dh-hero index-masthead">
+			<div class="dh-hero-lede">
+				<p class="eyebrow dh-hero-eyebrow">
+					Infrastructure · {projectCount} entries · {corpusPeriod}
+				</p>
+				<h1 class="index-title">Digital Humanities</h1>
+				<p class="standfirst">
+					Not an end in itself, but a response to a concrete problem. After years of fieldwork
+					across West Africa, I had accumulated thousands of documents that exceeded what
+					traditional methods could process. These projects turn that accumulation into open
+					research infrastructure — digital archives, AI-assisted pipelines, interactive
+					visualisations, and conversational interfaces — so that African historical sources are not
+					only preserved but made usable.
+				</p>
+			</div>
+
+			<!-- Project-period strip — one bar per record across the axis the
+			     catalogue covers, running work in pine. Same idiom as /research.
+			     Every span it draws is printed as a period in the key column of
+			     the entry below, so it is hidden from assistive technology rather
+			     than given labels that read the catalogue back a second time. -->
+			{#if periodBars.length > 0}
+				<section class="periods dh-periods" aria-hidden="true">
+					<p class="eyebrow eyebrow--ink periods-label">
+						Project periods · {AXIS_START}–{AXIS_END}
+					</p>
+					<div class="period-bars">
+						{#each periodBars as bar (bar.id)}
+							<div class="period-track">
+								<span
+									class="period-bar"
+									class:period-bar--current={bar.current}
+									style="left: {bar.left}%; width: {bar.width}%"
+								></span>
+							</div>
+						{/each}
+					</div>
+					<div class="period-legend">
+						<span>{AXIS_START}</span>
+						<span>{AXIS_END}</span>
+					</div>
+				</section>
+			{/if}
 		</header>
 
 		<!-- FEATURED — one broadsheet dossier for the flagship, ledger entries for
@@ -290,18 +379,25 @@
 			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 
 			{#if selectedSkill}
+				<!-- The same sentence the other three indexes print: what is
+				     narrowing, how much of the catalogue survives it, and the way
+				     out — one control, `.mono-action`. -->
 				<p class="filter-note">
 					<span class="filter-note-label">Filtered by method</span>
 					<span class="filter-note-value">{selectedSkill}</span>
-					<a href={resolve('/digital-humanities')} class="filter-note-clear">
+					<span class="filter-note-count" aria-live="polite">
+						{catalogueProjects.length} of {projectCount}
+						{projectCount === 1 ? 'entry' : 'entries'}
+					</span>
+					<button type="button" class="mono-action" onclick={clearSkill}>
 						Clear all <span aria-hidden="true">✕</span>
-					</a>
+					</button>
 				</p>
 			{/if}
 
 			{#if catalogueProjects.length === 0}
 				<p class="catalogue-empty">No projects are filed under “{selectedSkill}”.</p>
-				<p class="catalogue-empty">The catalogue holds {projectCount} projects.</p>
+				<p class="catalogue-empty">The catalogue holds {projectCount} entries.</p>
 			{:else}
 				<div class="ledger ledger--ruled" id="dh-catalogue">
 					{#each pagedProjects as project (project.id)}
@@ -373,24 +469,40 @@ own methods close the entry as apparatus.
 {/snippet}
 
 <style>
-	/* ===== HERO ===== */
+	/* ===== HERO =====
+	 * The rule, its interval and the masthead type come from `.index-masthead`
+	 * and `.index-title` in `ink-signal.css` — the same declaration every other
+	 * section index takes. What is local is the two-track lede: the written half
+	 * left, the counted half right, the finding-aid indexes' own shape. */
 	.dh-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-lg);
 		margin-bottom: var(--space-2xl);
+	}
+
+	.dh-hero-lede {
+		min-width: 0;
 	}
 
 	.dh-hero-eyebrow {
 		margin-bottom: var(--space-sm);
 	}
 
-	.dh-hero-title {
-		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display);
-		font-size: var(--font-size-display);
-		font-weight: 830;
-		letter-spacing: var(--tracking-display-lg);
-		line-height: 0.98;
-		color: var(--color-text-emphasis);
-		margin: 0 0 var(--space-md);
+	/* Sixteen tracks against /research's seven, so the strip takes the idiom's
+	 * tunables down a step rather than growing a hero column half a screen
+	 * tall. The bars still encode the same thing at the same scale. */
+	.dh-periods {
+		--period-track-h: 8px;
+		--period-gap: var(--space-1);
+	}
+
+	@media (--md) {
+		.dh-hero {
+			grid-template-columns: minmax(0, 1fr) 320px;
+			gap: var(--space-2xl);
+			align-items: end;
+		}
 	}
 
 	/* ===== THE FLAGSHIP DOSSIER — plate + headline, one per page ===== */
@@ -489,7 +601,10 @@ own methods close the entry as apparatus.
 		min-width: 12rem;
 	}
 
-	/* Skill-filter note — mono label + accent value + clear affordance. */
+	/* Skill-filter note — the row itself only. `.filter-note-label` and
+	 * `.filter-note-value` are the shared idiom (ink-signal.css) and the clear
+	 * is `.mono-action`; this page used to redeclare all three, which is how its
+	 * way out ended up muted, 16px tall and a link rather than a control. */
 	.filter-note {
 		display: flex;
 		flex-wrap: wrap;
@@ -502,24 +617,11 @@ own methods close the entry as apparatus.
 		text-transform: uppercase;
 	}
 
-	.filter-note-label {
+	/* How much of the catalogue survived the narrowing — tabular so the figure
+	 * holds its column as the reader switches methods. */
+	.filter-note-count {
+		font-variant-numeric: tabular-nums;
 		color: var(--color-text-light);
-		font-weight: var(--font-weight-medium);
-	}
-
-	.filter-note-value {
-		color: var(--color-accent);
-		font-weight: var(--font-weight-bold);
-	}
-
-	.filter-note-clear {
-		color: var(--color-text-muted);
-		text-decoration: none;
-		font-weight: var(--font-weight-semibold);
-	}
-
-	.filter-note-clear:hover {
-		color: var(--color-accent);
 	}
 
 	.catalogue-empty {

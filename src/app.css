@@ -16,7 +16,6 @@
 
 /* UI Components (global — used across most/all pages) */
 @import './styles/components/buttons.css';
-@import './styles/components/cards.css';
 @import './styles/components/navigation-utilities.css';
 /* Ink + Signal structural idioms: nameplate, rules, sections, ledger,
  * chips, year-bars, key-terms, drop cap, plates, pagination. */
@@ -25,7 +24,6 @@
 /* Page-specific component CSS is imported by the components that own it
  * (code-split per route) rather than bundled here, to keep the render-blocking
  * global stylesheet small:
- *   - components/entity-cards.css  → PublicationItem / CommunicationItem
  *   - components/activity-list.css → /activities routes
  *   - components/panels.css        → PanelBase / RelevantItemsList /
  *                                    RelevantPublications (home + research)

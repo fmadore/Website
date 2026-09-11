@@ -13,7 +13,7 @@
 	import PublicationIndexRail, {
 		hasIndexApparatus
 	} from '$lib/components/publications/PublicationIndexRail.svelte';
-	import PublicationToc from '$lib/components/publications/PublicationToc.svelte';
+	import PublicationToc, { hasToc } from '$lib/components/publications/PublicationToc.svelte';
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
 	import { allPublications } from '$lib/data/publications/index';
@@ -95,15 +95,11 @@
 	// Does this record have a document at all? Three of the publications carry
 	// no abstract, no contents, no reviews and no citations, and the reading
 	// column printed as an empty grid interval under the masthead. The four
-	// clauses mirror what the column's four children each render on: the
-	// contents test repeats PublicationToc's own gate, since only books and
-	// special issues print one.
-	const hasContents = $derived(
-		(publication.type === 'book' || publication.type === 'special-issue') &&
-			(publication.tableOfContents?.length ?? 0) > 0
-	);
+	// clauses mirror what the column's four children each render on — the
+	// contents test is `PublicationToc`'s own gate, imported rather than
+	// restated, so the column and the section cannot disagree.
 	const hasDocument = $derived(
-		abstractParagraphs.length > 0 || hasContents || reviews.length > 0 || citedBy.length > 0
+		abstractParagraphs.length > 0 || hasToc(publication) || reviews.length > 0 || citedBy.length > 0
 	);
 
 	// Related publications in the same project (excluding the current one).
@@ -176,7 +172,6 @@
 
 <RecordLayout
 	section={{ label: 'Publications', href: `${base}/publications` }}
-	breadcrumbCurrent={typeLabel}
 	{eyebrow}
 	title={displayTitle}
 	{byline}

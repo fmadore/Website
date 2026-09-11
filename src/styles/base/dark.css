@@ -90,7 +90,9 @@ html.dark {
 	/* Focus ring */
 	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 50%, transparent);
 
-	/* Academic */
+	/* Academic. The alias tracks the brightened midnight accent; an inline
+	 * citation itself is set in cream like the sentence around it (see the
+	 * note on this token in `variables.css`). */
 	--color-citation: var(--color-accent);
 	--color-code-bg: var(--sys-color-film-100);
 

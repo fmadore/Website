@@ -101,39 +101,54 @@
 
 <div class="container py-8">
 	<div class="max-w-6xl mx-auto">
-		<PageHeader title="Research" />
+		<!-- The section masthead: the index tier of the shared PageHeader, so
+		     /research opens on the same 4px rule, the same Archivo display size
+		     and the same mono eyebrow as /publications, /activities and the rest
+		     of its siblings rather than a tier below them. The eyebrow's figures
+		     are the dataset's own — count and the axis the strip is drawn on. -->
+		<PageHeader
+			tier="index"
+			title="Research"
+			typeBadgeText="Projects"
+			date="{researchProjects.length} entries · {CAREER_START}–{CAREER_END}"
+		/>
 
-		<PageIntro>
-			Islam and Muslim societies in francophone West Africa since the 1960s: how youth, women, and
-			religious minorities have shaped activism, the media, and political life. I build the
-			collections I study, analyse them with digital humanities methods, and experiment with AI.
-			That work now reaches Central Asian collections, the research infrastructure of the Africa
-			Multiple Cluster, and the question of what these methods do to African studies.
-		</PageIntro>
+		<!-- The lede: standfirst left, the period strip beside it rather than
+		     stacked under it, so the masthead block carries the section's one
+		     piece of real data instead of leaving half the page empty. -->
+		<div class="research-lede">
+			<PageIntro>
+				Islam and Muslim societies in francophone West Africa since the 1960s: how youth, women, and
+				religious minorities have shaped activism, the media, and political life. I build the
+				collections I study, analyse them with digital humanities methods, and experiment with AI.
+				That work now reaches Central Asian collections, the research infrastructure of the Africa
+				Multiple Cluster, and the question of what these methods do to African studies.
+			</PageIntro>
 
-		<!-- Project-period timeline — one Gantt bar per project across the years.
-		     Ornamental rather than navigational: every span it draws is printed as
-		     a date in the ledger below, which is why it is hidden from assistive
-		     technology instead of being given labels that would repeat the list. -->
-		<section class="periods" aria-hidden="true">
-			<p class="eyebrow eyebrow--ink periods-label">
-				Project periods · {CAREER_START}–{CAREER_END}
-			</p>
-			<div class="period-bars">
-				{#each timelineBars as bar (bar.title)}
-					<div class="period-track">
-						<span
-							class="period-bar {bar.current ? 'period-bar--current' : ''}"
-							style="left: {bar.left}%; width: {bar.width}%"
-						></span>
-					</div>
-				{/each}
-			</div>
-			<div class="period-legend">
-				<span>{CAREER_START}</span>
-				<span>{CAREER_END}</span>
-			</div>
-		</section>
+			<!-- Project-period timeline — one Gantt bar per project across the years.
+			     Ornamental rather than navigational: every span it draws is printed as
+			     a date in the ledger below, which is why it is hidden from assistive
+			     technology instead of being given labels that would repeat the list. -->
+			<section class="periods" aria-hidden="true">
+				<p class="eyebrow eyebrow--ink periods-label">
+					Project periods · {CAREER_START}–{CAREER_END}
+				</p>
+				<div class="period-bars">
+					{#each timelineBars as bar (bar.title)}
+						<div class="period-track">
+							<span
+								class="period-bar {bar.current ? 'period-bar--current' : ''}"
+								style="left: {bar.left}%; width: {bar.width}%"
+							></span>
+						</div>
+					{/each}
+				</div>
+				<div class="period-legend">
+					<span>{CAREER_START}</span>
+					<span>{CAREER_END}</span>
+				</div>
+			</section>
+		</div>
 
 		<!-- CURRENT PROJECTS — a broadsheet dossier for the flagship, ruled ledger
 		     rows for the rest. The section head is what says this work is running,
@@ -253,51 +268,31 @@
 {/snippet}
 
 <style>
-	/* Project-period timeline — Gantt bars, one per project, under the intro.
-	 * The periods themselves are the ornament: each bar spans its project's
-	 * years across one axis read off the records, current work in pine. */
-	.periods {
-		margin: var(--space-xl) 0 var(--space-2xl);
+	/* The hero's lede row. The period strip itself is the `.periods` idiom in
+	 * `ink-signal.css` (extracted so /digital-humanities draws its sixteen
+	 * records on the same strip); what is local is where it sits — a fixed
+	 * 320px ornament column beside the standfirst, the same two-track lede the
+	 * finding-aid indexes use. Below the column stacks, strip after prose:
+	 * the ornament follows the sentence it illustrates. */
+	.research-lede {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-lg);
+		margin-bottom: var(--space-2xl);
 	}
 
-	.periods-label {
-		margin-bottom: var(--space-sm);
+	/* The standfirst's own trailing margin would push the strip off the shared
+	 * baseline; the grid owns the interval here. */
+	.research-lede :global(.page-intro) {
+		margin-bottom: 0;
 	}
 
-	.period-bars {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-2);
-	}
-
-	.period-track {
-		position: relative;
-		height: 12px;
-	}
-
-	.period-bar {
-		position: absolute;
-		top: 2px;
-		bottom: 2px;
-		min-width: 4px;
-		background: var(--color-primary);
-	}
-
-	.period-bar--current {
-		background: var(--color-accent);
-	}
-
-	.period-legend {
-		display: flex;
-		justify-content: space-between;
-		margin-top: var(--space-2);
-		padding-top: var(--space-2);
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
-		color: var(--color-text-light);
+	@media (--md) {
+		.research-lede {
+			grid-template-columns: minmax(0, 1fr) 320px;
+			gap: var(--space-2xl);
+			align-items: end;
+		}
 	}
 
 	/* ---- The lead dossier — plate + headline for the flagship project ---- */

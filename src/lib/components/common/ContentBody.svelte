@@ -77,23 +77,13 @@
 		margin-bottom: 0;
 	}
 
-	/* Prose links — the accent, marked with a pine underline (matching
-	 * the inline-citation idiom), not a bare coloured word. */
-	.content-body :global(a) {
-		color: var(--color-accent);
-		text-decoration: underline;
-		text-decoration-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
-		text-decoration-thickness: var(--border-width-thin);
-		text-underline-offset: 0.16em;
-		transition:
-			color var(--duration-fast) var(--ease-out),
-			text-decoration-color var(--duration-fast) var(--ease-out);
-	}
-
-	.content-body :global(a:hover) {
-		color: var(--color-accent-dark);
-		text-decoration-color: var(--color-accent);
-	}
+	/* Prose links: `.content-body` is one of the containers that opt into the
+	 * prose-link idiom in `base/typography.css`, which owns it alone. This
+	 * component used to restate it in a third dialect — pine TEXT plus a 45%
+	 * underline — and won `color` while typography won the decoration, so the
+	 * home page's prose links rendered as a hybrid neither author wrote, and
+	 * pine text was the loudest thing below the nameplate in midnight. The
+	 * focus outline below is this component's own and stays. */
 
 	/* Emphasis styling */
 	.content-body :global(em) {

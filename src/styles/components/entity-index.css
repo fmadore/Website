@@ -39,16 +39,13 @@
 	margin-bottom: var(--space-sm);
 }
 
-.index-title {
-	font-family: var(--font-family-display);
-	font-variation-settings: var(--font-variation-display-sm);
-	font-size: var(--font-size-display);
-	font-weight: 830;
-	line-height: 0.95;
-	letter-spacing: var(--tracking-display-lg);
-	color: var(--color-text-emphasis);
-	margin: 0 0 var(--space-md);
-}
+/* `.index-title` is not declared here any more. It is the idiom in
+ * `ink-signal.css`, beside `.index-masthead`: six section indexes open on the
+ * same name in the same voice, and this file is loaded by only two of them.
+ * The grid above stays — the two-column lede + data-ornament layout is this
+ * page family's, not the idiom's — and composes with `.index-masthead`
+ * (equivalently, the `.rule-masthead` + `--rule-gap` pair the markup already
+ * carries). */
 
 /* Year-bar strip — real per-year output as ink bars, newest in pine. */
 .index-hero-bars {
@@ -224,26 +221,11 @@
 	flex-wrap: wrap;
 }
 
-.facet-toggle {
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-semibold);
-	letter-spacing: var(--tracking-label);
-	text-transform: uppercase;
-	color: var(--color-accent);
-	background: none;
-	border: none;
-	padding: 0;
-	cursor: pointer;
-	display: none;
-}
-
-/* Advanced-filters toggle only matters where the grid is collapsible. */
-@media (--lg-down) {
-	.facet-toggle {
-		display: inline-flex;
-	}
-}
+/* `More filters` is `.facet-toggle`, which moved to ink-signal.css when
+ * /activities adopted the same disclosure over the same kind of apparatus —
+ * and does not load this sheet. Its inking is unchanged: ink at rest (it is a
+ * permanent control of the narrow layout, not a current state), pine under the
+ * pointer or on focus. */
 
 .sort-control {
 	display: flex;
@@ -310,15 +292,6 @@
 	.language-opt {
 		padding-bottom: calc(var(--space-2-5) - var(--space-0-5));
 		border-bottom-width: var(--border-width-medium);
-	}
-
-	.facet-toggle {
-		padding: var(--space-2-5) var(--space-2);
-		min-height: 44px;
-		align-items: center;
-		/* Cancel the inline padding's left offset so the control stays flush
-		 * with the column edge it opens. */
-		margin-left: calc(-1 * var(--space-2));
 	}
 }
 
@@ -440,9 +413,11 @@
 		border-color var(--duration-fast) var(--ease-out);
 }
 
+/* Filled solid ink when on — the swap a selected chip makes. A selection is
+ * not "the current thing": a facet ledger can hold a dozen at once. */
 .facet-marker--on {
-	background: var(--color-accent);
-	border-color: var(--color-accent);
+	background: var(--color-primary);
+	border-color: var(--color-primary);
 }
 
 .facet-name {
@@ -468,26 +443,6 @@
 .facet-row[data-count='0']:not(.facet-row--active),
 .facet-row[data-count='0']:not(.facet-row--active) .facet-count {
 	color: var(--color-text-light);
-}
-
-/* "All N ↓" overflow affordance — accent mono, sits under the list. */
-.facet-more {
-	margin-top: var(--space-2);
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-semibold);
-	letter-spacing: var(--tracking-label);
-	text-transform: uppercase;
-	color: var(--color-accent);
-	background: none;
-	border: none;
-	padding: 0;
-	cursor: pointer;
-	transition: color var(--duration-fast) var(--ease-out);
-}
-
-.facet-more:hover {
-	color: var(--color-accent-dark);
 }
 
 /* The live read-out of the two handles, printed where a caption belongs: under
@@ -555,22 +510,12 @@
 	gap: var(--space-2);
 }
 
-.facet-clear {
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-semibold);
-	letter-spacing: var(--tracking-label);
-	text-transform: uppercase;
-	color: var(--color-accent);
-	background: none;
-	border: none;
-	padding: 0;
-	cursor: pointer;
-	transition: color var(--duration-fast) var(--ease-out);
-}
-
-.facet-clear:hover {
-	color: var(--color-accent-dark);
+/* `Clear all` in the summary and `Clear years` under the slider are both
+ * `.mono-action` (ink-signal.css), the one text-action primitive. Nothing is
+ * restated here; the year control only needs the gap that sets it under the
+ * track it clears. */
+.facet-years-clear {
+	margin-top: var(--space-2);
 }
 
 .bib-list {
@@ -626,9 +571,7 @@
 	.language-opt,
 	.sort-opt,
 	.facet-row,
-	.facet-marker,
-	.facet-more,
-	.facet-clear {
+	.facet-marker {
 		transition: none;
 	}
 }

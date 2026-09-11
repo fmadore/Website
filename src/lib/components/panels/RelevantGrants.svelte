@@ -149,7 +149,9 @@
 		color: var(--color-text-emphasis);
 	}
 
-	/* Status — a flat mono marker; "Awarded" earns the lone pine accent. */
+	/* Status — a flat mono marker in quiet ink. "Awarded" is the outcome of a
+	 * finished competition, not a live state, so it takes no accent: pine on a
+	 * grant panel would mark every awarded grant the site has ever held. */
 	.grant-status {
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
@@ -158,7 +160,7 @@
 	}
 
 	.status-awarded {
-		color: var(--color-accent);
+		color: var(--color-text-emphasis);
 	}
 
 	.status-other {

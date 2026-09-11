@@ -8,8 +8,12 @@
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import { activityFilters } from '$lib/data/activities/filters.svelte';
 	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
-	import { visibleFacetOptions } from '$lib/components/entity-index/facetSearch';
+	import {
+		needsFacetCombobox,
+		visibleFacetOptions
+	} from '$lib/components/entity-index/facetSearch';
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
+	import { createFacetCollapsible } from '$lib/utils/facetDisclosure.svelte';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
 	import { formatShortDateMono } from '$lib/utils/date-formatter';
@@ -23,6 +27,18 @@
 
 	const PER_PAGE = 8;
 	const PRIMARY_TAGS = 8;
+
+	/** The id the `More filters` disclosure controls — the browse aside. */
+	const FACET_ASIDE_ID = 'activities-facets';
+
+	// Below --lg the aside is the first thing in the column, behind the same
+	// disclosure the two sibling indexes use: laid out after the log, its year
+	// meter, type chips and tag facet sat 5588px down a phone — past the entire
+	// record they narrow. Above --lg the aside is always open and the toggle is
+	// `display: none`, which is why `aria-expanded` is rendered only while the
+	// control it describes is.
+	let facetsOpen = $state(false);
+	const collapsible = createFacetCollapsible();
 
 	// All activities, newest first (the store pre-sorts by date).
 	let activities = $derived(getActivities());
@@ -148,92 +164,33 @@
 		     The year distribution is not drawn here as a bar strip: the aside's
 		     browse meter already draws it, with counts and a link per year, and a
 		     second copy of the same data would be ornament rather than apparatus. -->
-		<header class="activities-hero">
+		<header class="activities-hero index-masthead">
 			<p class="eyebrow activities-hero-eyebrow">
 				Log · {totalCount} entries · {minYear}–{maxYear}
 			</p>
-			<h1 class="activities-hero-title">Activities</h1>
+			<h1 class="index-title">Activities</h1>
 			<p class="standfirst">
 				Talks, workshops, conferences, grants and publications, most recent first.
 			</p>
 		</header>
 
-		<!-- Two columns opened by a 3px rule: the log, then the browse aside. -->
+		<!-- Two columns opened by a 3px rule: the log and the browse aside. The
+		     aside comes first in the source so that in one column it reaches the
+		     reader before the record it narrows; from --lg up the grid places
+		     the log back in column one. -->
 		<div class="activities-layout">
-			<!-- The log — a press column grouped by year, hairline-separated rows.
-			     A <div>, not a <main>: the app shell already opens one around every
-			     route, and a second (nested) main is invalid and leaves the document
-			     with two main landmarks for a screen reader to choose between. -->
-			<div class="activities-log" id="activities-log">
-				<!-- The narrowing, stated: what is filtering, how much of the log
-				     survives it, and the way out. The count is the half that was
-				     missing — a filtered log that reports no match figure leaves the
-				     reader to count the rows themselves. -->
-				{#if anyFiltering}
-					<p class="filter-note">
-						<span class="filter-note-label">Filtered by</span>
-						<span class="filter-note-value">{activeFilterLabels.join(' · ')}</span>
-						<!-- The count alone is the live region: with the button inside it, every
-						     narrowing re-announced the control along with the figure. -->
-						<span class="filter-note-count" aria-live="polite">
-							{activeFilterCount}
-							{activeFilterCount === 1 ? 'filter' : 'filters'} active · {filtered.length} of {totalCount}
-							{totalCount === 1 ? 'entry' : 'entries'}
-						</span>
-						<button type="button" class="filter-note-clear" onclick={filters.clearAllFilters}>
-							Clear all <span aria-hidden="true">✕</span>
-						</button>
-					</p>
-				{/if}
+			<button
+				type="button"
+				class="facet-toggle"
+				aria-expanded={collapsible.current ? facetsOpen : undefined}
+				aria-controls={FACET_ASIDE_ID}
+				onclick={() => (facetsOpen = !facetsOpen)}
+			>
+				More filters <span aria-hidden="true">{facetsOpen ? '▴' : '▾'}</span>
+			</button>
 
-				{#if filtered.length === 0}
-					<!-- Empty state: name the corpus that is still there, and carry the
-					     control back to it. The filter note above also clears, but it is
-					     scrolled past on a phone, where the log is the whole column. -->
-					<div class="log-empty">
-						<p class="log-empty-line">No activities match.</p>
-						<p class="log-empty-note">
-							The log holds {totalCount} entries, {minYear}–{maxYear}.
-						</p>
-					</div>
-				{:else}
-					{#each pageGroups as group, groupIndex (group.year)}
-						<section class="year-group" aria-label="Activities from {group.year}">
-							<div class="year-group-head">
-								<!-- Real h2 so the h1 → h2 (year) → h3 (item) outline holds for AT -->
-								<h2 class="year-group-year">{group.year}</h2>
-								<span class="year-group-count">
-									{group.total}
-									{group.total === 1 ? 'entry' : 'entries'}
-								</span>
-							</div>
-							<!-- An <ol>, like `.bib-list` on the two sibling indexes: the
-							     hairline between entries and the key/plate track widths are
-							     the list's to set, so year-group spacing stays under its
-							     control and every row hangs on the same two columns. -->
-							<ol class="log-list">
-								{#each group.items as activity, itemIndex (activity.id)}
-									<li class="log-item">
-										<ActivityItem {activity} eager={groupIndex === 0 && itemIndex === 0} />
-									</li>
-								{/each}
-							</ol>
-						</section>
-					{/each}
-
-					<Pagination
-						page={currentPage}
-						perPage={PER_PAGE}
-						total={filtered.length}
-						onchange={(p) => (currentPage = p)}
-						label="entries"
-						scrollTargetId="activities-log"
-					/>
-				{/if}
-			</div>
-
-			<!-- ASIDE — browse-by-year meter, tag facet, RSS/updated footer. -->
-			<aside class="activities-aside">
+			<!-- ASIDE — browse-by-year meter, type chips, tag facet. -->
+			<aside id={FACET_ASIDE_ID} class="activities-aside" class:activities-aside--open={facetsOpen}>
 				<section class="aside-block">
 					<h2 class="aside-title">Years</h2>
 					<ul class="year-meter">
@@ -313,7 +270,7 @@
 								</button>
 							{/each}
 						</div>
-						{#if rankedTags.length > PRIMARY_TAGS}
+						{#if needsFacetCombobox(rankedTags.length, PRIMARY_TAGS)}
 							<FacetCombobox
 								options={rankedTags}
 								counts={filters.counts.tags}
@@ -324,15 +281,90 @@
 						{/if}
 					</section>
 				{/if}
-
-				<section class="aside-block aside-footer">
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->
-					<a href="{base}/rss.xml" class="aside-rss">RSS feed</a>
-					{#if updatedLabel}
-						<span class="aside-updated">Log updated {updatedLabel}</span>
-					{/if}
-				</section>
 			</aside>
+
+			<!-- The log — a press column grouped by year, hairline-separated rows.
+			     A <div>, not a <main>: the app shell already opens one around every
+			     route, and a second (nested) main is invalid and leaves the document
+			     with two main landmarks for a screen reader to choose between. -->
+			<div class="activities-log" id="activities-log">
+				<!-- The narrowing, stated: what is filtering, how much of the log
+				     survives it, and the way out. The count is the half that was
+				     missing — a filtered log that reports no match figure leaves the
+				     reader to count the rows themselves. -->
+				{#if anyFiltering}
+					<p class="filter-note">
+						<span class="filter-note-label">Filtered by</span>
+						<span class="filter-note-value">{activeFilterLabels.join(' · ')}</span>
+						<!-- The count alone is the live region: with the button inside it, every
+						     narrowing re-announced the control along with the figure. -->
+						<span class="filter-note-count" aria-live="polite">
+							{activeFilterCount}
+							{activeFilterCount === 1 ? 'filter' : 'filters'} active · {filtered.length} of {totalCount}
+							{totalCount === 1 ? 'entry' : 'entries'}
+						</span>
+						<button type="button" class="mono-action" onclick={filters.clearAllFilters}>
+							Clear all <span aria-hidden="true">✕</span>
+						</button>
+					</p>
+				{/if}
+
+				{#if filtered.length === 0}
+					<!-- Empty state: name the corpus that is still there, and carry the
+					     control back to it. The filter note above also clears, but it is
+					     scrolled past on a phone, where the log is the whole column. -->
+					<div class="log-empty">
+						<p class="log-empty-line">No activities match.</p>
+						<p class="log-empty-note">
+							The log holds {totalCount} entries, {minYear}–{maxYear}.
+						</p>
+					</div>
+				{:else}
+					{#each pageGroups as group, groupIndex (group.year)}
+						<section class="year-group" aria-label="Activities from {group.year}">
+							<div class="year-group-head">
+								<!-- Real h2 so the h1 → h2 (year) → h3 (item) outline holds for AT -->
+								<h2 class="year-group-year">{group.year}</h2>
+								<span class="year-group-count">
+									{group.total}
+									{group.total === 1 ? 'entry' : 'entries'}
+								</span>
+							</div>
+							<!-- An <ol>, like `.bib-list` on the two sibling indexes: the
+							     hairline between entries and the key/plate track widths are
+							     the list's to set, so year-group spacing stays under its
+							     control and every row hangs on the same two columns. -->
+							<ol class="log-list">
+								{#each group.items as activity, itemIndex (activity.id)}
+									<li class="log-item">
+										<ActivityItem {activity} eager={groupIndex === 0 && itemIndex === 0} />
+									</li>
+								{/each}
+							</ol>
+						</section>
+					{/each}
+
+					<Pagination
+						page={currentPage}
+						perPage={PER_PAGE}
+						total={filtered.length}
+						onchange={(p) => (currentPage = p)}
+						label="entries"
+						scrollTargetId="activities-log"
+					/>
+				{/if}
+			</div>
+
+			<!-- The machine-readable exit and the log's own timestamp: a footer to
+			     the whole page, so it closes the column on a phone rather than
+			     riding above the record inside the disclosure. -->
+			<section class="aside-block aside-footer activities-footer">
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->
+				<a href="{base}/rss.xml" class="aside-rss">RSS feed</a>
+				{#if updatedLabel}
+					<span class="aside-updated">Log updated {updatedLabel}</span>
+				{/if}
+			</section>
 		</div>
 	</div>
 </div>

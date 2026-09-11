@@ -10,9 +10,8 @@
 		/**
 		 * Render this card as the editorial "lead" of a featured block:
 		 * no chrome (transparent background, no border, no shadow,
-		 * no lift-on-hover), serif display title, larger image. Mirrors
-		 * the `.entity-card--editorial` pattern in entity-cards.css for
-		 * the same single-large-figures break called for in the brief.
+		 * no lift-on-hover), serif display title, larger image: the
+		 * single-large-figures break called for in the brief.
 		 */
 		editorial = false,
 		// Snippet props
@@ -242,9 +241,6 @@
 	 * alignment" and "break the grid intentionally for emphasis (single
 	 * large figures)"; this is the lead-story treatment for the most
 	 * prominent project in a section.
-	 *
-	 * Mirrors `.entity-card--editorial` in entity-cards.css to keep the two
-	 * card systems' editorial conventions visually consistent.
 	 */
 	.card--editorial,
 	:global(html.dark) .card--editorial {

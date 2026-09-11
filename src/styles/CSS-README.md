@@ -21,7 +21,7 @@ src/
 The `src/app.css` file imports the global stylesheet in a fixed order so tokens are available before anything depends on them:
 
 - **Import order**: Base → Layout → Components → Utilities (mirrors the block comments inside `app.css`).
-- **Route-scoped CSS**: `components/entity-cards.css`, `components/activity-list.css`, and `components/bibliography.css` are **not** imported globally — they are imported by the components that own them, so they code-split per route and keep the render-blocking global stylesheet small.
+- **Route-scoped CSS**: `components/activity-list.css` and `components/bibliography.css` are **not** imported globally — they are imported by the components that own them, so they code-split per route and keep the render-blocking global stylesheet small.
 - **Adding new modules**: Place new files under the appropriate directory, then add a matching `@import` in the same section of `app.css` (or import from the owning component if the styles are route-specific).
 - **Component overrides**: Prefer Svelte component-scoped styles for one-off tweaks; reach for global imports only when multiple pages need the change.
 
@@ -170,7 +170,8 @@ The vocabulary of the design system, in one place. Every class belongs to exactl
 - **Ledger** — the universal record idiom: `.ledger`, `.ledger-row` (hanging mono key column left, serif content right, hairline per row; `--meta` three-column variant), `.ledger-key` / `--current`, `.ledger-status`, `.ledger-content`, `.ledger-title`, `.ledger-desc`, `.ledger-meta`. Column widths tune via `--ledger-key-w` / `--ledger-meta-w`
 - **Ledger meta, as machine text**: `.ledger-meta--figures` — a `.ledger-meta` cell holding a token name, a DOI or a count with a unit rather than a stamp. The column uppercases by default because a meta cell is normally a stamp; a CSS custom-property name is case-sensitive and a DOI is not a stamp, so this prints the string as written on `--tracking-figures`. Face, size and colour stay the column's own
 - **Contents ledger** — the table of contents a long document opens with: `.contents-ledger` (the `<nav>`, keyed at `--ledger-key-w: 4rem` for "§ 14") wrapping a `.ledger.ledger--ruled` of `.ledger-row--meta` rows, with `.contents-link` on the title (quiet ink at rest, pine underline on hover, 24px touch floor). One density step under a record ledger — it is apparatus pointing at the page, not the page itself. Rendered by `ContentsLedger.svelte`; used by both visualisation pages and `/style-guide`
-- **Chips**: `.chip` (flat, square, 1px border, mono caps, `.chip-count` appended; `.chip--selected` = solid ink fill), `.chip-more` (accent mono text action), `.chip-row`
+- **Chips**: `.chip` (flat, square, 1px border, mono caps, `.chip-count` appended; `.chip--selected` = solid ink fill), `.chip-row`
+- **Text actions**: `.mono-action` — the one control that is a line of type rather than a box (`Clear all ✕`, `Clear years ✕`, `All N tags ↓`): reset native button, accent mono caps, 24px target (44px on a coarse pointer), focus ring. Pine at rest because its job is always the current narrowing and the way out of it. `.facet-toggle` is its sibling for the `More filters` disclosure — ink at rest (a permanent control of the narrow layout, not a current state), and `display: none` above `--lg`, where the apparatus it opens is already laid out
 - **Data as ornament**: `.year-bars` / `.year-bar` / `.year-bar--current` (output distribution as ink bars, accent on the newest year), `.hbar` / `.hbar--current` (horizontal proportion meter — a hard-stop `linear-gradient` fill via `--pct`), `.key-terms` (frequency-scaled term cloud), `.stat-ledger` / `.stat-row` / `.stat-value`
 - **Editorial**: `.drop-cap` (accent Archivo initial), `.plate` / `.plate-caption` (images as plates: 1px border, square, serif-italic caption), `.standfirst` (serif-italic deck)
 - **Specimen frame**: `.specimen` — a `<figure>` framing a live demo of an idiom that is itself page chrome, so a documentation page can show a masthead or a ruled section head without the reader mistaking the exhibit for the room. Drawn as a plate (1px box edge, `--color-surface` ground, square, no shadow), never a card. `.specimen-label` is the first child, in the data voice, closed by a hairline; `.specimen--flush` drops the inner padding for demos whose own full-width rules must reach the frame's edge. Consumer: `/style-guide`
@@ -197,17 +198,9 @@ Buttons speak the **data voice**: Spline Sans Mono, uppercase, letterspaced, squ
 - **States**: `.btn-loading`, disabled opacity; focus-visible uses an accent outline
 - **Accessibility**: High-contrast border widening, reduced-motion support
 
-### Cards (`components/cards.css`)
+### Cards
 
-The bounded-tile `.card` primitive (flat warm-paper tile: 1px hairline border, square corners, no shadow, border-colour hover only) is **owned by `Card.svelte`** (`src/lib/components/common/`) as component-scoped CSS, including its `.card-image` / `.card-body` / `.card-title` / `.card-subtitle` elements, the `.card--editorial` lead variant, and dark-mode rules. Many former card grids have been reworked into ledger rows.
-
-This sheet only carries the one shared card class used outside that component:
-
-- **`.card-accent-border`**: Reading-surface tile whose border warms to pine on hover (used by `RelevantItemCard`, `LatestActivities`)
-
-### Entity Cards (`components/entity-cards.css`) — route-scoped
-
-Shared styles for list-based entities (Publications, Communications). `.entity-card` is a flat `--color-surface` tile with a 1px border and square corners; hover warms the border toward the accent and the title to pine — no lift, no zoom, no shadow. Core classes: `.entity-list-item`, `.entity-card`, `.entity-grid`, `.entity-image-container` / `.entity-cover-image`, `.entity-content`, `.entity-meta` / `.entity-type` / `.entity-language`, `.entity-title` / `.entity-title-link`, `.entity-details` / `.entity-abstract`, `.entity-tags` / `.entity-links` / `.entity-link-btn`.
+There is no cards sheet. The bounded-tile `.card` primitive (flat warm-paper tile: 1px hairline border, square corners, no shadow, border-colour hover only) is **owned by `Card.svelte`** (`src/lib/components/common/`) as component-scoped CSS, including its `.card-image` / `.card-body` / `.card-title` / `.card-subtitle` elements, the `.card--editorial` lead variant, and dark-mode rules. The former global `.card-accent-border` had one consumer, `RelevantItemCard`, and now lives in that component's scoped styles. Every dated or keyed record renders as a ledger row, not a card (DESIGN.md, principle 3).
 
 ### Bibliography (`components/bibliography.css`) — route-scoped
 
@@ -237,7 +230,7 @@ Page navigation uses one short Svelte opacity transition in the root layout. Com
 
 ## Page-Specific Styles
 
-There is intentionally no `styles/pages/` directory. Page-level design lives alongside its Svelte component so styles ship only where they are used. Shared presentation is centralized in the route-scoped modules above (`entity-cards.css`, `bibliography.css`, `activity-list.css`). The `ContentBody` and `PageHeader` components (`src/lib/components/common/`) centralize common content-area and page-header styling with component-scoped CSS.
+There is intentionally no `styles/pages/` directory. Page-level design lives alongside its Svelte component so styles ship only where they are used. Shared presentation is centralized in the route-scoped modules above (`bibliography.css`, `activity-list.css`). The `ContentBody` and `PageHeader` components (`src/lib/components/common/`) centralize common content-area and page-header styling with component-scoped CSS.
 
 ## Utilities
 
@@ -326,11 +319,11 @@ Defined in `src/styles/base/media.css`: `--sm` 640px, `--md` 768px, `--lg` 1024p
 6. **Avoid inline styles and `!important`** (exceptions: third-party overrides and `prefers-reduced-motion` blocks)
 7. **Test both themes**: midnight is a first-class microfilm negative, not an afterthought
 8. **Use motion sparingly** and respect `prefers-reduced-motion`
-9. **For list-based content**, use the ledger idiom or `entity-cards.css` / `bibliography.css` rather than bespoke card CSS in components
+9. **For list-based content**, use the ledger idiom or `bibliography.css` rather than bespoke card CSS in components
 
 ## Performance Considerations
 
-- **Modular imports**: The global stylesheet stays small; route-scoped CSS (`entity-cards`, `activity-list`, `bibliography`, `filters`) code-splits with its components
+- **Modular imports**: The global stylesheet stays small; route-scoped CSS (`activity-list`, `bibliography`, `filters`) code-splits with its components
 - **Utility-first approach**: Reduces CSS bloat through reusable classes
 - **CSS variables**: Enable theming without duplicate rule sets (dark mode is a token remap)
 - **Animation performance**: Entry animations use `transform`/`opacity` only; scroll effects are native CSS (`animation-timeline: view()`), no JavaScript observers

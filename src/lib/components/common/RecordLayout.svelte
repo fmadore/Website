@@ -5,9 +5,11 @@ Extracted from /publications/[id], which is where this layout was designed, so
 that /communications/[id] renders the same page rather than a second attempt at
 it. The shell owns everything that is true of *any* record:
 
-  - the editorial breadcrumb — a back-link ("← Publications / Journal Article")
-    rather than the Home/Section/Title trail of the <Breadcrumb> molecule, so it
-    reads as document chrome on a record;
+  - the editorial breadcrumb — a back-link ("← Publications") rather than the
+    Home/Section/Title trail of the <Breadcrumb> molecule, so it reads as
+    document chrome on a record. The BreadcrumbList structured data below still
+    carries the full trail: that is the machine's path, and it ends at the page
+    it describes;
   - the masthead: mono eyebrow tokens, Archivo h1, and either a serif-italic
     byline (a bibliographic record) or a `deck` snippet (a research project's
     standfirst) in the same slot;
@@ -27,7 +29,6 @@ Usage:
 
   <RecordLayout
     section={{ label: 'Publications', href: `${base}/publications` }}
-    breadcrumbCurrent={typeLabel}
     eyebrow={[{ label: typeLabel }, { label: date }]}
     title={displayTitle}
     byline={byline}
@@ -64,8 +65,6 @@ Usage:
 	interface Props {
 		/** Section this record belongs to — the breadcrumb's back-link. */
 		section: { label: string; href: string };
-		/** Trailing breadcrumb segment, normally the type label. */
-		breadcrumbCurrent: string;
 		/** Masthead eyebrow tokens, in print order. */
 		eyebrow?: EyebrowToken[];
 		/** Record title — already typeset. */
@@ -104,7 +103,6 @@ Usage:
 
 	let {
 		section,
-		breadcrumbCurrent,
 		eyebrow = [],
 		title,
 		byline,
@@ -129,19 +127,17 @@ Usage:
 <div class="container py-8">
 	<div class="record-shell">
 		<!-- Breadcrumb — mono, muted. Deliberate editorial variant of the shared
-		     <Breadcrumb> molecule: a back-link ("← Publications / Type") instead
-		     of the Home/Section/Title trail, so it reads as document chrome on
-		     the record. Breadcrumb JSON-LD still ships above, like every other
-		     detail page. -->
+		     <Breadcrumb> molecule: a back-link ("← Publications") and nothing
+		     else, so it reads as document chrome on the record. It used to carry
+		     the type as a trailing segment, which the masthead eyebrow and the
+		     rail's `Type` row both print already — and a type is not a place.
+		     Breadcrumb JSON-LD still ships above, like every other detail page,
+		     and still ends on the record's own title. -->
 		<nav class="record-breadcrumb" aria-label="Breadcrumb">
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed path -->
 			<a href={section.href} class="record-breadcrumb-link"
 				><span aria-hidden="true">← </span>{section.label}</a
 			>
-			{#if breadcrumbCurrent}
-				<span class="record-breadcrumb-sep" aria-hidden="true">/</span>
-				<span class="record-breadcrumb-current">{breadcrumbCurrent}</span>
-			{/if}
 		</nav>
 
 		<!-- The whole record is one article: masthead, body column and metadata
@@ -245,18 +241,6 @@ Usage:
 		color: var(--color-accent);
 	}
 
-	.record-breadcrumb-sep {
-		color: var(--color-text-muted);
-	}
-
-	/* The trailing segment is an unbroken type label on most records but a raw
-	   identifier on some, and the mono caps do not hyphenate: let it break
-	   inside a word rather than push the breadcrumb past the viewport. */
-	.record-breadcrumb-current {
-		color: var(--color-text-muted);
-		overflow-wrap: anywhere;
-	}
-
 	/* ── Two-column grid: masthead + main + 380px metadata rail ───────────── */
 	.record-grid {
 		display: grid;
@@ -341,7 +325,17 @@ Usage:
 		/* With no document, row 2 collapses to nothing but still charges its two
 		   gaps, which would open a 96px hole under the masthead. Sibling work
 		   takes row 2 instead; the rail still spans rows 1–2 in column two, so
-		   the two never meet. */
+		   the two never meet.
+
+		   The two tracks are then declared explicitly, and the second one is
+		   flexible on purpose: an item spanning a flexible track is skipped when
+		   intrinsic tracks are sized, so a rail taller than the masthead — every
+		   talk whose venue map is now a plate in it — cannot push row one open
+		   and strand the sibling work a screen below the byline. */
+		.record-grid--no-main {
+			grid-template-rows: max-content 1fr;
+		}
+
 		.record-grid--no-main .record-related-block {
 			grid-row: 2;
 		}

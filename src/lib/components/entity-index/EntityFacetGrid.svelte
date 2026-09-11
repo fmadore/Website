@@ -12,7 +12,7 @@
 	// Styled by entity-index.css (imported by the page).
 	import RangeSlider from '$lib/components/atoms/RangeSlider.svelte';
 	import FacetCombobox from './FacetCombobox.svelte';
-	import { visibleFacetOptions } from './facetSearch';
+	import { needsFacetCombobox, visibleFacetOptions } from './facetSearch';
 	import type { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 	// Facet *labels* are typeset; the raw value stays the toggle key and the URL
 	// parameter, so filtering and deep links keep matching the data.
@@ -54,20 +54,21 @@
 	const af = $derived(filters.activeFilters);
 	const options = $derived(filters.filterOptions);
 
-	// The open facets (tags: 95 values, co-authors: 60) print their
-	// frequency-ranked head and reach the tail through a combobox — laying the
-	// whole list out grew the page by a screen and a half. A selected value the
-	// cut would hide is merged back in, so a `?tag=` deep link or a combobox
-	// pick is always visible and always switchable off in place.
+	// Every long facet takes one rule (`facetSearch.ts`): print the whole list
+	// while it is at most one value over the limit, otherwise print the
+	// frequency-ranked head and reach the tail by typing. Laying 95 tags out
+	// grew the page by a screen and a half; hiding a single ninth country
+	// behind an "All 9 ↓" disclosure was a second idiom for a row it would have
+	// been cheaper to print. A selected value the cut would hide is merged back
+	// in, so a `?tag=` deep link or a combobox pick is always visible and always
+	// switchable off in place.
 	const AUTHOR_LIMIT = 8;
 	const TAG_LIMIT = 12;
-	// Countries is a closed list (single figures), so it still prints in full.
 	const COUNTRY_LIMIT = 8;
-	let showAllCountries = $state(false);
 	const visibleAuthors = $derived(visibleFacetOptions(options.authors, AUTHOR_LIMIT, af.authors));
 	const visibleTags = $derived(visibleFacetOptions(options.tags, TAG_LIMIT, af.tags));
 	const visibleCountries = $derived(
-		showAllCountries ? options.countries : options.countries.slice(0, COUNTRY_LIMIT)
+		visibleFacetOptions(options.countries, COUNTRY_LIMIT, af.countries)
 	);
 
 	// The active year window (or the full span when unset), clamped to the
@@ -162,7 +163,7 @@
 					</li>
 				{/each}
 			</ul>
-			{#if options.authors.length > AUTHOR_LIMIT}
+			{#if needsFacetCombobox(options.authors.length, AUTHOR_LIMIT)}
 				<FacetCombobox
 					options={options.authors}
 					counts={filters.counts.authors}
@@ -195,15 +196,14 @@
 					</li>
 				{/each}
 			</ul>
-			{#if options.countries.length > COUNTRY_LIMIT}
-				<button
-					type="button"
-					class="facet-more"
-					onclick={() => (showAllCountries = !showAllCountries)}
-				>
-					{showAllCountries ? 'Show fewer' : `All ${options.countries.length}`}
-					<span aria-hidden="true">{showAllCountries ? '↑' : '↓'}</span>
-				</button>
+			{#if needsFacetCombobox(options.countries.length, COUNTRY_LIMIT)}
+				<FacetCombobox
+					options={options.countries}
+					counts={filters.counts.countries}
+					selected={af.countries}
+					label="countries"
+					ontoggle={(value) => filters.toggle('countries', value)}
+				/>
 			{/if}
 		{/if}
 
@@ -228,7 +228,11 @@
 				<span class="facet-years-bound">{maxYear}</span>
 			</div>
 			{#if af.yearRange}
-				<button type="button" class="facet-more" onclick={filters.resetYearRange}>
+				<button
+					type="button"
+					class="mono-action facet-years-clear"
+					onclick={filters.resetYearRange}
+				>
 					Clear years <span aria-hidden="true">✕</span>
 				</button>
 			{/if}
@@ -253,7 +257,7 @@
 					</button>
 				{/each}
 			</div>
-			{#if options.tags.length > TAG_LIMIT}
+			{#if needsFacetCombobox(options.tags.length, TAG_LIMIT)}
 				<FacetCombobox
 					options={options.tags}
 					counts={filters.counts.tags}
@@ -293,7 +297,7 @@
 		{/if}
 	</span>
 	{#if anyNarrowing}
-		<button type="button" class="facet-clear" onclick={onclearall}>
+		<button type="button" class="mono-action" onclick={onclearall}>
 			Clear all <span aria-hidden="true">✕</span>
 		</button>
 	{/if}

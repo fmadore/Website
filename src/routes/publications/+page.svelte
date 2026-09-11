@@ -181,7 +181,7 @@
 
 <div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters, search }}>
 	<!-- ═══ INDEX HERO ═══ -->
-	<header class="index-hero rule-masthead">
+	<header class="index-hero index-masthead">
 		<div class="index-hero-lede">
 			<p class="eyebrow index-eyebrow">
 				Index · {totalEntries} entries · {minYear}–{maxYear}
@@ -204,10 +204,11 @@
 					></span>
 				{/each}
 			</div>
+			<!-- The legend names what the bars encode and nothing else: the
+			     eyebrow above already prints the span, and the strip reprinted
+			     its two end years under it. -->
 			<div class="year-bars-legend">
-				<span>{minYear}</span>
 				<span>Entries by year</span>
-				<span>{maxYear}</span>
 			</div>
 		</div>
 	</header>
@@ -251,7 +252,6 @@
 					<li class="bib-item" class:bib-item--lead={isLead}>
 						<PublicationItem
 							publication={pub}
-							bibliography
 							{yearLabel}
 							featured={isLead}
 							index={i}

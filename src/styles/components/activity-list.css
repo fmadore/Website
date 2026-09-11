@@ -23,8 +23,8 @@
  * site (`.index-hero.rule-masthead`). It previously carried none at all, so the
  * page's own title was the one region the rule hierarchy did not draw. */
 .activities-hero {
-	padding-top: var(--rule-gap);
-	border-top: var(--rule-masthead) solid var(--color-primary);
+	/* The 4px rule and its gap come from `.index-masthead` (ink-signal.css);
+	 * only the interval to the log is local. */
 	margin-bottom: var(--space-8);
 }
 
@@ -35,27 +35,20 @@
 	margin-bottom: var(--space-sm);
 }
 
-/* Masthead — the display voice, large. Cut to the same tokens as `.index-title`
- * on /publications and /conference-activity: the three index pages are one
- * family and were set in three different mastheads (this one a step smaller, a
- * weight lighter and on the wide display axis rather than the narrower one).
- * The standfirst under it takes the global `.standfirst` unchanged — the local
- * override only restated the idiom's own size and dropped nothing else. */
-.activities-hero-title {
-	font-family: var(--font-family-display);
-	font-variation-settings: var(--font-variation-display-sm);
-	font-size: var(--font-size-display);
-	font-weight: 830;
-	line-height: 0.95;
-	letter-spacing: var(--tracking-display-lg);
-	color: var(--color-text-emphasis);
-	margin: 0 0 var(--space-md);
-}
+/* Masthead — the display voice, large. No longer declared here: the log's
+ * title is `.index-title`, the idiom in `ink-signal.css`, which is the same
+ * declaration this block held and the same one /publications, /research,
+ * /teaching, /digital-humanities and the deck gallery now take. The standfirst
+ * under it takes the global `.standfirst` unchanged. */
 
 /* ===========================================================================
  * LAYOUT — main log + browse aside, opened by a 3px rule
  * =========================================================================== */
 
+/* Source order is disclosure → aside → log → footer, which is the reading order
+ * in one column: state what narrows the log before printing it. From --lg the
+ * grid puts the log back in column one and stacks the aside over the footer in
+ * column two, where the disclosure does not exist at all. */
 .activities-layout {
 	display: grid;
 	grid-template-columns: 1fr;
@@ -67,7 +60,30 @@
 @media (--lg) {
 	.activities-layout {
 		grid-template-columns: 1fr 320px;
-		gap: var(--space-10);
+		/* Row one is exactly as tall as the aside, so the footer under it sits
+		   where it used to sit inside it. The second track is flexible on
+		   purpose: an item spanning a flexible track is skipped when intrinsic
+		   tracks are sized, so the log (which spans both rows) cannot push row
+		   one open and strand the footer halfway down the page. */
+		grid-template-rows: max-content 1fr;
+		column-gap: var(--space-10);
+		row-gap: var(--space-6);
+	}
+
+	.activities-log {
+		grid-column: 1;
+		grid-row: 1 / -1;
+	}
+
+	.activities-aside {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.activities-footer {
+		grid-column: 2;
+		grid-row: 2;
+		align-self: start;
 	}
 }
 
@@ -173,40 +189,10 @@
 	color: var(--color-text-light);
 }
 
-/* Rendered as a <button> since the filter system took over from ?tag= links —
- * strip the UA chrome so it keeps reading as a mono text affordance. */
-.filter-note-clear {
-	background: none;
-	border: none;
-	padding: 0;
-	font: inherit;
-	letter-spacing: inherit;
-	text-transform: inherit;
-	cursor: pointer;
-	color: var(--color-accent);
-	text-decoration: none;
-	font-weight: var(--font-weight-semibold);
-	/* WCAG 2.5.8 floor (24px): 16px mono caps, the same shortfall 2.4 found on
-	 * `.bib-action` once a neighbour stopped supplying the spacing exception. */
-	min-height: var(--space-6);
-	display: inline-flex;
-	align-items: center;
-}
-
-.filter-note-clear:hover {
-	color: var(--color-accent-dark);
-}
-
-.filter-note-clear:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-1);
-}
-
-@media (--touch) {
-	.filter-note-clear {
-		min-height: 44px;
-	}
-}
+/* The way out of the narrowing is `.mono-action` (ink-signal.css) — the one
+ * text-action primitive, which carries the UA reset, the 24px/44px target and
+ * the focus ring. This sheet declares nothing about it: the log's clear, the
+ * two entity indexes' `Clear all` and the DH catalogue's are one control. */
 
 /* Empty state — a designed state, not an absence: the statement in the prose
  * voice, the corpus still standing behind it in the data voice, and the control
@@ -239,45 +225,9 @@
 	color: var(--color-text-light);
 }
 
-/* The way out, in the data voice — like the filter note's own clear and
- * `.facet-clear` on the sibling indexes. A reset native button on the index,
- * where the way out is to drop the filters; a link on the year archive, where
- * it is the whole log. */
-.log-empty-clear {
-	background: none;
-	border: none;
-	padding: 0;
-	cursor: pointer;
-	text-decoration: none;
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-semibold);
-	letter-spacing: var(--tracking-label);
-	text-transform: uppercase;
-	color: var(--color-accent);
-	/* WCAG 2.5.8 floor (24px) on every pointer; 44px on a coarse one below.
-	 * inline-flex, not inline: `min-height` is inert on an inline box, and the
-	 * archive renders this as an <a>. */
-	display: inline-flex;
-	align-items: center;
-	min-height: var(--space-6);
-	transition: color var(--duration-fast) var(--ease-out);
-}
-
-.log-empty-clear:hover {
-	color: var(--color-accent-dark);
-}
-
-.log-empty-clear:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-1);
-}
-
-@media (--touch) {
-	.log-empty-clear {
-		min-height: 44px;
-	}
-}
+/* The empty state's way back to the whole log is `.mono-action` too — it is the
+ * same text action, and the archive renders it as an <a> rather than a button
+ * (there are no filters to drop, only a log to return to). */
 
 /* ===========================================================================
  * ASIDE — ruled blocks (no cards): browse-by-year, tag facet, RSS footer
@@ -288,6 +238,18 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-6);
+}
+
+/* Below --lg the whole apparatus collapses behind the `More filters`
+ * disclosure, exactly as `.facet-grid` does on the two sibling indexes. */
+@media (--lg-down) {
+	.activities-aside {
+		display: none;
+	}
+
+	.activities-aside--open {
+		display: flex;
+	}
 }
 
 @media (--lg) {
@@ -335,18 +297,21 @@
 	border-top: var(--rule-section) solid var(--color-primary);
 }
 
+/* The feed link is a permanent fixture of the aside, not the current thing:
+ * quiet ink at rest, pine under the pointer or on focus. */
 .aside-rss {
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-semibold);
 	text-transform: uppercase;
 	letter-spacing: var(--tracking-label);
-	color: var(--color-accent);
+	color: var(--color-text-muted);
 	text-decoration: none;
 }
 
-.aside-rss:hover {
-	color: var(--color-accent-dark);
+.aside-rss:hover,
+.aside-rss:focus-visible {
+	color: var(--color-accent);
 }
 
 .aside-updated {
@@ -417,8 +382,7 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.year-meter-row,
-	.year-step-link,
-	.log-empty-clear {
+	.year-step-link {
 		transition: none;
 	}
 }

@@ -65,6 +65,43 @@
 }
 
 /* ===========================================================================
+ * INDEX MASTHEAD — the nameplate a section index opens on
+ *
+ * One role, one idiom. A section index (/publications, /conference-activity,
+ * /activities, /research, /teaching, /digital-humanities, the deck gallery)
+ * opens one tier under the home nameplate and one tier over a record: the 4px
+ * masthead rule, then a mono eyebrow counting the section, then the section's
+ * name set in Archivo at display size on the narrow width axis.
+ *
+ * That was written four times — `.index-hero`/`.index-title` on the two
+ * finding aids, `.activities-hero-title` on the log, `.dh-hero-title` on the
+ * DH index and `PageHeader`'s own `.page-title` — and the four had drifted a
+ * size, a weight and a width axis apart, so five sibling sections opened in
+ * four different voices. The declaration lives here now; the grid a hero puts
+ * its lede and its data ornament on stays with the page that has one.
+ *
+ * `.index-masthead` draws the rule and its interval; `.index-title` sets the
+ * name. They compose: `.index-hero.index-masthead` on the finding aids,
+ * `.page-header.index-masthead` on the `tier="index"` PageHeader.
+ * =========================================================================== */
+
+.index-masthead {
+	border-top: var(--rule-masthead) solid var(--color-primary);
+	padding-top: var(--rule-gap);
+}
+
+.index-title {
+	font-family: var(--font-family-display);
+	font-variation-settings: var(--font-variation-display-sm);
+	font-size: var(--font-size-display);
+	font-weight: 830;
+	line-height: 0.95;
+	letter-spacing: var(--tracking-display-lg);
+	color: var(--color-text-emphasis);
+	margin: 0 0 var(--space-md);
+}
+
+/* ===========================================================================
  * NAMEPLATE — the masthead wordmark
  * =========================================================================== */
 
@@ -102,13 +139,17 @@
 	margin-bottom: var(--space-md);
 }
 
-/* Section marker — accent mono (e.g. the podcast ♪ glyph). */
+/* Section marker — quiet mono (a § number, or the podcast ♪ glyph). Ink, not
+ * pine: a page of sections printed the marker once per head (13 on the
+ * visualisations page, 9 on the style guide), which is the opposite of an
+ * accent that means "the current thing". The head's 3px rule and Archivo
+ * title already carry the hierarchy; the marker is a label on it. */
 .section-no {
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-bold);
 	letter-spacing: var(--tracking-eyebrow);
-	color: var(--color-accent);
+	color: var(--color-text-muted);
 	white-space: nowrap;
 }
 
@@ -669,16 +710,32 @@
 	color: color-mix(in srgb, var(--color-text-inverted) 72%, transparent);
 }
 
-/* "All N tags ↓" — accent action affordance sitting inline with a chip row.
- * It is a native <button>, so the user-agent chrome (grey/dark box, bevel,
- * default cursor) must be reset; it then reads as an accent mono text action,
- * matching .featured-action. */
-.chip-more {
+/* ===========================================================================
+ * MONO ACTION — the one text-action primitive
+ *
+ * A control that is a line of type rather than a box: "Clear all ✕", "Clear
+ * years ✕", "More filters ▾", "All N tags ↓". The site shipped four copies of
+ * it (`.chip-more`, `.facet-more`, `.facet-clear`, `.filter-note-clear`, plus a
+ * page-local fifth on /digital-humanities), which is how one of them ended up
+ * 16px tall with no focus rule while another was 44px with one.
+ *
+ * It is normally a native <button>, so the user-agent chrome (grey/dark box,
+ * bevel, default cursor) is reset first; it then reads as accent mono text.
+ * Pine at rest is correct here because the job is always "the current
+ * narrowing" — what is active, and the way out of it.
+ *
+ * The 24px floor is WCAG 2.2 SC 2.5.8: 16px of mono caps is not a target, and
+ * the `--touch` block below takes it to the 44px platform guideline.
+ * =========================================================================== */
+.mono-action {
 	appearance: none;
 	-webkit-appearance: none;
 	background: none;
 	border: none;
 	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-1-5);
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-semibold);
@@ -686,17 +743,75 @@
 	text-transform: uppercase;
 	color: var(--color-accent);
 	text-decoration: none;
+	min-height: var(--space-6);
 	padding: var(--space-1) 0;
 	transition: color var(--duration-fast) var(--ease-out);
 }
 
-.chip-more:hover {
+.mono-action:hover {
 	color: var(--color-accent-dark);
 }
 
-.chip-more:focus-visible {
+.mono-action:focus-visible {
 	outline: var(--border-width-medium) solid var(--color-accent);
 	outline-offset: var(--space-2xs);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mono-action {
+		transition: none;
+	}
+}
+
+/* ---------------------------------------------------------------------------
+ * FACET DISCLOSURE — `More filters ▾`
+ *
+ * The sibling of `.mono-action`, and deliberately not a variant of it: pine at
+ * rest means "the current thing", and this control is a permanent fixture of
+ * the narrow layout rather than a state. Ink at rest, pine under the pointer or
+ * on focus.
+ *
+ * It exists only where the block it controls is actually collapsed. Above --lg
+ * the apparatus is laid out in full, so a control offering to open it would be
+ * offering nothing — and an assistive technology that ignores CSS would hear
+ * `aria-expanded="false"` over an open grid.
+ *
+ * Lives here rather than in `entity-index.css` because three pages now open
+ * apparatus with it — the two entity indexes' filter bar and the /activities
+ * aside — and /activities does not load that sheet.
+ * ------------------------------------------------------------------------- */
+.facet-toggle {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: var(--tracking-label);
+	text-transform: uppercase;
+	color: var(--color-text-emphasis);
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	display: none;
+}
+
+/* Pine arrives under the pointer or on focus — the control is live, but only
+ * while it is being used. */
+.facet-toggle:hover,
+.facet-toggle:focus-visible {
+	color: var(--color-accent);
+}
+
+/* A colour change alone is not a focus indicator: the ring is the same one
+ * every other control on the site draws. */
+.facet-toggle:focus-visible {
+	outline: var(--border-width-medium) solid var(--color-accent);
+	outline-offset: var(--space-2xs);
+}
+
+@media (--lg-down) {
+	.facet-toggle {
+		display: inline-flex;
+	}
 }
 
 .chip-row {
@@ -813,6 +928,76 @@
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-medium);
 	letter-spacing: var(--tracking-figures);
+	color: var(--color-text-light);
+}
+
+/* ===========================================================================
+ * PERIOD STRIP — a corpus of dated spans as Gantt bars on one shared axis
+ *
+ * The sibling of the year-bar strip, for a record set whose unit is a *span*
+ * rather than a year: research projects, digital-humanities projects. One
+ * track per record, each bar positioned and sized to its own period across an
+ * axis read off the records (never hardcoded — a constant end year once sat
+ * two years short of a live project and its bar overshot the axis). Running
+ * work takes pine, because "current" is exactly what the accent means.
+ *
+ * Data as ornament, so it encodes and does not decorate: every span it draws
+ * is also printed as a date in the ledger below it, which is why a consumer
+ * hides the whole strip from assistive technology rather than labelling bars
+ * that would read the list back a second time.
+ *
+ * Bar geometry (`left`, `width`) is set inline from the record, like
+ * `.year-bar`'s height and `.hbar`'s `--pct`. Placement is the consumer's:
+ * the strip carries no margin of its own, because on both index pages it
+ * sits in a hero grid cell rather than in the flow.
+ * =========================================================================== */
+
+.periods {
+	min-width: 0;
+}
+
+.periods-label {
+	margin-bottom: var(--space-sm);
+}
+
+/* Track height and the interval between tracks are tunable per instance, the
+ * way `.year-bars` takes `--year-bars-h`: seven research projects and sixteen
+ * DH records draw the same strip, and at the default rhythm the longer one
+ * would be half a screen tall in a hero column. */
+.period-bars {
+	display: flex;
+	flex-direction: column;
+	gap: var(--period-gap, var(--space-2));
+}
+
+.period-track {
+	position: relative;
+	height: var(--period-track-h, 12px);
+}
+
+.period-bar {
+	position: absolute;
+	top: 2px;
+	bottom: 2px;
+	min-width: 4px;
+	background: var(--color-primary);
+	/* Span geometry is set inline: style="left: 18%; width: 32%" */
+}
+
+.period-bar--current {
+	background: var(--color-accent);
+}
+
+.period-legend {
+	display: flex;
+	justify-content: space-between;
+	margin-top: var(--space-2);
+	padding-top: var(--space-2);
+	border-top: var(--rule-hairline) solid var(--color-hairline);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	letter-spacing: var(--tracking-label);
+	text-transform: uppercase;
 	color: var(--color-text-light);
 }
 
@@ -1416,7 +1601,9 @@
 	font-weight: var(--font-weight-medium);
 }
 
-/* Same square marker the projects facet uses — filled pine when on. */
+/* Same square marker the projects facet uses — filled solid ink when on, the
+ * swap a selected chip makes. A selection is not "the current thing": a facet
+ * ledger can hold a dozen of them at once, and pine is scarce by rule. */
 .facet-combobox-mark {
 	flex: 0 0 auto;
 	width: 9px;
@@ -1429,8 +1616,8 @@
 }
 
 .facet-combobox-mark--on {
-	background: var(--color-accent);
-	border-color: var(--color-accent);
+	background: var(--color-primary);
+	border-color: var(--color-primary);
 }
 
 .facet-combobox-name {
@@ -1530,9 +1717,19 @@
 		min-height: 44px;
 	}
 
-	.chip-more {
+	.mono-action {
 		padding: var(--space-2-5) 0;
 		min-height: 44px;
+	}
+
+	/* The disclosure takes its room inline as well as in leading, and cancels
+	 * the inline padding's left offset so it stays flush with the column edge
+	 * it opens. */
+	.facet-toggle {
+		padding: var(--space-2-5) var(--space-2);
+		min-height: 44px;
+		align-items: center;
+		margin-left: calc(-1 * var(--space-2));
 	}
 
 	/* The apparatus line has no box to enlarge, so its terms take the room in

@@ -12,6 +12,7 @@
 	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
 	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
 	import { scaleKeyTerms } from '$lib/utils/keyTerms';
+	import { PUBLICATION_TYPE_BADGE_LABELS } from '$lib/utils/publicationTypeLabels';
 	import {
 		allPublicationSummaries as allPublications,
 		publicationSummariesByYear as publicationsByYear,
@@ -459,6 +460,38 @@
 				}));
 	})();
 
+	/* Spans rather than points, for the period-strip demo in § 6: the run of
+	 * years each publication type covers, drawn over the same axis the bar strip
+	 * above it uses. Real data, and the shape the idiom is for — a strip of
+	 * Gantt bars answers "over which years" where the bar strip answers "how
+	 * many". A type whose newest work is the corpus's newest year is still
+	 * running, so it takes pine, which is what the accent means everywhere. */
+	const typePeriods = (() => {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- build-time tally, not reactive state
+		const spans = new Map<string, { start: number; end: number }>();
+		for (const pub of allPublications) {
+			const label = PUBLICATION_TYPE_BADGE_LABELS[pub.type] ?? pub.type;
+			const span = spans.get(label);
+			if (!span) {
+				spans.set(label, { start: pub.year, end: pub.year });
+			} else {
+				span.start = Math.min(span.start, pub.year);
+				span.end = Math.max(span.end, pub.year);
+			}
+		}
+		const axis = Math.max(1, lastYear - firstYear);
+		return [...spans.entries()]
+			.sort((a, b) => a[1].start - b[1].start || a[1].end - b[1].end)
+			.map(([label, span]) => ({
+				label,
+				current: span.end === lastYear,
+				left: ((span.start - firstYear) / axis) * 100,
+				// A type with a single year is a point on the axis; the floor keeps
+				// it visible without overstating the span.
+				width: Math.max(((span.end - span.start) / axis) * 100, 3)
+			}));
+	})();
+
 	const stats = [
 		{ label: 'Publications', value: allPublications.length, accent: true },
 		{ label: 'Communications', value: allCommunications.length },
@@ -788,15 +821,30 @@
 
 			<h3 class="rail-label guide-subhead">Prose links</h3>
 			<p class="guide-note">
-				A bare <span class="data-voice">&lt;a&gt;</span> inside a
-				<span class="data-voice">&lt;p&gt;</span>, an <span class="data-voice">&lt;li&gt;</span> or
-				<span class="data-voice">.prose</span> takes ink text and a static pine underline — the most
-				frequent accent occurrence on the site, and the one place pine marks a live cross-reference
-				rather than a current state. The selector carries three
-				<span class="data-voice">:not()</span> clauses, so it outranks anything a component can
-				write: the opt-out is the class the selector itself names,
-				<span class="data-voice">.no-underline</span>, and apparatus runs, contents rows and chips
-				all take it.
+				An <span class="data-voice">&lt;a&gt;</span> inside a prose container takes ink text and a
+				static pine underline — the most frequent accent occurrence on the site, and the one place
+				pine marks a live cross-reference rather than a current state. The idiom is
+				<em>opt-in by container</em>: the selector names
+				<span class="data-voice">.prose</span>, <span class="data-voice">.content-body</span>,
+				<span class="data-voice">.page-intro</span>, <span class="data-voice">.record-prose</span>,
+				<span class="data-voice">.project-prose</span>, <span class="data-voice">.abstract</span>,
+				<span class="data-voice">.apparatus-text</span>,
+				<span class="data-voice">.audio-description</span>,
+				<span class="data-voice">.embed-desc</span> and
+				<span class="data-voice">.guide-note</span>, and nothing else. Anything outside them —
+				chips, bibliography titles, plate links, breadcrumbs, ledger rows whose whole row is the
+				anchor — owns its own links, and a component that writes
+				<span class="data-voice">text-decoration: none</span> keeps it.
+			</p>
+			<p class="guide-note">
+				It used to carry bare <span class="data-voice">p a</span> and
+				<span class="data-voice">li a</span> arms as well, which at 0,3,2 outranked every component
+				that had stated its own intent. 209 of the site&rsquo;s 246 pine underlines landed outside
+				running prose that way, down to the mono date key of a log row. A paragraph is not prose
+				because it is a <span class="data-voice">&lt;p&gt;</span>; it is prose because it sits in a
+				reading column. <span class="data-voice">.no-underline</span> stays as the opt-out for an
+				apparatus link that <em>does</em> sit inside a container — a chip in a prose column, or an inline
+				citation that draws its own softer rule.
 			</p>
 			<figure class="specimen">
 				<figcaption class="specimen-label">Specimen — the prose link and its opt-out</figcaption>
@@ -805,7 +853,13 @@
 					underlined in pine at rest, thickening to two pixels and warming to pine on hover.
 				</p>
 				<p class="guide-note guide-specimen-prose">
-					The opt-out, and the one place it belongs — a link that is not running prose:
+					A chip carries <span class="data-voice">.no-underline</span>, so the same sentence leaves
+					<a class="chip no-underline" href={resolve('/publications')}>Publications</a> unruled: the box
+					is already the affordance, and a rule drawn through it reads as a strike.
+				</p>
+				<p class="guide-note guide-specimen-prose">
+					The opt-out on a bare link, and the one place it belongs — a link that is not running
+					prose:
 				</p>
 				<p class="guide-specimen-prose">
 					<a class="no-underline" href={resolve('/publications')}>Publications</a>
@@ -813,9 +867,9 @@
 			</figure>
 			<p class="guide-caption">
 				<span class="data-voice">.no-underline</span> is for apparatus runs, contents rows and chips,
-				never for a link set inside a sentence: strip the underline there and colour alone distinguishes
-				it, which is a WCAG 1.4.1 failure rather than a style choice. Every opt-out on the site sits outside
-				running prose for that reason.
+				never for a link set inside a sentence with nothing else to distinguish it: strip the underline
+				there and colour alone carries the link, which is a WCAG 1.4.1 failure rather than a style choice.
+				Every opt-out on the site either sits outside running prose or draws a rule of its own.
 			</p>
 
 			<h3 class="rail-label guide-subhead">Type scale — forked ratios</h3>
@@ -984,6 +1038,38 @@
 					</div>
 				{/each}
 			</div>
+
+			<h3 class="rail-label guide-subhead">The index masthead</h3>
+			<p class="guide-note">
+				One role, one idiom. Every section index — <span class="data-voice">/publications</span>,
+				<span class="data-voice">/conference-activity</span>,
+				<span class="data-voice">/activities</span>, <span class="data-voice">/research</span>,
+				<span class="data-voice">/teaching</span>,
+				<span class="data-voice">/digital-humanities</span> and the deck gallery — opens on
+				<span class="data-voice">.index-masthead</span> (the 4px rule and its
+				<span class="data-voice">--rule-gap</span>) over a mono eyebrow and
+				<span class="data-voice">.index-title</span>: Archivo at
+				<span class="data-voice">--font-size-display</span>, weight 830, on the narrow width axis.
+				The declaration was written four separate times and had drifted a size, a weight and a width
+				axis apart, so five sibling sections opened in four voices. A sub-page of a section stays on
+				the record tier — that fork is the system working, and the rule above the title is what says
+				which of the two a reader is on.
+				<span class="data-voice">&lt;PageHeader tier="index"&gt;</span> is how a page that does not build
+				its own hero opts in.
+			</p>
+
+			<!-- A paragraph, not a heading: a live masthead demo should not add a
+			     phantom entry to the guide's own document outline. -->
+			<figure class="specimen">
+				<figcaption class="specimen-label">Specimen — index masthead</figcaption>
+				<div class="index-masthead">
+					<p class="eyebrow">Index · {allPublications.length} entries · {firstYear}–{lastYear}</p>
+					<p class="index-title">Publications</p>
+					<p class="standfirst">
+						Books, chapters, articles and reviews, filed as a finding aid rather than a list.
+					</p>
+				</div>
+			</figure>
 
 			<h3 class="rail-label guide-subhead">The rule → content interval</h3>
 			<p class="guide-note">
@@ -1297,17 +1383,59 @@
 						<span class="chip-count">{count}</span>
 					</button>
 				{/each}
-				<button type="button" class="chip-more">All {allTags.length} tags ↓</button>
+				<button type="button" class="mono-action">All {allTags.length} tags ↓</button>
+			</div>
+
+			<h3 class="rail-label guide-subhead">Text actions</h3>
+			<p class="guide-note">
+				The site ships one control that is a line of type rather than a box:
+				<span class="data-voice">.mono-action</span>. A reset native button in mono caps, 24px tall
+				on any pointer and 44px on a coarse one, with the same focus ring every other control draws.
+				It is pine at rest because its job is always the same one — naming the current narrowing and
+				offering the way out of it. Four copies of this control used to ship (one of them 16px tall
+				with no focus rule, another a muted link); the chip row above closes with the first
+				specimen, and these are the other two.
+			</p>
+			<div class="chip-row guide-field">
+				<button type="button" class="mono-action"
+					>Clear all <span aria-hidden="true">✕</span></button
+				>
+				<button type="button" class="mono-action">
+					Clear years <span aria-hidden="true">✕</span>
+				</button>
+			</div>
+
+			<h3 class="rail-label guide-subhead">The facet disclosure</h3>
+			<p class="guide-note">
+				<span class="data-voice">.facet-toggle</span> is the sibling of the text action and
+				deliberately not a variant of it: opening an apparatus is not a state, so it is ink at rest
+				and turns pine only under the pointer or on focus. It exists only below
+				<span class="data-voice">--lg</span>, where the block it controls is actually collapsed —
+				above that breakpoint it is
+				<span class="data-voice">display: none</span>, which is why its
+				<span class="data-voice">aria-expanded</span> is rendered only while the control is. All
+				three index pages open their filters with it: the two entity indexes over the facet grid,
+				<span class="data-voice">/activities</span> over its browse aside. On a wide screen the specimen
+				below is correctly invisible.
+			</p>
+			<div class="guide-field">
+				<button type="button" class="facet-toggle">
+					More filters <span aria-hidden="true">▾</span>
+				</button>
 			</div>
 
 			<h3 class="rail-label guide-subhead">Facet combobox</h3>
 			<p class="guide-note">
-				A chip row prints a closed list; an open one is reached by typing. The field is
-				machine-facing, so it takes the data voice and the square edge of the search field, and the
-				listbox is a plate rather than a floating card — paper ground, 1px border, ledger rows with
-				the serif value left and the mono count right. It overlays what follows on purpose: laying
-				all {allTags.length} publication tags out grew the index by a screen and a half. Matching ignores
-				case and diacritics, so <span class="data-voice">cote</span> reaches Côte d’Ivoire.
+				A facet prints in full while it is at most one value over its limit; past that it prints the
+				frequency-ranked head and reaches the tail by typing. One rule, in
+				<span class="data-voice">facetSearch.ts</span>, because hiding a single row behind a control
+				costs the reader more than the row costs the page — and it was that one case which grew a
+				second long-facet idiom beside this one. The field is machine-facing, so it takes the data
+				voice and the square edge of the search field, and the listbox is a plate rather than a
+				floating card — paper ground, 1px border, ledger rows with the serif value left and the mono
+				count right. It overlays what follows on purpose: laying all {allTags.length} publication tags
+				out grew the index by a screen and a half. Matching ignores case and diacritics, so
+				<span class="data-voice">cote</span> reaches Côte d’Ivoire.
 			</p>
 			<div class="guide-combobox">
 				<FacetCombobox
@@ -1461,8 +1589,12 @@
 			<p class="guide-note">
 				What is currently narrowing a list, stated in the data voice: a quiet mono label, then the
 				reader's own facet values in emphasis ink. It prints the values verbatim rather than a count
-				of them, because it is the one line a reader can check against what they clicked. All three
-				indexes set it — <span class="data-voice">/activities</span> above its log, the two entity indexes
+				of them, because it is the one line a reader can check against what they clicked. All four
+				indexes set it in the same sentence shape — what is narrowing, how much of the corpus
+				survives it, and the way out as a single
+				<span class="data-voice">.mono-action</span>:
+				<span class="data-voice">/activities</span> above its log,
+				<span class="data-voice">/digital-humanities</span> above its catalogue, the two entity indexes
 				inside the facet summary.
 			</p>
 			<p class="guide-field">
@@ -1515,6 +1647,45 @@
 							<span class="stat-value" class:stat-value--accent={stat.accent}>{stat.value}</span>
 						</div>
 					{/each}
+				</div>
+			</div>
+
+			<h3 class="rail-label guide-subhead">The period strip</h3>
+			<p class="guide-note">
+				The bar strip's sibling, for a record set whose unit is a <em>span</em> rather than a year:
+				one <span class="data-voice">.period-track</span> per record, each
+				<span class="data-voice">.period-bar</span> positioned and sized to its own period across
+				one axis read off the records — never a constant, which is how a bar ends up overshooting
+				the axis it is drawn on. Running work takes
+				<span class="data-voice">.period-bar--current</span>, because "current" is the accent's own
+				definition. <span class="data-voice">/research</span> draws its seven projects with it and
+				<span class="data-voice">/digital-humanities</span> its sixteen records, both in the hero
+				column beside the standfirst; the strip carries no margin of its own, and
+				<span class="data-voice">--period-track-h</span> /
+				<span class="data-voice">--period-gap</span>
+				take the rhythm down a step when there are many tracks. Below, the years each publication type
+				covers. Every span a strip draws is also printed as a date in the ledger under it, which is why
+				the whole strip is hidden from assistive technology rather than given labels that would read the
+				list back a second time.
+			</p>
+			<div class="periods period-demo" aria-hidden="true">
+				<p class="eyebrow eyebrow--ink periods-label">
+					Publication periods · {firstYear}–{lastYear}
+				</p>
+				<div class="period-bars">
+					{#each typePeriods as row (row.label)}
+						<div class="period-track">
+							<span
+								class="period-bar"
+								class:period-bar--current={row.current}
+								style="left: {row.left}%; width: {row.width}%"
+							></span>
+						</div>
+					{/each}
+				</div>
+				<div class="period-legend">
+					<span>{firstYear}</span>
+					<span>{lastYear}</span>
 				</div>
 			</div>
 
@@ -2182,6 +2353,15 @@
 	/* The meter is a rail idiom; showing it at page width would misstate it. */
 	.meter-demo {
 		max-width: 20rem;
+	}
+
+	/* The strip carries no margin of its own (a hero grid cell places it), so
+	   the specimen supplies the interval before the next subhead. Held to the
+	   320px ornament column both index heroes give it, so the demo is drawn at
+	   the width it is actually used at. */
+	.period-demo {
+		max-width: 20rem;
+		margin-bottom: var(--space-2xl);
 	}
 
 	/* Wider than the year meter's demo: the key column holds a language name

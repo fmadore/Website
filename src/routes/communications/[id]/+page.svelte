@@ -79,16 +79,17 @@
 	const participants = $derived(communication.participants ?? []);
 	const tags = $derived(communication.tags?.filter(Boolean) ?? []);
 
-	// Does this record have a document at all? A talk with no abstract, no deck,
-	// no programme and no venue prints only its masthead and rail; the reading
-	// column is withheld rather than opening an empty grid interval. The five
-	// clauses mirror the column's five sections.
+	// Does this record have a document at all? A talk with no abstract, no deck
+	// and no programme prints only its masthead and rail; the reading column is
+	// withheld rather than opening an empty grid interval. The four clauses
+	// mirror the column's four sections — the venue map is not among them any
+	// more, which is what makes those 11 talks a masthead and a rail rather
+	// than a screen of map.
 	const hasDocument = $derived(
 		abstractParagraphs.length > 0 ||
 			Boolean(communication.slidesUrl) ||
 			papers.length > 0 ||
-			participants.length > 0 ||
-			Boolean(communication.coordinates)
+			participants.length > 0
 	);
 
 	// Related talks in the same project (excluding the current one).
@@ -196,21 +197,45 @@
      children with their own gap, so each is passed only when it prints
      something: an empty block would read as a stray interval in the column. -->
 {#snippet indexRail()}
-	<div class="comm-tags">
-		<h2 class="rail-label">Tags</h2>
-		<div class="chip-row">
-			{#each tags as tag (tag)}
-				<!-- Label typeset; the href keeps the raw tag the filter matches. -->
-				<!-- eslint-disable svelte/no-navigation-without-resolve -- tag search URL -->
-				<a
-					class="chip"
-					rel="nofollow"
-					href="{base}/conference-activity?tag={encodeURIComponent(tag)}">{typesetQuotes(tag)}</a
-				>
-			{/each}
-			<!-- eslint-enable svelte/no-navigation-without-resolve -->
+	<!-- The venue, drawn. It sits in the rail, under the Location and Country
+	     rows it illustrates, rather than as a section of the reading column: on
+	     11 of the 79 talks that map was the whole column, a 498px plate of one
+	     marker beside a rail already naming the place twice. At the rail's width
+	     it is a plate among the apparatus, which is what it always was. -->
+	{#if communication.coordinates}
+		<div class="comm-location">
+			<h2 class="rail-label">Location</h2>
+			<div class="comm-map" bind:this={mapSectionEl}>
+				{#if MapVisualization}
+					<MapVisualization markersData={singleMarkerData} />
+				{:else if mapLoadError}
+					<p class="comm-map-loading" role="status">
+						The map could not be loaded. The venue is named in the record.
+					</p>
+				{:else}
+					<p class="comm-map-loading">Loading map…</p>
+				{/if}
+			</div>
 		</div>
-	</div>
+	{/if}
+
+	{#if tags.length > 0}
+		<div class="comm-tags">
+			<h2 class="rail-label">Tags</h2>
+			<div class="chip-row">
+				{#each tags as tag (tag)}
+					<!-- Label typeset; the href keeps the raw tag the filter matches. -->
+					<!-- eslint-disable svelte/no-navigation-without-resolve -- tag search URL -->
+					<a
+						class="chip"
+						rel="nofollow"
+						href="{base}/conference-activity?tag={encodeURIComponent(tag)}">{typesetQuotes(tag)}</a
+					>
+				{/each}
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
+			</div>
+		</div>
+	{/if}
 {/snippet}
 
 {#snippet documentColumn()}
@@ -290,26 +315,6 @@
 			</div>
 		</section>
 	{/if}
-
-	<!-- Location — the venue as a plate. -->
-	{#if communication.coordinates}
-		<section class="section comm-section" aria-labelledby="comm-location-head">
-			<div class="section-head">
-				<h2 id="comm-location-head" class="section-title">Location</h2>
-			</div>
-			<div class="comm-map" bind:this={mapSectionEl}>
-				{#if MapVisualization}
-					<MapVisualization markersData={singleMarkerData} />
-				{:else if mapLoadError}
-					<p class="comm-map-loading" role="status">
-						The map could not be loaded. The venue is named in the record.
-					</p>
-				{:else}
-					<p class="comm-map-loading">Loading map…</p>
-				{/if}
-			</div>
-		</section>
-	{/if}
 {/snippet}
 
 {#snippet relatedBlock()}
@@ -330,7 +335,6 @@
 
 <RecordLayout
 	section={{ label: 'Talks & Events', href: `${base}/conference-activity` }}
-	breadcrumbCurrent={typeLabel}
 	{eyebrow}
 	title={displayTitle}
 	{byline}
@@ -338,7 +342,7 @@
 	jsonLdScriptId="communication-json-ld"
 	{jsonLdString}
 	main={hasDocument ? documentColumn : undefined}
-	railSecondary={tags.length > 0 ? indexRail : undefined}
+	railSecondary={tags.length > 0 || communication.coordinates ? indexRail : undefined}
 	related={relatedInProject.length > 0 ? relatedBlock : undefined}
 >
 	{#snippet railPrimary()}
@@ -404,30 +408,34 @@
 
 	/* ── Map plate ─────────────────────────────────────────────────────────── */
 	/* A plain block, not a flex box: MapVisualization sizes itself to the
-	   wrapper's height, and a flex main axis would leave it at content height. */
+	   wrapper's height, and a flex main axis would leave it at content height.
+	   The height comes from the ratio rather than a figure, because the plate
+	   now takes the rail's 380px above --lg and the whole column below it, and
+	   a fixed height would be wrong at one of the two. */
 	.comm-map {
-		height: 400px;
+		aspect-ratio: 4 / 3;
 		overflow: hidden;
 		background: var(--color-background-muted);
 		border: var(--border-width-thin) solid var(--color-border);
 	}
 
-	/* Placeholder held in the data voice — it is machine status, not prose. */
+	/* Placeholder held in the data voice — it is machine status, not prose.
+	   Centred in the plate the map will fill, so the honest state sits where
+	   the map would rather than at the top of an empty box. */
 	.comm-map-loading {
 		margin: 0;
-		padding: var(--space-3xl) var(--space-md);
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: var(--space-md);
 		text-align: center;
+		text-wrap: balance;
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
 		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-text-light);
-	}
-
-	@media (--sm-down) {
-		.comm-map {
-			height: 300px;
-		}
 	}
 </style>

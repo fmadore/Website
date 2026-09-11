@@ -21,7 +21,7 @@
 	let itemLink = $derived(resolve(`${basePath}/${item.id}` as any));
 </script>
 
-<div class="relevant-item card-accent-border">
+<div class="relevant-item">
 	<div class="relevant-item-meta">
 		{#if item.type}
 			<span class="relevant-item-type">{formatType(item.type)}</span>
@@ -55,6 +55,23 @@
 </div>
 
 <style>
+	/* Reading-surface tile: flat paper, 1px border, square corners, no shadow.
+	 * The border warms to pine only under the pointer — interaction feedback,
+	 * the one accent a standing card may carry. Formerly the global
+	 * `.card-accent-border` in cards.css, whose only consumer this was. */
+	.relevant-item {
+		padding: var(--space-lg);
+		border-radius: 0;
+		background: var(--color-surface);
+		border: var(--border-width-thin) solid var(--color-border);
+		box-shadow: none;
+		transition: border-color var(--duration-fast) var(--ease-out);
+	}
+
+	.relevant-item:hover {
+		border-color: var(--color-accent);
+	}
+
 	/* Meta line — the DATA voice: a mono type "kind" marker and a mono dateline,
 	 * hairline-ruled beneath, the way a finding-aid entry is headed. */
 	.relevant-item-meta {
@@ -68,14 +85,16 @@
 		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
-	/* Type — a mono "kind" marker in accent, no pill, no fill. */
+	/* Type — a mono "kind" marker, no pill, no fill. Quiet ink, not pine: a
+	 * record's kind is a permanent fact about it, never "the current thing",
+	 * and a panel of twelve cards printed it twelve times. */
 	.relevant-item-type {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
 		font-weight: var(--font-weight-semibold);
 		letter-spacing: var(--tracking-label);
-		color: var(--color-accent);
+		color: var(--color-text-muted);
 	}
 
 	.relevant-item-date {
@@ -128,14 +147,16 @@
 		margin-top: auto;
 	}
 
-	/* Action — a mono-caps link, the data voice, accent-coloured. */
+	/* Action — a mono-caps link in the data voice. Ink at rest, pine only under
+	 * the pointer or focus: every card in the panel carries one, so at rest it
+	 * is a repeated affordance, not the current thing. */
 	.relevant-item-link {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
 		letter-spacing: var(--tracking-label);
 		font-weight: var(--font-weight-medium);
-		color: var(--color-accent);
+		color: var(--color-text-emphasis);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
 		display: inline-flex;
@@ -143,8 +164,9 @@
 		gap: var(--space-1);
 	}
 
-	.relevant-item-link:hover {
-		color: var(--color-accent-dark);
+	.relevant-item-link:hover,
+	.relevant-item-link:focus-visible {
+		color: var(--color-accent);
 	}
 
 	/* Responsive design */
@@ -156,6 +178,7 @@
 
 	/* Respect user motion preferences */
 	@media (prefers-reduced-motion: reduce) {
+		.relevant-item,
 		.relevant-item-title a,
 		.relevant-item-link {
 			transition: none !important;

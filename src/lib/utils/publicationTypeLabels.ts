@@ -31,6 +31,7 @@ export const PUBLICATION_TYPE_BADGE_LABELS: Record<string, string> = {
 	blogpost: 'Blog Post',
 	'masters-thesis': "Master's Thesis",
 	'phd-dissertation': 'PhD Dissertation',
+	'conference-proceedings': 'Conference Proceedings',
 	'working-paper': 'Working Paper'
 };
 
@@ -65,10 +66,19 @@ export const PUBLICATION_TYPE_SEO_LABELS: Record<string, string> = {
 	blogpost: 'Blog post',
 	'masters-thesis': "Master's thesis",
 	'phd-dissertation': 'PhD dissertation',
+	'conference-proceedings': 'Conference proceedings',
 	'working-paper': 'Working paper'
 };
 
-/** Plural section headings for the CV page. */
+/**
+ * Plural section headings for the CV page.
+ *
+ * `getPublicationTypeDisplayName` falls back to "Other Publications", so a
+ * missing key is silent rather than loud — which is why the registry test
+ * checks this one like the rest. The CV itself filters theses and dissertations
+ * out of its publication list (`CVPublications.svelte`); the headings are kept
+ * complete anyway, because an absent key is not how that exclusion is stated.
+ */
 export const PUBLICATION_TYPE_CV_HEADING_LABELS: Record<string, string> = {
 	book: 'Books',
 	'special-issue': 'Guest Edited Journals',
@@ -79,7 +89,9 @@ export const PUBLICATION_TYPE_CV_HEADING_LABELS: Record<string, string> = {
 	'working-paper': 'Working Papers',
 	'bulletin-article': 'Bulletin Articles',
 	blogpost: 'Blog Posts',
-	'conference-proceedings': 'Conference Proceedings'
+	'conference-proceedings': 'Conference Proceedings',
+	'masters-thesis': "Master's Theses",
+	'phd-dissertation': 'PhD Dissertations'
 };
 
 /** Sentence-case facet labels for the publications index filters. */
@@ -107,8 +119,8 @@ export const PUBLICATION_TYPE_CHIP_LABELS: Record<string, string> = {
 	'conference-proceedings': 'Proceedings',
 	encyclopedia: 'Encyclopedia entries',
 	article: 'Articles',
-	'masters-thesis': 'Theses',
-	'phd-dissertation': 'Dissertations',
+	'masters-thesis': "Master's theses",
+	'phd-dissertation': 'PhD dissertations',
 	report: 'Reports',
 	'special-issue': 'Special issues',
 	'working-paper': 'Working papers'
@@ -156,7 +168,9 @@ export const PUBLICATION_TYPE_PANEL_LABELS: Record<string, string> = {
 	report: 'Report',
 	encyclopedia: 'Encyclopedia Entry',
 	blogpost: 'Blog Post',
-	dissertation: 'Dissertation',
+	'masters-thesis': "Master's Thesis",
+	'phd-dissertation': 'PhD Dissertation',
+	'conference-proceedings': 'Conference Proceedings',
 	'working-paper': 'Working Paper'
 };
 

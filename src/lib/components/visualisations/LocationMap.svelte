@@ -480,6 +480,25 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		queueMicrotask(() => choroplethStatusRegion?.focus());
 	}
 
+	/**
+	 * Give every attribution link the visually hidden ` (opens in new tab)` the
+	 * rest of the site's external links carry. Idempotent: the control rebuilds
+	 * its links on each style and source change, and an already-annotated link
+	 * must not collect a second copy.
+	 */
+	function labelAttributionLinks() {
+		const links = mapContainer?.querySelectorAll<HTMLAnchorElement>(
+			'.maplibregl-ctrl-attrib a[target="_blank"]'
+		);
+		for (const link of links ?? []) {
+			if (link.querySelector('.sr-only')) continue;
+			const note = document.createElement('span');
+			note.className = 'sr-only';
+			note.textContent = ' (opens in new tab)';
+			link.append(note);
+		}
+	}
+
 	// Shared MapLibre lifecycle (WebGL guard, dynamic import, controls, theme
 	// style swap, cleanup). The active view re-renders after style, data, or
 	// mode changes; country boundaries are cached after their first lazy fetch.
@@ -494,6 +513,14 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		isDark: () => darkModeDetected,
 		onInit: (m, gl) => {
 			m.addControl(new gl.AttributionControl({ compact: true }), 'bottom-right');
+			// The basemap credits are the one set of new-tab links on the site the
+			// markup does not author: MapLibre builds them from the style's own
+			// attribution string. Annotate them wherever the control rewrites
+			// them, so CARTO and OpenStreetMap announce the new tab like every
+			// other external link. Registered after `addControl`, so the control's
+			// own handler has already run by the time this one does.
+			m.on('styledata', labelAttributionLinks);
+			m.on('sourcedata', labelAttributionLinks);
 		},
 		onStyleReady: () => renderMapView(),
 		watchData: () => ({ data, viewMode }),

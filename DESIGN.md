@@ -315,7 +315,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **Style:** Transparent ground, 1px border, square, mono uppercase at 0.06em tracking, with the count appended in a heavier weight and quieter ink (`ISLAM 33`).
 - **State:** Unselected hovers to a stronger border and emphasis ink. **Selected is a solid ink fill** with paper text, and its appended count drops to 72% of the inverted colour.
 - **Sizing:** Vertical padding is set so the chip clears 24px in both dimensions, satisfying WCAG 2.5.8 target size.
-- **`chip-more`:** The "All N tags" affordance is a reset native button rendered as accent mono text, not a chip.
+- **`mono-action`:** The one text action beside a chip row or under a facet — "All N tags ↓", "Clear all ✕", "Clear years ✕". A reset native button rendered as accent mono text, not a chip; pine at rest because its job is always the current narrowing and the way out of it. `.facet-toggle` is the same control for the "More filters" disclosure, inked rather than pine: opening the apparatus is not a state.
 
 ### Cards / Containers
 
@@ -345,6 +345,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **The Year-Bar Strip:** Publication distribution drawn as flush ink bars with the newest year in pine, and a mono legend beneath. Real data used as the page's ornament.
 - **The Key-Terms Cloud:** A frequency-scaled serif term list where size encodes actual corpus frequency.
 - **The Drop Cap:** An Archivo initial at 4.4em, weight 850, in pine, floated into an abstract or standfirst.
+- **The Prose Link and the Inline Citation:** A link in running prose takes ink text and a 1px pine underline at a 3px offset, warming to pine text and 2px on hover or focus — and the idiom is opt-in by _container_ (`.prose`, `.content-body`, `.page-intro`, `.record-prose`, `.project-prose`, `.abstract`, `.apparatus-text`, `.audio-description`, `.embed-desc`, `.guide-note`), never by `p a` / `li a`, which used to put 209 of the site's 246 pine underlines on chips, plate links, breadcrumbs and ledger rows that had each written `text-decoration: none` and lost. An **inline citation** is that prose link with a softer rule — ink text, the pine underline held at 55% and set at a 0.18em offset, pine on hover — not a pine word; it carries `.no-underline` because it always sits inside a prose container and draws its own rule.
 - **The Stat Ledger:** "The corpus, in numbers" — mono rows with tabular figures, the key figure in pine.
 - **The Contents Ledger** (`.contents-ledger`, `.contents-link`, rendered by `ContentsLedger.svelte`): what any document long enough to need one opens with — a `§`-keyed ledger of anchors with the machine's count per section in the meta column, quiet ink at rest and pine only under the pointer. The visualisation pages and the style guide open with it.
 - **The Specimen Frame** (`.specimen`, `.specimen-label`, `.specimen--flush`): frames a live demo of an idiom that is itself page chrome, so a documentation page can show a ruled section head without the reader mistaking the exhibit for the room — a plate, never a card: 1px box edge on `--color-surface`, square, no shadow, a data-voice caption as its first child closed by a hairline; the flush variant drops the inner padding so a demo's own full-width rules reach the frame's edge.

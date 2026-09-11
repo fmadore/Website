@@ -99,6 +99,19 @@
 		margin: 0 0 var(--space-3);
 	}
 
+	/* One step down on a phone. "Curriculum" is the longest single word any
+	 * masthead on the site sets, and at the desktop step it is wider than the
+	 * sheet's own measure at 375, so `overflow-wrap: break-word` — the reset
+	 * that keeps a long URL from tearing the layout open — did the only thing
+	 * it can and broke it as `Curriculu / m Vitae`. The largest step on the
+	 * scale that fits the word at 375 within the page's own gutters is the one
+	 * below, so the title breaks between its two words, where a title should. */
+	@media (--sm-down) {
+		.cv-main-title {
+			font-size: var(--font-size-3xl);
+		}
+	}
+
 	/* Subject — the serif-italic standfirst. */
 	.cv-subtitle {
 		font-family: var(--font-family-serif);
