@@ -109,18 +109,19 @@ generated from the datasets and would keep advertising URLs that ship no page.
 
 ### Generated data files
 
-The four `*.generated.ts` files in `src/lib/data/` (`referenceIndex`,
-`publications/summaries`, `researchProse`, `imageVariants`) are committed, not
-built on the fly. `prebuild` regenerates all four, so a full `npm run build`
-covers it; after only touching `src/lib/data/` or adding an image, the
-generators alone are quicker:
+The `*.generated.ts` files in `src/lib/data/` (`referenceIndex`,
+`publications/summaries`, `analysis/keyTerms`, `analysis/corpusSummary`,
+`researchProse`, `imageVariants`) are committed, not built on the fly.
+`prebuild` regenerates them all, so a full `npm run build` covers it; after
+only touching `src/lib/data/` or adding an image, the generators alone are
+quicker:
 
 ```bash
-npm run gen:refs && npm run gen:summaries && npm run gen:prose && npm run gen:images
+npm run gen:refs && npm run gen:summaries && npm run gen:analysis && npm run gen:prose && npm run gen:images
 ```
 
-`lint` and `check` pass on a stale index — CI does not. `ci.yml` gates all
-three by rerunning the same scripts under `--check`, before the SvelteKit
+`lint` and `check` pass on a stale index — CI does not. `ci.yml` gates them all
+by rerunning the same scripts under `--check`, before the SvelteKit
 build, on pull requests and on main alike.
 
 **Publication summaries**: `/publications`, `/cv`, the research pages and the
@@ -132,6 +133,31 @@ citation the watcher records), plus `abstractExcerpt`, `citedByCount` and
 `index.ts`. `summaries.test.ts` proves the projection faithful against the full
 dataset, excerpt truncation included; a list row must never truncate an
 abstract past `ABSTRACT_EXCERPT_LENGTH` (`summaryConfig.ts`).
+
+**Communication summaries**: the same projection for talks —
+`data/communications/summaries.ts` drops `abstract` and adds `abstractExcerpt`;
+`/cv`, `/conference-activity`, the slides gallery, the timeline and the research
+pages read it, and only `/communications/[id]` imports the full `index.ts`.
+`gen:summaries` emits both projections; `summaries.test.ts` beside each proves
+it faithful.
+
+**Font subsets**: the latin-ext and vietnamese faces in `static/fonts/web/` are
+cut to fixed Unicode blocks by `scripts/subset-fonts.py` (x64 Python with
+fontTools + brotli); `npm run check:fonts` proves the committed files and the
+`unicode-range` declarations in `src/app.html` still match the script. Fonts are
+not part of `prebuild` — regenerate by hand when a face changes.
+
+**Analysis projections**: `data/analysis/` is 306 KiB of lemmatised word and
+bigram frequencies. Two places read it and neither needs more than a sliver, so
+both read a committed projection instead: `keyTerms.generated.ts` (publication
+id → its top 28 terms) for `PublicationIndexRail`'s key-terms cloud, and
+`corpusSummary.generated.ts` (the 100-term cloud and 30 commonest bigrams, for
+all / English / French, plus the counts the toggle prints) for
+`/publications/visualisations`. `analysis/index.ts` keeps the full API —
+nothing on a route's critical path uses it. `analysisSummaries.test.ts` proves
+both projections identical to the live computation; if a page starts asking for
+more terms than a projection carries, change the constants in
+`scripts/generate-analysis-summaries.mjs` and regenerate.
 
 ## Architecture
 

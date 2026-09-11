@@ -204,11 +204,24 @@
 	 * hole in the primary face is filled by a font this site already ships and
 	 * loads, keeping the page warm rather than dropping into a terminal face.
 	 * Digits and Latin are fully covered by Spline, so the tabular grid the
-	 * data voice depends on is never affected. */
-	--font-family-serif: 'Newsreader', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
-	--font-family-display: 'Archivo', 'system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
+	 * data voice depends on is never affected.
+	 *
+	 * `… Fallback` is the metric-matched cut of the system face the stack would
+	 * otherwise reach first (Georgia, Segoe UI, Consolas), declared in app.html
+	 * with size-adjust and ascent/descent overrides taken from the webfont it
+	 * stands in for. It holds the layout for the round trip before the webfont
+	 * swaps in, so the swap changes letterforms and not line positions. In the
+	 * mono stack it sits *after* Newsreader, not before: Consolas does carry the
+	 * Yoruba underdots, so putting it ahead of Newsreader would hand ẹ and ọ to
+	 * a terminal face permanently — exactly the drop the splice above exists to
+	 * prevent. A platform without the named local face falls straight through. */
+	--font-family-serif:
+		'Newsreader', 'Newsreader Fallback', 'Georgia', 'Cambria', 'Times New Roman', Times, serif;
+	--font-family-display:
+		'Archivo', 'Archivo Fallback', 'system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', sans-serif;
 	--font-family-mono:
-		'Spline Sans Mono', 'Newsreader', 'SF Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+		'Spline Sans Mono', 'Newsreader', 'Spline Sans Mono Fallback', 'SF Mono', 'Consolas', 'Monaco',
+		'Courier New', monospace;
 
 	/* Archivo width-axis presets. The nameplate/section heads are set on a
 	 * wide, heavy cut (a compressed-broadsheet feel); weight is carried by

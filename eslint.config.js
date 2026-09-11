@@ -15,7 +15,10 @@ export default ts.config(
 		ignores: [
 			'src/lib/data/referenceIndex.generated.ts',
 			'src/lib/data/researchProse.generated.ts',
-			'src/lib/data/publications/summaries.generated.ts'
+			'src/lib/data/publications/summaries.generated.ts',
+			'src/lib/data/analysis/keyTerms.generated.ts',
+			'src/lib/data/analysis/corpusSummary.generated.ts',
+			'src/lib/data/communications/summaries.generated.ts'
 		]
 	},
 	includeIgnoreFile(gitignorePath),

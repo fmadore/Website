@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Communication } from '$lib/types/communication';
+	import type { CommunicationSummary } from '$lib/types/communication';
 	import { resolve } from '$app/paths';
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	import { formatCommunicationCitation } from '$lib/utils/citationFormatter';
@@ -9,7 +9,8 @@
 	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
 
 	interface Props {
-		communication: Communication;
+		/** A summary: the list never needs the full abstract. */
+		communication: CommunicationSummary;
 		/** Position in the list, used only to load the first plates eagerly. */
 		index?: number;
 		/** The hanging year, printed once per year-group by the parent. */
@@ -54,8 +55,10 @@
 	// Venue line (conference · city · country) — the finding-aid byline.
 	const venueLine = $derived(citationDetails);
 	// A one-line standfirst for the featured lead: a trimmed abstract if present.
+	// The excerpt truncates exactly as the full abstract would at this length
+	// (summaries.test.ts holds that contract).
 	const bibStandfirst = $derived(
-		communication.abstract ? truncateAbstract(communication.abstract, 180) : ''
+		communication.abstractExcerpt ? truncateAbstract(communication.abstractExcerpt, 180) : ''
 	);
 	// Right-aligned action column: primary material (slides/other), an optional
 	// DOI; BibliographyRow appends the internal "Details" link.

@@ -18,7 +18,7 @@
 		publicationSummariesByYear as publicationsByYear,
 		publicationSummaryTags as allTags
 	} from '$lib/data/publications/summaries';
-	import { allCommunications } from '$lib/data/communications/index';
+	import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
 	import { activitiesByDate } from '$lib/data/activities';
 	import { tallyBy } from '$lib/utils/vizAggregation';
 	/* The index pages' search field is documented in § 5, so the guide loads the
@@ -1785,13 +1785,17 @@
 
 			<h3 class="rail-label guide-subhead">The empty plate and the honest state</h3>
 			<p class="guide-note">
-				Two states, one register. <span class="data-voice">.viz-empty</span> is what a plate prints
-				when the record holds nothing to draw; <span class="data-voice">.state-note</span> is what a
-				component prints when it could not load at all — a failed map, a recording that 404s. Both
-				set a mono label naming the state over one serif sentence naming what still works, both
-				left-aligned at the top edge rather than floated in the middle of the plate, and neither is
-				red: <span class="data-voice">--color-danger</span> is reserved for form validation, and a fetch
+				Three states, one register. <span class="data-voice">.viz-empty</span> is what a plate
+				prints when the record holds nothing to draw; <span class="data-voice">.state-note</span> is
+				what a component prints when it could not load at all — a failed map, a recording that 404s
+				— and the same panel, carrying only its dateline, is what a heavy plate holds while its
+				library is on the way. Every one of them sets a mono label naming the state, left-aligned at
+				the top edge rather than floated in the middle of the plate, and none of them is red:
+				<span class="data-voice">--color-danger</span> is reserved for form validation, and a fetch
 				that failed is not the reader's mistake. The renderer's own message goes to the console.
+				There is no spinner and no shimmer anywhere in the system: the charts and maps load 400px
+				before they scroll into view (<span class="data-voice">use:inView</span>), so on an ordinary
+				scroll the pending note is never read at all.
 			</p>
 			<div class="state-demo">
 				<div class="viz-empty">
@@ -1801,6 +1805,9 @@
 				<div class="state-note" role="status">
 					<span class="dateline">Map unavailable</span>
 					<p>The map could not be loaded. The publication counts below are the same records.</p>
+				</div>
+				<div class="state-note" role="status">
+					<span class="dateline">Loading chart…</span>
 				</div>
 			</div>
 		</section>

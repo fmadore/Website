@@ -19,6 +19,7 @@
 	import { formatByline } from '$lib/utils/byline';
 	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 	import MetaTags from '$lib/components/communications/MetaTags.svelte';
+	import { inView } from '$lib/actions/inView';
 
 	// Get communication from the page data
 	let { data } = $props();
@@ -105,16 +106,17 @@
 	// maplibre-gl (~267 KiB JS) plus ~2 MB of Carto tiles dominate LCP/TBT, and
 	// the map sits at the very bottom of the page — well below the fold — so
 	// eagerly importing it on mount tanked PageSpeed for no visible benefit.
+	// The gate itself is `use:inView` (src/lib/actions/inView.ts), the one
+	// 400px observer every heavy plate on the site now hangs on.
 	let MapVisualization:
 		typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
 		$state(null);
-	let mapLoaded = $state(false);
+	let mapRequested = false;
 	let mapLoadError = $state(false);
-	let mapSectionEl = $state<HTMLElement>();
 
 	function loadMap() {
-		if (mapLoaded) return;
-		mapLoaded = true;
+		if (mapRequested) return;
+		mapRequested = true;
 		import('$lib/components/visualisations/MapVisualization.svelte')
 			.then((module) => {
 				MapVisualization = module.default;
@@ -122,36 +124,11 @@
 			.catch((error) => {
 				// The chunk can fail on a cold offline load or a stale service-worker
 				// manifest. The venue is already printed in the rail, so the section
-				// says so rather than spinning on "Loading map…" for ever.
+				// says so rather than holding "Loading map…" for ever.
 				mapLoadError = true;
 				if (import.meta.env.DEV) console.error('map chunk failed to load:', error);
 			});
 	}
-
-	// Defer the maplibre-gl import until the map section approaches the viewport
-	// (200px pre-load margin). Falls back to loading immediately if
-	// IntersectionObserver is unavailable.
-	$effect(() => {
-		if (!communication.coordinates || mapLoaded || !mapSectionEl) return;
-
-		if (typeof IntersectionObserver === 'undefined') {
-			loadMap();
-			return;
-		}
-
-		const observer = new IntersectionObserver(
-			(entries) => {
-				if (entries.some((entry) => entry.isIntersecting)) {
-					loadMap();
-					observer.disconnect();
-				}
-			},
-			{ rootMargin: '200px' }
-		);
-		observer.observe(mapSectionEl);
-
-		return () => observer.disconnect();
-	});
 
 	// Prepare marker data for the map (array with one item)
 	const singleMarkerData = $derived(
@@ -205,15 +182,18 @@
 	{#if communication.coordinates}
 		<div class="comm-location">
 			<h2 class="rail-label">Location</h2>
-			<div class="comm-map" bind:this={mapSectionEl}>
+			<div class="comm-map">
 				{#if MapVisualization}
 					<MapVisualization markersData={singleMarkerData} />
 				{:else if mapLoadError}
-					<p class="comm-map-loading" role="status">
-						The map could not be loaded. The venue is named in the record.
-					</p>
+					<div class="state-note" role="status">
+						<span class="dateline">Map unavailable</span>
+						<p>The map could not be loaded. The venue is named in the record.</p>
+					</div>
 				{:else}
-					<p class="comm-map-loading">Loading map…</p>
+					<div class="state-note" role="status" use:inView={loadMap}>
+						<span class="dateline">Loading map…</span>
+					</div>
 				{/if}
 			</div>
 		</div>
@@ -419,23 +399,12 @@
 		border: var(--border-width-thin) solid var(--color-border);
 	}
 
-	/* Placeholder held in the data voice — it is machine status, not prose.
-	   Centred in the plate the map will fill, so the honest state sits where
-	   the map would rather than at the top of an empty box. */
-	.comm-map-loading {
-		margin: 0;
+	/* Pending and failed are the shared `.state-note` idiom; all this does is
+	   fill the plate the map will occupy, so the note replaces the map rather
+	   than banding across the top of it — the same two lines the visualisation
+	   pages and `.map-state-note` use. */
+	.comm-map :global(.state-note) {
+		width: 100%;
 		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: var(--space-md);
-		text-align: center;
-		text-wrap: balance;
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-medium);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
-		color: var(--color-text-light);
 	}
 </style>

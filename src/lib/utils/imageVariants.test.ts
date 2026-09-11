@@ -1,5 +1,7 @@
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { describe, it, expect } from 'vitest';
-import { buildSrcset, imageDimensions, resolveImagePath } from './imageVariants';
+import { buildSrcset, imageDimensions, resolveImagePath, VARIANT_WIDTHS } from './imageVariants';
 
 const manifest = {
 	'activities/talk.webp': { sourceWidth: 1280, sourceHeight: 720, widths: [400, 800] },
@@ -78,5 +80,26 @@ describe('resolveImagePath', () => {
 		expect(resolveImagePath('', '')).toBeUndefined();
 		expect(resolveImagePath(null, '')).toBeUndefined();
 		expect(resolveImagePath(undefined, '')).toBeUndefined();
+	});
+});
+
+describe('VARIANT_WIDTHS', () => {
+	it('matches the ladder the generator writes files for', () => {
+		// The generator is a top-level-await script that walks static/images and
+		// writes derivatives, so it cannot be imported; its ladder is read as
+		// source text instead. A drift between the two silently points srcset
+		// candidates at files that were never generated.
+		const generator = readFileSync(
+			fileURLToPath(new URL('../../../scripts/generate-image-variants.mjs', import.meta.url)),
+			'utf8'
+		);
+		const declared = generator.match(/export const VARIANT_WIDTHS = \[([^\]]*)\]/);
+		expect(declared).not.toBeNull();
+		const widths = (declared?.[1] ?? '').split(',').map((part) => Number(part.trim()));
+		expect(widths).toEqual([...VARIANT_WIDTHS]);
+	});
+
+	it('is sorted ascending and free of duplicates', () => {
+		expect([...VARIANT_WIDTHS]).toEqual([...new Set(VARIANT_WIDTHS)].sort((a, b) => a - b));
 	});
 });

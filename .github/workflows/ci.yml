@@ -91,6 +91,25 @@ jobs:
       - name: Publication summaries freshness
         run: node scripts/generate-publication-summaries.mjs --check
 
+      # The CV, the talks index, the slides gallery and the timeline read a
+      # committed projection of the communications dataset without abstracts.
+      - name: Communication summaries freshness
+        run: node scripts/generate-communication-summaries.mjs --check
+
+      # The latin-ext and vietnamese font subsets are cut to fixed Unicode
+      # blocks by scripts/subset-fonts.py; the check proves the committed files
+      # and the unicode-range declarations in app.html still match the script.
+      - name: Font subsets freshness
+        run: |
+          python -m pip install --quiet fonttools brotli
+          python scripts/subset-fonts.py --check
+
+      # The record rails and the visualisations page read committed projections
+      # of the full-text analysis corpus rather than the corpus itself; a new or
+      # re-run analysis has to be regenerated into them.
+      - name: Analysis projections freshness
+        run: node scripts/generate-analysis-summaries.mjs --check
+
       # The research narratives are authored in the route pages and projected
       # into a committed module, so an edit to the prose has to be regenerated.
       - name: Research prose freshness

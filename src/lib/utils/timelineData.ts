@@ -6,7 +6,7 @@ import type { Appointment } from '$lib/types/appointment';
 import type { Education } from '$lib/types/education';
 import type { Grant } from '$lib/types/grant';
 import type { Publication } from '$lib/types/publication';
-import type { Communication } from '$lib/types/communication';
+import type { CommunicationSummary } from '$lib/types/communication';
 import type { Award } from '$lib/types/award';
 import type { Fieldwork } from '$lib/types/fieldwork';
 
@@ -15,7 +15,10 @@ import { allAppointments } from '$lib/data/appointments';
 import { allEducation } from '$lib/data/education';
 import { allGrants } from '$lib/data/grants';
 import { allPublications } from '$lib/data/publications';
-import { allCommunications } from '$lib/data/communications';
+// A talk card prints title, venue and location — never the abstract — so the
+// timeline takes the committed projection. Publications keep the full index:
+// their card's description IS the abstract.
+import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
 import { allAwards } from '$lib/data/awards';
 import { allFieldworks } from '$lib/data/fieldworks';
 
@@ -105,7 +108,7 @@ export function publicationToTimelineItem(publication: Publication): TimelineIte
 /**
  * Transform a Communication to a TimelineItem
  */
-export function communicationToTimelineItem(communication: Communication): TimelineItem {
+export function communicationToTimelineItem(communication: CommunicationSummary): TimelineItem {
 	const date = new Date(communication.dateISO);
 
 	return {

@@ -15,6 +15,29 @@ const D3_INTERACTIVE = [
 ];
 
 /**
+ * The pure maths D3 packages share: no DOM, no simulation, no interaction.
+ *
+ * They are pulled out ABOVE `d3-interactive` because a group also captures its
+ * modules' dependencies, and the capture decides which chunk depends on which.
+ * `d3-transition` imports `d3-color`; with `d3-color` left to the scale side's
+ * group, `d3-interactive` swallowed it first, and `/cv/timeline` — which wants
+ * nothing but `scaleTime` — followed `d3-scale → d3-interpolate → d3-color`
+ * into the interactive chunk and downloaded `d3-force`, `d3-zoom` and
+ * `d3-selection` for a static SVG timeline. As their own group the leaves are
+ * a dependency of both sides and a dependant of neither, so each page pays for
+ * exactly the half it uses. `scripts/check-bundle-budget.mjs` asserts the
+ * direction from the built manifest.
+ */
+const D3_LEAVES = [
+	'd3-array',
+	'd3-color',
+	'd3-format',
+	'd3-interpolate',
+	'd3-time',
+	'd3-time-format'
+];
+
+/**
  * The framework runtime every page loads: Svelte, the Kit client, their two
  * tiny dependencies, plus Vite's dynamic-import preload helper and Rolldown's
  * interop runtime. One chunk instead of the half dozen slivers automatic
@@ -83,6 +106,15 @@ export default defineConfig({
 						// (statically imported by CareerTimeline on /cv/timeline).
 						// A single merged 'd3' chunk made /cv/timeline eagerly download
 						// force/zoom/selection it never uses.
+						//
+						// First of the three: the shared leaves, so neither side
+						// captures them and the interactive chunk stays downstream
+						// (see D3_LEAVES).
+						{
+							name: 'd3-leaves',
+							test: (id) => D3_LEAVES.some((pkg) => id.includes(`node_modules/${pkg}/`)),
+							priority: 27
+						},
 						{
 							name: 'd3-interactive',
 							test: (id) => D3_INTERACTIVE.some((pkg) => id.includes(`node_modules/${pkg}/`)),

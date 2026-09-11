@@ -17,7 +17,6 @@
 	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
-	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
@@ -46,7 +45,8 @@
 	import { author } from '$lib/data/siteConfig';
 	import type { LocationDatum } from '$lib/data/geo';
 	import { scaleKeyTerms } from '$lib/utils/keyTerms';
-	import { corpusAnalysis, getCombinedWordCloudData, getCombinedBigrams } from '$lib/data/analysis';
+	import { corpusSummary } from '$lib/data/analysis/corpusSummary.generated';
+	import { inView } from '$lib/actions/inView';
 	import type { NgramFrequency } from '$lib/types';
 
 	type CitationYearData = { year: number; count: number };
@@ -383,11 +383,43 @@
 		publisherLocationData.map((d) => ({ label: d.country, value: d.count }))
 	);
 
+	/*
+	 * The map plate, loaded when it is about to be read.
+	 *
+	 * MapLibre is 966 KiB of JavaScript and nearly four seconds of main thread,
+	 * and it then fetches ~1.7 MiB of vector tiles — for a plate that sits
+	 * fourteen viewports below the fold at 375px. Mounting it on page load spent
+	 * the entire performance budget of this page before the reader had seen the
+	 * first chart. So the component is imported on `use:inView` (the shared
+	 * 400px gate), inside the box the section has already reserved.
+	 */
+	let PublisherMap:
+		typeof import('$lib/components/visualisations/LocationMap.svelte').default | null =
+		$state(null);
+	let mapRequested = false;
+	let mapChunkFailed = $state(false);
+
+	function loadPublisherMap() {
+		if (mapRequested) return;
+		mapRequested = true;
+		import('$lib/components/visualisations/LocationMap.svelte')
+			.then((module) => {
+				PublisherMap = module.default;
+			})
+			.catch((error) => {
+				// A cold offline load or a stale service-worker manifest can lose the
+				// chunk. The countries are tabled under the plate either way, so the
+				// section says so rather than holding "Loading map…" for ever.
+				mapChunkFailed = true;
+				if (import.meta.env.DEV) console.error('map chunk failed to load:', error);
+			});
+	}
+
 	// When the map cannot load there are no view modes to switch between, so the
 	// section's note must stop promising them.
 	let publisherMapFailed = $state(false);
 	const locationDescription = $derived(
-		publisherMapFailed
+		publisherMapFailed || mapChunkFailed
 			? 'The countries of the publishers and journals, taken from the place of publication recorded on each work.'
 			: 'The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications.'
 	);
@@ -409,7 +441,7 @@
 	// A toggle is only worth drawing when the corpus has something to toggle
 	// between; with one language analysed it is three buttons for one answer.
 	const languageOptions = $derived(
-		languageToggleOptions(corpusAnalysis.byLanguage.en.length, corpusAnalysis.byLanguage.fr.length)
+		languageToggleOptions(corpusSummary.analysed.en, corpusSummary.analysed.fr)
 	);
 	const showLanguageToggle = $derived(languageOptions.length > 1);
 
@@ -417,27 +449,14 @@
 	const languageLabel = (lang: CorpusLanguage) =>
 		lang === 'all' ? 'any' : lang === 'en' ? 'English' : 'French';
 
-	// Get publication IDs for the selected language
-	const analysedPublicationIds = $derived.by(() => {
-		if (corpusLanguage === 'en') {
-			return corpusAnalysis.byLanguage.en;
-		} else if (corpusLanguage === 'fr') {
-			return corpusAnalysis.byLanguage.fr;
-		}
-		return [...corpusAnalysis.byLanguage.en, ...corpusAnalysis.byLanguage.fr];
-	});
+	// How many publications stand behind the current language filter.
+	const analysedCount = $derived(corpusSummary.analysed[corpusLanguage]);
 
 	// Lemmatised full-text terms, scaled for the key-terms cloud.
-	const fullTextTerms = $derived.by(() => {
-		if (analysedPublicationIds.length === 0) return [];
-		return scaleKeyTerms(getCombinedWordCloudData(analysedPublicationIds, { maxWords: 100 }));
-	});
+	const fullTextTerms = $derived(scaleKeyTerms(corpusSummary.wordCloud[corpusLanguage]));
 
 	// Get bigrams data for selected language
-	const bigramsData = $derived.by(() => {
-		if (analysedPublicationIds.length === 0) return [];
-		return getCombinedBigrams(analysedPublicationIds, 30);
-	});
+	const bigramsData = $derived<NgramFrequency[]>(corpusSummary.bigrams[corpusLanguage]);
 
 	// Accessor functions for bigrams chart
 	const getBigramName = (d: NgramFrequency) => d.ngram;
@@ -508,7 +527,7 @@
 			id: 'full-text-terms',
 			no: '§ 6',
 			title: 'Full-text terms, by frequency',
-			count: countOf(analysedPublicationIds.length, 'publication analysed', 'publications analysed')
+			count: countOf(analysedCount, 'publication analysed', 'publications analysed')
 		},
 		bigrams: {
 			id: 'bigrams',
@@ -751,8 +770,8 @@
 			{#if showLanguageToggle}
 				<LanguageToggle
 					bind:current={corpusLanguage}
-					enCount={corpusAnalysis.byLanguage.en.length}
-					frCount={corpusAnalysis.byLanguage.fr.length}
+					enCount={corpusSummary.analysed.en}
+					frCount={corpusSummary.analysed.fr}
 				/>
 			{/if}
 		{/snippet}
@@ -768,7 +787,7 @@
 			<div class="viz-empty">
 				<span class="dateline">No data</span>
 				<p>
-					{#if corpusAnalysis.publicationCount === 0}
+					{#if corpusSummary.publicationCount === 0}
 						No full-text analysis is available for this visualisation.
 					{:else}
 						No full-text analysis is available for {languageLabel(corpusLanguage)} publications.
@@ -784,14 +803,14 @@
 		variant="bigrams"
 		height="{Math.max(400, bigramsData.length * 28 + 70)}px"
 		placeholderHeight="400px"
-		hasData={corpusAnalysis.publicationCount > 0 && bigramsData.length > 0}
+		hasData={corpusSummary.publicationCount > 0 && bigramsData.length > 0}
 	>
 		{#snippet controls()}
 			{#if showLanguageToggle}
 				<LanguageToggle
 					bind:current={corpusLanguage}
-					enCount={corpusAnalysis.byLanguage.en.length}
-					frCount={corpusAnalysis.byLanguage.fr.length}
+					enCount={corpusSummary.analysed.en}
+					frCount={corpusSummary.analysed.fr}
 				/>
 			{/if}
 		{/snippet}
@@ -799,7 +818,7 @@
 			<div class="viz-empty">
 				<span class="dateline">No data</span>
 				<p>
-					{#if corpusAnalysis.publicationCount === 0}
+					{#if corpusSummary.publicationCount === 0}
 						No full-text analysis is available for this visualisation.
 					{:else}
 						No phrase data is available for {languageLabel(corpusLanguage)} publications.
@@ -907,12 +926,23 @@
 		hasData={publisherLocationData.length > 0}
 		empty="No publisher locations recorded."
 	>
-		<LocationMap
-			data={publisherLocationData}
-			basePath="/publications"
-			itemLabel="publication"
-			bind:failed={publisherMapFailed}
-		/>
+		{#if PublisherMap}
+			<PublisherMap
+				data={publisherLocationData}
+				basePath="/publications"
+				itemLabel="publication"
+				bind:failed={publisherMapFailed}
+			/>
+		{:else if mapChunkFailed}
+			<div class="state-note map-plate-note" role="status">
+				<span class="dateline">Map unavailable</span>
+				<p>The map could not be loaded. The country table below holds the same records.</p>
+			</div>
+		{:else}
+			<div class="state-note map-plate-note" role="status" use:inView={loadPublisherMap}>
+				<span class="dateline">Loading map…</span>
+			</div>
+		{/if}
 		{#snippet table()}
 			<VizDataTable
 				rows={locationTableRows}
@@ -949,17 +979,21 @@
 		{/snippet}
 	</VizSection>
 
-	<!-- Paginated: the chart is re-keyed per page and followed by the pager, so
-	     this section composes VizChartCard itself rather than delegating. -->
+	<!-- Paginated: the chart is followed by the pager, so this section composes
+	     VizChartCard itself rather than delegating. The `{#key}` sits INSIDE the
+	     card, not around it: re-creating the card on every page turn would also
+	     re-create its `use:inView` gate, and the reader would see "Loading
+	     chart…" flash between two instant states. This way the plate is gated
+	     once, on the way down the page, and the pager only redraws the chart. -->
 	<VizSection
 		{...sections.citingAuthors}
 		description="The authors who cite the work most often, from the same recorded citations. The scale is fixed across pages so bars stay comparable."
 	>
 		{#if citedAuthorsData.length > 0}
-			{#snippet authorChart(authorsToShow: CitedAuthorData[])}
-				<VizChartCard height="{Math.max(350, authorsToShow.length * 35 + 70)}px">
+			<VizChartCard height="{Math.max(350, pagedAuthors.length * 35 + 70)}px">
+				{#key currentPage}
 					<EChartsHorizontalBarChart
-						data={authorsToShow}
+						data={pagedAuthors}
 						xAccessor={getAuthorCitationCount}
 						yAccessor={getAuthorName}
 						measure="Citations per author"
@@ -968,20 +1002,16 @@
 						itemPlural="authors"
 						descriptionLead="Most citations"
 					/>
-					{#snippet table()}
-						<VizDataTable
-							rows={authorsToShow.map((d) => ({ label: d.author, value: d.count }))}
-							keyLabel="Author"
-							valueLabel="Citations"
-							caption="The authors on this page of the chart, with the number of times each cites the record."
-						/>
-					{/snippet}
-				</VizChartCard>
-			{/snippet}
-
-			{#key currentPage}
-				{@render authorChart(pagedAuthors)}
-			{/key}
+				{/key}
+				{#snippet table()}
+					<VizDataTable
+						rows={pagedAuthors.map((d) => ({ label: d.author, value: d.count }))}
+						keyLabel="Author"
+						valueLabel="Citations"
+						caption="The authors on this page of the chart, with the number of times each cites the record."
+					/>
+				{/snippet}
+			</VizChartCard>
 
 			<Pagination
 				page={currentPage}
@@ -1047,6 +1077,15 @@
 		text-decoration: underline;
 		text-decoration-thickness: 1px;
 		text-underline-offset: 3px;
+	}
+
+	/* The map plate before its chunk arrives, and if it never does. The panel is
+	   the shared `.state-note` idiom; this only makes it fill the 500px box the
+	   section reserved, as `.map-state-note` does inside LocationMap — so the
+	   pending, failed and drawn states all occupy the same plate. */
+	.map-plate-note {
+		width: 100%;
+		height: 100%;
 	}
 
 	/* Empty state for the sections that are typeset rather than plated. */

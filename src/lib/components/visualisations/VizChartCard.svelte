@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { inView } from '$lib/actions/inView';
 
 	/**
 	 * Shared chart container used by the visualisations pages.
@@ -7,9 +8,25 @@
 	 * Owns the surface, hover, dark-mode and responsive sizing rules so each
 	 * viz section reduces to <VizChartCard variant="stacked" height="450px"
 	 * {hasData}> ... {#snippet placeholder()}...{/snippet} </VizChartCard>.
+	 *
+	 * It is also the gate. A visualisation page is a column of seven canvases
+	 * and a map, every one of which used to mount on load: the reader waited
+	 * several seconds of main thread for plates fourteen viewports below them.
+	 * The card now holds its reserved box empty until `use:inView` fires 400px
+	 * ahead of the viewport, so a plate costs its library only when it is about
+	 * to be read. The box height never changes, so nothing below it moves.
 	 */
 	type Variant =
 		'stacked' | 'network' | 'arc' | 'matrix' | 'bubble' | 'treemap' | 'gantt' | 'map' | 'bigrams';
+
+	/**
+	 * The three network plates draw themselves: declarative SVG from pure layout
+	 * maths, with an `sr-only` table inside them. They are server-rendered as
+	 * they stand, they pull no library the page has not already paid for, and
+	 * gating them would take their table out of the prerendered HTML — a real
+	 * loss for no saving. So they are never deferred.
+	 */
+	const SELF_DRAWN: ReadonlySet<string> = new Set(['network', 'arc', 'matrix']);
 
 	let {
 		variant,
@@ -39,13 +56,29 @@
 
 	const wrapperClass = $derived(variant ? `chart-wrapper ${variant}-chart` : 'chart-wrapper');
 	const emptyHeight = $derived(placeholderHeight ?? height);
+	const deferred = $derived(!(variant !== undefined && SELF_DRAWN.has(variant)));
+	/** The map plate says what it is loading; every other plate is a chart. */
+	const pendingLabel = $derived(variant === 'map' ? 'Loading map…' : 'Loading chart…');
+
+	let revealed = $state(false);
+	const showChildren = $derived(!deferred || revealed);
 </script>
 
 {#if hasData}
-	<div class={wrapperClass} style:height>
-		{@render children?.()}
+	<div class={wrapperClass} style:height use:inView={() => (revealed = true)}>
+		{#if showChildren}
+			{@render children?.()}
+		{:else}
+			<!-- Held, not failed: the same flat panel the honest state uses, with
+			     the machine saying what is on its way. No spinner, no shimmer. -->
+			<div class="state-note plate-pending" role="status">
+				<span class="dateline">{pendingLabel}</span>
+			</div>
+		{/if}
 	</div>
 	{#if table}
+		<!-- Outside the gate on purpose: the figures behind the plate are the
+		     plate's accessible alternative and must never wait on a scroll. -->
 		<details class="chart-table">
 			<summary class="dateline">Data table</summary>
 			{@render table()}
@@ -81,6 +114,15 @@
 		padding: var(--space-lg);
 		contain: layout style paint;
 		min-height: var(--iframe-height-xs);
+	}
+
+	/* The plate while its library is on the way. `.state-note` (ink-signal.css)
+	   is the panel; this only makes it fill the box the plate has already
+	   reserved, exactly as `.map-state-note` does for a map that failed — so
+	   pending and failed sit in the same place and only the words differ. */
+	.plate-pending {
+		width: 100%;
+		height: 100%;
 	}
 
 	.stacked-chart {

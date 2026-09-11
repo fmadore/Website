@@ -5,7 +5,12 @@ import {
 	type ImageVariantManifestEntry
 } from '$lib/data/imageVariants.generated';
 
-export const VARIANT_WIDTHS = [400, 800, 1600] as const;
+/**
+ * The derivative ladder, mirrored from `scripts/generate-image-variants.mjs`
+ * (the generator cannot be imported here: it pulls in sharp). The two are
+ * asserted equal in `imageVariants.test.ts`.
+ */
+export const VARIANT_WIDTHS = [160, 240, 400, 800, 1600] as const;
 
 export const HERO_SIZES =
 	'(max-width: 640px) 100vw, (max-width: 768px) 330px, (max-width: 1024px) 600px, 800px';

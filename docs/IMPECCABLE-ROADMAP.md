@@ -235,11 +235,15 @@ the job-to-be-done: find and cite the work.
 
 ## Phase 5 — Performance
 
-- [ ] **5.1 Optimize.** `/impeccable optimize` on the visualisation routes (ECharts,
+- [x] **5.1 Optimize.** `/impeccable optimize` on the visualisation routes (ECharts,
       MapLibre, D3 chunks — confirm dynamic imports still hold) and the home page (hero
       image variants, LCP). Cross-check against `npm run check:bundle` budgets; font loading
       for the three families (subsetting, `font-display`). _Done when:_ budgets pass with
       headroom and no regression in the audit's performance score.
+      _(Done 2026-09-11: the visualisation pages 51 → 93 and 69 → 90 (the map plate loaded
+      eagerly 14 viewports below the fold); the app stylesheet had silently outgrown the inline
+      threshold and render-blocked every route; index thumbnails and fonts trimmed; heaviest
+      route 724 → 516 KiB. One ruled exception: `/cv` prerenders its whole record at 83 → 81.)_
 
 ## Phase 6 — Ship gate
 
@@ -1644,5 +1648,65 @@ format, lint, check 0/0 over 1055 files; unit 893 passed (52 files, 34 new tests
 2.2 AA**, **0 new-tab links without the hidden label** (was 8). 60 files, +2,129 / −1,994 including
 this entry and the guide's three new specimens; the source itself shed the 434-line card sheet,
 two card branches and four masthead copies.
+
+**2026-09-11 — 5.1 optimize (two Opus critique agents → three Opus fix agents; the orchestrator
+finished one agent's remainder by hand).** Snapshots in `.impeccable/critique/2026-09-11T09-08-1*`.
+The critiques were run as instruments: 24 Lighthouse runs over eight routes with the LCP element,
+CLS sources and coverage read per page; counterfactual Lighthouse on the visualisation pages with
+the MapLibre chunk, the CARTO tiles and the ECharts chunk blocked in turn, so each plate was priced
+against the page's own score; a network waterfall in first-view and scrolled phases; a fontTools
+analysis of the sixteen subsets against every character the 199-page build actually contains.
+**The visualisation pages were losing 35 of 49 points to a plate nobody could see.** Both mounted
+`LocationMap` on load — 966 KiB of MapLibre (3.8 s of main-thread bootup, two long tasks) and
+1.7 MB of CARTO vector tiles — for a map 11,827 px, 14.6 viewport-heights, below the fold at 375;
+the seven ECharts plates mounted eagerly too, the first of them 2.8 viewports down. One `inView`
+action (`src/lib/actions/inView.ts`, 400 px `rootMargin`, fires once) now gates every heavy plate
+inside its already-reserved box behind a flat `.state-note` (`Loading chart…` / `Loading map…`,
+`role="status"`) — the 3.2 idiom, no shimmer, no spinner; the talk record's hand-rolled observer
+took the same action. **`/publications/visualisations` 51 → 93** (TBT 1386 → 34 ms, 2483 → 523
+KiB), **`/conference-activity/visualisations` 69 → 90**; CLS 0.000 in both phases at both widths.
+**The site-wide finding was one config line.** `kit.inlineStyleThreshold` was 72 KiB and the app
+stylesheet had grown to 79.6 KB, so every route fetched it render-blocking for 153 ms while the
+Lighthouse config still asserted the opposite — raised to 96 KiB with the rule stated, and the
+stylesheet budget tightened from 2 to 1 so the next silent overrun fails CI. **Bytes were the LCP
+lever** (simulated LCP is 89–90 % render delay and tracks total transfer linearly): the thumbnail
+ladder had no step below 400 px, so 56–80 CSS-px cover boxes fetched 400w files — 160 and 240
+added (`/publications` images 187 → 45 KB, `/conference-activity` 99 → 28); the latin-ext and
+vietnamese subsets carried 329 / 153 glyphs for the 13 such characters the build contains —
+re-subset to fixed blocks by `scripts/subset-fonts.py` (x64 Python fontTools; `npm run check:fonts`
+in CI proves the files and the `unicode-range` declarations still match), −58 KB on disk, −15 KB
+on the two pages that load them; metric-matched `local()` fallback faces (`size-adjust`,
+`ascent-`/`descent-override` measured per family) so a slow-connection font swap no longer moves
+the home page's first paragraph 36 px and the CV 2,174 px; the 306 KiB text-analysis corpus was
+statically imported by every publication record for 28 key terms and by the visualisations page
+for three fixed reductions — two committed projections (`keyTerms.generated`,
+`corpusSummary.generated`, `gen:analysis` with a fidelity test) take `/publications/[id]` 694 →
+~400 KiB; a `communications/summaries` projection without abstracts (41 % of that dataset) mirrors
+the publications one on the nine routes that listed talks; `d3-color` had been captured into the
+interactive d3 group so `/cv/timeline` still downloaded d3-force — a leaf group fixes it and
+`check:bundle` now reads chunk sourcemaps to assert the timeline's graph excludes it. The portrait
+was a 300×300 source stretched 3.1× into the home page's LCP element; replaced from the owner's
+original (854×742, EXIF stripped, 160/240/400/800 variants, `srcset` + `sizes` for the three slot
+widths). **The CV is the one ruled regression.** It prerendered 3 of 17 sections and loaded the
+other 14 in four `setTimeout` waves — the static HTML held no Grants, Awards or Invited Talks and
+the contents ledger pointed at anchors the document did not contain. All seventeen are static
+imports now (55 → 32 requests, the record complete for crawlers and no-JS readers), which puts the
+section components on the hydration path: lab LCP 4.41 → 4.68 s, performance 83 → 81. **Owner's
+ruling: the complete record outranks the lab number**; `lighthouserc.yml` became an `assertMatrix`
+with LCP 5.0 s for `/cv$` alone and 4.5 s everywhere else. **Measured before → after (mobile,
+best of three):** `/` 85 → 86, LCP 4.11 → 4.04 s; `/publications` 84 → 87, 4.28 → 3.91 s, 702 →
+544 KB; record 88 → 90; `/conference-activity` 86 → 90, 4.06 → 3.61 s, 610 → 505 KB; `/cv`
+83 → 81 (ruled); render-blocking 153 ms → 0 on every route; CLS 0 everywhere; heaviest route
+724 → 516 KiB, entry 108.8 of 140. **Declined:** pinning Newsreader's `opsz`, dropping the italic
+preload, content-exact font subsetting (corpus-coupled), label-free basemaps (a locator map that
+names nothing), `preconnect` to the tile CDN (optimises what should not happen), canvas for the
+SVG networks, any shimmer or spinner, `content-visibility` on the CV (deferred to 6.1: −83 % on
+theme recalcs but it collapsed the document height and the ToC anchors with it). **Method
+lesson:** two of the three fix agents stalled silently mid-work and never reported; their
+transcripts' modification times were the only signal. Poll them. **Ship gate on the rebuilt
+build:** lint, check 0/0 over 1064 files; unit 915 passed (55 files, 22 new); bundle and
+prerender checks pass; e2e 35 passed, 1 skipped; a Playwright probe over 15 routes × 1440/375 ×
+both themes: 0 console errors (the 404's own excepted), 0 overflow, 0 axe violations under WCAG
+2.2 AA, 0 unlabelled new-tab links.
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

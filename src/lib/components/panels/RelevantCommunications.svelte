@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { allCommunications } from '../../data/communications/index';
+	import { allCommunicationSummaries } from '$lib/data/communications/summaries';
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 	import { formatAuthorsCompact as formatAuthors } from '$lib/utils/nameUtils';
@@ -16,13 +16,24 @@
 	// Add state for selected type filter
 	let selectedType = $state<string | null>(null);
 
-	// Filter communications by project name
+	// Filter talks by project name. The summaries suffice: the card prints at
+	// most 120 characters of the abstract, which the excerpt covers.
 	let communicationList = $derived<RelevantItem[]>(
-		allCommunications
+		allCommunicationSummaries
 			.filter((comm) => comm.project === projectName)
 			.sort((a, b) => new Date(b.dateISO).getTime() - new Date(a.dateISO).getTime())
-			.slice(0, limit) as RelevantItem[]
-	); // Cast to the generic type
+			.slice(0, limit)
+			.map((comm) => ({
+				id: comm.id,
+				project: comm.project,
+				type: comm.type ?? 'conference',
+				date: comm.date,
+				dateISO: comm.dateISO,
+				title: comm.title,
+				authors: comm.authors,
+				abstract: comm.abstractExcerpt
+			}))
+	);
 
 	// Compute filtered list based on selected type
 	let filteredList = $derived<RelevantItem[]>(

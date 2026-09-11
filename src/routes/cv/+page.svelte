@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getCvDescription } from '$lib/utils/siteHelpers';
-	import { onMount, type Component } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
@@ -10,121 +9,32 @@
 	import CVAppointments from '$lib/components/cv/CVAppointments.svelte';
 	import CVPublications from '$lib/components/cv/CVPublications.svelte';
 	import CVTableOfContents from '$lib/components/cv/CVTableOfContents.svelte';
+	// Every section is a static import, so the whole CV is in the prerendered
+	// HTML. It used to ship three sections and fetch the other fourteen in four
+	// timed batches after mount: `build/cv.html` held no Grants, Awards or
+	// Invited Talks, the contents ledger pointed at anchors the document did not
+	// contain, and the page spent 23 requests and 400 ms of self-imposed
+	// latency on a staircase no reader could see the end of. The record's
+	// completeness is the product; the request count is the bonus.
+	import CVGrants from '$lib/components/cv/CVGrants.svelte';
+	import CVAwards from '$lib/components/cv/CVAwards.svelte';
+	import CVDigitalHumanities from '$lib/components/cv/CVDigitalHumanities.svelte';
+	import CVInvitedTalks from '$lib/components/cv/CVInvitedTalks.svelte';
+	import CVConferences from '$lib/components/cv/CVConferences.svelte';
+	import CVEvents from '$lib/components/cv/CVEvents.svelte';
+	import CVTeaching from '$lib/components/cv/CVTeaching.svelte';
+	import CVResearchExperience from '$lib/components/cv/CVResearchExperience.svelte';
+	import CVService from '$lib/components/cv/CVService.svelte';
+	import CVConsulting from '$lib/components/cv/CVConsulting.svelte';
+	import CVMedia from '$lib/components/cv/CVMedia.svelte';
+	import CVLanguages from '$lib/components/cv/CVLanguages.svelte';
+	import CVAffiliations from '$lib/components/cv/CVAffiliations.svelte';
+	import CVComputerSkills from '$lib/components/cv/CVComputerSkills.svelte';
 
 	import { resolve } from '$app/paths';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('CV', '/cv');
-
-	// Lazy load components below the fold using $state
-	let CVGrants: Component | undefined = $state();
-	let CVAwards: Component | undefined = $state();
-	let CVDigitalHumanities: Component | undefined = $state();
-	let CVConferences: Component | undefined = $state();
-	let CVEvents: Component | undefined = $state();
-	let CVTeaching: Component | undefined = $state();
-	let CVConsulting: Component | undefined = $state();
-	let CVInvitedTalks: Component | undefined = $state();
-	let CVMedia: Component | undefined = $state();
-	let CVLanguages: Component | undefined = $state();
-	let CVService: Component | undefined = $state();
-	let CVAffiliations: Component | undefined = $state();
-	let CVComputerSkills: Component | undefined = $state();
-	let CVResearchExperience: Component | undefined = $state();
-
-	let componentsStartedLoading = $state(false);
-
-	/**
-	 * The CV is seventeen sections; three are in the bundle and fourteen arrive
-	 * in four timed batches. Between mount and the last batch the sheet simply
-	 * ends, and a reader looking for Service or Languages has no way to tell a
-	 * section that is still coming from one that does not exist. The count is
-	 * derived from the slots themselves, so it cannot drift from what is drawn.
-	 */
-	const EAGER_SECTIONS = 3; // Appointments, Education, Publications.
-	const lazySections = $derived([
-		CVGrants,
-		CVAwards,
-		CVDigitalHumanities,
-		CVInvitedTalks,
-		CVConferences,
-		CVEvents,
-		CVTeaching,
-		CVResearchExperience,
-		CVService,
-		CVConsulting,
-		CVMedia,
-		CVLanguages,
-		CVAffiliations,
-		CVComputerSkills
-	]);
-	const totalSections = $derived(EAGER_SECTIONS + lazySections.length);
-	const loadedSections = $derived(
-		EAGER_SECTIONS + lazySections.filter((section) => section !== undefined).length
-	);
-
-	onMount(() => {
-		// Start loading components immediately after mount
-		// This still provides performance benefits by:
-		// 1. Not blocking initial page render
-		// 2. Loading in batches to avoid overwhelming the browser
-		// 3. Keeping the initial bundle smaller
-		if (!componentsStartedLoading) {
-			componentsStartedLoading = true;
-			loadComponents();
-		}
-	});
-
-	function loadComponents() {
-		// Load components in batches to avoid overwhelming the browser
-		// Batch 1: Most important sections
-		setTimeout(() => {
-			Promise.all([
-				import('$lib/components/cv/CVGrants.svelte').then((m) => (CVGrants = m.default)),
-				import('$lib/components/cv/CVAwards.svelte').then((m) => (CVAwards = m.default)),
-				import('$lib/components/cv/CVDigitalHumanities.svelte').then(
-					(m) => (CVDigitalHumanities = m.default)
-				)
-			]);
-		}, 100);
-
-		// Batch 2: Conference and talks
-		setTimeout(() => {
-			Promise.all([
-				import('$lib/components/cv/CVInvitedTalks.svelte').then(
-					(m) => (CVInvitedTalks = m.default)
-				),
-				import('$lib/components/cv/CVConferences.svelte').then((m) => (CVConferences = m.default)),
-				import('$lib/components/cv/CVEvents.svelte').then((m) => (CVEvents = m.default))
-			]);
-		}, 200);
-
-		// Batch 3: Experience sections
-		setTimeout(() => {
-			Promise.all([
-				import('$lib/components/cv/CVTeaching.svelte').then((m) => (CVTeaching = m.default)),
-				import('$lib/components/cv/CVResearchExperience.svelte').then(
-					(m) => (CVResearchExperience = m.default)
-				),
-				import('$lib/components/cv/CVService.svelte').then((m) => (CVService = m.default))
-			]);
-		}, 300);
-
-		// Batch 4: Final sections
-		setTimeout(() => {
-			Promise.all([
-				import('$lib/components/cv/CVConsulting.svelte').then((m) => (CVConsulting = m.default)),
-				import('$lib/components/cv/CVMedia.svelte').then((m) => (CVMedia = m.default)),
-				import('$lib/components/cv/CVLanguages.svelte').then((m) => (CVLanguages = m.default)),
-				import('$lib/components/cv/CVAffiliations.svelte').then(
-					(m) => (CVAffiliations = m.default)
-				),
-				import('$lib/components/cv/CVComputerSkills.svelte').then(
-					(m) => (CVComputerSkills = m.default)
-				)
-			]);
-		}, 400);
-	}
 </script>
 
 <SEO
@@ -157,86 +67,48 @@
 		<CVPublications />
 	</div>
 
-	<!-- Components load automatically after page mount in batches -->
-	{#if CVGrants}
-		<div id="cv-grants" class="cv-section-wrapper cv-lazy-section">
-			<CVGrants />
-		</div>
-	{/if}
-	{#if CVAwards}
-		<div id="cv-awards" class="cv-section-wrapper cv-lazy-section">
-			<CVAwards />
-		</div>
-	{/if}
-	{#if CVDigitalHumanities}
-		<div id="cv-digital-humanities" class="cv-section-wrapper cv-lazy-section">
-			<CVDigitalHumanities />
-		</div>
-	{/if}
-	{#if CVInvitedTalks}
-		<div id="cv-invited-talks" class="cv-section-wrapper cv-lazy-section">
-			<CVInvitedTalks />
-		</div>
-	{/if}
-	{#if CVConferences}
-		<div id="cv-conferences" class="cv-section-wrapper cv-lazy-section">
-			<CVConferences />
-		</div>
-	{/if}
-	{#if CVEvents}
-		<div id="cv-events" class="cv-section-wrapper cv-lazy-section">
-			<CVEvents />
-		</div>
-	{/if}
-	{#if CVTeaching}
-		<div id="cv-teaching" class="cv-section-wrapper cv-lazy-section">
-			<CVTeaching />
-		</div>
-	{/if}
-	{#if CVResearchExperience}
-		<div id="cv-research-experience" class="cv-section-wrapper cv-lazy-section">
-			<CVResearchExperience />
-		</div>
-	{/if}
-	{#if CVService}
-		<div id="cv-service" class="cv-section-wrapper cv-lazy-section">
-			<CVService />
-		</div>
-	{/if}
-	{#if CVConsulting}
-		<div id="cv-consulting" class="cv-section-wrapper cv-lazy-section">
-			<CVConsulting />
-		</div>
-	{/if}
-	{#if CVMedia}
-		<div id="cv-media" class="cv-section-wrapper cv-lazy-section">
-			<CVMedia />
-		</div>
-	{/if}
-	{#if CVLanguages}
-		<div id="cv-languages" class="cv-section-wrapper cv-lazy-section">
-			<CVLanguages />
-		</div>
-	{/if}
-	{#if CVAffiliations}
-		<div id="cv-affiliations" class="cv-section-wrapper cv-lazy-section">
-			<CVAffiliations />
-		</div>
-	{/if}
-	{#if CVComputerSkills}
-		<div id="cv-computer-skills" class="cv-section-wrapper cv-lazy-section">
-			<CVComputerSkills />
-		</div>
-	{/if}
-
-	<!-- The foot of the sheet, so a reader who has scrolled to the end knows the
-	     end has not arrived yet. Inside #cv-content on purpose: a PDF taken mid
-	     load prints the same caveat. -->
-	{#if loadedSections < totalSections}
-		<p class="dateline cv-loading-note" role="status">
-			Loading remaining sections… {loadedSections} of {totalSections} shown.
-		</p>
-	{/if}
+	<div id="cv-grants" class="cv-section-wrapper">
+		<CVGrants />
+	</div>
+	<div id="cv-awards" class="cv-section-wrapper">
+		<CVAwards />
+	</div>
+	<div id="cv-digital-humanities" class="cv-section-wrapper">
+		<CVDigitalHumanities />
+	</div>
+	<div id="cv-invited-talks" class="cv-section-wrapper">
+		<CVInvitedTalks />
+	</div>
+	<div id="cv-conferences" class="cv-section-wrapper">
+		<CVConferences />
+	</div>
+	<div id="cv-events" class="cv-section-wrapper">
+		<CVEvents />
+	</div>
+	<div id="cv-teaching" class="cv-section-wrapper">
+		<CVTeaching />
+	</div>
+	<div id="cv-research-experience" class="cv-section-wrapper">
+		<CVResearchExperience />
+	</div>
+	<div id="cv-service" class="cv-section-wrapper">
+		<CVService />
+	</div>
+	<div id="cv-consulting" class="cv-section-wrapper">
+		<CVConsulting />
+	</div>
+	<div id="cv-media" class="cv-section-wrapper">
+		<CVMedia />
+	</div>
+	<div id="cv-languages" class="cv-section-wrapper">
+		<CVLanguages />
+	</div>
+	<div id="cv-affiliations" class="cv-section-wrapper">
+		<CVAffiliations />
+	</div>
+	<div id="cv-computer-skills" class="cv-section-wrapper">
+		<CVComputerSkills />
+	</div>
 </div>
 
 <CVTableOfContents />
@@ -253,15 +125,6 @@
 		position: relative;
 		margin-top: var(--space-lg);
 		margin-bottom: var(--space-2xl);
-	}
-
-	/* The lazy-load caveat: apparatus, so it takes the dateline voice and sits
-	 * on the sheet's own hairline rather than drawing a panel of its own. */
-	.cv-loading-note {
-		margin: var(--space-lg) 0 0;
-		padding-top: var(--space-sm);
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-		text-transform: none;
 	}
 
 	/* Action buttons — document chrome, tucked to the top right of the sheet
@@ -410,8 +273,7 @@
 	@media print {
 		/* The page-enter fade is the only animation these carry. */
 		.cv-container,
-		:global(.cv-section-wrapper),
-		:global(.cv-lazy-section) {
+		:global(.cv-section-wrapper) {
 			animation: none !important;
 			opacity: 1 !important;
 		}
@@ -492,8 +354,7 @@
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		.cv-container,
-		:global(.cv-section-wrapper),
-		:global(.cv-lazy-section) {
+		:global(.cv-section-wrapper) {
 			animation: none !important;
 			transition: none !important;
 			opacity: 1 !important;

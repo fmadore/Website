@@ -7,7 +7,16 @@
 	import ItemReference from '$lib/components/reference/ItemReference.svelte';
 	import Button from '$lib/components/atoms/Button.svelte';
 	import { author, profile } from '$lib/data/siteConfig';
+	import { buildSrcset } from '$lib/utils/imageVariants';
 	import type { PageData } from './$types';
+
+	// The portrait's slot is 22rem wide on a phone (capped), 18rem at --md and
+	// 22rem from --lg, so a 2× screen wants ~700 px; the 854 px source and its
+	// 400/800 derivatives come from the variant manifest, like every plate.
+	const portraitSrc = `${base}/images/Profile-picture.webp`;
+	const portraitSrcset = buildSrcset(portraitSrc);
+	const PORTRAIT_SIZES =
+		'(max-width: 767px) min(100vw - 2rem, 22rem), (max-width: 1023px) 18rem, 22rem';
 
 	let { data } = $props<{ data: PageData }>();
 
@@ -36,10 +45,12 @@
 		<figure class="home-portrait">
 			<img
 				class="plate"
-				src="{base}/images/Profile-picture.webp"
+				src={portraitSrc}
+				srcset={portraitSrcset}
+				sizes={portraitSrcset ? PORTRAIT_SIZES : undefined}
 				alt="Frédérick Madore"
-				width="380"
-				height="330"
+				width="854"
+				height="742"
 				loading="eager"
 				decoding="async"
 				fetchpriority="high"
@@ -338,7 +349,7 @@
 
 	.home-portrait .plate {
 		width: 100%;
-		aspect-ratio: 380 / 330;
+		aspect-ratio: 854 / 742;
 		object-fit: cover;
 	}
 

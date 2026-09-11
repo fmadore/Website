@@ -4,11 +4,14 @@
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import { base } from '$app/paths';
+	// The charts and networks tally fields, never prose: the committed
+	// projection (no abstracts) carries everything they read, `papers`
+	// included — the co-presenter and institution networks are built from it.
 	import {
-		allCommunications,
-		communicationsByType,
-		communicationsByProject
-	} from '$lib/data/communications';
+		allCommunicationSummaries as allCommunications,
+		communicationSummariesByType as communicationsByType,
+		communicationSummariesByProject as communicationsByProject
+	} from '$lib/data/communications/summaries';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import {
 		buildBreadcrumbJsonLd,
@@ -21,9 +24,9 @@
 	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
-	import LocationMap from '$lib/components/visualisations/LocationMap.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
+	import { inView } from '$lib/actions/inView';
 	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
 	import {
 		buildLocationData,
@@ -273,11 +276,36 @@
 		projectTimelineData.map((entry) => ({ label: entry.name, value: entry.publications.length }))
 	);
 
+	/*
+	 * The map plate, loaded when it is about to be read — the same gate the
+	 * publications page and the talk record use. MapLibre is 966 KiB of
+	 * JavaScript before a single vector tile, for a plate far below the fold.
+	 */
+	let VenueMap: typeof import('$lib/components/visualisations/LocationMap.svelte').default | null =
+		$state(null);
+	let mapRequested = false;
+	let mapChunkFailed = $state(false);
+
+	function loadVenueMap() {
+		if (mapRequested) return;
+		mapRequested = true;
+		import('$lib/components/visualisations/LocationMap.svelte')
+			.then((module) => {
+				VenueMap = module.default;
+			})
+			.catch((error) => {
+				// A cold offline load or a stale service-worker manifest can lose the
+				// chunk. The countries are tabled under the plate either way.
+				mapChunkFailed = true;
+				if (import.meta.env.DEV) console.error('map chunk failed to load:', error);
+			});
+	}
+
 	// When the map cannot load there are no view modes to switch between, so the
 	// section's note must stop promising them.
 	let venueMapFailed = $state(false);
 	const locationDescription = $derived(
-		venueMapFailed
+		venueMapFailed || mapChunkFailed
 			? 'The countries of the venues, taken from the location recorded on each talk.'
 			: 'The countries of the venues, taken from the location recorded on each talk. Switch between proportional markers and country shading; select a country to list its titles and cities.'
 	);
@@ -711,12 +739,23 @@
 		hasData={locationMapData.length > 0}
 		empty="No venue locations recorded."
 	>
-		<LocationMap
-			data={locationMapData}
-			basePath="/communications"
-			itemLabel="talk"
-			bind:failed={venueMapFailed}
-		/>
+		{#if VenueMap}
+			<VenueMap
+				data={locationMapData}
+				basePath="/communications"
+				itemLabel="talk"
+				bind:failed={venueMapFailed}
+			/>
+		{:else if mapChunkFailed}
+			<div class="state-note map-plate-note" role="status">
+				<span class="dateline">Map unavailable</span>
+				<p>The map could not be loaded. The country table below holds the same records.</p>
+			</div>
+		{:else}
+			<div class="state-note map-plate-note" role="status" use:inView={loadVenueMap}>
+				<span class="dateline">Loading map…</span>
+			</div>
+		{/if}
 		{#snippet table()}
 			<VizDataTable
 				rows={locationTableRows}
@@ -791,6 +830,14 @@
 		text-decoration: underline;
 		text-decoration-thickness: 1px;
 		text-underline-offset: 3px;
+	}
+
+	/* The map plate before its chunk arrives, and if it never does. The panel is
+	   the shared `.state-note` idiom; this only makes it fill the 500px box the
+	   section reserved, as `.map-state-note` does inside LocationMap. */
+	.map-plate-note {
+		width: 100%;
+		height: 100%;
 	}
 
 	/* Empty state for the sections that are typeset rather than plated. */

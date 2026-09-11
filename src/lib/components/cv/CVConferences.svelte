@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { communicationsByDate } from '$lib/data/communications';
+	import { communicationSummariesByDate as communicationsByDate } from '$lib/data/communications/summaries';
 	import { formatCVAuthorList, terminalPeriod } from '$lib/utils/cvFormatters';
 	import { formatDayMonth } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';

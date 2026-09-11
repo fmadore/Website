@@ -4,7 +4,7 @@
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import { base, resolve } from '$app/paths';
-	import { communicationsWithSlides } from '$lib/data/communications';
+	import { communicationSummariesWithSlides as communicationsWithSlides } from '$lib/data/communications/summaries';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import { plateFallback } from '$lib/actions/plateFallback';
 	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';

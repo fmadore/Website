@@ -10,7 +10,7 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 -->
 <script module lang="ts">
 	import type { Publication as PublicationRecord } from '$lib/types';
-	import { hasAnalysis as recordHasAnalysis } from '$lib/data/analysis';
+	import { keyTermsByPublication } from '$lib/data/analysis/keyTerms.generated';
 
 	/**
 	 * Whether this record has anything to index. The rail block is a grid child
@@ -18,14 +18,15 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 	 * would print something — an empty block reads as a stray interval.
 	 */
 	export function hasIndexApparatus(publication: PublicationRecord): boolean {
-		return (publication.tags?.filter(Boolean).length ?? 0) > 0 || recordHasAnalysis(publication.id);
+		return (
+			(publication.tags?.filter(Boolean).length ?? 0) > 0 || publication.id in keyTermsByPublication
+		);
 	}
 </script>
 
 <script lang="ts">
 	import { base } from '$app/paths';
 	import type { Publication } from '$lib/types';
-	import { getAnalysis, hasAnalysis } from '$lib/data/analysis';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	interface Props {
@@ -36,10 +37,14 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 
 	// KEY TERMS — real full-text frequencies, sized by rank. Only shown when a
 	// text analysis exists for this publication (data as ornament, never faked).
+	//
+	// Read from the committed projection rather than from `$lib/data/analysis`:
+	// the full corpus is 306 KiB of frequencies for every analysed publication,
+	// and this rail prints 28 terms of one of them. The projection carries
+	// exactly those 28 (`scripts/generate-analysis-summaries.mjs`,
+	// `analysisSummaries.test.ts` proves them identical to the live corpus).
 	const keyTerms = $derived.by(() => {
-		if (!hasAnalysis(publication.id)) return [];
-		const freqs = getAnalysis(publication.id)?.frequencies ?? [];
-		const top = freqs.slice(0, 28);
+		const top = keyTermsByPublication[publication.id] ?? [];
 		if (top.length === 0) return [];
 		const max = top[0]!.count;
 		const min = top[top.length - 1]!.count;

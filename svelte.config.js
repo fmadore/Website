@@ -13,14 +13,22 @@ const config = {
 			strict: true
 		}),
 		// Inline stylesheets into the prerendered HTML to eliminate
-		// render-blocking CSS requests. The shared app stylesheet has grown to
-		// ~68KB raw (~11KB compressed), so the former 20KB ceiling had quietly
-		// pushed it back out to a render-blocking <link> on every page — one
-		// extra round trip before first paint. 72KB keeps it inline (route CSS
-		// is far smaller); the caching trade-off is minor because GitHub Pages
-		// caps Cache-Control at max-age=600 anyway. Only the MapLibre sheet
-		// (~83KB, loaded with the map) stays external.
-		inlineStyleThreshold: 72 * 1024,
+		// render-blocking CSS requests. This has now silently failed twice: the
+		// shared app stylesheet grows, crosses the ceiling, and goes back out to
+		// a render-blocking <link> on every page with nothing in the build log
+		// to say so. Measured at 79,623 B (~12 KB compressed) when the ceiling
+		// was 72 KiB, costing 153 ms before first paint on all eight routes
+		// audited. 96 KiB restores the inline with ~16 KB of headroom; the
+		// caching trade-off is minor because GitHub Pages caps Cache-Control at
+		// max-age=600 anyway. Only the MapLibre sheet (~83KB, loaded with the
+		// map) stays external.
+		//
+		// The guard against a third recurrence is in lighthouserc.yml:
+		// `resource-summary:stylesheet:count` is budgeted at the one sheet a
+		// page legitimately requests, so an app stylesheet that falls out of the
+		// inline fails CI instead of quietly costing a round trip. Raise this
+		// ceiling only with the measured size named in the commit.
+		inlineStyleThreshold: 96 * 1024,
 		paths: {
 			base: ''
 		},

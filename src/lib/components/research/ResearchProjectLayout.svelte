@@ -30,7 +30,7 @@ co-director, programme or grant simply drop those rows.
 	import { GRANTS_SCRIPT_ID, buildGrantsJsonLd } from '$lib/utils/grantsJsonLd.svelte';
 	import { allGrants } from '$lib/data/grants/index';
 	import { allPublicationSummaries as allPublications } from '$lib/data/publications/summaries';
-	import { allCommunications } from '$lib/data/communications/index';
+	import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
 	import type { Grant, ResearchProject } from '$lib/types';
 	import { website } from '$lib/utils/siteHelpers';
 	import { base } from '$app/paths';

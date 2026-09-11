@@ -22,7 +22,12 @@ const CACHE_FILE = join(OUT_DIR, '.variants-cache.json');
 const CLIENT_MANIFEST_FILE = join(root, 'src', 'lib', 'data', 'imageVariants.generated.ts');
 const CHECK_ONLY = process.argv.includes('--check');
 
-export const VARIANT_WIDTHS = [400, 800, 1600];
+// The ladder. 160 and 240 exist because the site's densest pages are ledgers
+// of 56–120 CSS-px covers: without a step below 400 a phone at DPR 3 still
+// fetched a 400w file for a 56 px box, which measured 268 KB of covers on
+// /publications alone. Keep in sync with src/lib/utils/imageVariants.ts
+// (`VARIANT_WIDTHS`); imageVariants.test.ts asserts the two agree.
+export const VARIANT_WIDTHS = [160, 240, 400, 800, 1600];
 const RASTER_EXT = new Set(['.webp', '.jpg', '.jpeg', '.png', '.avif']);
 const RECIPE_VERSION = 'webp-q80-v2';
 

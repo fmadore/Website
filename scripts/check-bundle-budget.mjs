@@ -183,6 +183,90 @@ console.log(
 	`[bundle-budget] heaviest route: ${heaviestRoute.name} at ${heaviestRoute.kib.toFixed(1)} KiB / ${ROUTE_BUDGET_KIB} KiB budget`
 );
 
+// --- 4. Chunk-group direction: a route must not follow a leaf into a chunk --
+
+/**
+ * Splitting a library by what each page needs only works while the groups
+ * depend on each other in the intended direction, and that direction is decided
+ * by which group captures a shared leaf first — a fact no test could read off
+ * the config. `/cv/timeline` draws a static SVG with `scaleTime`; for a while
+ * it also downloaded `d3-force`, `d3-zoom`, `d3-selection` and `d3-drag`,
+ * because `d3-transition` (interactive) had captured `d3-color`, and
+ * `d3-scale → d3-interpolate → d3-color` then walked the timeline into the
+ * interactive chunk. Nothing failed: the route budget absorbed 58 KiB.
+ *
+ * So the direction is asserted here, per route, by package rather than by
+ * chunk name — the codeSplitting group names never reach disk. See D3_LEAVES
+ * in vite.config.ts for the fix this guards.
+ */
+const FORBIDDEN_PACKAGES = [
+	{
+		source: 'src/routes/cv/timeline/+page.svelte',
+		packages: ['d3-force', 'd3-zoom', 'd3-selection'],
+		why: 'the timeline needs `scaleTime` and nothing else; these are the lazily-loaded network graph’s. Check the d3 group priorities in vite.config.ts.'
+	}
+];
+
+/** Route source file → the generated client node key the manifest uses. */
+const NODE_DIR = '.svelte-kit/generated/client-optimized/nodes';
+function nodeKeyFor(source) {
+	for (const key of routeKeys) {
+		const file = `${NODE_DIR}/${key.slice(key.lastIndexOf('/') + 1)}`;
+		if (!existsSync(file)) continue;
+		if (readFileSync(file, 'utf8').includes(source)) return key;
+	}
+	return null;
+}
+
+/**
+ * Which node_modules packages a chunk was built from, read off its sourcemap.
+ * Exact where a content signature would be a guess — and the reason the `HEAVY`
+ * list above cannot police D3 by signature at all.
+ */
+const packageCache = new Map();
+function packagesIn(file) {
+	if (!packageCache.has(file)) {
+		const mapPath = `${BUILD_DIR}/${file}.map`;
+		const packages = new Set();
+		if (existsSync(mapPath)) {
+			for (const source of JSON.parse(readFileSync(mapPath, 'utf8')).sources ?? []) {
+				const match = /node_modules\/((?:@[^/]+\/)?[^/]+)\//.exec(source.replace(/\\/g, '/'));
+				if (match) packages.add(match[1]);
+			}
+		}
+		packageCache.set(file, packages);
+	}
+	return packageCache.get(file);
+}
+
+let mapsSeen = 0;
+for (const { source, packages, why } of FORBIDDEN_PACKAGES) {
+	const node = nodeKeyFor(source);
+	if (!node) {
+		problems.push(
+			`No client node found for ${source}. The route moved or was removed; update FORBIDDEN_PACKAGES in scripts/check-bundle-budget.mjs.`
+		);
+		continue;
+	}
+	const found = new Set();
+	for (const key of staticGraph(APP_ENTRY, KIT_ENTRY, node)) {
+		const file = manifest[key]?.file;
+		if (!file?.endsWith('.js')) continue;
+		const inChunk = packagesIn(file);
+		if (inChunk.size > 0) mapsSeen += 1;
+		for (const pkg of packages) if (inChunk.has(pkg)) found.add(pkg);
+	}
+	if (found.size > 0) {
+		problems.push(`Route ${source} statically loads ${[...found].sort().join(', ')} — ${why}`);
+	}
+}
+
+console.log(
+	mapsSeen > 0
+		? `[bundle-budget] chunk-group direction: checked ${FORBIDDEN_PACKAGES.length} route(s) against their sourcemaps`
+		: '[bundle-budget] chunk-group direction: SKIPPED — no sourcemaps beside the chunks (they are stripped before the Pages upload; run this straight after `npm run build`)'
+);
+
 // --- Report ----------------------------------------------------------------
 
 if (problems.length) {

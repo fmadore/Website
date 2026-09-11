@@ -4,14 +4,14 @@
  * Instantiates the runed EntityFilterSystem for the /conference-activity index.
  */
 
-import type { Communication, YearRange } from '$lib/types';
+import type { CommunicationSummary, YearRange } from '$lib/types';
 import {
-	allCommunications,
-	communicationsByType,
-	communicationsByYear,
-	allTags,
-	communicationsByCountry
-} from './index';
+	allCommunicationSummaries as allCommunications,
+	communicationSummariesByType as communicationsByType,
+	communicationSummariesByYear as communicationsByYear,
+	communicationSummaryTags as allTags,
+	communicationSummariesByCountry as communicationsByCountry
+} from './summaries';
 import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 
 // --- Computed unique values ---
@@ -59,22 +59,23 @@ const coAuthorFrequency = countOccurrences(
 
 // --- Filter System ---
 
-export const communicationFilters = new EntityFilterSystem<Communication>({
+export const communicationFilters = new EntityFilterSystem<CommunicationSummary>({
 	items: allCommunications,
-	matchesYearRange: (comm: Communication, range: YearRange) =>
+	matchesYearRange: (comm: CommunicationSummary, range: YearRange) =>
 		!!comm.year && comm.year >= range.min && comm.year <= range.max,
 	dimensions: {
 		types: {
-			match: (comm: Communication, values: string[]) => !!comm.type && values.includes(comm.type),
-			countExtractor: (comm: Communication) => comm.type
+			match: (comm: CommunicationSummary, values: string[]) =>
+				!!comm.type && values.includes(comm.type),
+			countExtractor: (comm: CommunicationSummary) => comm.type
 		},
 		tags: {
-			match: (comm: Communication, values: string[]) =>
+			match: (comm: CommunicationSummary, values: string[]) =>
 				!!comm.tags && comm.tags.some((t) => values.includes(t)),
-			countExtractor: (comm: Communication) => comm.tags
+			countExtractor: (comm: CommunicationSummary) => comm.tags
 		},
 		languages: {
-			match: (comm: Communication, values: string[]) => {
+			match: (comm: CommunicationSummary, values: string[]) => {
 				const langs = comm.language
 					? Array.isArray(comm.language)
 						? comm.language
@@ -82,7 +83,7 @@ export const communicationFilters = new EntityFilterSystem<Communication>({
 					: [];
 				return langs.some((l) => values.includes(l));
 			},
-			countExtractor: (comm: Communication) => {
+			countExtractor: (comm: CommunicationSummary) => {
 				if (!comm.language) return undefined;
 				return Array.isArray(comm.language)
 					? comm.language
@@ -90,21 +91,22 @@ export const communicationFilters = new EntityFilterSystem<Communication>({
 			}
 		},
 		authors: {
-			match: (comm: Communication, values: string[]) => {
+			match: (comm: CommunicationSummary, values: string[]) => {
 				const authors = comm.authors || [];
 				return authors.some((a) => a !== 'Frédérick Madore' && values.includes(a));
 			},
-			countExtractor: (comm: Communication) => comm.authors?.filter((a) => a !== 'Frédérick Madore')
+			countExtractor: (comm: CommunicationSummary) =>
+				comm.authors?.filter((a) => a !== 'Frédérick Madore')
 		},
 		countries: {
-			match: (comm: Communication, values: string[]) =>
+			match: (comm: CommunicationSummary, values: string[]) =>
 				!!comm.country && values.includes(comm.country),
-			countExtractor: (comm: Communication) => comm.country
+			countExtractor: (comm: CommunicationSummary) => comm.country
 		},
 		projects: {
-			match: (comm: Communication, values: string[]) =>
+			match: (comm: CommunicationSummary, values: string[]) =>
 				!!comm.project && values.includes(comm.project),
-			countExtractor: (comm: Communication) => comm.project
+			countExtractor: (comm: CommunicationSummary) => comm.project
 		}
 	},
 	filterOptions: {

@@ -54,7 +54,8 @@
 			body {
 				margin: 0;
 				min-height: 100vh;
-				font-family: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
+				font-family:
+					'Newsreader', 'Newsreader Fallback', Georgia, Cambria, 'Times New Roman', Times, serif;
 				line-height: 1.6;
 				background-color: #faf7ef;
 				color: #191509;
@@ -127,8 +128,11 @@
 		     subset only downloads when its codepoints appear on the page.
 		     The variable fonts are instanced (fontTools varLib.instancer) to the
 		     axis ranges the CSS actually uses — Archivo wght 400:900 wdth 100:125,
-		     Newsreader/Spline Sans Mono wght 400:700 — cutting ~30% of font bytes;
-		     keep the @font-face ranges below in sync if the files are regenerated. -->
+		     Newsreader/Spline Sans Mono wght 400:700 — cutting ~30% of font bytes.
+		     The ten latin-ext / vietnamese files are then re-subset by
+		     scripts/subset-fonts.py, which also owns the unicode-range values
+		     below and verifies them in CI (`npm run check:fonts`): edit the
+		     ranges there, not here. -->
 		<link
 			rel="preload"
 			as="font"
@@ -163,6 +167,46 @@
 			crossorigin
 		/>
 		<style>
+			/* Metric-matched fallbacks. Each webfont ships with `font-display: swap`,
+			 * so the first paint is set in a system face and the webfont replaces it
+			 * a round trip later. Without matching metrics that replacement moves
+			 * every line below it: measured at 375px, the home page's first
+			 * paragraph jumped 36px, the publications ledger 259px, and the CV
+			 * document 2174px. These three faces re-cut the system fallback to the
+			 * webfont's own proportions — outlines scaled by `size-adjust`, box
+			 * fixed by the ascent/descent overrides — so the swap changes the
+			 * shapes and not the layout. The ratios were measured with a canvas
+			 * probe against the shipped files and their named `local()` pair; they
+			 * only need revisiting if a family or a fallback changes.
+			 *
+			 * `local()` only: nothing is downloaded, and a platform without the
+			 * named face simply fails this rule and falls through to the next
+			 * entry in the stack (variables.css). */
+			@font-face {
+				font-family: 'Newsreader Fallback';
+				src: local('Georgia');
+				size-adjust: 102.6%;
+				ascent-override: 71.6%;
+				descent-override: 25.8%;
+				line-gap-override: 0%;
+			}
+			@font-face {
+				font-family: 'Archivo Fallback';
+				src: local('Segoe UI');
+				size-adjust: 99%;
+				ascent-override: 88.7%;
+				descent-override: 21.2%;
+				line-gap-override: 0%;
+			}
+			@font-face {
+				font-family: 'Spline Sans Mono Fallback';
+				src: local('Consolas');
+				size-adjust: 109.1%;
+				ascent-override: 96.4%;
+				descent-override: 24.1%;
+				line-gap-override: 0%;
+			}
+
 			/* Archivo italic vietnamese */
 			@font-face {
 				font-family: 'Archivo';
@@ -184,9 +228,8 @@
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/archivo-italic-latin-ext.woff2) format('woff2');
 				unicode-range:
-					U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
-					U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
-					U+2C60-2C7F, U+A720-A7FF;
+					U+0100-024F, U+02B0-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+					U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF;
 			}
 			/* Archivo italic latin */
 			@font-face {
@@ -221,9 +264,8 @@
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/archivo-normal-latin-ext.woff2) format('woff2');
 				unicode-range:
-					U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
-					U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
-					U+2C60-2C7F, U+A720-A7FF;
+					U+0100-024F, U+02B0-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+					U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF;
 			}
 			/* Archivo normal latin */
 			@font-face {
@@ -256,9 +298,8 @@
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/newsreader-italic-latin-ext.woff2) format('woff2');
 				unicode-range:
-					U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
-					U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
-					U+2C60-2C7F, U+A720-A7FF;
+					U+0100-024F, U+02B0-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+					U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF;
 			}
 			/* Newsreader italic latin */
 			@font-face {
@@ -290,9 +331,8 @@
 				font-display: swap;
 				src: url(%sveltekit.assets%/fonts/web/newsreader-normal-latin-ext.woff2) format('woff2');
 				unicode-range:
-					U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
-					U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
-					U+2C60-2C7F, U+A720-A7FF;
+					U+0100-024F, U+02B0-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+					U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF;
 			}
 			/* Newsreader normal latin */
 			@font-face {
@@ -314,9 +354,8 @@
 				src: url(%sveltekit.assets%/fonts/web/spline-sans-mono-italic-latin-ext.woff2)
 					format('woff2');
 				unicode-range:
-					U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
-					U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
-					U+2C60-2C7F, U+A720-A7FF;
+					U+0100-024F, U+02B0-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+					U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF;
 			}
 			/* Spline Sans Mono italic latin */
 			@font-face {
@@ -338,9 +377,8 @@
 				src: url(%sveltekit.assets%/fonts/web/spline-sans-mono-normal-latin-ext.woff2)
 					format('woff2');
 				unicode-range:
-					U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
-					U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113,
-					U+2C60-2C7F, U+A720-A7FF;
+					U+0100-024F, U+02B0-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+					U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF;
 			}
 			/* Spline Sans Mono normal latin */
 			@font-face {

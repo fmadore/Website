@@ -1,12 +1,12 @@
 <script lang="ts">
-	import type { Communication } from '$lib/types/communication';
+	import type { CommunicationSummary } from '$lib/types/communication';
 	import CommunicationItem from './CommunicationItem.svelte';
 	import Icon from '@iconify/svelte';
 
 	let {
 		communications = []
 	}: {
-		communications: Communication[];
+		communications: CommunicationSummary[];
 	} = $props();
 
 	// The hanging year is printed once per year-group, exactly as the record

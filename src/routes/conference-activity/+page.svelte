@@ -16,10 +16,15 @@
 	} from '$lib/utils/typeUtils';
 	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import { truncateSearchTerm } from '$lib/utils/entityFilterCore';
-	import { allCommunications, communicationsByYear } from '$lib/data/communications';
+	// The index lists talks, it never opens one: the committed projection
+	// (no abstracts) is what the rows, the facets and the map markers need.
+	import {
+		allCommunicationSummaries as allCommunications,
+		communicationSummariesByYear as communicationsByYear
+	} from '$lib/data/communications/summaries';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import { organisedWorkshopsJsonLd } from '$lib/data/organisedWorkshops';
-	import type { Communication } from '$lib/types/communication';
+	import type { CommunicationSummary } from '$lib/types/communication';
 
 	// The runed filter system: `af` is the stable deep-reactive filter state.
 	// (Mirrors the /publications page.)
@@ -107,7 +112,7 @@
 	}
 
 	// Haystack builder for the search — flattens the fields a scholar scans by.
-	function matchesSearch(comm: Communication, q: string): boolean {
+	function matchesSearch(comm: CommunicationSummary, q: string): boolean {
 		if (!q) return true;
 		const parts: string[] = [comm.title, String(comm.year ?? '')];
 		if (comm.authors) parts.push(...comm.authors);
@@ -168,8 +173,8 @@
 	// Map markers from the filtered set (independent of the upcoming/past split).
 	const mapMarkers = $derived(
 		filters.filteredItems
-			.filter((comm: Communication) => comm.coordinates)
-			.map((comm: Communication) => ({
+			.filter((comm: CommunicationSummary) => comm.coordinates)
+			.map((comm: CommunicationSummary) => ({
 				id: comm.id,
 				title: comm.title,
 				coordinates: comm.coordinates!,
