@@ -240,20 +240,15 @@
 		}
 	}
 
-	/* Midnight — the negative: film ground closed by a cream masthead rule. */
-	:global(html.dark .site-header) {
-		background: var(--color-background);
-		border-bottom: var(--rule-masthead) solid var(--color-primary);
-		box-shadow: none;
-	}
+	/* Midnight needs no block of its own: `dark.css` swaps --color-primary and
+	 * --color-background, so the base rule above already draws the negative —
+	 * film ground closed by a cream masthead rule. */
 
-	.container {
-		max-width: var(--container-xl);
-		width: 100%;
-		margin-left: auto;
-		margin-right: auto;
-		padding: 0 var(--space-4);
-	}
+	/* The masthead hangs on the page's rail, so it takes the global `.container`
+	 * unaltered rather than declaring a cap and a padding of its own. Those
+	 * overrides put the wordmark 8px inside every page's content at 768/1024/1440
+	 * and 136px outside it above --2xl, where the page took --container-2xl and
+	 * the header stayed capped at --container-xl. One rail, one rule. */
 
 	.header-inner {
 		display: flex;
@@ -317,10 +312,6 @@
 	}
 
 	@media (--sm) {
-		.container {
-			padding: 0 var(--space-6);
-		}
-
 		.header-inner {
 			padding: var(--space-4) 0;
 			min-height: var(--space-16);
@@ -337,9 +328,25 @@
 		}
 	}
 
-	/* Theme toggle sits to the right of the nav; keep rhythm consistent
-	 * with the --space-6 gap already present on .desktop-controls. */
-	.desktop-controls :global(.theme-toggle) {
-		margin-left: 0;
+	/* On paper the masthead is a masthead and nothing else: the wordmark over its
+	 * 4px rule, printed once at the top of the document. The nav and the theme
+	 * control are things to click, so they do not print; the bar stops being
+	 * sticky so it cannot repeat or hide mid-page. */
+	@media print {
+		:global(.site-header),
+		:global(.site-header.header-hidden) {
+			position: static;
+			transform: none;
+			background: var(--color-print-ground);
+			border-bottom: var(--rule-masthead) solid var(--color-print-ink);
+		}
+
+		.header-logo :global(.site-title) {
+			color: var(--color-print-ink);
+		}
+
+		.desktop-controls {
+			display: none;
+		}
 	}
 </style>

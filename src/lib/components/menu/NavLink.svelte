@@ -94,7 +94,6 @@
 	.dropdown-icon {
 		display: inline-block;
 		font-size: var(--font-size-2xs);
-		transition: transform var(--duration-fast) var(--ease-out);
 		line-height: 1;
 	}
 
@@ -111,11 +110,10 @@
 		}
 	}
 
-	/* Reduced motion support — the underline no longer animates; only the
-	 * colour shift and the disclosure caret still have anything to guard. */
+	/* Reduced motion support — the underline no longer animates and the caret
+	 * never moved; only the colour shift has anything to guard. */
 	@media (prefers-reduced-motion: reduce) {
-		.nav-link,
-		.dropdown-icon {
+		.nav-link {
 			transition: none;
 		}
 	}

@@ -13,7 +13,7 @@
 <section>
 	<h3>Languages</h3>
 	{#if languagesByProficiency.length > 0}
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each languagesByProficiency as language (language.id)}
 				<CVEntry year={language.proficiency}>
 					<span class="cv-language-name">{language.name}</span>

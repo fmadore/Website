@@ -16,7 +16,7 @@
 	<!-- Podcasts -->
 	{#if podcasts.length > 0}
 		<h4>Podcasts</h4>
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each podcasts as podcast (podcast.id)}
 				{@const podcastDate = new Date(podcast.dateISO)}
 				<CVEntry year={podcastDate.getFullYear()}>
@@ -63,7 +63,7 @@
 	<!-- Traditional Media Appearances -->
 	{#if mediaAppearancesByDate.length > 0}
 		<h4>Interviews and Appearances</h4>
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each mediaAppearancesByDate as media (media.id)}
 				{@const mediaDate = new Date(media.dateISO)}
 				<CVEntry year={mediaDate.getFullYear()}>

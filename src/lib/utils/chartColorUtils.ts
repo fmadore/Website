@@ -290,7 +290,6 @@ export const CHART_COLOR_FALLBACKS = {
 	border: '#c9c0aa', // border (--color-border)
 	surface: '#f3eee0', // paper-100 (--color-surface)
 	surfaceRgb: '250, 247, 239', // warm paper #faf7ef (--color-surface-rgb is unset, so this fallback renders)
-	black: '#000000',
 	white: '#ffffff',
 	accent: '#1e6a56', // pine — the signal accent (--color-accent)
 	highlight: '#1e6a56', // pine (--color-highlight)
@@ -374,7 +373,6 @@ export interface ResolvedChartColors {
 	surface: string;
 	surfaceElevated: string;
 	surfaceRgb: string;
-	black: string;
 	white: string;
 	accent: string;
 	highlight: string;
@@ -414,7 +412,6 @@ export function getResolvedChartColors(): ResolvedChartColors {
 		surface: getCSSVariableValueWithFallback('--color-surface', fb.surface),
 		surfaceElevated: getCSSVariableValueWithFallback('--color-surface-elevated', fb.surface),
 		surfaceRgb: getCSSVariableValueWithFallback('--color-surface-rgb', fb.surfaceRgb),
-		black: getCSSVariableValueWithFallback('--color-black', fb.black),
 		white: getCSSVariableValueWithFallback('--color-white', fb.white),
 		accent: getCSSVariableValueWithFallback('--color-accent', fb.accent),
 		highlight: getCSSVariableValueWithFallback('--color-highlight', fb.highlight),

@@ -66,6 +66,7 @@
 			}
 
 			:root {
+				color-scheme: light;
 				/* Daylight: warm paper + ink + pine (mirrors the design tokens) */
 				--bg: #faf7ef;
 				--ink: #191509;
@@ -81,6 +82,7 @@
 			   The class is what the bootstrap above sets; the media query is the
 			   no-JavaScript fallback, scoped so it never fights an explicit choice. */
 			:root.dark {
+				color-scheme: dark;
 				--bg: #171310;
 				--ink: #efe7d6;
 				--muted: #b3a88d;
@@ -90,6 +92,7 @@
 
 			@media (prefers-color-scheme: dark) {
 				:root:not(.light):not(.dark) {
+					color-scheme: dark;
 					--bg: #171310;
 					--ink: #efe7d6;
 					--muted: #b3a88d;

@@ -22,7 +22,10 @@
 <header class="cv-header">
 	<p class="cv-date">As of {today}</p>
 	<h1 class="cv-main-title">Curriculum Vitae</h1>
-	<h2 class="cv-subtitle">{author.fullName} — {author.position}</h2>
+	<!-- A colon, not an em dash: the Punctuation Rule bars em dashes from
+	     interface copy, and the position string already carries commas of its
+	     own, which an en dash would sit badly among. -->
+	<h2 class="cv-subtitle">{author.fullName}: {author.position}</h2>
 </header>
 
 <!-- Contact Info Section -->

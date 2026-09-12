@@ -110,10 +110,6 @@
 		border-radius: 0;
 	}
 
-	:global(.dropdown-item:last-child) {
-		margin-bottom: 0;
-	}
-
 	/* Leaves the site — the same ↗ the ledger actions and the footer use. */
 	.external-mark {
 		font-family: var(--font-family-mono);
@@ -126,11 +122,10 @@
 		color: var(--color-accent);
 	}
 
-	/* Dark mode — flat film surface matching the masthead. */
+	/* Dark mode — the film surface is the one thing that differs; the 1px border
+	 * and the absent shadow are already what the base rule draws. */
 	:global(html.dark) .dropdown-menu {
 		background: var(--color-surface-alt);
-		border: var(--border-width-thin) solid var(--color-border-dark);
-		box-shadow: none;
 	}
 
 	/* Touch device optimizations */

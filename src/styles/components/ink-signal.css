@@ -15,9 +15,15 @@
  * DATA VOICE — eyebrows, datelines, counts, labels
  * =========================================================================== */
 
+/* Tabular figures are declared here, once, rather than on every leaf that
+ * prints a number. Spline Sans Mono is monospaced, so its figures already share
+ * an advance — which is why the per-class copies drifted onto half the
+ * apparatus unnoticed. This is the one opt-in for anything that needs the
+ * guarantee stated (a figure column that could fall back to a proportional
+ * face); mono classes inherit alignment from the face itself. */
 .data-voice {
 	font-family: var(--font-family-mono);
-	font-feature-settings: 'tnum' 1;
+	font-variant-numeric: tabular-nums;
 }
 
 /* Eyebrow — the accent kicker above a title (DOSSIERS · 5 PROJECTS · 2013—2027). */
@@ -99,6 +105,19 @@
 	letter-spacing: var(--tracking-display-lg);
 	color: var(--color-text-emphasis);
 	margin: 0 0 var(--space-md);
+}
+
+/* Below 360px the display clamp bottoms out at 40px and the longest section
+ * names no longer fit their column: "Publications" — the longest single word
+ * any section index opens on — sets 272.3px into 256px and breaks mid-word,
+ * orphaning its final "s". One step down the scale clears it (255.3px into
+ * 256px at 320, 256.8 into 295 at 359) and nothing moves at 360 and up, where
+ * the name already fits. The margin is thin by construction: it is the last
+ * scale step that keeps the masthead above `.section-title`. */
+@media (--2xs-down) {
+	.index-title {
+		font-size: var(--font-size-3xl);
+	}
 }
 
 /* ===========================================================================
@@ -599,7 +618,6 @@
 	line-height: var(--line-height-snug);
 	color: var(--color-text-emphasis);
 	margin: 0;
-	font-variant-numeric: tabular-nums;
 	word-break: break-word;
 }
 
@@ -905,7 +923,7 @@
 .year-bars {
 	display: flex;
 	align-items: flex-end;
-	gap: 4px;
+	gap: var(--space-1);
 	height: var(--year-bars-h, 44px);
 }
 
@@ -1079,7 +1097,6 @@
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-sm);
 	font-weight: var(--font-weight-medium);
-	font-variant-numeric: tabular-nums;
 	letter-spacing: var(--tracking-figures);
 	color: var(--color-text-soft);
 }
@@ -1093,7 +1110,6 @@
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-semibold);
-	font-variant-numeric: tabular-nums;
 	letter-spacing: var(--tracking-figures);
 	color: var(--color-text-light);
 	min-width: 2ch;
@@ -1160,7 +1176,6 @@
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-semibold);
-	font-variant-numeric: tabular-nums;
 	letter-spacing: var(--tracking-figures);
 	color: var(--color-text-light);
 	min-width: 6ch;
@@ -1629,7 +1644,6 @@
 .facet-combobox-count {
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
-	font-variant-numeric: tabular-nums;
 	color: var(--color-text-muted);
 	text-align: right;
 }
@@ -1683,6 +1697,15 @@
 .pager-item--current {
 	background: var(--color-primary);
 	border-color: var(--color-primary);
+	color: var(--color-text-inverted);
+}
+
+/* The current page keeps its fill under the pointer: `.pager-item:hover` is
+ * (0,2,0) and would otherwise repaint the label in emphasis ink on the ink
+ * fill (1.00:1). Same move as `.chip--selected:hover`. */
+.pager-item--current:hover {
+	background: var(--color-primary-dark);
+	border-color: var(--color-primary-dark);
 	color: var(--color-text-inverted);
 }
 
@@ -1932,7 +1955,6 @@
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-xs);
 	font-weight: var(--font-weight-semibold);
-	font-variant-numeric: tabular-nums;
 	letter-spacing: var(--tracking-figures);
 	color: var(--color-text-emphasis);
 	text-align: end;

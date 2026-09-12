@@ -366,11 +366,15 @@
 		background: var(--color-surface-alt);
 	}
 
+	/* The letterbox behind a video, and the scrim over it while it loads, are
+	 * warm near-black — the system's own film ground — not pure black. Black is
+	 * outside the palette in both themes, and beside a warm-paper or microfilm
+	 * plate it reads as a hole rather than a ground. */
 	.media-element {
 		width: 100%;
 		height: auto;
 		display: block;
-		background: var(--color-black);
+		background: var(--sys-color-film-ground);
 	}
 
 	audio.media-element {
@@ -386,7 +390,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: color-mix(in srgb, var(--color-black) calc(var(--opacity-50) * 100%), transparent);
+		background: color-mix(
+			in srgb,
+			var(--sys-color-film-ground) calc(var(--opacity-50) * 100%),
+			transparent
+		);
 		border-radius: 0;
 	}
 

@@ -113,7 +113,9 @@
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	/* Left marker — a square-cut pine rule, hidden until hover/current. */
+	/* Left marker — a square-cut pine rule, either drawn or not. No transition:
+	 * a marker that grows out of the edge is a sliding indicator, which the
+	 * navigation rule forbids. `NavLink` draws its underline the same way. */
 	.mobile-nav-link::before {
 		content: '';
 		position: absolute;
@@ -124,7 +126,6 @@
 		width: var(--border-width-thick);
 		height: 1.4em;
 		background-color: var(--color-accent);
-		transition: transform var(--duration-fast) var(--ease-out);
 	}
 
 	.mobile-nav-link:hover,

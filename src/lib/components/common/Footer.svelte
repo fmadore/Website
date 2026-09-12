@@ -7,7 +7,7 @@
 </script>
 
 <footer class="site-footer">
-	<div class="footer-container">
+	<div class="footer-container container">
 		<section class="footer-branding" aria-labelledby="footer-brand-heading">
 			<!-- The wordmark prints exactly what the masthead prints; the degree
 			     belongs to the © line, which is a rights statement, not a nameplate. -->
@@ -74,7 +74,7 @@
 	</div>
 
 	<!-- Colophon rule — the fine-book signature line -->
-	<div class="footer-colophon">
+	<div class="footer-colophon container">
 		<span class="footer-copyright">© {currentYear} {author.fullName}</span>
 		<!-- The type credit doubles as the door to the living style guide. -->
 		<a class="footer-typecredit" href="{resolve('/style-guide')}#colophon">
@@ -102,10 +102,14 @@
 		z-index: 1;
 	}
 
+	/* The endpaper hangs on the page's rail: the global `.container` on the
+	 * element carries the cap and the gutter, so the footer cannot drift from the
+	 * masthead and the reading column again. It used to cap at --container-lg
+	 * under a full-bleed rule, which at 1440 started the content at x=240 against
+	 * the page's 96 and starved the Contact column to 177.6px — 116px short of
+	 * the imprint's longest line, so the postal record broke mid-phrase at every
+	 * desktop width. */
 	.footer-container {
-		max-width: var(--container-lg);
-		margin: 0 auto;
-		padding: 0 var(--space-6);
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--space-10);
@@ -262,9 +266,8 @@
 
 	/* Colophon rule — the signature line: © in mono, type credit in serif italic. */
 	.footer-colophon {
-		max-width: var(--container-lg);
-		margin: var(--space-10) auto 0;
-		padding: var(--space-4) var(--space-6) 0;
+		margin-top: var(--space-10);
+		padding-top: var(--space-4);
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
@@ -297,14 +300,6 @@
 	}
 
 	/* Responsive design improvements */
-	@media (--sm) {
-		.footer-container,
-		.footer-colophon {
-			padding-left: var(--space-8);
-			padding-right: var(--space-8);
-		}
-	}
-
 	@media (--md) {
 		.footer-container {
 			grid-template-columns: minmax(15rem, 1.2fr) 2fr;
@@ -326,10 +321,32 @@
 			gap: var(--space-10);
 		}
 
-		/* Four groups on one row. Contact carries the imprint, so it takes the
-		 * wider measure; the other three hold single-line labels. */
+		/* Four groups on one row. Contact carries the imprint, whose longest line
+		 * ("Forschungszentrum für Afrikastudien") measures 293.9px, so its column
+		 * is given that much outright and the other three — single-line mono
+		 * labels, none wider than 150px — share what is left. Proportional
+		 * fractions could not express this: at 1.3fr the Contact column came out
+		 * 116px short and the address broke mid-phrase. */
 		.footer-link-groups {
-			grid-template-columns: 1.3fr 1.1fr 0.95fr 1.1fr;
+			grid-template-columns: minmax(19rem, 1.35fr) 1fr 0.9fr 1fr;
+		}
+	}
+
+	/* On paper the endpaper takes the print ground. The footer's colours are all
+	 * tokens, so re-pointing the four of them carries the group rules, the
+	 * imprint and the colophon with it. Left as it was, the daylight footer
+	 * printed cream type on an ink slab — and with background graphics off, as
+	 * browsers default, that is cream on white at ~1.6:1: a blank colophon. */
+	@media print {
+		.site-footer {
+			--color-footer-bg: var(--color-print-ground);
+			--color-footer-text: var(--color-print-ink);
+			--color-footer-text-muted: var(--color-print-ink);
+			--color-footer-accent: var(--color-print-ink);
+
+			background: var(--color-print-ground);
+			color: var(--color-print-ink);
+			border-top: var(--rule-masthead) solid var(--color-print-ink);
 		}
 	}
 

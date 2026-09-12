@@ -3,6 +3,7 @@
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 	import { formatAuthorsCompact as formatAuthors } from '$lib/utils/nameUtils';
+	import { getCommunicationTypeBadge } from '$lib/utils/typeUtils';
 
 	// Props - project name and limit
 	let {
@@ -13,11 +14,9 @@
 		limit?: number;
 	} = $props();
 
-	// Add state for selected type filter
-	let selectedType = $state<string | null>(null);
-
-	// Filter talks by project name. The summaries suffice: the card prints at
-	// most 120 characters of the abstract, which the excerpt covers.
+	// Filter talks by project name. The summaries suffice: the panel row prints
+	// at most PANEL_EXCERPT_LENGTH characters of the abstract, which the excerpt
+	// covers.
 	let communicationList = $derived<RelevantItem[]>(
 		allCommunicationSummaries
 			.filter((comm) => comm.project === projectName)
@@ -35,38 +34,25 @@
 			}))
 	);
 
-	// Compute filtered list based on selected type
-	let filteredList = $derived<RelevantItem[]>(
-		selectedType
-			? communicationList.filter((comm) => comm.type === selectedType)
-			: communicationList
-	);
-
-	// Format communication type for display
-	function formatCommunicationType(type: string): string {
-		const typeMap: Record<string, string> = {
-			conference: 'Conference Paper',
-			workshop: 'Workshop',
-			seminar: 'Seminar',
-			lecture: 'Lecture',
-			panel: 'Panel',
-			poster: 'Poster Presentation',
-			event: 'Academic Event'
-		};
-		return typeMap[type] || type;
-	}
+	// Kind labels come from the shared register, not a local copy. The copy this
+	// replaces duplicated COMMUNICATION_TYPE_BADGE_LABELS except that it omitted
+	// `podcast` altogether, so a podcast talk filed under a project printed the
+	// raw key `podcast` as its kind — the same failure mode the registry guard
+	// was written for. There is no filter snippet on this panel, so there was
+	// also a `selectedType` state and a `filteredList` derived from it that
+	// nothing could ever change; both are gone with it.
 </script>
 
 <div>
 	<RelevantItemsList
 		title="Related talks & events"
-		items={filteredList}
+		items={communicationList}
 		collectionLabel="talks & events"
 		emptyLabel="talks or events"
 		basePath="/communications"
 		viewAllPath="/conference-activity"
 		{projectName}
-		formatType={formatCommunicationType}
+		formatType={getCommunicationTypeBadge}
 		{formatAuthors}
 	/>
 </div>

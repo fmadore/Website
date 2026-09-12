@@ -11,6 +11,7 @@
 @custom-media --2xl (min-width: 1536px);
 
 /* Desktop-first: max-width queries (for mobile-specific overrides) */
+@custom-media --2xs-down (max-width: 374px);
 @custom-media --xs-down (max-width: 479px);
 @custom-media --sm-down (max-width: 639px);
 @custom-media --md-down (max-width: 767px);

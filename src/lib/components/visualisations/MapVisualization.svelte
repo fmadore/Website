@@ -13,7 +13,10 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
-	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
+	import {
+		getCSSVariableValueWithFallback,
+		getResolvedChartColors
+	} from '$lib/utils/chartColorUtils';
 	import { toRgbString } from '$lib/utils/colorContrast';
 	import { prefersReducedMotion } from '$lib/utils/maplibre';
 	import { useMapLibre } from '$lib/utils/useMapLibre.svelte';
@@ -148,7 +151,14 @@
 		// MapLibre's style spec can't parse oklch() (which several --sys-viz-*
 		// palette tokens resolve to), so every colour handed to a paint property
 		// is normalised to rgb() first.
-		const labelColor = toRgbString(colors.white || '#ffffff');
+		// The cluster count sits on a `--color-primary` fill, so its ink is the
+		// token that pairs with that fill by definition: warm paper on daylight,
+		// the film ground on midnight. It read `--color-white` with a `#ffffff`
+		// fallback, which contradicted the note directly below it and printed a
+		// cold label on a warm plate in both themes.
+		const labelColor = toRgbString(
+			getCSSVariableValueWithFallback('--color-text-inverted', '#faf7ef')
+		);
 		// Warm paper surface, never pure white — a white fallback is the wrong
 		// temperature on daylight and badly wrong on the microfilm ground.
 		const strokeColor = toRgbString(colors.surface || '#f3eee0');
@@ -489,8 +499,8 @@
 		width: 0.75rem;
 		height: 0.75rem;
 		border-radius: var(--border-radius-full);
-		border: 2px solid var(--color-surface);
-		outline: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent);
+		border: var(--border-width-medium) solid var(--color-surface);
+		outline: var(--border-width-thin) solid color-mix(in srgb, var(--color-text) 20%, transparent);
 		flex-shrink: 0;
 	}
 
@@ -546,7 +556,7 @@
 		padding: 0;
 		overflow: hidden;
 		max-height: calc(100% - var(--space-4));
-		border: 1px solid var(--color-border);
+		border: var(--border-width-thin) solid var(--color-border);
 	}
 
 	:global(.map-popup .maplibregl-popup-tip) {
@@ -614,7 +624,7 @@
 	:global(.maplibregl-ctrl-group button) {
 		background-color: var(--color-background);
 		color: var(--color-text);
-		border: 1px solid var(--color-border);
+		border: var(--border-width-thin) solid var(--color-border);
 		transition: background-color var(--duration-fast) var(--ease-out);
 	}
 
@@ -623,7 +633,7 @@
 	}
 
 	:global(.maplibregl-ctrl-group button + button) {
-		border-top: 1px solid var(--color-border);
+		border-top: var(--border-width-thin) solid var(--color-border);
 	}
 
 	/* Attribution styling */

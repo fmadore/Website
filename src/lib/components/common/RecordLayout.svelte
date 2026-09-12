@@ -241,6 +241,22 @@ Usage:
 		color: var(--color-accent);
 	}
 
+	/* The only navigation control on a record page, and at rest 16px of mono
+	 * caps — a third the height of the buttons in the rail beneath it. A coarse
+	 * pointer gets the same 44px the rest of the site's controls take; keyed to
+	 * input method, not viewport width, like every other touch rule. */
+	@media (--touch) {
+		.record-breadcrumb {
+			align-items: center;
+		}
+
+		.record-breadcrumb-link {
+			display: inline-flex;
+			align-items: center;
+			min-height: 44px;
+		}
+	}
+
 	/* ── Two-column grid: masthead + main + 380px metadata rail ───────────── */
 	.record-grid {
 		display: grid;

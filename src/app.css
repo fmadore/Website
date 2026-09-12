@@ -25,8 +25,11 @@
  * (code-split per route) rather than bundled here, to keep the render-blocking
  * global stylesheet small:
  *   - components/activity-list.css → /activities routes
- *   - components/panels.css        → PanelBase / RelevantItemsList /
- *                                    RelevantPublications (home + research)
+ *   - components/panels.css        → PanelBase (home + research). It is now
+ *                                    only the panel shell: the record lists it
+ *                                    used to lay out are `.ledger` and their
+ *                                    filters are `.chip`, both from
+ *                                    ink-signal.css.
  */
 
 /* Utilities */

@@ -79,11 +79,6 @@
 	gap: var(--space-lg);
 }
 
-/* Space between elements */
-.space-y-3 > * + * {
-	margin-top: var(--space-sm);
-}
-
 /*
 Note: responsive variants (e.g. .sm\:flex-row) live with their base
 utilities — see flex.css. Add more classes as needed based on actual usage.

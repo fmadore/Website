@@ -268,7 +268,6 @@
 	<!-- ═══ FILTER BAR ═══ -->
 	<EntityFilterBar
 		{filters}
-		{totalEntries}
 		{typeLabels}
 		{typeChipLabels}
 		ariaLabel="Filter talks and events"
@@ -360,7 +359,6 @@
 				perPage={PER_PAGE}
 				total={matchCount}
 				onchange={(p) => (currentPage = p)}
-				label="talks"
 				scrollTargetId="bibliography"
 			/>
 		{:else}

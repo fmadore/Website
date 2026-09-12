@@ -107,10 +107,13 @@
 		<ul class="error-ways">
 			{#each ways as way (way.href)}
 				<li>
+					<!-- The shared chip idiom, not a local copy of it: 1px border,
+					     square corners, mono caps, solid ink when it is the current
+					     index. `.chip--selected` is the idiom's own current state. -->
 					<a
 						href={way.href}
-						class="error-chip no-underline"
-						class:is-current={way.href === currentWay}
+						class="chip no-underline"
+						class:chip--selected={way.href === currentWay}
 						aria-current={way.href === currentWay ? 'true' : undefined}
 					>
 						{way.label}
@@ -131,8 +134,10 @@
 			</p>
 		{/if}
 
+		<!-- A non-breaking space: Svelte trims a trailing ordinary one inside the
+		     span, and the live DOM read `←Back to the homepage`. -->
 		<a class="error-home" href={resolve('/')}
-			><span aria-hidden="true">&larr; </span>Back to the homepage</a
+			><span aria-hidden="true">&larr;&nbsp;</span>Back to the homepage</a
 		>
 	</div>
 </div>
@@ -174,8 +179,8 @@
 		max-width: var(--measure-prose);
 	}
 
-	/* Flat chips — the site's selected-chip idiom: 1px ink border, square
-	 * corners, mono caps; the current index is a solid ink fill. */
+	/* The chips themselves are the shared `.chip` idiom (ink-signal.css); this
+	 * list only places them. */
 	.error-ways {
 		list-style: none;
 		padding: 0;
@@ -183,38 +188,6 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--space-2) var(--space-2-5);
-	}
-
-	.error-chip {
-		display: inline-block;
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-xs);
-		font-weight: var(--font-weight-medium);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
-		color: var(--color-text-emphasis);
-		text-decoration: none;
-		padding: var(--space-2) var(--space-4);
-		border: var(--border-width-thin) solid var(--color-primary);
-		transition:
-			background-color var(--duration-fast) var(--ease-out),
-			color var(--duration-fast) var(--ease-out);
-	}
-
-	.error-chip:hover,
-	.error-chip:focus-visible {
-		background-color: var(--color-primary);
-		color: var(--color-text-inverted);
-	}
-
-	.error-chip.is-current {
-		background-color: var(--color-primary);
-		color: var(--color-text-inverted);
-	}
-
-	.error-chip:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--border-width-thin);
 	}
 
 	/* Diagnostics — the machine voice, never the lede. */

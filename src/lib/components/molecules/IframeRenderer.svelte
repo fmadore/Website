@@ -68,8 +68,8 @@
 			height: var(--iframe-height-sm);
 			aspect-ratio: auto;
 			min-height: 0;
-			border-color: var(--color-black);
-			background: var(--color-white);
+			border-color: var(--color-print-ink);
+			background: var(--color-print-ground);
 		}
 	}
 </style>

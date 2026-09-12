@@ -375,7 +375,6 @@
 		font-size: var(--font-size-xs);
 		line-height: 1;
 		flex-shrink: 0;
-		transition: transform var(--duration-fast) var(--ease-out);
 	}
 
 	.card-link {
@@ -390,10 +389,10 @@
 		color: var(--color-accent-dark);
 	}
 
-	.card-link:hover .hint-arrow,
-	.card-link:focus-visible .hint-arrow {
-		transform: translateX(var(--space-1));
-	}
+	/* The glyph used to nudge 4px to the right on hover. The label beside it
+	 * already changes colour, which is the whole state change this register
+	 * allows; a mark that slides is the one bit of motion the print register
+	 * does not have room for. */
 
 	/* Arrow — a small square of the paper body rotated 45°, with two hairline
 	 * edges showing, tying the tile to its reference. No shadow. */
@@ -478,18 +477,12 @@
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		.preview-card,
-		.hint-arrow {
+		.preview-card {
 			transition: none !important;
 		}
 
 		.preview-card.positioned {
 			opacity: 1;
-		}
-
-		.card-link:hover .hint-arrow,
-		.card-link:focus-visible .hint-arrow {
-			transform: none;
 		}
 	}
 

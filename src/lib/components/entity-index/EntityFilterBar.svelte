@@ -7,11 +7,11 @@
 	import type { Snippet } from 'svelte';
 	import type { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 	import { createFacetCollapsible } from '$lib/utils/facetDisclosure.svelte';
+	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { FACET_GRID_ID } from './EntityFacetGrid.svelte';
 
 	interface Props {
 		filters: EntityFilterSystem<TItem>;
-		totalEntries: number;
 		/** Full type labels (title attribute). */
 		typeLabels: Record<string, string>;
 		/** Short chip labels for the compact type row. */
@@ -28,7 +28,6 @@
 
 	let {
 		filters,
-		totalEntries,
 		typeLabels,
 		typeChipLabels,
 		ariaLabel,
@@ -65,14 +64,19 @@
 		</div>
 
 		<div class="chip-row type-chips">
+			<!-- "All" prints what clearing this row returns, not the corpus total:
+			     under another active facet the two differ, and the chip would be
+			     asserting a count clicking it does not produce. Same rule below
+			     for the language row. -->
 			<button
 				type="button"
 				class="chip"
 				class:chip--selected={af.types.length === 0}
-				aria-label="All types"
+				aria-pressed={af.types.length === 0}
+				data-count={filters.totals.types}
 				onclick={() => filters.setValues('types', [])}
 			>
-				All <span class="chip-count">{totalEntries}</span>
+				All <span class="chip-count">{filters.totals.types}</span>
 			</button>
 			{#each options.types as type (type)}
 				<button
@@ -82,9 +86,9 @@
 					aria-pressed={af.types.includes(type)}
 					data-count={filters.counts.types[type] ?? 0}
 					onclick={() => filters.toggle('types', type)}
-					title={typeLabels[type] ?? type}
+					title={typesetQuotes(typeLabels[type] ?? type)}
 				>
-					{typeChipLabels[type] ?? typeLabels[type] ?? type}
+					{typesetQuotes(typeChipLabels[type] ?? typeLabels[type] ?? type)}
 					<span class="chip-count">{filters.counts.types[type] ?? 0}</span>
 				</button>
 			{/each}
@@ -98,11 +102,11 @@
 				type="button"
 				class="language-opt"
 				class:language-opt--active={af.languages.length === 0}
-				aria-label="All languages"
 				aria-pressed={af.languages.length === 0}
+				data-count={filters.totals.languages}
 				onclick={() => filters.setValues('languages', [])}
 			>
-				All
+				All <span class="language-count">{filters.totals.languages}</span>
 			</button>
 			{#each options.languages as lang (lang)}
 				<button

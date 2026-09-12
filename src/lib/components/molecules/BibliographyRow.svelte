@@ -107,12 +107,6 @@
 		 * demand: a list page renders a dozen of these and only one is ever used.
 		 */
 		reference?: () => string;
-		/**
-		 * Label of the trailing internal link ("Details"). Omit on a row whose
-		 * title already links to the record and whose trailing action is the
-		 * citation — a third link to the same page is only noise in the tab order.
-		 */
-		detailLabel?: string;
 		/** Citation count — rendered as quiet mono marginalia when > 0. */
 		citedCount?: number;
 		/** Hanging year, printed once per year-group by the parent. */
@@ -157,7 +151,6 @@
 		loading = 'lazy',
 		actions = [],
 		reference = undefined,
-		detailLabel = '',
 		citedCount = 0,
 		yearLabel = null,
 		headingLevel = 2,
@@ -196,6 +189,14 @@
 		idle: 'Cite',
 		copied: 'Copied',
 		failed: 'Copy failed'
+	} as const;
+
+	// Idle is quiet ink, a copy that happened is pine, a copy that was refused is
+	// emphasis ink — three states, three inks, none of them shared.
+	const CITE_STATE_CLASS = {
+		idle: '',
+		copied: 'bib-cite--confirmed',
+		failed: 'bib-cite--failed'
 	} as const;
 
 	async function copyReference() {
@@ -328,13 +329,10 @@
 			<Button
 				bare
 				class="bib-action bib-cite"
-				additionalClasses={copyState === 'copied' ? 'bib-cite--confirmed' : ''}
+				additionalClasses={CITE_STATE_CLASS[copyState]}
 				onclick={copyReference}
 				label={CITE_LABELS[copyState]}
 			/>
-		{/if}
-		{#if detailLabel}
-			<a {href} class="bib-action" data-sveltekit-preload-code="tap">{detailLabel}</a>
 		{/if}
 		{#if citedCount > 0}
 			<span class="bib-cited">Cited by {citedCount}</span>

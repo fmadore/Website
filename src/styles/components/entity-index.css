@@ -35,7 +35,6 @@
 }
 
 .index-eyebrow {
-	font-variant-numeric: tabular-nums;
 	margin-bottom: var(--space-sm);
 }
 
@@ -251,7 +250,8 @@
 	color: var(--color-text-soft);
 	background: none;
 	border: none;
-	padding: 0;
+	padding: 0 0 var(--space-0-5);
+	border-bottom: var(--border-width-medium) solid transparent;
 	cursor: pointer;
 	transition: color var(--duration-fast) var(--ease-out);
 }
@@ -260,8 +260,12 @@
 	color: var(--color-text-emphasis);
 }
 
+/* Sort and Language are both single-select option rows on the same baseline,
+ * so "the current option" is drawn one way in both: pine text over a 2px pine
+ * underline. */
 .sort-opt--active {
 	color: var(--color-accent);
+	border-bottom-color: var(--color-accent);
 }
 
 /* Touch targets — the filter controls are baseline-aligned text affordances
@@ -289,9 +293,19 @@
 
 	/* Keep the active underline tight to the label rather than to the new
 	 * padded box, so the indicator still reads as an underline. */
-	.language-opt {
+	.language-opt,
+	.sort-opt {
 		padding-bottom: calc(var(--space-2-5) - var(--space-0-5));
 		border-bottom-width: var(--border-width-medium);
+	}
+
+	/* The facet ledger is a control family too: at rest its rows measure 23px on
+	 * a 23px pitch, and adjacent rows share an edge, so the SC 2.5.8 spacing
+	 * exception cannot rescue them. The grid is behind `More filters` below
+	 * --lg, so the extra leading costs the reader nothing. */
+	.facet-row {
+		padding: var(--space-2-5) 0;
+		min-height: 44px;
 	}
 }
 
@@ -397,16 +411,32 @@
 	font-weight: var(--font-weight-medium);
 }
 
-/* Small square marker for the projects column — filled pine when on. */
+/* Small square marker for the projects column.
+ *
+ * The row keeps the ledger's `align-items: baseline` like every other facet
+ * column: centring a row that wraps drops its marker and its count below the
+ * line they key, and the count column then reads ragged against Co-authors and
+ * Countries two tracks away. On baseline the marker sits on the first line, a
+ * box bracketing the x-height.
+ *
+ * It is also hung in the gutter rather than indenting the column, so the
+ * project names start on the same vertical as the PROJECTS head above them.
+ * The hang is the marker plus its gap, and both are kept inside the index's
+ * 16px page padding so nothing is clipped on a phone. */
 .facet-row--marker {
-	align-items: center;
+	--facet-marker-size: 9px;
+	gap: var(--space-1-5);
+	margin-left: calc(-1 * (var(--facet-marker-size) + var(--space-1-5)));
 }
 
 .facet-marker {
 	flex: 0 0 auto;
-	width: 9px;
-	height: 9px;
-	border: var(--border-width-thin) solid var(--color-border-dark);
+	width: var(--facet-marker-size, 9px);
+	height: var(--facet-marker-size, 9px);
+	/* --color-text-light, not --color-border-dark: this is the state indicator of
+	 * a toggle (empty square off, solid ink on), so its boundary is held to the
+	 * 3:1 of SC 1.4.11 — 2.6:1 daylight / 2.4:1 midnight before, 5.6 / 5.4 now. */
+	border: var(--border-width-thin) solid var(--color-text-light);
 	background: transparent;
 	transition:
 		background var(--duration-fast) var(--ease-out),
@@ -430,7 +460,6 @@
 .facet-count {
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
-	font-variant-numeric: tabular-nums;
 	color: var(--color-text-muted);
 	text-align: right;
 }
@@ -449,7 +478,6 @@
  * the label, above the track it describes. */
 .facet-years-readout {
 	margin: 0 0 var(--space-2);
-	font-variant-numeric: tabular-nums;
 }
 
 .facet-years {
@@ -461,7 +489,6 @@
 .facet-years-bound {
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
-	font-variant-numeric: tabular-nums;
 	color: var(--color-text-light);
 	white-space: nowrap;
 }
@@ -478,7 +505,7 @@
 /* Active-filter summary — the "N FILTERS ACTIVE · M MATCHES" ledger line. */
 .facet-summary {
 	margin-top: var(--space-md);
-	padding-top: var(--space-2);
+	padding-top: var(--rule-gap);
 	border-top: var(--rule-hairline) solid var(--color-hairline);
 	display: flex;
 	flex-wrap: wrap;
@@ -494,7 +521,6 @@
 }
 
 .facet-summary-count {
-	font-variant-numeric: tabular-nums;
 	color: var(--color-text-emphasis);
 }
 
@@ -546,11 +572,20 @@
 	gap: var(--space-md);
 }
 
+/* The message the reader came for: one serif line, the register of the list it
+ * replaces. */
 .bib-empty-line {
 	font-family: var(--font-family-serif);
 	font-style: italic;
 	font-size: var(--font-size-lg);
 	color: var(--color-text-soft);
+	margin: 0;
+}
+
+/* Its context is apparatus, not message: the corpus figures take the
+ * `.dateline` register (ink-signal.css) so the two lines no longer carry equal
+ * weight. Only the paragraph margin is restated here. */
+.bib-empty-note {
 	margin: 0;
 }
 

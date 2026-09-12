@@ -243,10 +243,13 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 			subsections.forEach((h4) => {
 				layout.addSubsectionLabel(h4.textContent || '');
 
-				// Get the next sibling div with space-y-3 class (flex layout entries)
+				// Get the next sibling ledger div (flex layout entries). `data-cv-ledger`
+				// is the contract: it used to be the `.space-y-3` utility class, which
+				// was applied to every CV ledger purely so this selector could find it
+				// and then cancelled again by the page's own stylesheet.
 				let nextElement = h4.nextElementSibling;
 				while (nextElement) {
-					if (nextElement.tagName === 'DIV' && nextElement.classList.contains('space-y-3')) {
+					if (nextElement.tagName === 'DIV' && nextElement.hasAttribute('data-cv-ledger')) {
 						// Handle flex layout entries
 						const entries = nextElement.querySelectorAll('.cv-entry, .flex.gap-4');
 
@@ -404,7 +407,9 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 			} else {
 				// Fallback: handle simple paragraph content (for sections like Fieldwork)
 				const paragraphs = section.querySelectorAll('p:not(.text-light)');
-				const divs = section.querySelectorAll('div:not(.space-y-3):not(.flex):not(.cv-entry)');
+				const divs = section.querySelectorAll(
+					'div:not([data-cv-ledger]):not(.flex):not(.cv-entry)'
+				);
 
 				const contentElements = paragraphs.length > 0 ? paragraphs : divs;
 				pdf.setTextColor(...COLORS.TEXT); // Ensure text color is reset for fallback content

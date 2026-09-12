@@ -213,8 +213,8 @@
 	}
 
 	.close-btn-minimal:focus-visible {
-		outline: none;
-		box-shadow: var(--focus-ring);
+		outline: var(--border-width-medium) solid var(--color-border-focus);
+		outline-offset: var(--border-width-medium);
 	}
 
 	.detail-meta-row {

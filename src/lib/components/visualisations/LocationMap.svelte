@@ -671,17 +671,21 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		color: var(--color-surface);
 	}
 
+	/* `--color-focus` is not a token in this system — the ring resolved to
+	 * `currentColor`'s initial and never rendered on either control. The token is
+	 * `--color-border-focus`, and the width is the medium border token, as on
+	 * every other focus ring on the site. */
 	.map-mode-toggle button:focus-visible,
 	.map-mode-status button:focus-visible {
-		outline: 2px solid var(--color-focus);
-		outline-offset: 2px;
+		outline: var(--border-width-medium) solid var(--color-border-focus);
+		outline-offset: var(--border-width-medium);
 		position: relative;
 		z-index: 1;
 	}
 
 	.map-mode-region:focus-visible {
-		outline: 2px solid var(--color-focus);
-		outline-offset: 2px;
+		outline: var(--border-width-medium) solid var(--color-border-focus);
+		outline-offset: var(--border-width-medium);
 	}
 
 	.map-mode-status {
@@ -754,7 +758,8 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		display: block;
 		height: 0.5rem;
 		margin-bottom: var(--space-2xs);
-		border-block: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+		border-block: var(--border-width-thin) solid
+			color-mix(in srgb, var(--color-border) 70%, transparent);
 	}
 
 	/* The honest state fills the plate the map would have occupied; the panel
@@ -800,7 +805,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		border-radius: 0;
 		box-shadow: none;
 		padding: var(--space-sm) var(--space-md);
-		border: 1px solid var(--color-border);
+		border: var(--border-width-thin) solid var(--color-border);
 	}
 
 	:global(.location-map-popup .maplibregl-popup-tip) {
@@ -853,9 +858,11 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		gap: var(--space-md);
 	}
 
+	/* A rule between entries, so it takes the rule pair rather than the box-edge
+	 * pair it was drawn in (as a raw 1px, at that). */
 	:global(.location-popup .item-list li) {
 		padding: var(--space-2xs) 0;
-		border-bottom: 1px solid var(--color-border);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 		font-size: var(--font-size-xs);
 	}
 

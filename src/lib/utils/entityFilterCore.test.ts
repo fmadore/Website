@@ -4,6 +4,7 @@ import {
 	filterEntityItems,
 	computeFacetCounts,
 	computeDisjunctiveFacetCounts,
+	computeDisjunctiveTotals,
 	toggleArrayValue,
 	normalizeYearRange,
 	clampYearRange,
@@ -204,6 +205,47 @@ describe('computeDisjunctiveFacetCounts', () => {
 		const filters = { ...emptyFilters(), types: ['book'] };
 		const counts = computeDisjunctiveFacetCounts(items, filters, dimensions, matchesYearRange);
 		expect(counts.types.chapter).toBe(1);
+	});
+});
+
+describe('computeDisjunctiveTotals', () => {
+	it('reports how many items clearing one dimension alone would return', () => {
+		const filters = { ...emptyFilters(), types: ['book'] };
+		const totals = computeDisjunctiveTotals(items, filters, dimensions, matchesYearRange);
+		// Types cleared: the whole corpus. Every other dimension still sees the
+		// one book the active type admits.
+		expect(totals.types).toBe(4);
+		expect(totals.tags).toBe(1);
+		expect(totals.languages).toBe(1);
+	});
+
+	it('keeps every other active dimension and the year range applied', () => {
+		const filters = {
+			...emptyFilters(),
+			types: ['article'],
+			tags: ['Islam'],
+			yearRange: { min: 2015, max: 2020 }
+		};
+		const totals = computeDisjunctiveTotals(items, filters, dimensions, matchesYearRange);
+		// p2 alone is an Islam-tagged article in range; clearing types adds nothing
+		// else tagged Islam in 2015-2020.
+		expect(totals.types).toBe(1);
+		// Clearing tags admits p3 (article, 2020, untagged) as well.
+		expect(totals.tags).toBe(2);
+	});
+
+	it('is not the sum of the facet counts for a multi-valued dimension', () => {
+		const filters = emptyFilters();
+		const counts = computeDisjunctiveFacetCounts(items, filters, dimensions, matchesYearRange);
+		const totals = computeDisjunctiveTotals(items, filters, dimensions, matchesYearRange);
+		// p3 is "French, English", so the language counts sum to 4 over 4 items —
+		// one of which (p4) has no language at all. The total is the item count.
+		const languageSum = Object.values(counts.languages).reduce((a, b) => a + b, 0);
+		expect(languageSum).toBe(4);
+		expect(totals.languages).toBe(items.length);
+		// Types are single-valued and every item has one, so there the two agree.
+		const typeSum = Object.values(counts.types).reduce((a, b) => a + b, 0);
+		expect(typeSum).toBe(totals.types);
 	});
 });
 

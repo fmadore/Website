@@ -98,7 +98,7 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 
 #### Focus Ring (Accessibility)
 
-- **`--focus-ring`**: Accent-coloured focus indicator (pine signals the keyboard target)
+- There is no ring token. Every control draws the same flat outline on `:focus-visible` — `var(--border-width-medium) solid var(--color-border-focus)` with a matching offset — never a translucent halo (the `--focus-ring` box-shadow token was retired on 2026-09-12 with its last consumer).
 
 #### Animation & Transitions
 
@@ -200,7 +200,7 @@ Buttons speak the **data voice**: Spline Sans Mono, uppercase, letterspaced, squ
 
 ### Cards
 
-There is no cards sheet. The bounded-tile `.card` primitive (flat warm-paper tile: 1px hairline border, square corners, no shadow, border-colour hover only) is **owned by `Card.svelte`** (`src/lib/components/common/`) as component-scoped CSS, including its `.card-image` / `.card-body` / `.card-title` / `.card-subtitle` elements, the `.card--editorial` lead variant, and dark-mode rules. The former global `.card-accent-border` had one consumer, `RelevantItemCard`, and now lives in that component's scoped styles. Every dated or keyed record renders as a ledger row, not a card (DESIGN.md, principle 3).
+There is no cards sheet. The bounded-tile `.card` primitive (flat warm-paper tile: 1px hairline border, square corners, no shadow, border-colour hover only) is **owned by `Card.svelte`** (`src/lib/components/common/`) as component-scoped CSS, including its `.card-image` / `.card-body` / `.card-title` / `.card-subtitle` elements, the `.card--editorial` lead variant, and dark-mode rules. The former global `.card-accent-border` had one consumer, the research panels' `RelevantItemCard`, which was retired in the 6.1 ledger conversion; the rule went with it. Every dated or keyed record renders as a ledger row, not a card (DESIGN.md, principle 3).
 
 ### Bibliography (`components/bibliography.css`) — route-scoped
 
@@ -238,7 +238,7 @@ The utility sheets are intentionally lean: each class exists because markup actu
 
 ### Spacing (`utilities/spacing.css`)
 
-Margin (`.mx-auto`, `.mt-*`, `.mb-*`, `.ml-*`), padding (`.p-*`, `.px-4`, `.py-8`), gap (`.gap-4/-6`), and `.space-y-3` utilities on the 8-point grid. Values map to the semantic tokens.
+Margin (`.mx-auto`, `.mt-*`, `.mb-*`, `.ml-*`), padding (`.p-*`, `.px-4`, `.py-8`), and gap (`.gap-4/-6`) utilities on the 8-point grid. Values map to the semantic tokens.
 
 ### Colors (`utilities/colors.css`)
 
@@ -258,7 +258,7 @@ Text colour utilities only: `.text-primary`, `.text-light`, `.text-muted`, `.tex
 
 ### Images (`utilities/images.css`)
 
-`.responsive-image`, `.image-container` (with its hover zoom), and `.hero-image`. Prefer the `.plate` idiom for content imagery (scans, covers, photos).
+`.responsive-image` and `.hero-image`. Prefer the `.plate` idiom for content imagery (scans, covers, photos).
 
 ### Surfaces (`utilities/surfaces.css`)
 

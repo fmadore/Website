@@ -154,7 +154,13 @@ a {
 	transition: color var(--duration-fast) var(--ease-out);
 }
 
-a:hover {
+/* A `.btn` is a control, not a line of type: this bare hover (0,1,1) outranked
+ * `.btn-accent` (0,1,0) and repainted the accent button's label on hover —
+ * measured at 1.48:1 on `Open publication ↗`. The exclusion is wrapped in
+ * `:where()` so it costs nothing: at (0,1,1) the rule still loses to every
+ * component hover declared later in the cascade, which is what a bare element
+ * default should do. The prose-link idiom below carries the same exclusion. */
+a:hover:not(:where(.btn)) {
 	color: var(--color-highlight);
 }
 
@@ -199,8 +205,7 @@ a:hover {
 		.abstract,
 		.apparatus-text,
 		.audio-description,
-		.embed-desc,
-		.guide-note
+		.embed-desc
 	)
 	a:not(.btn):not(.no-underline):not(.site-header *) {
 	text-decoration: underline;
@@ -221,8 +226,7 @@ a:hover {
 		.abstract,
 		.apparatus-text,
 		.audio-description,
-		.embed-desc,
-		.guide-note
+		.embed-desc
 	)
 	a:not(.btn):not(.no-underline):not(.site-header *):is(:hover, :focus-visible) {
 	color: var(--color-accent);
@@ -241,8 +245,7 @@ a:hover {
 			.abstract,
 			.apparatus-text,
 			.audio-description,
-			.embed-desc,
-			.guide-note
+			.embed-desc
 		)
 		a:not(.btn):not(.no-underline):not(.site-header *) {
 		transition: none;
@@ -261,7 +264,6 @@ a:hover {
 }
 
 /* Special cases without underlines */
-.card a,
 .nav-link,
 .btn,
 .header-logo a {
@@ -501,10 +503,11 @@ small {
  * An inline citation is a prose link with a softer rule, not a pine word: it
  * takes ink text like the sentence it sits in, and pine arrives on hover the
  * way it does for any cross-reference. It used to read `var(--color-citation)`,
- * which aliases the accent, so every citation in a paragraph was a pine word —
+ * which aliased the accent, so every citation in a paragraph was a pine word —
  * and `ReferenceLink` (the component that actually renders one) said the same
- * thing a second time. The token stays declared for a consumer that wants the
- * accent by that name; this rule no longer is one. */
+ * thing a second time. That token is gone: once this rule stopped using it,
+ * nothing did, and a named alias with no consumer is a second way to spell the
+ * accent waiting to drift from it. */
 .citation {
 	color: var(--color-primary);
 	font-style: italic;
@@ -570,11 +573,12 @@ table {
 	font-size: var(--font-size-sm);
 }
 
+/* The row separator is a rule, not a box edge: the Hairline Pairing Rule. */
 th,
 td {
 	padding: var(--space-sm);
 	text-align: left;
-	border-bottom: var(--border-width-thin) solid var(--color-border);
+	border-bottom: var(--rule-hairline) solid var(--color-hairline);
 }
 
 th {
@@ -583,13 +587,21 @@ th {
 	background-color: var(--color-surface);
 }
 
-/* Print optimizations */
+/* Print optimizations.
+ *
+ * Paper is a third ground, and the chrome was never designed for it: the sheet
+ * set the body black-on-white and stopped there, so the masthead printed its
+ * navigation and theme control, the skip link (position: fixed) stamped itself
+ * on every page, and the footer printed 414px of cream type on an ink slab —
+ * which, with background graphics off as browsers default, is cream on white at
+ * ~1.6:1, i.e. a blank colophon. What survives onto paper is what a reader can
+ * act on there: the wordmark as a masthead, the document, the imprint. */
 @media print {
 	body {
 		font-size: 12pt;
 		line-height: var(--line-height-snug);
-		color: black;
-		background: white;
+		color: var(--color-print-ink);
+		background: var(--color-print-ground);
 	}
 
 	h1,
@@ -599,7 +611,7 @@ th {
 	h5,
 	h6 {
 		page-break-after: avoid;
-		color: black;
+		color: var(--color-print-ink);
 	}
 
 	blockquote {
@@ -609,7 +621,26 @@ th {
 	.prose {
 		max-width: none;
 	}
+
+	/* The skip link is the loud one: `position: fixed` stamps it at the top of
+	 * every printed page. Nothing else sets its `display`, so this is enough. */
+	.skip-link {
+		display: none;
+	}
 }
+
+/*
+ * The rest of the print sheet lives with the chrome it prints, because a
+ * component's own scoped rule is the only one that reliably outranks the screen
+ * rule beside it — a global override here would sit at equal specificity and
+ * win or lose on bundle order. Each is marked `@media print` in its own file:
+ *
+ *   Header.svelte                — masthead: wordmark and rule only, not sticky
+ *   HamburgerButton.svelte       — hidden
+ *   MobileMenu.svelte            — hidden
+ *   NetworkStatusIndicator.svelte — hidden
+ *   Footer.svelte                — endpaper re-pointed at the print ground
+ */
 
 /* Responsive typography utilities */
 @media (--sm) {

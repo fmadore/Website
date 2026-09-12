@@ -829,9 +829,8 @@
 				<span class="data-voice">.page-intro</span>, <span class="data-voice">.record-prose</span>,
 				<span class="data-voice">.project-prose</span>, <span class="data-voice">.abstract</span>,
 				<span class="data-voice">.apparatus-text</span>,
-				<span class="data-voice">.audio-description</span>,
-				<span class="data-voice">.embed-desc</span> and
-				<span class="data-voice">.guide-note</span>, and nothing else. Anything outside them —
+				<span class="data-voice">.audio-description</span> and
+				<span class="data-voice">.embed-desc</span>, and nothing else. Anything outside them —
 				chips, bibliography titles, plate links, breadcrumbs, ledger rows whose whole row is the
 				anchor — owns its own links, and a component that writes
 				<span class="data-voice">text-decoration: none</span> keeps it.
@@ -848,11 +847,15 @@
 			</p>
 			<figure class="specimen">
 				<figcaption class="specimen-label">Specimen — the prose link and its opt-out</figcaption>
-				<p class="guide-note guide-specimen-prose">
+				<!-- These two carry `.prose` as well: a specimen has to sit inside an
+				     opt-in container to demonstrate the idiom, and `.guide-note` is no
+				     longer one of them. The scoped `.guide-note` rule outranks `.prose`
+				     on every declaration the two share, so nothing moves optically. -->
+				<p class="prose guide-note guide-specimen-prose">
 					The automatic treatment: <a href={resolve('/publications')}>a link in running prose</a>
 					underlined in pine at rest, thickening to two pixels and warming to pine on hover.
 				</p>
-				<p class="guide-note guide-specimen-prose">
+				<p class="prose guide-note guide-specimen-prose">
 					A chip carries <span class="data-voice">.no-underline</span>, so the same sentence leaves
 					<a class="chip no-underline" href={resolve('/publications')}>Publications</a> unruled: the box
 					is already the affordance, and a rule drawn through it reads as a strike.
@@ -1550,8 +1553,8 @@
 				Three size steps, and the state modifiers that compose over any skin. Hover deepens the fill
 				with no movement whatsoever; focus-visible draws a two-pixel pine outline at a two-pixel
 				offset — tab into the row above to see it, or read it standing still in the specimen below.
-				The <span class="data-voice">--focus-ring</span> token exists as a three-pixel translucent accent
-				ring and is used by one visualisation card; controls take the flat outline instead.
+				There is no translucent ring token: every control on the site, the visualisation cards
+				included, takes this one flat outline.
 			</p>
 			<div class="button-row">
 				{#each buttonSizes as step (step.size)}
@@ -1834,8 +1837,8 @@
 					loading="lazy"
 				/>
 				<figcaption class="plate-caption">
-					Fig. 1 — Cahiers d’études africaines 229 (2018), the issue carrying “L’organisation du
-					hadj en Côte d’Ivoire”. The caption is set in the serif italic.
+					Fig. 1. Cahiers d’études africaines 229 (2018), the issue carrying “L’organisation du hadj
+					en Côte d’Ivoire”. The caption is set in the serif italic.
 				</figcaption>
 			</figure>
 
@@ -1859,7 +1862,7 @@
 							height={railPlate.height}
 							loading="lazy"
 						/>
-						<figcaption class="plate-caption">Fig. 2 — cover.</figcaption>
+						<figcaption class="plate-caption">Fig. 2. Cover.</figcaption>
 					</figure>
 				</div>
 			</figure>
@@ -1870,7 +1873,7 @@
 				enclosing figure <span class="data-voice">.plate--missing</span>: the box stays, the image
 				and its numbered caption go, and a centred
 				<span class="data-voice">.plate--missing-note</span> states the fact in the data voice. A caption
-				describes a plate, and a broken-image glyph sitting under “Fig. 1 — …” numbers a figure that is
+				describes a plate, and a broken-image glyph sitting under “Fig. 1. …” numbers a figure that is
 				not there.
 			</p>
 			<figure class="specimen">

@@ -39,7 +39,7 @@
 	{additionalSchemas}
 />
 
-<div class="container home-shell py-8">
+<div class="home-shell py-8">
 	<ProfileBanner />
 	<div class="home-grid">
 		<figure class="home-portrait">
@@ -244,6 +244,14 @@
 	 * paper per section, with the 3px section rules overhanging the text they
 	 * open by half their length. Narrowing the shell turns that surplus back
 	 * into a masthead that fills its viewport. */
+	/* A cap, not a second container. The shell used to carry `.container` as
+	 * well, nested inside the layout's own: it took a second 16px gutter and
+	 * centred what was left, so the hero nameplate, its dateline hairline and its
+	 * 5px rule all began at x=272 at 1440 while the masthead wordmark — the same
+	 * words, in the same face — began at x=104. The narrowing is right; the
+	 * centring and the doubled gutter were not. A plain block starts at the
+	 * column's own edge, so the two nameplates share one, and the surplus goes to
+	 * the right margin, where nothing is set against it. */
 	.home-shell {
 		max-width: 58rem;
 	}

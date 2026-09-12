@@ -249,7 +249,9 @@
 		box-shadow: none;
 		padding-bottom: var(--space-xl);
 		margin-bottom: var(--space-lg);
-		border-bottom: var(--border-width-thin) solid var(--color-border);
+		/* The chrome is gone, so this edge is a separator between entries, not
+		 * the bottom of a box: the rule pair, not the box-edge pair. */
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	/* Editorial cards do not lift on hover — the chrome is gone, so there's

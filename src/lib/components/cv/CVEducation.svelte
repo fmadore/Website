@@ -17,7 +17,7 @@
 
 	{#if degrees.length > 0}
 		<h4>Degrees</h4>
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each degrees as edu (edu.id)}
 				<CVEntry year={edu.year}>
 					{typesetQuotes(edu.degree)}.
@@ -33,7 +33,7 @@
 
 	{#if trainings.length > 0}
 		<h4>Digital Humanities Trainings</h4>
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each trainings as edu (edu.id)}
 				<CVEntry year={edu.year}>
 					{quoteTitle(edu.degree)}.
@@ -47,7 +47,7 @@
 
 	{#if certificates.length > 0}
 		<h4>Certificates</h4>
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each certificates as edu (edu.id)}
 				<CVEntry year={edu.year}>
 					{typesetQuotes(edu.degree)}.
@@ -61,7 +61,7 @@
 
 	{#if otherEducation.length > 0}
 		<h4>Other Education</h4>
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each otherEducation as edu (edu.id)}
 				<CVEntry year={edu.year}>
 					{typesetQuotes(edu.degree)}.

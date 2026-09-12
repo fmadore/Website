@@ -1017,7 +1017,6 @@
 				page={currentPage}
 				perPage={AUTHORS_PER_PAGE}
 				total={citedAuthorsData.length}
-				label="authors"
 				onchange={(p) => (currentPage = p)}
 			/>
 		{:else}

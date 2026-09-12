@@ -17,9 +17,12 @@ html.dark {
 	/* Secondary — muted cream */
 	--color-secondary: var(--sys-color-cream-muted);
 
-	/* Accent — pine, brightened for the negative. */
+	/* Accent — pine, brightened for the negative. The "dark" step is the
+	 * emphatic step (hover, pressed), and a negative deepens by getting
+	 * lighter: on the film ground it lifts toward the cream rather than
+	 * falling back to the daylight pine, which reads 2.9:1 as text there. */
 	--color-accent: var(--sys-color-pine-bright);
-	--color-accent-dark: var(--sys-color-pine);
+	--color-accent-dark: color-mix(in srgb, var(--sys-color-pine-bright) 75%, var(--sys-color-cream));
 
 	/* Highlight — accent */
 	--color-highlight: var(--sys-color-pine-bright);
@@ -61,7 +64,12 @@ html.dark {
 	/* Functional states */
 	--color-success: var(--sys-color-success-bright);
 	--color-danger: var(--sys-color-danger-bright);
-	--color-danger-dark: var(--sys-color-danger);
+	/* Same rule as the accent: the emphatic step lifts toward the cream. */
+	--color-danger-dark: color-mix(
+		in srgb,
+		var(--sys-color-danger-bright) 75%,
+		var(--sys-color-cream)
+	);
 
 	/* Backgrounds — the warm near-black film ground. */
 	--color-background: var(--sys-color-film-ground);
@@ -87,13 +95,6 @@ html.dark {
 	--color-border-dark: var(--sys-color-film-border-strong);
 	--color-border-focus: var(--color-accent);
 
-	/* Focus ring */
-	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 50%, transparent);
-
-	/* Academic. The alias tracks the brightened midnight accent; an inline
-	 * citation itself is set in cream like the sentence around it (see the
-	 * note on this token in `variables.css`). */
-	--color-citation: var(--color-accent);
 	--color-code-bg: var(--sys-color-film-100);
 
 	/* Component layers */

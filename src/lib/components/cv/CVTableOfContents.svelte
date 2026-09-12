@@ -44,6 +44,8 @@
 	let activeId = $state<string>('');
 	/** Panel open state */
 	let isOpen = $state(false);
+	/** The control the panel hangs off — Escape hands focus back to it. */
+	let fabEl = $state<HTMLButtonElement | null>(null);
 
 	const visibleSections = $derived(TOC_SECTIONS.filter((s) => visibleIds.has(s.id)));
 
@@ -61,13 +63,11 @@
 				if (entryCounts.get(s.id) !== count) entryCounts.set(s.id, count);
 			}
 		}
+		// One call is enough. All seventeen sections have been static imports
+		// since 5.1, so they are in the prerendered HTML before this runs; the
+		// MutationObserver and 500ms poll that used to chase four lazy batches
+		// were watching a 219-row subtree for changes that can no longer happen.
 		scanSections();
-
-		// --- MutationObserver: detect lazy-loaded sections promptly ---
-		const mutationObs = new MutationObserver(() => {
-			scanSections();
-		});
-		mutationObs.observe(cvContent, { childList: true, subtree: true });
 
 		// --- IntersectionObserver: scroll-spy ---
 		let debounceTimer: ReturnType<typeof setTimeout>;
@@ -87,29 +87,13 @@
 			}
 		);
 
-		// Observe existing sections and re-observe when new ones appear
-		function observeAll() {
-			sectionObserver.disconnect();
-			for (const s of TOC_SECTIONS) {
-				const el = document.getElementById(s.id);
-				if (el) sectionObserver.observe(el);
-			}
+		for (const s of TOC_SECTIONS) {
+			const el = document.getElementById(s.id);
+			if (el) sectionObserver.observe(el);
 		}
-		observeAll();
-
-		// Poll until all sections are found (fallback for MutationObserver edge cases)
-		const pollInterval = setInterval(() => {
-			scanSections();
-			observeAll();
-			if (visibleIds.size === TOC_SECTIONS.length) {
-				clearInterval(pollInterval);
-			}
-		}, 500);
 
 		return () => {
 			clearTimeout(debounceTimer);
-			clearInterval(pollInterval);
-			mutationObs.disconnect();
 			sectionObserver.disconnect();
 		};
 	});
@@ -128,8 +112,14 @@
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') {
+		// Escape closes the panel and hands focus back to the control it hangs
+		// off. Without this the reader is dropped on <body> — back at the top of
+		// a 142-stop tab order, 23 masthead stops from where they were (WCAG
+		// 2.4.3). Guarded on `isOpen` so Escape elsewhere on the sheet does not
+		// pull focus to a closed control.
+		if (event.key === 'Escape' && isOpen) {
 			isOpen = false;
+			fabEl?.focus();
 		}
 	}
 
@@ -145,6 +135,7 @@
 
 <div class="cv-toc">
 	<button
+		bind:this={fabEl}
 		class="cv-toc-fab"
 		class:open={isOpen}
 		onclick={(e: MouseEvent) => {
@@ -194,14 +185,6 @@
 	{#if isOpen}
 		<nav class="cv-toc-panel" aria-label="CV table of contents">
 			<p class="cv-toc-title">Contents</p>
-			<!-- The lower sections mount lazily, so an open panel can list nine of
-			     seventeen with nothing to say why. The dateline says so until the
-			     last one has reported in. It is a caption, not a live region: the
-			     counted line at the foot of the sheet is the one that announces,
-			     and two status regions saying the same thing announce it twice. -->
-			{#if visibleSections.length < TOC_SECTIONS.length}
-				<p class="dateline">Loading remaining sections…</p>
-			{/if}
 			<ul class="cv-toc-list">
 				{#each visibleSections as section (section.id)}
 					<li>
@@ -216,9 +199,11 @@
 								{@const count = entryCounts.get(section.id) ?? 0}
 								<!-- The figure is the visible mark; speech gets the noun it counts,
 								     so the button announces "Publications 42 entries" rather than
-								     "Publications 42". -->
+								     "Publications 42". The space lives inside the expression: as a
+								     literal before `{count === 1 …}` Svelte trimmed it at compile
+								     time and the accessible name read "Publications 42entries". -->
 								<span class="cv-toc-count"
-									>{count}<span class="sr-only"> {count === 1 ? 'entry' : 'entries'}</span></span
+									>{count}<span class="sr-only">{count === 1 ? ' entry' : ' entries'}</span></span
 								>
 							{/if}
 						</button>
@@ -330,6 +315,10 @@
 		background: none;
 		border: none;
 		padding: var(--space-1) var(--space-2);
+		/* WCAG 2.5.8 applies to every pointer, not only a coarse one: at 11px mono
+		 * over 4px padding these rows measured 23px with a mouse. 24px is the
+		 * floor; the --touch step below takes them to 44px. */
+		min-height: var(--space-6);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);

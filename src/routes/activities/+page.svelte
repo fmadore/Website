@@ -223,7 +223,6 @@
 								type="button"
 								class="chip"
 								class:chip--selected={af.types.length === 0}
-								aria-label="All types"
 								onclick={() => filters.setValues('types', [])}
 							>
 								All <span class="chip-count">{totalCount}</span>
@@ -349,7 +348,6 @@
 						perPage={PER_PAGE}
 						total={filtered.length}
 						onchange={(p) => (currentPage = p)}
-						label="entries"
 						scrollTargetId="activities-log"
 					/>
 				{/if}

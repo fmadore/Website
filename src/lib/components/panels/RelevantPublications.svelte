@@ -4,7 +4,6 @@
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
 	import { formatAuthorsCompact as formatAuthors } from '$lib/utils/nameUtils';
 	import { PUBLICATION_TYPE_PANEL_LABELS } from '$lib/utils/publicationTypeLabels';
-	import Button from '../atoms/Button.svelte';
 
 	// Props - project name and limit
 	let {
@@ -20,8 +19,9 @@
 	// Add state for selected type filter
 	let selectedType = $state<string | null>(null);
 
-	// Filter publications by project name. The summaries suffice: the card
-	// prints at most 120 characters of the abstract, which the excerpt covers.
+	// Filter publications by project name. The summaries suffice: the panel row
+	// prints at most PANEL_EXCERPT_LENGTH characters of the abstract, which the
+	// excerpt covers.
 	let publicationList = $derived<RelevantItem[]>(
 		allPublicationSummaries
 			.filter((pub) => pub.project === projectName)
@@ -39,9 +39,14 @@
 			}))
 	);
 
-	// Get unique publication types for the type filter
-	let publicationTypes = $derived<string[]>(
-		[...new Set(publicationList.map((pub) => pub.type).filter(Boolean))].sort() as string[]
+	// The types present in this project's set, each with its tally — a chip
+	// states what it would leave standing, which is what makes it a facet
+	// rather than a button.
+	let publicationTypes = $derived(
+		[...new Set(publicationList.map((pub) => pub.type).filter(Boolean))].sort().map((type) => ({
+			type: type as string,
+			count: publicationList.filter((pub) => pub.type === type).length
+		}))
 	);
 
 	// Compute filtered list based on selected type
@@ -63,17 +68,18 @@
 <div>
 	{#snippet filterButtons()}
 		{#if showTypeFilters && publicationTypes.length > 1}
-			<div class="type-filters-container">
-				{#each publicationTypes as type (type)}
-					<Button
-						variant={selectedType === type ? 'primary' : 'outline-secondary'}
-						size="sm"
-						additionalClasses="filter-button {selectedType === type ? 'active' : ''}"
-						onclick={() => selectType(type)}
+			<div class="chip-row">
+				{#each publicationTypes as { type, count } (type)}
+					<button
 						type="button"
+						class="chip"
+						class:chip--selected={selectedType === type}
+						aria-pressed={selectedType === type}
+						data-count={count}
+						onclick={() => selectType(type)}
 					>
-						{formatPublicationType(type)}
-					</Button>
+						{formatPublicationType(type)} <span class="chip-count">{count}</span>
+					</button>
 				{/each}
 			</div>
 		{/if}
@@ -92,11 +98,3 @@
 		filters={filterButtons}
 	/>
 </div>
-
-<style>
-	.type-filters-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2);
-	}
-</style>

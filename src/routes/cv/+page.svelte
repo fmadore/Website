@@ -46,14 +46,23 @@
 	pageType="ProfilePage"
 />
 
+<!-- The contents control is `position: fixed`, so its place in the document is
+     purely a tab-order decision: rendered after `#cv-content` it was stop 128 of
+     142, reachable only after every one of the sheet's 116 links. A control whose
+     whole job is to skip a 23,000px document belongs before the document. -->
+<CVTableOfContents />
+
 <div id="cv-content" class="cv-container p-8 max-w-6xl mx-auto">
-	<!-- Action Buttons - positioned in top right corner of CV -->
+	<!-- Action Buttons - positioned in top right corner of CV.
+	     The primary (Download PDF) is first in the DOM so that the stacked phone
+	     order leads with it; `row-reverse` from --md restores the desktop reading
+	     order, where `justify-content: flex-end` puts the primary rightmost. -->
 	<div class="cv-actions">
+		<PdfGenerator />
 		<a href={resolve('/cv/timeline')} class="btn btn-secondary">
-			<Icon icon="lucide:trending-up" width="20" height="20" aria-hidden="true" />
+			<Icon icon="mdi:trending-up" width="20" height="20" aria-hidden="true" />
 			<span>Timeline</span>
 		</a>
-		<PdfGenerator />
 	</div>
 
 	<CVHeader />
@@ -111,8 +120,6 @@
 	</div>
 </div>
 
-<CVTableOfContents />
-
 <style>
 	/*
 	 * The CV is the purest ledger on the site: a single sheet of paper, no glass,
@@ -127,8 +134,22 @@
 		margin-bottom: var(--space-2xl);
 	}
 
+	/* Below 360px the sheet's own 32px padding (plus the page's 16px gutter and
+	 * the 1px edge) leaves the masthead 222px for a word that needs 235, so
+	 * "Curriculum" broke mid-word. The gutter is the cause, not the type: one
+	 * step down on the sheet's padding gives the title 246px — and every one of
+	 * the 219 ledger rows 16px more measure — without dropping the masthead two
+	 * tiers below every other index title. */
+	@media (--2xs-down) {
+		.cv-container {
+			padding: var(--space-5);
+		}
+	}
+
 	/* Action buttons — document chrome, tucked to the top right of the sheet
-	 * like a letterhead's utility row instead of a centered button bar. */
+	 * like a letterhead's utility row instead of a centered button bar. The row
+	 * closes on the rule-gap interval every other ruled module on the sheet
+	 * opens on. */
 	.cv-actions {
 		display: flex;
 		gap: var(--space-md);
@@ -138,12 +159,13 @@
 		position: relative;
 		z-index: 10;
 		flex-wrap: wrap;
-		padding-bottom: var(--space-2);
+		padding-bottom: var(--rule-gap);
 	}
 
 	@media (--md) {
 		.cv-actions {
-			justify-content: flex-end;
+			flex-direction: row-reverse;
+			justify-content: flex-start;
 			margin-bottom: 0;
 		}
 	}
@@ -211,15 +233,11 @@
 	}
 
 	/* Ledger rows are contiguous — the hairline is drawn by each row's border-top,
-	 * so cancel the .space-y-3 inter-row margin that would otherwise gap them. */
-	:global(#cv-content .ledger.space-y-3 > * + *) {
-		margin-top: 0;
-	}
-
-	/* Non-ledger stacked content keeps a small rhythm. */
-	:global(#cv-content .space-y-3:not(.ledger) > * + *) {
-		margin-top: var(--space-2);
-	}
+	 * and nothing adds an inter-row margin to cancel any more: the ledgers used to
+	 * carry `.space-y-3` (a 12px stack utility) purely as a hook the PDF generator
+	 * read the sheet by, and this block then set `margin-top: 0` to undo it. The
+	 * hook is now `data-cv-ledger`, which is what it always was — a contract with
+	 * `pdfCvGenerator.ts`, not a spacing decision. */
 
 	/* The ledger closes itself: every CV ledger carries `.ledger--ruled`, so the
 	 * final row's bottom hairline comes from the idiom rather than from a
@@ -271,11 +289,11 @@
 	 * beat component-scoped declarations it cannot otherwise reach.
 	 */
 	@media print {
-		/* The page-enter fade is the only animation these carry. */
-		.cv-container,
-		:global(.cv-section-wrapper) {
-			animation: none !important;
-			opacity: 1 !important;
+		/* Site chrome is a screen affordance: the nameplate bar with its hamburger
+		 * glyph, and the footer, printed on the paper CV. */
+		:global(.site-header),
+		:global(.site-footer) {
+			display: none !important;
 		}
 
 		/* Optimize for print — flat sheet, no border, ledger rules preserved. */
@@ -284,7 +302,7 @@
 			padding: var(--space-10) !important;
 			margin: 0 !important;
 			border: none !important;
-			background: var(--color-white) !important;
+			background: var(--color-print-ground) !important;
 		}
 
 		/* Drop the surface tints; the stock is the ground. */
@@ -292,12 +310,12 @@
 		:global(.surface-card),
 		:global(.surface-panel),
 		:global(.cv-section-wrapper) {
-			background: var(--color-white) !important;
+			background: var(--color-print-ground) !important;
 		}
 
 		/* Keep the ledger's ink rules in print: section rule + row hairlines. */
 		:global(.cv-section-wrapper > section) {
-			border-top: var(--rule-section) solid var(--color-primary) !important;
+			border-top: var(--rule-section) solid var(--color-print-ink) !important;
 		}
 
 		:global(#cv-content .cv-entry) {
@@ -313,22 +331,32 @@
 		 * ink. The ground stays `--color-white` because a printed ground is the
 		 * paper itself — painting warm paper onto warm paper only spends toner. */
 		:global(body) {
-			background: var(--color-white) !important;
-			color: var(--color-primary) !important;
+			background: var(--color-print-ground) !important;
+			color: var(--color-print-ink) !important;
 		}
 
-		/* Page breaks */
-		:global(#cv-content section) {
-			page-break-inside: avoid;
+		/* Page breaks. The unit a CV must not split is the entry, not the section:
+		 * `page-break-inside: avoid` on `section` is unsatisfiable for Publications
+		 * (many pages on its own, so Chrome ignores it) while pushing each short
+		 * section — Awards, Languages, Affiliations, Computer Skills, Consulting —
+		 * onto a fresh sheet. Measured at A4/12mm: 38 pages with the section rule,
+		 * 33 without it, and the row-level guard costs nothing. */
+		:global(#cv-content .cv-entry) {
+			break-inside: avoid;
 		}
 
 		:global(#cv-content h3) {
 			page-break-after: avoid;
 		}
 
+		/* A subsection label must not be the last line on a page. */
+		:global(#cv-content h4) {
+			break-after: avoid;
+		}
+
 		/* Links — ink underline in print (accent reads muddy on paper). */
 		:global(#cv-content a) {
-			color: var(--color-primary) !important;
+			color: var(--color-print-ink) !important;
 			text-decoration: underline !important;
 		}
 

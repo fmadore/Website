@@ -26,7 +26,7 @@
 	<h3>Teaching Experience</h3>
 	{#if sortedTeaching.length > 0}
 		<h4>Instructor</h4>
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each sortedTeaching as course (course.title + course.year)}
 				<CVEntry year={formatCVYearRange(course.year)}>
 					<strong>{typesetQuotes(course.title)}</strong>, {typesetQuotes(course.institution)}, {course.level ===
@@ -44,7 +44,7 @@
 		</div>
 
 		<h4>Guest Lecturer</h4>
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each sortedGuestLectures as lecture (lecture.title + lecture.year)}
 				<CVEntry year={lecture.year}>
 					<strong>{typesetQuotes(lecture.title)}</strong>, <em>{typesetQuotes(lecture.course)}</em>,

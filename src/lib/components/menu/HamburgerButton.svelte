@@ -86,4 +86,11 @@
 			transition: none;
 		}
 	}
+
+	/* A control that opens a panel is nothing on paper. */
+	@media print {
+		.hamburger {
+			display: none;
+		}
+	}
 </style>

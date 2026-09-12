@@ -48,8 +48,17 @@ body {
 	line-height: var(--line-height-body);
 }
 
+/* The theme is a stored choice, not only an OS preference, so the declaration
+ * narrows to the resolved theme. `light dark` left the browser's own surfaces —
+ * scrollbars, form controls, the overscroll canvas — following the OS, which is
+ * dark scrollbars against warm paper for the reader who chose daylight on a dark
+ * machine. Kept in step with the pre-hydration copy in `src/app.html`. */
 html {
-	color-scheme: light dark;
+	color-scheme: light;
+}
+
+html.dark {
+	color-scheme: dark;
 }
 
 /* Make images easier to work with */
@@ -73,18 +82,17 @@ th {
 	overflow-wrap: break-word;
 }
 
-/* Better default focus for accessibility.
- * The 120 ms transition on outline-color/box-shadow makes keyboard focus
- * feel less brittle as it moves between elements (Phase 2 of the animation
- * roadmap). Outline width itself is not transitioned — instant snap on /
- * off keeps the indicator visually unambiguous. */
+/* The focus ring itself is drawn once, by `*:focus-visible` in
+ * `components/navigation-utilities.css` — same specificity, imported later, so
+ * the ring this rule used to declare never rendered. What survives here is the
+ * 120 ms settle on colour and offset, which makes keyboard focus feel less
+ * brittle as it moves between elements; outline *width* is not transitioned, so
+ * the indicator still snaps on and off unambiguously. No focus state in the
+ * system uses a box-shadow, so that term is gone with the dead ring. */
 :focus-visible {
-	outline: 2px solid var(--color-border-focus, currentColor);
-	outline-offset: 2px;
 	transition:
 		outline-color var(--duration-fast, 120ms) var(--ease-out, ease-out),
-		outline-offset var(--duration-fast, 120ms) var(--ease-out, ease-out),
-		box-shadow var(--duration-fast, 120ms) var(--ease-out, ease-out);
+		outline-offset var(--duration-fast, 120ms) var(--ease-out, ease-out);
 }
 
 /* Inherit fonts for inputs and buttons */

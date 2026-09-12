@@ -152,8 +152,13 @@
 		visibility: visible;
 	}
 
+	/* `min-height`, not `height`: the panel's contents run past the viewport on a
+	 * phone (1177px inside 812px), and a fixed 100% box strands its own bottom
+	 * padding — and the container's `env(safe-area-inset-bottom)` — above the
+	 * overflow. Measured at 375x812 scrolled to the end, the last row bottomed at
+	 * 811.6px: the CV link sat inside the home-indicator gesture zone. */
 	.mobile-nav {
-		height: 100%;
+		min-height: 100%;
 		display: flex;
 		flex-direction: column;
 		padding: 0 var(--space-5) var(--space-6);
@@ -300,6 +305,13 @@
 
 		.mobile-close-line {
 			transition: none;
+		}
+	}
+
+	/* The panel is a way of navigating, not part of the document. */
+	@media print {
+		.mobile-nav-container {
+			display: none;
 		}
 	}
 </style>

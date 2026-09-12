@@ -61,18 +61,26 @@
 	class:is-online={!showOffline && showBackOnline}
 	role="status"
 >
+	<!-- The ground is full-bleed; the notice itself hangs on the page's rail,
+	     because a notice that is part of the record is set on the record's
+	     measure. `.container` is the same rail the masthead and the reading
+	     column take. -->
 	{#if showOffline}
-		<p class="network-status-text">Offline. Cached pages remain available.</p>
-		<Button
-			bare
-			class="network-status-dismiss"
-			ariaLabel="Dismiss the connection notice"
-			onclick={() => (dismissed = true)}
-		>
-			<span aria-hidden="true">✕</span>
-		</Button>
+		<div class="network-status-inner container">
+			<p class="network-status-text">Offline. Cached pages remain available.</p>
+			<Button
+				bare
+				class="network-status-dismiss"
+				ariaLabel="Dismiss the connection notice"
+				onclick={() => (dismissed = true)}
+			>
+				<span aria-hidden="true">✕</span>
+			</Button>
+		</div>
 	{:else if showBackOnline}
-		<p class="network-status-text">Back online.</p>
+		<div class="network-status-inner container">
+			<p class="network-status-text">Back online.</p>
+		</div>
 	{/if}
 </div>
 
@@ -80,10 +88,6 @@
 	/* Nothing is drawn until there is something to say: the element stays in the
 	 * DOM so the live region is registered, but an empty strip has no box. */
 	.network-status {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: var(--space-3);
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
@@ -91,14 +95,22 @@
 		text-transform: uppercase;
 	}
 
+	.network-status-inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-3);
+	}
+
 	.network-status-text {
 		margin: 0;
 	}
 
-	/* Full-bleed ink strip: opaque, square, no animation of any kind. */
+	/* Full-bleed ink strip: opaque, square, no animation of any kind. The
+	 * horizontal inset belongs to the rail inside it, not to the strip. */
 	.network-status.is-offline,
 	.network-status.is-online {
-		padding: var(--space-2) var(--space-4);
+		padding: var(--space-2) 0;
 	}
 
 	.network-status.is-offline {
@@ -127,5 +139,22 @@
 
 	.network-status :global(.network-status-dismiss:hover) {
 		color: var(--color-accent);
+	}
+
+	/* Coarse pointers get the 44px guideline, like every other chrome control.
+	 * The ✕ itself does not grow; only its hit box. */
+	@media (--touch) {
+		.network-status :global(.network-status-dismiss) {
+			width: var(--space-11);
+			height: var(--space-11);
+		}
+	}
+
+	/* A connection notice is about what the reader can still fetch. On paper
+	 * there is nothing to fetch. */
+	@media print {
+		.network-status {
+			display: none;
+		}
 	}
 </style>

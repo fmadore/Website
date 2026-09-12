@@ -24,16 +24,16 @@
 </script>
 
 <!--
-	CV section — a ruled ledger module. The <section> + <h3> structure and
-	the .space-y-3 entry wrapper are load-bearing DOM hooks for the PDF generator,
-	so they are preserved; the ledger itself is the shared `.ledger` idiom at its
-	tight density (see ink-signal.css), closed by `--ruled`.
+	CV section — a ruled ledger module. The <section> + <h3> structure and the
+	[data-cv-ledger] entry wrapper are load-bearing DOM hooks for the PDF
+	generator, so they are preserved; the ledger itself is the shared `.ledger`
+	idiom at its tight density (see ink-signal.css), closed by `--ruled`.
 -->
 {#if !conditional || hasItems}
 	<section>
 		<h3>{title}</h3>
 		{#if hasItems}
-			<div class="space-y-3 ledger ledger--tight ledger--ruled">
+			<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 				{#each items as item (key(item))}
 					<CVEntry year={year(item)}>
 						{@render entry(item)}

@@ -127,17 +127,6 @@
 	--color-border-dark: #a39b86; /* stronger borders, outline buttons */
 	--color-border-focus: var(--color-accent);
 
-	/* ===== FOCUS RING ===== */
-	/* Accent focus — the accent signals interactivity/keyboard target. */
-	--focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-accent) 45%, transparent);
-
-	/* ===== ACADEMIC-SPECIFIC COLORS ===== */
-	/* Kept as a named alias of the accent. It is no longer what an inline
-	 * citation is set in: a citation is a prose link with a softer rule, so it
-	 * takes ink text and pine only on the underline and on hover (see the
-	 * prose-link idiom in `typography.css` and `ReferenceLink.svelte`). */
-	--color-citation: var(--color-accent);
-
 	--color-code-bg: var(--sys-color-paper-200);
 
 	/* ===== TIMELINE/CHART COLORS =====
@@ -154,6 +143,12 @@
 
 	/* ===== UTILITY COLORS ===== */
 	--color-white: #ffffff;
+
+	/* ===== PRINT — the third ground =====
+	 * Theme-stable on purpose: a page printed from midnight must not come out
+	 * cream on white. Ink is the warm system ink, never `black`. */
+	--color-print-ground: var(--color-white);
+	--color-print-ink: var(--sys-color-ink);
 
 	--color-black: #000000;
 
@@ -360,6 +355,16 @@
 	--measure-prose: 50ch;
 	--measure-standfirst: 42ch;
 	--measure-note: 40ch;
+	/*
+	 * The display-face exception. A title is not read line after line, it is
+	 * taken in at a glance, so its cap is set for the *shape of the headline* —
+	 * how many lines it breaks into — rather than for the ~66-character reading
+	 * measure above. It is deliberately a role with a name, not a bare `20ch`
+	 * written into one component: an Archivo `ch` is not a Newsreader `ch`, and
+	 * the next page title that wants the same shape must get the same number.
+	 * Consumer: `PageHeader.svelte` (`.page-title`).
+	 */
+	--measure-title: 20ch;
 	/* ===== SPACING SYSTEM ===== */
 	/* 
 	 * 8-point grid system for consistent rhythm
@@ -543,10 +548,10 @@
 	--opacity-100: 1;
 
 	/* ===== TRANSFORMS ===== */
-	/* Two survivors of the pre-Ink+Signal motion vocabulary: the image hover
-	 * scale and the disclosure caret. The stagger scale, the transform and
-	 * animation distances went with the last staggered reveal (2.11). */
-	--scale-102: 1.02;
+	/* The last survivor of the pre-Ink+Signal motion vocabulary: the disclosure
+	 * caret. The image hover scale went with the dead `.image-container` rule
+	 * that was its only consumer; the stagger scale, the transform and animation
+	 * distances went with the last staggered reveal (2.11). */
 	--rotate-180: 180deg;
 
 	/* ===== CARD TOKENS ===== */
@@ -569,4 +574,19 @@
 	/* 40px */
 	--iframe-header-height-mobile: 2.25rem;
 	/* 36px */
+}
+
+/*
+ * The nameplate at the narrowest phones.
+ *
+ * `--font-size-nameplate` bottoms out at its clamp minimum (2.5rem = 40px)
+ * below ~375px, and at 320px the home nameplate's longest word no longer fits
+ * the 288px column: "FRÉDÉRICK" broke mid-word (rédéri|ck), which is the one
+ * thing a nameplate must never do. One step down, measured so the name breaks
+ * only at its space or its comma.
+ */
+@media (--2xs-down) {
+	:root {
+		--font-size-nameplate: 2rem;
+	}
 }

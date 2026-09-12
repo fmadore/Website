@@ -129,6 +129,10 @@
 	// Any narrowing at all — system filters OR the text search.
 	const anyNarrowing = $derived(areFiltersActive(af) || searchTerm.trim().length > 0);
 
+	// The search is the only thing narrowing: the empty state's way out then
+	// names the search rather than promising to clear filters that are not set.
+	const searchOnlyNarrowing = $derived(searchTerm.trim().length > 0 && !areFiltersActive(af));
+
 	// Count of active filter dimensions, for the "N FILTERS ACTIVE" readout.
 	const activeFilterCount = $derived(
 		af.types.length +
@@ -216,7 +220,6 @@
 	<!-- ═══ FILTER BAR ═══ -->
 	<EntityFilterBar
 		{filters}
-		{totalEntries}
 		{typeLabels}
 		{typeChipLabels}
 		ariaLabel="Filter publications"
@@ -243,7 +246,13 @@
 	/>
 
 	<!-- ═══ BIBLIOGRAPHY ═══ -->
-	<section class="bibliography rule-section" id="bibliography" aria-label="Bibliography">
+	<section class="bibliography rule-section" id="bibliography" aria-labelledby="bibliography-head">
+		<!-- The apparatus above prints five h2 facet heads and the list below
+		     prints one per record, so heading navigation walks straight from the
+		     finding aid into the entries with nothing marking the join. This is
+		     that mark. It is visually hidden because the 3px section rule already
+		     draws the same boundary for a sighted reader. -->
+		<h2 class="sr-only" id="bibliography-head">Bibliography</h2>
 		<p class="sr-only" role="status">{copyAnnouncement}</p>
 
 		{#if bibRows.length > 0}
@@ -266,7 +275,6 @@
 				perPage={PER_PAGE}
 				total={matchCount}
 				onchange={(p) => (currentPage = p)}
-				label="publications"
 				scrollTargetId="bibliography"
 			/>
 		{:else}
@@ -278,9 +286,18 @@
 						No entries match.
 					{/if}
 				</p>
-				<p class="bib-empty-line">
+				<p class="dateline bib-empty-note">
 					The index holds {totalEntries} entries, {minYear}–{maxYear}.
 				</p>
+				<!-- The way out, repeated where the reader is looking. The summary's
+				     `Clear all` is the same control and the same function, but it sits
+				     above a 48px section rule and off the screen the empty block fills. -->
+				{#if anyNarrowing}
+					<button type="button" class="mono-action" onclick={clearAllNarrowing}>
+						{searchOnlyNarrowing ? 'Clear search' : 'Clear all'}
+						<span aria-hidden="true">✕</span>
+					</button>
+				{/if}
 			</div>
 		{/if}
 	</section>

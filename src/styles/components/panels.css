@@ -65,15 +65,10 @@
 	font-size: var(--font-size-lg);
 }
 
-.item-list,
-.activities-list {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-md);
-}
+/* The panels' record lists are `.ledger` now (RelevantItemsList, and
+ * LatestActivities before it), so the flex stack `.item-list` /
+ * `.activities-list` drew has no consumer: a ledger's rows are contiguous and
+ * separated by their own hairline, never by a gap. */
 
 .view-all-container {
 	padding: var(--space-lg) 0 0 0;
@@ -108,58 +103,11 @@
  * future panel needs a genuinely distinct look.
  */
 
-/* Filter and container styling for Button components */
-.filter-label {
-	display: block;
-	font-size: var(--font-size-sm);
-	font-weight: var(--font-weight-medium);
-	color: var(--color-text-light);
-	margin-bottom: var(--space-sm);
-}
-
-.year-filters {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-xs);
-}
-
-.type-filters-container {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-xs);
-}
-
-/* Additional styling for Button components in panels */
-/* .year-filter-button and .filter-button styles can be added here when needed */
-
-/* Filter button styles for type filters — flat square mono chip. */
-.filter-button {
-	padding: var(--space-2xs) var(--space-sm);
-	background-color: transparent;
-	border: var(--border-width-thin) solid var(--color-border);
-	border-radius: 0;
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-xs);
-	text-transform: uppercase;
-	letter-spacing: var(--tracking-caps);
-	color: var(--color-text-soft);
-	cursor: pointer;
-	transition:
-		background-color var(--duration-fast) var(--ease-out),
-		border-color var(--duration-fast) var(--ease-out),
-		color var(--duration-fast) var(--ease-out);
-}
-
-.filter-button:hover {
-	border-color: var(--color-border-dark);
-	color: var(--color-text-emphasis);
-}
-
-.filter-button.active {
-	background-color: var(--color-primary);
-	color: var(--color-text-inverted);
-	border-color: var(--color-primary);
-}
+/* The panels' filter controls are `.chip` / `.chip--selected` from the idiom
+ * sheet now, with the record count appended, so the local `.filter-label`,
+ * `.year-filters`, `.type-filters-container` and `.filter-button` set is gone:
+ * a facet control on this site is a chip, and a second dialect of it here drew
+ * 23px targets under the 24px minimum with no count. */
 
 /* Dark mode — surface continues to come from `.surface-panel` (warm dusk
  * tile in dark mode). No panel-level dark override needed now that the

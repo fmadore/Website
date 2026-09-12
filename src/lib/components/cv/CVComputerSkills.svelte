@@ -30,7 +30,7 @@
 -->
 <section>
 	<h3>Computer Skills</h3>
-	<div class="space-y-3 ledger ledger--tight ledger--ruled">
+	<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 		{#each computerSkills as skill (skill.category)}
 			<CVEntry year={skill.category} wide>
 				<span class="cv-skill-list">{skill.skills}</span>

@@ -18,7 +18,7 @@
 		<!-- Panels Organised -->
 		{#if organizedPanels.length > 0}
 			<h4>Panels organised</h4>
-			<div class="space-y-3 ledger ledger--tight ledger--ruled">
+			<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 				{#each organizedPanels as comm (comm.id)}
 					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
@@ -39,7 +39,7 @@
 		<!-- Papers Presented -->
 		{#if presentedPapers.length > 0}
 			<h4>Papers presented</h4>
-			<div class="space-y-3 ledger ledger--tight ledger--ruled">
+			<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 				{#each presentedPapers as comm (comm.id)}
 					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
@@ -58,7 +58,7 @@
 		<!-- Posters Presented -->
 		{#if presentedPosters.length > 0}
 			<h4>Posters presented</h4>
-			<div class="space-y-3 ledger ledger--tight ledger--ruled">
+			<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 				{#each presentedPosters as comm (comm.id)}
 					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}

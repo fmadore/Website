@@ -376,11 +376,20 @@
 		}
 	}
 
-	.range-handle:hover,
-	.range-handle:focus-visible {
-		outline: none;
+	/* Pine under the pointer — the handle is live while it is being used. */
+	.range-handle:hover {
 		background: var(--color-accent);
 		border-color: var(--color-accent);
+	}
+
+	/* A colour change alone is not a focus indicator: keyboard focus draws the
+	 * same ring every other control on the site draws (`.mono-action`), so focus
+	 * and hover stay distinguishable on a pointer-idle page. */
+	.range-handle:focus-visible {
+		background: var(--color-accent);
+		border-color: var(--color-accent);
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--space-2xs);
 	}
 
 	.range-handle.active {
@@ -403,7 +412,6 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-semibold);
-		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
 		pointer-events: none;
 	}
@@ -450,17 +458,21 @@
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
 		font-weight: var(--font-weight-medium);
-		font-variant-numeric: tabular-nums;
 		color: var(--color-text-light);
 		white-space: nowrap;
 	}
 
 	/* Dark mode — the bare track carries the microfilm-negative colours below;
-	 * no container to restyle. */
+	 * no container to restyle.
+	 *
+	 * The unselected track has to stay visible: it is what shows how far the
+	 * handles can still travel. At 10% cream it measured 1.13:1 against the film
+	 * ground and vanished; 40% carries the control's boundary past the 3:1 of
+	 * SC 1.4.11 while staying quieter than the solid-cream selection it frames. */
 	:global(html.dark) .range-track {
 		background-color: color-mix(
 			in srgb,
-			var(--color-text) calc(var(--opacity-10) * 100%),
+			var(--color-text) calc(var(--opacity-40) * 100%),
 			transparent
 		);
 	}

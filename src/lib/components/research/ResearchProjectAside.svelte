@@ -28,10 +28,10 @@
 		plateSrc: string;
 		plateAlt: string;
 		/**
-		 * The authored caption for the plate, without the `Fig. 1 — ` stamp.
+		 * The authored caption for the plate, without the `Fig. 1.` stamp.
 		 * Omitted when the record carries none: the plate then prints no caption
 		 * at all rather than restating the headline, which is what the old
-		 * `Fig. 1 — {imageAlt}` fallback did on four of the six projects.
+		 * `Fig. 1. {imageAlt}` fallback did on four of the six projects.
 		 */
 		plateCaption?: string;
 		years?: string;
@@ -70,7 +70,18 @@
 
 	const plateSrcset = $derived(buildSrcset(plateSrc));
 	const displayPlateAlt = $derived(typesetQuotes(plateAlt));
-	const displayPlateCaption = $derived(typesetQuotes(plateCaption));
+
+	// Plate caption — "Fig. 1." is the figure's number, so the stop belongs to it
+	// and the caption follows as its own sentence. Same form as the publication,
+	// communication and activity rails; this one printed `Fig. 1 — ` and was the
+	// only plate on the site punctuated differently. Authored captions that
+	// already end in punctuation keep theirs rather than collecting a second
+	// full stop.
+	const plateFigCaption = $derived.by(() => {
+		const caption = typesetQuotes(plateCaption);
+		if (!caption) return undefined;
+		return `Fig. 1. ${caption}${/[.!?…]$/.test(caption.trim()) ? '' : '.'}`;
+	});
 
 	/**
 	 * The project's catalogue entry. Every value is a string a database could
@@ -122,8 +133,8 @@
 			decoding="async"
 			use:plateFallback
 		/>
-		{#if displayPlateCaption}
-			<figcaption class="plate-caption">Fig. 1 — {displayPlateCaption}</figcaption>
+		{#if plateFigCaption}
+			<figcaption class="plate-caption">{plateFigCaption}</figcaption>
 		{/if}
 	</figure>
 {/if}

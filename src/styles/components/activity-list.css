@@ -219,7 +219,6 @@
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-medium);
-	font-variant-numeric: tabular-nums;
 	letter-spacing: var(--tracking-label);
 	text-transform: uppercase;
 	color: var(--color-text-light);
@@ -350,7 +349,6 @@
 .year-step-link {
 	color: var(--color-text-soft);
 	text-decoration: none;
-	font-variant-numeric: tabular-nums;
 	transition: color var(--duration-fast) var(--ease-out);
 }
 

@@ -409,7 +409,6 @@
 					page={currentPage}
 					perPage={PER_PAGE}
 					total={catalogueProjects.length}
-					label="projects"
 					scrollTargetId="dh-catalogue"
 					onchange={(p) => (currentPage = p)}
 				/>

@@ -49,7 +49,11 @@ export const TIMELINE_CATEGORIES: TimelineCategoryConfig[] = [
 	{ id: 'positions', label: 'Positions', color: 'var(--color-timeline-positions)' },
 	{ id: 'education', label: 'Education', color: 'var(--color-timeline-education)' },
 	{ id: 'grants', label: 'Grants', color: 'var(--color-timeline-grants)' },
-	{ id: 'publications', label: 'Publications', color: 'var(--color-timeline-publications)' },
+	{
+		id: 'publications',
+		label: 'Publications & theses',
+		color: 'var(--color-timeline-publications)'
+	},
 	{ id: 'presentations', label: 'Presentations', color: 'var(--color-timeline-presentations)' },
 	{ id: 'awards', label: 'Awards', color: 'var(--color-timeline-awards)' },
 	{ id: 'fieldwork', label: 'Fieldwork', color: 'var(--color-timeline-fieldwork)' }

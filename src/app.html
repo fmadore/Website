@@ -7,13 +7,22 @@
 		<!-- PWA Configuration -->
 		<link rel="apple-touch-icon" href="/icons/favicon.png" />
 		<link rel="manifest" href="/manifest.webmanifest" />
-		<meta name="theme-color" content="#171310" />
+		<!-- Browser chrome takes the page's own ground. Two media-scoped metas cover
+		     the reader with no JavaScript (the OS preference decides); the bootstrap
+		     at the foot of this head, and `toggleTheme`, then overwrite BOTH with the
+		     resolved theme's `--color-background`, so a stored choice that contradicts
+		     the OS wins there too. Hexes mirror src/styles/base/variables.css and are
+		     bound to it by src/lib/utils/designTokenParity.test.ts. -->
+		<meta name="theme-color" content="#faf7ef" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#171310" media="(prefers-color-scheme: dark)" />
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 		<meta name="apple-mobile-web-app-title" content="F. Madore" />
 		<meta name="application-name" content="F. Madore" />
-		<meta name="msapplication-TileColor" content="#171310" />
+		<!-- The Windows tile has no media form, so it takes the default theme's
+		     ground (daylight) rather than midnight's. -->
+		<meta name="msapplication-TileColor" content="#faf7ef" />
 		<meta name="msapplication-config" content="/browserconfig.xml" />
 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -48,8 +57,15 @@
 			*::after {
 				box-sizing: border-box;
 			}
+			/* The theme is a stored choice, not only an OS preference, so the
+			 * declaration narrows to the resolved theme: `light dark` left the
+			 * scrollbars, form controls and overscroll canvas following the OS
+			 * against the opposite ground. Kept in step with reset.css. */
 			html {
-				color-scheme: light dark;
+				color-scheme: light;
+			}
+			html.dark {
+				color-scheme: dark;
 			}
 			body {
 				margin: 0;
@@ -75,12 +91,6 @@
 				height: auto;
 				display: block;
 			}
-			.grid {
-				display: grid;
-			}
-			.grid-cols-1 {
-				grid-template-columns: 1fr;
-			}
 			.flex {
 				display: flex;
 			}
@@ -93,32 +103,6 @@
 			.py-8 {
 				padding-top: 2rem;
 				padding-bottom: 2rem;
-			}
-			.mt-8 {
-				margin-top: 2rem;
-			}
-			.gap-6 {
-				gap: 1.5rem;
-			}
-			header {
-				min-height: 64px;
-			}
-			/* Paper tiles (formerly the glassmorphism classes) — flat warm-paper
-			 * surfaces, square corners, hairline border, no shadow/blur. Full
-			 * styling in utilities/surfaces.css; this inline block is for FOUC only. */
-			.surface-card,
-			.surface-panel {
-				background: #fffdf7;
-				border: 1px solid #c9c0aa;
-				border-radius: 0;
-			}
-			html.dark .surface-card,
-			html.dark .surface-panel {
-				background: #252017;
-				border-color: #453d2f;
-			}
-			.max-w-7xl {
-				max-width: 80rem;
 			}
 		</style>
 
@@ -410,6 +394,17 @@
 				}
 
 				document.documentElement.classList.add(initialTheme);
+
+				// Both theme-color metas take the resolved ground, so the address bar
+				// follows the *chosen* theme even when it contradicts the OS. The
+				// media attributes stay: they are the answer for a reader with no
+				// JavaScript. Mirrors `toggleTheme` in $lib/stores/themeStore.svelte,
+				// which re-reads --color-background once the stylesheet exists.
+				const grounds = { light: '#faf7ef', dark: '#171310' };
+				const metas = document.querySelectorAll('meta[name="theme-color"]');
+				for (let i = 0; i < metas.length; i++) {
+					metas[i].setAttribute('content', grounds[initialTheme]);
+				}
 			})();
 		</script>
 

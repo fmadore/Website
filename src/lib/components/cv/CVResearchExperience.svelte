@@ -48,7 +48,7 @@
 	<!-- Fieldwork Subsection -->
 	<h4>Fieldwork</h4>
 	{#if displayFieldworks.length > 0}
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each displayFieldworks as item (item.location)}
 				<!-- The years are the key and the place is the record. Set inline
 				     as "Place: years" this was the one dated list on the sheet
@@ -69,7 +69,7 @@
 	<!-- Research Roles Subsection -->
 	<h4>Research Roles</h4>
 	{#if researchRolesByDate.length > 0}
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each researchRolesByDate as role (role.id)}
 				<CVEntry year={formatCVYearRange(role.startYear, role.endYear)}>
 					<span class="font-medium">{typesetQuotes(role.title)}</span>, {typesetQuotes(

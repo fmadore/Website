@@ -4,6 +4,8 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="robots" content="noindex, follow" />
+		<meta name="theme-color" content="#faf7ef" media="(prefers-color-scheme: light)" />
+		<meta name="theme-color" content="#171310" media="(prefers-color-scheme: dark)" />
 		<title>Page not found | Frédérick Madore</title>
 
 		<!--
@@ -40,6 +42,14 @@
 							? 'dark'
 							: 'light';
 				document.documentElement.classList.add(initial);
+				// Both theme-color metas take the resolved ground, so a stored choice
+				// that contradicts the OS wins in the address bar too. Mirrors the
+				// bootstrap in src/app.html.
+				var grounds = { light: '#faf7ef', dark: '#171310' };
+				var metas = document.querySelectorAll('meta[name="theme-color"]');
+				for (var i = 0; i < metas.length; i++) {
+					metas[i].setAttribute('content', grounds[initial]);
+				}
 			})();
 		</script>
 
@@ -68,12 +78,18 @@
 			}
 
 			:root {
-				/* Daylight: warm paper + ink + pine (mirrors the design tokens) */
-				--bg: #faf7ef;
-				--ink: #191509;
-				--muted: #5c5442;
-				--accent: #1e6a56;
-				--code-bg: #ece4d1;
+				color-scheme: light;
+				/* Daylight: warm paper + ink + pine. Each literal is the value the
+				   app resolves for the token named beside it; this file cannot
+				   import them, so it restates them. */
+				--bg: #faf7ef; /* --color-background */
+				--ink: #191509; /* --color-primary / --color-text-emphasis */
+				--muted: #5c5442; /* --color-text-soft */
+				--faint: #6b634e; /* --color-text-light */
+				--border: #c9c0aa; /* --color-border */
+				--border-dark: #a39b86; /* --color-border-dark */
+				--accent: #1e6a56; /* --color-accent */
+				--code-bg: #ece4d1; /* --color-code-bg */
 				--font-display: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 				--font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
 				--font-mono: 'Spline Sans Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
@@ -83,18 +99,26 @@
 			   The class is what the bootstrap above sets; the media query is the
 			   no-JavaScript fallback, scoped so it never fights an explicit choice. */
 			:root.dark {
+				color-scheme: dark;
 				--bg: #171310;
 				--ink: #efe7d6;
-				--muted: #b3a88d;
+				--muted: #cbc0a6;
+				--faint: #b3a88d;
+				--border: #453d2f;
+				--border-dark: #5a5140;
 				--accent: #4fbb99;
 				--code-bg: #1f1a14;
 			}
 
 			@media (prefers-color-scheme: dark) {
 				:root:not(.light):not(.dark) {
+					color-scheme: dark;
 					--bg: #171310;
 					--ink: #efe7d6;
-					--muted: #b3a88d;
+					--muted: #cbc0a6;
+					--faint: #b3a88d;
+					--border: #453d2f;
+					--border-dark: #5a5140;
 					--accent: #4fbb99;
 					--code-bg: #1f1a14;
 				}
@@ -121,9 +145,11 @@
 				-webkit-font-smoothing: antialiased;
 			}
 
+			/* 45rem less the 1.5rem gutters = a 42rem content column: the width of
+			   `.error-block` in the app. */
 			main {
 				width: 100%;
-				max-width: 40rem;
+				max-width: 45rem;
 				margin: 0 auto;
 				padding: 2rem 1.5rem 4rem;
 			}
@@ -140,20 +166,24 @@
 				margin-bottom: 0.75rem;
 			}
 
-			/* Masthead rule: hierarchy is drawn in rules, not colour */
+			/* Masthead rule: hierarchy is drawn in rules, not colour.
+			   4px = --rule-masthead; 0.75rem = --rule-gap, the interval every
+			   ruled module on the site keeps between its rule and its content. */
 			.sheet {
-				border-top: 5px solid var(--ink);
+				border-top: 4px solid var(--ink);
+				padding-top: 0.75rem;
 			}
 
+			/* The .eyebrow idiom: --font-size-2xs (11.11px at 1440),
+			   --font-weight-bold, --tracking-eyebrow, --space-sm below. */
 			.eyebrow {
 				font-family: var(--font-mono);
-				font-size: 0.8125rem;
-				font-weight: 500;
-				letter-spacing: 0.12em;
+				font-size: clamp(0.625rem, 0.595rem + 0.15vw, 0.6944rem);
+				font-weight: 700;
+				letter-spacing: 0.16em;
 				text-transform: uppercase;
 				color: var(--accent);
-				margin-top: 1.25rem;
-				margin-bottom: 1rem;
+				margin: 0 0 0.75rem;
 			}
 
 			h1 {
@@ -163,14 +193,15 @@
 				font-size: clamp(2.93rem, 2.784rem + 0.732vw, 3.296rem);
 				line-height: 1;
 				letter-spacing: -0.015em;
-				margin-bottom: 1.25rem;
+				margin-bottom: 1rem; /* --space-md */
 			}
 
+			/* --font-size-lg (21.6px at 1440) on --measure-prose, --space-lg below. */
 			.lede {
-				font-size: 1.125rem;
+				font-size: clamp(1.225rem, 1.164rem + 0.305vw, 1.35rem);
 				color: var(--muted);
-				max-width: 34rem;
-				margin-bottom: 2.25rem;
+				max-width: 50ch;
+				margin-bottom: 1.5rem;
 			}
 
 			.links {
@@ -178,45 +209,53 @@
 				flex-wrap: wrap;
 				gap: 0.5rem 0.625rem;
 				list-style: none;
+				margin-bottom: 1.5rem;
 			}
 
-			/* Flat chips: 1px ink border, square corners, mono caps */
+			/* The .chip idiom: 1px border on --color-border, square corners, mono
+			   caps at --font-size-2xs / --tracking-caps, --color-text-soft. */
 			.links a {
-				display: inline-block;
+				display: inline-flex;
+				align-items: baseline;
 				font-family: var(--font-mono);
-				font-size: 0.8125rem;
+				font-size: clamp(0.625rem, 0.595rem + 0.15vw, 0.6944rem);
+				font-weight: 500;
 				letter-spacing: 0.06em;
 				text-transform: uppercase;
-				color: var(--ink);
+				color: var(--muted);
 				text-decoration: none;
-				padding: 0.5rem 0.95rem;
-				border: 1px solid var(--ink);
+				padding: calc(0.25rem + 2px) 0.5rem;
+				border: 1px solid var(--border);
 			}
 
-			.links a:hover,
-			.links a:focus-visible {
-				background-color: var(--ink);
-				color: var(--bg);
+			.links a:hover {
+				border-color: var(--border-dark);
+				color: var(--ink);
 			}
 
-			/* The index the requested URL was already inside is the way out. */
+			/* The index the requested URL was already inside is the way out —
+			   .chip--selected, a solid ink fill. */
 			.links a.is-current {
 				background-color: var(--ink);
+				border-color: var(--ink);
 				color: var(--bg);
 			}
 
+			/* The site's focus ring: --border-width-medium pine at --space-1. */
 			.links a:focus-visible {
 				outline: 2px solid var(--accent);
-				outline-offset: 2px;
+				outline-offset: 4px;
 			}
 
 			/* The machine voice: what was asked for, printed back. */
+			/* --font-size-xs, --tracking-figures, --color-text-light. The interval
+			   above it is the chip row's own --space-lg margin. */
 			.diagnostic {
 				font-family: var(--font-mono);
-				font-size: 0.8125rem;
+				font-size: clamp(0.75rem, 0.714rem + 0.178vw, 0.8333rem);
 				letter-spacing: 0.03em;
-				color: var(--muted);
-				margin-top: 2.25rem;
+				color: var(--faint);
+				margin-top: 0;
 				display: flex;
 				flex-wrap: wrap;
 				align-items: baseline;
@@ -237,11 +276,12 @@
 				overflow-wrap: anywhere;
 			}
 
+			/* --font-size-sm, --space-lg above. */
 			.home-link {
 				display: inline-block;
 				margin-top: 1.5rem;
 				font-family: var(--font-mono);
-				font-size: 0.8125rem;
+				font-size: clamp(0.875rem, 0.83rem + 0.226vw, 1rem);
 				color: var(--ink);
 				text-decoration: underline;
 				text-decoration-color: var(--accent);
@@ -276,8 +316,10 @@
 					<span class="diagnostic-label">Requested</span>
 					<code id="requested-path"></code>
 				</p>
+				<!-- A non-breaking space, so this file and +error.svelte render the
+				     same string: Svelte trims a trailing ordinary one. -->
 				<a class="home-link" href="/"
-					><span aria-hidden="true">&larr; </span>Back to the homepage</a
+					><span aria-hidden="true">&larr;&nbsp;</span>Back to the homepage</a
 				>
 			</div>
 		</main>

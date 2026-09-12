@@ -247,13 +247,13 @@ the job-to-be-done: find and cite the work.
 
 ## Phase 6 — Ship gate
 
-- [ ] **6.1 Final polish.** `/impeccable polish` sweep over home, publications, and CV —
+- [x] **6.1 Final polish.** `/impeccable polish` sweep over home, publications, and CV —
       alignment, spacing, micro-detail.
-- [ ] **6.2 Re-audit.** `/impeccable audit` again; compare scores against
+- [x] **6.2 Re-audit.** `/impeccable audit` again; compare scores against
       `docs/audits/2026-08-audit.md`. All P0/P1 resolved, P2s triaged.
-- [ ] **6.3 Regression check.** Run the retooled `design-philosophy-auditor` agent; it
+- [x] **6.3 Regression check.** Run the retooled `design-philosophy-auditor` agent; it
       should pass clean.
-- [ ] **6.4 Full test suite.** `npm run lint && npm run check && npm run test`, then
+- [x] **6.4 Full test suite.** `npm run lint && npm run check && npm run test`, then
       `npm run build && npm run check:build`, then `npm run test:e2e`.
 
 ---
@@ -1708,5 +1708,72 @@ build:** lint, check 0/0 over 1064 files; unit 915 passed (55 files, 22 new); bu
 prerender checks pass; e2e 35 passed, 1 skipped; a Playwright probe over 15 routes × 1440/375 ×
 both themes: 0 console errors (the 404's own excepted), 0 overflow, 0 axe violations under WCAG
 2.2 AA, 0 unlabelled new-tab links.
+
+**2026-09-12 — Phase 6 ship gate in one session: 6.1 polish, 6.2 re-audit, 6.3 auditor, 6.4 full
+suite (three Opus critique agents → three Opus fix agents on disjoint file sets, the auditor run
+twice as baseline and gate, one Opus audit agent; Fable orchestrating and applying every
+cross-agent handoff by hand).** Snapshots in `.impeccable/critique/2026-09-12T06-*`; the audit in
+`docs/audits/2026-09-audit.md`. The three critiques were instruments again: a rail sweep of
+masthead / page / footer inner edges at 768–1600; the in-app error branch measured element for
+element against the static `404.html`; print emulation with `page.pdf()` page counts; a 60-stop
+keyboard walk with every ring read; hover-state contrast on 18 control classes × both themes with
+`CSS.getMatchedStylesForNode` to find the winning rule; a same-role typography census over all 17
+CV sections, 24 sub-heads and 49 sampled rows; a character-level `Range` sweep for mid-word `h1`
+breaks on 14 routes at 320; a per-section `content-visibility` experiment at 4× CPU. **6.1 — the
+home page was finished; the chrome it shares with 195 other pages was not.** Three left rails
+(header 24 / page 16 / footer 240 at 1440; at 1600 the wordmark at 184 against content at 48) —
+now one: every surface takes the global `.container`, and the home shell hangs on the masthead's
+edge instead of centring 168 px inside it (**The One Rail Rule**, DESIGN.md). The record's
+`Open publication ↗` hovered at **1.48:1** daylight / 2.74 midnight because `typography.css`'s
+bare `a:hover` (0,1,1) outranked `.btn-accent` (0,1,0) — now `a:hover:not(:where(.btn))`, the
+buttons restate their label colour, and `--color-accent-dark` on midnight is itself lighter than
+the accent (a negative deepens by getting lighter), which also lifted `.mono-action:hover` off
+2.89:1: **8.9 / 9.2:1** measured. `theme-color` was the midnight ground on all 196 pages in
+daylight — two media-scoped metas plus a runtime repaint from the computed `--color-background`,
+so a stored choice beats the OS; `color-scheme` narrowed to the chosen theme so scrollbars and form
+controls follow it. The print sheet had never met the inverted footer (cream on white at ~1.6:1,
+a blank colophon), the masthead with its hamburger, or the fixed skip link stamped on **all 38
+pages** of the printed CV — the chrome's print rules now live with each component, no
+`!important`, and the CV breaks at the entry instead of the section: **38 → 33 pages** (**The
+Paper Rule**). The mobile panel's last row sat 0.4 px from the viewport edge (`height: 100%` on a
+1177 px nav) — `min-height`, 24 px clear. The facet ledger was the one control family the touch
+pass missed: 18 of 21 rows at **23.06 px** on a 23.06 px pitch under WCAG 2.2 SC 2.5.8 — 44 px;
+`.btn`, the record breadcrumb (16 px) and the offline dismiss (24 px) join the 44 px roster. The
+year slider was the only keyboard-operable control with no focus indicator (hover and focus both
+"turned pine") — a ring; its midnight track was **1.13:1**, now 3.30. The `All` type chip printed
+`44` beside siblings summing to `10` — it prints the match count with the dimension alone cleared
+(`EntityFilterSystem.totals`; the sum of sibling counts was declined on measurement: 45 over a
+44-entry corpus, one bilingual record). The empty result had no control inside it — `Clear search ✕`
+/ `Clear all ✕` repeated in the block. `Master's theses` (U+0027) beside `Côte d’Ivoire` (U+2019) —
+`typesetQuotes` on the chip. The CV: Escape dropped focus to `<body>` 23 masthead stops from
+where the reader was; the contents control was tab stop **128 of 142**, after every link in the
+document it exists to skip — now 9; `Publications 42entries` (Svelte trimming a leading space in an
+`sr-only` span). **The five left-for-later items closed:** the CV title at 320 was the gutter
+(96 px of 320), fixed with `--2xs-down` on the sheet's padding (widened to 374 px when the home
+nameplate proved to split at 360 too; `.index-title`, `.page-title` and the nameplate each took one
+step under it — 0 mid-word `h1` breaks at 320 on 14 routes); `RelevantItemsList` on the seven
+research projects was the last card grid of dated records — a `.ledger` per `LatestActivities`,
+one link per row, **2,606 → 1,789 px** at 1440, `RelevantItemCard` deleted with `View record →`
+(×9, 16 px), a sixth hand-rolled type register missing `podcast`, and a `'...'` cut at a bare 120;
+`.guide-note` left the base sheet (2 of 52 notes carried a link); `--color-citation` retired;
+`content-visibility` on the CV **measured and declined** — −48 % on a theme swap at 4× CPU, but
+17 hard-coded intrinsic heights that are half the truth at 375, for 38 ms once per session. The
+auditor baseline's 17 token bypasses, 4 crossed hairline pairs and 4 motion hits are all fixed
+(an undefined `--color-focus` meant the map's focus ring had never rendered); `hairlinePairing.test.ts`
+gained the fourth direction (a one-sided box edge used as a separator) and `designTokenParity.test.ts`
+now binds the hand-copied hexes in `app.html` and the PWA icon script. **Declined:** the playbook's
+eyebrow ban (a signature element), a true print running head (`position: running()` unimplemented),
+`.rail-label` convergence for the PWA `h3` and CV `h4` (3 and 5 declarations apart, not a class
+swap), squaring the circular legend swatches (added to the sanctioned list instead), the masthead
+type on the 201-character title, chip border contrast (1.69:1, recorded), the DOI printed twice on
+the record. **Documentation falsified by grep, corrected:** CLAUDE.md's animation section named an
+`animations.css` and four classes that do not exist; the rules table offered `--shadow-md` and
+`--border-radius-lg`; the auditor's own brief denied `PdfGenerator.svelte` exists. **6.2 — 17/20 (Good), the same total as August with a different composition** (`docs/audits/2026-09-audit.md`): accessibility 3, performance 4, theming 4, responsive 2 → **3** (0 overflow over 133 page loads at six widths, 0 mid-word `h1` breaks at 320), implementation integrity 4 → 3 for a dimension the baseline never looked at (a Tailwind-shaped utility layer: 5 undefined and 22 dead classes, 11 of 22 CV components authored in it). The audit's two P1s were both in states no scanner enters — the current pager item hovering to **1.00:1** (`.pager-item:hover` at 0,2,0 over `.pager-item--current` at 0,1,0; the same rule shape 6.1 had just fixed on `.btn-accent`), and the new `All 44` chip whose `aria-label` no longer contained its visible text (SC 2.5.3) — and were fixed in the same session with the cheap P2/P3s (arc-diagram focus ring, `--color-danger-dark` lifting on midnight, `color-scheme` on the two static pages); the audit report carries the disposition. 76 axe scans, 0 violations; Lighthouse accessibility 100 on every gated page; heaviest route 711 → 536 KiB; `/cv` 81 → 87. **6.3 — the auditor PASSED twice**, as a baseline before the fixes (17 token bypasses, 4 crossed hairline pairs, 4 motion hits, 4 documentation claims a grep falsifies — all folded into the batch) and as the gate after them (16 of 16 baseline sub-items resolved or declined by measurement; three new warnings it raised on the batch itself — the 404's 22 unguarded hexes, `white`/`black` in the new print blocks, a comment denying a `box-shadow` focus ring that still existed — fixed by the orchestrator: `designTokenParity.test.ts` now binds `static/404.html`, print ink is `--color-print-ink` on `--color-print-ground` (theme-stable, so a page printed from midnight is not cream on white), and `--focus-ring` is retired with its last consumer). **6.4 — ship gate on the rebuilt production
+build:** format, lint, check 0/0 over 1064 files; unit 932 passed (55 files); bundle 536 of 850 KiB
+on the heaviest route, 108.8 of 140 KiB entry, prerender 196 of 196; e2e 35 passed, 1 skipped.
+**Outlive the gate, recorded here and in the audit:** the second tier of touch targets (visualisation
+toolbars at 36 px, `.doi-link` at 16 px ×30 on the CV, the slider handle at 12×24) and the CV's
+utility-class vocabulary — both sweeps, neither a defect a reader meets on the index pages. **The
+roadmap is closed.**
 
 <!-- e.g. 2026-08-17 — 0.2 audit — score 82/100, 0 P0, 4 P1 (assigned: 1.3 ×2, 2.2, 5.1) -->

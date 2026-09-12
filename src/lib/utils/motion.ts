@@ -2,9 +2,9 @@
  * Motion preference utilities.
  *
  * Keeps Svelte transition/animate durations in sync with the user's
- * `prefers-reduced-motion` setting. CSS-only animations already respect this
- * via media queries in `src/styles/components/animations.css`; this helper
- * covers the JS-driven Svelte transition path (fade, flip, etc.).
+ * `prefers-reduced-motion` setting. CSS transitions respect it through each
+ * component's own `@media (--reduced-motion)` rule; this helper covers the
+ * JS-driven Svelte transition path (fade, flip, etc.).
  */
 
 /**

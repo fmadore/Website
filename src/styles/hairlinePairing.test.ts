@@ -98,6 +98,54 @@ describe('the hairline pairing', () => {
 		expect(crossed).toEqual([]);
 	});
 
+	it('never draws a separator in the box-edge pair', () => {
+		/**
+		 * The fourth direction, and the one that had four live sites when it was
+		 * finally probed: a ONE-SIDED `--border-width-thin` + `--color-border`.
+		 * A single edge does not enclose anything — it separates what is above it
+		 * from what is below — so it is a rule, and it takes the rule pair. The
+		 * three probes above all read the pair from the rule side; none of them
+		 * could see a separator written correctly-looking in the wrong tokens.
+		 *
+		 * A one-sided box edge is a real thing too (a plate's lid, a card image's
+		 * foot, an embed's chrome), which is why this is an allowlist rather than
+		 * a ban: each legitimate site is named, with what it encloses.
+		 */
+		const sanctioned = [
+			// The card's own image tile: the foot of a bordered box, not a rule
+			// between entries.
+			'lib/components/common/Card.svelte — border-bottom: var(--border-width-thin) solid var(--color-border);',
+			// Deck chrome: the embed frame's own edges.
+			'lib/components/communications/SlideDeckEmbed.svelte — border-bottom: var(--border-width-thin) solid var(--color-border);',
+			'lib/components/communications/SlideDeckEmbed.svelte — border-top: var(--border-width-thin) solid var(--color-border);',
+			// The preview card's image tile.
+			'lib/components/reference/ReferencePreviewCard.svelte — border-bottom: var(--border-width-thin) solid var(--color-border);',
+			// The map's own control surface.
+			'lib/components/visualisations/MapVisualization.svelte — border-bottom: var(--border-width-thin) solid var(--color-border);',
+			// Two segmented controls — the site's map-mode toggle and MapLibre's own
+			// zoom cluster. The division between two segments is the enclosing box's
+			// edge continued inward, and meets it, so it is drawn in the same ink
+			// rather than dropping to the rule tier halfway along.
+			'lib/components/visualisations/LocationMap.svelte — border-inline-end: var(--border-width-thin) solid var(--color-border);',
+			'lib/components/visualisations/MapVisualization.svelte — border-top: var(--border-width-thin) solid var(--color-border);'
+		];
+
+		const crossed = findDeclarations(
+			/border-(top|bottom|left|right|inline-start|inline-end|block-start|block-end):\s*var\(--border-width-thin\)\s+solid\s+var\(--color-border\)/
+		);
+
+		const unsanctioned = crossed.filter((hit) => {
+			const [site, declaration] = [hit.split(':')[0], hit.split(' — ')[1]];
+			return !sanctioned.some(
+				(s) => s.split(' — ')[0] === site && s.split(' — ')[1] === declaration
+			);
+		});
+
+		expect(unsanctioned).toEqual([]);
+		// Every allowlisted site must still exist, so the cover cannot go stale.
+		expect(crossed.length).toBeGreaterThanOrEqual(sanctioned.length);
+	});
+
 	it('gives every ruled module the same rule → content interval', () => {
 		// A heavy rule declared near a top padding that is not --rule-gap: the
 		// interval has drifted and hierarchy is being carried by spacing instead

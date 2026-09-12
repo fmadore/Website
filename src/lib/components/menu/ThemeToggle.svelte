@@ -117,8 +117,8 @@
 	/* Coarse pointers get the 44px guideline; the pointer size is unchanged. */
 	@media (--touch) {
 		.theme-toggle {
-			min-width: 44px;
-			min-height: 44px;
+			min-width: var(--space-11);
+			min-height: var(--space-11);
 		}
 	}
 

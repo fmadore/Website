@@ -1,3 +1,22 @@
+<script module lang="ts">
+	// Chart dimensions. `margin.left` is the hanging mono key column of the
+	// ledger: every lane names itself there, so no lane is keyed by colour
+	// alone. The plate draws at 1:1 (the viewBox matches the pixel size), so
+	// SVG user units are CSS pixels and the label column keeps its typographic
+	// size whatever the viewport.
+	const margin = { top: 40, right: 32, bottom: 8, left: 124 };
+	const MIN_PLOT_WIDTH = 620;
+	const LANE_HEIGHT = 52;
+
+	/**
+	 * The narrowest the plate will ever draw: the hanging lane-key column plus a
+	 * readable plot floor plus the right margin. Below this the plate overflows
+	 * its route container and must be scrolled sideways, so the route reads the
+	 * figure from here rather than guessing a breakpoint for its scroll caption.
+	 */
+	export const TIMELINE_MIN_PLATE_WIDTH = margin.left + MIN_PLOT_WIDTH + margin.right;
+</script>
+
 <script lang="ts">
 	import { scaleTime } from 'd3-scale';
 	import { type TimelineItem, TIMELINE_CATEGORIES, getCategoryColor } from '$lib/types/timeline';
@@ -22,21 +41,10 @@
 		return TIMELINE_CATEGORIES.filter((c) => uniqueCats.has(c.id));
 	});
 
-	// Chart dimensions. `margin.left` is the hanging mono key column of the
-	// ledger: every lane names itself there, so no lane is keyed by colour
-	// alone. The plate draws at 1:1 (the viewBox matches the pixel size), so
-	// SVG user units are CSS pixels and the label column keeps its typographic
-	// size whatever the viewport.
-	const margin = { top: 40, right: 32, bottom: 8, left: 124 };
-	const MIN_PLOT_WIDTH = 620;
-	const LANE_HEIGHT = 52;
-
 	// The single horizontal scroller lives on the route container; the plate
 	// sizes to the space it is given, with a readable floor.
 	let containerWidth = $state(0);
-	const chartWidth = $derived(
-		Math.max(margin.left + MIN_PLOT_WIDTH + margin.right, Math.floor(containerWidth))
-	);
+	const chartWidth = $derived(Math.max(TIMELINE_MIN_PLATE_WIDTH, Math.floor(containerWidth)));
 	const chartHeight = $derived(
 		margin.top + Math.max(1, activeCategories.length) * LANE_HEIGHT + margin.bottom
 	);

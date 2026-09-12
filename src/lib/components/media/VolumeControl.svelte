@@ -103,14 +103,15 @@
 		outline: none;
 		appearance: none;
 		cursor: pointer;
-		transition:
-			border-color var(--duration-normal) var(--ease-out),
-			transform var(--duration-normal) var(--ease-out);
+		/* Colour only, at the fast step. The track used to swell to scaleY(1.2)
+		 * and the thumb to scale(1.1) over 200ms on hover: a material-design
+		 * spring in a print register, and the only geometry on the site that
+		 * moved under the pointer. */
+		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
 	.volume-slider:hover {
 		border-color: var(--color-accent);
-		transform: scaleY(1.2);
 	}
 
 	.volume-slider::-webkit-slider-thumb {
@@ -121,14 +122,11 @@
 		border-radius: 0;
 		cursor: pointer;
 		border: var(--border-width-thin) solid var(--color-surface-elevated);
-		transition:
-			background-color var(--duration-normal) var(--ease-out),
-			transform var(--duration-normal) var(--ease-out);
+		transition: background-color var(--duration-fast) var(--ease-out);
 	}
 
 	.volume-slider::-webkit-slider-thumb:hover {
 		background: var(--color-accent-dark);
-		transform: scale(1.1);
 	}
 
 	.volume-slider::-moz-range-thumb {
@@ -138,14 +136,11 @@
 		border-radius: 0;
 		cursor: pointer;
 		border: var(--border-width-thin) solid var(--color-surface-elevated);
-		transition:
-			background-color var(--duration-normal) var(--ease-out),
-			transform var(--duration-normal) var(--ease-out);
+		transition: background-color var(--duration-fast) var(--ease-out);
 	}
 
 	.volume-slider::-moz-range-thumb:hover {
 		background: var(--color-accent-dark);
-		transform: scale(1.1);
 	}
 
 	/* Fixed icon container to prevent layout shifts */

@@ -149,73 +149,36 @@
 	);
 	const bibActions = $derived<BibliographyAction[]>(bibAction ? [bibAction] : []);
 
-	interface DisplayListItem {
-		name: string;
-		isClickable: boolean;
-	}
-
-	// Reactive computation for Author/Editor list (not HTML string)
+	// The row's byline: the names in running order, plus the prefix a co-edited
+	// special issue needs ("Edited by ").
+	//
+	// The names are assembled with ", " between entries and " and " before the
+	// last. A collective byline (two dozen signatories) collapses to "et al." so
+	// the row stays a bibliography entry rather than a page of names; the site
+	// owner is held in view wherever they sit in the running order.
 	const displayData = $derived.by(() => {
-		const type = publication.type;
-		const authors = publication.authors;
-		const editors = publication.editors;
+		const { type, authors, editors } = publication;
 
-		let items: DisplayListItem[] = [];
-		let listPrefix = ''; // Reset prefix
+		let names: string[] = [];
+		let listPrefix = '';
 
-		if (
-			type === 'book' ||
-			type === 'article' ||
-			type === 'bulletin-article' ||
-			type === 'chapter' ||
-			type === 'encyclopedia' ||
-			type === 'report' ||
-			type === 'working-paper' ||
-			type === 'blogpost' ||
-			type === 'phd-dissertation' ||
-			type === 'masters-thesis' ||
-			type === 'conference-proceedings'
-		) {
-			if (authors) {
-				const authorsArray = getAuthorsArray(authors);
-				items = authorsArray.map((author) => ({
-					name: author,
-					isClickable: false // No longer needed, but keep structure for now
-				}));
-			}
-		} else if (type === 'special-issue') {
-			if (editors) {
+		if (type === 'special-issue') {
+			// Editors carry the byline of a volume the owner edited rather than wrote.
+			if (typeof editors === 'string') {
 				listPrefix = 'Edited by ';
-				if (typeof editors === 'string') {
-					const editorsArray = editors
-						.split(' and ')
-						.flatMap((part) => part.split(', '))
-						.map((name) => name.trim())
-						.filter(Boolean);
-					items = editorsArray.map((editor) => ({
-						name: editor,
-						isClickable: false // No longer needed
-					}));
-				}
-				// Add logic for array editors if needed
+				names = editors
+					.split(' and ')
+					.flatMap((part) => part.split(', '))
+					.map((name) => name.trim())
+					.filter(Boolean);
 			}
+		} else if (authors) {
+			names = getAuthorsArray(authors);
 		}
-		// Handle advisors separately in the template as before
-		// Handle prefacedBy separately in the template as before
-
-		// Build the authorString: ", " between entries, " and " before the last.
-		// A collective byline (two dozen signatories) collapses to "et al." so
-		// the row stays a bibliography entry rather than a page of names; the
-		// site owner is held in view wherever they sit in the running order.
-		const builtString = formatAuthorsWithEtAl(
-			items.map((item) => item.name),
-			{ mustInclude: siteAuthor.name }
-		);
 
 		return {
-			displayList: items,
 			listPrefix,
-			authorString: builtString
+			authorString: formatAuthorsWithEtAl(names, { mustInclude: siteAuthor.name })
 		};
 	});
 </script>

@@ -103,7 +103,8 @@
 	.page-header {
 		position: relative;
 		padding-bottom: var(--space-lg);
-		border-bottom: var(--border-width-thin) solid var(--color-border);
+		/* A separator, so it takes the rule pair, not the box-edge pair. */
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 		margin-bottom: var(--space-xl);
 	}
 
@@ -184,7 +185,9 @@
 		margin: 0;
 		/* Mobile-first font size */
 		font-size: var(--font-size-3xl);
-		max-width: 20ch;
+		/* The display-face cap: a headline is sized for its shape, not for the
+		 * reading measure. The role is documented in `variables.css`. */
+		max-width: var(--measure-title);
 		text-wrap: balance;
 	}
 
@@ -208,6 +211,15 @@
 	@media (prefers-reduced-motion: reduce) {
 		.back-link {
 			transition: none;
+		}
+	}
+
+	/* Below 375px the longest record titles break mid-word: "Visualisations"
+	 * sets 299px into 264px at 320. One step down the scale clears it (238px)
+	 * and nothing moves at 375 and up. */
+	@media (--2xs-down) {
+		.page-title {
+			font-size: var(--font-size-2xl);
 		}
 	}
 

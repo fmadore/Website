@@ -41,12 +41,12 @@ src/lib/utils/
   density. A section either uses `CVSection` (year-grouped, keyed, with a
   `CVEntry` snippet) or hand-rolls the `<section>` + `<h3>` + ledger wrapper
   because it needs subsection `<h4>`s or a `current` key — but it still renders
-  `CVEntry` rows inside `div.space-y-3.ledger.ledger--tight.ledger--ruled`.
+  `CVEntry` rows inside `div.ledger.ledger--tight.ledger--ruled[data-cv-ledger]`.
   Do not draw a row by hand: four sections used to, each with its own padding,
   key width and hairline, which is how the CV came to hold five ledgers.
 - **The DOM is the PDF's input.** `pdfCvGenerator.ts` reads the rendered page,
   so these hooks are load-bearing and must not be renamed casually:
-  `#cv-content`, `section > h3`, `h4`, `div.space-y-3`, `.cv-entry`,
+  `#cv-content`, `section > h3`, `h4`, `div[data-cv-ledger]`, `.cv-entry`,
   `.cv-entry-year`, `.cv-entry-year--current` (prints the key in pine),
   `.cv-entry--wide` (widens the export's key gutter), `.doi-link`, and
   `data-pdf-hide` on anything the export should skip.

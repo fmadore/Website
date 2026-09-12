@@ -11,19 +11,12 @@
 		perPage = 10,
 		total = 0,
 		onchange,
-		// Accepted for call-site compatibility; the rendered noun is always "entries".
-		label: _label = 'entries',
 		scrollTargetId
 	}: {
 		page?: number;
 		perPage?: number;
 		total?: number;
 		onchange: (page: number) => void;
-		/**
-		 * Accepted for call-site compatibility only: the count readout always
-		 * says "entries" (or "entry"), one noun across every index.
-		 */
-		label?: string;
 		/** Optional element id to scroll to the top of on page change. */
 		scrollTargetId?: string;
 	} = $props();
@@ -165,17 +158,23 @@
 		border-color: var(--color-accent);
 	}
 
-	/* Current page — solid ink fill, the way a selected chip reads. */
+	/* Current page — solid ink fill, the way a selected chip reads, down to the
+	 * token: `.chip--selected` inverts with --color-text-inverted, and the two
+	 * quote the same idiom. */
 	.page-btn--current {
-		color: var(--color-background);
+		color: var(--color-text-inverted);
 		background: var(--color-primary);
 		border-color: var(--color-primary);
 		cursor: default;
 	}
 
-	.page-btn--current:hover {
-		color: var(--color-background);
-		border-color: var(--color-primary);
+	/* Written at the same specificity as `.page-btn:hover:not(:disabled)` and
+	 * after it, so the current page keeps its inverted label under the pointer
+	 * (the pine text of the generic hover read 2.8:1 on the ink fill). */
+	.page-btn--current:hover:not(:disabled) {
+		color: var(--color-text-inverted);
+		background: var(--color-primary-dark);
+		border-color: var(--color-primary-dark);
 	}
 
 	/* Next carries a full ink border to read as the forward affordance. */

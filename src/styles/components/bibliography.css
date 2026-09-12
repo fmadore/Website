@@ -41,7 +41,6 @@
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-sm);
 	font-weight: var(--font-weight-semibold);
-	font-variant-numeric: tabular-nums;
 	letter-spacing: var(--tracking-figures);
 	color: var(--color-text-light);
 	line-height: 1.5;
@@ -281,9 +280,13 @@
 /* The cite control — a button, because it produces the citation rather than
  * going somewhere. It reserves the width of its longest state so a confirmation
  * never resizes the action track and reflows the entry beside it, and it is
- * right-aligned inside that reserved box so the column edge stays true. */
+ * right-aligned inside that reserved box so the column edge stays true.
+ *
+ * The longest state is `Copy failed` (88.0px), not `Copied`: at 7.5em (83.3px)
+ * a denied clipboard widened the track and reflowed the row by 4.7px — the
+ * exact reflow this reservation exists to prevent. */
 .bib-cite {
-	min-width: 7.5em;
+	min-width: 8em;
 	justify-content: flex-end;
 	text-align: right;
 }
@@ -292,6 +295,14 @@
  * it is true (the label returns to "Cite" after a moment). */
 .bib-cite--confirmed {
 	color: var(--color-accent);
+}
+
+/* Failed: emphasis ink, not pine — pine is the success signal on this control,
+ * and the two states cannot share it. Not --color-danger either: a denied
+ * clipboard permission is not the reader's mistake (see the state-note idiom in
+ * ink-signal.css). Apparatus, not alarm. */
+.bib-cite--failed {
+	color: var(--color-text-emphasis);
 }
 
 .bib-cited {

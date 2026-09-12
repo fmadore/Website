@@ -16,7 +16,7 @@
 <section>
 	<h3>Professional Affiliations</h3>
 	{#if affiliationsByStartDate.length > 0}
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each affiliationsByStartDate as aff (aff.id)}
 				<!-- Deliberately not `current`: three of six memberships are open-ended,
 				     and an accent that marks half a section has stopped marking

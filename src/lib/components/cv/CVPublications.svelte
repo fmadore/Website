@@ -29,7 +29,7 @@
 		{#each presentPublicationTypes as pubType (pubType)}
 			{#if publicationsByType[pubType] && publicationsByType[pubType].length > 0}
 				<h4>{getPublicationTypeDisplayName(pubType)}</h4>
-				<div class="space-y-3 ledger ledger--tight ledger--ruled">
+				<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 					{#each publicationsByType[pubType] as pub (pub.id)}
 						{@const formattedAuthors = formatCVAuthorList(pub.authors)}
 						{@const authorStop = terminalPeriod(formattedAuthors)}
@@ -128,7 +128,7 @@
 		<!-- Optional: Section for other publication types -->
 		{#if otherPublicationTypes.length > 0}
 			<h4>Other</h4>
-			<div class="space-y-3 ledger ledger--tight ledger--ruled">
+			<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 				{#each otherPublicationTypes as pubType (pubType)}
 					{#each publicationsByType[pubType as Publication['type']] as pub (pub.id)}
 						<CVEntry year={getCVDisplayYear(pub)}>
@@ -178,9 +178,13 @@
 		text-decoration: underline;
 	}
 
+	/* 16px, the size every other inline mark on the sheet renders at (the contact
+	 * stack's five, the ORCID mark). Sized absolutely rather than in `em`: the
+	 * identifier beside it is set at the 2xs mono step, so `1.25em` drew this
+	 * mark at 14px and made the DOI the one glyph on the page at its own size. */
 	.doi-link :global(.doi-link-icon) {
-		width: 1.25em;
-		height: 1.25em;
+		width: var(--space-4);
+		height: var(--space-4);
 		flex-shrink: 0;
 	}
 

@@ -105,7 +105,9 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 				projectName: project.name,
 				symbolSize: isMobile ? 8 : 12,
 				itemStyle: {
-					color: resolvedColors.white,
+					// A knockout against the plate ground, never pure white: on the
+					// film ground a white marker is the wrong temperature.
+					color: resolvedColors.surface,
 					borderColor: resolvedColors.chartColors[projectIndex % resolvedColors.chartColors.length],
 					borderWidth: 2
 				}
@@ -342,7 +344,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		width: 10px;
 		height: 10px;
 		background: var(--color-surface-elevated);
-		border: 2px solid var(--color-accent);
+		border: var(--border-width-medium) solid var(--color-accent);
 		border-radius: 0;
 	}
 

@@ -39,6 +39,7 @@ import mdiCheckboxBlankOutline from '@iconify-icons/mdi/checkbox-blank-outline';
 import mdiLoading from '@iconify-icons/mdi/loading';
 import mdiFilePdfBox from '@iconify-icons/mdi/file-pdf-box';
 import mdiWeb from '@iconify-icons/mdi/web';
+import mdiTrendingUp from '@iconify-icons/mdi/trending-up';
 
 // Academicons (academic identifiers and scholarly-infrastructure marks)
 import academiconsGoogleScholar from '@iconify-icons/academicons/google-scholar';
@@ -75,7 +76,6 @@ import lucideMapPin from '@iconify-icons/lucide/map-pin';
 import lucideCircle from '@iconify-icons/lucide/circle';
 import lucideArrowDownWideNarrow from '@iconify-icons/lucide/arrow-down-wide-narrow';
 import lucideArrowDownAZ from '@iconify-icons/lucide/arrow-down-a-z';
-import lucideTrendingUp from '@iconify-icons/lucide/trending-up';
 import lucideMaximize from '@iconify-icons/lucide/maximize';
 import lucideArrowUpRight from '@iconify-icons/lucide/arrow-up-right';
 import lucidePlay from '@iconify-icons/lucide/play';
@@ -109,6 +109,7 @@ export function registerIcons(): void {
 	addIcon('mdi:checkbox-blank-outline', mdiCheckboxBlankOutline);
 	addIcon('mdi:loading', mdiLoading);
 	addIcon('mdi:file-pdf-box', mdiFilePdfBox);
+	addIcon('mdi:trending-up', mdiTrendingUp);
 	addIcon('mdi:web', mdiWeb);
 
 	// Simple Icons
@@ -149,7 +150,6 @@ export function registerIcons(): void {
 	addIcon('lucide:circle', lucideCircle);
 	addIcon('lucide:arrow-down-wide-narrow', lucideArrowDownWideNarrow);
 	addIcon('lucide:arrow-down-a-z', lucideArrowDownAZ);
-	addIcon('lucide:trending-up', lucideTrendingUp);
 	addIcon('lucide:maximize', lucideMaximize);
 	addIcon('lucide:arrow-up-right', lucideArrowUpRight);
 	addIcon('lucide:play', lucidePlay);
@@ -173,6 +173,7 @@ export {
 	mdiLoading,
 	mdiFilePdfBox,
 	mdiWeb,
+	mdiTrendingUp,
 	// Simple Icons
 	blueskyIcon,
 	// Academicons
@@ -209,6 +210,5 @@ export {
 	lucideCircle,
 	lucideArrowDownWideNarrow,
 	lucideArrowDownAZ,
-	lucideTrendingUp,
 	mdiChevronDown
 };

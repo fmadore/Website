@@ -498,8 +498,11 @@ background texture is now the whole subject of the chart.
 		opacity: var(--opacity-20, 0.2);
 	}
 
+	/* A colour change alone is not a focus indicator: the row draws the same
+	 * ring every other control on the site draws, so focus and hover differ. */
 	.arc-row:focus-visible {
-		outline: none;
+		outline: var(--border-width-medium) solid var(--color-accent);
+		outline-offset: var(--border-width-medium);
 	}
 
 	.arc-row:focus-visible .arc-name {

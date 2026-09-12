@@ -93,6 +93,30 @@ export function computeFacetCounts<TItem>(
 }
 
 /**
+ * The items one dimension's facet is counted over: everything the year range
+ * and every *other* active dimension still admit, with the counted dimension
+ * itself ignored. Shared by the facet counts and the per-dimension totals so
+ * the two can never disagree about what "with this facet cleared" means.
+ */
+function eligibleItemsForDimension<TItem>(
+	countedKey: EntityArrayFilterKey,
+	items: TItem[],
+	filters: EntityIndexFilters,
+	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
+	matchesYearRange: (item: TItem, range: YearRange) => boolean
+): TItem[] {
+	return items.filter((item) => {
+		if (filters.yearRange && !matchesYearRange(item, filters.yearRange)) return false;
+		for (const key of ENTITY_ARRAY_FILTER_KEYS) {
+			if (key === countedKey) continue;
+			const active = filters[key];
+			if (active.length > 0 && !dimensions[key].match(item, active)) return false;
+		}
+		return true;
+	});
+}
+
+/**
  * Facet counts for an OR-within/AND-across filter UI. Each dimension is
  * counted after applying the year range and every *other* active dimension,
  * so an unselected value reports how many results it would add.
@@ -106,17 +130,45 @@ export function computeDisjunctiveFacetCounts<TItem>(
 	const result = {} as Record<EntityArrayFilterKey, Record<string, number>>;
 
 	for (const countedKey of ENTITY_ARRAY_FILTER_KEYS) {
-		const eligibleItems = items.filter((item) => {
-			if (filters.yearRange && !matchesYearRange(item, filters.yearRange)) return false;
-			for (const key of ENTITY_ARRAY_FILTER_KEYS) {
-				if (key === countedKey) continue;
-				const active = filters[key];
-				if (active.length > 0 && !dimensions[key].match(item, active)) return false;
-			}
-			return true;
-		});
-
+		const eligibleItems = eligibleItemsForDimension(
+			countedKey,
+			items,
+			filters,
+			dimensions,
+			matchesYearRange
+		);
 		result[countedKey] = computeFacetCounts(eligibleItems, dimensions)[countedKey];
+	}
+
+	return result;
+}
+
+/**
+ * How many items each dimension would return if that dimension alone were
+ * cleared — the number the "All" option in a facet row prints, and exactly the
+ * number clicking it produces.
+ *
+ * Not the sum of `computeDisjunctiveFacetCounts`: a dimension whose extractor
+ * yields several values per item (languages, tags, countries) double-counts in
+ * that sum, and one whose value can be absent under-counts. Both are the same
+ * defect — an "All" that asserts a total the click does not produce.
+ */
+export function computeDisjunctiveTotals<TItem>(
+	items: TItem[],
+	filters: EntityIndexFilters,
+	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
+	matchesYearRange: (item: TItem, range: YearRange) => boolean
+): Record<EntityArrayFilterKey, number> {
+	const result = {} as Record<EntityArrayFilterKey, number>;
+
+	for (const countedKey of ENTITY_ARRAY_FILTER_KEYS) {
+		result[countedKey] = eligibleItemsForDimension(
+			countedKey,
+			items,
+			filters,
+			dimensions,
+			matchesYearRange
+		).length;
 	}
 
 	return result;

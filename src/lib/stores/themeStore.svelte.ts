@@ -17,12 +17,33 @@ function getInitialTheme(): Theme {
 	return prefersDark ? 'dark' : 'light';
 }
 
+/**
+ * Point the browser chrome at the page's own ground.
+ *
+ * `src/app.html` ships two media-scoped `theme-color` metas, which is the right
+ * answer for a reader whose theme is simply the OS preference. A stored choice
+ * can contradict the OS, and then the matching meta is the wrong one — so both
+ * are overwritten with the resolved theme's `--color-background`. The value is
+ * read from the stylesheet rather than hand-copied: a custom property's computed
+ * value is already substituted, so this is the token itself, not a copy of it.
+ */
+function applyThemeColorMeta() {
+	const ground = getComputedStyle(document.documentElement)
+		.getPropertyValue('--color-background')
+		.trim();
+	if (!ground) return;
+	for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+		meta.setAttribute('content', ground);
+	}
+}
+
 // Function to apply the theme class to the HTML element
 function applyTheme(newTheme: Theme) {
 	if (browser) {
 		document.documentElement.classList.remove('light', 'dark');
 		document.documentElement.classList.add(newTheme);
 		localStorage.setItem('theme', newTheme);
+		applyThemeColorMeta();
 	}
 }
 

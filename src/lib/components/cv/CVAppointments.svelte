@@ -8,12 +8,12 @@
 <!--
 	Rendered with CVEntry (not the generic CVSection) so the ongoing appointment
 	(endYear === null) can carry the accent "current" marker on its year key.
-	<section> + <h3> + .space-y-3 remain as PDF-generator hooks.
+	<section> + <h3> + [data-cv-ledger] remain as PDF-generator hooks.
 -->
 <section>
 	<h3>Professional Appointments</h3>
 	{#if appointmentsByDate.length > 0}
-		<div class="space-y-3 ledger ledger--tight ledger--ruled">
+		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each appointmentsByDate as appt (appt.id)}
 				<CVEntry
 					year={formatCVYearRange(appt.startYear, appt.endYear)}

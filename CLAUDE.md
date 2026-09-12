@@ -201,7 +201,7 @@ Components in `src/lib/components/` follow atomic design:
 
 Modular system in `src/styles/` with import order: Base → Layout → Components → Utilities
 
-- **Design tokens**: `base/variables.css` (colors, spacing, typography, rules; all `--shadow-*` resolve to `none` and all `--border-radius-*` except `-full` resolve to `0` by design)
+- **Design tokens**: `base/variables.css` (colors, spacing, typography, rules; there are no `--shadow-*` tokens at all, and all `--border-radius-*` except `-full` resolve to `0` by design)
 - **Breakpoints** (defined in `base/media.css`):
   - Min-width: `--sm` (640px), `--md` (768px), `--lg` (1024px), `--xl` (1280px), `--2xl` (1536px)
   - Max-width: `--xs-down`, `--sm-down`, `--md-down`, `--lg-down`, `--xl-down`, `--2xl-down`
@@ -244,16 +244,13 @@ Always use runes - never legacy reactive syntax:
 - **No glass, no shadows, no gradients, no rounded corners** — depth comes from ink density and rule weight (5px masthead / 3px section / 1px hairline). Never add `backdrop-filter`, `box-shadow`, or `border-radius` to new styles (the only gradient exception is a real data-proportion bar like `.hbar`)
 - **Never use `var()` in media queries** - use PostCSS custom media syntax (e.g., `@media (--md)`)
 - **Avoid `!important`** - only acceptable when overriding third-party library styles (ECharts, MapLibre) or in `prefers-reduced-motion` blocks
+- **Print is a media, not an override.** A component's print behaviour belongs in that component's own `<style>` under `@media print`; only document-level rules (body, headings, prose) live in the global block in `base/typography.css`, which carries an index of the rest. This is what keeps the print sheet free of `!important` (the CV's own print sheet is the one documented exception).
+- **One rail.** The masthead, page and footer share the global `.container`. Never re-declare a cap or a gutter for one of them, and never nest a `.container` inside another; cap the inner block with `max-width` instead.
 - **Dark mode**: Use `:global(html.dark) .my-class { ... }` selector pattern. Use CSS variables and `color-mix()` with design tokens for dark-mode-specific values
 
 ### Animation System (CSS-only)
 
-Motion is near-zero by design (print register). When an entrance animation is warranted, use the CSS classes in `animations.css` (the old `scrollAnimations.ts` util was deleted):
-
-- `.scroll-reveal` - fade-up on viewport entry
-- `.scroll-reveal-scale` - scale-in for cards/images
-- `.grid-stagger` - staggered child animations
-- `.page-enter` - page load animation
+Motion is near-zero by design (print register). Page navigation is one short opacity transition in the root layout; component-scoped transitions animate colour and border only, at 150ms, for direct state feedback (opening navigation, media controls), and each component owns its `prefers-reduced-motion` rule. The only `@keyframes` in the codebase are loading spinners (`Button`, `PdfGenerator`, `MediaPlayer`). There is no `animations.css`, no entrance or scroll-reveal utility, and no resting `will-change`; do not add any. Transforms on hover (scale, slide, nudge) are violations, not polish.
 
 ### File Organization
 
@@ -291,6 +288,10 @@ Every string a reader sees follows the glossary in `DESIGN.md` § Voice & Copy: 
 Run `npm run format` before committing. CI enforces Prettier + ESLint via `npm run lint`.
 
 ## Important Patterns
+
+### Theme colour
+
+`toggleTheme` (`$lib/stores/themeStore.svelte.ts`) also repaints both `theme-color` metas from the computed `--color-background`. The pre-hydration copy of the same logic is in `src/app.html` (and again in `static/404.html`), where the stylesheet does not exist yet and the two grounds are written as literals; `src/lib/utils/designTokenParity.test.ts` binds those literals to the tokens.
 
 ### Filter Implementation
 

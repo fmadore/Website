@@ -14,11 +14,16 @@ import { CHART_COLOR_FALLBACKS, CHART_COLOR_FALLBACKS_DARK } from './chartColorU
  *     with no document to read computed styles from.
  *   - `chartColorUtils.ts` — ECharts and MapLibre cannot parse `color-mix()`
  *     or `oklch()`, so the fallbacks must be literal hex.
+ *   - `src/app.html` — the pre-hydration critical block and the theme bootstrap
+ *     run before any stylesheet exists, so the page ground, the ink and the
+ *     browser-chrome `theme-color` metas are all written as literals there.
+ *   - `scripts/generate-pwa-icons.mjs` — the icon art is rasterised by sharp
+ *     from an inline SVG, with no document to read tokens from.
  *
- * Both are legitimate duplicates, and both have silently fallen behind before:
- * `--sys-color-ink-faint` was darkened to meet 4.5:1 and the copies kept the
- * old `#93896f`, which shipped a 3.24:1 label colour in the downloadable CV.
- * Nothing bound them to the source, so nothing caught it.
+ * Every one of them is a legitimate duplicate, and one has silently fallen
+ * behind before: `--sys-color-ink-faint` was darkened to meet 4.5:1 and the
+ * copies kept the old `#93896f`, which shipped a 3.24:1 label colour in the
+ * downloadable CV. Nothing bound them to the source, so nothing caught it.
  *
  * This test is that binding. It parses the real stylesheet rather than
  * restating the hexes, so editing a token here fails loudly instead of
@@ -255,6 +260,171 @@ describe('midnight chart fallbacks match dark.css', () => {
 			[]
 		);
 	});
+});
+
+describe('the pre-hydration copies in src/app.html match variables.css', () => {
+	/**
+	 * `app.html` is the one file that runs before the stylesheet: its inline
+	 * critical block paints the first frame and its bootstrap paints the browser
+	 * chrome, both from hand-copied hexes. Nothing else binds them, and a page
+	 * ground that drifts from the token shows as a flash of the wrong paper on
+	 * every cold load.
+	 *
+	 * Read by meaning, not by line number, so pruning or reordering the block
+	 * does not break the guard — only changing a value does.
+	 */
+	const appHtml = readFileSync(fileURLToPath(new URL('../../app.html', import.meta.url)), 'utf8');
+
+	/** The value of `prop` inside the first rule whose selector is `selector`. */
+	const declared = (selector: string, prop: string) => {
+		const block = appHtml.match(
+			new RegExp(`(?:^|\\})\\s*${selector.replace(/\./g, '\\.')}\\s*\\{([^}]*)\\}`, 'm')
+		);
+		if (!block) throw new Error(`no \`${selector}\` rule in app.html`);
+		// Anchored, or `color` matches inside `background-color`.
+		const value = block[1]!.match(new RegExp(`(?:^|[;\\s])${prop}\\s*:\\s*([^;]+);`))?.[1];
+		if (!value) throw new Error(`\`${selector}\` declares no ${prop}`);
+		return value.trim();
+	};
+
+	it('paints the daylight ground and ink', () => {
+		expect(declared('body', 'background-color')).toBe(resolve('--color-background'));
+		expect(declared('body', 'color')).toBe(resolve('--color-text'));
+	});
+
+	it('paints the midnight ground and ink', () => {
+		expect(declared('html.dark body', 'background-color')).toBe(resolveDark('--color-background'));
+		expect(declared('html.dark body', 'color')).toBe(resolveDark('--color-text'));
+	});
+
+	/**
+	 * Two media-scoped metas for the reader with no JavaScript, both overwritten
+	 * with the resolved ground by the bootstrap. Matched by media attribute, so
+	 * the order of the tags is free.
+	 */
+	const metaFor = (scheme: 'light' | 'dark') =>
+		appHtml.match(
+			new RegExp(
+				`<meta[^>]*name="theme-color"[^>]*content="(#[0-9a-f]{6})"[^>]*media="\\(prefers-color-scheme: ${scheme}\\)"`
+			)
+		)?.[1];
+
+	it('gives the browser chrome each theme own ground', () => {
+		expect(metaFor('light')).toBe(resolve('--color-background'));
+		expect(metaFor('dark')).toBe(resolveDark('--color-background'));
+	});
+
+	it('hands the bootstrap the same two grounds', () => {
+		const grounds = appHtml.match(
+			/const grounds = \{ light: '(#[0-9a-f]{6})', dark: '(#[0-9a-f]{6})' \}/
+		);
+		expect(grounds?.[1]).toBe(resolve('--color-background'));
+		expect(grounds?.[2]).toBe(resolveDark('--color-background'));
+	});
+
+	it('gives the Windows tile the default theme own ground', () => {
+		const tile = appHtml.match(/name="msapplication-TileColor" content="(#[0-9a-f]{6})"/)?.[1];
+		expect(tile).toBe(resolve('--color-background'));
+	});
+});
+
+describe('the static 404 page mirrors both themes', () => {
+	/**
+	 * `static/404.html` is served by GitHub Pages with no stylesheet and no
+	 * bootstrap, so it carries its own copy of the palette: a daylight `:root`
+	 * block, a `html.dark` block for the stored choice and a
+	 * `prefers-color-scheme: dark` block for the reader with no choice stored,
+	 * plus the two media-scoped `theme-color` metas. DESIGN.md promises the file
+	 * "mirrors all of it"; this is what keeps the promise executable. Each
+	 * daylight declaration names its token in a trailing comment, and that
+	 * comment is the mapping the guard reads.
+	 */
+	const html = readFileSync(
+		fileURLToPath(new URL('../../../static/404.html', import.meta.url)),
+		'utf8'
+	);
+
+	/** `--name: #hex; /* --color-token … *\/` pairs inside the first `:root` block. */
+	const daylight = (() => {
+		const block = html.match(/:root\s*\{([^}]*)\}/)?.[1];
+		if (!block) throw new Error('no `:root` block in 404.html');
+		return [...block.matchAll(/(--[\w-]+):\s*(#[0-9a-f]{6});\s*\/\*\s*(--color-[\w-]+)/g)].map(
+			(m) => ({ local: m[1]!, hex: m[2]!, token: m[3]! })
+		);
+	})();
+
+	/** The `--name: #hex;` pairs inside the first block opened by `selector`. */
+	const blockValues = (selector: RegExp) => {
+		const block = html.match(new RegExp(selector.source + '\\s*\\{([^}]*)\\}'))?.[1];
+		if (!block) throw new Error(`no \`${selector.source}\` block in 404.html`);
+		return Object.fromEntries(
+			[...block.matchAll(/(--[\w-]+):\s*(#[0-9a-f]{6});/g)].map((m) => [m[1]!, m[2]!])
+		);
+	};
+
+	it('names a token beside every daylight value', () => {
+		expect(daylight.length).toBeGreaterThanOrEqual(8);
+	});
+
+	it('paints daylight from variables.css', () => {
+		for (const { local, hex, token } of daylight) {
+			expect(hex, `${local} ← ${token}`).toBe(resolve(token));
+		}
+	});
+
+	it.each([
+		[':root.dark (the stored choice)', /:root\.dark/],
+		[
+			':root:not(.light):not(.dark) (the OS preference)',
+			/@media \(prefers-color-scheme: dark\)\s*\{\s*:root:not\(\.light\):not\(\.dark\)/
+		]
+	])('paints midnight from dark.css in the %s block', (_name, selector) => {
+		const values = blockValues(selector);
+		for (const { local, token } of daylight) {
+			expect(values[local], `${local} ← ${token}`).toBe(resolveDark(token));
+		}
+	});
+
+	it('gives the browser chrome each theme own ground', () => {
+		const metaFor = (scheme: string) =>
+			html.match(
+				new RegExp(
+					`<meta[^>]*name="theme-color"[^>]*content="(#[0-9a-f]{6})"[^>]*media="\\(prefers-color-scheme: ${scheme}\\)"`
+				)
+			)?.[1];
+		expect(metaFor('light')).toBe(resolve('--color-background'));
+		expect(metaFor('dark')).toBe(resolveDark('--color-background'));
+		const grounds = html.match(/grounds = \{ light: '(#[0-9a-f]{6})', dark: '(#[0-9a-f]{6})' \}/);
+		expect(grounds?.[1]).toBe(resolve('--color-background'));
+		expect(grounds?.[2]).toBe(resolveDark('--color-background'));
+	});
+});
+
+describe('the PWA icon art matches variables.css', () => {
+	/**
+	 * `generate-pwa-icons.mjs` is a one-off tool whose output is committed, so a
+	 * drifted constant here would not show until someone re-ran it and the icons
+	 * changed underfoot. Three colours, three tokens.
+	 */
+	const script = readFileSync(
+		fileURLToPath(new URL('../../../scripts/generate-pwa-icons.mjs', import.meta.url)),
+		'utf8'
+	);
+
+	const constant = (name: string) =>
+		script.match(new RegExp(`const ${name} = '(#[0-9a-f]{6})'`))?.[1];
+
+	const mapping: [string, string][] = [
+		['PAPER', '--sys-color-paper'],
+		['INK', '--sys-color-ink'],
+		['PINE', '--sys-color-pine']
+	];
+
+	for (const [name, token] of mapping) {
+		it(`${name} equals ${token}`, () => {
+			expect(constant(name)).toBe(resolve(token));
+		});
+	}
 });
 
 describe('palette contrast promises hold', () => {

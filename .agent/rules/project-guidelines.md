@@ -77,9 +77,9 @@ When writing Svelte code, use Context7 MCP to fetch up-to-date Svelte 5 document
 | Category   | Examples                                                               |
 | ---------- | ---------------------------------------------------------------------- |
 | Colors     | `--color-primary`, `--color-accent`, `--color-text`, `--color-surface` |
-| Spacing    | `--space-sm` through `--space-xl`, or `--spacing-4` (numeric)          |
+| Spacing    | `--space-sm` through `--space-xl`, or `--space-4` (numeric)            |
 | Typography | `--font-size-sm`, `--font-family-serif`, `--font-weight-bold`          |
-| Effects    | `--shadow-md`, `--border-radius-lg`, `--duration-normal`               |
+| Effects    | `--border-width-thin`, `--duration-fast` (no shadow or radius tokens)  |
 
 ### Breakpoints (PostCSS Custom Media)
 

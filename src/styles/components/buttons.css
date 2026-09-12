@@ -121,8 +121,12 @@
 	border-color: var(--color-primary);
 }
 
+/* `color` is restated here, not inherited from `.btn-primary`: a bare
+ * `a:hover` rule outranks a single class on the anchor, so an anchor styled as
+ * a button would otherwise hover to link ink on a solid fill. */
 .btn-primary:hover:not(:disabled) {
 	background: var(--color-primary-dark);
+	color: var(--color-text-inverted);
 	border-color: var(--color-primary-dark);
 }
 
@@ -137,8 +141,12 @@
 	border-color: var(--color-accent);
 }
 
+/* Same restatement as `.btn-primary:hover` — see the note there. On midnight
+ * `--color-accent-dark` itself lifts toward the cream (`dark.css`), so the
+ * fill hovers lighter under the dark inverted label, as a negative should. */
 .btn-accent:hover:not(:disabled) {
 	background: var(--color-accent-dark);
+	color: var(--color-text-inverted);
 	border-color: var(--color-accent-dark);
 }
 
@@ -285,6 +293,17 @@
 .btn-surface:hover:not(:disabled) {
 	background: var(--color-surface-alt);
 	border-color: var(--color-primary);
+}
+
+/* ===== TOUCH TARGETS =====
+ * `.btn` carries padding and a tight line-height, which lands it at ~41.5px —
+ * a hair under the 44px every other control on the site takes under `--touch`
+ * (`.chip`, `.mono-action`, `.pager-item`, `.facet-combobox-input`). Keyed to
+ * the input method, not the viewport, like the rest of the touch pass. */
+@media (--touch) {
+	.btn {
+		min-height: 44px;
+	}
 }
 
 /* ===== ACCESSIBILITY ===== */
