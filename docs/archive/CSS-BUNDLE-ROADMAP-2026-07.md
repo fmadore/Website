@@ -1,5 +1,11 @@
 # CSS bundle roadmap — shrinking the global stylesheet
 
+> **Historical document.** The numbers here are from July 2026 and are stale: the inline
+> threshold was raised to 96 KiB in September 2026 (`svelte.config.js`), the stylesheet budget
+> tightened in `lighthouserc.yml`, and `check:bundle` guards the chunk boundary. The two
+> unfinished items and the purger guardrail are carried in `../DESIGN-REVIEW.md`. Nothing
+> below is a plan.
+
 _Last updated: July 2026 (dead-token pruning + utility audit + panels.css
 route-scoping pass; original numbers from the PageSpeed improvement pass)._
 

@@ -1,6 +1,10 @@
 # Post-Refactor Improvement Roadmap — July 2026
 
-Second improvement wave, following `docs/MAINTAINABILITY-ROADMAP.md` (all of
+> **Historical document.** Closed July 2026; every item landed, was ruled unnecessary on
+> audit (C5) or is blocked outside the repo (D4, carried in `../DESIGN-REVIEW.md`). Nothing
+> below is a plan.
+
+Second improvement wave, following `MAINTAINABILITY-ROADMAP-2026-07.md` (all of
 whose non-deferred items landed on `claude/repo-maintainability-review-oc7fdh`
 and successors). This roadmap consolidates a fresh four-track audit
 (code health, build/bundle/assets, testing/CI, docs/SEO/content) run on
@@ -64,7 +68,7 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred · ⊘ blocked 
   exist (components live in `src/lib/components/cv/`, formatter in
   `src/lib/utils/cvFormatters.ts`); lists a non-existent `CVFieldwork` and
   omits ~10 real components.
-- ☑ **B3. Correct `docs/MAINTAINABILITY-ROADMAP.md` status header.** Fonts,
+- ☑ **B3. Correct `MAINTAINABILITY-ROADMAP-2026-07.md` status header.** Fonts,
   the ESLint ratchet, and the home-page Person JSON-LD have all since
   landed; only responsive images and the audio re-encode remain open (both
   addressed by this roadmap: D1 landed, D4 blocked in sandbox).

@@ -1,5 +1,9 @@
 # Maintainability & Efficiency Roadmap — July 2026
 
+> **Historical document.** Closed 2026-07-24; every non-deferred item landed. The one item
+> that outlived it (the notebooklm audio re-encode) is carried in `../DESIGN-REVIEW.md`.
+> Nothing below is a plan.
+
 Follow-up to the June–July 2026 refactoring wave (runes migration, component
 splits, entity-index filter convergence). This roadmap consolidates a
 five-track audit of the repository (code health, data layer, build/bundle,
@@ -14,7 +18,7 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred (see notes)
 > home-page Person JSON-LD derivation (`ac5a69c`), and the responsive-image
 > `srcset` pipeline (wave 2). The only still-open item is the audio
 > re-encode, which needs ffmpeg on a local machine. Follow-up work is
-> tracked in `docs/POST-REFACTOR-ROADMAP.md` (wave 2).
+> tracked in `POST-REFACTOR-ROADMAP-2026-07.md` (wave 2).
 
 ---
 
@@ -130,7 +134,7 @@ Status legend: ☐ pending · ☑ done · ◪ partial / deferred (see notes)
   oversized images (2500–5700px, up to 2.2 MB) are capped at 1920px/q80 and
   the last raw JPEGs converted to webp — `static/images` 33 MB → 24 MB.
   _The true `srcset` pipeline landed in wave 2
-  (`docs/POST-REFACTOR-ROADMAP.md`, item D1): build-time sharp variants +
+  (`POST-REFACTOR-ROADMAP-2026-07.md`, item D1): build-time sharp variants +
   `srcset` on Card/HeroImageDisplay._
 - ◪ **Audio weight.** `static/notebooklm/` ships 44 MB of MP3 (more than all
   images combined). _Attempted 2026-07-22: the sandbox has no ffmpeg and the
