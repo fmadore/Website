@@ -76,7 +76,16 @@ export function walkData(dir) {
 			name.endsWith('.ts') &&
 			name !== 'index.ts' &&
 			!name.endsWith('.svelte.ts') &&
-			!/template|filters/i.test(name)
+			// A record module stands alone once transpiled, which is what lets
+			// `loadModule` import it from a data: URL. The data trees also hold
+			// modules that do not: the summary projection (`summaries.ts`, which
+			// imports its generated sibling), the generated projection itself,
+			// its config, and the Vitest spec that proves the projection faithful
+			// (`summaries.test.ts`, whose `import 'vitest'` cannot resolve from a
+			// data: URL and took the daily slides check down with it).
+			!name.endsWith('.test.ts') &&
+			!name.endsWith('.generated.ts') &&
+			!/template|filters|^summar/i.test(name)
 		)
 			out.push(full);
 	}
