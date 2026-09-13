@@ -13,6 +13,26 @@ test('mobile navigation is usable without horizontal overflow', async ({ page, i
 	await menuButton.click();
 	await expect(page.getByRole('navigation', { name: /mobile/i })).toBeVisible();
 
+	// The touch targets are keyed to the input method (`--touch` in media.css,
+	// i.e. `(hover: none), (pointer: coarse)`), not to the viewport width, so a
+	// narrow window alone proves nothing about them. Pin the emulation first —
+	// a device profile that stopped reporting a coarse pointer would silently
+	// turn every assertion below into a check of the desktop layout — then
+	// measure one chip: 44px tall, its label centred in the box rather than
+	// sitting on the top edge (the defect baseline alignment produced).
+	await page.goto('/publications');
+	expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
+	const chip = page.getByRole('group', { name: 'Type' }).getByRole('button').first();
+	await expect(chip).toHaveCSS('min-height', '44px');
+	const centring = await chip.evaluate((el) => {
+		const box = el.getBoundingClientRect();
+		const range = document.createRange();
+		range.selectNodeContents(el);
+		const text = range.getBoundingClientRect();
+		return Math.abs(box.top + box.height / 2 - (text.top + text.height / 2));
+	});
+	expect(centring, 'chip label should be vertically centred').toBeLessThanOrEqual(1);
+
 	for (const path of ['/', '/publications', '/cv', '/publications/visualisations']) {
 		await page.goto(path);
 		await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();

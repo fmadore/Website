@@ -149,7 +149,10 @@
 .filter-bar-bottom {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-sm);
+	/* The same step the bar and its top row use: stacked on a phone the reader
+	 * sees search / type chips / rule / language chips / controls, and one rhythm
+	 * is what says those are five parts of one apparatus. */
+	gap: var(--space-md);
 	padding-top: var(--rule-gap);
 	border-top: var(--rule-hairline) solid var(--color-hairline);
 }
@@ -163,53 +166,30 @@
 	}
 }
 
-/* LANGUAGE row — mono options; active is underlined pine. */
-.language-row {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: baseline;
-	gap: var(--space-1) var(--space-3);
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-2xs);
-	letter-spacing: var(--tracking-label);
-	text-transform: uppercase;
+/* LANGUAGE — a facet, and therefore chips.
+ *
+ * Type, language and tags all narrow the list, so all three are drawn with the
+ * one facet idiom (`.chip` / `.chip--selected`, ink-signal.css). Language used
+ * to be an underlined option row instead, which made the same job look like two
+ * different ones on the same screen — loudest on a phone, where the type chips
+ * sit directly above it. The row is a `role="group"`, and the visible label is
+ * what tells it from the type row at a glance: both open on "All N".
+ */
+.language-chips {
+	flex: 1 1 auto;
+	min-width: 0;
 }
 
-.language-label {
+/* The label that names a control group in the bar — `Language:`, `Sort:`. One
+ * class for both: the two groups sit a row apart, and their labels have to be
+ * the same piece of type or the reader reads them as different kinds of thing.
+ */
+.filter-group-label {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-semibold);
-	color: var(--color-text-light);
-}
-
-.language-opt {
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-medium);
 	letter-spacing: var(--tracking-label);
 	text-transform: uppercase;
-	color: var(--color-text-soft);
-	background: none;
-	border: none;
-	padding: 0 0 var(--space-0-5);
-	border-bottom: var(--border-width-medium) solid transparent;
-	cursor: pointer;
-	transition: color var(--duration-fast) var(--ease-out);
-}
-
-.language-opt:hover {
-	color: var(--color-text-emphasis);
-}
-
-.language-opt--active {
-	color: var(--color-accent);
-	border-bottom-color: var(--color-accent);
-}
-
-.language-count {
-	color: var(--color-text-muted);
-}
-
-.language-opt[data-count='0']:not(.language-opt--active),
-.language-opt[data-count='0']:not(.language-opt--active) .language-count {
 	color: var(--color-text-light);
 }
 
@@ -236,12 +216,15 @@
 	text-transform: uppercase;
 }
 
-.sort-label {
-	font-weight: var(--font-weight-semibold);
-	color: var(--color-text-light);
-}
-
 .sort-opt {
+	display: inline-flex;
+	align-items: center;
+	/* The direction glyph is its own flex item, and a flex container drops the
+	 * whitespace text node beside it — which is how "Date ↓" came out as
+	 * "DATE↓" once the `--touch` block below made this box inline-flex. The
+	 * space has to be drawn as a gap, and it is drawn here so the word and its
+	 * arrow are spaced the same whatever the pointer. */
+	gap: var(--space-1);
 	font-family: var(--font-family-mono);
 	font-size: var(--font-size-2xs);
 	font-weight: var(--font-weight-medium);
@@ -260,9 +243,10 @@
 	color: var(--color-text-emphasis);
 }
 
-/* Sort and Language are both single-select option rows on the same baseline,
- * so "the current option" is drawn one way in both: pine text over a 2px pine
- * underline. */
+/* Sort orders the list; it does not narrow it, so it is deliberately not a chip
+ * row like the facets above. It stays an option row, and "the current option"
+ * is pine text over a 2px pine underline — the accent marking the present, as
+ * it does nowhere else in this bar now that selected chips take the ink fill. */
 .sort-opt--active {
 	color: var(--color-accent);
 	border-bottom-color: var(--color-accent);
@@ -283,19 +267,12 @@
 		min-height: 44px;
 	}
 
-	.language-opt,
+	/* The bottom padding is short of the rest by the underline's own weight, so
+	 * the active indicator stays tight to the label rather than drifting to the
+	 * bottom of the new padded box and ceasing to read as an underline. */
 	.sort-opt {
-		padding: var(--space-2-5) var(--space-2);
+		padding: var(--space-2-5) var(--space-2) calc(var(--space-2-5) - var(--space-0-5));
 		min-height: 44px;
-		display: inline-flex;
-		align-items: center;
-	}
-
-	/* Keep the active underline tight to the label rather than to the new
-	 * padded box, so the indicator still reads as an underline. */
-	.language-opt,
-	.sort-opt {
-		padding-bottom: calc(var(--space-2-5) - var(--space-0-5));
 		border-bottom-width: var(--border-width-medium);
 	}
 
@@ -411,44 +388,11 @@
 	font-weight: var(--font-weight-medium);
 }
 
-/* Small square marker for the projects column.
- *
- * The row keeps the ledger's `align-items: baseline` like every other facet
- * column: centring a row that wraps drops its marker and its count below the
- * line they key, and the count column then reads ragged against Co-authors and
- * Countries two tracks away. On baseline the marker sits on the first line, a
- * box bracketing the x-height.
- *
- * It is also hung in the gutter rather than indenting the column, so the
- * project names start on the same vertical as the PROJECTS head above them.
- * The hang is the marker plus its gap, and both are kept inside the index's
- * 16px page padding so nothing is clipped on a phone. */
-.facet-row--marker {
-	--facet-marker-size: 9px;
-	gap: var(--space-1-5);
-	margin-left: calc(-1 * (var(--facet-marker-size) + var(--space-1-5)));
-}
-
-.facet-marker {
-	flex: 0 0 auto;
-	width: var(--facet-marker-size, 9px);
-	height: var(--facet-marker-size, 9px);
-	/* --color-text-light, not --color-border-dark: this is the state indicator of
-	 * a toggle (empty square off, solid ink on), so its boundary is held to the
-	 * 3:1 of SC 1.4.11 — 2.6:1 daylight / 2.4:1 midnight before, 5.6 / 5.4 now. */
-	border: var(--border-width-thin) solid var(--color-text-light);
-	background: transparent;
-	transition:
-		background var(--duration-fast) var(--ease-out),
-		border-color var(--duration-fast) var(--ease-out);
-}
-
-/* Filled solid ink when on — the swap a selected chip makes. A selection is
- * not "the current thing": a facet ledger can hold a dozen at once. */
-.facet-marker--on {
-	background: var(--color-primary);
-	border-color: var(--color-primary);
-}
+/* The projects column carries no state marker of its own. It used to hang a
+ * small square in the gutter, which no other facet column did — so the one
+ * column that had it read as a checkbox list rather than as the same ledger,
+ * and most of all on a phone, where the four columns stack into one. Active is
+ * what it is everywhere else in the grid: pine, at medium weight. */
 
 .facet-name {
 	flex: 1;
@@ -603,10 +547,8 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.pub-search,
-	.language-opt,
 	.sort-opt,
-	.facet-row,
-	.facet-marker {
+	.facet-row {
 		transition: none;
 	}
 }

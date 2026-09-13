@@ -666,7 +666,14 @@
 
 .chip {
 	display: inline-flex;
-	align-items: baseline;
+	/* Centred, not baseline. A chip is a box the reader taps, not a ledger line
+	 * keyed to a shared baseline, and the `--touch` block below gives it a 44px
+	 * floor — under `baseline` the label then sits against the top edge of a box
+	 * half again as tall as the type, which is what made every chip read
+	 * top-heavy on a phone. Label and count are the same mono size, so centring
+	 * them costs the pairing nothing; when the label wraps (the `overflow-wrap`
+	 * below), both items centre against the taller line box together. */
+	align-items: center;
 	gap: var(--space-2);
 	/* Vertical padding sized so the chip is ≥24px tall — WCAG 2.5.8 requires
 	 * interactive targets of at least 24px in both dimensions. */
@@ -810,6 +817,12 @@
 	padding: 0;
 	cursor: pointer;
 	display: none;
+	/* The caret is a separate flex item once this box is shown (`inline-flex`,
+	 * below), and a flex container drops the whitespace text node beside it — so
+	 * `More filters ▾` set itself as `MORE FILTERS▾`. The space has to be drawn
+	 * as a gap, and it is drawn on the base rule so the word and its caret are
+	 * spaced the same at every pointer. Same correction as `.sort-opt`. */
+	gap: var(--space-1);
 }
 
 /* Pine arrives under the pointer or on focus — the control is live, but only

@@ -1,6 +1,6 @@
 <script lang="ts" generics="TItem">
 	// Filter bar of the entity-index pages (/publications, /conference-activity):
-	// free-text search, type chips, language row, facet/sort controls. Markup
+	// free-text search, type chips, language chips, facet/sort controls. Markup
 	// shared verbatim between both pages; styled by entity-index.css (imported
 	// by the page). Page-specific controls (e.g. the map toggle) render through
 	// the `extraControls` snippet, between the facet toggle and the sort group.
@@ -63,7 +63,11 @@
 			/>
 		</div>
 
-		<div class="chip-row type-chips">
+		<!-- Both facet rows are groups: their chips read "All 44", "English 24" on
+		     screen and must keep those as their accessible names (SC 2.5.3), so
+		     the thing being filtered is named on the container instead of being
+		     smuggled into each chip's `aria-label`. -->
+		<div class="chip-row type-chips" role="group" aria-label="Type">
 			<!-- "All" prints what clearing this row returns, not the corpus total:
 			     under another active facet the two differ, and the chip would be
 			     asserting a count clicking it does not produce. Same rule below
@@ -96,29 +100,32 @@
 	</div>
 
 	<div class="filter-bar-bottom">
-		<div class="language-row">
-			<span class="language-label">Language:</span>
+		<!-- Language is a facet like type and tags, so it is drawn like them: the
+		     same chips, not its own row of underlined options. The visible label
+		     keeps it apart from the type row above, which also opens on "All N". -->
+		<div class="chip-row language-chips" role="group" aria-label="Language">
+			<span class="filter-group-label">Language:</span>
 			<button
 				type="button"
-				class="language-opt"
-				class:language-opt--active={af.languages.length === 0}
+				class="chip"
+				class:chip--selected={af.languages.length === 0}
 				aria-pressed={af.languages.length === 0}
 				data-count={filters.totals.languages}
 				onclick={() => filters.setValues('languages', [])}
 			>
-				All <span class="language-count">{filters.totals.languages}</span>
+				All <span class="chip-count">{filters.totals.languages}</span>
 			</button>
 			{#each options.languages as lang (lang)}
 				<button
 					type="button"
-					class="language-opt"
-					class:language-opt--active={af.languages.includes(lang)}
+					class="chip"
+					class:chip--selected={af.languages.includes(lang)}
 					aria-pressed={af.languages.includes(lang)}
 					data-count={filters.counts.languages[lang] ?? 0}
 					onclick={() => filters.toggle('languages', lang)}
 				>
 					{lang}
-					<span class="language-count">{filters.counts.languages[lang] ?? 0}</span>
+					<span class="chip-count">{filters.counts.languages[lang] ?? 0}</span>
 				</button>
 			{/each}
 		</div>
@@ -135,7 +142,7 @@
 			</button>
 			{@render extraControls?.()}
 			<div class="sort-control" role="group" aria-label={sortAriaLabel}>
-				<span class="sort-label">Sort:</span>
+				<span class="filter-group-label">Sort:</span>
 				<button
 					type="button"
 					class="sort-opt"

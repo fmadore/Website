@@ -126,13 +126,12 @@
 					<li>
 						<button
 							type="button"
-							class="facet-row facet-row--marker"
+							class="facet-row"
 							class:facet-row--active={active}
 							aria-pressed={active}
 							data-count={filters.counts.projects[project] ?? 0}
 							onclick={() => filters.toggle('projects', project)}
 						>
-							<span class="facet-marker" class:facet-marker--on={active} aria-hidden="true"></span>
 							<span class="facet-name">{typesetQuotes(project)}</span>
 							<span class="facet-count">{filters.counts.projects[project] ?? 0}</span>
 						</button>

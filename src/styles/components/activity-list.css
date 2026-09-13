@@ -145,6 +145,12 @@
 .log-list {
 	--bib-year-w: 4.75rem;
 	--bib-cover-w: 120px;
+	/* On a phone the shared row drops the key to a label line and gives the plate
+	 * and the record the full measure between them (see the --sm-down block in
+	 * bibliography.css). A 3:2 photograph needs more of that measure than a book
+	 * cover does to say anything at all, so the log takes the 96px the deck
+	 * gallery and the DH catalogue already run their landscape plates at. */
+	--bib-cover-w-narrow: 96px;
 
 	list-style: none;
 	margin: 0;

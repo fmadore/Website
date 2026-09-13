@@ -87,10 +87,12 @@ Two differences from its siblings, both of them the record's own:
 
 <!-- Landscape plate: an event photograph or a book cover shot in the field, not
      the portrait covers /publications hangs or the square seals talks carry.
-     The log widens the shelf to 120px (`--bib-cover-w` on `.log-list`) so a
-     3:2 frame still reads, and `plateSizes` restates that width — the shared
-     default describes the 80px shelf and would fetch a candidate a third too
-     narrow for the box it renders. -->
+     The log widens the shelf on both measures (`--bib-cover-w` and
+     `--bib-cover-w-narrow` on `.log-list`) so a 3:2 frame still reads — 120px
+     from --sm up, 96px on a phone, where the row drops its hanging key and
+     hands the plate and the record the full width. `plateSizes` restates both:
+     the shared default describes the 80px shelf and would fetch a candidate too
+     narrow for the box the log renders. -->
 <BibliographyRow
 	href={activityLink}
 	{kindLabel}
@@ -102,7 +104,7 @@ Two differences from its siblings, both of them the record's own:
 	imageWidth={300}
 	imageHeight={200}
 	plateAspect="3 / 2"
-	plateSizes="(max-width: 640px) 56px, 120px"
+	plateSizes="(max-width: 639px) 96px, 120px"
 	loading={eager ? 'eager' : 'lazy'}
 	{actions}
 	yearLabel={dayMonth}

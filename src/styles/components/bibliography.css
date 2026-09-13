@@ -11,9 +11,16 @@
  * The hairline between rows is drawn by the parent <ol> so year-group spacing
  * stays under the list's control.
  *
+ * Under --sm-down the row collapses the way the ledger does: the hanging key
+ * becomes a label line above the record, and the plate and the body then share
+ * the full content width side by side with the actions under the body. See the
+ * narrow block at the foot of this sheet.
+ *
  * Tunables (set on the parent or the row):
  *   --bib-year-w      width of the hanging year column   (default 5rem)
  *   --bib-cover-w     width of the cover-plate column    (default 80px)
+ *   --bib-cover-w-narrow  width of that column under --sm-down, where the key
+ *                     no longer takes a track of its own  (default 80px)
  *   --bib-plate-aspect  plate aspect ratio               (default 104/148,
  *                       i.e. portrait book cover; set 1/1 for square logos)
  * ═══════════════════════════════════════════════════════════════════════════ */
@@ -315,33 +322,66 @@
 	white-space: nowrap;
 }
 
-/* On narrow screens the action column drops under the content so the title gets
- * full width; the cover shrinks and sits left, and the year stays hanging. */
+/* On a phone the four hanging tracks leave the record almost nothing. The key
+ * and a 56px plate took roughly 150px of a 343px measure before the title could
+ * start, which crushed the body column and shrank an event photograph to a
+ * postage stamp no reader can recognise anything in. Collapse the way the
+ * ledger does (`.ledger-row` in ink-signal.css): the hanging key becomes a
+ * label line above the content it keys, and the plate and the record then share
+ * the full width side by side — the shape the deck gallery and the DH catalogue
+ * already use on a narrow measure. The actions stay under the body, left
+ * aligned, where they have been.
+ *
+ * Placement is left to auto-flow rather than numbered rows. /publications and
+ * /conference-activity print the year once per year-group and pass none on the
+ * rows after it; with a numbered row the hidden key still reserved its track
+ * and the row gap above it, so every later entry would open with a blank line.
+ * Auto-flow drops the row instead, and the definite columns below keep the
+ * plate, the body and the actions in the cells they belong in either way. */
 @media (--sm-down) {
 	.bib-row,
 	.bib-row--featured {
-		grid-template-columns: var(--bib-year-w, 3rem) 3.5rem minmax(0, 1fr);
-		gap: var(--space-1) var(--space-sm);
+		/* 80px is the same width the shelf renders from --sm up, so the plate has
+		 * one rendered width at every breakpoint and `sizes` can state a single
+		 * number. It also clears the two shapes the shared default has to carry:
+		 * a 104/148 portrait cover stands 114px tall, enough to recognise a book
+		 * by, and a square conference seal is a legible 80px. Lists whose plates
+		 * are wider frames raise it — the activities log runs 3:2 photographs at
+		 * 96px, matching the deck and DH plates. */
+		grid-template-columns: var(--bib-cover-w-narrow, 80px) minmax(0, 1fr);
+		gap: var(--space-2) var(--space-sm);
 	}
 
+	/* The key is a label line over the record, not a column beside it, so it
+	 * takes the full measure and gives up the optical nudge that aligned it with
+	 * the body's first line. */
 	.bib-year {
-		grid-column: 1;
-		grid-row: 1;
+		grid-column: 1 / -1;
+		grid-row: auto;
+		padding-top: 0;
+	}
+
+	/* A row the list prints no key on prints no line either. The markup already
+	 * marks those rows `aria-hidden`; `:empty` catches a list that hands over an
+	 * empty string rather than null. */
+	.bib-year:empty,
+	.bib-year[aria-hidden='true'] {
+		display: none;
 	}
 
 	.bib-plate-col {
-		grid-column: 2;
-		grid-row: 1 / span 2;
+		grid-column: 1;
+		grid-row: auto;
 	}
 
 	.bib-body {
-		grid-column: 3;
-		grid-row: 1;
+		grid-column: 2;
+		grid-row: auto;
 	}
 
 	.bib-actions {
-		grid-column: 3;
-		grid-row: 2;
+		grid-column: 2;
+		grid-row: auto;
 		flex-direction: row;
 		flex-wrap: wrap;
 		align-items: baseline;
@@ -359,8 +399,15 @@
 		text-align: left;
 	}
 
+	/* The lead pops through a larger key and title, one step down each on a
+	 * phone: beside the shelf the body is a 219px column, and the 2xl serif
+	 * broke a French chapter title into a dozen one-word lines. */
 	.bib-row--featured .bib-year {
 		font-size: var(--font-size-lg);
+	}
+
+	.bib-row--featured .bib-title {
+		font-size: var(--font-size-xl);
 	}
 }
 

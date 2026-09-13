@@ -22,6 +22,10 @@
  *   --element            capture only --selector's box, not the viewport
  *   --crop <top:height>  crop a full-page capture, in CSS px from the top
  *   --dark               request the dark colour scheme
+ *   --mobile             emulate a phone: 375×812 unless --width/--height are
+ *                        given, device-scale 2, and a coarse pointer so the
+ *                        `--touch` rules (44px targets, chip padding) apply —
+ *                        a narrow viewport alone leaves them off
  *   --quality <n>        WebP/JPEG quality (default 80, matching gen:images)
  *
  * Finding a crop: run once with `--crop 0:99999` to keep the whole page, open
@@ -49,8 +53,9 @@ if (!url || !out) {
 	process.exit(2);
 }
 
-const width = Number(arg('width', 1280));
-const height = Number(arg('height', 900));
+const mobile = flag('mobile');
+const width = Number(arg('width', mobile ? 375 : 1280));
+const height = Number(arg('height', mobile ? 812 : 900));
 const scale = Number(arg('scale', 2));
 const wait = Number(arg('wait', 4000));
 const quality = Number(arg('quality', 80));
@@ -77,7 +82,12 @@ const browser = await chromium.launch();
 const page = await browser.newPage({
 	viewport: { width, height },
 	deviceScaleFactor: scale,
-	colorScheme: flag('dark') ? 'dark' : 'light'
+	colorScheme: flag('dark') ? 'dark' : 'light',
+	// `isMobile` + `hasTouch` is what makes Chromium report `pointer: coarse`
+	// and `hover: none`; the site keys its touch targets to those, not to
+	// the viewport width.
+	isMobile: mobile,
+	hasTouch: mobile
 });
 
 let buffer;

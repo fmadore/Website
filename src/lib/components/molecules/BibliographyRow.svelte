@@ -45,12 +45,14 @@
 	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
-	// The plate column is 80px wide (56px under --sm-down), so even a 3× phone
-	// needs no more than the 400w derivative — never the detail-page-sized
-	// source. `sizes` states that width so the browser can pick it. A list that
-	// widens the column (`--bib-cover-w`) must restate it through `plateSizes`,
+	// The plate column is 80px wide at every breakpoint: the narrow collapse
+	// moves the key above the record rather than shrinking the plate, so the
+	// shared shelf needs no second width and `sizes` is one number. Even a 3×
+	// phone therefore needs no more than the 400w derivative — never the
+	// detail-page-sized source. A list that widens the column (`--bib-cover-w`
+	// or `--bib-cover-w-narrow`) must restate both widths through `plateSizes`,
 	// or the browser picks a candidate for a narrower box than it renders.
-	const DEFAULT_PLATE_SIZES = '(max-width: 640px) 56px, 80px';
+	const DEFAULT_PLATE_SIZES = '80px';
 
 	interface Props {
 		/** Internal detail link — pre-resolved via resolve() by the parent. */
@@ -93,8 +95,9 @@
 		plateAspect?: string | null;
 		/**
 		 * `sizes` for the plate, stated in the same widths the list's
-		 * `--bib-cover-w` renders. Only a list that widens that column needs to
-		 * pass it; the default describes the shared 80px / 56px shelf.
+		 * `--bib-cover-w` / `--bib-cover-w-narrow` render. Only a list that
+		 * widens either needs to pass it; the default describes the shared 80px
+		 * shelf, which is 80px on a phone too.
 		 */
 		plateSizes?: string;
 		loading?: 'eager' | 'lazy';
