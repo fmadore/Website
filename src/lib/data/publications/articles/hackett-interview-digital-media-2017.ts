@@ -44,14 +44,6 @@ export const hackettInterviewDigitalMedia: Publication = {
 			url: 'https://scholar.sun.ac.za/handle/10019.1/126133'
 		},
 		{
-			authors: ['Chijioke A. Azuawusiefe'],
-			year: 2020,
-			title:
-				'Nollywood And Popular Religion: Productions Of Prosperity, Gender, And The Supernatural In Nigerian Cinema',
-			source: 'PhD dissertation, University of Pennsylvania',
-			url: 'https://repository.upenn.edu/edissertations/4030'
-		},
-		{
 			authors: ['Kandung Sapto Nugroho', 'Muhammad Adnan', 'Hardi Warsono', 'Riswanti Putranti'],
 			year: 2020,
 			title: 'Indonesian-Religious and Digital Pluralism: Covid-19 Impact',

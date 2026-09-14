@@ -77,7 +77,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 			year: 2021,
 			title: 'İletişim ve medya teknolojilerinin sosyal ve kültürel etkileri: Burkina Faso örneği',
 			source: "Master's thesis, İstanbul Ticaret Üniversitesi, 2021.",
-			url: 'https://katalog.ticaret.edu.tr/e-kaynak/tez/89640.pdf'
+			url: 'https://web.archive.org/web/20250506204821/https://katalog.ticaret.edu.tr/e-kaynak/tez/89640.pdf'
 		}
 	]
 };
