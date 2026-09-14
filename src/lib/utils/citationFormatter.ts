@@ -2,7 +2,7 @@ import type { Publication } from '$lib/types/publication';
 import { formatDisplayDate, isForthcoming } from '$lib/utils/date-formatter';
 import { joinNames, splitNames } from '$lib/utils/nameUtils';
 import { PUBLICATION_TYPE_CITATION_LABELS } from '$lib/utils/publicationTypeLabels';
-import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
+import { quoteTitle, typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 
 // Human-readable labels for publication types (citation register).
 // Re-exported from the single type-label registry in publicationTypeLabels.
@@ -326,9 +326,9 @@ export interface ReferenceTextOptions {
 /**
  * Types whose title is the work itself. Everywhere else the italic falls on a
  * host — the journal, the edited volume, the encyclopaedia, the series — and
- * the title stays roman; a book has no host, so the title carries the italic.
- * The CV sets its bibliography by the same rule (`CVPublications.svelte`), and
- * thesis titles stay roman there too, so the two never disagree.
+ * the title is set roman in quotation marks; a book has no host, so its title
+ * carries the italic and no quotes. The CV sets its bibliography by the same
+ * rule (`CVPublications.svelte`), so the two never disagree.
  */
 const STANDALONE_TYPES: ReadonlySet<Publication['type']> = new Set(['book']);
 
@@ -357,11 +357,13 @@ export function formatReferenceHtml(
 ): string {
 	const { typeLabel: label, detailsHtml, year } = formatCitation(publication);
 	const authors = escapeHtml(formatAuthorList(publication.authors));
-	const title = escapeHtml(typesetQuotes(publication.title));
-	// The stop sits outside the italic, and is checked against the bare title.
-	const titleHtml =
-		(STANDALONE_TYPES.has(publication.type) ? `<em>${title}</em>` : title) +
-		closeElement(title).slice(title.length);
+	const title = typesetQuotes(publication.title);
+	// The stop sits outside the italic or the closing quote, as on the CV, and
+	// is checked against the bare title so “Whose Islam?” takes no second one.
+	const stop = closeElement(title).slice(title.length);
+	const titleHtml = STANDALONE_TYPES.has(publication.type)
+		? `<em>${escapeHtml(title)}</em>${stop}`
+		: `${escapeHtml(quoteTitle(publication.title))}${stop}`;
 
 	return [
 		authors && closeElement(authors),

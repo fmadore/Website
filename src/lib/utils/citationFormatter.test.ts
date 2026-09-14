@@ -244,7 +244,7 @@ describe('formatCitation — blogpost', () => {
 					publisher: 'Digital History Bielefeld'
 				})
 			)
-		).toBe('Frédérick Madore. Charting New Territory. Digital History Bielefeld, 31 March 2026.');
+		).toBe('Frédérick Madore. “Charting New Territory”. Digital History Bielefeld, 31 March 2026.');
 	});
 
 	it('formats publisher alone when there is no ISO date', () => {
@@ -443,7 +443,7 @@ describe('formatReferenceText', () => {
 
 	it('assembles authors, year, title and venue into one plain-text line', () => {
 		expect(formatReferenceText(article)).toBe(
-			'Frédérick Madore and Dorothea Schulz. (2024). Muslim Minorities in Africa. Islamic Africa 12 (1): 1-24.'
+			'Frédérick Madore and Dorothea Schulz. (2024). “Muslim Minorities in Africa”. Islamic Africa 12 (1): 1-24.'
 		);
 	});
 
@@ -467,7 +467,7 @@ describe('formatReferenceText', () => {
 	// the page's copy control must never assemble the same work differently.
 	it('closes with the bracketed type label for the MCP reference style', () => {
 		expect(formatReferenceText(article, { typeLabel: true })).toBe(
-			'Frédérick Madore and Dorothea Schulz. (2024). Muslim Minorities in Africa. Islamic Africa 12 (1): 1-24. [Journal Article]'
+			'Frédérick Madore and Dorothea Schulz. (2024). “Muslim Minorities in Africa”. Islamic Africa 12 (1): 1-24. [Journal Article]'
 		);
 	});
 
@@ -487,7 +487,7 @@ describe('formatReferenceText', () => {
 
 	it('prints a bare author, year and title when the record carries no venue', () => {
 		expect(formatReferenceText(pub({ type: 'article', title: 'A Title' }))).toBe(
-			'Frédérick Madore. (2024). A Title.'
+			'Frédérick Madore. (2024). “A Title”.'
 		);
 	});
 });
@@ -508,12 +508,20 @@ describe('formatReferenceHtml', () => {
 		);
 	});
 
-	it('keeps an article title roman and italicises the journal instead', () => {
+	it('quotes an article title and italicises the journal instead', () => {
 		const html = formatReferenceHtml(
 			pub({ type: 'article', title: 'Muslim Minorities', journal: 'Islamic Africa', volume: '12' })
 		);
-		expect(html).toContain(' Muslim Minorities. <em>Islamic Africa</em> 12.');
+		expect(html).toContain(' “Muslim Minorities”. <em>Islamic Africa</em> 12.');
 		expect(html).not.toContain('<em>Muslim Minorities</em>');
+	});
+
+	it('demotes a quotation the title already carries to single marks', () => {
+		expect(
+			formatReferenceHtml(
+				pub({ type: 'article', title: `Islam's "Peripheries": A Study`, journal: 'Africa' })
+			)
+		).toContain(' “Islam’s ‘Peripheries’: A Study”. <em>Africa</em>.');
 	});
 
 	it.each([
@@ -536,26 +544,26 @@ describe('formatReferenceHtml', () => {
 			{ publisher: 'Digital History Bielefeld', dateISO: '2026-03-31' },
 			'<em>Digital History Bielefeld</em>, 31 March 2026.'
 		]
-	] as const)('sets a %s with a roman title and an italic host', (type, fields, host) => {
+	] as const)('sets a %s with a quoted title and an italic host', (type, fields, host) => {
 		const html = formatReferenceHtml(pub({ type, title: 'Plain Title', ...fields }));
-		expect(html).toContain(' Plain Title. ');
+		expect(html).toContain(' “Plain Title”. ');
 		expect(html).toContain(host);
 	});
 
 	it('does not add a full stop after a title that already ends in one', () => {
 		expect(
 			formatReferenceHtml(pub({ type: 'article', title: 'Whose Islam?', journal: 'Africa' }))
-		).toContain(' Whose Islam? <em>Africa</em>.');
+		).toContain(' “Whose Islam?” <em>Africa</em>.');
 		expect(
 			formatReferenceHtml(pub({ type: 'book', title: 'Whose Islam?', publisher: 'Brill' }))
 		).toContain(' <em>Whose Islam?</em> Brill.');
 	});
 
-	it('sets a dissertation title roman, as the CV does', () => {
+	it('quotes a dissertation title, as the CV does', () => {
 		const html = formatReferenceHtml(
 			pub({ type: 'phd-dissertation', title: 'Thesis', university: 'Université Laval' })
 		);
-		expect(html).toBe('Frédérick Madore. (2024). Thesis. PhD Dissertation, Université Laval.');
+		expect(html).toBe('Frédérick Madore. (2024). “Thesis”. PhD Dissertation, Université Laval.');
 	});
 
 	it('escapes markup in the title and byline rather than printing it', () => {
