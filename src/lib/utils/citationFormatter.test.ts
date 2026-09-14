@@ -3,6 +3,7 @@ import {
 	getAuthorsArray,
 	formatAuthorList,
 	formatCitation,
+	formatReferenceHtml,
 	formatReferenceText,
 	formatCommunicationCitation
 } from './citationFormatter';
@@ -477,3 +478,89 @@ describe('formatReferenceText', () => {
 		);
 	});
 });
+
+describe('formatReferenceHtml', () => {
+	const book = pub({
+		type: 'book',
+		title: 'Religiosity on University Campuses in Africa',
+		authors: ['Abdoulaye Sounaye', 'Frédérick Madore'],
+		year: 2023,
+		placeOfPublication: 'Berlin',
+		publisher: 'LIT Verlag'
+	});
+
+	it('italicises the title of a book, which has no host to carry the italic', () => {
+		expect(formatReferenceHtml(book)).toBe(
+			'Abdoulaye Sounaye and Frédérick Madore. (2023). <em>Religiosity on University Campuses in Africa</em>. Berlin: LIT Verlag.'
+		);
+	});
+
+	it('keeps an article title roman and italicises the journal instead', () => {
+		const html = formatReferenceHtml(
+			pub({ type: 'article', title: 'Muslim Minorities', journal: 'Islamic Africa', volume: '12' })
+		);
+		expect(html).toContain(' Muslim Minorities. <em>Islamic Africa</em> 12.');
+		expect(html).not.toContain('<em>Muslim Minorities</em>');
+	});
+
+	it.each([
+		['chapter', { book: 'Host Volume' }, 'In <em>Host Volume</em>.'],
+		['encyclopedia', { encyclopediaTitle: 'EI3' }, 'In <em>EI3</em>.'],
+		['conference-proceedings', { proceedingsTitle: 'Proc.' }, 'In <em>Proc.</em>.'],
+		['special-issue', { journal: 'Émulations', issue: '24' }, '<em>Émulations</em> (24).'],
+		[
+			'working-paper',
+			{ series: 'ZMO Programmatic Texts', issue: '16' },
+			'<em>ZMO Programmatic Texts</em> 16.'
+		],
+		[
+			'report',
+			{ publisher: 'Bulletin FrancoPaix', volume: '7' },
+			'<em>Bulletin FrancoPaix</em> 7.'
+		],
+		['blogpost', { publisher: 'Digital History Bielefeld' }, '<em>Digital History Bielefeld</em>.']
+	] as const)('sets a %s with a roman title and an italic host', (type, fields, host) => {
+		const html = formatReferenceHtml(pub({ type, title: 'Plain Title', ...fields }));
+		expect(html).toContain(' Plain Title. ');
+		expect(html).toContain(host);
+	});
+
+	it('does not add a full stop after a title that already ends in one', () => {
+		expect(
+			formatReferenceHtml(pub({ type: 'article', title: 'Whose Islam?', journal: 'Africa' }))
+		).toContain(' Whose Islam? <em>Africa</em>.');
+		expect(
+			formatReferenceHtml(pub({ type: 'book', title: 'Whose Islam?', publisher: 'Brill' }))
+		).toContain(' <em>Whose Islam?</em> Brill.');
+	});
+
+	it('sets a dissertation title roman, as the CV does', () => {
+		const html = formatReferenceHtml(
+			pub({ type: 'phd-dissertation', title: 'Thesis', university: 'Université Laval' })
+		);
+		expect(html).toBe('Frédérick Madore. (2024). Thesis. PhD Dissertation, Université Laval.');
+	});
+
+	it('escapes markup in the title and byline rather than printing it', () => {
+		const html = formatReferenceHtml(
+			pub({ type: 'book', title: 'Tom & Jerry <script>', authors: ['A <b>B</b>'] })
+		);
+		expect(html).toContain('A &lt;b&gt;B&lt;/b&gt;.');
+		expect(html).toContain('<em>Tom &amp; Jerry &lt;script&gt;</em>.');
+	});
+
+	it('is the source the plain-text reference is stripped from', () => {
+		expect(formatReferenceText(book, { doi: true, typeLabel: true })).toBe(
+			stripLikeReader(formatReferenceHtml(book, { doi: true, typeLabel: true }))
+		);
+	});
+});
+
+// A reader's notion of "the same text without the italics".
+function stripLikeReader(html: string): string {
+	return html
+		.replace(/<\/?em>/g, '')
+		.replace(/&amp;/g, '&')
+		.replace(/&lt;/g, '<')
+		.replace(/&gt;/g, '>');
+}

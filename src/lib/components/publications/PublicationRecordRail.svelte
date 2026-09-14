@@ -13,7 +13,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	import type { Publication } from '$lib/types';
 	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
 	import { generateBibtex } from '$lib/utils/bibtexGenerator';
-	import { formatReferenceText } from '$lib/utils/citationFormatter';
+	import { formatReferenceHtml, formatReferenceText } from '$lib/utils/citationFormatter';
 	import { copyText } from '$lib/utils/clipboard';
 	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
@@ -142,7 +142,10 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	// citation: a peer had to reassemble it from the ledger by hand, or take the
 	// BibTeX and read it. The reference is set here as real text — selectable,
 	// and the fallback if the clipboard is ever denied — with the copy control
-	// beside the export that was already here.
+	// beside the export that was already here. The printed form keeps the
+	// italic a bibliography owes its host (or, for a book, its title); the
+	// clipboard takes the same reference flattened to text.
+	const referenceHtml = $derived(formatReferenceHtml(publication, { doi: true }));
 	const reference = $derived(formatReferenceText(publication, { doi: true }));
 
 	let copyState = $state<'idle' | 'copied' | 'failed'>('idle');
@@ -236,7 +239,8 @@ The other half of the old <PublicationAside> — tags and key terms — is
      second is the one this site exists to serve. -->
 <div class="cite-block">
 	<h2 class="rail-label">Cite</h2>
-	<p class="cite-reference">{reference}</p>
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatReferenceHtml escapes the data fields; the only markup is its own <em> -->
+	<p class="cite-reference">{@html referenceHtml}</p>
 	<div class="cite-actions">
 		<button
 			type="button"

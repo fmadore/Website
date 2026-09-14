@@ -324,30 +324,67 @@ export interface ReferenceTextOptions {
 }
 
 /**
- * The site's display reference as one plain-text string:
- * `Authors. (Year). Title. Venue details.`
- *
- * The title is typeset like the details already are, so a copied reference
- * never mixes a straight apostrophe in the title against a curled one in the
- * journal name of the same line.
+ * Types whose title is the work itself. Everywhere else the italic falls on a
+ * host — the journal, the edited volume, the encyclopaedia, the series — and
+ * the title stays roman; a book has no host, so the title carries the italic.
+ * The CV sets its bibliography by the same rule (`CVPublications.svelte`), and
+ * thesis titles stay roman there too, so the two never disagree.
  */
-export function formatReferenceText(
+const STANDALONE_TYPES: ReadonlySet<Publication['type']> = new Set(['book']);
+
+function escapeHtml(text: string): string {
+	return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// Close a reference element with a full stop unless it already ends in one
+// — a title that asks a question must not read "ivoirien?." on the page.
+function closeElement(text: string): string {
+	return /[.?!]$/.test(text) ? text : `${text}.`;
+}
+
+/**
+ * The site's display reference as one HTML string:
+ * `Authors. (Year). Title. Venue details.` — with the host italicised as
+ * `formatCitation` already sets it, and the title itself italicised when the
+ * work stands alone (see `STANDALONE_TYPES`). What the record rail prints.
+ *
+ * The title and byline are data, not markup, so they are escaped here; the
+ * details string arrives from `formatCitation` already carrying its `<em>`.
+ */
+export function formatReferenceHtml(
 	publication: Publication,
 	options: ReferenceTextOptions = {}
 ): string {
 	const { typeLabel: label, detailsHtml, year } = formatCitation(publication);
-	const authors = formatAuthorList(publication.authors);
+	const authors = escapeHtml(formatAuthorList(publication.authors));
+	const title = escapeHtml(typesetQuotes(publication.title));
+	// The stop sits outside the italic, and is checked against the bare title.
+	const titleHtml =
+		(STANDALONE_TYPES.has(publication.type) ? `<em>${title}</em>` : title) +
+		closeElement(title).slice(title.length);
 
 	return [
-		authors && `${authors}.`,
+		authors && closeElement(authors),
 		year && `(${year}).`,
-		`${typesetQuotes(publication.title)}.`,
-		stripReferenceMarkup(detailsHtml),
-		options.typeLabel && `[${label}]`,
-		options.doi && publication.doi ? `https://doi.org/${publication.doi}` : ''
+		titleHtml,
+		detailsHtml,
+		options.typeLabel && `[${escapeHtml(label)}]`,
+		options.doi && publication.doi ? `https://doi.org/${escapeHtml(publication.doi)}` : ''
 	]
 		.filter(Boolean)
 		.join(' ')
 		.replace(/\s+/g, ' ')
 		.trim();
+}
+
+/**
+ * The same reference as plain text — what the "Copy reference" control puts on
+ * the clipboard and what the MCP server hands to assistants. Derived from the
+ * HTML form so the two can never assemble the same work differently.
+ */
+export function formatReferenceText(
+	publication: Publication,
+	options: ReferenceTextOptions = {}
+): string {
+	return stripReferenceMarkup(formatReferenceHtml(publication, options));
 }
