@@ -16,7 +16,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
 	import { copyText } from '$lib/utils/clipboard';
 	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { plateFallback } from '$lib/actions/plateFallback';
 
 	// The rail is 380px wide from --lg up; below that the plate spans the single
@@ -116,8 +116,9 @@ to emit, and widening it for one button would be the wrong place to decide that.
 
 	/**
 	 * The talk's own reference, in the shape `formatReferenceText` gives a
-	 * publication: `Authors. (Year). Title. Venue details.` with a resolvable DOI
-	 * where there is one.
+	 * publication: `Authors. (Year). “Title”. Venue details.` with a resolvable
+	 * DOI where there is one. The title takes quotation marks like every
+	 * non-book title on the site, and no second stop after a ? or !.
 	 *
 	 * Composed here rather than called, because `formatReferenceText` takes a
 	 * `Publication` and reads publication-only fields through `formatCitation`.
@@ -125,12 +126,13 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	 * what the talks index row prints under every title, so the page and the row
 	 * cannot disagree about the same talk.
 	 */
+	const venueLine = $derived(formatCommunicationCitation(communication));
 	const reference = $derived(
 		[
 			formatAuthorList(communication.authors) && `${formatAuthorList(communication.authors)}.`,
 			communication.year && `(${communication.year}).`,
-			`${typesetQuotes(communication.title)}.`,
-			formatCommunicationCitation(communication),
+			`${quoteTitle(communication.title)}${/[.?!]$/.test(typesetQuotes(communication.title).trim()) ? '' : '.'}`,
+			venueLine && `${venueLine}${/[.?!]$/.test(venueLine) ? '' : '.'}`,
 			communication.doi ? `https://doi.org/${communication.doi}` : ''
 		]
 			.filter(Boolean)
