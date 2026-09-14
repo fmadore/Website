@@ -37,5 +37,14 @@ export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication 
 		src: 'images/publications/digital-history-bielefeld-hero.webp',
 		alt: 'Screenshot of the blogpost'
 	},
-	project: 'Digital Humanities and AI in African Studies'
+	project: 'Digital Humanities and AI in African Studies',
+	citedBy: [
+		{
+			authors: ['Susan Elizabeth Gagliardi'],
+			year: 2026,
+			title: 'Are We Ready Not to Know, to Unlearn, and to Learn Anew?',
+			source: 'African Arts 59, no. 3 (2026): 1-9',
+			url: 'https://doi.org/10.1162/AFAR.a.847'
+		}
+	]
 };

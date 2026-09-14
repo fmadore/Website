@@ -167,7 +167,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"image": "images/publications/digital-history-bielefeld.webp",
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "Im Februar 2026 versammelten sich 26 Forschende aus 16 Ländern im Schloss Herrenhausen in Hannover zu einem von der VolkswagenStiftung geförderten Scoping Workshop über Digital Humanities und Künstliche Intelligenz in den",
-		"citedByCount": 0,
+		"citedByCount": 1,
 		"tocAuthors": [],
 		"sourceDirType": "blogposts"
 	},
