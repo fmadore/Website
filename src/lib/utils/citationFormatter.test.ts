@@ -225,13 +225,26 @@ describe('formatCitation — dissertations and theses', () => {
 });
 
 describe('formatCitation — blogpost', () => {
-	it('formats the display date in parentheses, then the italicised publisher, and drops year', () => {
+	it('formats the italicised publisher, then the display date, and drops year', () => {
 		const result = formatCitation(
 			pub({ type: 'blogpost', dateISO: '2024-03-21', publisher: 'Africa Is a Country' })
 		);
 		expect(result.typeLabel).toBe('Blog Post');
-		expect(result.detailsHtml).toBe('(21 March 2024), <em>Africa Is a Country</em>.');
+		expect(result.detailsHtml).toBe('<em>Africa Is a Country</em>, 21 March 2024.');
 		expect(result.year).toBeUndefined();
+	});
+
+	it('reads as one reference in the CV order: authors, title, blog, date', () => {
+		expect(
+			formatReferenceText(
+				pub({
+					type: 'blogpost',
+					title: 'Charting New Territory',
+					dateISO: '2026-03-31',
+					publisher: 'Digital History Bielefeld'
+				})
+			)
+		).toBe('Frédérick Madore. Charting New Territory. Digital History Bielefeld, 31 March 2026.');
 	});
 
 	it('formats publisher alone when there is no ISO date', () => {
@@ -243,7 +256,7 @@ describe('formatCitation — blogpost', () => {
 
 	it('formats the date alone when there is no publisher', () => {
 		const result = formatCitation(pub({ type: 'blogpost', dateISO: '2024-03-21' }));
-		expect(result.detailsHtml).toBe('(21 March 2024).');
+		expect(result.detailsHtml).toBe('21 March 2024.');
 		expect(result.year).toBeUndefined();
 	});
 });
@@ -518,7 +531,11 @@ describe('formatReferenceHtml', () => {
 			{ publisher: 'Bulletin FrancoPaix', volume: '7' },
 			'<em>Bulletin FrancoPaix</em> 7.'
 		],
-		['blogpost', { publisher: 'Digital History Bielefeld' }, '<em>Digital History Bielefeld</em>.']
+		[
+			'blogpost',
+			{ publisher: 'Digital History Bielefeld', dateISO: '2026-03-31' },
+			'<em>Digital History Bielefeld</em>, 31 March 2026.'
+		]
 	] as const)('sets a %s with a roman title and an italic host', (type, fields, host) => {
 		const html = formatReferenceHtml(pub({ type, title: 'Plain Title', ...fields }));
 		expect(html).toContain(' Plain Title. ');

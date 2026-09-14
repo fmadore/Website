@@ -138,19 +138,19 @@ export function formatCitation(publication: Publication): FormattedCitation {
 		detailsHtml = withFinalPeriod(details);
 		year = publication.year;
 	} else if (type === 'blogpost') {
+		// Format: *Blog*, 21 March 2024. — the host first, then the day it ran,
+		// as the CV bibliography sets it. The full date carries the year, so the
+		// separate year slot stays empty rather than printing it twice.
 		let details = '';
-		// Date (in parentheses) first, then comma, then italicized publisher
+		if (publication.publisher) details += `<em>${publication.publisher}</em>`;
 		const formattedDate = publication.dateISO ? formatDisplayDate(publication.dateISO) : '';
 		if (formattedDate) {
-			details += `(${formattedDate})`; // Add parentheses around the date
-		}
-		if (publication.publisher) {
-			if (details) details += ', '; // Add comma separator if date exists
-			details += `<em>${publication.publisher}</em>`;
+			if (details) details += ', ';
+			details += formattedDate;
 		}
 
 		detailsHtml = withFinalPeriod(details);
-		year = undefined; // Year is included in the full date
+		year = undefined;
 	} else if (type === 'working-paper') {
 		// Format: *Series* Issue: Pages. Publisher.
 		// A working paper is identified by its series and number, not a journal;
