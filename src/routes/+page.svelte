@@ -11,12 +11,13 @@
 	import type { PageData } from './$types';
 
 	// The portrait's slot is 22rem wide on a phone (capped), 18rem at --md and
-	// 22rem from --lg, so a 2× screen wants ~700 px; the 854 px source and its
-	// 400/800 derivatives come from the variant manifest, like every plate.
+	// 380px from --lg — the record rail's width — so a 2× screen wants ~760 px;
+	// the 854 px source and its 400/800 derivatives come from the variant
+	// manifest, like every plate.
 	const portraitSrc = `${base}/images/Profile-picture.webp`;
 	const portraitSrcset = buildSrcset(portraitSrc);
 	const PORTRAIT_SIZES =
-		'(max-width: 767px) min(100vw - 2rem, 22rem), (max-width: 1023px) 18rem, 22rem';
+		'(max-width: 767px) min(100vw - 2rem, 22rem), (max-width: 1023px) 18rem, 380px';
 
 	let { data } = $props<{ data: PageData }>();
 
@@ -237,23 +238,23 @@
 </div>
 
 <style>
-	/* The page is a reading column beside a rail, so it is set to the width that
-	 * serves that — the measure, a gutter, and a 22rem rail — rather than to the
-	 * 80rem index width it used to borrow. At 1280 the old container left the
-	 * reading column 832px wide against a ~450px measure: nearly 400px of empty
-	 * paper per section, with the 3px section rules overhanging the text they
-	 * open by half their length. Narrowing the shell turns that surplus back
-	 * into a masthead that fills its viewport. */
-	/* A cap, not a second container. The shell used to carry `.container` as
-	 * well, nested inside the layout's own: it took a second 16px gutter and
-	 * centred what was left, so the hero nameplate, its dateline hairline and its
-	 * 5px rule all began at x=272 at 1440 while the masthead wordmark — the same
-	 * words, in the same face — began at x=104. The narrowing is right; the
-	 * centring and the doubled gutter were not. A plain block starts at the
-	 * column's own edge, so the two nameplates share one, and the surplus goes to
-	 * the right margin, where nothing is set against it. */
+	/* The record rail, shared. This page is the site's other prose-beside-a-rail
+	 * surface, so it is set on exactly the shell `RecordLayout` gives every
+	 * detail route — `--container-lg`, centred — rather than on a width of its
+	 * own. It used to be a 58rem block flush to the container's left edge: at
+	 * 1440 that put the front page at 89–1017 while every other page ran
+	 * 137–1289, so arriving from a section index moved the whole page left and
+	 * narrowed it, and left 320px of dead paper down the right margin.
+	 *
+	 * A cap, not a second container: the shell must never carry `.container`
+	 * itself — nested inside the layout's own it takes a second 16px gutter.
+	 * The trade the centring makes is deliberate: the hero nameplate no longer
+	 * starts on the masthead wordmark's edge, because on this site no page's
+	 * content does. Agreeing with the other twenty pages is worth more than
+	 * agreeing with the wordmark alone. */
 	.home-shell {
-		max-width: 58rem;
+		max-width: var(--container-lg);
+		margin-inline: auto;
 	}
 
 	/* Asymmetric editorial grid: prose + sections in the wide column, the
@@ -296,9 +297,13 @@
 		}
 	}
 
+	/* From --lg the grid is the record grid, value for value: a flexible reading
+	 * column, a --space-3xl gutter and the same 380px rail every record page
+	 * carries its metadata in. At 1024 that resolves to 580 / 64 / 380, so the
+	 * portrait plate and the activities ledger line up across the site. */
 	@media (--lg) {
 		.home-grid {
-			grid-template-columns: minmax(0, 1fr) 22rem;
+			grid-template-columns: minmax(0, 1fr) 380px;
 			column-gap: var(--space-3xl);
 		}
 	}
@@ -315,8 +320,17 @@
 	 * above it, so the two tiers of the same rule system started at different
 	 * places. Zeroed: the rules stack flush, which is the whole point of drawing
 	 * hierarchy in them. */
+	/* One edge for rule and text alike. The Measured Line Rule used to be set on
+	 * the paragraphs alone — `.content-body` never carried a measure, only
+	 * `.prose` did, so this column was the last uncapped long-form text on the
+	 * site, and the one a peer lands on first. On the record rail the reading
+	 * column is wider than the body measure, so the cap belongs on the block
+	 * instead: the 3px rule above each section head then stops where the prose
+	 * stops rather than running on into the gutter. Hierarchy drawn in rules
+	 * only reads if the rule is the width of the thing it opens. */
 	.home-main :global(.home-prose) {
 		padding: 0;
+		max-width: var(--measure-prose);
 	}
 
 	/* Lead paragraph — the standfirst tier (Newsreader, one step above body).
@@ -334,10 +348,6 @@
 	.home-main :global(.home-prose > p) {
 		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
-		/* The Measured Line Rule. `.content-body` never carried a measure — only
-		 * `.prose` did — so this column was the last uncapped long-form text on
-		 * the site, and the one a peer lands on first. */
-		max-width: var(--measure-prose);
 	}
 
 	/* Each content section opens with a 3px ink rule above the Archivo title —
