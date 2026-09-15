@@ -190,7 +190,11 @@
 			</button>
 
 			<!-- ASIDE — browse-by-year meter, type chips, tag facet. -->
-			<aside id={FACET_ASIDE_ID} class="activities-aside" class:activities-aside--open={facetsOpen}>
+			<aside
+				id={FACET_ASIDE_ID}
+				class="activities-aside activities-aside--collapsible"
+				class:activities-aside--open={facetsOpen}
+			>
 				<section class="aside-block">
 					<h2 class="aside-title">Years</h2>
 					<ul class="year-meter">

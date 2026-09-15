@@ -166,6 +166,9 @@ its share — so the step is a convenience, not the only route.
 			<!-- ASIDE — the index's browse-by-year meter, with the accent on the year
 			     being read rather than on the newest one: pine marks the current
 			     thing, and here the current thing is where the reader is. -->
+			<!-- No `--collapsible`: this page has no `More filters` disclosure, so
+			     the aside must stay visible below --lg rather than hiding with no
+			     control able to bring it back. -->
 			<aside class="activities-aside">
 				<section class="aside-block">
 					<h2 class="aside-title">Years</h2>
