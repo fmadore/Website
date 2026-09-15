@@ -427,7 +427,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"openAccess": true,
 		"image": "images/publications/acteurs-religieux-numerique.webp",
 		"abstractExcerpt": "On October 21st, 2017, the editors of this special issue conducted an interview with Rosalind I. J. Hackett, one of the pioneering scholars in the field of media and religion in Africa. The interview took place via Skype ",
-		"citedByCount": 6,
+		"citedByCount": 5,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
