@@ -79,7 +79,12 @@
 	bind:this={containerEl}
 	inert={!isActive}
 >
-	<nav class="mobile-nav" aria-label="Mobile navigation">
+	<!-- `.container` is the site's one rail. The panel's *ground* is full-bleed —
+	     it is the top of the press page pulled down over the body — but its
+	     contents ride the same cap and gutter as the masthead they replace, so
+	     the wordmark and the close control land where the wordmark and the
+	     hamburger were. -->
+	<nav class="mobile-nav container" aria-label="Mobile navigation">
 		<!-- Masthead strip — the menu opens as the top of the press page. -->
 		<div class="mobile-nav-header">
 			<a href={resolve('/')} class="mobile-site-title" onclick={onCloseMenu}> Frédérick Madore </a>
@@ -142,6 +147,14 @@
 			opacity var(--duration-fast) var(--ease-out),
 			visibility var(--duration-fast) var(--ease-out);
 		overflow-y: auto;
+		/* Reserve the scrollbar's column whether or not this panel scrolls. The
+		 * page under it is locked with `overflow: hidden` while the menu is open,
+		 * so its scrollbar is gone; without a stable gutter the panel measures
+		 * 900px where the page measured 885, and the centred rail inside lands
+		 * 8px off the masthead it replaces on any viewport tall enough to fit the
+		 * whole menu. No effect where scrollbars are overlays, which is every
+		 * touch device. */
+		scrollbar-gutter: stable;
 		/* Respect the iOS home-indicator safe area so the last link never
 		 * sits flush against the gesture zone. */
 		padding-bottom: env(safe-area-inset-bottom, 0);
@@ -157,11 +170,16 @@
 	 * padding — and the container's `env(safe-area-inset-bottom)` — above the
 	 * overflow. Measured at 375x812 scrolled to the end, the last row bottomed at
 	 * 811.6px: the CV link sat inside the home-indicator gesture zone. */
+	/* Side gutter and cap come from `.container` on the same element, never from
+	   here: this panel used to set its own flat `--space-5` gutter full-bleed,
+	   and the masthead it opens from is capped and centred, so opening the menu
+	   slid the wordmark 55px left and the control 54px right at 900px wide —
+	   the two states of one control disagreeing about where the page edge is. */
 	.mobile-nav {
 		min-height: 100%;
 		display: flex;
 		flex-direction: column;
-		padding: 0 var(--space-5) var(--space-6);
+		padding-bottom: var(--space-6);
 	}
 
 	/*
@@ -174,12 +192,25 @@
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-4);
-		padding: var(--space-4) 0 var(--space-3);
+		/* Padding and min-height mirror `.header-inner` step for step, because
+		   this strip replaces that one: the close control has to land on the
+		   hamburger it replaces, not 4px below it. The strip used to run
+		   `--space-4` over `--space-3` with no floor, which put the control 4px
+		   low on a phone and seated the masthead rule 4px high from --sm up. */
+		padding: var(--space-3) 0;
+		min-height: var(--space-14);
 		border-bottom: var(--rule-masthead) solid var(--color-primary);
 		background: var(--color-background);
 		position: sticky;
 		top: 0;
 		z-index: var(--z-above);
+	}
+
+	@media (--sm) {
+		.mobile-nav-header {
+			padding: var(--space-4) 0;
+			min-height: var(--space-16);
+		}
 	}
 
 	.mobile-nav-controls {
