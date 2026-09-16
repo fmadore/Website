@@ -261,8 +261,10 @@
 			{/if}
 			{#each kindNotes as note (note.label)}
 				<span class="bib-kind-sep" aria-hidden="true">·</span>
-				<!-- No whitespace between the mark and the word: a text node there
-				     collapses to a mono space on top of the mark's own margin. -->
+				<!-- No whitespace between the mark and the word: the note is inline
+				     text (so the kind line can align it on its baseline), and a
+				     text node here would collapse to a mono space on top of the
+				     mark's own margin. -->
 				<span class="bib-kind-note"
 					>{#if note.icon}<Icon
 							icon={note.icon}

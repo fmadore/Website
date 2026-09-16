@@ -132,21 +132,30 @@
 
 /* A record fact stamped after the kind — "Open Access" and its lock. Emphasis
  * ink rather than pine: it is a standing property of the record, not the
- * current thing, and it prints on roughly half the list. */
+ * current thing, and it prints on roughly half the list.
+ *
+ * Deliberately NOT a flex box, for the reason the record masthead's eyebrow
+ * token states: the kind line aligns its parts on the baseline, and an
+ * inline-flex box donates its first child's baseline — an SVG's bottom edge —
+ * so the whole note, mark and word together, sat 0.3em above the kind it
+ * follows. As inline text the span keeps its own baseline; blockified as a
+ * flex item, it hands the line its first line box's baseline, the label's. */
 .bib-kind-note {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-1);
+	display: inline;
+	white-space: nowrap;
 	color: var(--color-text-soft);
 }
 
 /* Height only, like the action marks: several of these glyphs are narrow (the
  * open-access lock is a 1:2 viewBox) and a square box would pad them with dead
- * space the flex gap then reads as a wider gap. */
+ * space the gap then reads as a wider gap. The mark is then seated against the
+ * line with the masthead eyebrow's figures — 1.15em box centred on the 0.75em
+ * cap band — so the same lock sits identically in the list and on the record. */
 .bib-kind-icon {
 	width: auto;
 	height: 1.15em;
-	flex-shrink: 0;
+	vertical-align: -0.2em;
+	margin-inline-end: 0.45em;
 }
 
 /* Serif title — the document voice. Books/edited works go italic. */
