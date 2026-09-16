@@ -15,7 +15,7 @@ export const talkAiAfricaSymposiumKansas2026: Communication = {
 	type: 'lecture',
 	language: 'English',
 	abstract:
-		'Featuring panels on African history and literature, the event explores AI models and discourses, as well as digital humanities methods and tools in the African context.',
+		'Building upon our 2026 Connecting Codes Conference in Nairobi and previous African DH symposia, this virtual event features panels dedicated to African history and literature. Speakers will examine how AI systems and discourses shape scholarly production, emphasizing the contributions of active developers, writers, and scholars in the field. The discussions will highlight how AI methodologies and tools invigorate digital humanities research within African studies, reinforcing our commitment to critical and postcolonial approaches to digital technologies at the University of Kansas.',
 	tags: [
 		'AI',
 		'Digital Humanities',

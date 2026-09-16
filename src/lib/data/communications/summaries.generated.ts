@@ -2465,7 +2465,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			}
 		],
 		"project": "Digital Humanities and AI in African Studies",
-		"abstractExcerpt": "Featuring panels on African history and literature, the event explores AI models and discourses, as well as digital humanities methods and tools in the African context."
+		"abstractExcerpt": "Building upon our 2026 Connecting Codes Conference in Nairobi and previous African DH symposia, this virtual event features panels dedicated to African history and literature. Speakers will examine how AI systems and disc"
 	},
 	{
 		"id": "associations-chretiennes-islamiques-campus",
