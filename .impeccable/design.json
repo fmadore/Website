@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 2,
-	"generatedAt": "2026-08-17T00:00:00.000Z",
+	"generatedAt": "2026-09-16T09:55:38.723Z",
 	"title": "Design System: Ink + Signal",
 	"extensions": {
 		"colorMeta": {
@@ -32,6 +32,20 @@
 					"#7dd0b6",
 					"#aae2d1",
 					"#d6f1e8"
+				]
+			},
+			"viz-slate": {
+				"role": "tertiary",
+				"displayName": "Visualisation Palette",
+				"canonical": "oklch(0.6 0.09 250)",
+				"tonalRamp": [
+					"#1e6a56",
+					"oklch(0.6 0.09 250)",
+					"oklch(0.5 0.08 128)",
+					"oklch(0.65 0.09 72)",
+					"oklch(0.49 0.08 350)",
+					"oklch(0.65 0.09 305)",
+					"oklch(0.45 0.055 30)"
 				]
 			},
 			"paper": {
@@ -98,19 +112,19 @@
 		"typographyMeta": {
 			"nameplate": {
 				"displayName": "Nameplate",
-				"purpose": "The home masthead wordmark. Archivo at its widest and heaviest, above a 5px ink rule. One per site."
+				"purpose": "The home masthead wordmark. Archivo at its widest and heaviest (wdth 123, weight 850), above a 5px ink rule. One per site."
 			},
 			"display": {
 				"displayName": "Display",
-				"purpose": "h1 — page and index hero titles."
+				"purpose": "h1 — page and index hero titles. Capped for headline shape by --measure-title (20ch)."
 			},
 			"headline": {
 				"displayName": "Headline",
-				"purpose": "h2 and the section head that follows a 3px rule."
+				"purpose": "Two steps on wdth 112: h2 at weight 780, the section head that follows a 3px rule; h3 at 750."
 			},
 			"title": {
 				"displayName": "Title",
-				"purpose": "Record titles inside ledger rows, and h4–h6. Serif, not display."
+				"purpose": "Record titles inside ledger rows, and h4–h5. Serif, not display. h6 is cast in the label tier instead, and no page uses one."
 			},
 			"body": {
 				"displayName": "Body",
@@ -118,15 +132,15 @@
 			},
 			"standfirst": {
 				"displayName": "Standfirst",
-				"purpose": "The serif-italic deck under a page title, and plate captions."
+				"purpose": "The serif-italic deck under a page title (--measure-standfirst, ~61 characters), and plate captions."
 			},
 			"label": {
 				"displayName": "Label (data voice)",
-				"purpose": "Every machine-indexed string: datelines, counts, nav, filters, chips, DOIs, pagination, ledger keys, button text."
+				"purpose": "Every machine-indexed string: datelines, counts, nav, filters, chips, DOIs, pagination, ledger keys, button text. A module label is a heading in this tier — .rail-label is an h2/h3 cast mono over a hairline."
 			},
 			"eyebrow": {
 				"displayName": "Eyebrow",
-				"purpose": "The accent kicker above a title. Widest tracking in the system (0.16em)."
+				"purpose": "The accent kicker above a title. Widest tracking in the system (0.16em). .eyebrow--ink is the same label in quiet ink, for a kicker that is not \"current\"."
 			}
 		},
 		"shadows": [],
@@ -134,7 +148,7 @@
 			{
 				"name": "duration-fast",
 				"value": "150ms",
-				"purpose": "The default and near-only transition length. Colour and border changes on chips, buttons, links, pager items."
+				"purpose": "The default and near-only transition length. Colour and border changes on chips, buttons, links, nav and pager items."
 			},
 			{
 				"name": "duration-instant",
@@ -144,29 +158,57 @@
 			{
 				"name": "ease-out",
 				"value": "cubic-bezier(0, 0, 0.2, 1)",
-				"purpose": "Standard deceleration. Overshoot-free by policy — bounce and elastic easing are banned as toy-like on a scholarly site."
+				"purpose": "Standard deceleration, and the only easing a UI state change uses. Overshoot-free by policy — bounce and elastic easing are banned as toy-like on a scholarly site."
 			}
 		],
 		"breakpoints": [
 			{
 				"name": "sm",
-				"value": "640px"
+				"value": "(min-width: 640px)"
 			},
 			{
 				"name": "md",
-				"value": "768px"
+				"value": "(min-width: 768px)"
 			},
 			{
 				"name": "lg",
-				"value": "1024px"
+				"value": "(min-width: 1024px)"
 			},
 			{
 				"name": "xl",
-				"value": "1280px"
+				"value": "(min-width: 1280px)"
 			},
 			{
 				"name": "2xl",
-				"value": "1536px"
+				"value": "(min-width: 1536px)"
+			},
+			{
+				"name": "2xs-down",
+				"value": "(max-width: 374px)"
+			},
+			{
+				"name": "xs-down",
+				"value": "(max-width: 479px)"
+			},
+			{
+				"name": "sm-down",
+				"value": "(max-width: 639px)"
+			},
+			{
+				"name": "md-down",
+				"value": "(max-width: 767px)"
+			},
+			{
+				"name": "lg-down",
+				"value": "(max-width: 1023px)"
+			},
+			{
+				"name": "xl-down",
+				"value": "(max-width: 1279px)"
+			},
+			{
+				"name": "2xl-down",
+				"value": "(max-width: 1535px)"
 			}
 		]
 	},
@@ -177,63 +219,79 @@
 			"refersTo": "button-primary",
 			"description": "The standard primary action. Solid ink fill, mono uppercase, square, no lift on press.",
 			"html": "<button class=\"ds-btn ds-btn-primary\">Download BibTeX</button>",
-			"css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Spline Sans Mono', SF Mono, Consolas, monospace; font-weight: 600; font-size: 0.9375rem; line-height: 1.1; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; padding: 12px 20px; border: 1px solid transparent; border-radius: 0; cursor: pointer; transition: background 150ms cubic-bezier(0,0,0.2,1), border-color 150ms cubic-bezier(0,0,0.2,1), color 150ms cubic-bezier(0,0,0.2,1); } .ds-btn-primary { background: var(--color-primary, #191509); color: var(--color-text-inverted, #faf7ef); border-color: var(--color-primary, #191509); } .ds-btn-primary:hover { background: var(--color-primary-dark, #0e0b04); border-color: var(--color-primary-dark, #0e0b04); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
+			"css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-weight: 600; font-size: var(--font-size-sm, 1rem); line-height: 1.1; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; padding: 12px 20px; border: 1px solid transparent; border-radius: 0; cursor: pointer; transition: background 150ms cubic-bezier(0,0,0.2,1), border-color 150ms cubic-bezier(0,0,0.2,1), color 150ms cubic-bezier(0,0,0.2,1); } .ds-btn-primary { background: var(--color-primary, #191509); color: var(--color-text-inverted, #faf7ef); border-color: var(--color-primary, #191509); } .ds-btn-primary:hover { background: var(--color-primary-dark, #0e0b04); color: var(--color-text-inverted, #faf7ef); border-color: var(--color-primary-dark, #0e0b04); } .ds-btn-primary:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
 		},
 		{
 			"name": "Accent Button",
 			"kind": "button",
 			"refersTo": "button-accent",
 			"description": "The single hero call to action per screen. Solid pine — governed by the Scarcity Rule.",
-			"html": "<button class=\"ds-btn ds-btn-accent\">Access publication</button>",
-			"css": ".ds-btn-accent { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Spline Sans Mono', SF Mono, Consolas, monospace; font-weight: 600; font-size: 0.9375rem; line-height: 1.1; letter-spacing: 0.06em; text-transform: uppercase; padding: 12px 20px; border: 1px solid var(--color-accent, #1e6a56); border-radius: 0; background: var(--color-accent, #1e6a56); color: #faf7ef; cursor: pointer; transition: background 150ms cubic-bezier(0,0,0.2,1), border-color 150ms cubic-bezier(0,0,0.2,1); } .ds-btn-accent:hover { background: var(--color-accent-dark, #154e40); border-color: var(--color-accent-dark, #154e40); } .ds-btn-accent:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
+			"html": "<button class=\"ds-btn ds-btn-accent\">Open publication</button>",
+			"css": ".ds-btn-accent { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-weight: 600; font-size: var(--font-size-sm, 1rem); line-height: 1.1; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; padding: 12px 20px; border: 1px solid transparent; border-radius: 0; cursor: pointer; transition: background 150ms cubic-bezier(0,0,0.2,1), border-color 150ms cubic-bezier(0,0,0.2,1), color 150ms cubic-bezier(0,0,0.2,1); background: var(--color-accent, #1e6a56); color: var(--color-text-inverted, #faf7ef); border-color: var(--color-accent, #1e6a56); } .ds-btn-accent:hover { background: var(--color-accent-dark, #154e40); color: var(--color-text-inverted, #faf7ef); border-color: var(--color-accent-dark, #154e40); } .ds-btn-accent:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
 		},
 		{
 			"name": "Secondary Button",
 			"kind": "button",
 			"refersTo": "button-secondary",
 			"description": "Flat outlined control. Fills with the alt surface on hover; the border darkens to ink.",
-			"html": "<button class=\"ds-btn-secondary\">View all activities</button>",
-			"css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; font-family: 'Spline Sans Mono', SF Mono, Consolas, monospace; font-weight: 600; font-size: 0.9375rem; line-height: 1.1; letter-spacing: 0.06em; text-transform: uppercase; padding: 12px 20px; border: 1px solid var(--color-border-dark, #a39b86); border-radius: 0; background: transparent; color: var(--color-text-emphasis, #191509); cursor: pointer; transition: background 150ms cubic-bezier(0,0,0.2,1), border-color 150ms cubic-bezier(0,0,0.2,1); } .ds-btn-secondary:hover { background: var(--color-surface-alt, #ece4d1); border-color: var(--color-primary, #191509); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
+			"html": "<button class=\"ds-btn ds-btn-secondary\">View all activities</button>",
+			"css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-weight: 600; font-size: var(--font-size-sm, 1rem); line-height: 1.1; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; padding: 12px 20px; border: 1px solid transparent; border-radius: 0; cursor: pointer; transition: background 150ms cubic-bezier(0,0,0.2,1), border-color 150ms cubic-bezier(0,0,0.2,1), color 150ms cubic-bezier(0,0,0.2,1); background: transparent; color: var(--color-text-emphasis, #191509); border-color: var(--color-border-dark, #a39b86); } .ds-btn-secondary:hover { background: var(--color-surface-alt, #ece4d1); border-color: var(--color-primary, #191509); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
 		},
 		{
 			"name": "Filter Chip",
 			"kind": "chip",
 			"refersTo": "chip",
-			"description": "Flat, square, mono caps with the count appended. Selected state is a solid ink fill.",
-			"html": "<span class=\"ds-chip-row\"><button class=\"ds-chip\">Islam <span class=\"ds-chip-count\">33</span></button><button class=\"ds-chip ds-chip-selected\">Benin <span class=\"ds-chip-count\">12</span></button></span>",
-			"css": ".ds-chip-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; } .ds-chip { display: inline-flex; align-items: baseline; gap: 8px; padding: 6px 8px; border: 1px solid var(--color-border, #c9c0aa); border-radius: 0; background: transparent; font-family: 'Spline Sans Mono', SF Mono, Consolas, monospace; font-size: 0.6944rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-soft, #5c5442); cursor: pointer; transition: border-color 150ms cubic-bezier(0,0,0.2,1), color 150ms cubic-bezier(0,0,0.2,1), background 150ms cubic-bezier(0,0,0.2,1); } .ds-chip:hover { border-color: var(--color-border-dark, #a39b86); color: var(--color-text-emphasis, #191509); } .ds-chip-count { font-weight: 600; color: var(--color-text-muted, #6b634e); } .ds-chip-selected { background: var(--color-primary, #191509); border-color: var(--color-primary, #191509); color: var(--color-text-inverted, #faf7ef); } .ds-chip-selected .ds-chip-count { color: color-mix(in srgb, var(--color-text-inverted, #faf7ef) 72%, transparent); } .ds-chip:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
+			"description": "Flat, square, mono caps with the count appended. Selected is a solid ink fill; a chip that would return nothing drops to the quietest ink and stays clickable.",
+			"html": "<span class=\"ds-chip-row\"><button class=\"ds-chip\">Islam <span class=\"ds-chip-count\">33</span></button><button class=\"ds-chip ds-chip-selected\">Benin <span class=\"ds-chip-count\">12</span></button><button class=\"ds-chip ds-chip-empty\">Uganda <span class=\"ds-chip-count\">0</span></button></span>",
+			"css": ".ds-chip-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; } .ds-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 8px; border: 1px solid var(--color-border, #c9c0aa); border-radius: 0; background: transparent; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-2xs, 0.6944rem); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-soft, #5c5442); overflow-wrap: anywhere; cursor: pointer; transition: border-color 150ms cubic-bezier(0,0,0.2,1), color 150ms cubic-bezier(0,0,0.2,1), background 150ms cubic-bezier(0,0,0.2,1); } .ds-chip:hover { border-color: var(--color-border-dark, #a39b86); color: var(--color-text-emphasis, #191509); } .ds-chip-count { font-weight: 600; color: var(--color-text-muted, #6b634e); } .ds-chip-empty, .ds-chip-empty .ds-chip-count { color: var(--color-text-light, #6b634e); } .ds-chip-selected { background: var(--color-primary, #191509); border-color: var(--color-primary, #191509); color: var(--color-text-inverted, #faf7ef); } .ds-chip-selected:hover { background: var(--color-primary-dark, #0e0b04); border-color: var(--color-primary-dark, #0e0b04); color: var(--color-text-inverted, #faf7ef); } .ds-chip-selected .ds-chip-count { color: color-mix(in srgb, var(--color-text-inverted, #faf7ef) 72%, transparent); } .ds-chip:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
+		},
+		{
+			"name": "Search Field",
+			"kind": "input",
+			"refersTo": null,
+			"description": "The index search box: a square strong-border case that takes the accent on focus-within, with the field itself borderless mono caps inside it.",
+			"html": "<div class=\"ds-search\"><span class=\"ds-search-icon\" aria-hidden=\"true\">⌕</span><input class=\"ds-search-input\" type=\"search\" placeholder=\"Title, co-author, tag, venue, year…\" /></div>",
+			"css": ".ds-search { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 8px 12px; border: 1px solid var(--color-border-dark, #a39b86); border-radius: 0; background: var(--color-surface, #f3eee0); transition: border-color 150ms cubic-bezier(0,0,0.2,1); } .ds-search:focus-within { border-color: var(--color-accent, #1e6a56); } .ds-search-icon { font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-base, 1.125rem); line-height: 1; color: var(--color-text-light, #6b634e); } .ds-search-input { flex: 1; min-width: 0; min-height: 24px; border: none; background: transparent; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-2xs, 0.6944rem); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-emphasis, #191509); } .ds-search-input:focus { outline: none; } .ds-search-input::placeholder { color: var(--color-text-light, #6b634e); text-transform: uppercase; }"
+		},
+		{
+			"name": "Navigation Item",
+			"kind": "nav",
+			"refersTo": null,
+			"description": "Mono caps in quiet ink; the current section alone takes pine and a 2px pine rule beneath. A hovered label answers with ink, never with a second rule.",
+			"html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-active\" href=\"#\">Publications</a><a class=\"ds-nav-link\" href=\"#\">Activities</a><a class=\"ds-nav-link\" href=\"#\">Teaching</a></nav>",
+			"css": ".ds-nav { display: flex; align-items: center; gap: 24px; } .ds-nav-link { position: relative; display: flex; align-items: center; gap: 4px; padding: 8px 0; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-2xs, 0.6944rem); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap; text-decoration: none; color: var(--color-text-soft, #5c5442); transition: color 150ms cubic-bezier(0,0,0.2,1); } .ds-nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background-color: var(--color-accent, #1e6a56); transform: scaleX(0); transform-origin: left center; } .ds-nav-link:hover { color: var(--color-text-emphasis, #191509); } .ds-nav-active { color: var(--color-accent, #1e6a56); } .ds-nav-active::after { transform: scaleX(1); } .ds-nav-link:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 4px; }"
 		},
 		{
 			"name": "Ledger Row",
 			"kind": "custom",
 			"refersTo": null,
-			"description": "The universal record idiom: hanging mono key column, serif content, hairline above each row.",
+			"description": "The universal record idiom: hanging mono key column, serif content, hairline above each row. Anything dated or keyed renders as this, not as a card.",
 			"html": "<div class=\"ds-ledger\"><div class=\"ds-ledger-row\"><div class=\"ds-ledger-key\">2024<span class=\"ds-ledger-status\">Article</span></div><div class=\"ds-ledger-content\"><h3 class=\"ds-ledger-title\">Muslim Minorities in Southern Cities of Benin and Togo</h3><p class=\"ds-ledger-desc\">A study of religious activism and the public sphere across two coastal capitals.</p></div></div><div class=\"ds-ledger-row\"><div class=\"ds-ledger-key\">2023<span class=\"ds-ledger-status\">Chapter</span></div><div class=\"ds-ledger-content\"><h3 class=\"ds-ledger-title\">Religious Activism on Campuses in Togo and Benin</h3><p class=\"ds-ledger-desc\">Student associations and the making of a Muslim intelligentsia.</p></div></div></div>",
-			"css": ".ds-ledger { display: block; } .ds-ledger-row { display: grid; grid-template-columns: 7rem 1fr; gap: 16px 24px; padding: 16px 0; border-top: 1px solid var(--color-hairline, #dcd4be); align-items: baseline; } .ds-ledger-key { display: flex; flex-direction: column; gap: 4px; font-family: 'Spline Sans Mono', SF Mono, Consolas, monospace; font-size: 0.9375rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-light, #6b634e); } .ds-ledger-status { font-size: 0.6944rem; font-weight: 600; letter-spacing: 0.12em; color: var(--color-text-muted, #6b634e); } .ds-ledger-content { display: flex; flex-direction: column; gap: 6px; min-width: 0; } .ds-ledger-title { font-family: Newsreader, Georgia, serif; font-size: 1.6875rem; font-weight: 500; letter-spacing: -0.01em; line-height: 1.35; color: var(--color-text-emphasis, #191509); margin: 0; } .ds-ledger-desc { font-family: Newsreader, Georgia, serif; font-size: 1.125rem; line-height: 1.6; color: var(--color-text-soft, #5c5442); margin: 0; max-width: 66ch; }"
+			"css": ".ds-ledger { display: block; } .ds-ledger-row { display: grid; grid-template-columns: 7rem 1fr; gap: 16px 24px; padding: 16px 0; border-top: 1px solid var(--color-hairline, #dcd4be); align-items: baseline; } .ds-ledger-key { display: flex; flex-direction: column; gap: 4px; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-sm, 1rem); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-light, #6b634e); } .ds-ledger-status { font-size: var(--font-size-2xs, 0.6944rem); font-weight: 600; letter-spacing: 0.12em; color: var(--color-text-muted, #6b634e); } .ds-ledger-content { display: flex; flex-direction: column; gap: 6px; min-width: 0; } .ds-ledger-title { margin: 0; font-family: Newsreader, Georgia, Cambria, serif; font-size: var(--font-size-xl, 1.6875rem); font-weight: 500; letter-spacing: -0.01em; line-height: 1.35; color: var(--color-text-emphasis, #191509); } .ds-ledger-desc { margin: 0; font-family: Newsreader, Georgia, Cambria, serif; font-size: var(--font-size-base, 1.125rem); line-height: 1.6; color: var(--color-text-soft, #5c5442); max-width: var(--measure-prose, 50ch); }"
 		},
 		{
 			"name": "Ruled Section",
 			"kind": "custom",
 			"refersTo": null,
-			"description": "The standard content module: a 3px ink rule, an optional accent marker, and an Archivo head.",
-			"html": "<section class=\"ds-section\"><div class=\"ds-section-head\"><span class=\"ds-section-no\">№ 02</span><h2 class=\"ds-section-title\">Selected Publications</h2></div></section>",
-			"css": ".ds-section { border-top: 3px solid var(--color-primary, #191509); padding-top: var(--rule-gap, 12px); } .ds-section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; } .ds-section-no { font-family: 'Spline Sans Mono', SF Mono, Consolas, monospace; font-size: 0.6944rem; font-weight: 700; letter-spacing: 0.16em; color: var(--color-accent, #1e6a56); white-space: nowrap; } .ds-section-title { font-family: Archivo, system-ui, sans-serif; font-variation-settings: 'wdth' 112; font-size: 2.109rem; font-weight: 750; letter-spacing: -0.01em; line-height: 1.05; color: var(--color-text-emphasis, #191509); margin: 0; }"
+			"description": "The standard content module: a 3px ink rule, the --rule-gap, then an Archivo head. The § marker is quiet ink, not pine — a page prints it once per head, which is the opposite of an accent meaning \"the current thing\".",
+			"html": "<section class=\"ds-section\"><div class=\"ds-section-head\"><span class=\"ds-section-no\">§ 02</span><h2 class=\"ds-section-title\">Selected publications</h2></div><p class=\"ds-section-note\">Books, chapters and articles on Islam and Muslim societies in West Africa.</p></section>",
+			"css": ".ds-section { border-top: 3px solid var(--color-primary, #191509); padding-top: var(--rule-gap, 12px); } .ds-section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; } .ds-section-no { font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-2xs, 0.6944rem); font-weight: 700; letter-spacing: 0.16em; color: var(--color-text-muted, #6b634e); white-space: nowrap; } .ds-section-title { margin: 0; font-family: Archivo, system-ui, Segoe UI, sans-serif; font-variation-settings: 'wdth' 112; font-size: var(--font-size-2xl, 2.109rem); font-weight: 750; letter-spacing: -0.01em; line-height: 1.05; color: var(--color-text-emphasis, #191509); } .ds-section-note { margin: 0 0 16px; font-family: Newsreader, Georgia, Cambria, serif; font-size: var(--font-size-base, 1.125rem); line-height: 1.6; color: var(--color-text-soft, #5c5442); max-width: var(--measure-prose, 50ch); }"
 		},
 		{
 			"name": "Nameplate",
 			"kind": "custom",
 			"refersTo": null,
 			"description": "The masthead wordmark above a 5px ink rule. The single loudest element in the system.",
-			"html": "<div class=\"ds-nameplate-block\"><span class=\"ds-eyebrow\">Historian · Digital Humanities</span><h1 class=\"ds-nameplate\">Frédérick Madore</h1></div>",
-			"css": ".ds-nameplate-block { border-top: 5px solid var(--color-primary, #191509); padding-top: 12px; } .ds-eyebrow { display: block; font-family: 'Spline Sans Mono', SF Mono, Consolas, monospace; font-size: 0.6944rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-accent, #1e6a56); margin: 0 0 12px; } .ds-nameplate { font-family: Archivo, system-ui, sans-serif; font-variation-settings: 'wdth' 123; font-weight: 850; font-size: clamp(2.5rem, 1.6rem + 4.2vw, 5rem); line-height: 0.9; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-emphasis, #191509); margin: 0; }"
+			"html": "<div class=\"ds-nameplate-block\"><span class=\"ds-eyebrow\">Historian · Digital humanities</span><h1 class=\"ds-nameplate\">Frédérick Madore</h1></div>",
+			"css": ".ds-nameplate-block { border-top: 5px solid var(--color-primary, #191509); padding-top: 12px; } .ds-eyebrow { display: block; margin: 0 0 12px; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-2xs, 0.6944rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-accent, #1e6a56); } .ds-nameplate { margin: 0; font-family: Archivo, system-ui, Segoe UI, sans-serif; font-variation-settings: 'wdth' 123; font-weight: 850; font-size: clamp(2.5rem, 1.6rem + 4.2vw, 5rem); line-height: 0.9; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-emphasis, #191509); }"
 		},
 		{
 			"name": "Year-Bar Strip",
 			"kind": "custom",
 			"refersTo": null,
-			"description": "Publication distribution as ink bars with the newest year in pine. Data used as the only permitted ornament.",
+			"description": "Publication distribution as flush ink bars with the newest year in pine, over a mono legend. Data used as the only permitted ornament.",
 			"html": "<div class=\"ds-year-wrap\"><div class=\"ds-year-bars\"><i style=\"height:38%\"></i><i style=\"height:55%\"></i><i style=\"height:30%\"></i><i style=\"height:72%\"></i><i style=\"height:48%\"></i><i style=\"height:88%\"></i><i style=\"height:62%\"></i><i class=\"ds-year-current\" style=\"height:100%\"></i></div><div class=\"ds-year-legend\"><span>2018</span><span>2026</span></div></div>",
-			"css": ".ds-year-wrap { max-width: 320px; } .ds-year-bars { display: flex; align-items: flex-end; gap: 4px; height: 44px; } .ds-year-bars i { flex: 1 1 auto; min-width: 3px; background: var(--color-primary, #191509); } .ds-year-current { background: var(--color-accent, #1e6a56) !important; } .ds-year-legend { display: flex; justify-content: space-between; margin-top: 6px; font-family: 'Spline Sans Mono', SF Mono, Consolas, monospace; font-size: 0.6944rem; font-weight: 500; letter-spacing: 0.03em; color: var(--color-text-light, #6b634e); }"
+			"css": ".ds-year-wrap { max-width: 320px; } .ds-year-bars { display: flex; align-items: flex-end; gap: 4px; height: 44px; } .ds-year-bars i { flex: 1 1 auto; min-width: 3px; background: var(--color-primary, #191509); } .ds-year-bars i.ds-year-current { background: var(--color-accent, #1e6a56); } .ds-year-legend { display: flex; justify-content: space-between; margin-top: 6px; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-2xs, 0.6944rem); font-weight: 500; letter-spacing: 0.03em; color: var(--color-text-light, #6b634e); }"
 		},
 		{
 			"name": "Pagination",
@@ -241,20 +299,28 @@
 			"refersTo": "pager-item",
 			"description": "Mono, square, ink-fill on the current page. Colour-only transitions.",
 			"html": "<nav class=\"ds-pager\"><a class=\"ds-pager-item\" href=\"#\">Prev</a><a class=\"ds-pager-item ds-pager-current\" href=\"#\">1</a><a class=\"ds-pager-item\" href=\"#\">2</a><a class=\"ds-pager-item\" href=\"#\">3</a><a class=\"ds-pager-item\" href=\"#\">Next</a></nav>",
-			"css": ".ds-pager { display: flex; align-items: center; gap: 8px; font-family: 'Spline Sans Mono', SF Mono, Consolas, monospace; font-size: 0.6944rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; } .ds-pager-item { padding: 6px 10px; border: 1px solid var(--color-border, #c9c0aa); color: var(--color-text-soft, #5c5442); text-decoration: none; transition: border-color 150ms cubic-bezier(0,0,0.2,1), color 150ms cubic-bezier(0,0,0.2,1); } .ds-pager-item:hover { border-color: var(--color-border-dark, #a39b86); color: var(--color-text-emphasis, #191509); } .ds-pager-current { background: var(--color-primary, #191509); border-color: var(--color-primary, #191509); color: var(--color-text-inverted, #faf7ef); } .ds-pager-item:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
+			"css": ".ds-pager { display: flex; align-items: center; gap: 8px; font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-2xs, 0.6944rem); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; } .ds-pager-item { padding: 6px 10px; border: 1px solid var(--color-border, #c9c0aa); color: var(--color-text-soft, #5c5442); text-decoration: none; transition: border-color 150ms cubic-bezier(0,0,0.2,1), color 150ms cubic-bezier(0,0,0.2,1); } .ds-pager-item:hover { border-color: var(--color-border-dark, #a39b86); color: var(--color-text-emphasis, #191509); } .ds-pager-current { background: var(--color-primary, #191509); border-color: var(--color-primary, #191509); color: var(--color-text-inverted, #faf7ef); } .ds-pager-item:focus-visible { outline: 2px solid var(--color-accent, #1e6a56); outline-offset: 2px; }"
 		},
 		{
 			"name": "Image Plate",
 			"kind": "card",
 			"refersTo": null,
-			"description": "Imagery treatment: 1px border, square corners, serif-italic caption below. Corpus scans preferred to stock.",
+			"description": "Imagery treatment: 1px box edge, square corners, muted ground, serif-italic caption below. Corpus scans preferred to stock photography.",
 			"html": "<figure class=\"ds-figure\"><div class=\"ds-plate\"></div><figcaption class=\"ds-plate-caption\">Fig. 1 — Front page, <em>La Nation</em>, Cotonou, 1994.</figcaption></figure>",
-			"css": ".ds-figure { margin: 0; max-width: 320px; } .ds-plate { display: block; width: 100%; height: 160px; border: 1px solid var(--color-border, #c9c0aa); border-radius: 0; background: var(--color-background-muted, #ece4d1); } .ds-plate-caption { margin-top: 8px; font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 0.9375rem; line-height: 1.45; color: var(--color-text-light, #6b634e); }"
+			"css": ".ds-figure { margin: 0; max-width: 320px; } .ds-plate { display: block; width: 100%; height: 160px; border: 1px solid var(--color-border, #c9c0aa); border-radius: 0; background: var(--color-background-muted, #ece4d1); object-fit: cover; } .ds-plate-caption { margin-top: 8px; font-family: Newsreader, Georgia, Cambria, serif; font-style: italic; font-size: var(--font-size-sm, 1rem); line-height: 1.45; color: var(--color-text-light, #6b634e); }"
+		},
+		{
+			"name": "State Note",
+			"kind": "custom",
+			"refersTo": null,
+			"description": "The one shape every honest state takes: a flat surface panel with no border of its own, a mono dateline label over one serif sentence saying what happened and what still works. Never danger-coloured — a map that failed to load is not a destructive action.",
+			"html": "<div class=\"ds-state-note\" role=\"status\"><span class=\"ds-dateline\">Map unavailable</span><p>The map could not be loaded. The talks below are the same records.</p></div>",
+			"css": ".ds-state-note { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 16px; background: var(--color-surface, #f3eee0); text-align: start; } .ds-dateline { font-family: 'Spline Sans Mono', SF Mono, Consolas, Monaco, monospace; font-size: var(--font-size-2xs, 0.6944rem); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-text-light, #6b634e); } .ds-state-note p { margin: 0; max-width: var(--measure-note, 40ch); font-family: Newsreader, Georgia, Cambria, serif; font-size: var(--font-size-sm, 1rem); line-height: 1.5; color: var(--color-text-muted, #6b634e); }"
 		}
 	],
 	"narrative": {
 		"northStar": "The Press Archive, Read Computationally",
-		"overview": "The system comes from a collision between two real source materials: the West African press corpus this scholar studies — nameplates, section rules, typeset bibliographies, dated columns — and the computational layer he builds on top of it, all structured metadata and machine-readable records. Neither half decorates the other. The page demonstrates the method: primary sources set with editorial gravity, apparatus set in a machine voice. A visitor should feel they have opened a working archive, not landed on a personal-brand page.\n\nThe register is print, not app. Depth is drawn rather than floated: a 5px rule opens a masthead, a 3px rule opens a section, a 1px hairline separates entries, and that weight hierarchy alone should make the page navigable if every string were set at the same size. Surfaces stay close in value and corners are square, so structure has to come from ink density and rule weight instead of elevation. Motion is nearly absent — state changes are instant, and the most a page does on arrival is a short fade.\n\nBoth themes are first-class and both are warm. Daylight is warm paper struck by ink; midnight is the same printed page photographed as a microfilm negative, with grounds swapped to warm near-black, type to cream, and the pine accent brightened. It is not slate, not blue, and never an inversion filter.\n\nThe system renders itself: the /style-guide route is a living reference that reads the live token values off :root and re-documents itself when a token changes. Check a claim against that page before trusting it, and when you add a reusable idiom, document it there in the same change. The idiom classes live in src/styles/components/ink-signal.css.",
+		"overview": "The system comes from a collision between two real source materials: the West African press corpus this scholar studies — nameplates, section rules, typeset bibliographies, dated columns — and the computational layer he builds on top of it, all structured metadata and machine-readable records. Neither half decorates the other. The page demonstrates the method: primary sources set with editorial gravity, apparatus set in a machine voice. A visitor should feel they have opened a working archive, not landed on a personal-brand page.\n\nThe register is print, not app. Depth is drawn rather than floated: a 5px rule opens a masthead, a 3px rule opens a section, a 1px hairline separates entries, and that weight hierarchy alone should make the page navigable if every string were set at the same size. Surfaces stay close in value and corners are square, so structure has to come from ink density and rule weight instead of elevation. Motion is nearly absent — state changes are instant, and the most a page does on arrival is a short fade.\n\nBoth themes are first-class and both are warm. Daylight is warm paper struck by ink; midnight is the same printed page photographed as a microfilm negative, with grounds swapped to warm near-black, type to cream, and the pine accent brightened. It is not slate, not blue, and never an inversion filter. The browser's own surfaces take the chosen theme, not the OS: html narrows color-scheme to light or dark (never light dark), so scrollbars, form controls and the overscroll canvas follow the theme the reader picked; src/app.html ships two media-scoped theme-color metas for the reader with no JavaScript, and both the bootstrap and toggleTheme overwrite both metas with the resolved --color-background, so a stored choice that contradicts the OS wins in the address bar too. static/404.html mirrors all of it. The confirmed anti-references are specific: templated academic CMS and faculty-directory defaults; the AI-slop tells (gradients, glassmorphism, glow, border-left accent stripes, rounded cards with soft shadows); code-editor and terminal aesthetics, since mono here is metadata and never a page theme; and soft-launch minimalism with acres of whitespace and hero photos under overlay text.\n\nThe system renders itself: the /style-guide route is a living reference that reads the live token values off :root and re-documents itself when a token changes. Check a claim in this file against that page before trusting it, and when you add a reusable idiom, document it there in the same change — src/styles/styleGuideCoverage.test.ts fails the build when a class in ink-signal.css appears neither on /style-guide nor in a component that page renders. The idiom classes themselves live in src/styles/components/ink-signal.css.",
 		"keyCharacteristics": [
 			"Two typographic voices, strictly cast — document (Archivo + Newsreader) versus data (Spline Sans Mono)",
 			"Hierarchy drawn in ink-coloured rules at four weights, never in gray",
@@ -277,12 +343,17 @@
 			},
 			{
 				"name": "The Negative Rule",
-				"body": "Midnight is the same page photographed as a negative, designed as its own pass. Never ship a component specified in only one theme, and never reach for an inversion filter or a slate-blue dark palette.",
+				"body": "Midnight is the same page photographed as a negative, designed as its own pass. Never ship a component specified in only one theme, and never reach for an inversion filter or a slate-blue dark palette. That pass carries exactly one typographic adjustment alongside the colour remap — the Microfilm Weight Rule below. **The midnight footer is the page:** daylight's footer is an inverted ink block, and the negative of an inverted block would be a bright cream slab, which the microfilm register refuses — so in midnight the footer takes the page ground itself (`--color-footer-bg: var(--color-background)`) and the 4px cream masthead rule plus the hairlines carry the boundary. Likewise the film ramp holds three steps for four paper roles, so `--color-background-muted` and `--color-surface-elevated` share the lightest step in midnight by design; the style guide records it rather than hiding it.",
 				"section": "colors"
 			},
 			{
 				"name": "The Measured Line Rule",
-				"body": "Reading measure is stated in characters, never in `ch`. A `ch` is the advance width of the digit zero; Newsreader's average character is only ~0.68–0.73 of that, so a cap written as `65ch` sets 87–95 characters — half again the intended line. Three calibrated roles own every prose cap: `--measure-prose` (50ch → ~69 characters) for body copy, ledger descriptions, abstracts and CV entries; `--measure-standfirst` (42ch → ~61) for the italic deck under a title; `--measure-note` (40ch → ~55) for captions and fine print. Never write a raw `ch` value into a component, and verify a change by counting characters in the rendered line — `/style-guide` measures all three live. Monospace is the exception: 1ch is exactly one character there, so ledger key columns may be sized in `ch` literally. Metadata that is scanned rather than read — bylines, citation and venue lines — is deliberately left uncapped.",
+				"body": "Reading measure is stated in characters, never in `ch`. A `ch` is the advance width of the digit zero; Newsreader's average character is only ~0.68–0.73 of that, so a cap written as `65ch` sets 87–95 characters — half again the intended line. Three calibrated roles own every prose cap: `--measure-prose` (50ch → ~69 characters) for body copy, ledger descriptions, abstracts and CV entries; `--measure-standfirst` (42ch → ~61) for the italic deck under a title; `--measure-note` (40ch → ~55) for captions and fine print. Never write a raw `ch` value into a component, and verify a change by counting characters in the rendered line — `/style-guide` measures all three live. Monospace is the exception: 1ch is exactly one character there, so ledger key columns may be sized in `ch` literally. Metadata that is scanned rather than read — bylines, citation and venue lines — is deliberately left uncapped. **The display-face exception.** A title is not read line after line, it is taken in at a glance, so its cap is set for the shape of the headline — how many lines it breaks into — not for the reading measure. That cap is a named role, `--measure-title` (20ch), never a bare `ch` written into a component: an Archivo `ch` is not a Newsreader `ch`, and the next page title that wants the same shape must get the same number. Consumer: `PageHeader.svelte` (`.page-title`).",
+				"section": "typography"
+			},
+			{
+				"name": "The Tracked Size Rule",
+				"body": "Tracking is a role scale keyed to size, not a free numeric field. The display face tightens as it grows (-0.01em at h3 and below, -0.015em at h1–h2, -0.02em at the nameplate, which is the floor); the mono data voice loosens as it shrinks (0.06em for the compact caps tier at xs–sm, 0.12em for the 2xs label default), with the eyebrow at 0.16em as the one deliberate exception and 0.03em for mixed-case figures such as DOIs, counts and years. Serif prose sets no tracking at all, and a serif title takes -0.01em. Never write a raw `em` value: reach for one of the eight `--tracking-*` roles, and let a ninth step be a documented design decision rather than a patch — `trackingScale.test.ts` fails the build otherwise.",
 				"section": "typography"
 			},
 			{
@@ -291,8 +362,18 @@
 				"section": "typography"
 			},
 			{
+				"name": "The Tabular Figures Rule",
+				"body": "The data voice is monospaced, so its figures already share an advance; `font-variant-numeric: tabular-nums` is declared once, on `.data-voice`, as the stated opt-in, and on the Archivo data numbers (`.stat-value`), where it is load-bearing. It is not restated per class on the mono face.",
+				"section": "typography"
+			},
+			{
 				"name": "The Mono-Is-Not-A-Theme Rule",
 				"body": "The mono face is metadata, never body copy and never a page-wide treatment. A terminal or code-editor aesthetic is an anti-reference, not an adjacent style.",
+				"section": "typography"
+			},
+			{
+				"name": "The Microfilm Weight Rule",
+				"body": "Light type on the film ground optically bolds, and the spread costs most where the strokes are thinnest, so midnight sets the three shared weight tokens 40 lighter — `--font-weight-medium` 500 → 460, `--font-weight-semibold` 600 → 560, `--font-weight-bold` 700 → 660. That step returns the data voice at its small sizes to its daylight weight while leaving serif titles at parity; a step of 50 was tested and over-corrected, dropping the 24px title below its daylight weight. Body weight stays 400 in both themes because the served font subsets are instanced to wght 400–700 and floor there, and neither the display face's hand-set heavy weights nor the tracking scale is compensated: at those sizes the effect is negligible, and tracking is keyed to size rather than to theme. A component that needs a theme-stable weight must set a literal instead of a token, and must say why — `midnightWeight.test.ts` guards the step and the axis range.",
 				"section": "typography"
 			},
 			{
@@ -307,12 +388,22 @@
 			},
 			{
 				"name": "The Hairline Pairing Rule",
-				"body": "A rule and a box edge share a 1px width and nothing else, and they take different tokens:\n\n- a **rule** separates, and is the lightest mark on the page: `var(--rule-hairline) solid var(--color-hairline)`\n- a **box edge** encloses an object, and sits one step darker: `var(--border-width-thin) solid var(--color-border)`\n\nNever cross the pair. The failure is silent — a separator drawn in the edge colour simply reads as a plate and flattens the ramp, with nothing to catch it — which is exactly how the ledger, the bibliography and the facet rules spent three months one step too dark while the CV and the panels drew the same role correctly. `--rule-*` inside a `border:` shorthand is the tell that a box edge has borrowed the rule tier. The one sanctioned exception is `.bib-item--lead`, which marks the featured entry with a deliberately heavier `--color-border-dark` rule.",
+				"body": "A rule and a box edge share a 1px width and nothing else, and they take different tokens:\n\n- a **rule** separates, and is the lightest mark on the page: `var(--rule-hairline) solid var(--color-hairline)`\n- a **box edge** encloses an object, and sits one step darker: `var(--border-width-thin) solid var(--color-border)`\n\nNever cross the pair. The failure is silent — a separator drawn in the edge colour simply reads as a plate and flattens the ramp, with nothing to catch it — which is exactly how the ledger, the bibliography and the facet rules spent three months one step too dark while the CV and the panels drew the same role correctly. `--rule-*` inside a `border:` shorthand is the tell that a box edge has borrowed the rule tier. The one sanctioned exception is `.bib-item--lead`, which marks the featured entry with a deliberately heavier `--color-border-dark` rule. And one boundary takes one mark: where a `.meta-ledger` or a contents ledger follows a `.rail-label`, the label's hairline is the boundary and the first row gives up its own. A **one-sided** `--border-width-thin` + `--color-border` is a separator too, and takes the rule pair like any other; the exception is an edge that continues the box edge it meets — the division between two segments of a segmented control is the enclosing border carried inward, and stays in the same ink. `src/styles/hairlinePairing.test.ts` guards all four directions with a named allowlist.",
 				"section": "layout"
 			},
 			{
 				"name": "The Ledger Default Rule",
 				"body": "Anything dated or keyed — a publication, appointment, activity, metadata field, facet — renders as a ledger row, not a card. A card is the exception and needs a reason.",
+				"section": "layout"
+			},
+			{
+				"name": "The One Rail Rule",
+				"body": "The masthead, the reading column and the endpaper all take the global `.container` — the same cap ladder, the same `--space-4` gutter, no component copies. Measured inner-left edge on `/publications` (header / page / footer / colophon): 768 → 16 / 16 / 16 / 16; 1024 → 16; 1440 → 96; 1600 → 48. A page that needs a narrower measure caps itself with `max-width` and stays left-aligned in the rail; it never nests a second `.container`, which doubles the gutter and re-centres what is left. The home shell is the worked example: 58rem wide, hung on the masthead's edge.",
+				"section": "layout"
+			},
+			{
+				"name": "The Paper Rule",
+				"body": "Paper is the third ground, and what prints is what a reader can act on there: the wordmark as a masthead over its 4px rule, the document, and the imprint. Controls do not print — the skip link (`position: fixed`, and therefore stamped on every page), the navigation, the theme toggle, the hamburger, the mobile panel and the connection strip are all `display: none` under `@media print`. Print ink is named, not written: `--color-print-ink` (the warm system ink, theme-stable, so a page printed from midnight never comes out cream) on `--color-print-ground`; `black` and `white` never appear in a print block. The footer re-points its `--color-footer-*` tokens at the print ground rather than restating every rule, because with background graphics off — the browser default — cream on an ink slab prints as cream on white at ~1.6:1, a blank colophon. A component's print rules live with the component, in its own `<style>`: a global override sits at equal specificity to the screen rule beside it and would win or lose on bundle order. `base/typography.css` keeps only the document-level rules and an index of where the rest lives. The CV, whose printed sheet is a product, breaks at the entry (`.cv-entry { break-inside: avoid }`), never at the section.",
 				"section": "layout"
 			},
 			{
@@ -324,6 +415,46 @@
 				"name": "The Square Corner Rule",
 				"body": "No `border-radius` on any new style, with the single documented exception of a circular micro-control opting into `--border-radius-full`.",
 				"section": "shapes"
+			},
+			{
+				"name": "The Sentence-Case Rule",
+				"body": "Navigation items and breadcrumbs are section names and keep Title Case (`Talks & Events`, `Digital Humanities`, `All Publications`). Everything else — headings, labels, buttons, empty states, captions — is sentence case with proper nouns intact (`Cited by`, `Key terms`, `More in this project`, `Talks & events`). The CV's own section headings are the one document-level exception: they are the owner's document and the PDF prints them.",
+				"section": "voice"
+			},
+			{
+				"name": "The Reader's Noun Rule",
+				"body": "The code's nouns never reach the reader. `communication` is always `talk` / `talks & events`; a chart's `node` is always the entity it stands for (keywords, tags, co-presenters, institutions); a `choropleth` is `country shading`; a `decal` is a `pattern fill`. On the talks visualisation page the counted noun is `talks`; `Activities` belongs to the separate `/activities` log.",
+				"section": "voice"
+			},
+			{
+				"name": "The Count Rule",
+				"body": "Every count readout uses one noun, `entry` / `entries`, singular-guarded (`Showing 1–12 of 44 entries`, `3 of 34 entries`, `1 filter active · 1 of 79 entries`), and an empty result still states the corpus (`The index holds 44 entries, 2013–2026.`). Chart summaries and tooltips take their noun from a prop, so the same component says `publications` on one page and `talks` on the other.",
+				"section": "voice"
+			},
+			{
+				"name": "The Verb Pair",
+				"body": "`Open …` leads to an external destination (a new tab); `View …` leads to an internal page. `Explore`, `Visit`, `Access`, `Discover` and `Read` do not label links. Citation controls are `Cite` → `Copied` → `Copy failed` in the index row and `Copy reference` → `Reference copied` → `Copy failed. Select the text above.` in the record rail, under a heading `Cite`. Files are `Download BibTeX` and `Download PDF`; a failed download says `Download failed. Try again.`",
+				"section": "voice"
+			},
+			{
+				"name": "The Clearing Rule",
+				"body": "`Clear all` clears the whole filter state; `Clear years` resets the range alone; `Clear search` empties the search box. The panel of additional facets and the button that opens it are both named `More filters`. Exactly one clear control exists in any empty state.",
+				"section": "voice"
+			},
+			{
+				"name": "The Glyph Rule",
+				"body": "`↗ → ← ↓ ▾ ▴ ✕ ✓ ×` are decoration and sit inside `aria-hidden` spans; an accessible name never contains one. A visible label begins its accessible name (WCAG 2.5.3): `Open deck: {title} (opens in new tab)`, `Link to {title}`, `Previous record`. Every `target=\"_blank\"` link carries one visually hidden ` (opens in new tab)`; a `mailto:` link opens no tab and says so nowhere.",
+				"section": "voice"
+			},
+			{
+				"name": "The Punctuation Rule",
+				"body": "`…` never `...`; year ranges are an en dash closed up (`2013–2026`); no em dashes in interface copy (a full stop or a colon does the work); a quoted value takes typographic quotes (`No tags match “zzz”.`); a missing date is `n.d.` and a missing author is omitted, never `N/A`. The `<title>` separator is `|` on every page.",
+				"section": "voice"
+			},
+			{
+				"name": "The Honest-State Rule",
+				"body": "A state names what happened and what still works: `The map could not be loaded. The talks below are the same records.`; `Country shading could not be loaded. The marker view still works.`; `Offline. Cached pages remain available.`; `Loading map…`. Internal error text stays in the console. A canvas chart hands the screen reader a computed one-sentence summary (`Publications per year by type, 2013 to 2026, in 8 types. Busiest year: 2016, 6 publications.`), never the renderer's auto-generated dump.",
+				"section": "voice"
 			}
 		],
 		"dos": [
@@ -332,9 +463,11 @@
 			"**Do** render dated or keyed records as ledger rows with a hanging mono key.",
 			"**Do** keep pine countable — a handful of occurrences per screen, marking only what is current, active, newest, or primary.",
 			"**Do** design midnight as its own pass, verifying every component in both themes before shipping it.",
+			"**Do** verify small mono caps in midnight against daylight by capture, not by computed style — the compensation is optical and only a render shows it.",
 			"**Do** use real data as the only ornament: year-bars, counts, frequency-scaled terms, corpus figures.",
 			"**Do** set imagery as plates — 1px border, square corners, serif-italic caption below — and prefer corpus scans to stock imagery.",
-			"**Do** address breakpoints through PostCSS custom media (`@media (--md)`) and colours through `color-mix()` with design tokens."
+			"**Do** address breakpoints through PostCSS custom media (`@media (--md)`) and colours through `color-mix()` with design tokens.",
+			"**Do** write interface copy in the archive's voice — British English, sentence case, one noun per concept, the reader's noun rather than the code's — and check a new string against the Voice & Copy glossary before shipping it."
 		],
 		"donts": [
 			"**Don't** add `border-radius` to any new style; every radius token is `0` and `--border-radius-full` is reserved for circular micro-controls.",
@@ -343,6 +476,7 @@
 			"**Don't** set a headline in mono or metadata in serif, and don't let the mono face become a page-wide theme.",
 			"**Don't** introduce a second accent, or spend pine on large filled areas beyond the single hero button.",
 			"**Don't** use `rgba()` for transparency, hardcode a hex or spacing value, or write a pixel media query — use tokens, `color-mix()`, and custom media.",
+			"**Don't** write a raw `em` letter-spacing value anywhere outside the token block. Tracking is eight roles keyed to size; reach for the matching `--tracking-*` role, and treat a value that fits none of them as a design question rather than a new step.",
 			"**Don't** write a raw `ch` cap on prose, and don't read a `ch` number as a character count. Reach for `--measure-prose`, `--measure-standfirst`, or `--measure-note`, and check the result by counting characters in the rendered line.",
 			"**Don't** add a `border-left` accent stripe, a rounded card with a soft shadow, or any of the templated-academic-CMS patterns this system was built against.",
 			"**Don't** animate beyond an instant colour or border change; the register is print, and the most a page may do on arrival is a short fade.",
