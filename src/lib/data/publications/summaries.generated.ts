@@ -623,7 +623,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Á partir des cas ivoirien et burkinabé, cet article propose d'explorer les contenus de l'islam à l'ère du web et des réseaux sociaux, d'en présenter les conséquences sur l'identité, l'appartenance à la communauté, l'autor",
-		"citedByCount": 19,
+		"citedByCount": 20,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -1516,7 +1516,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"openAccess": true,
 		"image": "images/publications/acteurs-religieux-numerique.webp",
 		"abstractExcerpt": "Depuis l'étude pionnière d'O'Leary (1996) et surtout à partir des années 2000, tout un champ de recherche s'est développé sur la façon dont la religion s'inscrit dans les médias numériques – sites web, forums, blogues, mé",
-		"citedByCount": 4,
+		"citedByCount": 5,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},

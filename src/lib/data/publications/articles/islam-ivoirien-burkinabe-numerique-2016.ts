@@ -38,6 +38,13 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			authors: ['Emmanuelle Olivier'],
+			year: 2026,
+			title:
+				'Islamic Pop Music in Mali: Cultural Entrepreneurship and Religious Entertainment in the Digital Age',
+			source: 'Archives de sciences sociales des religions, no. 214 (2026): 131-54'
+		},
+		{
 			authors: ['Issouf Binaté'],
 			year: 2026,
 			title:
