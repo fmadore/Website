@@ -70,7 +70,7 @@ export const hadjCoteDIvoire: Publication = {
 			title:
 				"Les luttes de positionnement autour des mosquées en Côte d'Ivoire : guerres idéologiques, conflits de leadership et de contrôle des fonds",
 			source: 'Afrique et Développement 46, no. 4 (2021): 97-119',
-			url: 'https://www.jstor.org/stable/48640604'
+			url: 'https://doi.org/10.57054/ad.v46i4.1442'
 		},
 		{
 			authors: ['Issouf Binaté', 'Yaya Dao'],
