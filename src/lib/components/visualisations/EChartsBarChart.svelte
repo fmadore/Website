@@ -9,6 +9,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		getEChartsTooltipStyle,
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
+		getEChartsAccentDecal,
 		getChartMotion
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
@@ -95,12 +96,24 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	// Reactive color resolution - updates when theme changes
 	const resolvedColors = $derived({
 		...getResolvedChartColors(),
-		barColor: resolveColor(barColor)
+		barColor: resolveColor(barColor),
+		// The plate's own ground — what the accent hatch is cut in.
+		ground: resolveColor('var(--color-background)')
 	});
 
 	// The single accented category, compared as a string so a numeric year key
 	// matches the stringified axis category.
 	const accentName = $derived(accentKey === undefined ? null : String(accentKey));
+
+	/**
+	 * Colour carries exactly one distinction on this chart: the accented
+	 * category against the ink. Where no accent is set a pattern fill could
+	 * only repeat itself across every bar — decoration that encodes nothing —
+	 * so the control is not offered. Where one is set, the pattern restates
+	 * "this is the current one" without relying on hue.
+	 */
+	const canPattern = $derived(accentName !== null);
+	const accentDecal = $derived(getEChartsAccentDecal(resolvedColors.ground));
 
 	// Chart data transformation
 	const chartData = $derived(
@@ -175,7 +188,11 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 					value: d.value,
 					itemStyle: {
 						color: d.name === accentName ? resolvedColors.accent : resolvedColors.barColor,
-						borderRadius: 0
+						borderRadius: 0,
+						// Set on the item, not through `aria.decal`: that palette
+						// hatches the whole series at once, which over one ink
+						// fill distinguishes nothing.
+						...(showDecal && d.name === accentName ? { decal: accentDecal } : {})
 					}
 				})),
 				emphasis: {
@@ -187,7 +204,9 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 				}
 			}
 		],
-		aria: getAriaConfig(showDecal, ariaDescription),
+		// `false`: the pattern is drawn by the accented item above, so the
+		// aria palette never paints its own hatch over every bar.
+		aria: getAriaConfig(false, ariaDescription),
 		backgroundColor: 'transparent', // Let the container handle background
 		...getChartMotion('settle')
 	});
@@ -204,6 +223,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	<ChartToolbar
 		chart={echartsInstance.chart}
 		bind:showDecal
+		showDecalToggle={canPattern}
 		filename={measure || yAxisLabel || 'bar-chart'}
 	/>
 	<div bind:this={chartContainer} class="chart"></div>

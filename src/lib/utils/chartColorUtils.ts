@@ -487,6 +487,32 @@ export function getEChartsTooltipStyle(colors: ResolvedChartColors) {
 }
 
 /**
+ * The pattern fill that marks the one accented mark on a single-hue chart.
+ *
+ * ECharts' own decal palette paints `rgba(0, 0, 0, 0.2)`, which is invisible on
+ * an ink bar in daylight and barely there on a cream one at midnight — the
+ * reason the pattern-fill control looked dead on every chart drawn in the house
+ * fill. A hatch cut in the *ground* reads on ink, on cream and on pine in both
+ * themes, because the ground is the one colour no mark is ever drawn in.
+ *
+ * It is a ruled 45° hatch rather than a texture: the press sheet's own way of
+ * calling out one column, and the only ornament here encodes something true —
+ * which bar is the current one, said a second time without colour.
+ *
+ * @param ground - Resolved page ground (`--color-background`), not a CSS var.
+ */
+export function getEChartsAccentDecal(ground: string) {
+	return {
+		color: colorWithOpacity(ground, 0.85),
+		symbol: 'rect',
+		// Solid rows, spaced by their own weight, turned onto the diagonal.
+		dashArrayX: [1, 0],
+		dashArrayY: [4, 4],
+		rotation: -Math.PI / 4
+	};
+}
+
+/**
  * Common axis line styles for ECharts components.
  *
  * @param colors - Resolved chart colors
