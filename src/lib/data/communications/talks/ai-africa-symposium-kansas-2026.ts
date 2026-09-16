@@ -24,8 +24,8 @@ export const talkAiAfricaSymposiumKansas2026: Communication = {
 		'African Literature',
 		'Archives'
 	],
-	url: 'https://shorturl.at/qxb6a',
-	urlLabel: 'Register',
+	url: 'https://calendar.ku.edu/event/ai-and-africa-symposium',
+	urlLabel: 'Event Website',
 	image: 'images/communications/ai-africa-symposium-kansas-2026.webp',
 	heroImage: {
 		src: 'images/communications/ai-africa-symposium-kansas-2026-hero.webp',
