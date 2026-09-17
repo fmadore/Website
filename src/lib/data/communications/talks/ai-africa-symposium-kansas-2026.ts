@@ -24,6 +24,7 @@ export const talkAiAfricaSymposiumKansas2026: Communication = {
 		'African Literature',
 		'Archives'
 	],
+	slidesUrl: 'https://slides.frederickmadore.com/talks/2026-09-17-kansas-ai-and-the-work-of/',
 	url: 'https://calendar.ku.edu/event/ai-and-africa-symposium',
 	urlLabel: 'Event Website',
 	image: 'images/communications/ai-africa-symposium-kansas-2026.webp',

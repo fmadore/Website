@@ -638,6 +638,11 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 		sourceHeight: 720,
 		widths: [160, 240, 400, 800]
 	},
+	'communications/slides/2026-09-17-kansas-ai-and-the-work-of.webp': {
+		sourceWidth: 1280,
+		sourceHeight: 720,
+		widths: [160, 240, 400, 800]
+	},
 	'communications/slides/2026-09-23-stellenbosch-mcp-glam-africains.webp': {
 		sourceWidth: 1280,
 		sourceHeight: 720,
