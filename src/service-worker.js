@@ -44,6 +44,7 @@ const ASSETS_TO_CACHE = ['/', '/offline.html', '/manifest.webmanifest'];
 const CACHE_FIRST_ROUTES = [
 	'/images/',
 	'/icons/',
+	// Skipped for '/app/version.json' in the fetch handler — see the note there.
 	'/_app/',
 	'/app/',
 	'.css',
@@ -160,6 +161,21 @@ sw.addEventListener('fetch', (event) => {
 	// preload cache, which is what made the app.html font preloads read as
 	// fetched-but-unused. See the note on CACHE_FIRST_ROUTES.
 	if (request.destination === 'font' || FONT_EXTENSIONS.some((ext) => url.pathname.endsWith(ext))) {
+		return;
+	}
+
+	// The version file is the freshness oracle, so it is the one file that must
+	// never be answered from a cache. When a node module fails to import — the
+	// redeploy case, where the chunk it names has just been renamed — SvelteKit
+	// fetches this file with `no-cache`, and hard-navigates instead of rendering
+	// the error page if the version moved. A service-worker response discards
+	// those request headers, and `/app/version.json` matches the `/app/` prefix
+	// in CACHE_FIRST_ROUTES long before the `.json` rule is consulted, so the
+	// cached copy answered "no new version" across a deploy that had already
+	// renamed every chunk: no reload, and `Error 500` on a page whose only
+	// problem was being one deploy old. Skipping respondWith() entirely lets the
+	// no-cache headers reach the network. Path tracks `appDir` in svelte.config.js.
+	if (url.pathname.endsWith('/app/version.json')) {
 		return;
 	}
 
