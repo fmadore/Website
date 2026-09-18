@@ -4,6 +4,7 @@
 /// <reference types="@sveltejs/kit" />
 
 import { version } from '$service-worker';
+import { chooseStrategy } from './service-worker-routes';
 
 // Cast self to ServiceWorkerGlobalScope for proper typing
 const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (globalThis.self));
@@ -25,42 +26,10 @@ const RUNTIME_CACHE = `runtime-v${version}`;
 // a plain fetch — otherwise every navigation made while preload was active
 // returned a page that was never written to the runtime cache, and the sentence
 // above was false for exactly the pages a reader had visited.
-// Fonts are deliberately absent: see the note on CACHE_FIRST_ROUTES below —
+// Fonts are deliberately absent: see the note on CACHE_FIRST_ROUTES in
+// ./service-worker-routes —
 // nothing here serves them, so precaching them would only cost install traffic.
 const ASSETS_TO_CACHE = ['/', '/offline.html', '/manifest.webmanifest'];
-
-// Cache strategies. Entries starting with '.' are file extensions and must
-// match the END of the pathname; everything else is a path-prefix substring.
-// (Substring-matching extensions is how '.json' used to match the '.js' rule,
-// which routed all JSON to cache-first and made stale-while-revalidate dead
-// code — data was served stale until the next deploy.)
-// Fonts are intentionally NOT listed. `<link rel="preload" as="font">` in
-// app.html starts the three latin subsets at parse time, but a request answered
-// by a service worker never consults the browser's preload cache, so Firefox
-// reported all three preloads as fetched-and-unused on every repeat visit. The
-// host already serves fonts with `max-age=2678400` (31 days) and a repeat visit
-// measured `transferSize: 0` either way, so letting them go straight to the HTTP
-// cache costs nothing and lets the preload actually be consumed.
-const CACHE_FIRST_ROUTES = [
-	'/images/',
-	'/icons/',
-	// Skipped for '/app/version.json' in the fetch handler — see the note there.
-	'/_app/',
-	'/app/',
-	'.css',
-	'.js',
-	'.png',
-	'.jpg',
-	'.jpeg',
-	'.webp',
-	'.svg',
-	'.ico'
-];
-
-const STALE_WHILE_REVALIDATE_ROUTES = ['/api/', '.json'];
-
-// Matched in the fetch handler to skip service-worker handling entirely.
-const FONT_EXTENSIONS = ['.woff2', '.woff', '.ttf', '.otf'];
 
 // Bound the runtime cache so it can't grow without limit between deploys.
 const RUNTIME_CACHE_MAX_ENTRIES = 150;
@@ -156,33 +125,17 @@ sw.addEventListener('fetch', (event) => {
 		return;
 	}
 
-	// Fonts go straight to the browser with no respondWith() at all. Any
-	// service-worker response — even a plain fetch() passthrough — bypasses the
-	// preload cache, which is what made the app.html font preloads read as
-	// fetched-but-unused. See the note on CACHE_FIRST_ROUTES.
-	if (request.destination === 'font' || FONT_EXTENSIONS.some((ext) => url.pathname.endsWith(ext))) {
-		return;
-	}
+	// Which strategy applies is a pure decision, tested in
+	// service-worker-routes.test.ts. 'passthrough' means no respondWith() at all,
+	// which is the only way a request keeps its own cache headers and the
+	// browser's preload cache — the fonts and the version file both need that.
+	const strategy = chooseStrategy(url.pathname, request.destination);
 
-	// The version file is the freshness oracle, so it is the one file that must
-	// never be answered from a cache. When a node module fails to import — the
-	// redeploy case, where the chunk it names has just been renamed — SvelteKit
-	// fetches this file with `no-cache`, and hard-navigates instead of rendering
-	// the error page if the version moved. A service-worker response discards
-	// those request headers, and `/app/version.json` matches the `/app/` prefix
-	// in CACHE_FIRST_ROUTES long before the `.json` rule is consulted, so the
-	// cached copy answered "no new version" across a deploy that had already
-	// renamed every chunk: no reload, and `Error 500` on a page whose only
-	// problem was being one deploy old. Skipping respondWith() entirely lets the
-	// no-cache headers reach the network. Path tracks `appDir` in svelte.config.js.
-	if (url.pathname.endsWith('/app/version.json')) {
+	if (strategy === 'passthrough') {
 		return;
-	}
-
-	// Handle different types of requests with appropriate strategies
-	if (shouldUseCacheFirst(url.pathname)) {
+	} else if (strategy === 'cache-first') {
 		event.respondWith(handleCacheFirst(request));
-	} else if (shouldUseStaleWhileRevalidate(url.pathname)) {
+	} else if (strategy === 'stale-while-revalidate') {
 		event.respondWith(handleStaleWhileRevalidate(request));
 	} else {
 		event.respondWith(handleNetworkFirst(request, event));
@@ -289,19 +242,6 @@ async function handleNetworkFirst(request, event) {
 
 		throw error;
 	}
-}
-
-// Helper functions to determine caching strategy
-function matchesRoute(pathname, route) {
-	return route.startsWith('.') ? pathname.endsWith(route) : pathname.includes(route);
-}
-
-function shouldUseCacheFirst(pathname) {
-	return CACHE_FIRST_ROUTES.some((route) => matchesRoute(pathname, route));
-}
-
-function shouldUseStaleWhileRevalidate(pathname) {
-	return STALE_WHILE_REVALIDATE_ROUTES.some((route) => matchesRoute(pathname, route));
 }
 
 // Store a response in the runtime cache, evicting oldest entries past the cap.
