@@ -12,6 +12,7 @@
 	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
 	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
 	import { scaleKeyTerms } from '$lib/utils/keyTerms';
+	import { formatReferenceText } from '$lib/utils/citationFormatter';
 	import { PUBLICATION_TYPE_BADGE_LABELS } from '$lib/utils/publicationTypeLabels';
 	import {
 		allPublicationSummaries as allPublications,
@@ -526,22 +527,36 @@
 	};
 	const plates = [pagePlate, railPlate];
 
-	/* The meta-ledger demo is rendered by <RecordLedger> — the component every
-	 * record page uses — so the guide's catalogue entry cannot drift from the
-	 * one that ships, and its DOI is a real `.meta-link` rather than accent text. */
-	const demoMetaRows: MetaRow[] = [
-		{ key: 'Type', value: 'Journal Article' },
-		{ key: 'Journal', value: 'Islamic Africa' },
-		{ key: 'Date', value: '2026' },
-		{
-			key: 'DOI',
-			value: '10.1163/21540993-01201007',
-			href: 'https://doi.org/10.1163/21540993-01201007',
-			external: true,
-			accent: true,
-			icon: 'academicons:doi'
-		}
-	];
+	/* The meta-ledger and cite-block demos read a real record out of the dataset
+	 * and render it through the components every record page uses, so the guide's
+	 * catalogue entry cannot drift from the one that ships — and its DOI is a live
+	 * `.meta-link` that resolves, and that the link checker can hold to account,
+	 * rather than a plausible-looking literal. Four rows of the rail's fuller set,
+	 * which is enough to show the idiom. */
+	const demoRecord = allPublications.find((item) => item.id === 'beninese-imam-election-2022');
+	const demoMetaRows: MetaRow[] = demoRecord
+		? [
+				{ key: 'Type', value: PUBLICATION_TYPE_BADGE_LABELS[demoRecord.type] ?? demoRecord.type },
+				{ key: 'Journal', value: demoRecord.journal ?? '' },
+				{ key: 'Date', value: demoRecord.date },
+				...(demoRecord.doi
+					? [
+							{
+								key: 'DOI',
+								value: demoRecord.doi,
+								href: `https://doi.org/${demoRecord.doi}`,
+								external: true,
+								accent: true,
+								icon: 'academicons:doi'
+							}
+						]
+					: [])
+			]
+		: [];
+
+	/* The same formatter the record rail and the MCP server call, on the same
+	 * record — the claim the cite-block caption makes, made literally true. */
+	const demoReference = demoRecord ? formatReferenceText(demoRecord, { doi: true }) : '';
 
 	/* ===== Colophon — the three families, and where the system lives. ===== */
 	const typefaces = [
@@ -1303,8 +1318,8 @@
 				5.5rem for the 380px metadata rail. It is what the “Record” block prints on a publication or
 				a talk — and the “Project” block on a research project, whose period, funder, programme,
 				grant and regions are a catalogue entry by the same test — above the rail’s label and action
-				stack. The block below is rendered by <span class="data-voice">RecordLedger</span> itself,
-				so the DOI is a real
+				stack. The block below is a real record from the dataset, rendered by
+				<span class="data-voice">RecordLedger</span> itself, so the DOI is a live
 				<span class="data-voice">.meta-link</span> carrying the
 				<span class="data-voice">.meta-icon</span> identifier glyph, exactly as a record page ships it.
 			</p>
@@ -1337,10 +1352,7 @@
 				<div class="guide-rail">
 					<div class="cite-block">
 						<p class="rail-label">Cite</p>
-						<p class="cite-reference">
-							Madore, Frédérick. (2026). Muslim Minorities in Africa. Islamic Africa 12 (1): 1–24.
-							https://doi.org/10.1163/21540993-01201007
-						</p>
+						<p class="cite-reference">{demoReference}</p>
 						<div class="cite-actions">
 							<Button variant="outline-primary" label="Copy reference" block />
 							<Button variant="outline-secondary" label="Export BibTeX" block />
@@ -1349,9 +1361,10 @@
 				</div>
 			</figure>
 			<p class="guide-caption">
-				The same reference string the MCP server returns for its <span class="data-voice"
-					>reference</span
-				> style — one formatter, so the page and an assistant can never disagree about the same work.
+				Printed by <span class="data-voice">formatReferenceText</span> — the same call the record
+				rail makes and the same string the MCP server returns for its
+				<span class="data-voice">reference</span> style. One formatter, so the page and an assistant can
+				never disagree about the same work.
 			</p>
 		</section>
 
