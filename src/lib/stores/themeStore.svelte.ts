@@ -8,7 +8,19 @@ const defaultTheme: Theme = 'light';
 function getInitialTheme(): Theme {
 	if (!browser) return defaultTheme; // Default for SSR
 
-	const storedTheme = localStorage.getItem('theme') as Theme | null;
+	/* A stored choice is a convenience, not a requirement. This module is
+	 * evaluated at boot on every page (layout -> Header -> ThemeToggle), so an
+	 * unguarded read throws wherever storage is blocked or partitioned,
+	 * hydration dies with it, and SvelteKit renders the error page at status
+	 * 500 over a document that was served fine. Falling through to the OS
+	 * preference is the honest degradation. Mirrored in `src/app.html` and
+	 * `static/404.html` — edit the three together. */
+	let storedTheme: Theme | null = null;
+	try {
+		storedTheme = localStorage.getItem('theme') as Theme | null;
+	} catch {
+		// Storage blocked; the OS preference below answers instead.
+	}
 	if (storedTheme && ['light', 'dark'].includes(storedTheme)) {
 		return storedTheme;
 	}
@@ -42,7 +54,13 @@ function applyTheme(newTheme: Theme) {
 	if (browser) {
 		document.documentElement.classList.remove('light', 'dark');
 		document.documentElement.classList.add(newTheme);
-		localStorage.setItem('theme', newTheme);
+		/* Also on the boot path, via the `applyTheme(initialTheme)` call below:
+		 * the write has to be guarded for the same reason as the read. */
+		try {
+			localStorage.setItem('theme', newTheme);
+		} catch {
+			// Storage blocked; the choice holds for this page without persisting.
+		}
 		applyThemeColorMeta();
 	}
 }

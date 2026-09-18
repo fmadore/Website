@@ -382,7 +382,15 @@
 		<!-- Theme initialization script -->
 		<script>
 			(function () {
-				const theme = localStorage.getItem('theme');
+				// Guarded for the same reason as the copy in `static/404.html`: an
+				// unguarded read throws wherever storage is blocked or partitioned,
+				// which takes out the bootstrap and then hydration.
+				let theme = null;
+				try {
+					theme = localStorage.getItem('theme');
+				} catch {
+					/* storage blocked — fall through to the OS preference */
+				}
 				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 				const defaultTheme = 'light'; // Default theme if nothing else is set
 
