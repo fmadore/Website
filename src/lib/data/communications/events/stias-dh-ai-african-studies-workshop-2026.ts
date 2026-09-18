@@ -30,6 +30,11 @@ export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {
 	urlLabel: 'Workshop Website',
 	additionalUrls: [],
 	image: 'images/communications/point-sud-logo.svg',
+	heroImage: {
+		src: 'images/communications/point-sud-logo.svg',
+		alt: 'DFG Point Sud programme logo',
+		caption: ''
+	},
 	coordinates: {
 		latitude: -33.9321,
 		longitude: 18.8602

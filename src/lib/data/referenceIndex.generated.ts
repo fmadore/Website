@@ -2029,6 +2029,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2026-09-23",
 		"year": 2026,
 		"image": "images/communications/point-sud-logo.svg",
+		"heroImage": {
+			"src": "images/communications/point-sud-logo.svg"
+		},
 		"conference": "Humanités numériques et intelligence artificielle en études africaines : vers des pratiques durables et équitables",
 		"location": "Stellenbosch Institute for Advanced Study (STIAS), Stellenbosch",
 		"country": "South Africa"
@@ -2065,6 +2068,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2026-09-21",
 		"year": 2026,
 		"image": "images/communications/point-sud-logo.svg",
+		"heroImage": {
+			"src": "images/communications/point-sud-logo.svg"
+		},
 		"conference": "Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices",
 		"location": "Stellenbosch Institute for Advanced Study (STIAS), Stellenbosch",
 		"country": "South Africa"

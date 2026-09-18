@@ -35,6 +35,11 @@ Reste la question que l'atelier doit poser. Une telle médiation protège-t-elle
 	url: 'https://fmadore.github.io/stias-dh-ai-workshop-2026/',
 	urlLabel: 'Workshop Website',
 	image: 'images/communications/point-sud-logo.svg',
+	heroImage: {
+		src: 'images/communications/point-sud-logo.svg',
+		alt: 'DFG Point Sud programme logo',
+		caption: ''
+	},
 	coordinates: {
 		latitude: -33.9321,
 		longitude: 18.8602
