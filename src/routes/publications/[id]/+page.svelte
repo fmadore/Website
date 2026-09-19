@@ -16,8 +16,6 @@
 	import PublicationToc, { hasToc } from '$lib/components/publications/PublicationToc.svelte';
 	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
 	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
-	import { allPublications } from '$lib/data/publications/index';
-	import { researchProjectPath } from '$lib/data/research';
 	import {
 		createPublicationSEODescription,
 		createPublicationSEOKeywords,
@@ -70,7 +68,7 @@
 
 	// Internal research page for this publication's project, resolved from the
 	// research dataset so a new project links itself.
-	const projectPath = $derived(researchProjectPath(publication.project));
+	const projectPath = $derived(data.projectPath);
 	const projectUrl = $derived(projectPath ? `${base}${projectPath}` : undefined);
 
 	// Byline — "by A, B and C", with the preface credit as its trailing clause.
@@ -103,11 +101,7 @@
 	);
 
 	// Related publications in the same project (excluding the current one).
-	const relatedInProject = $derived(
-		publication.project
-			? allPublications.filter((p) => p.id !== publication.id && p.project === publication.project)
-			: []
-	);
+	const relatedInProject = $derived(data.relatedInProject);
 </script>
 
 <SEO
@@ -156,13 +150,13 @@
 
 {#snippet relatedBlock()}
 	<RelatedItemsList
-		allItems={allPublications}
+		allItems={relatedInProject}
 		currentItemId={publication.id}
 		filterKey="project"
 		filterValue={publication.project}
 		title="More in this project"
 		itemComponent={RelatedItemCard as unknown as ComponentType}
-		baseItemUrl="/publications/"
+		baseItemUrl="{base}/publications/"
 		viewAllUrl="{base}/publications"
 		maxItems={3}
 		sectionClass="pub-related section section--flush"

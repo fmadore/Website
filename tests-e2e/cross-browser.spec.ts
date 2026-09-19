@@ -1,13 +1,16 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, ready } from './fixtures';
 
 test('core content and an embedded project render across browser engines', async ({ page }) => {
 	await page.goto('/');
+	await ready(page);
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
 	await page.goto('/publications');
+	await ready(page);
 	await expect(page.locator('ol.bib-list > li').first()).toBeVisible();
 
 	await page.goto('/digital-humanities/iwac-sentiment-analysis');
+	await ready(page);
 	const iframe = page.locator('#iwac-sentiment-analysis-embed');
 	await expect(iframe).toBeAttached();
 	await expect(iframe).toHaveAttribute('loading', 'lazy');

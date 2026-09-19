@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { afterNavigate } from '$app/navigation';
 	import { fade } from 'svelte/transition';
@@ -15,6 +16,14 @@
 	import { useGtm } from '$lib/utils/gtm.svelte';
 	import { useNetworkMonitor } from '$lib/utils/networkMonitor.svelte';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
+
+	// Readiness signal for progressive enhancements and browser checks.
+	onMount(() => {
+		document.documentElement.dataset.appReady = 'true';
+		return () => {
+			delete document.documentElement.dataset.appReady;
+		};
+	});
 
 	// Register all icons at app startup to avoid API calls
 	registerIcons();
@@ -35,10 +44,14 @@
 
 		let disposed = false;
 		let unregister = () => {};
-		void import('$lib/utils/webmcp.svelte').then(({ registerWebMcp }) => {
-			if (disposed) return;
-			unregister = registerWebMcp();
-		});
+		void import('$lib/utils/webmcp.svelte')
+			.then(({ registerWebMcp }) => {
+				if (disposed) return;
+				unregister = registerWebMcp();
+			})
+			.catch((error) => {
+				if (import.meta.env.DEV) console.warn('WebMCP unavailable:', error);
+			});
 
 		return () => {
 			disposed = true;

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { allCommunications } from '$lib/data/communications/index';
-	import { researchProjectPath } from '$lib/data/research';
 	import SEO from '$lib/SEO.svelte';
 	import { base } from '$app/paths';
 	import type { Communication } from '$lib/types/communication';
@@ -62,7 +60,7 @@
 	const byline = $derived(formatByline(communication.authors));
 
 	// Internal research page for this talk's project, when the name matches one.
-	const projectPath = $derived(researchProjectPath(communication.project));
+	const projectPath = $derived(data.projectPath);
 	const projectUrl = $derived(projectPath ? `${base}${projectPath}` : undefined);
 
 	// Abstract → paragraphs. Rendered via {@html} because abstracts carry inline
@@ -94,13 +92,7 @@
 	);
 
 	// Related talks in the same project (excluding the current one).
-	const relatedInProject = $derived(
-		communication.project
-			? allCommunications.filter(
-					(c) => c.id !== communication.id && c.project === communication.project
-				)
-			: []
-	);
+	const relatedInProject = $derived(data.relatedInProject);
 
 	// Lazy load MapVisualization only when the map scrolls near the viewport.
 	// maplibre-gl (~267 KiB JS) plus ~2 MB of Carto tiles dominate LCP/TBT, and
@@ -299,13 +291,13 @@
 
 {#snippet relatedBlock()}
 	<RelatedItemsList
-		allItems={allCommunications}
+		allItems={relatedInProject}
 		currentItemId={communication.id}
 		filterKey="project"
 		filterValue={communication.project}
 		title="More in this project"
 		itemComponent={RelatedItemCard as unknown as ComponentType}
-		baseItemUrl="/communications/"
+		baseItemUrl="{base}/communications/"
 		viewAllUrl="{base}/conference-activity"
 		maxItems={3}
 		sectionClass="comm-related section section--flush"

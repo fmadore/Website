@@ -57,10 +57,10 @@ export default defineConfig({
 			// A ratchet, not an aspirational target: new work may raise these
 			// floors, but must not silently reduce the verified pure-logic surface.
 			thresholds: {
-				statements: 52,
-				branches: 48,
-				functions: 59,
-				lines: 52
+				statements: 60,
+				branches: 55,
+				functions: 66,
+				lines: 61
 			}
 		}
 	}

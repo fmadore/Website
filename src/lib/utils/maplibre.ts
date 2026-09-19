@@ -26,13 +26,12 @@
  * self-contained chunk.
  */
 
+import { retryableLoader } from './retryableLoader';
 import { browser } from '$app/environment';
 // Static import so Vite resolves and emits the worker chunk at build time.
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 
 export type MapLibreModule = typeof import('maplibre-gl');
-
-let loadPromise: Promise<MapLibreModule> | null = null;
 
 /**
  * Dynamically load MapLibre GL JS (module + CSS) and register the worker.
@@ -45,31 +44,31 @@ export async function loadMapLibre(): Promise<MapLibreModule> {
 		throw new Error('loadMapLibre() can only be called in the browser');
 	}
 
-	loadPromise ??= (async () => {
-		const [module] = await Promise.all([
-			import('maplibre-gl'),
-			import('maplibre-gl/dist/maplibre-gl.css')
-		]);
-
-		// Must run before any Map is constructed, so every map uses the worker
-		// chunk Vite emitted rather than the path v6 guesses from import.meta.url.
-		module.setWorkerUrl(workerUrl);
-
-		// Prewarm spins up the worker + shared resources eagerly, so the first
-		// `new Map()` paints a frame or two sooner. Safe to no-op if unavailable.
-		if (typeof module.prewarm === 'function') {
-			try {
-				module.prewarm();
-			} catch {
-				// prewarm() is a nice-to-have; never block map creation on it.
-			}
-		}
-
-		return module;
-	})();
-
-	return loadPromise;
+	return loadModule();
 }
+
+const loadModule = retryableLoader(async () => {
+	const [module] = await Promise.all([
+		import('maplibre-gl'),
+		import('maplibre-gl/dist/maplibre-gl.css')
+	]);
+
+	// Must run before any Map is constructed, so every map uses the worker
+	// chunk Vite emitted rather than the path v6 guesses from import.meta.url.
+	module.setWorkerUrl(workerUrl);
+
+	// Prewarm spins up the worker + shared resources eagerly, so the first
+	// `new Map()` paints a frame or two sooner. Safe to no-op if unavailable.
+	if (typeof module.prewarm === 'function') {
+		try {
+			module.prewarm();
+		} catch {
+			// prewarm() is a nice-to-have; never block map creation on it.
+		}
+	}
+
+	return module;
+});
 
 /**
  * CartoCDN basemap styles chosen to match the site's light/dark themes.

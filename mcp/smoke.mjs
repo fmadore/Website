@@ -1,4 +1,6 @@
-import { createServer } from 'node:http';
+import { createServer, request as httpRequest } from 'node:http';
+import { spawn } from 'node:child_process';
+import { once } from 'node:events';
 import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -313,6 +315,89 @@ async function exerciseHttp() {
 	}
 }
 
+async function exerciseHttpProcess() {
+	const child = spawn(process.execPath, [here('./dist/http.js')], {
+		env: { ...process.env, PORT: '0', WEBSITE_API_BASE: base },
+		stdio: ['ignore', 'ignore', 'pipe', 'ipc']
+	});
+	const exited = once(child, 'exit');
+	let client;
+	try {
+		const endpoint = await new Promise((resolve, reject) => {
+			const timer = setTimeout(() => reject(new Error('HTTP server startup timeout')), 10000);
+			let output = '';
+			child.stderr.on('data', (data) => {
+				output += data;
+				const match = output.match(/listening on 0.0.0.0:(\d+)\/mcp/);
+				if (match) {
+					clearTimeout(timer);
+					resolve('http://127.0.0.1:' + match[1]);
+				}
+			});
+			child.once('error', (error) => {
+				clearTimeout(timer);
+				reject(error);
+			});
+			child.once('exit', () => {
+				clearTimeout(timer);
+				reject(new Error('HTTP server exited before ready: ' + output));
+			});
+		});
+		check('HTTP process health route', (await fetch(endpoint + '/healthz')).status === 200);
+		const forbiddenStatus = await new Promise((resolve, reject) => {
+			const req = httpRequest(
+				endpoint + '/healthz',
+				{ headers: { Host: 'untrusted.example' } },
+				(res) => {
+					res.resume();
+					resolve(res.statusCode);
+				}
+			);
+			req.on('error', reject);
+			req.end();
+		});
+		check('HTTP process rejects untrusted hosts', forbiddenStatus === 403);
+		check(
+			'HTTP process returns 404 for unknown routes',
+			(await fetch(endpoint + '/missing')).status === 404
+		);
+		client = new Client(
+			{ name: 'http-process-smoke', version: '0.0.0' },
+			{ versionNegotiation: { mode: 'auto' } }
+		);
+		await client.connect(new StreamableHTTPClientTransport(new URL(endpoint + '/mcp')));
+		check(
+			'HTTP process lists tools over the real Node adapter',
+			(await client.listTools()).tools.length === 12
+		);
+		check(
+			'HTTP process executes a tool',
+			(await client.callTool({ name: 'search_publications', arguments: { limit: 1 } }))
+				.structuredContent?.count === 1
+		);
+		await client.close();
+		client = null;
+		child.send('shutdown');
+		let timer;
+		try {
+			const [code] = await Promise.race([
+				exited,
+				new Promise((_, reject) => {
+					timer = setTimeout(() => reject(new Error('HTTP shutdown timeout')), 10000);
+				})
+			]);
+			check('HTTP process exits cleanly on shutdown', code === 0);
+		} finally {
+			clearTimeout(timer);
+		}
+	} finally {
+		await client?.close().catch(() => {});
+		// A failed graceful-shutdown assertion must not leave the smoke suite hanging.
+		if (child.exitCode === null && child.signalCode === null) child.kill('SIGKILL');
+		await exited;
+	}
+}
+
 let unpacked;
 try {
 	console.log('\n── developer build (dist/index.js) ──');
@@ -320,6 +405,7 @@ try {
 
 	console.log('\n── stateless Streamable HTTP (dist/server.js) ──');
 	await exerciseHttp();
+	await exerciseHttpProcess();
 
 	const bundle = here('./dist/frederickmadore-website.mcpb');
 	if (existsSync(bundle)) {
@@ -343,6 +429,10 @@ try {
 			manifest.server.entry_point === 'server/index.js'
 		);
 		check('manifest tool list matches the server', manifest.tools.length === 12);
+		check(
+			'manifest version matches the package',
+			manifest.version === JSON.parse(await readFile(here('./package.json'), 'utf8')).version
+		);
 	} else {
 		console.log('\n(no .mcpb built — run `npm run pack -w mcp` to include it)');
 	}

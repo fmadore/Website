@@ -96,9 +96,26 @@ Citation output is not reimplemented there — the build aliases `$lib` and bund
 | `npm run test`          | Vitest unit tests — pure utils, data-integrity validation of all content |
 | `npm run test:coverage` | Unit tests with V8 coverage report                                       |
 | `npm run test:e2e`      | Playwright smoke tests against the production build                      |
-| `npm run test:all`      | Everything above in sequence                                             |
+| `npm run test:all`      | Alias for the complete `npm run verify` workflow                         |
 
 CI runs the full gate (lint, type-check, unit tests, dependency audit, reference-index freshness, build, E2E) on every pull request, and again on the deploy path before publishing. CodeQL scans weekly and on every change.
+
+Run `npm run verify` before submitting a broad change. It checks formatting and types,
+enforces unit coverage, runs the compiled Svelte lifecycle tests, checks generated data
+and font freshness, builds once, checks bundle budgets and prerender output, exercises
+the MCP transports and bundle, and runs Playwright against that build. It starts its own
+preview server so a stale development server cannot satisfy the checks. Set
+`PLAYWRIGHT_PORT` if the default preview port is occupied.
+
+The font check requires Python with FontTools and Brotli installed; set `PYTHON` to the
+interpreter path if needed. Install the configured Playwright browsers with
+`npx playwright install` before the first browser run. Network-dependent dependency,
+link, citation, and Lighthouse checks remain separate from the deterministic workflow.
+
+For focused work, `npm run test:lifecycle` checks chart/map updates, retry, late imports,
+and cleanup using the Svelte client compiler. `npm run check:generated` checks committed
+content projections without rewriting them. Pure-logic coverage floors are 60% statements,
+55% branches, 66% functions, and 61% lines; browser/lifecycle tests cover separate behavior.
 
 ## License
 

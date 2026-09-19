@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, ready } from './fixtures';
 import AxeBuilder from '@axe-core/playwright';
 
 /**
@@ -44,7 +44,8 @@ for (const { name, path } of pages) {
 	test(`${name} has no WCAG A/AA violations`, async ({ page }) => {
 		test.setTimeout(path.includes('visualisations') ? 60_000 : 30_000);
 		await page.goto(path);
-		// Wait for the primary heading so we scan the hydrated page, not a shell.
+		await ready(page);
+		// Readiness above proves hydration; the heading establishes the page being scanned.
 		await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
 
 		const results = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
@@ -60,6 +61,7 @@ for (const { name, path } of darkPages) {
 	test(`${name} has no WCAG A/AA violations in dark mode`, async ({ page }) => {
 		await page.emulateMedia({ colorScheme: 'dark' });
 		await page.goto(path);
+		await ready(page);
 		await expect(page.locator('html')).toHaveClass(/\bdark\b/);
 		await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
 
@@ -83,6 +85,7 @@ for (const { name, path } of darkPages) {
 test('key-terms cloud targets clear the WCAG 2.5.8 floor', async ({ page }) => {
 	test.setTimeout(60_000);
 	await page.goto('/publications/visualisations');
+	await ready(page);
 	await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
 
 	const terms = page.locator('.key-terms a');

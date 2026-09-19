@@ -50,6 +50,7 @@ jobs:
           path: |
             .svelte-kit
             node_modules/.cache
+            node_modules/.vitest-cache
           key: ${{ runner.os }}-sveltekit-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-sveltekit-
@@ -82,6 +83,9 @@ jobs:
 
       - name: Unit tests and coverage floor (Vitest)
         run: npm run test:coverage
+
+      - name: Svelte lifecycle tests
+        run: npm run test:lifecycle
 
       - name: Reference index freshness
         run: node scripts/generate-reference-index.mjs --check
@@ -206,6 +210,7 @@ jobs:
           path: |
             .svelte-kit
             node_modules/.cache
+            node_modules/.vitest-cache
           key: ${{ runner.os }}-sveltekit-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-sveltekit-

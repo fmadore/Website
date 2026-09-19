@@ -1575,10 +1575,7 @@
 	/* Collapse the plate edge onto the field edge, so the two boxes read as one
 	 * drawn object rather than as two stacked rules. */
 	margin-top: calc(-1 * var(--border-width-thin));
-	/* Roughly eight ledger rows; the rest is scrolled, never laid out. */
-	max-height: 17rem;
-	overflow-y: auto;
-	overscroll-behavior: contain;
+
 	border: var(--border-width-thin) solid var(--color-border);
 	/* The same ground as the field above it, so the two read as one drawn
 	 * object. It must also stay one step off --color-background-muted, which
@@ -1593,6 +1590,10 @@
 }
 
 .facet-combobox-list {
+	/* The controlled listbox owns scrolling; keyboard focus stays in its input. */
+	max-height: 17rem;
+	overflow-y: auto;
+	overscroll-behavior: contain;
 	list-style: none;
 	margin: 0;
 	padding: 0;

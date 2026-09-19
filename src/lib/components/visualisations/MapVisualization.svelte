@@ -11,6 +11,7 @@
 </script>
 
 <script lang="ts">
+	import RecoveryActions from './RecoveryActions.svelte';
 	import { base } from '$app/paths';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import {
@@ -390,6 +391,7 @@
 		<div class="state-note map-state-note" role="status">
 			<span class="dateline">Map unavailable</span>
 			<p>The map could not be loaded. The {noun} records on this page are unaffected.</p>
+			<RecoveryActions retry={ml.retry} label="Retry map" />
 		</div>
 	{/if}
 	{#if showLegend && legendEntries.length > 0}

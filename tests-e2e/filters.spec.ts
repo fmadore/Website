@@ -1,4 +1,5 @@
-import { test, expect, type Locator, type Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
+import { test, expect, ready } from './fixtures';
 
 /**
  * Filter-system E2E: the /publications index wires the runed
@@ -8,6 +9,59 @@ import { test, expect, type Locator, type Page } from '@playwright/test';
  */
 
 const bibItems = 'ol.bib-list > li';
+
+test('narrowing from page two resets pagination and preserves search on reload', async ({
+	page
+}) => {
+	await page.goto('/publications');
+	await ready(page);
+	await page.getByRole('button', { name: 'Page 2', exact: true }).click();
+	await expect(page.getByRole('button', { name: 'Page 2', exact: true })).toHaveAttribute(
+		'aria-current',
+		'page'
+	);
+	await page.getByRole('button', { name: /^Books/ }).click();
+	await page.getByRole('searchbox').fill('Islam');
+	await expect(page).toHaveURL(/q=Islam/);
+	const count = await page.locator(bibItems).count();
+	expect(count).toBeGreaterThan(0);
+	await expect(page.getByRole('button', { name: 'Page 2', exact: true })).toHaveCount(0);
+	await page.reload();
+	await ready(page);
+	await expect(page.getByRole('searchbox')).toHaveValue('Islam');
+	await expect(page.locator(bibItems)).toHaveCount(count);
+});
+
+test('repeated type parameters and search survive back and forward', async ({ page }) => {
+	await page.goto('/publications?type=book&type=chapter&q=Islam');
+	await ready(page);
+	await expect(page.getByRole('button', { name: /^Books/ })).toHaveClass(/chip--selected/);
+	await expect(page.getByRole('button', { name: /^Chapters/ })).toHaveClass(/chip--selected/);
+	const original = page.url();
+	await page.getByRole('link', { name: 'CV', exact: true }).first().click();
+	await expect(page).toHaveURL(/\/cv$/);
+	await page.goBack();
+	await expect(page).toHaveURL(original);
+	await expect(page.getByRole('searchbox')).toHaveValue('Islam');
+	await expect(page.getByRole('button', { name: /^Chapters/ })).toHaveClass(/chip--selected/);
+	await page.goForward();
+	await expect(page).toHaveURL(/\/cv$/);
+});
+
+test('conference filters support search, type selection, and reload', async ({ page }) => {
+	await page.goto('/conference-activity');
+	await ready(page);
+	const chip = page.locator('.type-chips button').nth(1);
+	await chip.click();
+	await expect(chip).toHaveClass(/chip--selected/);
+	await page.getByRole('searchbox').fill('Islam');
+	await expect(page).toHaveURL(/q=Islam/);
+	const selected = await chip.getAttribute('title');
+	await page.reload();
+	await ready(page);
+	await expect(page.getByRole('searchbox')).toHaveValue('Islam');
+	await expect(page.locator('.type-chips .chip--selected')).toHaveAttribute('title', selected!);
+});
 
 /**
  * Clicks the "Books" type chip until the URL reflects the filter. The first
@@ -26,6 +80,7 @@ test('clicking a type chip narrows the list and syncs the URL; clearing restores
 	page
 }) => {
 	await page.goto('/publications');
+	await ready(page);
 
 	const items = page.locator(bibItems);
 	const initialCount = await items.count();
@@ -53,6 +108,7 @@ test('clicking a type chip narrows the list and syncs the URL; clearing restores
 
 test('toggling the same chip off restores the list and URL', async ({ page }) => {
 	await page.goto('/publications');
+	await ready(page);
 	const items = page.locator(bibItems);
 	const initialCount = await items.count();
 
@@ -69,6 +125,7 @@ test('toggling the same chip off restores the list and URL', async ({ page }) =>
 
 test('a deep link with a filter query applies the filter on load', async ({ page }) => {
 	await page.goto('/publications?type=book');
+	await ready(page);
 
 	const booksChip = page.getByRole('button', { name: /^Books/ });
 	// Hydration + urlFilterSync apply the URL state to the filter system.
@@ -80,6 +137,7 @@ test('a deep link with a filter query applies the filter on load', async ({ page
 
 test('type counts remain selectable totals when another type is active', async ({ page }) => {
 	await page.goto('/publications');
+	await ready(page);
 
 	const booksChip = page.getByRole('button', { name: /^Books/ });
 	const chaptersChip = page.getByRole('button', { name: /^Chapters/ });

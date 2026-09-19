@@ -10,15 +10,7 @@ import {
 
 type ModuleType = Record<string, unknown>;
 
-// Define all template IDs to filter out
-const templateIds = [
-	'paper-template-id',
-	'panel-template-id',
-	'talk-template-id',
-	'poster-template-id',
-	'event-template-id',
-	'podcast-template-id'
-];
+import { COMMUNICATION_TEMPLATE_IDS as templateIds } from '$lib/dataMetadata';
 
 // Dynamically import all communication files from relevant subfolders,
 // excluding sub-indexes and per-type template files

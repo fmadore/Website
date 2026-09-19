@@ -20,6 +20,7 @@ Colour encodes the node/edge kind, size and link distance encode the weight;
 no two channels carry the same value.
 -->
 <script lang="ts">
+	import RecoveryActions from './RecoveryActions.svelte';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import Icon from '@iconify/svelte';
@@ -197,9 +198,14 @@ no two channels carry the same value.
 
 	$effect(() => {
 		let cancelled = false;
-		import('$lib/utils/networkLayout').then((mod) => {
-			if (!cancelled) layoutModule = mod;
-		});
+		import('$lib/utils/networkLayout')
+			.then((mod) => {
+				if (!cancelled) layoutModule = mod;
+			})
+			.catch((error) => {
+				if (!cancelled) loadError = true;
+				if (import.meta.env.DEV) console.error('Network layout unavailable:', error);
+			});
 		return () => {
 			cancelled = true;
 		};
@@ -265,24 +271,30 @@ no two channels carry the same value.
 	let zoomSelection: any = null;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- d3-zoom's zoomIdentity
 	let zoomIdentity: any = null;
+	let loadError = $state(false);
 
 	$effect(() => {
 		if (!svgEl) return;
 		let disposed = false;
 
-		Promise.all([import('d3-zoom'), import('d3-selection')]).then(([zoomMod, selectionMod]) => {
-			if (disposed || !svgEl) return;
-			zoomIdentity = zoomMod.zoomIdentity;
-			zoomBehavior = zoomMod
-				.zoom()
-				.scaleExtent([0.4, 6])
-				.on('zoom', (event: { transform: FitTransform }) => {
-					transform = { x: event.transform.x, y: event.transform.y, k: event.transform.k };
-				});
-			zoomSelection = selectionMod.select(svgEl);
-			zoomSelection.call(zoomBehavior);
-			applyFit();
-		});
+		Promise.all([import('d3-zoom'), import('d3-selection')])
+			.then(([zoomMod, selectionMod]) => {
+				if (disposed || !svgEl) return;
+				zoomIdentity = zoomMod.zoomIdentity;
+				zoomBehavior = zoomMod
+					.zoom()
+					.scaleExtent([0.4, 6])
+					.on('zoom', (event: { transform: FitTransform }) => {
+						transform = { x: event.transform.x, y: event.transform.y, k: event.transform.k };
+					});
+				zoomSelection = selectionMod.select(svgEl);
+				zoomSelection.call(zoomBehavior);
+				applyFit();
+			})
+			.catch((error) => {
+				if (!disposed) loadError = true;
+				if (import.meta.env.DEV) console.error('Network controls unavailable:', error);
+			});
 
 		return () => {
 			disposed = true;
@@ -504,6 +516,14 @@ no two channels carry the same value.
 </script>
 
 <div class="viz-plate" bind:this={outerContainer}>
+	<!-- The data table remains available even when the enhancement fails. -->
+	{#if loadError}<div class="state-note" role="status">
+			<p>
+				The interactive network could not be loaded. Reload the page to try again, or read the data
+				table.
+			</p>
+			<RecoveryActions />
+		</div>{/if}
 	<ChartToolbar
 		chart={null}
 		onDownload={handleDownload}

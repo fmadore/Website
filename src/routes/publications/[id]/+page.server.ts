@@ -1,7 +1,9 @@
+import { relatedItems } from '$lib/server/relatedItems';
+import { researchProjectPath } from '$lib/data/research';
 import { allPublications } from '$lib/data/publications/index';
 import { buildPublicationJsonLd } from '$lib/utils/entityJsonLd';
 import { loadEntityDetail } from '$lib/utils/entityPageLoader';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
 /**
  * Enumerate every publication for the prerenderer.
@@ -14,7 +16,7 @@ import type { PageLoad } from './$types';
  */
 export const entries = () => allPublications.map(({ id }) => ({ id }));
 
-export const load: PageLoad = ({ params }) => {
+export const load: PageServerLoad = ({ params }) => {
 	const { entity: publication, jsonLdString } = loadEntityDetail({
 		id: params.id,
 		find: (id) => allPublications.find((p) => p.id === id),
@@ -22,5 +24,10 @@ export const load: PageLoad = ({ params }) => {
 		notFound: 'Publication not found'
 	});
 
-	return { publication, jsonLdString };
+	return {
+		publication,
+		jsonLdString,
+		relatedInProject: relatedItems(allPublications, publication),
+		projectPath: researchProjectPath(publication.project)
+	};
 };

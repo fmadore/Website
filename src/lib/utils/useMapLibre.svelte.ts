@@ -80,6 +80,7 @@ export interface UseMapLibreReturn {
 	 * call site: the string is for the DEV console, never for the reader.
 	 */
 	readonly importError: string | null;
+	retry: () => void;
 }
 
 export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
@@ -98,6 +99,7 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 	let maplibregl = $state<MapLibreModule | null>(null);
 	let isMapLoaded = $state(false);
 	let importError = $state<string | null>(null);
+	let attempt = $state(0);
 	// The style currently applied to the map; compared against isDark() to
 	// decide when a setStyle is actually needed.
 	let currentThemeIsDark: boolean | null = null;
@@ -107,9 +109,11 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 	// is read untracked so prop changes don't tear the map down.
 	$effect(() => {
 		const container = getContainer();
+		void attempt;
 		if (!browser || !container) return;
 
 		let cancelled = false;
+		importError = null;
 
 		(async () => {
 			try {
@@ -167,6 +171,7 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 					if (import.meta.env.DEV) console.error('MapLibre error:', e.error);
 				});
 			} catch (error) {
+				if (cancelled) return;
 				if (import.meta.env.DEV) console.error('Error initializing map:', error);
 				importError = error instanceof Error ? error.message : 'Unknown error loading map';
 			}
@@ -194,9 +199,13 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 		if (!m || !gl || !isMapLoaded || dark === currentThemeIsDark) return;
 		currentThemeIsDark = dark;
 		m.setStyle(dark ? MAP_STYLES.dark : MAP_STYLES.light);
-		m.once('style.load', () => {
+		const ready = () => {
 			untrack(() => onStyleReady(m, gl));
-		});
+		};
+		m.once('style.load', ready);
+		return () => {
+			m.off('style.load', ready);
+		};
 	});
 
 	// Data effect: tracks only watchData()'s value; the callback runs untracked
@@ -205,11 +214,14 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 		watchData?.();
 		const m = map;
 		const gl = maplibregl;
-		if (!m || !gl || !isMapLoaded) return;
+		if (!m || !gl || !isMapLoaded || !m.isStyleLoaded()) return;
 		untrack(() => onDataChange?.(m, gl));
 	});
 
 	return {
+		retry: () => {
+			attempt += 1;
+		},
 		get map() {
 			return map;
 		},

@@ -16,7 +16,7 @@
 		"prebuild": "npm run gen:refs && npm run gen:summaries && npm run gen:analysis && npm run gen:prose && npm run gen:images",
 		"gen:images": "node scripts/generate-image-variants.mjs",
 		"check:images": "node scripts/generate-image-variants.mjs --check",
-		"check:fonts": "python scripts/subset-fonts.py --check",
+		"check:fonts": "node scripts/check-fonts.mjs",
 		"preview": "vite preview",
 		"gen:refs": "node scripts/generate-reference-index.mjs",
 		"gen:summaries": "node scripts/generate-publication-summaries.mjs && node scripts/generate-communication-summaries.mjs",
@@ -44,7 +44,7 @@
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:coverage": "vitest run --coverage",
-		"test:all": "npm run lint && npm run check && npm run test && npm run test:e2e",
+		"test:all": "npm run verify",
 		"test:e2e": "playwright test",
 		"test:e2e:ui": "playwright test --ui",
 		"serve:https": "npx serve build -l 8080 --ssl-cert localhost.pem --ssl-key localhost-key.pem",
@@ -52,7 +52,10 @@
 		"sync:projects": "node scripts/sync-projects-to-vault.mjs",
 		"sync:publications": "node scripts/sync-publications-to-vault.mjs",
 		"sync:vault": "npm run sync:publications -- --write && npm run sync:projects -- --write && npm run sync:sections -- --write && npm run sync:talks -- --write",
-		"sync:sections": "node scripts/sync-sections-to-vault.mjs"
+		"sync:sections": "node scripts/sync-sections-to-vault.mjs",
+		"check:generated": "node scripts/generate-reference-index.mjs --check && node scripts/generate-publication-summaries.mjs --check && node scripts/generate-communication-summaries.mjs --check && node scripts/generate-analysis-summaries.mjs --check && node scripts/generate-research-prose.mjs --check",
+		"test:lifecycle": "tsc --project tests-lifecycle/tsconfig.json --noEmit && vitest run --config vitest.lifecycle.config.ts",
+		"verify": "node scripts/verify.mjs"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.12.1",
@@ -87,7 +90,7 @@
 	},
 	"overrides": {
 		"js-yaml": ">=4.1.1",
-		"devalue": ">=5.8.1",
+		"devalue": "^5.9.4",
 		"brace-expansion": ">=5.0.9",
 		"dompurify": "^3.4.12",
 		"fast-uri": "^3.1.5",

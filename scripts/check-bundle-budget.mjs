@@ -29,6 +29,7 @@
  */
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { exit } from 'node:process';
+import { staticGraph as walkGraph, pageRoots, graphBytes } from './lib/bundle-graph.mjs';
 
 const MANIFEST = '.svelte-kit/output/client/.vite/manifest.json';
 const BUILD_DIR = 'build';
@@ -90,20 +91,12 @@ const APP_ENTRY = '.svelte-kit/generated/client-optimized/app.js';
 const KIT_ENTRY = 'node_modules/@sveltejs/kit/src/runtime/client/entry.js';
 
 /** Walk only STATIC import edges — dynamic ones are the split working as designed. */
-function staticGraph(...roots) {
-	const seen = new Set();
-	const visit = (key) => {
-		if (seen.has(key) || !manifest[key]) return;
-		seen.add(key);
-		for (const next of manifest[key].imports ?? []) visit(next);
-	};
-	roots.forEach(visit);
-	return seen;
-}
+const staticGraph = (...roots) => walkGraph(manifest, ...roots);
 
 const sizeOf = (file) => {
 	const path = `${BUILD_DIR}/${file}`;
-	return existsSync(path) ? statSync(path).size : 0;
+	if (!existsSync(path)) throw new Error('Missing emitted bundle: ' + path);
+	return statSync(path).size;
 };
 
 const problems = [];
@@ -161,20 +154,25 @@ for (const root of [APP_ENTRY, KIT_ENTRY, ...routeKeys]) {
 	}
 }
 
+const { manifest: serverManifest } = await import('../.svelte-kit/output/server/manifest-full.js');
+const pages = serverManifest._.routes
+	.filter((route) => route.page)
+	.map((route) => ({
+		name: route.id,
+		roots: pageRoots(route.page, '.svelte-kit/generated/client-optimized/nodes')
+	}));
+if (!pages.length) throw new Error('No pages found in server manifest');
+
 // --- 3. Per-route weight ---------------------------------------------------
 
 let heaviestRoute = { name: null, kib: 0 };
-for (const root of routeKeys) {
-	let bytes = 0;
-	for (const key of staticGraph(APP_ENTRY, KIT_ENTRY, root)) {
-		const file = manifest[key]?.file;
-		if (file?.endsWith('.js')) bytes += sizeOf(file);
-	}
+for (const { name, roots } of pages) {
+	const bytes = graphBytes(manifest, staticGraph(APP_ENTRY, KIT_ENTRY, ...roots), sizeOf);
 	const kib = bytes / 1024;
-	if (kib > heaviestRoute.kib) heaviestRoute = { name: manifest[root]?.name ?? root, kib };
+	if (kib > heaviestRoute.kib) heaviestRoute = { name, kib };
 	if (kib > ROUTE_BUDGET_KIB) {
 		problems.push(
-			`Route ${manifest[root]?.name ?? root} statically loads ${kib.toFixed(1)} KiB, over the ${ROUTE_BUDGET_KIB} KiB budget.`
+			`Route ${name} statically loads ${kib.toFixed(1)} KiB, over the ${ROUTE_BUDGET_KIB} KiB budget.`
 		);
 	}
 }
@@ -249,7 +247,11 @@ for (const { source, packages, why } of FORBIDDEN_PACKAGES) {
 		continue;
 	}
 	const found = new Set();
-	for (const key of staticGraph(APP_ENTRY, KIT_ENTRY, node)) {
+	for (const key of staticGraph(
+		APP_ENTRY,
+		KIT_ENTRY,
+		...(pages.find((page) => page.roots.includes(node))?.roots ?? [node])
+	)) {
 		const file = manifest[key]?.file;
 		if (!file?.endsWith('.js')) continue;
 		const inChunk = packagesIn(file);

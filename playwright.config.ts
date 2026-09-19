@@ -69,7 +69,7 @@ export default defineConfig({
 			? `npx serve build --listen ${PORT} --no-port-switching`
 			: `npm run build && npx serve build --listen ${PORT} --no-port-switching`,
 		port: PORT,
-		reuseExistingServer: !process.env.CI,
+		reuseExistingServer: !process.env.CI && process.env.PLAYWRIGHT_REUSE_SERVER !== '0',
 		timeout: 120_000
 	}
 });

@@ -1,4 +1,4 @@
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 import { createFullPersonSchema } from '$lib/utils/jsonLdSchemas';
 
 /**
@@ -7,7 +7,7 @@ import { createFullPersonSchema } from '$lib/utils/jsonLdSchemas';
  * structured data. All biographical fields are derived from the data in
  * `$lib/data/` — see `createFullPersonSchema` in `$lib/utils/jsonLdSchemas.ts`.
  */
-export const load: PageLoad = () => {
+export const load: PageServerLoad = () => {
 	return {
 		personSchema: createFullPersonSchema()
 	};

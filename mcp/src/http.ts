@@ -3,7 +3,9 @@ import { toNodeHandler } from '@modelcontextprotocol/node';
 import { createMcpHandler } from '@modelcontextprotocol/server';
 import { createWebsiteServer } from './server.js';
 
-const port = Number.parseInt(process.env.PORT ?? '7860', 10);
+const port = Number(process.env.PORT ?? '7860');
+if (!Number.isInteger(port) || port < 0 || port > 65535)
+	throw new Error('PORT must be an integer from 0 to 65535');
 const mcp = createMcpHandler(createWebsiteServer);
 const handleMcp = toNodeHandler(mcp, {
 	onerror(error) {
@@ -35,9 +37,21 @@ const http = createServer(async (request, response) => {
 		return;
 	}
 
-	const url = new URL(request.url ?? '/', `http://${request.headers.host}`);
+	let url: URL;
+	try {
+		url = new URL(request.url ?? '/', `http://${request.headers.host}`);
+	} catch {
+		response.writeHead(400).end('Bad request.');
+		return;
+	}
 	if (url.pathname === '/mcp') {
-		await handleMcp(request, response);
+		try {
+			await handleMcp(request, response);
+		} catch (error) {
+			console.error('MCP request failed:', error);
+			if (!response.headersSent) response.writeHead(500).end('Request failed.');
+			else response.destroy();
+		}
 		return;
 	}
 
@@ -57,7 +71,10 @@ const http = createServer(async (request, response) => {
 });
 
 http.listen(port, '0.0.0.0', () => {
-	console.error(`MCP HTTP server listening on 0.0.0.0:${port}/mcp`);
+	const address = http.address();
+	console.error(
+		`MCP HTTP server listening on 0.0.0.0:${typeof address === 'object' && address ? address.port : port}/mcp`
+	);
 });
 
 async function close(): Promise<void> {
@@ -67,5 +84,23 @@ async function close(): Promise<void> {
 	});
 }
 
-process.once('SIGINT', () => void close());
-process.once('SIGTERM', () => void close());
+let closing = false;
+function shutdown() {
+	if (closing) return;
+	closing = true;
+	void close()
+		.catch((error) => {
+			console.error(error);
+			process.exitCode = 1;
+		})
+		.finally(() => {
+			process.disconnect?.();
+		});
+}
+process.once('SIGINT', shutdown);
+process.once('SIGTERM', shutdown);
+// Parent supervisors can request a graceful stop over a private IPC channel.
+if (process.send)
+	process.on('message', (message) => {
+		if (message === 'shutdown') shutdown();
+	});

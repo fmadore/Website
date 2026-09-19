@@ -46,6 +46,7 @@
  * duplicated in the first place.
  */
 
+import { untrack } from 'svelte';
 import type * as echarts from '$lib/utils/echartsCore';
 
 /** Options accepted by ECharts' `setOption`, in object form. */
@@ -90,6 +91,8 @@ export interface UseEChartsReturn {
 	readonly chart: echarts.ECharts | null;
 	/** Whether the chart is ready for updates (reactive) */
 	readonly isReady: boolean;
+	readonly error: string | null;
+	retry: () => void;
 }
 
 /**
@@ -120,9 +123,15 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 	let chart: echarts.ECharts | null = $state(null);
 	let echartsLib: typeof echarts | null = null;
 	let isReady = $state(false);
+	let errorMessage = $state<string | null>(null);
+	let attempt = $state(0);
 
 	// Effect for initialization and cleanup
 	$effect(() => {
+		const container = getContainer();
+		void attempt;
+		if (!container) return;
+		errorMessage = null;
 		let mounted = true;
 		let resizeObserver: ResizeObserver | undefined;
 
@@ -138,12 +147,13 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 				chart = echartsLib.init(container, undefined, initOptions);
 				isReady = true;
 			} catch (error) {
+				if (mounted) errorMessage = error instanceof Error ? error.message : 'Chart unavailable';
 				if (import.meta.env.DEV) console.error('Failed to initialize ECharts:', error);
 			}
 		};
 
 		// Load echarts library (+ extensions) and initialize the chart
-		(async () => {
+		untrack(async () => {
 			if (!echartsLib) {
 				try {
 					// Tree-shaken core (see echartsCore.ts) — never the full 'echarts'.
@@ -151,6 +161,7 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 					if (!mounted) return;
 					echartsLib = echartsModule;
 				} catch (error) {
+					if (mounted) errorMessage = error instanceof Error ? error.message : 'Chart unavailable';
 					if (import.meta.env.DEV) console.error('Failed to load ECharts:', error);
 					return;
 				}
@@ -160,14 +171,12 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 				try {
 					await loadExtensions();
 				} catch (error) {
+					if (mounted) errorMessage = error instanceof Error ? error.message : 'Chart unavailable';
 					if (import.meta.env.DEV) console.error('Failed to load ECharts extension:', error);
 					return;
 				}
 				if (!mounted) return;
 			}
-
-			const container = getContainer();
-			if (!container) return;
 
 			// Setup resize observer: it both drives the deferred first init (for
 			// requireDimensions) and handles subsequent resizes.
@@ -184,7 +193,7 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 			// Immediate attempt covers the common (already-sized, no-extension) case;
 			// for requireDimensions it no-ops until the observer delivers real dims.
 			tryInit(container);
-		})();
+		});
 
 		return () => {
 			mounted = false;
@@ -199,17 +208,26 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 
 	// Separate effect for updating chart when options change
 	$effect(() => {
-		if (isReady && chart && !chart.isDisposed() && hasData()) {
+		if (isReady && chart && !chart.isDisposed()) {
 			try {
 				// Object-form setOption for clarity; default fully replaces the option.
-				chart.setOption(getOption(), setOptionOpts ?? { notMerge: true });
+				if (hasData()) chart.setOption(getOption(), setOptionOpts ?? { notMerge: true });
+				else chart.clear();
+				errorMessage = null;
 			} catch (error) {
+				errorMessage = error instanceof Error ? error.message : 'Chart unavailable';
 				if (import.meta.env.DEV) console.error('Failed to update chart options:', error);
 			}
 		}
 	});
 
 	return {
+		get error() {
+			return errorMessage;
+		},
+		retry: () => {
+			attempt += 1;
+		},
 		get chart() {
 			return chart;
 		},

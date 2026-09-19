@@ -20,10 +20,8 @@ import allTeaching from '$lib/data/teaching';
 import { publicationAnalyses } from '$lib/data/analysis/publications';
 
 /**
- * Integrity checks over the shipped datasets (the aggregated index exports —
- * i.e. exactly what the site builds from). `loadData()` is deliberately
- * fail-soft: in production it silently DROPS malformed items, so without this
- * suite a bad content file would vanish from the site with no CI signal.
+ * Integrity checks over shipped datasets. The loader rejects malformed sources
+ * before aggregation; these assertions validate their domain-level content.
  */
 
 interface Dataset {

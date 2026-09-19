@@ -5,6 +5,7 @@
 
 import { version } from '$service-worker';
 import { chooseStrategy } from './service-worker-routes';
+import { createCacheHandler } from './service-worker-cache';
 
 // Cast self to ServiceWorkerGlobalScope for proper typing
 const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (globalThis.self));
@@ -32,7 +33,13 @@ const RUNTIME_CACHE = `runtime-v${version}`;
 const ASSETS_TO_CACHE = ['/', '/offline.html', '/manifest.webmanifest'];
 
 // Bound the runtime cache so it can't grow without limit between deploys.
-const RUNTIME_CACHE_MAX_ENTRIES = 150;
+const handleRequest = createCacheHandler({
+	storage: caches,
+	fetch: (request) => fetch(request),
+	assetCache: CACHE_NAME,
+	runtimeCache: RUNTIME_CACHE,
+	maxEntries: 150
+});
 
 // Install event: Cache essential assets
 sw.addEventListener('install', (event) => {
@@ -131,129 +138,11 @@ sw.addEventListener('fetch', (event) => {
 	// browser's preload cache — the fonts and the version file both need that.
 	const strategy = chooseStrategy(url.pathname, request.destination);
 
-	if (strategy === 'passthrough') {
-		return;
-	} else if (strategy === 'cache-first') {
-		event.respondWith(handleCacheFirst(request));
-	} else if (strategy === 'stale-while-revalidate') {
-		event.respondWith(handleStaleWhileRevalidate(request));
-	} else {
-		event.respondWith(handleNetworkFirst(request, event));
-	}
+	if (strategy === 'passthrough') return;
+	const { response, done } = handleRequest(request, strategy, event.preloadResponse);
+	event.waitUntil(done);
+	event.respondWith(response);
 });
-
-// Cache-first strategy for static assets
-async function handleCacheFirst(request) {
-	const cached = await caches.match(request);
-	if (cached) {
-		return cached;
-	}
-
-	try {
-		const response = await fetch(request);
-		if (response.ok) {
-			const cache = await caches.open(CACHE_NAME);
-			cache.put(request, response.clone());
-		}
-		return response;
-	} catch (error) {
-		console.warn('[SW] Cache-first fetch failed:', error);
-		// Rethrow rather than substituting a body. Everything routed here is a
-		// script, stylesheet or image, and this used to answer with the cached
-		// offline.html: a JS module request would receive an HTML document and
-		// die as "error loading dynamically imported module", which is how one
-		// blocked request for the Svelte runtime chunk took down a whole page.
-		// A genuine network error is both honest and retryable.
-		throw error;
-	}
-}
-
-// Stale-while-revalidate for dynamic content
-async function handleStaleWhileRevalidate(request) {
-	const cache = await caches.open(RUNTIME_CACHE);
-	const cached = await cache.match(request);
-
-	// Start fetch in background
-	const fetchPromise = fetch(request)
-		.then((response) => {
-			if (response.ok) {
-				putRuntime(cache, request, response.clone());
-			}
-			return response;
-		})
-		.catch(() => cached);
-
-	// Return cached version immediately if available, otherwise wait for network
-	return cached || fetchPromise;
-}
-
-// Network-first strategy for navigation and dynamic content
-async function handleNetworkFirst(request, event) {
-	try {
-		// Use navigation preload response if available
-		const preloadResponse = event ? await event.preloadResponse : null;
-		if (preloadResponse) {
-			// The preload response IS the navigation's response, so it earns a
-			// place in the runtime cache on exactly the terms a fetch() would.
-			if (preloadResponse.ok && preloadResponse.status < 400) {
-				const cache = await caches.open(RUNTIME_CACHE);
-				await putRuntime(cache, request, preloadResponse.clone());
-			}
-			return preloadResponse;
-		}
-
-		const response = await fetch(request);
-
-		// Cache successful responses
-		if (response.ok && response.status < 400) {
-			const cache = await caches.open(RUNTIME_CACHE);
-			putRuntime(cache, request, response.clone());
-		}
-
-		return response;
-	} catch (error) {
-		console.warn('[SW] Network-first fetch failed:', error);
-
-		// Try cache as fallback
-		const cached = await caches.match(request);
-		if (cached) {
-			return cached;
-		}
-
-		// Return appropriate offline fallback. Note the await: caches.match()
-		// returns a promise, so `caches.match(...) || fallback` always yielded
-		// the promise and the fallback below was unreachable — when offline.html
-		// was missing from the cache that resolved to undefined, and
-		// respondWith(undefined) fails the navigation outright.
-		// A redirected response cannot be handed to a navigation: respondWith()
-		// rejects it and the tab shows a network error instead of the fallback.
-		// Better an honest 503 body than a failed navigation.
-		if (request.destination === 'document') {
-			const offline = await caches.match('/offline.html');
-			if (offline && !offline.redirected) {
-				return offline;
-			}
-			return new Response('You are offline', {
-				status: 503,
-				statusText: 'Service Unavailable',
-				headers: { 'Content-Type': 'text/html' }
-			});
-		}
-
-		throw error;
-	}
-}
-
-// Store a response in the runtime cache, evicting oldest entries past the cap.
-async function putRuntime(cache, request, response) {
-	await cache.put(request, response);
-	const keys = await cache.keys();
-	if (keys.length > RUNTIME_CACHE_MAX_ENTRIES) {
-		await Promise.all(
-			keys.slice(0, keys.length - RUNTIME_CACHE_MAX_ENTRIES).map((key) => cache.delete(key))
-		);
-	}
-}
 
 // Handle messages from clients
 sw.addEventListener('message', (event) => {

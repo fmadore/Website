@@ -80,24 +80,6 @@ export async function registerCvFonts(pdf: JsPdf): Promise<boolean> {
 	}
 }
 
-/** Wait for the lazily-loaded CV sections to be present in #cv-content. */
-export async function waitForCvSections(cvContent: HTMLElement): Promise<void> {
-	// The CV page loads components in batches with delays up to 400ms.
-	// The full CV has 15+ sections; wait until we see at least 12.
-	const maxWaitTime = 3000;
-	const checkInterval = 100;
-	let waited = 0;
-
-	while (waited < maxWaitTime) {
-		if (cvContent.querySelectorAll('section').length >= 12) break;
-		await new Promise((resolve) => setTimeout(resolve, checkInterval));
-		waited += checkInterval;
-	}
-
-	// Additional small delay to ensure DOM is fully rendered
-	await new Promise((resolve) => setTimeout(resolve, 200));
-}
-
 /**
  * Classify a contact link by its actual hostname (not a substring match,
  * which would also accept e.g. "evil.com/github.com"). Returns null for

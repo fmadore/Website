@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, ready } from './fixtures';
 
 /**
  * Theme E2E: the masthead toggle flips daylight <-> midnight by swapping the
@@ -9,6 +9,7 @@ test('theme toggle switches to dark and persists across navigation', async ({ pa
 	// Pin the OS preference so the initial theme is deterministic.
 	await page.emulateMedia({ colorScheme: 'light' });
 	await page.goto('/');
+	await ready(page);
 
 	const html = page.locator('html');
 	await expect(html).not.toHaveClass(/\bdark\b/);

@@ -14,6 +14,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
+	import ChartStatus from './ChartStatus.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
 	import { describeSeries } from '$lib/utils/chartDescriptions';
 
@@ -220,6 +221,7 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 </script>
 
 <div class="echarts-container">
+	<ChartStatus error={echartsInstance.error} retry={echartsInstance.retry} />
 	<ChartToolbar
 		chart={echartsInstance.chart}
 		bind:showDecal

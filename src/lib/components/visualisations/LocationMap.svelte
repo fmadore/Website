@@ -6,7 +6,9 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 `basePath` + `itemLabel` so the popup can link items back to their detail page.
 -->
 <script lang="ts">
+	import RecoveryActions from './RecoveryActions.svelte';
 	import { base } from '$app/paths';
+	import { createBoundaryLoader } from '$lib/utils/countryBoundaries';
 	import { COUNTRY_COORDINATES, type LocationDatum } from '$lib/data/geo';
 	import { getTheme } from '$lib/stores/themeStore.svelte';
 	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
@@ -29,7 +31,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	type ChoroplethStatus = 'idle' | 'loading' | 'ready' | 'error';
 
 	const VIEW_MODE_STORAGE_KEY = 'location-map-view-mode';
-	const COUNTRY_BOUNDARY_URL = `${base}/data/world-countries-110m.geojson`;
+	const loadCountryBoundaries = createBoundaryLoader(`${base}/data/world-countries-110m.geojson`);
 	const CHOROPLETH_SOURCE_ID = 'location-country-boundaries';
 	const CHOROPLETH_BASE_LAYER_ID = 'location-country-outlines';
 	const CHOROPLETH_FILL_LAYER_ID = 'location-country-fills';
@@ -64,7 +66,6 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	let viewMode = $state<MapViewMode>('markers');
 	let choroplethStatus = $state<ChoroplethStatus>('idle');
 	let boundaryCache: CountryBoundaryCollection | null = null;
-	let boundaryPromise: Promise<CountryBoundaryCollection> | null = null;
 	let viewRenderId = 0;
 	let choroplethInteractionsRegistered = false;
 	// Imperative lookup keyed by country, only ever mutated from inside effects to
@@ -346,29 +347,6 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		if (fitBounds) fitDataBounds(activeMap, gl);
 	}
 
-	async function loadCountryBoundaries(): Promise<CountryBoundaryCollection> {
-		if (boundaryCache) return boundaryCache;
-		if (!boundaryPromise) {
-			boundaryPromise = fetch(COUNTRY_BOUNDARY_URL)
-				.then(async (response) => {
-					if (!response.ok) {
-						throw new Error(`Country boundaries returned HTTP ${response.status}.`);
-					}
-					const collection = (await response.json()) as CountryBoundaryCollection;
-					if (collection.type !== 'FeatureCollection' || !Array.isArray(collection.features)) {
-						throw new Error('Country boundary data has an invalid format.');
-					}
-					boundaryCache = collection;
-					return collection;
-				})
-				.catch((error) => {
-					boundaryPromise = null;
-					throw error;
-				});
-		}
-		return boundaryPromise;
-	}
-
 	async function addChoropleth(renderId: number) {
 		const activeMap = ml.map;
 		const gl = ml.maplibregl;
@@ -380,6 +358,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 		try {
 			const boundaries = await loadCountryBoundaries();
+			boundaryCache = boundaries;
 			if (renderId !== viewRenderId || viewMode !== 'choropleth' || ml.map !== activeMap) return;
 
 			clearMarkers();
@@ -472,7 +451,6 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	}
 
 	function retryChoropleth() {
-		boundaryPromise = null;
 		boundaryCache = null;
 		renderMapView();
 		// The button the reader just pressed is replaced by the status line that
@@ -595,6 +573,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 				<p>
 					The map could not be loaded. The {itemLabel} counts below are the same records.
 				</p>
+				<RecoveryActions retry={ml.retry} label="Retry map" />
 			</div>
 		{/if}
 	</div>

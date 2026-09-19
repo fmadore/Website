@@ -4,6 +4,7 @@ import {
 	filterEntityItems,
 	computeFacetCounts,
 	computeDisjunctiveFacetCounts,
+	computeDisjunctiveFacets,
 	computeDisjunctiveTotals,
 	toggleArrayValue,
 	normalizeYearRange,
@@ -354,4 +355,33 @@ describe('truncateSearchTerm', () => {
 	it('honours a custom limit', () => {
 		expect(truncateSearchTerm('abcdef', 3)).toBe('abc…');
 	});
+});
+
+it('extracts each eligible facet once while calculating counts and totals together', () => {
+	let calls = 0;
+	const instrumented = Object.fromEntries(
+		ENTITY_ARRAY_FILTER_KEYS.map((key) => [
+			key,
+			{
+				...dimensions[key],
+				countExtractor: (item: TestItem) => {
+					calls++;
+					return dimensions[key].countExtractor(item);
+				}
+			}
+		])
+	) as typeof dimensions;
+	const filters: EntityIndexFilters = {
+		types: [],
+		tags: [],
+		languages: [],
+		authors: [],
+		countries: [],
+		projects: [],
+		yearRange: null
+	};
+	const result = computeDisjunctiveFacets(items, filters, instrumented, () => true);
+	expect(calls).toBe(items.length * ENTITY_ARRAY_FILTER_KEYS.length);
+	expect(result.counts).toEqual(computeFacetCounts(items, dimensions));
+	expect(Object.values(result.totals)).toEqual(ENTITY_ARRAY_FILTER_KEYS.map(() => items.length));
 });

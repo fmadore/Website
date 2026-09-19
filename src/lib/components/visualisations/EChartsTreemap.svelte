@@ -12,6 +12,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
+	import ChartStatus from './ChartStatus.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
 	import { describeTreemap } from '$lib/utils/chartDescriptions';
 	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
@@ -424,6 +425,7 @@ ECharts Treemap - Hierarchical visualization for grouped data (e.g., publication
 	bind:this={outerEl}
 	style={resolvedHeight > 0 ? `width:${resolvedWidth}px;height:${resolvedHeight}px` : ''}
 >
+	<ChartStatus error={echartsInstance.error} retry={echartsInstance.retry} />
 	<ChartToolbar chart={echartsInstance.chart} bind:showDecal filename={title || 'treemap'} />
 	<div bind:this={chartContainer} class="chart"></div>
 </div>

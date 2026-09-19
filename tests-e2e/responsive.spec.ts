@@ -1,9 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, ready } from './fixtures';
 
 test('mobile navigation is usable without horizontal overflow', async ({ page, isMobile }) => {
 	test.skip(!isMobile, 'Covered by the mobile Chromium project');
 
 	await page.goto('/');
+	await ready(page);
 	const menuButton = page.getByRole('button', { name: /navigation menu/i });
 	await expect(menuButton).toBeVisible();
 	// 44x44 is the platform touch-target guideline (WCAG 2.2 SC 2.5.8 requires
@@ -21,6 +22,7 @@ test('mobile navigation is usable without horizontal overflow', async ({ page, i
 	// measure one chip: 44px tall, its label centred in the box rather than
 	// sitting on the top edge (the defect baseline alignment produced).
 	await page.goto('/publications');
+	await ready(page);
 	expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
 	const chip = page.getByRole('group', { name: 'Type' }).getByRole('button').first();
 	await expect(chip).toHaveCSS('min-height', '44px');
@@ -35,6 +37,7 @@ test('mobile navigation is usable without horizontal overflow', async ({ page, i
 
 	for (const path of ['/', '/publications', '/cv', '/publications/visualisations']) {
 		await page.goto(path);
+		await ready(page);
 		await expect(page.getByRole('heading', { level: 1 }).first()).toBeVisible();
 		const overflow = await page.evaluate(
 			() => document.documentElement.scrollWidth - document.documentElement.clientWidth

@@ -16,7 +16,8 @@ import { website } from '$lib/data/siteConfig';
  */
 
 /** Payload schema version. Bump on any breaking change to the item shapes. */
-export const API_VERSION = 1;
+import { API_VERSION, type DatasetPayload } from '$lib/apiContract';
+export { API_VERSION, type DatasetPayload };
 
 const SITE = website.url;
 
@@ -66,16 +67,6 @@ export function compact<T extends Record<string, unknown>>(item: T): T {
 		out[key] = value;
 	}
 	return out as T;
-}
-
-/** Envelope returned by every dataset endpoint. */
-export interface DatasetPayload<T> {
-	version: number;
-	dataset: string;
-	/** Absolute URL of this document, so a fetched payload stays self-locating. */
-	url: string;
-	count: number;
-	items: T[];
 }
 
 export function datasetPayload<T>(dataset: string, items: T[]): DatasetPayload<T> {

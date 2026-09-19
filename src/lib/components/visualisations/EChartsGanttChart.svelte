@@ -12,6 +12,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
+	import ChartStatus from './ChartStatus.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
 	import { PUBLICATION_TYPE_GANTT_LABELS } from '$lib/utils/publicationTypeLabels';
 
@@ -285,6 +286,7 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 </script>
 
 <div class="echarts-container">
+	<ChartStatus error={echartsInstance.error} retry={echartsInstance.retry} />
 	<ChartToolbar chart={echartsInstance.chart} showDecalToggle={false} filename="project-timeline" />
 	<div bind:this={chartContainer} class="chart"></div>
 	<div class="legend-hint">

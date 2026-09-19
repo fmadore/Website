@@ -78,18 +78,24 @@ export function computeFacetCounts<TItem>(
 ): Record<EntityArrayFilterKey, Record<string, number>> {
 	const result = {} as Record<EntityArrayFilterKey, Record<string, number>>;
 	for (const key of ENTITY_ARRAY_FILTER_KEYS) {
-		const extractor = dimensions[key].countExtractor;
-		const counts: Record<string, number> = {};
-		for (const item of items) {
-			const extracted = extractor(item);
-			if (!extracted) continue;
-			for (const value of Array.isArray(extracted) ? extracted : [extracted]) {
-				if (value) counts[value] = (counts[value] || 0) + 1;
-			}
-		}
-		result[key] = counts;
+		result[key] = countDimension(items, dimensions[key].countExtractor);
 	}
 	return result;
+}
+
+function countDimension<T>(
+	items: T[],
+	extractor: EntityArrayDimension<T>['countExtractor']
+): Record<string, number> {
+	const counts: Record<string, number> = Object.create(null);
+	for (const item of items) {
+		const extracted = extractor(item);
+		if (!extracted) continue;
+		for (const value of Array.isArray(extracted) ? extracted : [extracted]) {
+			if (value) counts[value] = (counts[value] ?? 0) + 1;
+		}
+	}
+	return counts;
 }
 
 /**
@@ -121,14 +127,17 @@ function eligibleItemsForDimension<TItem>(
  * counted after applying the year range and every *other* active dimension,
  * so an unselected value reports how many results it would add.
  */
-export function computeDisjunctiveFacetCounts<TItem>(
+export function computeDisjunctiveFacets<TItem>(
 	items: TItem[],
 	filters: EntityIndexFilters,
 	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
 	matchesYearRange: (item: TItem, range: YearRange) => boolean
-): Record<EntityArrayFilterKey, Record<string, number>> {
-	const result = {} as Record<EntityArrayFilterKey, Record<string, number>>;
-
+): {
+	counts: Record<EntityArrayFilterKey, Record<string, number>>;
+	totals: Record<EntityArrayFilterKey, number>;
+} {
+	const counts = {} as Record<EntityArrayFilterKey, Record<string, number>>;
+	const totals = {} as Record<EntityArrayFilterKey, number>;
 	for (const countedKey of ENTITY_ARRAY_FILTER_KEYS) {
 		const eligibleItems = eligibleItemsForDimension(
 			countedKey,
@@ -137,10 +146,17 @@ export function computeDisjunctiveFacetCounts<TItem>(
 			dimensions,
 			matchesYearRange
 		);
-		result[countedKey] = computeFacetCounts(eligibleItems, dimensions)[countedKey];
+		counts[countedKey] = countDimension(eligibleItems, dimensions[countedKey].countExtractor);
+		totals[countedKey] = eligibleItems.length;
 	}
 
-	return result;
+	return { counts, totals };
+}
+
+export function computeDisjunctiveFacetCounts<T>(
+	...args: Parameters<typeof computeDisjunctiveFacets<T>>
+) {
+	return computeDisjunctiveFacets(...args).counts;
 }
 
 /**

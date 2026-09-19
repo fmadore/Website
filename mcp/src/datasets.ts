@@ -20,65 +20,21 @@ const DEFAULT_BASE = 'https://www.frederickmadore.com';
  */
 const apiBase = (process.env.WEBSITE_API_BASE?.trim() || DEFAULT_BASE).replace(/\/+$/, '');
 
-export type DatasetName =
-	'research' | 'publications' | 'communications' | 'activities' | 'digital-humanities';
+import { createDocumentLoader } from './documentLoader.js';
+import type {
+	DatasetName,
+	ApiDocumentName,
+	ApiItem as Item,
+	DatasetPayload,
+	CvPayload
+} from '../../src/lib/apiContract';
+export type { DatasetName, ApiDocumentName, Item, CvPayload };
 
-export type ApiDocumentName = DatasetName | 'cv' | 'index';
-
-/** A record in any of the item datasets. Fields vary; only `id` is guaranteed. */
-export interface Item {
-	id: string;
-	url?: string;
-	title?: string;
-	year?: number;
-	[key: string]: unknown;
-}
-
-interface DatasetPayload {
-	version: number;
-	dataset: string;
-	count: number;
-	items: Item[];
-}
-
-export interface CvPayload extends Record<string, unknown> {
-	version: number;
-	person: Record<string, unknown>;
-	sections: Record<string, unknown>;
-}
-
-/**
- * One in-flight fetch per document for the life of the process. The corpus is
- * a few hundred records that change a few times a month, so a process-lifetime
- * cache is the right trade: no staleness a restart won't fix, no refetch per
- * tool call.
- */
-const cache = new Map<string, Promise<unknown>>();
-
-async function fetchDocument<T>(path: string): Promise<T> {
-	const cached = cache.get(path);
-	if (cached) return cached as Promise<T>;
-
-	const pending = (async () => {
-		const url = `${apiBase}/api/${path}.json`;
-		let response: Response;
-		try {
-			response = await fetch(url);
-		} catch (cause) {
-			throw new Error(`Could not reach ${url}. Is the site online?`, { cause });
-		}
-		if (!response.ok) {
-			throw new Error(`${url} returned HTTP ${response.status} ${response.statusText}`);
-		}
-		return (await response.json()) as T;
-	})();
-
-	// Don't cache a rejection: a transient network blip would otherwise poison
-	// every later call for the life of the process.
-	pending.catch(() => cache.delete(path));
-	cache.set(path, pending);
-	return pending;
-}
+const fetchDocument = createDocumentLoader({
+	base: apiBase,
+	timeoutMs: Number(process.env.WEBSITE_API_TIMEOUT_MS ?? 10000),
+	ttlMs: Number(process.env.WEBSITE_API_CACHE_TTL_MS ?? 300000)
+});
 
 /** Load one complete API document for exposure as an MCP resource. */
 export async function loadApiDocument(name: ApiDocumentName): Promise<unknown> {
@@ -87,7 +43,7 @@ export async function loadApiDocument(name: ApiDocumentName): Promise<unknown> {
 
 /** All items in a dataset, in the order the site publishes them (newest first). */
 export async function loadDataset(name: DatasetName): Promise<Item[]> {
-	const payload = await fetchDocument<DatasetPayload>(name);
+	const payload = await fetchDocument<DatasetPayload<Item>>(name);
 	return payload.items;
 }
 

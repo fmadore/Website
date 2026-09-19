@@ -49,12 +49,7 @@ import {
 	yearColumnWidth,
 	wideColumnWidth
 } from '$lib/utils/pdfDesignTokens';
-import {
-	CvPdfLayout,
-	registerCvFonts,
-	waitForCvSections,
-	classifyContactLink
-} from '$lib/utils/pdfCvLayout';
+import { CvPdfLayout, registerCvFonts, classifyContactLink } from '$lib/utils/pdfCvLayout';
 
 type JsPdfConstructor = typeof import('jspdf').jsPDF;
 
@@ -66,8 +61,6 @@ type JsPdfConstructor = typeof import('jspdf').jsPDF;
 export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	const element = document.getElementById('cv-content');
 	if (!element) throw new Error('CV content not found');
-
-	await waitForCvSections(element);
 
 	const today = new Date();
 	const dateStr = today.toISOString().split('T')[0];

@@ -14,6 +14,7 @@ ECharts Stacked Bar Chart component
 	} from '$lib/utils/chartColorUtils';
 	import { useECharts } from '$lib/utils/useECharts.svelte';
 	import ChartToolbar from './ChartToolbar.svelte';
+	import ChartStatus from './ChartStatus.svelte';
 	import { getAriaConfig } from '$lib/utils/chartActions';
 	import { describeStack } from '$lib/utils/chartDescriptions';
 	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
@@ -404,6 +405,7 @@ ECharts Stacked Bar Chart component
 </script>
 
 <div class="echarts-container">
+	<ChartStatus error={echartsInstance.error} retry={echartsInstance.retry} />
 	<ChartToolbar
 		chart={echartsInstance.chart}
 		bind:showDecal

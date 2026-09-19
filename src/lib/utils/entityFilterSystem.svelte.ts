@@ -22,8 +22,7 @@ import type { YearRange } from '$lib/types';
 import {
 	ENTITY_ARRAY_FILTER_KEYS,
 	filterEntityItems,
-	computeDisjunctiveFacetCounts,
-	computeDisjunctiveTotals,
+	computeDisjunctiveFacets,
 	toggleArrayValue,
 	normalizeYearRange,
 	type EntityIndexFilters,
@@ -72,23 +71,18 @@ export class EntityFilterSystem<TItem> {
 	);
 
 	/** Counts under all active filters except the dimension being counted. */
-	readonly counts: Record<EntityArrayFilterKey, Record<string, number>> = $derived.by(() =>
-		computeDisjunctiveFacetCounts(
-			this.items,
-			this.activeFilters,
-			this.dimensions,
-			this.matchesYearRange
-		)
+	private readonly facets = $derived.by(() =>
+		computeDisjunctiveFacets(this.items, this.activeFilters, this.dimensions, this.matchesYearRange)
 	);
+
+	readonly counts = $derived(this.facets.counts);
 
 	/**
 	 * Per dimension, how many items clearing that dimension alone would return —
 	 * the number an "All" option prints. Read it rather than summing `counts`:
 	 * a multi-valued dimension (languages, tags) double-counts in that sum.
 	 */
-	readonly totals: Record<EntityArrayFilterKey, number> = $derived.by(() =>
-		computeDisjunctiveTotals(this.items, this.activeFilters, this.dimensions, this.matchesYearRange)
-	);
+	readonly totals = $derived(this.facets.totals);
 
 	constructor(config: EntityFilterConfig<TItem>) {
 		this.items = config.items;

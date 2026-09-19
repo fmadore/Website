@@ -10,36 +10,10 @@ import {
 	extractUniqueDelimited
 } from '$lib/utils/dataAggregation';
 
-// Define all template IDs to filter out
-const templateIds = [
-	'book-template-id',
-	'edited-volume-template-id',
-	'article-template-id',
-	'bulletin-article-template-id',
-	'chapter-template-id',
-	'special-issue-template-id',
-	'report-template-id',
-	'encyclopedia-template-id',
-	'blogpost-template-id',
-	'phd-dissertation-template-id',
-	'conference-proceedings-template-id',
-	'working-paper-template-id'
-];
-
-// Directory-to-type mapping for sourceDirType extraction
-const dirTypeMap: Record<string, string> = {
-	'./books/': 'books',
-	'./articles/': 'articles',
-	'./bulletins/': 'bulletins',
-	'./chapters/': 'chapters',
-	'./special-issues/': 'specialIssues',
-	'./reports/': 'reports',
-	'./encyclopedia/': 'encyclopedia',
-	'./blogposts/': 'blogposts',
-	'./dissertations/': 'dissertations',
-	'./proceedings/': 'proceedings',
-	'./working-papers/': 'workingPapers'
-};
+import {
+	PUBLICATION_TEMPLATE_IDS as templateIds,
+	PUBLICATION_DIRECTORY_TYPES
+} from '$lib/dataMetadata';
 
 // Use a single static glob import (excluding per-type template files)
 const publicationModules = import.meta.glob(
@@ -66,8 +40,7 @@ const allPublications = loadData<Publication>(
 	templateIds,
 	'publication',
 	(item, path) => {
-		const sourceDirType =
-			Object.entries(dirTypeMap).find(([prefix]) => path.startsWith(prefix))?.[1] ?? 'unknown';
+		const sourceDirType = PUBLICATION_DIRECTORY_TYPES[path.split('/')[1] ?? ''] ?? 'unknown';
 		return { ...item, sourceDirType } as Publication;
 	}
 ) as (Publication & { sourceDirType: string })[];

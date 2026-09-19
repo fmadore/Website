@@ -97,9 +97,15 @@ directly.
 ## How it works
 
 The server reads the site's published JSON documents (`/api/*.json`) over HTTP and holds
-them in memory for the life of the process. There is no database, no search index, and no
+validated responses in memory for five minutes. Concurrent requests share one fetch, and failed
+requests can be retried. There is no database, no search index, and no
 data of its own: the corpus is a few hundred records, so a linear scan is cheaper than the
-machinery needed to avoid one. Restart the server to pick up new content.
+machinery needed to avoid one. The next request after expiry picks up new content.
+
+`WEBSITE_API_TIMEOUT_MS` bounds the complete fetch, including the response body (default
+10,000 ms). `WEBSITE_API_CACHE_TTL_MS` sets the cache lifetime (default 300,000 ms). Both
+accept milliseconds: the timeout must be positive; a zero TTL disables persistent caching. Incompatible API versions and malformed documents are
+rejected before caching.
 
 The server uses the stable TypeScript SDK v2. `serveStdio()` and `createMcpHandler()` serve
 both the stateless `2026-07-28` protocol and legacy 2025-era clients from the same server

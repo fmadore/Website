@@ -44,25 +44,7 @@ const DATA_DIR = 'src/lib/data/publications';
 const OUT_FILE = `${DATA_DIR}/summaries.generated.ts`;
 const CHECK_MODE = process.argv.includes('--check');
 
-/**
- * Directory → `sourceDirType`.
- *
- * !! KEEP IN SYNC with `dirTypeMap` in src/lib/data/publications/index.ts
- * (summaries.test.ts fails if the two disagree for any record).
- */
-const DIR_TYPES = {
-	books: 'books',
-	articles: 'articles',
-	bulletins: 'bulletins',
-	chapters: 'chapters',
-	'special-issues': 'specialIssues',
-	reports: 'reports',
-	encyclopedia: 'encyclopedia',
-	blogposts: 'blogposts',
-	dissertations: 'dissertations',
-	proceedings: 'proceedings',
-	'working-papers': 'workingPapers'
-};
+import { PUBLICATION_DIRECTORY_TYPES as DIR_TYPES } from '../src/lib/dataMetadata.ts';
 
 /** Unique contributor names from a table of contents, in order of appearance. */
 function tocAuthors(tableOfContents) {

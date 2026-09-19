@@ -20,30 +20,30 @@ describe('loadData', () => {
 		expect(result.map((r) => r.id)).toEqual(['b']);
 	});
 
-	it('prefers the default export over named exports', () => {
-		const modules = { './c.ts': { named: item('named'), default: item('default') } };
-		const result = loadData<Publication>(modules, []);
-		expect(result.map((r) => r.id)).toEqual(['default']);
+	it('rejects ambiguous records, including default plus named records', () => {
+		expect(() => loadData({ './two.ts': { default: item('a'), named: item('b') } }, [])).toThrow(
+			'./two.ts: expected exactly one'
+		);
 	});
-
-	it('skips modules that are not objects', () => {
-		const modules = {
-			'./bad-null.ts': null,
-			'./bad-number.ts': 7,
-			'./good.ts': { default: item('good') }
-		};
-		const result = loadData<Publication>(modules, []);
-		expect(result.map((r) => r.id)).toEqual(['good']);
+	it.each([null, 7, {}, { default: { title: 'missing id' } }, { default: item('') }])(
+		'rejects malformed source modules: %j',
+		(module) => {
+			expect(() => loadData({ './bad.ts': module }, [])).toThrow('./bad.ts:');
+		}
+	);
+	it('rejects transform failures and duplicate IDs with their source path', () => {
+		expect(() =>
+			loadData({ './a.ts': { default: item('a') } }, [], 'publication', () => {
+				throw new Error('broken');
+			})
+		).toThrow('./a.ts: transform failed');
+		expect(() =>
+			loadData({ './a.ts': { default: item('same') }, './b.ts': { default: item('same') } }, [])
+		).toThrow('./b.ts: duplicate id');
 	});
-
-	it('skips modules with no export carrying an id', () => {
-		const modules = {
-			'./empty.ts': {},
-			'./no-id.ts': { default: { title: 'anonymous' } },
-			'./good.ts': { default: item('good') }
-		};
-		const result = loadData<Publication>(modules, []);
-		expect(result.map((r) => r.id)).toEqual(['good']);
+	it('accepts two exports referring to the same record', () => {
+		const record = item('a');
+		expect(loadData({ './a.ts': { default: record, named: record } }, [])).toEqual([record]);
 	});
 
 	it('filters out a single template id', () => {

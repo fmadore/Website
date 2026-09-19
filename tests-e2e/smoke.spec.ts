@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, ready } from './fixtures';
 
 /**
  * Smoke tests: confirm the key prerendered routes load and render their core
@@ -8,6 +8,7 @@ import { test, expect } from '@playwright/test';
 
 test('home page loads with the author name', async ({ page }) => {
 	await page.goto('/');
+	await ready(page);
 	await expect(page).toHaveTitle(/Frédérick Madore/i);
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
@@ -17,6 +18,7 @@ test('main list pages load with a top-level heading', async ({ page }) => {
 	// only has detail routes (/communications/[id]).
 	for (const path of ['/publications', '/conference-activity', '/activities']) {
 		const response = await page.goto(path);
+		await ready(page);
 		expect(response?.status(), `${path} should respond 200`).toBe(200);
 		await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	}
@@ -50,6 +52,7 @@ test('visualisation pages render each network view and its controls', async ({ p
 	];
 	for (const { path, heading, mark } of cases) {
 		await page.goto(path);
+		await ready(page);
 		const section = page.locator('section').filter({ hasText: heading }).first();
 		await section.scrollIntoViewIfNeeded();
 
@@ -67,6 +70,7 @@ test('the arc diagram ranks collaborators and omits the centre', async ({ page }
 	// The egocentric centre is joined to everyone by construction, so it is not
 	// a data point — dropping it is the whole reason this is not a node-link map.
 	await page.goto('/publications/visualisations');
+	await ready(page);
 	const section = page
 		.locator('section')
 		.filter({ hasText: 'Author collaboration network' })
@@ -91,6 +95,7 @@ test('the arc diagram ranks collaborators and omits the centre', async ({ page }
 
 test('the co-occurrence matrix renders a labelled, seriated grid', async ({ page }) => {
 	await page.goto('/publications/visualisations');
+	await ready(page);
 	const section = page
 		.locator('section')
 		.filter({ hasText: 'Keyword co-occurrence matrix' })
@@ -122,6 +127,7 @@ test('the matrix draws the same grid on every load', async ({ page }) => {
 	// rows between visits.
 	const read = async () => {
 		await page.goto('/publications/visualisations');
+		await ready(page);
 		const section = page
 			.locator('section')
 			.filter({ hasText: 'Keyword co-occurrence matrix' })
@@ -142,6 +148,7 @@ test('searching a network dims marks without moving them', async ({ page }) => {
 	// change discarded the node positions and restarted the force simulation,
 	// so the whole graph rescaled on each keystroke.
 	await page.goto('/conference-activity/visualisations');
+	await ready(page);
 	const section = page.locator('section').filter({ hasText: 'Institution network' }).first();
 	await section.scrollIntoViewIfNeeded();
 
@@ -166,6 +173,7 @@ test('searching a network dims marks without moving them', async ({ page }) => {
 test('network marks are keyboard focusable', async ({ page }) => {
 	// The canvas series this replaced could only be read via the sr-only list.
 	await page.goto('/publications/visualisations');
+	await ready(page);
 	const section = page
 		.locator('section')
 		.filter({ hasText: 'Author collaboration network' })
@@ -308,6 +316,7 @@ test('the static 404 page honours a stored theme choice', async ({ page }) => {
 
 test('the footer is a colophon: four groups, no controls', async ({ page }) => {
 	await page.goto('/cv');
+	await ready(page);
 	const footer = page.locator('footer.site-footer');
 	// Every string in the footer is a link or a record — there is no control
 	// (the scroll-to-top button was removed: invisible in daylight, focusable
@@ -329,6 +338,7 @@ test('the footer is a colophon: four groups, no controls', async ({ page }) => {
 
 test('a publication detail page injects JSON-LD structured data', async ({ page }) => {
 	await page.goto('/publications');
+	await ready(page);
 	// Follow the first real publication item through to its detail page,
 	// excluding the visualisations link which also lives under /publications/.
 	const firstItem = page
