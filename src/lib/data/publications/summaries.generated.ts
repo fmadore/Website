@@ -1478,6 +1478,17 @@ export const publicationSummaries: PublicationSummary[] = [
 				"issue": "1",
 				"url": "https://doi.org/10.1017/asr.2025.10172",
 				"excerpt": "Madore's account demonstrates an admirable respect for the current and former members he interviewed and a deep knowledge of the complex relationships between student religious associations, politico-economic conditions, and the challenges of Togolese and Beninese students."
+			},
+			{
+				"author": "Matthew Swagler",
+				"year": 2026,
+				"title": "Frédérick Madore. Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023",
+				"journal": "The American Historical Review",
+				"volume": "131",
+				"issue": "3",
+				"pages": "1417-18",
+				"url": "https://doi.org/10.1093/ahr/rhag129",
+				"excerpt": "Ultimately, the book’s sweeping account of religious associations on West African campuses stands as an important resource for historians of contemporary religion, higher education, and politics."
 			}
 		],
 		"abstractExcerpt": "Although religious organisations have coexisted with student unions at the Université de Lomé and the Université d'Abomey-Calavi since the 1970s, much of the literature has tended to focus on the role of student protests ",
