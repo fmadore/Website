@@ -58,7 +58,7 @@ export default defineConfig({
 			// floors, but must not silently reduce the verified pure-logic surface.
 			thresholds: {
 				statements: 60,
-				branches: 55,
+				branches: 56,
 				functions: 66,
 				lines: 61
 			}

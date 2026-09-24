@@ -74,11 +74,16 @@ export function stripHtml(html: string): string {
 }
 
 /**
- * Truncates a string to a specified maximum length and appends an ellipsis.
+ * Truncates a string to `maxLength` characters and appends an ellipsis.
+ *
+ * The ellipsis is *not* counted: a truncated result is `maxLength + 1`
+ * characters. The summaries' `abstractExcerpt` contract depends on exactly
+ * this (an excerpt one character past ABSTRACT_EXCERPT_LENGTH truncates the
+ * same as the full abstract), so change it only with that contract.
  *
  * @param text The string to truncate.
- * @param maxLength The maximum length of the truncated string (including the ellipsis).
- * @returns The truncated string or the original string if it's shorter than maxLength.
+ * @param maxLength How many characters of the text to keep.
+ * @returns The truncated string, or the original if it is at most maxLength.
  */
 export function truncateAbstract(text: string | undefined, maxLength: number = 200): string {
 	if (!text) return '';
@@ -107,7 +112,7 @@ export function truncateAbstract(text: string | undefined, maxLength: number = 2
  *
  * @example
  * smartTruncate("A very long text without sentence breaks here", 20)
- * // Returns: "A very long text..."
+ * // Returns: "A very long text…"
  */
 export function smartTruncate(
 	text: string,
