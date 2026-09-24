@@ -4,10 +4,19 @@ import { sortByDate } from '$lib/utils/dataAggregation';
 import { loadData } from '$lib/utils/dataLoader';
 
 // Dynamically import all activity files (excluding this index, the template,
-// and the filter-system module, which lives alongside the items but is not an
-// activity record)
+// and the modules that live alongside the items but are not activity records:
+// the filter system and the summaries projection with its config and tests)
 const activityModules = import.meta.glob<Record<string, Activity>>(
-	['./*.ts', '!./index.ts', '!./activity-template.ts', '!./filters.svelte.ts'],
+	[
+		'./*.ts',
+		'!./index.ts',
+		'!./activity-template.ts',
+		'!./filters.svelte.ts',
+		'!./summaries.ts',
+		'!./summaries.generated.ts',
+		'!./summaryConfig.ts',
+		'!./*.test.ts'
+	],
 	{ eager: true }
 );
 

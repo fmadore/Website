@@ -5,7 +5,7 @@ import { buildCommunicationJsonLd } from '$lib/utils/entityJsonLd';
 import { loadEntityDetail } from '$lib/utils/entityPageLoader';
 import type { PageServerLoad } from './$types';
 
-/** Every communication gets a page — see the note in publications/[id]/+page.ts. */
+/** Every communication gets a page — see the note in publications/[id]/+page.server.ts. */
 export const entries = () => allCommunications.map(({ id }) => ({ id }));
 
 export const load: PageServerLoad = ({ params }) => {

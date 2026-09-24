@@ -1,15 +1,21 @@
 /**
  * Shared loader for the build-time generators that project the TypeScript
  * data files under src/lib/data/** into committed, slimmer modules
- * (generate-reference-index.mjs, generate-publication-summaries.mjs).
+ * (the reference index and the publication, talk and activity summaries).
  *
  * It relies on Node's built-in TypeScript type stripping (enabled by default
- * since Node v22.18 / v23.6, so in every supported Node line today). That
- * works here only because every data item file is erasable-syntax-only and
- * uses `import type` exclusively (verified — no runtime imports, so `$lib` /
- * `$app` aliases never need resolving), letting plain `import()` load each one
- * directly — no Vite, no bundler.
+ * since Node v22.18 / v23.6, so in every supported Node line today), which
+ * works because every data file is erasable-syntax-only, letting plain
+ * `import()` load each one directly — no Vite, no bundler.
+ *
+ * Publication and talk records import types alone. Activity records do not:
+ * they format their display date with `$lib/utils/date-formatter`, and one
+ * links a talk through `$app/paths`. So the resolve hook below gives Node the
+ * two things Vite would: the `$lib` alias with extensionless `.ts` resolution,
+ * and a `$app/paths` carrying the site's (empty) base path. Anything a data
+ * file imports must itself be loadable this way — alias-free past `$lib`.
  */
+import { registerHooks } from 'node:module';
 import { globSync } from 'node:fs';
 import { basename, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -19,6 +25,27 @@ import {
 	COMMUNICATION_TEMPLATE_IDS
 } from '../../src/lib/dataMetadata.ts';
 import { selectDataRecord } from '../../src/lib/dataRecords.ts';
+const LIB_URL = pathToFileURL(resolve('src/lib') + '/').href;
+
+/** `svelte.config.js` sets `paths.base` to '' and records only ever read `base`. */
+const APP_PATHS_STUB = `data:text/javascript,${encodeURIComponent("export const base = ''; export const assets = '';")}`;
+
+registerHooks({
+	resolve(specifier, context, nextResolve) {
+		if (specifier === '$app/paths') return { url: APP_PATHS_STUB, shortCircuit: true };
+		const target = specifier.startsWith('$lib/')
+			? new URL(specifier.slice('$lib/'.length), LIB_URL).href
+			: specifier;
+		// Vite resolves `$lib/utils/date-formatter` to the .ts file; Node needs the
+		// extension spelled out, for aliased and relative specifiers alike.
+		const local = target.startsWith('file:') || target.startsWith('.');
+		if (local && !/\.[cm]?[jt]s$/.test(target)) {
+			return nextResolve(`${target}.ts`, context);
+		}
+		return nextResolve(target, context);
+	}
+});
+
 export const TEMPLATE_IDS = new Set([...PUBLICATION_TEMPLATE_IDS, ...COMMUNICATION_TEMPLATE_IDS]);
 
 /** Files that are not data items (aggregators, filter stores, templates). */

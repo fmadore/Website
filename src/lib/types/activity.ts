@@ -22,3 +22,14 @@ export type Activity = {
 	pdfTitle?: string; // Optional title for the PDF section
 	panelType?: string; // Optional: type for display in panels (e.g., 'conference', 'workshop', etc.)
 };
+
+/**
+ * The field an `ActivitySummary` drops: the full HTML body, 60% of the
+ * dataset's source, which only the activity record page prints. Every list —
+ * the /activities log, the year pages, the home page's latest-activities rail —
+ * renders the title, dates, description and tags and never the body.
+ */
+export type HeavyActivityField = 'content';
+
+/** An activity as every page but its own record reads it. */
+export type ActivitySummary = Omit<Activity, HeavyActivityField>;

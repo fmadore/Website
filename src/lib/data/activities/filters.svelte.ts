@@ -8,8 +8,11 @@
  * empty vocabularies so no UI or URL surface ever exercises them.
  */
 
-import type { Activity, YearRange } from '$lib/types';
-import { activitiesByDate, activitiesByYear } from './index';
+import type { ActivitySummary, YearRange } from '$lib/types';
+import {
+	activitySummariesByDate as activitiesByDate,
+	activitySummariesByYear as activitiesByYear
+} from './summaries';
 import {
 	EntityFilterSystem,
 	type EntityArrayDimension
@@ -39,27 +42,27 @@ const allTypes = Array.from(
 );
 
 // Dimensions activities don't have — empty vocabulary, never matches/counts.
-const inertDimension: EntityArrayDimension<Activity> = {
+const inertDimension: EntityArrayDimension<ActivitySummary> = {
 	match: () => true,
 	countExtractor: () => undefined
 };
 
 // --- Filter System ---
 
-export const activityFilters = new EntityFilterSystem<Activity>({
+export const activityFilters = new EntityFilterSystem<ActivitySummary>({
 	items: activitiesByDate,
-	matchesYearRange: (activity: Activity, range: YearRange) =>
+	matchesYearRange: (activity: ActivitySummary, range: YearRange) =>
 		activity.year >= range.min && activity.year <= range.max,
 	dimensions: {
 		types: {
-			match: (activity: Activity, values: string[]) =>
+			match: (activity: ActivitySummary, values: string[]) =>
 				!!activity.type && values.includes(activity.type),
-			countExtractor: (activity: Activity) => activity.type
+			countExtractor: (activity: ActivitySummary) => activity.type
 		},
 		tags: {
-			match: (activity: Activity, values: string[]) =>
+			match: (activity: ActivitySummary, values: string[]) =>
 				!!activity.tags && activity.tags.some((t) => values.includes(t)),
-			countExtractor: (activity: Activity) => activity.tags
+			countExtractor: (activity: ActivitySummary) => activity.tags
 		},
 		languages: inertDimension,
 		authors: inertDimension,

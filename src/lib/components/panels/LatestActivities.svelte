@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { getActivities } from '../../stores/activities.svelte';
-	import type { Activity } from '$lib/types';
+	import type { ActivityLog } from '$lib/utils/activityLog';
 	import { resolve } from '$app/paths';
 	import PanelBase from './PanelBase.svelte';
 	import Button from '../atoms/Button.svelte';
@@ -10,34 +9,20 @@
 	// ink-signal.css) plus panels.css, so the home page no longer downloads
 	// `activity-list.css` for markup it does not render.
 
-	// Props - limit the number of activities to show
+	// The rail arrives as data (`summariseActivityLog`, run by the page's server
+	// load): the newest entries and the per-year tallies. The counts are what
+	// turn a row of year links into a meter: the bar encodes real output per
+	// year rather than decorating the list.
 	let {
-		limit = 5,
+		log,
 		showYearFilters = true
 	}: {
-		limit?: number;
+		log: ActivityLog;
 		showYearFilters?: boolean;
 	} = $props();
 
-	// Get activities reactively
-	let activities = $derived(getActivities());
-
-	// Local activities array - derived from store and limited
-	let activityList = $derived(activities.slice(0, limit));
-
-	// Years present in the log, newest first, with their tallies. The counts are
-	// what turn a row of year links into a meter: the bar encodes real output
-	// per year rather than decorating the list.
-	let yearRows = $derived.by(() => {
-		const counts: Record<number, number> = {};
-		for (const activity of activities as Activity[]) {
-			counts[activity.year] = (counts[activity.year] ?? 0) + 1;
-		}
-		const max = Math.max(1, ...Object.values(counts));
-		return Object.entries(counts)
-			.map(([year, count]) => ({ year: Number(year), count, pct: (count / max) * 100 }))
-			.sort((a, b) => b.year - a.year);
-	});
+	let activityList = $derived(log.latest);
+	let yearRows = $derived(log.years);
 
 	let newestYear = $derived(yearRows[0]?.year);
 
@@ -58,7 +43,7 @@
 {#snippet panelHeader()}
 	<div class="log-head">
 		<h2 class="panel-title">Latest activities</h2>
-		<span class="log-tally">{activities.length} in the log</span>
+		<span class="log-tally">{log.total} in the log</span>
 	</div>
 {/snippet}
 

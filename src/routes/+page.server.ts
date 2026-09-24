@@ -1,5 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { createFullPersonSchema } from '$lib/server/personSchema';
+import { activitiesByDate } from '$lib/data/activities';
+import { summariseActivityLog } from '$lib/utils/activityLog';
 
 /**
  * Home page load: provides the full Person schema (the rich superset of the
@@ -9,6 +11,9 @@ import { createFullPersonSchema } from '$lib/server/personSchema';
  */
 export const load: PageServerLoad = () => {
 	return {
-		personSchema: createFullPersonSchema()
+		personSchema: createFullPersonSchema(),
+		// The latest-activities rail, as five rows and a year meter — not the
+		// activity dataset (every entry's HTML body) it is computed from.
+		activityLog: summariseActivityLog(activitiesByDate, 5)
 	};
 };

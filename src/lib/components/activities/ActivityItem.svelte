@@ -18,7 +18,7 @@ Two differences from its siblings, both of them the record's own:
     carries where a bibliographic row carries a byline.
 -->
 <script lang="ts">
-	import type { Activity } from '$lib/stores/activities.svelte';
+	import type { ActivitySummary } from '$lib/types';
 	import { resolve } from '$app/paths';
 	import BibliographyRow, {
 		type BibliographyAction
@@ -34,7 +34,7 @@ Two differences from its siblings, both of them the record's own:
 		activity,
 		eager = false,
 		headingLevel = 3
-	}: { activity: Activity; eager?: boolean; headingLevel?: 2 | 3 } = $props();
+	}: { activity: ActivitySummary; eager?: boolean; headingLevel?: 2 | 3 } = $props();
 
 	let activityLink = $derived(resolve('/activities/[id]', { id: activity.id }));
 

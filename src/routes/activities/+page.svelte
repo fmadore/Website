@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { getActivities } from '$lib/stores/activities.svelte';
-	import type { Activity } from '$lib/types';
+	import type { ActivitySummary } from '$lib/types';
 	import { base, resolve } from '$app/paths';
 	import SEO from '$lib/SEO.svelte';
 	import { pageTitle } from '$lib/utils/siteHelpers';
@@ -68,7 +68,7 @@
 	// --- Hero apparatus: total count + year span across ALL activities. ---
 	const totalCount = $derived(activities.length);
 	const allYears = $derived(
-		[...new Set(activities.map((a: Activity) => a.year))].sort((a, b) => a - b)
+		[...new Set(activities.map((a: ActivitySummary) => a.year))].sort((a, b) => a - b)
 	);
 	const minYear = $derived(allYears[0]);
 	const maxYear = $derived(allYears[allYears.length - 1]);
@@ -124,7 +124,7 @@
 	const pageGroups = $derived.by(() => {
 		const order: number[] = [];
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- local grouping, not reactive state
-		const byYear = new Map<number, Activity[]>();
+		const byYear = new Map<number, ActivitySummary[]>();
 		for (const a of paged) {
 			if (!byYear.has(a.year)) {
 				byYear.set(a.year, []);
@@ -141,7 +141,7 @@
 
 	// The "Updated" date in the aside footer — newest dated entry, mono form.
 	const updatedLabel = $derived.by(() => {
-		const iso = activities.find((a: Activity) =>
+		const iso = activities.find((a: ActivitySummary) =>
 			/^\d{4}-\d{2}-\d{2}$/.test(a.dateISO ?? '')
 		)?.dateISO;
 		return iso ? formatShortDateMono(iso) : '';

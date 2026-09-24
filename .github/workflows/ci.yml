@@ -110,6 +110,11 @@ jobs:
       - name: Communication summaries freshness
         run: node scripts/generate-communication-summaries.mjs --check
 
+      # The activities log, its year pages and the style guide read a committed
+      # projection of the activities dataset without the entries' HTML bodies.
+      - name: Activity summaries freshness
+        run: node scripts/generate-activity-summaries.mjs --check
+
       # The latin-ext and vietnamese font subsets are cut to fixed Unicode
       # blocks by scripts/subset-fonts.py; the check proves the committed files
       # and the unicode-range declarations in app.html still match the script.

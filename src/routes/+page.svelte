@@ -232,7 +232,7 @@
 			</ContentBody>
 		</div>
 		<div class="home-rail">
-			<LatestActivities limit={5} />
+			<LatestActivities log={data.activityLog} />
 		</div>
 	</div>
 </div>

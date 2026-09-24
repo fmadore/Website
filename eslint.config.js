@@ -18,7 +18,8 @@ export default ts.config(
 			'src/lib/data/publications/summaries.generated.ts',
 			'src/lib/data/analysis/keyTerms.generated.ts',
 			'src/lib/data/analysis/corpusSummary.generated.ts',
-			'src/lib/data/communications/summaries.generated.ts'
+			'src/lib/data/communications/summaries.generated.ts',
+			'src/lib/data/activities/summaries.generated.ts'
 		]
 	},
 	includeIgnoreFile(gitignorePath),

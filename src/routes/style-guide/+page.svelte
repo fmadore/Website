@@ -20,7 +20,7 @@
 		publicationSummaryTags as allTags
 	} from '$lib/data/publications/summaries';
 	import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
-	import { activitiesByDate } from '$lib/data/activities';
+	import { activitySummariesByDate as activitiesByDate } from '$lib/data/activities/summaries';
 	import { tallyBy } from '$lib/utils/vizAggregation';
 	/* The index pages' search field is documented in § 5, so the guide loads the
 	 * stylesheet that owns it rather than restating its declarations locally —

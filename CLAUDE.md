@@ -28,7 +28,8 @@ Checks that read the **build output** (run `npm run build` first):
 ```bash
 npm run check:build     # bundle budget + prerender coverage (both run in CI)
 npm run check:bundle    # heavy libs stay dynamically imported; entry/route size budgets;
-                        # no dataset in the app shell (entry + root layout)
+                        # no dataset in the app shell (entry + root layout); no route
+                        # downloads a site module it never imports
 npm run check:prerender # every URL in sitemap.xml resolves to a page that shipped
 npm run check:lighthouse # Lighthouse (mobile, the PageSpeed Insights lab profile) on five
                         # representative pages, asserted against lighthouserc.yml — score
@@ -111,8 +112,9 @@ generated from the datasets and would keep advertising URLs that ship no page.
 ### Generated data files
 
 The `*.generated.ts` files in `src/lib/data/` (`referenceIndex`,
-`publications/summaries`, `analysis/keyTerms`, `analysis/corpusSummary`,
-`researchProse`, `imageVariants`) are committed, not built on the fly.
+`publications/summaries`, `communications/summaries`, `activities/summaries`,
+`analysis/keyTerms`, `analysis/corpusSummary`, `researchProse`,
+`imageVariants`) are committed, not built on the fly.
 `prebuild` regenerates them all, so a full `npm run build` covers it; after
 only touching `src/lib/data/` or adding an image, the generators alone are
 quicker:
@@ -139,8 +141,24 @@ abstract past `ABSTRACT_EXCERPT_LENGTH` (`summaryConfig.ts`).
 `data/communications/summaries.ts` drops `abstract` and adds `abstractExcerpt`;
 `/cv`, `/conference-activity`, the slides gallery, the timeline and the research
 pages read it, and only `/communications/[id]` imports the full `index.ts`.
-`gen:summaries` emits both projections; `summaries.test.ts` beside each proves
-it faithful.
+`gen:summaries` emits all three projections; `summaries.test.ts` beside each
+proves it faithful.
+
+**Activity summaries**: the same projection for the activity log —
+`data/activities/summaries.ts` drops `content`, the HTML body (60% of the
+dataset's source). `/activities`, its year pages and the style guide read it
+through `stores/activities.svelte.ts`; `/activities/[id]` receives its one full
+record from a server load, and the home page's latest-activities rail receives
+five rows and a year meter (`utils/activityLog.ts`) from its server load. Only
+server code (API, RSS, sitemap, those loads) imports the full `index.ts`. The
+activity records import `$lib` at runtime (`formatDisplayDate`), which
+`scripts/lib/data-records.mjs` resolves with a Node resolve hook.
+
+**Detail routes load on the server.** Every `[id]` route (publications, talks,
+activities, digital humanities) has a `+page.server.ts`, so a record page
+receives its record rather than importing its whole dataset. A universal
+`+page.ts` that imports a dataset puts every record into every record page's
+bundle.
 
 **Font subsets**: the latin-ext and vietnamese faces in `static/fonts/web/` are
 cut to fixed Unicode blocks by `scripts/subset-fonts.py` (x64 Python with
@@ -333,7 +351,7 @@ All three render inline SVG (never canvas), so marks are focusable and CSS-theme
 
 ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions.output.codeSplitting` in Vite config. Use dynamic imports for visualization components. ECharts is tree-shaken via `echartsCore.ts`; `GraphChart` is deliberately absent (networks are SVG, see above).
 
-The same `codeSplitting` block also consolidates what every page loads: a `framework` group (Svelte, Kit, and the bundler helpers) and an entries-aware `shared` group for small utilities and components reused across routes. Rolldown's automatic splitting otherwise emits one file per shared module, and the index pages were fetching ~30 scripts, most under 2 KB — each a round trip on PageSpeed's simulated mobile network. `npm run check:bundle` guards the boundary: a group captures its modules' dependencies too, so the `shared` allow/deny lists in `vite.config.ts` must never admit a module that reaches a dataset or a heavy library.
+The same `codeSplitting` block also consolidates what every page loads: a `framework` group (Svelte, Kit, and the bundler helpers) and an entries-aware `shared` group for small utilities and components reused across routes, one chunk per exact set of routes that shares them. Its `entriesAwareMergeThreshold` stays **0**: a merge folds small subgroups into a neighbour, which makes _passengers_ — code a route downloads but never imports (the visualisation pages' chart utilities once rode on `/teaching`). `npm run check:bundle` guards both boundaries: a group captures its modules' dependencies too, so the `shared` allow/deny lists in `vite.config.ts` must never admit a module that reaches a dataset or a heavy library; and every route's chunks are compared with its source imports (`scripts/lib/source-graph.mjs`), failing on any passenger.
 
 ## Design Context
 

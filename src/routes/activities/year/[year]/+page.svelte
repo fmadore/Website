@@ -17,7 +17,7 @@ its share — so the step is a convenience, not the only route.
 <script lang="ts">
 	import { page } from '$app/state';
 	import { getActivities } from '$lib/stores/activities.svelte';
-	import type { Activity } from '$lib/types';
+	import type { ActivitySummary } from '$lib/types';
 	import { base, resolve } from '$app/paths';
 	import SEO from '$lib/SEO.svelte';
 	import { pageTitle } from '$lib/utils/siteHelpers';
@@ -37,12 +37,12 @@ its share — so the step is a convenience, not the only route.
 
 	// Filter activities by year - using $derived for reactive filtering
 	let filteredActivities = $derived(
-		activities.filter((activity: Activity) => activity.year === year)
+		activities.filter((activity: ActivitySummary) => activity.year === year)
 	);
 
 	// All years for display - using $derived for consistent sorting
 	let allYears = $derived(
-		[...new Set(activities.map((activity: Activity) => activity.year))].sort(
+		[...new Set(activities.map((activity: ActivitySummary) => activity.year))].sort(
 			(a: number, b: number) => b - a
 		)
 	);
@@ -50,7 +50,7 @@ its share — so the step is a convenience, not the only route.
 	// --- The browse meter, over the whole log (this page filters by year rather
 	// than narrowing a set, so every year keeps its true count and share). ---
 	function countForYear(y: number): number {
-		return activities.filter((activity: Activity) => activity.year === y).length;
+		return activities.filter((activity: ActivitySummary) => activity.year === y).length;
 	}
 	const maxYearCount = $derived(Math.max(1, ...allYears.map((y) => countForYear(y))));
 
@@ -63,7 +63,7 @@ its share — so the step is a convenience, not the only route.
 
 	// The "Updated" stamp in the aside footer — newest dated entry in this year.
 	const updatedLabel = $derived.by(() => {
-		const iso = filteredActivities.find((a: Activity) =>
+		const iso = filteredActivities.find((a: ActivitySummary) =>
 			/^\d{4}-\d{2}-\d{2}$/.test(a.dateISO ?? '')
 		)?.dateISO;
 		return iso ? formatShortDateMono(iso) : '';

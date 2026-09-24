@@ -1,26 +1,18 @@
 /**
- * Read-only accessors over the activities data.
+ * Read-only accessor over the activity log, for the pages that list it.
  *
- * The list is static (built from `$lib/data/activities` at module load); these
- * helpers exist so consumers share one import point and an id lookup.
+ * It serves the summaries (`$lib/data/activities/summaries`): every field but
+ * the `content` body, which only the record page prints and which that page
+ * receives from its server load. Reaching for the full `$lib/data/activities`
+ * index from a list page puts every body back into its bundle.
  */
 
-import { activitiesByDate } from '../data/activities';
-import type { Activity } from '$lib/types';
+import { activitySummariesByDate } from '$lib/data/activities/summaries';
+import type { ActivitySummary } from '$lib/types';
 
-// Re-export the Activity type for backward compatibility
-export type { Activity };
+export type { ActivitySummary };
 
-/**
- * Get all activities, newest first
- */
-export function getActivities(): Activity[] {
-	return activitiesByDate;
-}
-
-/**
- * Get a single activity by ID
- */
-export function getActivityById(id: string): Activity | undefined {
-	return activitiesByDate.find((a) => a.id === id);
+/** Every activity, newest first. */
+export function getActivities(): ActivitySummary[] {
+	return activitySummariesByDate;
 }
