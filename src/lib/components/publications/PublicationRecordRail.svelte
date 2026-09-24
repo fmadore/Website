@@ -14,7 +14,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
 	import { generateBibtex } from '$lib/utils/bibtexGenerator';
 	import { formatReferenceHtml, formatReferenceText } from '$lib/utils/citationFormatter';
-	import { copyText } from '$lib/utils/clipboard';
+	import { createCopyFeedback } from '$lib/utils/clipboard.svelte';
 	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { plateFallback } from '$lib/actions/plateFallback';
@@ -148,8 +148,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	const referenceHtml = $derived(formatReferenceHtml(publication, { doi: true }));
 	const reference = $derived(formatReferenceText(publication, { doi: true }));
 
-	let copyState = $state<'idle' | 'copied' | 'failed'>('idle');
-	let resetTimer: ReturnType<typeof setTimeout> | undefined;
+	const copyFeedback = createCopyFeedback();
 
 	const COPY_LABELS = {
 		idle: 'Copy reference',
@@ -157,13 +156,9 @@ The other half of the old <PublicationAside> — tags and key terms — is
 		failed: 'Copy failed. Select the text above.'
 	} as const;
 
-	async function copyReference() {
-		copyState = (await copyText(reference)) ? 'copied' : 'failed';
-		clearTimeout(resetTimer);
-		resetTimer = setTimeout(() => (copyState = 'idle'), 2400);
+	function copyReference() {
+		void copyFeedback.copy(reference);
 	}
-
-	$effect(() => () => clearTimeout(resetTimer));
 
 	function downloadBibtex() {
 		if (!publication) return;
@@ -248,7 +243,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 			aria-live="polite"
 			class="btn btn-outline-primary btn-block cursor-pointer"
 		>
-			{COPY_LABELS[copyState]}
+			{COPY_LABELS[copyFeedback.state]}
 		</button>
 		<button
 			type="button"

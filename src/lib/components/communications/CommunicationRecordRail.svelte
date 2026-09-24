@@ -14,7 +14,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	import type { Communication } from '$lib/types/communication';
 	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
 	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
-	import { copyText } from '$lib/utils/clipboard';
+	import { createCopyFeedback } from '$lib/utils/clipboard.svelte';
 	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { plateFallback } from '$lib/actions/plateFallback';
@@ -141,8 +141,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 			.trim()
 	);
 
-	let copyState = $state<'idle' | 'copied' | 'failed'>('idle');
-	let resetTimer: ReturnType<typeof setTimeout> | undefined;
+	const copyFeedback = createCopyFeedback();
 
 	const COPY_LABELS = {
 		idle: 'Copy reference',
@@ -150,13 +149,9 @@ to emit, and widening it for one button would be the wrong place to decide that.
 		failed: 'Copy failed. Select the text above.'
 	} as const;
 
-	async function copyReference() {
-		copyState = (await copyText(reference)) ? 'copied' : 'failed';
-		clearTimeout(resetTimer);
-		resetTimer = setTimeout(() => (copyState = 'idle'), 2400);
+	function copyReference() {
+		void copyFeedback.copy(reference);
 	}
-
-	$effect(() => () => clearTimeout(resetTimer));
 </script>
 
 {#if plateSrc}
@@ -236,7 +231,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 			aria-live="polite"
 			class="btn btn-outline-primary btn-block cursor-pointer"
 		>
-			{COPY_LABELS[copyState]}
+			{COPY_LABELS[copyFeedback.state]}
 		</button>
 	</div>
 </div>

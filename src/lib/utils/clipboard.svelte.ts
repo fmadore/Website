@@ -63,3 +63,38 @@ function selectionCopy(text: string): boolean {
 
 	return copied;
 }
+
+/** The three states a copy control reports. */
+export type CopyState = 'idle' | 'copied' | 'failed';
+
+/** How long a copy control shows its outcome before it returns to idle. */
+export const COPY_FEEDBACK_MS = 2400;
+
+/**
+ * A copy control's state: idle until a copy, then `copied` or `failed` —
+ * never a claimed copy that did not happen — for {@link COPY_FEEDBACK_MS},
+ * then idle again. A second copy restarts the window.
+ *
+ * Call it while a component initialises: the reset timer is cleared when the
+ * component is destroyed, since a row can paginate away mid-confirmation.
+ */
+export function createCopyFeedback() {
+	let state = $state<CopyState>('idle');
+	let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
+	$effect(() => () => clearTimeout(resetTimer));
+
+	return {
+		get state(): CopyState {
+			return state;
+		},
+		/** Copies `text` and reports the outcome. */
+		async copy(text: string): Promise<Exclude<CopyState, 'idle'>> {
+			const outcome = (await copyText(text)) ? 'copied' : 'failed';
+			state = outcome;
+			clearTimeout(resetTimer);
+			resetTimer = setTimeout(() => (state = 'idle'), COPY_FEEDBACK_MS);
+			return outcome;
+		}
+	};
+}

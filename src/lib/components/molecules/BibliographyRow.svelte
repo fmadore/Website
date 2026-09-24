@@ -41,7 +41,7 @@
 	import Icon from '@iconify/svelte';
 	import { base } from '$app/paths';
 	import Button from '$lib/components/atoms/Button.svelte';
-	import { copyText } from '$lib/utils/clipboard';
+	import { createCopyFeedback, type CopyState } from '$lib/utils/clipboard.svelte';
 	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
@@ -130,7 +130,7 @@
 		 * (a live region that appears at the moment its text does announces
 		 * nothing, and twelve of them are twelve chances to announce it twice).
 		 */
-		oncopystate?: (state: 'copied' | 'failed') => void;
+		oncopystate?: (state: Exclude<CopyState, 'idle'>) => void;
 	}
 
 	let {
@@ -185,8 +185,7 @@
 	// record page for a reference the row could hand over is a detour. The
 	// control reports its own result rather than claiming a copy that a denied
 	// permission never made — hence the third state.
-	let copyState = $state<'idle' | 'copied' | 'failed'>('idle');
-	let resetTimer: ReturnType<typeof setTimeout> | undefined;
+	const copyFeedback = createCopyFeedback();
 
 	const CITE_LABELS = {
 		idle: 'Cite',
@@ -204,14 +203,8 @@
 
 	async function copyReference() {
 		if (!reference) return;
-		copyState = (await copyText(reference())) ? 'copied' : 'failed';
-		oncopystate?.(copyState);
-		clearTimeout(resetTimer);
-		resetTimer = setTimeout(() => (copyState = 'idle'), 2400);
+		oncopystate?.(await copyFeedback.copy(reference()));
 	}
-
-	// The timer outlives a row that paginates away mid-confirmation.
-	$effect(() => () => clearTimeout(resetTimer));
 </script>
 
 <article
@@ -334,9 +327,9 @@
 			<Button
 				bare
 				class="bib-action bib-cite"
-				additionalClasses={CITE_STATE_CLASS[copyState]}
+				additionalClasses={CITE_STATE_CLASS[copyFeedback.state]}
 				onclick={copyReference}
-				label={CITE_LABELS[copyState]}
+				label={CITE_LABELS[copyFeedback.state]}
 			/>
 		{/if}
 		{#if citedCount > 0}
