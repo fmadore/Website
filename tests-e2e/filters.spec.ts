@@ -179,3 +179,24 @@ test('a talk that has happened since the build leaves the upcoming block after h
 		.poll(async () => plain(await page.locator('main .bib-list .bib-row').first().innerText()))
 		.toContain(plain(newest.title));
 });
+
+test('the activities log "All" chips print what clearing their row returns', async ({ page }) => {
+	await page.goto('/activities');
+	await ready(page);
+	const types = page.getByRole('group', { name: 'Types' });
+	const tags = page.getByRole('group', { name: 'Tags' });
+	const countOf = async (chip: Locator) =>
+		Number((await chip.locator('.chip-count').innerText()).trim());
+
+	// A type narrows the log; clearing the (empty) tag row returns that
+	// narrowed log, not the whole of it.
+	await types.getByRole('button').nth(1).click();
+	await expect(types.getByRole('button').nth(1)).toHaveAttribute('aria-pressed', 'true');
+	const readout = page.locator('.filter-note-count');
+	await expect(readout).toContainText('active');
+	const shown = Number(/(\d+)\s+of\s+\d+/i.exec(await readout.innerText())?.[1]);
+	expect(shown).toBeGreaterThan(0);
+	const allTags = tags.getByRole('button', { name: /^All \d+$/ });
+	await expect(allTags).toHaveAttribute('aria-pressed', 'true');
+	expect(await countOf(allTags)).toBe(shown);
+});

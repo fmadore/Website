@@ -226,15 +226,20 @@
 
 				{#if typeOptions.length > 0}
 					<section class="aside-block">
-						<h2 class="aside-title">Types</h2>
-						<div class="chip-row aside-tags">
+						<h2 class="aside-title" id="activities-types-head">Types</h2>
+						<!-- Named as a group by the heading above, so each chip's accessible
+						     name stays its visible text (SC 2.5.3), and "All" prints what
+						     clearing this row returns under the other facet — the same rules
+						     as the index facet bar. -->
+						<div class="chip-row aside-tags" role="group" aria-labelledby="activities-types-head">
 							<button
 								type="button"
 								class="chip"
 								class:chip--selected={af.types.length === 0}
+								aria-pressed={af.types.length === 0}
 								onclick={() => filters.setValues('types', [])}
 							>
-								All <span class="chip-count">{totalCount}</span>
+								All <span class="chip-count">{filters.totals.types}</span>
 							</button>
 							{#each typeOptions as type (type)}
 								<button
@@ -254,16 +259,16 @@
 
 				{#if tagCounts.length > 0}
 					<section class="aside-block">
-						<h2 class="aside-title">Tags</h2>
-						<div class="chip-row aside-tags">
+						<h2 class="aside-title" id="activities-tags-head">Tags</h2>
+						<div class="chip-row aside-tags" role="group" aria-labelledby="activities-tags-head">
 							<button
 								type="button"
 								class="chip"
 								class:chip--selected={af.tags.length === 0}
-								aria-label="All tags"
+								aria-pressed={af.tags.length === 0}
 								onclick={() => filters.setValues('tags', [])}
 							>
-								All <span class="chip-count">{totalCount}</span>
+								All <span class="chip-count">{filters.totals.tags}</span>
 							</button>
 							{#each visibleTags as tag (tag)}
 								<button

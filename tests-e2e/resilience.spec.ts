@@ -1,5 +1,4 @@
-import AxeBuilder from '@axe-core/playwright';
-import { test, expect, ready } from './fixtures';
+import { test, expect, ready, wcagScan } from './fixtures';
 
 // Network failure injection must not be bypassed by the service-worker cache.
 test.use({ serviceWorkers: 'block' });
@@ -57,9 +56,6 @@ test('facet combobox supports keyboard selection and accessible open state', asy
 	await field.press('Escape');
 	await expect(field).toBeFocused();
 	await field.click();
-	const results = await new AxeBuilder({ page })
-		.include('.facet-combobox')
-		.withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
-		.analyze();
+	const results = await wcagScan(page).include('.facet-combobox').analyze();
 	expect(results.violations).toEqual([]);
 });
