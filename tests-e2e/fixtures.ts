@@ -1,13 +1,25 @@
 import { test as base, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-/** Unhandled application errors fail interaction tests even if the static HTML looks correct. */
+/**
+ * Unhandled application errors fail interaction tests even if the static HTML
+ * looks correct — and so does anything the Content Security Policy blocks: the
+ * policy allows no inline script but the hashed ones, so a blocked script is a
+ * broken page, in whichever engine reports it.
+ */
 export const test = base.extend({
 	page: async ({ page }, use) => {
 		const errors: string[] = [];
+		const cspViolations: string[] = [];
 		page.on('pageerror', (error) => errors.push(error.message));
+		page.on('console', (message) => {
+			if (/content[- ]security[- ]policy/i.test(message.text())) {
+				cspViolations.push(message.text());
+			}
+		});
 		await use(page);
 		expect(errors, 'Unhandled browser errors').toEqual([]);
+		expect(cspViolations, 'Content Security Policy violations').toEqual([]);
 	}
 });
 export { expect };

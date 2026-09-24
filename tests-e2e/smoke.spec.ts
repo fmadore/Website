@@ -350,3 +350,21 @@ test('a publication detail page injects JSON-LD structured data', async ({ page 
 	const jsonLd = page.locator('script[type="application/ld+json"]');
 	await expect(jsonLd.first()).toBeAttached({ timeout: 15_000 });
 });
+
+test('the Content Security Policy allows no inline script but hashed ones', async ({
+	page,
+	request
+}) => {
+	const html = await (await request.get('/')).text();
+	const policy = /<meta http-equiv="content-security-policy" content="([^"]+)"/i.exec(html)?.[1];
+	expect(policy, 'a CSP <meta> on the prerendered page').toBeTruthy();
+	const scriptSrc = policy!
+		.split(';')
+		.find((directive) => directive.trim().startsWith('script-src'));
+	expect(scriptSrc).not.toContain("'unsafe-inline'");
+	expect(scriptSrc).toMatch(/'sha256-[^']+'/);
+	// The theme bootstrap is inline, so it only runs if its hash is in the policy.
+	await page.goto('/');
+	await ready(page);
+	await expect(page.locator('html')).toHaveClass(/\b(light|dark)\b/);
+});

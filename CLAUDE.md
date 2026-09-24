@@ -337,6 +337,17 @@ Run `npm run format` before committing. CI enforces Prettier + ESLint via `npm r
 
 `toggleTheme` (`$lib/stores/themeStore.svelte.ts`) also repaints both `theme-color` metas from the computed `--color-background`. The pre-hydration copy of the same logic is in `src/app.html` (and again in `static/404.html`), where the stylesheet does not exist yet and the two grounds are written as literals; `src/lib/utils/designTokenParity.test.ts` binds those literals to the tokens.
 
+### Content Security Policy
+
+`kit.csp` in `svelte.config.js` (hash mode), written by Kit as a `<meta>` on
+every prerendered page — GitHub Pages sets no headers, so `frame-ancestors`
+cannot be set. `script-src` has no `'unsafe-inline'`: Kit hashes its own
+bootstrap, the config hashes `app.html`'s inline scripts from the file, and
+`'unsafe-hashes'` admits exactly Svelte's `this.__e=event` load/error replay
+handler. A new inline script or handler anywhere is therefore blocked, and the
+E2E fixture fails any test whose page reports a CSP violation. A new external
+origin (an embed, an API) needs its host added to the matching directive.
+
 ### Filter Implementation
 
 Entity-index pages instantiate `new EntityFilterSystem(config)` from `$lib/utils/entityFilterSystem.svelte.ts` and read/mutate it directly (no store `$` prefix):
