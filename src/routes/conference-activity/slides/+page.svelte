@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
@@ -100,7 +101,7 @@
 </script>
 
 <SEO
-	title="Slides | Frédérick Madore"
+	title={pageTitle('Slides')}
 	description="Slide decks from conference papers, lectures and workshops by Frédérick Madore."
 	keywords="slides, presentations, slide decks, conference papers, lectures, reveal.js, Frédérick Madore"
 />

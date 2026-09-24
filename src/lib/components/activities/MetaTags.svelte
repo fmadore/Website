@@ -2,15 +2,27 @@
 	import type { Activity } from '$lib/types/activity';
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
-	import { type CoinsField, buildCoins, buildHeadTags, getFullUrl } from '$lib/utils/metaTags';
+	import {
+		type CoinsField,
+		buildCoins,
+		buildHeadTags,
+		getFullUrl,
+		parseAuthorName,
+		toLastFirstFormat
+	} from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
-	import { website } from '$lib/data/siteConfig';
+	import { author, website } from '$lib/data/siteConfig';
 
 	let { activity }: { activity: Activity } = $props();
 
 	// Resolve URLs against the canonical site origin — at prerender time
 	// page.url.origin is the placeholder http://sveltekit-prerender, which must
 	// never reach the baked head tags Zotero and crawlers consume.
+	// The site author as citation managers file a name ("Madore, Frédérick"),
+	// and its parts for COinS.
+	const authorCitationName = toLastFirstFormat(author.name);
+	const authorNameParts = parseAuthorName(authorCitationName);
+
 	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, base, path);
 
 	// Canonical page URL (see resolveUrl note above).
@@ -21,12 +33,12 @@
 	const coinsFields = (): CoinsField[] => [
 		['rft_val_fmt', 'info:ofi/fmt:kev:mtx:journal'],
 		['rft.genre', 'article'],
-		['rft.jtitle', 'Frédérick Madore'],
+		['rft.jtitle', author.name],
 		['rft.title', activity.title],
-		// Author (always Frédérick Madore for activities)
-		['rft.au', 'Madore, Frédérick'],
-		['rft.aufirst', 'Frédérick'],
-		['rft.aulast', 'Madore'],
+		// Author (always the site author for activities)
+		['rft.au', authorCitationName],
+		['rft.aufirst', authorNameParts.first],
+		['rft.aulast', authorNameParts.last],
 		['rft.date', activity.dateISO || activity.year?.toString()]
 	];
 
@@ -36,13 +48,13 @@
 			// Basic Highwire Press tags for blog posts
 			{ name: 'citation_title', content: activity.title },
 			{ name: 'citation_genre', content: 'blogPost' },
-			// Author - always Frédérick Madore for activities
-			{ name: 'citation_author', content: 'Madore, Frédérick' },
-			{ name: 'DC.creator', content: 'Madore, Frédérick' },
+			// Author - always the site author for activities
+			{ name: 'citation_author', content: authorCitationName },
+			{ name: 'DC.creator', content: authorCitationName },
 			// Publication info for blog posts - try multiple approaches
-			{ name: 'citation_journal_title', content: 'Frédérick Madore' },
-			{ name: 'citation_publication_title', content: 'Frédérick Madore' },
-			{ name: 'citation_publisher', content: 'Frédérick Madore' },
+			{ name: 'citation_journal_title', content: author.name },
+			{ name: 'citation_publication_title', content: author.name },
+			{ name: 'citation_publisher', content: author.name },
 			{ name: 'citation_date', content: activity.dateISO },
 			{ name: 'citation_publication_date', content: activity.dateISO },
 			{ name: 'citation_online_date', content: activity.dateISO },
@@ -62,7 +74,7 @@
 			// Dublin Core tags for blog posts
 			{ name: 'DC.title', content: activity.title },
 			{ name: 'DC.type', content: 'Text' },
-			{ name: 'DC.publisher', content: 'Frédérick Madore' },
+			{ name: 'DC.publisher', content: author.name },
 			{ name: 'DC.description', content: activity.description },
 			{ name: 'DC.date', content: activity.dateISO },
 			{ name: 'DC.identifier', content: currentUrl },
@@ -71,12 +83,12 @@
 			(activity.tags ?? []).map((tag) => ({ name: 'DC.subject', content: tag })),
 			{ name: 'DC.subject', content: activity.type },
 			// Blog post specific meta tags for better detection
-			{ name: 'article:author', content: 'Frédérick Madore' },
+			{ name: 'article:author', content: author.name },
 			{ name: 'article:section', content: 'Academic Activities' },
 			{ name: 'article:published_time', content: activity.dateISO },
 			{ name: 'article:modified_time', content: activity.dateISO },
 			// Website/blog identification
-			{ name: 'og:site_name', content: 'Frédérick Madore' },
+			{ name: 'og:site_name', content: author.name },
 			{ name: 'og:type', content: 'article' },
 			{ name: 'og:title', content: activity.title },
 			{ name: 'og:description', content: activity.description },

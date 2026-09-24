@@ -2,9 +2,16 @@
 	import type { Communication } from '$lib/types/communication';
 	import { base } from '$app/paths';
 	import { page } from '$app/state';
-	import { type CoinsField, buildCoins, buildHeadTags, getFullUrl } from '$lib/utils/metaTags';
+	import {
+		type CoinsField,
+		buildCoins,
+		buildHeadTags,
+		getFullUrl,
+		parseAuthorName,
+		toLastFirstFormat
+	} from '$lib/utils/metaTags';
 	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
-	import { website } from '$lib/data/siteConfig';
+	import { author, website } from '$lib/data/siteConfig';
 	import { stripHtml } from '$lib/utils/textUtils';
 
 	let { communication }: { communication: Communication } = $props();
@@ -18,6 +25,11 @@
 	// Resolve URLs against the canonical site origin — at prerender time
 	// page.url.origin is the placeholder http://sveltekit-prerender, which must
 	// never reach the baked head tags Zotero and crawlers consume.
+	// The site author as citation managers file a name ("Madore, Frédérick"),
+	// and its parts for COinS.
+	const authorCitationName = toLastFirstFormat(author.name);
+	const authorNameParts = parseAuthorName(authorCitationName);
+
 	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, base, path);
 
 	// Helper to get presentation type for Zotero
@@ -51,10 +63,10 @@
 		['rft_val_fmt', 'info:ofi/fmt:kev:mtx:dc'],
 		['rft.type', 'presentation'],
 		['rft.title', communication.title],
-		// Presenter (always Frédérick Madore for communications)
-		['rft.creator', 'Madore, Frédérick'],
-		['rft.aufirst', 'Frédérick'],
-		['rft.aulast', 'Madore'],
+		// Presenter (always the site author for communications)
+		['rft.creator', authorCitationName],
+		['rft.aufirst', authorNameParts.first],
+		['rft.aulast', authorNameParts.last],
 		// Meeting/Conference info
 		['rft.source', communication.conference],
 		['rft.coverage', communication.location],
@@ -69,10 +81,10 @@
 			// Basic Highwire Press tags for presentations
 			{ name: 'citation_title', content: communication.title },
 			{ name: 'citation_genre', content: 'presentation' },
-			// Author/Presenter - always Frédérick Madore for communications
-			{ name: 'citation_author', content: 'Madore, Frédérick' },
-			{ name: 'citation_presenter', content: 'Madore, Frédérick' },
-			{ name: 'DC.creator', content: 'Madore, Frédérick' },
+			// Author/Presenter - always the site author for communications
+			{ name: 'citation_author', content: authorCitationName },
+			{ name: 'citation_presenter', content: authorCitationName },
+			{ name: 'DC.creator', content: authorCitationName },
 			// Conference/Meeting info for presentations
 			{ name: 'citation_conference_title', content: communication.conference },
 			{ name: 'citation_meeting_name', content: communication.conference },
@@ -111,7 +123,7 @@
 			{ name: 'og:url', content: currentUrl },
 			{ name: 'og:description', content: plainAbstract },
 			{ name: 'og:image', content: resolveUrl(communication.image) },
-			{ name: 'og:site_name', content: 'Frédérick Madore' },
+			{ name: 'og:site_name', content: author.name },
 			// Twitter Card tags
 			{ name: 'twitter:card', content: 'summary_large_image' },
 			{ name: 'twitter:title', content: communication.title },

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import '$styles/components/entity-index.css';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { communicationFilters } from '$lib/data/communications/filters.svelte';
@@ -221,10 +222,9 @@
 </script>
 
 <SEO
-	title="Talks & Events | Frédérick Madore"
+	title={pageTitle('Talks & Events')}
 	description="Academic conference presentations, workshops, and other speaking engagements by Frédérick Madore across Africa, Europe, and North America."
 	keywords="conferences, presentations, workshops, panels, lectures, Islam, West Africa, digital humanities, Frédérick Madore"
-	canonical="https://www.frederickmadore.com/conference-activity"
 	{breadcrumbs}
 	pageType="CollectionPage"
 />

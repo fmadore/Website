@@ -3,6 +3,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { allResearchProjects } from '$lib/data/research';
 	import { buildSrcset } from '$lib/utils/imageVariants';
@@ -91,10 +92,9 @@
 </script>
 
 <SEO
-	title="Research | Frédérick Madore"
+	title={pageTitle('Research')}
 	description="Research projects by Frédérick Madore: Islam in francophone West Africa since the 1960s, AI and digital humanities, and African research infrastructure."
 	keywords="African history, Islamic studies, digital humanities, artificial intelligence, West Africa, Muslim societies, Muslim youth, Muslim women, religious minorities, religious activism, Benin, Burkina Faso, Côte d'Ivoire, Togo, Niger, Nigeria, Central Asia, Islam West Africa Collection, IWAC, Africa Multiple, research data infrastructure, computational methods, Islamic discourse, Muslim politics, Frédérick Madore"
-	canonical="https://www.frederickmadore.com/research"
 	{breadcrumbs}
 	pageType="CollectionPage"
 />

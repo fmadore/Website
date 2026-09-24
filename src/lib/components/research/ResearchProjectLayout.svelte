@@ -32,7 +32,7 @@ co-director, programme or grant simply drop those rows.
 	import { allPublicationSummaries as allPublications } from '$lib/data/publications/summaries';
 	import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
 	import type { Grant, ResearchProject } from '$lib/types';
-	import { website } from '$lib/utils/siteHelpers';
+	import { website, pageTitle } from '$lib/utils/siteHelpers';
 	import { base } from '$app/paths';
 	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
@@ -178,7 +178,7 @@ co-director, programme or grant simply drop those rows.
      `canonical`: SEO.svelte defaults it to the page's own address, which for
      this route is the same value. -->
 <SEO
-	title="{cardTitle ?? shortTitle} | Frédérick Madore"
+	title={pageTitle(cardTitle ?? shortTitle)}
 	description={seoDescription}
 	keywords={seoKeywords}
 	ogImage="{base}/images/research/{imageSrc}"

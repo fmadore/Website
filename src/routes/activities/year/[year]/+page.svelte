@@ -20,6 +20,7 @@ its share — so the step is a convenience, not the only route.
 	import type { Activity } from '$lib/types';
 	import { base, resolve } from '$app/paths';
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	// Activity-list styles relocated from the global app.css.
 	import '$styles/components/activity-list.css';
@@ -81,7 +82,7 @@ its share — so the step is a convenience, not the only route.
 	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 </script>
 
-<SEO title={`Activities (${year}) | Frédérick Madore`} />
+<SEO title={pageTitle(`Activities (${year})`)} />
 
 <JsonLd id="breadcrumb-json-ld-activities-year" json={breadcrumbJsonLd} />
 <div class="container py-8">

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
@@ -592,7 +593,7 @@
 </script>
 
 <SEO
-	title="Publication Visualisations | Frédérick Madore"
+	title={pageTitle('Publication Visualisations')}
 	description="The publication record counted: works per year and type, languages, keywords, venues, collaborators and recorded citations."
 	keywords="publications, visualisations, citations, research analytics, Frédérick Madore"
 />

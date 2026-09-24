@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import '$styles/components/entity-index.css';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { publicationFilters } from '$lib/data/publications/filters.svelte';
@@ -175,10 +176,9 @@
 </script>
 
 <SEO
-	title="Publications | Frédérick Madore"
+	title={pageTitle('Publications')}
 	description="Academic publications by Frédérick Madore, including books, journal articles, edited volumes, book chapters, and special issues."
 	keywords="publications, books, journal articles, research, Islam, West Africa, Frédérick Madore"
-	canonical="https://www.frederickmadore.com/publications"
 	{breadcrumbs}
 	pageType="CollectionPage"
 />

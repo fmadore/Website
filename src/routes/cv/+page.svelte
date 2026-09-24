@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getCvDescription } from '$lib/utils/siteHelpers';
+	import { getCvDescription, pageTitle } from '$lib/utils/siteHelpers';
 	import Icon from '@iconify/svelte';
 	import SEO from '$lib/SEO.svelte';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
@@ -38,10 +38,9 @@
 </script>
 
 <SEO
-	title="Curriculum Vitae | Frédérick Madore"
+	title={pageTitle('Curriculum Vitae')}
 	description={getCvDescription()}
 	keywords="CV, curriculum vitae, Frédérick Madore, research fellow, publications, academic career, Islam, West Africa"
-	canonical="https://www.frederickmadore.com/cv"
 	{breadcrumbs}
 	pageType="ProfilePage"
 />

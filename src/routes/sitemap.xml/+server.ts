@@ -4,6 +4,7 @@ import { allCommunications } from '$lib/data/communications/index';
 import { allDhProjects } from '$lib/data/digital-humanities';
 import type { RequestHandler } from '@sveltejs/kit';
 import { base } from '$app/paths';
+import { website as site } from '$lib/data/siteConfig';
 
 // Explicitly prerender this endpoint
 export const prerender = true;
@@ -57,7 +58,7 @@ const toLastmod = (dateISO?: string): string | undefined =>
 	dateISO && W3C_DATE.test(dateISO) ? dateISO : undefined;
 
 export const GET: RequestHandler = async () => {
-	const website = 'https://www.frederickmadore.com';
+	const website = site.url;
 
 	// Static pages with specific priorities for sitelinks optimization.
 	// No lastmod: these pages carry no true modification date, and a fabricated

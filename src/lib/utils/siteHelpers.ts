@@ -70,6 +70,15 @@ export function getEmailLink(): string {
 }
 
 /**
+ * A page's `<title>`: its own segments, most specific first, then the site
+ * name — `pageTitle('Research')` → "Research | Frédérick Madore". The name
+ * comes from siteConfig, like every other author string in SEO metadata.
+ */
+export function pageTitle(...segments: string[]): string {
+	return [...segments, author.name].join(' | ');
+}
+
+/**
  * Get default SEO description
  */
 export function getDefaultDescription(): string {

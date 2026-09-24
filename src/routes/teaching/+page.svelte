@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { base, resolve } from '$app/paths'; // base for files, resolve for hrefs
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
@@ -72,10 +73,9 @@
 </script>
 
 <SEO
-	title="Teaching | Frédérick Madore"
+	title={pageTitle('Teaching')}
 	description="Teaching experience by Frédérick Madore, including courses on African History, Islam in sub-Saharan Africa, and digital humanities."
 	keywords="teaching, courses, African history, Islam, digital humanities, Frédérick Madore, guest lectures"
-	canonical="https://www.frederickmadore.com/teaching"
 	{breadcrumbs}
 	pageType="CollectionPage"
 />

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import { base } from '$app/paths';
 	import type { Publication } from '$lib/types';
 	import type { ComponentType } from 'svelte';
@@ -105,7 +106,7 @@
 </script>
 
 <SEO
-	title={truncateTitle(publication.title) + ' | Frédérick Madore'}
+	title={pageTitle(truncateTitle(publication.title))}
 	schemaName={publication.title}
 	description={seoDescription}
 	keywords={seoKeywords}

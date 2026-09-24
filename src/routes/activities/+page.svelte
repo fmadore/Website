@@ -3,6 +3,7 @@
 	import type { Activity } from '$lib/types';
 	import { base, resolve } from '$app/paths';
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
@@ -143,10 +144,9 @@
 </script>
 
 <SEO
-	title="Activities | Frédérick Madore"
+	title={pageTitle('Activities')}
 	description="Professional activities by Frédérick Madore, including workshops, talks, conferences, and other academic engagements in digital humanities and African studies."
 	keywords="activities, workshops, talks, conferences, academic events, Frédérick Madore, digital humanities, Islam, West Africa"
-	canonical="https://www.frederickmadore.com/activities"
 	{breadcrumbs}
 	pageType="CollectionPage"
 />

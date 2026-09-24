@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import MetaTags from '$lib/components/digital-humanities/MetaTags.svelte';
 	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
 	import DhProjectRail from '$lib/components/digital-humanities/DhProjectRail.svelte';
@@ -54,7 +55,7 @@
 </script>
 
 <SEO
-	title={project.seoTitle || `${project.title} | Digital Humanities | Frédérick Madore`}
+	title={project.seoTitle || pageTitle(project.title, 'Digital Humanities')}
 	schemaName={project.title}
 	description={project.seoDescription || project.shortDescription}
 	keywords={project.seoKeywords?.join(', ') ||

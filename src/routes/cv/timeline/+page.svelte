@@ -6,6 +6,7 @@
 		TIMELINE_MIN_PLATE_WIDTH
 	} from '$lib/components/visualisations/CareerTimeline.svelte';
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import { getAllTimelineItems } from '$lib/utils/timelineData';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 
@@ -27,10 +28,9 @@
 </script>
 
 <SEO
-	title="Career Timeline | Frédérick Madore"
+	title={pageTitle('Career Timeline')}
 	description="The CV plotted against time: positions, education, grants, awards, fieldwork, publications and presentations, one lane per category."
 	keywords="career timeline, academic career, visualisation, digital humanities, Islam, West Africa"
-	canonical="https://www.frederickmadore.com/cv/timeline"
 	{breadcrumbs}
 />
 

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { base, resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
@@ -212,10 +213,9 @@
 </script>
 
 <SEO
-	title="Digital Humanities | Frédérick Madore"
+	title={pageTitle('Digital Humanities')}
 	description="Digital humanities projects by Frédérick Madore including the Islam West Africa Collection (IWAC), AI-assisted workflows, and data visualisation."
 	keywords="digital humanities, IWAC, Islam West Africa Collection, AI, machine learning, data visualisation, Frédérick Madore"
-	canonical="https://www.frederickmadore.com/digital-humanities"
 	{breadcrumbs}
 	pageType="CollectionPage"
 />

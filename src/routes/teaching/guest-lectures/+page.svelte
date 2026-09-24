@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import SEO from '$lib/SEO.svelte';
+	import { pageTitle } from '$lib/utils/siteHelpers';
 	import { base } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
@@ -50,7 +51,7 @@
 </script>
 
 <SEO
-	title="Guest lectures | Frédérick Madore"
+	title={pageTitle('Guest lectures')}
 	description="Guest lectures and invited talks on Islam, West Africa and historical research methods, delivered by Frédérick Madore in colleagues' undergraduate and graduate courses."
 	keywords="guest lectures, invited talks, teaching, African history, Islam, West Africa, Frédérick Madore"
 	pageType="CollectionPage"
