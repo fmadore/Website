@@ -3,9 +3,10 @@ import {
 	ENTITY_ARRAY_FILTER_KEYS,
 	filterEntityItems,
 	computeFacetCounts,
-	computeDisjunctiveFacetCounts,
 	computeDisjunctiveFacets,
-	computeDisjunctiveTotals,
+	countActiveFilters,
+	matchesSearchTerms,
+	summariseYears,
 	toggleArrayValue,
 	normalizeYearRange,
 	clampYearRange,
@@ -178,10 +179,10 @@ describe('computeFacetCounts', () => {
 	});
 });
 
-describe('computeDisjunctiveFacetCounts', () => {
+describe('computeDisjunctiveFacets: counts', () => {
 	it('ignores the active values in the dimension being counted', () => {
 		const filters = { ...emptyFilters(), types: ['book'] };
-		const counts = computeDisjunctiveFacetCounts(items, filters, dimensions, matchesYearRange);
+		const { counts } = computeDisjunctiveFacets(items, filters, dimensions, matchesYearRange);
 		expect(counts.types).toEqual({ book: 1, article: 2, chapter: 1 });
 		expect(counts.tags).toEqual({ Islam: 1, Benin: 1 });
 	});
@@ -193,7 +194,7 @@ describe('computeDisjunctiveFacetCounts', () => {
 			tags: ['Islam'],
 			yearRange: { min: 2015, max: 2020 }
 		};
-		const counts = computeDisjunctiveFacetCounts(items, filters, dimensions, matchesYearRange);
+		const { counts } = computeDisjunctiveFacets(items, filters, dimensions, matchesYearRange);
 
 		// Type counts ignore the active type but retain tag + year filters.
 		expect(counts.types).toEqual({ article: 1 });
@@ -204,15 +205,15 @@ describe('computeDisjunctiveFacetCounts', () => {
 
 	it('shows the number an OR selection would add instead of zero', () => {
 		const filters = { ...emptyFilters(), types: ['book'] };
-		const counts = computeDisjunctiveFacetCounts(items, filters, dimensions, matchesYearRange);
+		const { counts } = computeDisjunctiveFacets(items, filters, dimensions, matchesYearRange);
 		expect(counts.types.chapter).toBe(1);
 	});
 });
 
-describe('computeDisjunctiveTotals', () => {
+describe('computeDisjunctiveFacets: totals', () => {
 	it('reports how many items clearing one dimension alone would return', () => {
 		const filters = { ...emptyFilters(), types: ['book'] };
-		const totals = computeDisjunctiveTotals(items, filters, dimensions, matchesYearRange);
+		const { totals } = computeDisjunctiveFacets(items, filters, dimensions, matchesYearRange);
 		// Types cleared: the whole corpus. Every other dimension still sees the
 		// one book the active type admits.
 		expect(totals.types).toBe(4);
@@ -227,7 +228,7 @@ describe('computeDisjunctiveTotals', () => {
 			tags: ['Islam'],
 			yearRange: { min: 2015, max: 2020 }
 		};
-		const totals = computeDisjunctiveTotals(items, filters, dimensions, matchesYearRange);
+		const { totals } = computeDisjunctiveFacets(items, filters, dimensions, matchesYearRange);
 		// p2 alone is an Islam-tagged article in range; clearing types adds nothing
 		// else tagged Islam in 2015-2020.
 		expect(totals.types).toBe(1);
@@ -237,8 +238,8 @@ describe('computeDisjunctiveTotals', () => {
 
 	it('is not the sum of the facet counts for a multi-valued dimension', () => {
 		const filters = emptyFilters();
-		const counts = computeDisjunctiveFacetCounts(items, filters, dimensions, matchesYearRange);
-		const totals = computeDisjunctiveTotals(items, filters, dimensions, matchesYearRange);
+		const { counts } = computeDisjunctiveFacets(items, filters, dimensions, matchesYearRange);
+		const { totals } = computeDisjunctiveFacets(items, filters, dimensions, matchesYearRange);
 		// p3 is "French, English", so the language counts sum to 4 over 4 items —
 		// one of which (p4) has no language at all. The total is the item count.
 		const languageSum = Object.values(counts.languages).reduce((a, b) => a + b, 0);
@@ -384,4 +385,78 @@ it('extracts each eligible facet once while calculating counts and totals togeth
 	expect(calls).toBe(items.length * ENTITY_ARRAY_FILTER_KEYS.length);
 	expect(result.counts).toEqual(computeFacetCounts(items, dimensions));
 	expect(Object.values(result.totals)).toEqual(ENTITY_ARRAY_FILTER_KEYS.map(() => items.length));
+});
+
+describe('countActiveFilters', () => {
+	it('is zero with nothing set', () => {
+		expect(countActiveFilters(emptyFilters())).toBe(0);
+	});
+
+	it('counts each facet value once and a year range once', () => {
+		expect(
+			countActiveFilters({
+				...emptyFilters(),
+				types: ['book', 'article'],
+				tags: ['Islam'],
+				projects: ['P1'],
+				yearRange: { min: 2010, max: 2015 }
+			})
+		).toBe(5);
+	});
+
+	it('covers every array dimension', () => {
+		const filters = emptyFilters();
+		for (const key of ENTITY_ARRAY_FILTER_KEYS) filters[key] = ['x'];
+		expect(countActiveFilters(filters)).toBe(ENTITY_ARRAY_FILTER_KEYS.length);
+	});
+});
+
+describe('matchesSearchTerms', () => {
+	const fields = ['Religious Activism on Campuses', '2021', 'Frédérick Madore', 'Islam', 'Togo'];
+
+	it('matches everything on an empty or blank query', () => {
+		expect(matchesSearchTerms(fields, '')).toBe(true);
+		expect(matchesSearchTerms(fields, '   ')).toBe(true);
+	});
+
+	it('requires every term, in any field, case-insensitively', () => {
+		expect(matchesSearchTerms(fields, 'activism TOGO')).toBe(true);
+		expect(matchesSearchTerms(fields, 'activism benin')).toBe(false);
+	});
+
+	it('never matches a term across two fields', () => {
+		// "islamtogo" would only exist if the fields ran together.
+		expect(matchesSearchTerms(fields, 'islamtogo')).toBe(false);
+	});
+});
+
+describe('summariseYears', () => {
+	it('spans first to last year with an empty year kept as a stub', () => {
+		const { minYear, maxYear, bars } = summariseYears([2020, 2022, 2022, 2022, 2023]);
+		expect([minYear, maxYear]).toEqual([2020, 2023]);
+		expect(bars.map((bar) => [bar.year, bar.count])).toEqual([
+			[2020, 1],
+			[2021, 0],
+			[2022, 3],
+			[2023, 1]
+		]);
+		expect(bars.find((bar) => bar.year === 2021)?.pct).toBe(6);
+		expect(bars.find((bar) => bar.year === 2022)?.pct).toBe(100);
+		expect(bars.find((bar) => bar.year === 2020)?.pct).toBe(Math.round(12 + (1 / 3) * 88));
+	});
+
+	it('ignores non-finite years', () => {
+		const { minYear, maxYear, bars } = summariseYears([2019, Number.NaN, 2019]);
+		expect([minYear, maxYear]).toEqual([2019, 2019]);
+		expect(bars).toEqual([{ year: 2019, count: 2, pct: 100 }]);
+	});
+
+	it('reads an empty corpus as this year with no entries', () => {
+		const thisYear = new Date().getFullYear();
+		expect(summariseYears([])).toEqual({
+			minYear: thisYear,
+			maxYear: thisYear,
+			bars: [{ year: thisYear, count: 0, pct: 6 }]
+		});
+	});
 });

@@ -15,7 +15,6 @@
 	} from '$lib/components/entity-index/facetSearch';
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import { createFacetCollapsible } from '$lib/utils/facetDisclosure.svelte';
-	import { areFiltersActive } from '$lib/utils/filterUtils';
 	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
 	import { formatShortDateMono } from '$lib/utils/date-formatter';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
@@ -53,7 +52,7 @@
 
 	// The filtered record set.
 	let filtered = $derived(filters.filteredItems);
-	const anyFiltering = $derived(areFiltersActive(af));
+	const anyFiltering = $derived(filters.activeFilterCount > 0);
 
 	// Count of active filter dimensions, for the "N filters active" readout the
 	// three indexes share.
@@ -76,13 +75,19 @@
 
 	// --- Browse-by-year meter (aside): counts over the FILTERED set so the
 	// sidebar reflects the current view; newest year carries the lone accent. ---
-	const yearsDesc = $derived(
-		[...new Set(filtered.map((a: Activity) => a.year))].sort((a, b) => b - a)
-	);
+	// One tally per filtered set, read by the meter, its scale and each page
+	// group's header — rather than a filter pass per year per reader.
+	const yearCounts = $derived.by(() => {
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- rebuilt whole by $derived, never mutated
+		const counts = new Map<number, number>();
+		for (const a of filtered) counts.set(a.year, (counts.get(a.year) ?? 0) + 1);
+		return counts;
+	});
+	const yearsDesc = $derived([...yearCounts.keys()].sort((a, b) => b - a));
 	function countForYear(year: number): number {
-		return filtered.filter((a: Activity) => a.year === year).length;
+		return yearCounts.get(year) ?? 0;
 	}
-	const maxYearCount = $derived(Math.max(1, ...yearsDesc.map((y) => countForYear(y))));
+	const maxYearCount = $derived(Math.max(1, ...yearCounts.values()));
 	const newestYear = $derived(yearsDesc[0]);
 
 	// --- Tag facet (aside): frequency across the filtered set, most used first.

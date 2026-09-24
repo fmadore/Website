@@ -190,7 +190,7 @@ Components in `src/lib/components/` follow atomic design:
 ### State Management
 
 - **Global state**: `globalState.svelte.ts` - module-level `$state()` with getter/setter pattern
-- **Filter state**: `entityFilterSystem.svelte.ts` - a runed `EntityFilterSystem` class per entity-index page (deep `$state` `activeFilters`, `$derived` `filteredItems`/`counts`), with URL sync via the `urlFilterSync` action. Pure logic (predicates, facet counts, toggle/range helpers) lives in `entityFilterCore.ts` for testability; `filterUtils.ts` retains only the `areFiltersActive()` helper.
+- **Filter state**: `entityFilterSystem.svelte.ts` - a runed `EntityFilterSystem` class per entity-index page (deep `$state` `activeFilters`, `$derived` `filteredItems`/`counts`), with URL sync via the `urlFilterSync` action. Pure logic (predicates, facet counts, active-filter count, toggle/range helpers, and the index pages' search matcher and year strip) lives in `entityFilterCore.ts` for testability.
 
 ### Routing Pattern
 

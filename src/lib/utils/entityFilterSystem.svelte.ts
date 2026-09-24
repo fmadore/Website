@@ -23,6 +23,7 @@ import {
 	ENTITY_ARRAY_FILTER_KEYS,
 	filterEntityItems,
 	computeDisjunctiveFacets,
+	countActiveFilters,
 	toggleArrayValue,
 	normalizeYearRange,
 	type EntityIndexFilters,
@@ -83,6 +84,12 @@ export class EntityFilterSystem<TItem> {
 	 * a multi-valued dimension (languages, tags) double-counts in that sum.
 	 */
 	readonly totals = $derived(this.facets.totals);
+
+	/**
+	 * How many filter values are set (each facet value once, a year range
+	 * once); above zero, the filters narrow the index.
+	 */
+	readonly activeFilterCount = $derived(countActiveFilters(this.activeFilters));
 
 	constructor(config: EntityFilterConfig<TItem>) {
 		this.items = config.items;

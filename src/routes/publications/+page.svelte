@@ -10,13 +10,13 @@
 	import EntityFacetGrid from '$lib/components/entity-index/EntityFacetGrid.svelte';
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
 	import { sortItems } from '$lib/utils/sortUtils';
-	import { areFiltersActive } from '$lib/utils/filterUtils';
-	import { truncateSearchTerm } from '$lib/utils/entityFilterCore';
-	import { getAuthorsArray } from '$lib/utils/citationFormatter';
 	import {
-		allPublicationSummaries as allPublications,
-		publicationSummariesByYear as publicationsByYear
-	} from '$lib/data/publications/summaries';
+		matchesSearchTerms,
+		summariseYears,
+		truncateSearchTerm
+	} from '$lib/utils/entityFilterCore';
+	import { getAuthorsArray } from '$lib/utils/citationFormatter';
+	import { allPublicationSummaries as allPublications } from '$lib/data/publications/summaries';
 	import {
 		PUBLICATION_TYPE_FILTER_LABELS as typeLabels,
 		PUBLICATION_TYPE_CHIP_LABELS as typeChipLabels
@@ -31,33 +31,10 @@
 	const breadcrumbs = createSectionBreadcrumbs('Publications', '/publications');
 
 	// ── Corpus figures for the index hero (computed from the real dataset) ──────
-	const totalEntries = allPublications.length;
-	const allYears = allPublications
-		.map((p) => p.year)
-		.filter((y): y is number => Number.isFinite(y));
-	const minYear = allYears.length ? Math.min(...allYears) : new Date().getFullYear();
-	const maxYear = allYears.length ? Math.max(...allYears) : new Date().getFullYear();
-
 	// Per-year output counts → a continuous run of bars from minYear..maxYear
 	// (years with zero output render as a hairline stub, keeping the axis honest).
-	const yearBars = (() => {
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- one-shot local tally at module init, not reactive state
-		const counts = new Map<number, number>();
-		for (let y = minYear; y <= maxYear; y++) counts.set(y, 0);
-		for (const [yearKey, pubs] of Object.entries(publicationsByYear)) {
-			const y = Number(yearKey);
-			if (counts.has(y)) counts.set(y, (pubs as unknown[]).length);
-		}
-		const max = Math.max(1, ...counts.values());
-		return Array.from(counts.entries())
-			.sort((a, b) => a[0] - b[0])
-			.map(([year, count]) => ({
-				year,
-				count,
-				// Leave a visible stub for empty years; scale the rest 12%..100%.
-				pct: count === 0 ? 6 : Math.round(12 + (count / max) * 88)
-			}));
-	})();
+	const totalEntries = allPublications.length;
+	const { minYear, maxYear, bars: yearBars } = summariseYears(allPublications.map((p) => p.year));
 
 	// ── Local presentation state (does NOT touch the filter store) ──────────────
 	// Free-text filter over title / co-authors / tags / venue / year, applied on
@@ -101,9 +78,8 @@
 		searchTerm = '';
 	}
 
-	// Haystack builder for the search — flattens the fields a scholar scans by.
-	function matchesSearch(pub: (typeof allPublications)[number], q: string): boolean {
-		if (!q) return true;
+	// The fields a scholar scans by, for the free-text search.
+	function searchFields(pub: (typeof allPublications)[number]): string[] {
 		const parts: string[] = [pub.title, String(pub.year ?? '')];
 		if (pub.authors) parts.push(...getAuthorsArray(pub.authors));
 		if (typeof pub.editors === 'string') parts.push(pub.editors);
@@ -111,40 +87,27 @@
 		if (pub.journal) parts.push(pub.journal);
 		if (pub.book) parts.push(pub.book);
 		if (pub.publisher) parts.push(pub.publisher);
-		const hay = parts.join(' ').toLowerCase();
-		// Every whitespace-separated term must appear somewhere (AND semantics).
-		return q
-			.toLowerCase()
-			.split(/\s+/)
-			.filter(Boolean)
-			.every((term) => hay.includes(term));
+		return parts;
 	}
 
 	// The system's filtered list, narrowed by the free-text search, then sorted.
 	const searchedPublications = $derived(
-		filters.filteredItems.filter((pub) => matchesSearch(pub, searchTerm))
+		filters.filteredItems.filter((pub) => matchesSearchTerms(searchFields(pub), searchTerm))
 	);
 	const sortedPublications = $derived(sortItems(searchedPublications, activeSort));
 	const matchCount = $derived(sortedPublications.length);
 
 	// Any narrowing at all — system filters OR the text search.
-	const anyNarrowing = $derived(areFiltersActive(af) || searchTerm.trim().length > 0);
+	const anyNarrowing = $derived(filters.activeFilterCount > 0 || searchTerm.trim().length > 0);
 
 	// The search is the only thing narrowing: the empty state's way out then
 	// names the search rather than promising to clear filters that are not set.
-	const searchOnlyNarrowing = $derived(searchTerm.trim().length > 0 && !areFiltersActive(af));
+	const searchOnlyNarrowing = $derived(
+		searchTerm.trim().length > 0 && filters.activeFilterCount === 0
+	);
 
 	// Count of active filter dimensions, for the "N FILTERS ACTIVE" readout.
-	const activeFilterCount = $derived(
-		af.types.length +
-			af.languages.length +
-			af.projects.length +
-			af.authors.length +
-			af.countries.length +
-			af.tags.length +
-			(af.yearRange ? 1 : 0) +
-			(searchTerm.trim() ? 1 : 0)
-	);
+	const activeFilterCount = $derived(filters.activeFilterCount + (searchTerm.trim() ? 1 : 0));
 
 	// Reset to page 1 whenever the visible list identity changes (filters/search/sort).
 	// Reading the derived lengths + sort registers the dependencies.

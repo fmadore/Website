@@ -15,14 +15,14 @@
 		COMMUNICATION_TYPE_LIST_LABELS,
 		COMMUNICATION_TYPE_CHIP_LABELS
 	} from '$lib/utils/typeUtils';
-	import { areFiltersActive } from '$lib/utils/filterUtils';
-	import { truncateSearchTerm } from '$lib/utils/entityFilterCore';
+	import {
+		matchesSearchTerms,
+		summariseYears,
+		truncateSearchTerm
+	} from '$lib/utils/entityFilterCore';
 	// The index lists talks, it never opens one: the committed projection
 	// (no abstracts) is what the rows, the facets and the map markers need.
-	import {
-		allCommunicationSummaries as allCommunications,
-		communicationSummariesByYear as communicationsByYear
-	} from '$lib/data/communications/summaries';
+	import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import { organisedWorkshopsJsonLd } from '$lib/data/organisedWorkshops';
 	import type { CommunicationSummary } from '$lib/types/communication';
@@ -36,31 +36,9 @@
 	const breadcrumbs = createSectionBreadcrumbs('Talks & Events', '/conference-activity');
 
 	// ── Corpus figures for the index hero (computed from the real dataset) ──────
-	const totalEntries = allCommunications.length;
-	const allYears = allCommunications
-		.map((c) => c.year)
-		.filter((y): y is number => Number.isFinite(y));
-	const minYear = allYears.length ? Math.min(...allYears) : new Date().getFullYear();
-	const maxYear = allYears.length ? Math.max(...allYears) : new Date().getFullYear();
-
 	// Per-year output counts → a continuous run of bars minYear..maxYear.
-	const yearBars = (() => {
-		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- one-shot local tally at module init, not reactive state
-		const counts = new Map<number, number>();
-		for (let y = minYear; y <= maxYear; y++) counts.set(y, 0);
-		for (const [yearKey, comms] of Object.entries(communicationsByYear)) {
-			const y = Number(yearKey);
-			if (counts.has(y)) counts.set(y, (comms as unknown[]).length);
-		}
-		const max = Math.max(1, ...counts.values());
-		return Array.from(counts.entries())
-			.sort((a, b) => a[0] - b[0])
-			.map(([year, count]) => ({
-				year,
-				count,
-				pct: count === 0 ? 6 : Math.round(12 + (count / max) * 88)
-			}));
-	})();
+	const totalEntries = allCommunications.length;
+	const { minYear, maxYear, bars: yearBars } = summariseYears(allCommunications.map((c) => c.year));
 
 	// ── Local presentation state (does NOT touch the filter store) ──────────────
 	let searchTerm = $state('');
@@ -112,21 +90,15 @@
 		if (showMap) loadMapComponent();
 	}
 
-	// Haystack builder for the search — flattens the fields a scholar scans by.
-	function matchesSearch(comm: CommunicationSummary, q: string): boolean {
-		if (!q) return true;
+	// The fields a scholar scans by, for the free-text search.
+	function searchFields(comm: CommunicationSummary): string[] {
 		const parts: string[] = [comm.title, String(comm.year ?? '')];
 		if (comm.authors) parts.push(...comm.authors);
 		if (comm.tags) parts.push(...comm.tags);
 		if (comm.conference) parts.push(comm.conference);
 		if (comm.location) parts.push(comm.location);
 		if (comm.country) parts.push(comm.country);
-		const hay = parts.join('  ').toLowerCase();
-		return q
-			.toLowerCase()
-			.split(/\s+/)
-			.filter(Boolean)
-			.every((term) => hay.includes(term));
+		return parts;
 	}
 
 	// Today (YYYY-MM-DD) for the upcoming/past split.
@@ -134,11 +106,11 @@
 
 	// The system's filtered list, narrowed by the free-text search.
 	const searchedCommunications = $derived(
-		filters.filteredItems.filter((comm) => matchesSearch(comm, searchTerm))
+		filters.filteredItems.filter((comm) => matchesSearchTerms(searchFields(comm), searchTerm))
 	);
 
 	// Any narrowing at all — system filters OR the text search.
-	const anyNarrowing = $derived(areFiltersActive(af) || searchTerm.trim().length > 0);
+	const anyNarrowing = $derived(filters.activeFilterCount > 0 || searchTerm.trim().length > 0);
 
 	// Upcoming talks surface as their own block only when nothing is narrowing the
 	// list; otherwise they fold back into the main chronological record.
@@ -160,16 +132,7 @@
 	const matchCount = $derived(sortedCommunications.length);
 
 	// Count of active filter dimensions, for the "N FILTERS ACTIVE" readout.
-	const activeFilterCount = $derived(
-		af.types.length +
-			af.languages.length +
-			af.projects.length +
-			af.authors.length +
-			af.countries.length +
-			af.tags.length +
-			(af.yearRange ? 1 : 0) +
-			(searchTerm.trim() ? 1 : 0)
-	);
+	const activeFilterCount = $derived(filters.activeFilterCount + (searchTerm.trim() ? 1 : 0));
 
 	// Map markers from the filtered set (independent of the upcoming/past split).
 	const mapMarkers = $derived(

@@ -126,6 +126,14 @@ function eligibleItemsForDimension<TItem>(
  * Facet counts for an OR-within/AND-across filter UI. Each dimension is
  * counted after applying the year range and every *other* active dimension,
  * so an unselected value reports how many results it would add.
+ *
+ * `totals` is, per dimension, how many items clearing that dimension alone
+ * would return — the number the "All" option in a facet row prints, and
+ * exactly the number clicking it produces. It is not the sum of that
+ * dimension's counts: a dimension whose extractor yields several values per
+ * item (languages, tags, countries) double-counts in that sum, and one whose
+ * value can be absent under-counts. Both are the same defect — an "All" that
+ * asserts a total the click does not produce.
  */
 export function computeDisjunctiveFacets<TItem>(
 	items: TItem[],
@@ -153,41 +161,64 @@ export function computeDisjunctiveFacets<TItem>(
 	return { counts, totals };
 }
 
-export function computeDisjunctiveFacetCounts<T>(
-	...args: Parameters<typeof computeDisjunctiveFacets<T>>
-) {
-	return computeDisjunctiveFacets(...args).counts;
+/**
+ * How many filter values are set: each selected facet value counts once, a
+ * year range once. The number the "N filters active" readout prints, and —
+ * above zero — whether the filters narrow the index at all.
+ */
+export function countActiveFilters(filters: EntityIndexFilters): number {
+	let count = filters.yearRange ? 1 : 0;
+	for (const key of ENTITY_ARRAY_FILTER_KEYS) count += filters[key].length;
+	return count;
 }
 
 /**
- * How many items each dimension would return if that dimension alone were
- * cleared — the number the "All" option in a facet row prints, and exactly the
- * number clicking it produces.
- *
- * Not the sum of `computeDisjunctiveFacetCounts`: a dimension whose extractor
- * yields several values per item (languages, tags, countries) double-counts in
- * that sum, and one whose value can be absent under-counts. Both are the same
- * defect — an "All" that asserts a total the click does not produce.
+ * The index pages' free-text search: every whitespace-separated term of the
+ * query must occur, case-insensitively, somewhere among the row's fields (AND
+ * semantics). A term holds no whitespace, so it can never match across the
+ * boundary between two fields. An empty or blank query matches everything.
  */
-export function computeDisjunctiveTotals<TItem>(
-	items: TItem[],
-	filters: EntityIndexFilters,
-	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
-	matchesYearRange: (item: TItem, range: YearRange) => boolean
-): Record<EntityArrayFilterKey, number> {
-	const result = {} as Record<EntityArrayFilterKey, number>;
+export function matchesSearchTerms(fields: readonly string[], query: string): boolean {
+	const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+	if (terms.length === 0) return true;
+	const haystack = fields.join(' ').toLowerCase();
+	return terms.every((term) => haystack.includes(term));
+}
 
-	for (const countedKey of ENTITY_ARRAY_FILTER_KEYS) {
-		result[countedKey] = eligibleItemsForDimension(
-			countedKey,
-			items,
-			filters,
-			dimensions,
-			matchesYearRange
-		).length;
-	}
+/** One bar of an index hero's year strip. */
+export interface YearBar {
+	year: number;
+	count: number;
+	/** Bar height as a percentage of the strip. */
+	pct: number;
+}
 
-	return result;
+/**
+ * The span and year strip an index hero prints over its whole corpus: one bar
+ * per year from the first to the last, so a year with no entries still takes
+ * its place on the axis as a visible stub (6%) and the rest scale 12–100%
+ * against the busiest year. Non-finite years are ignored; an empty corpus
+ * reads as the current year with no entries.
+ */
+export function summariseYears(years: readonly number[]): {
+	minYear: number;
+	maxYear: number;
+	bars: YearBar[];
+} {
+	const finite = years.filter((year) => Number.isFinite(year));
+	const thisYear = new Date().getFullYear();
+	const minYear = finite.length ? Math.min(...finite) : thisYear;
+	const maxYear = finite.length ? Math.max(...finite) : thisYear;
+	const counts = new Map<number, number>();
+	for (let year = minYear; year <= maxYear; year++) counts.set(year, 0);
+	for (const year of finite) counts.set(year, (counts.get(year) ?? 0) + 1);
+	const busiest = Math.max(1, ...counts.values());
+	const bars = Array.from(counts, ([year, count]) => ({
+		year,
+		count,
+		pct: count === 0 ? 6 : Math.round(12 + (count / busiest) * 88)
+	}));
+	return { minYear, maxYear, bars };
 }
 
 /** Immutable toggle: removes `value` if present, appends it otherwise. */
