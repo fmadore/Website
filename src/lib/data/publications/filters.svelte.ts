@@ -14,8 +14,9 @@ import {
 	publicationSummaryTags
 } from './summaries';
 import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
-import { SvelteSet } from 'svelte/reactivity';
 import { PUBLICATION_TYPE_FILTER_LABELS as typeLabels } from '$lib/utils/publicationTypeLabels';
+import { splitNames } from '$lib/utils/nameUtils';
+import { author } from '$lib/data/siteConfig';
 
 // The index filters over the summaries: every facet, count and sort key below
 // is a summary field, so the page never pays for abstracts or citation lists.
@@ -27,64 +28,61 @@ const allPublications: Pub[] = allPublicationSummaries;
 
 function extractEditors(publication: Pub): string[] {
 	if (!publication.editors) return [];
-	if (typeof publication.editors === 'string') {
-		return publication.editors.split(/\s*(?:,|and)\s*/).map((name) => name.trim());
-	}
-	if (Array.isArray(publication.editors)) {
-		return publication.editors;
-	}
-	return [];
+	return typeof publication.editors === 'string'
+		? splitNames(publication.editors)
+		: publication.editors;
 }
 
-/** Table-of-contents contributors, projected into the summary by the generator. */
-function extractTocAuthors(publication: Pub): string[] {
-	return publication.tocAuthors;
+/** A chapter's or entry's `editors` edited the host volume, not this work. */
+function creditsEditors(publication: Pub): boolean {
+	return publication.type !== 'chapter' && publication.type !== 'encyclopedia';
+}
+
+/** A comma-separated `language` field as its values. */
+function publicationLanguages(publication: Pub): string[] {
+	return publication.language ? publication.language.split(',').map((l) => l.trim()) : [];
+}
+
+/**
+ * Everyone the author facet credits with a publication: its authors, its
+ * editors (unless they edited the host volume), the preface's author, and the
+ * table of contents' contributors (projected into the summary by the
+ * generator). One definition for the vocabulary, the frequency order, the
+ * match and the count, so the four can never disagree about who is in a work.
+ */
+function publicationAuthorNames(pub: Pub): string[] {
+	const names = [
+		...(pub.authors ?? []),
+		...(creditsEditors(pub) ? extractEditors(pub) : []),
+		...(pub.prefacedBy ? [pub.prefacedBy] : []),
+		...pub.tocAuthors
+	];
+	return names.filter((name, i) => names.indexOf(name) === i);
 }
 
 // --- Computed unique values ---
 
-export const allAuthors = Array.from(
-	new SvelteSet([
-		...allPublications.flatMap((pub) => pub.authors || []),
-		...allPublications
-			.filter((pub) => pub.type !== 'chapter' && pub.type !== 'encyclopedia')
-			.flatMap((pub) => extractEditors(pub)),
-		...allPublications.filter((pub) => pub.prefacedBy).map((pub) => pub.prefacedBy as string),
-		...allPublications.flatMap((pub) => extractTocAuthors(pub))
-	])
-)
-	.filter((author: string) => author !== 'Frédérick Madore')
+// Every value below is a one-shot build-time tally over a fixed dataset, never
+// reactive state, hence the plain Set.
+/* eslint-disable svelte/prefer-svelte-reactivity */
+export const allAuthors = Array.from(new Set(allPublications.flatMap(publicationAuthorNames)))
+	.filter((name: string) => name !== author.name)
 	.sort();
 
 const allCountries = Array.from(
-	new SvelteSet(allPublications.flatMap((pub) => pub.country || []))
+	new Set(allPublications.flatMap((pub) => pub.country || []))
 ).sort();
 
 const allProjects = Array.from(
-	new SvelteSet(allPublications.map((pub) => pub.project).filter(Boolean) as string[])
+	new Set(allPublications.map((pub) => pub.project).filter(Boolean) as string[])
 ).sort();
 
-const uniqueLanguages = Array.from(
-	new Set(
-		allPublications.flatMap((pub) =>
-			pub.language ? pub.language.split(',').map((l: string) => l.trim()) : []
-		)
-	)
-).sort();
+const uniqueLanguages = Array.from(new Set(allPublications.flatMap(publicationLanguages))).sort();
+/* eslint-enable svelte/prefer-svelte-reactivity */
 
 // --- Facet ordering by frequency ---
 // Tags and authors surface most-used first so the truncated sidebar facet lists
 // show the meaningful ones; ties fall back to alphabetical.
-function publicationAuthorNames(pub: Pub): string[] {
-	const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
-	const names = new SvelteSet<string>();
-	pub.authors?.forEach((a) => names.add(a));
-	if (!isExcludedType) extractEditors(pub).forEach((e) => names.add(e));
-	if (pub.prefacedBy) names.add(pub.prefacedBy);
-	extractTocAuthors(pub).forEach((a) => names.add(a));
-	return Array.from(names);
-}
-
 function countOccurrences(lists: string[][]): Map<string, number> {
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity -- build-time tally, never reactive
 	const freq = new Map<string, number>();
@@ -116,36 +114,14 @@ export const publicationFilters = new EntityFilterSystem<Pub>({
 			countExtractor: (pub: Pub) => pub.tags
 		},
 		languages: {
-			match: (pub: Pub, values: string[]) => {
-				const langs = pub.language ? pub.language.split(',').map((l) => l.trim()) : [];
-				return langs.some((l) => values.includes(l));
-			},
-			countExtractor: (pub: Pub) => pub.language?.split(',').map((l) => l.trim())
+			match: (pub: Pub, values: string[]) =>
+				publicationLanguages(pub).some((l) => values.includes(l)),
+			countExtractor: publicationLanguages
 		},
 		authors: {
-			match: (pub: Pub, values: string[]) => {
-				const hasMatchingAuthor = pub.authors && pub.authors.some((a) => values.includes(a));
-				const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
-				const hasMatchingEditor =
-					!isExcludedType && pub.editors && extractEditors(pub).some((e) => values.includes(e));
-				const hasMatchingPrefaceAuthor = pub.prefacedBy && values.includes(pub.prefacedBy);
-				const hasMatchingTocAuthor = extractTocAuthors(pub).some((a) => values.includes(a));
-				return !!(
-					hasMatchingAuthor ||
-					hasMatchingEditor ||
-					hasMatchingPrefaceAuthor ||
-					hasMatchingTocAuthor
-				);
-			},
-			countExtractor: (pub: Pub) => {
-				const isExcludedType = pub.type === 'chapter' || pub.type === 'encyclopedia';
-				const names = new SvelteSet<string>();
-				pub.authors?.forEach((a) => names.add(a));
-				if (!isExcludedType) extractEditors(pub).forEach((e) => names.add(e));
-				if (pub.prefacedBy) names.add(pub.prefacedBy);
-				extractTocAuthors(pub).forEach((a) => names.add(a));
-				return Array.from(names);
-			}
+			match: (pub: Pub, values: string[]) =>
+				publicationAuthorNames(pub).some((name) => values.includes(name)),
+			countExtractor: publicationAuthorNames
 		},
 		countries: {
 			match: (pub: Pub, values: string[]) =>

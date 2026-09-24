@@ -170,6 +170,25 @@ describe('splitNames', () => {
 	it('drops empty segments', () => {
 		expect(splitNames('Jane Doe, ')).toEqual(['Jane Doe']);
 	});
+
+	it('treats a serial comma as one separator', () => {
+		expect(splitNames('Jane Doe, John Smith, and Ann Lee')).toEqual([
+			'Jane Doe',
+			'John Smith',
+			'Ann Lee'
+		]);
+	});
+
+	it('never splits inside a name that contains "and"', () => {
+		expect(splitNames('André Chappatte, Bourahima Diomandé')).toEqual([
+			'André Chappatte',
+			'Bourahima Diomandé'
+		]);
+		expect(splitNames('Alexander Thurston and Fernand Rolland')).toEqual([
+			'Alexander Thurston',
+			'Fernand Rolland'
+		]);
+	});
 });
 
 describe('toLastFirstFormat', () => {

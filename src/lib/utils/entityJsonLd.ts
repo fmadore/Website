@@ -25,6 +25,7 @@ import type {
 import { formatAuthor, formatAuthors, formatPlaces, formatJsonLdDate } from '$lib/types/jsonld';
 import { author, address, website } from '$lib/data/siteConfig';
 import { stripHtml } from '$lib/utils/textUtils';
+import { splitNames } from '$lib/utils/nameUtils';
 
 /**
  * Abstracts may carry inline markup (`<i>` around transliterated terms).
@@ -63,12 +64,7 @@ function formatPeopleWithSiteIdentity(names: string[]): JsonLdPerson[] {
  * identity data, so a co-edited book never becomes one composite person.
  */
 function formatEditorString(editors: string): JsonLdPerson[] {
-	return formatPeopleWithSiteIdentity(
-		editors
-			.split(/\s*(?:,|\band\b)\s*/u)
-			.map((name) => name.trim())
-			.filter(Boolean)
-	);
+	return formatPeopleWithSiteIdentity(splitNames(editors));
 }
 
 /** Publication as enriched by the data loader (adds the source directory). */

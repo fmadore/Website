@@ -18,10 +18,17 @@ export function toLastFirstFormat(name: string): string {
 
 /**
  * Splits a comma/and-separated name string into individual trimmed names.
+ *
+ * "and" separates only as a whole word, so the names that contain it
+ * (Diomandé, Alexander, Rolland) stay whole, and a serial comma (", and") is
+ * one separator rather than leaving "and" glued to the last name. The one
+ * splitter for every consumer — citations, BibTeX, meta tags, JSON-LD, the
+ * publication author facet — so they can never disagree about who a
+ * co-edited volume's editors are.
  */
 export function splitNames(names: string): string[] {
 	return names
-		.split(/,\s*|\s+and\s+/)
+		.split(/\s*,\s*(?:and\s+)?|\s+and\s+/)
 		.map((name) => name.trim())
 		.filter(Boolean);
 }
