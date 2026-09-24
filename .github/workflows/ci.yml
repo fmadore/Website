@@ -94,7 +94,7 @@ jobs:
       - name: Unit tests and coverage floor (Vitest)
         run: npm run test:coverage
 
-      - name: Svelte lifecycle tests
+      - name: Svelte lifecycle tests and coverage floor
         run: npm run test:lifecycle
 
       - name: Reference index freshness

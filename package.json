@@ -54,7 +54,7 @@
 		"sync:vault": "npm run sync:publications -- --write && npm run sync:projects -- --write && npm run sync:sections -- --write && npm run sync:talks -- --write",
 		"sync:sections": "node scripts/sync-sections-to-vault.mjs",
 		"check:generated": "node scripts/generate-reference-index.mjs --check && node scripts/generate-summaries.mjs --check && node scripts/generate-analysis-summaries.mjs --check && node scripts/generate-research-prose.mjs --check",
-		"test:lifecycle": "tsc --project tests-lifecycle/tsconfig.json --noEmit && vitest run --config vitest.lifecycle.config.ts",
+		"test:lifecycle": "tsc --project tests-lifecycle/tsconfig.json --noEmit && vitest run --config vitest.lifecycle.config.ts --coverage",
 		"verify": "node scripts/verify.mjs"
 	},
 	"devDependencies": {

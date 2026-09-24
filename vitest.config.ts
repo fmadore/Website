@@ -50,17 +50,19 @@ export default defineConfig({
 		coverage: {
 			provider: 'v8',
 			// Pure-logic modules only: components and routes are exercised by the
-			// Playwright smoke suite, not these plain-Node tests.
+			// Playwright smoke suite, not these plain-Node tests. Runes modules
+			// (`*.svelte.ts`) need the compiler, so `vitest.lifecycle.config.ts`
+			// measures them instead; counted here they could only ever read 0%.
 			include: ['src/lib/utils/**/*.ts', 'src/lib/server/**/*.ts', 'src/lib/data/**/index.ts'],
-			exclude: ['src/lib/**/*.test.ts', 'src/lib/**/*.d.ts'],
+			exclude: ['src/lib/**/*.test.ts', 'src/lib/**/*.d.ts', 'src/lib/**/*.svelte.ts'],
 			reporter: ['text', 'html'],
 			// A ratchet, not an aspirational target: new work may raise these
 			// floors, but must not silently reduce the verified pure-logic surface.
 			thresholds: {
-				statements: 60,
-				branches: 56,
-				functions: 66,
-				lines: 61
+				statements: 70,
+				branches: 63,
+				functions: 80,
+				lines: 71
 			}
 		}
 	}

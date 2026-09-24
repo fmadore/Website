@@ -19,6 +19,7 @@ npm run lint         # Run Prettier + ESLint checks
 npm run format       # Auto-format with Prettier
 npm run test         # Run Vitest unit tests (pure utils: aggregation, JSON-LD)
 npm run test:watch   # Vitest in watch mode
+npm run test:lifecycle # Runes modules under the Svelte compiler, with their own coverage floor
 npm run test:e2e     # Run Playwright E2E smoke tests (builds + previews first)
 npm run test:e2e:ui  # Playwright tests with UI
 ```
@@ -55,7 +56,13 @@ npm run gen:posters -- --check  # report stale/missing posters, write nothing
 > module they cover (e.g. `src/lib/utils/vizAggregation.test.ts`) and run in a
 > plain Node environment via `vitest.config.ts`. Pure logic extracted from
 > build scripts is tested the same way (`scripts/*.test.mjs`) but stays out of
-> the coverage ratchet, which measures site code only. E2E smoke tests live in
+> the coverage ratchet, which measures site code only. Runes modules
+> (`*.svelte.ts`) need the Svelte compiler, so they are tested from
+> `tests-lifecycle/` under `vitest.lifecycle.config.ts` — compiled runes,
+> `$effect.root` and `flushSync`, with `$app/state`/`$app/navigation` replaced by
+> hand-driven stand-ins — which carries their coverage ratchet; the plain-Node
+> ratchet excludes them. A module with no runes in it is a plain `.ts`, so it is
+> tested and measured in the plain-Node suite. E2E smoke tests live in
 > `tests-e2e/` and run against the production build (`playwright.config.ts`).
 >
 > **Lighthouse gate**: `lighthouserc.yml` is the single source of truth for the
