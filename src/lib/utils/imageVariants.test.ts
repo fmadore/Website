@@ -3,10 +3,11 @@ import { fileURLToPath } from 'node:url';
 import { describe, it, expect } from 'vitest';
 import { buildSrcset, imageDimensions, resolveImagePath, VARIANT_WIDTHS } from './imageVariants';
 
+// [intrinsic width, height]; the derivatives are the ladder widths narrower.
 const manifest = {
-	'activities/talk.webp': { sourceWidth: 1280, sourceHeight: 720, widths: [400, 800] },
-	'foo.jpg': { sourceWidth: 640, sourceHeight: 480, widths: [400] },
-	'small.png': { sourceWidth: 320, sourceHeight: 320, widths: [] }
+	'activities/talk.webp': [1280, 720],
+	'foo.jpg': [640, 480],
+	'small.png': [150, 150]
 } as const;
 
 describe('imageDimensions', () => {
@@ -28,13 +29,13 @@ describe('imageDimensions', () => {
 describe('buildSrcset', () => {
 	it('uses generated derivatives and the original at its intrinsic width', () => {
 		expect(buildSrcset('/images/activities/talk.webp', manifest)).toBe(
-			'/images/_r/activities/talk-400.webp 400w, /images/_r/activities/talk-800.webp 800w, /images/activities/talk.webp 1280w'
+			'/images/_r/activities/talk-160.webp 160w, /images/_r/activities/talk-240.webp 240w, /images/_r/activities/talk-400.webp 400w, /images/_r/activities/talk-800.webp 800w, /images/activities/talk.webp 1280w'
 		);
 	});
 
 	it('preserves a base-path prefix', () => {
 		expect(buildSrcset('/site/images/foo.jpg', manifest)).toBe(
-			'/site/images/_r/foo-400.webp 400w, /site/images/foo.jpg 640w'
+			'/site/images/_r/foo-160.webp 160w, /site/images/_r/foo-240.webp 240w, /site/images/_r/foo-400.webp 400w, /site/images/foo.jpg 640w'
 		);
 	});
 

@@ -64,7 +64,7 @@ export function imageDimensions(
 	manifest: Readonly<Record<string, ImageVariantManifestEntry>> = imageVariantManifest
 ): ImageDimensions | undefined {
 	const found = manifestEntryFor(src, manifest);
-	return found ? { width: found.entry.sourceWidth, height: found.entry.sourceHeight } : undefined;
+	return found ? { width: found.entry[0], height: found.entry[1] } : undefined;
 }
 
 /**
@@ -76,10 +76,15 @@ export function buildSrcset(
 	manifest: Readonly<Record<string, ImageVariantManifestEntry>> = imageVariantManifest
 ): string | undefined {
 	const found = manifestEntryFor(src, manifest);
-	if (!found || found.entry.widths.length === 0) return undefined;
+	if (!found) return undefined;
 	const { entry, prefix, name } = found;
+	const [sourceWidth] = entry;
+	// The generator writes a derivative at every ladder width narrower than the
+	// source (scripts/generate-image-variants.mjs), and nothing else.
+	const widths = VARIANT_WIDTHS.filter((width) => width < sourceWidth);
+	if (widths.length === 0) return undefined;
 
-	const candidates = entry.widths.map((width) => `${prefix}_r/${name}-${width}.webp ${width}w`);
-	candidates.push(`${src} ${entry.sourceWidth}w`);
+	const candidates = widths.map((width) => `${prefix}_r/${name}-${width}.webp ${width}w`);
+	candidates.push(`${src} ${sourceWidth}w`);
 	return candidates.join(', ');
 }
