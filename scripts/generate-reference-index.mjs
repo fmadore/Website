@@ -21,11 +21,11 @@
  *       committed file is stale, OR if any `<ItemReference id="…">` in the site
  *       source names an id the index cannot resolve.
  */
-import { globSync, readFileSync, writeFileSync } from 'node:fs';
+import { globSync, readFileSync } from 'node:fs';
+import { CHECK_MODE, emitGenerated } from './lib/generated-file.mjs';
 import { collectRecords } from './lib/data-records.mjs';
 
 const OUT_FILE = 'src/lib/data/referenceIndex.generated.ts';
-const CHECK_MODE = process.argv.includes('--check');
 
 /** Project a full record down to the slim, render-only fields. */
 function slim(obj, itemType) {
@@ -114,20 +114,9 @@ function readReferenceSources() {
 	return files.map((file) => ({ file, text: readFileSync(file, 'utf8') }));
 }
 
+if (!emitGenerated([[OUT_FILE, output]], { tag: 'gen:refs', command: 'npm run gen:refs' }))
+	process.exit(1);
 if (CHECK_MODE) {
-	let committed = null;
-	try {
-		committed = readFileSync(OUT_FILE, 'utf8');
-	} catch {
-		// Missing file counts as stale.
-	}
-	if (committed !== output) {
-		console.error(
-			`[gen:refs] ERROR: ${OUT_FILE} is stale (or missing). ` +
-				'Run `npm run gen:refs` and commit the result.'
-		);
-		process.exit(1);
-	}
 	// A citation the index cannot resolve renders as bare prose to the reader
 	// and logs to a console nobody is watching in production. It is an authoring
 	// fault with a build-time answer, so the build is where it is caught.
@@ -149,6 +138,5 @@ if (CHECK_MODE) {
 			`${usages.length} <ItemReference> id(s) resolve.`
 	);
 } else {
-	writeFileSync(OUT_FILE, output, 'utf8');
 	console.log(`[gen:refs] Wrote ${Object.keys(index).length} entries → ${OUT_FILE}`);
 }

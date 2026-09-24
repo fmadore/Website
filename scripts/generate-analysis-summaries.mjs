@@ -41,14 +41,13 @@
  *       regenerate in memory and exit 1 if a committed file is stale.
  */
 import { globSync } from 'node:fs';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { CHECK_MODE, emitGenerated } from './lib/generated-file.mjs';
 import { basename, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const ANALYSIS_DIR = 'src/lib/data/analysis';
 const KEY_TERMS_FILE = `${ANALYSIS_DIR}/keyTerms.generated.ts`;
 const CORPUS_FILE = `${ANALYSIS_DIR}/corpusSummary.generated.ts`;
-const CHECK_MODE = process.argv.includes('--check');
 
 /**
  * !! KEEP IN SYNC with the three call sites these numbers project:
@@ -206,32 +205,12 @@ const outputs = [
 	[CORPUS_FILE, corpusOutput]
 ];
 
-if (CHECK_MODE) {
-	let stale = false;
-	for (const [file, output] of outputs) {
-		let committed = null;
-		try {
-			committed = readFileSync(file, 'utf8');
-		} catch {
-			// Missing file counts as stale.
-		}
-		if (committed !== output) {
-			console.error(
-				`[gen:analysis] ERROR: ${file} is stale (or missing). ` +
-					'Run `npm run gen:analysis` and commit the result.'
-			);
-			stale = true;
-		}
-	}
-	if (stale) process.exit(1);
-	console.log(
-		`[gen:analysis] --check OK: both projections are up to date ` +
-			`(${analyses.length} analyses, ${en.length} en / ${fr.length} fr).`
-	);
-} else {
-	for (const [file, output] of outputs) writeFileSync(file, output, 'utf8');
-	console.log(
-		`[gen:analysis] Wrote ${Object.keys(keyTerms).length} key-term lists → ${KEY_TERMS_FILE}\n` +
-			`[gen:analysis] Wrote the corpus summary (${en.length} en / ${fr.length} fr) → ${CORPUS_FILE}`
-	);
-}
+if (!emitGenerated(outputs, { tag: 'gen:analysis', command: 'npm run gen:analysis' }))
+	process.exit(1);
+console.log(
+	CHECK_MODE
+		? `[gen:analysis] --check OK: both projections are up to date ` +
+				`(${analyses.length} analyses, ${en.length} en / ${fr.length} fr).`
+		: `[gen:analysis] Wrote ${Object.keys(keyTerms).length} key-term lists → ${KEY_TERMS_FILE}\n` +
+				`[gen:analysis] Wrote the corpus summary (${en.length} en / ${fr.length} fr) → ${CORPUS_FILE}`
+);

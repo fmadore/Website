@@ -40,32 +40,14 @@
  *   node scripts/generate-communication-summaries.mjs --check  # CI freshness
  *       check: regenerate in memory and exit 1 if the committed file is stale.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import { collectRecords } from './lib/data-records.mjs';
-import { ABSTRACT_EXCERPT_LENGTH } from '../src/lib/data/publications/summaryConfig.ts';
+import { CHECK_MODE, emitGenerated } from './lib/generated-file.mjs';
+import { projectSummary } from './lib/summary-projection.mjs';
 import { HEAVY_COMMUNICATION_FIELDS } from '../src/lib/data/communications/summaryConfig.ts';
 
 const DATA_DIR = 'src/lib/data/communications';
 const OUT_FILE = `${DATA_DIR}/summaries.generated.ts`;
-const CHECK_MODE = process.argv.includes('--check');
-
-/** Project a full record down to its summary. */
-function summarise(record) {
-	const summary = {};
-	for (const [key, value] of Object.entries(record)) {
-		if (!HEAVY_COMMUNICATION_FIELDS.includes(key)) summary[key] = value;
-	}
-	if (typeof record.abstract === 'string' && record.abstract.length > 0) {
-		// One character past the contract length: an abstract that continues
-		// beyond it stays longer than any permitted truncation, so the row's
-		// truncation still appends its ellipsis.
-		const keep = ABSTRACT_EXCERPT_LENGTH + 1;
-		summary.abstractExcerpt =
-			record.abstract.length <= keep ? record.abstract : record.abstract.slice(0, keep);
-	}
-	return summary;
-}
 
 /** The glob key Vite sorts by: the path under DATA_DIR, forward slashes. */
 function globKey(file) {
@@ -74,7 +56,10 @@ function globKey(file) {
 
 const records = await collectRecords(`${DATA_DIR}/**/*.ts`, 'gen:summaries:talks');
 const summaries = records
-	.map(({ file, record }) => ({ key: globKey(file), summary: summarise(record) }))
+	.map(({ file, record }) => ({
+		key: globKey(file),
+		summary: projectSummary(record, HEAVY_COMMUNICATION_FIELDS)
+	}))
 	.sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0))
 	.map(({ summary }) => summary);
 
@@ -85,24 +70,15 @@ import type { CommunicationSummary } from '$lib/types/communication';
 export const communicationSummaries: CommunicationSummary[] = `;
 const output = banner + JSON.stringify(summaries, null, '\t') + ';\n';
 
-if (CHECK_MODE) {
-	let committed = null;
-	try {
-		committed = readFileSync(OUT_FILE, 'utf8');
-	} catch {
-		// Missing file counts as stale.
-	}
-	if (committed !== output) {
-		console.error(
-			`[gen:summaries:talks] ERROR: ${OUT_FILE} is stale (or missing). ` +
-				'Run `npm run gen:summaries` and commit the result.'
-		);
-		process.exit(1);
-	}
-	console.log(
-		`[gen:summaries:talks] --check OK: ${OUT_FILE} is up to date (${summaries.length} summaries).`
-	);
-} else {
-	writeFileSync(OUT_FILE, output, 'utf8');
-	console.log(`[gen:summaries:talks] Wrote ${summaries.length} summaries → ${OUT_FILE}`);
-}
+if (
+	!emitGenerated([[OUT_FILE, output]], {
+		tag: 'gen:summaries:talks',
+		command: 'npm run gen:summaries'
+	})
+)
+	process.exit(1);
+console.log(
+	CHECK_MODE
+		? `[gen:summaries:talks] --check OK: ${OUT_FILE} is up to date (${summaries.length} summaries).`
+		: `[gen:summaries:talks] Wrote ${summaries.length} summaries → ${OUT_FILE}`
+);

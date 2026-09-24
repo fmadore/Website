@@ -30,10 +30,10 @@
  *   node scripts/generate-research-prose.mjs --check  # CI freshness check:
  *       regenerate in memory and exit 1 if the committed file is stale.
  */
-import { globSync, readFileSync, writeFileSync } from 'node:fs';
+import { globSync, readFileSync } from 'node:fs';
+import { CHECK_MODE, emitGenerated } from './lib/generated-file.mjs';
 
 const OUT_FILE = 'src/lib/data/researchProse.generated.ts';
-const CHECK_MODE = process.argv.includes('--check');
 
 /** Components that may appear in the prose and carry no text of their own. */
 const DROPPABLE_COMPONENTS = ['RelevantGrants', 'ItemReference'];
@@ -188,17 +188,11 @@ const sorted = Object.fromEntries(
 );
 const output = `${banner}${JSON.stringify(sorted, null, '\t')};\n`;
 
+if (!emitGenerated([[OUT_FILE, output]], { tag: 'gen:prose', command: 'npm run gen:prose' }))
+	process.exit(1);
 if (CHECK_MODE) {
-	const current = readFileSync(OUT_FILE, 'utf8');
-	if (current !== output) {
-		console.error(
-			`[gen:prose] --check FAILED: ${OUT_FILE} is stale. Run \`npm run gen:prose\` and commit.`
-		);
-		process.exit(1);
-	}
 	console.log(`[gen:prose] --check OK: ${OUT_FILE} is up to date (${pages.length} pages scanned).`);
 } else {
-	writeFileSync(OUT_FILE, output, 'utf8');
 	const chars = Object.values(sorted).reduce((sum, entry) => sum + entry.body.length, 0);
 	console.log(
 		`[gen:prose] wrote ${OUT_FILE}: ${Object.keys(sorted).length} projects, ${chars} characters.`

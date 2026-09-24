@@ -32,17 +32,14 @@
  *   node scripts/generate-publication-summaries.mjs --check  # CI freshness
  *       check: regenerate in memory and exit 1 if the committed file is stale.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
 import { relative } from 'node:path';
 import { collectRecords } from './lib/data-records.mjs';
-import {
-	ABSTRACT_EXCERPT_LENGTH,
-	HEAVY_PUBLICATION_FIELDS
-} from '../src/lib/data/publications/summaryConfig.ts';
+import { CHECK_MODE, emitGenerated } from './lib/generated-file.mjs';
+import { projectSummary } from './lib/summary-projection.mjs';
+import { HEAVY_PUBLICATION_FIELDS } from '../src/lib/data/publications/summaryConfig.ts';
 
 const DATA_DIR = 'src/lib/data/publications';
 const OUT_FILE = `${DATA_DIR}/summaries.generated.ts`;
-const CHECK_MODE = process.argv.includes('--check');
 
 import { PUBLICATION_DIRECTORY_TYPES as DIR_TYPES } from '../src/lib/dataMetadata.ts';
 
@@ -58,18 +55,7 @@ function tocAuthors(tableOfContents) {
 
 /** Project a full record down to its summary. */
 function summarise(record, file) {
-	const summary = {};
-	for (const [key, value] of Object.entries(record)) {
-		if (!HEAVY_PUBLICATION_FIELDS.includes(key)) summary[key] = value;
-	}
-	if (typeof record.abstract === 'string' && record.abstract.length > 0) {
-		// One character past the contract length: an abstract that continues
-		// beyond it stays longer than any permitted truncation, so the row's
-		// truncation still appends its ellipsis.
-		const keep = ABSTRACT_EXCERPT_LENGTH + 1;
-		summary.abstractExcerpt =
-			record.abstract.length <= keep ? record.abstract : record.abstract.slice(0, keep);
-	}
+	const summary = projectSummary(record, HEAVY_PUBLICATION_FIELDS);
 	summary.citedByCount = Array.isArray(record.citedBy) ? record.citedBy.length : 0;
 	summary.tocAuthors = tocAuthors(record.tableOfContents);
 	const dir = relative(DATA_DIR, file).split(/[\\/]/)[0];
@@ -89,24 +75,12 @@ import type { PublicationSummary } from '$lib/types/publication';
 export const publicationSummaries: PublicationSummary[] = `;
 const output = banner + JSON.stringify(summaries, null, '\t') + ';\n';
 
-if (CHECK_MODE) {
-	let committed = null;
-	try {
-		committed = readFileSync(OUT_FILE, 'utf8');
-	} catch {
-		// Missing file counts as stale.
-	}
-	if (committed !== output) {
-		console.error(
-			`[gen:summaries] ERROR: ${OUT_FILE} is stale (or missing). ` +
-				'Run `npm run gen:summaries` and commit the result.'
-		);
-		process.exit(1);
-	}
-	console.log(
-		`[gen:summaries] --check OK: ${OUT_FILE} is up to date (${summaries.length} summaries).`
-	);
-} else {
-	writeFileSync(OUT_FILE, output, 'utf8');
-	console.log(`[gen:summaries] Wrote ${summaries.length} summaries → ${OUT_FILE}`);
-}
+if (
+	!emitGenerated([[OUT_FILE, output]], { tag: 'gen:summaries', command: 'npm run gen:summaries' })
+)
+	process.exit(1);
+console.log(
+	CHECK_MODE
+		? `[gen:summaries] --check OK: ${OUT_FILE} is up to date (${summaries.length} summaries).`
+		: `[gen:summaries] Wrote ${summaries.length} summaries → ${OUT_FILE}`
+);
