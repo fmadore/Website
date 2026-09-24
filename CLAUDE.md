@@ -111,8 +111,9 @@ generated from the datasets and would keep advertising URLs that ship no page.
 
 ### Generated data files
 
-The `*.generated.ts` files in `src/lib/data/` (`referenceIndex`,
-`publications/summaries`, `communications/summaries`, `activities/summaries`,
+The `*.generated.ts` files in `src/lib/data/` (`referenceIndex`, the
+`summaries` of publications, communications, activities and
+digital-humanities, the `cv` views of publications and communications,
 `analysis/keyTerms`, `analysis/corpusSummary`, `researchProse`,
 `imageVariants`) are committed, not built on the fly.
 `prebuild` regenerates them all, so a full `npm run build` covers it; after
@@ -141,8 +142,22 @@ abstract past `ABSTRACT_EXCERPT_LENGTH` (`summaryConfig.ts`).
 `data/communications/summaries.ts` drops `abstract` and adds `abstractExcerpt`;
 `/cv`, `/conference-activity`, the slides gallery, the timeline and the research
 pages read it, and only `/communications/[id]` imports the full `index.ts`.
-`gen:summaries` emits all three projections; `summaries.test.ts` beside each
+`gen:summaries` (`scripts/generate-summaries.mjs`, one config-driven generator
+for every dataset) emits all the projections; `summaries.test.ts` beside each
 proves it faithful.
+
+**Digital-humanities summaries** drop `description` and `embeddableContent`
+(72% of the dataset); the `/digital-humanities` index and the CV read them,
+and `/digital-humanities/[id]` gets its full record from a server load.
+
+**CV views**: `/cv` prints a talk as a dated line and a publication as its
+bibliographic apparatus, so it reads `communications/cv.ts` and
+`publications/cv.ts` — the summaries cut to `CV_*_FIELDS` — rather than the
+summaries themselves (a quarter and a half of their bytes). The views are
+typed as `Pick`s (`CvCommunication`, `CvPublication`), so a CV section that
+starts printing another field fails `npm run check` until the field is added
+to the type and its `CV_*_FIELDS` list (a compile-time check keeps those two
+in step).
 
 **Activity summaries**: the same projection for the activity log —
 `data/activities/summaries.ts` drops `content`, the HTML body (60% of the

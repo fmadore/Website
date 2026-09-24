@@ -8,7 +8,7 @@
 	import { browser } from '$app/environment';
 	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
-	import { allDhProjects } from '$lib/data/digital-humanities';
+	import { allDhProjectSummaries as allDhProjects } from '$lib/data/digital-humanities/summaries';
 	import { buildSrcset } from '$lib/utils/imageVariants';
 	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';

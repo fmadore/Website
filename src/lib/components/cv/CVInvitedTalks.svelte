@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { communicationSummariesByDate as communicationsByDate } from '$lib/data/communications/summaries';
-	import type { CommunicationSummary } from '$lib/types/communication';
+	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
+	import type { CvCommunication } from '$lib/types/communication';
 	import { formatCVAuthorList, terminalPeriod } from '$lib/utils/cvFormatters';
 	import { formatDayMonth } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
@@ -13,7 +13,7 @@
 	// conference alongside would repeat it verbatim ("University of Kansas AI and
 	// Africa Symposium", *AI and Africa Symposium*). Print it only when it adds
 	// something the title has not already said.
-	const venue = (comm: CommunicationSummary) =>
+	const venue = (comm: CvCommunication) =>
 		comm.conference && !comm.title.includes(comm.conference) ? comm.conference : '';
 </script>
 

@@ -1,8 +1,8 @@
-import type { HeavyCommunicationField } from '$lib/types/communication';
+import type { CvCommunicationField, HeavyCommunicationField } from '$lib/types/communication';
 
 /**
  * Shared between the summaries generator
- * (scripts/generate-communication-summaries.mjs, which imports this file
+ * (scripts/generate-summaries.mjs, which imports this file
  * straight from TypeScript under Node's type stripping) and the site, so the
  * projection and its consumers agree on one definition.
  *
@@ -16,3 +16,23 @@ import type { HeavyCommunicationField } from '$lib/types/communication';
 export const HEAVY_COMMUNICATION_FIELDS = [
 	'abstract'
 ] as const satisfies readonly HeavyCommunicationField[];
+
+/** The fields the CV view keeps; see `CvCommunicationField`. */
+export const CV_COMMUNICATION_FIELDS = [
+	'id',
+	'title',
+	'authors',
+	'type',
+	'date',
+	'dateISO',
+	'location',
+	'conference',
+	'panelTitle',
+	'episode',
+	'doi',
+	'url'
+] as const satisfies readonly CvCommunicationField[];
+
+// Fails to compile if the list above omits a member of the union.
+type MissingCvField = Exclude<CvCommunicationField, (typeof CV_COMMUNICATION_FIELDS)[number]>;
+export const CV_COMMUNICATION_FIELDS_COMPLETE: MissingCvField extends never ? true : never = true;

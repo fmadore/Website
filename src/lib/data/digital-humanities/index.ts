@@ -1,9 +1,20 @@
 import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 import { loadData } from '$lib/utils/dataLoader';
+import { compareDhProjects } from './order';
 
-// Dynamically import all DH project files
+// Dynamically import all DH project files (excluding this index and the
+// modules beside the records that are not records: the ordering helper and
+// the summaries projection with its config and tests)
 const projectModules = import.meta.glob<Record<string, DigitalHumanitiesProject>>(
-	['./*.ts', '!./index.ts'],
+	[
+		'./*.ts',
+		'!./index.ts',
+		'!./order.ts',
+		'!./summaries.ts',
+		'!./summaries.generated.ts',
+		'!./summaryConfig.ts',
+		'!./*.test.ts'
+	],
 	{ eager: true }
 );
 
@@ -12,21 +23,4 @@ export const allDhProjects: DigitalHumanitiesProject[] = loadData<DigitalHumanit
 	projectModules,
 	[],
 	'digital-humanities-project'
-).sort((a, b) => {
-	// Featured projects come first
-	const featuredA = a.featured ? 0 : 1;
-	const featuredB = b.featured ? 0 : 1;
-	if (featuredA !== featuredB) {
-		return featuredA - featuredB;
-	}
-
-	// Then sort by order property
-	const orderA = a.order === undefined ? Infinity : a.order;
-	const orderB = b.order === undefined ? Infinity : b.order;
-
-	if (orderA === orderB) {
-		// If orders are the same (or both undefined), sort by title
-		return a.title.localeCompare(b.title);
-	}
-	return orderA - orderB;
-});
+).sort(compareDhProjects);

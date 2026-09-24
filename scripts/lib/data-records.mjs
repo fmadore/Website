@@ -55,6 +55,8 @@ export function isDataItem(file) {
 		name !== 'index.ts' &&
 		name !== 'summaries.ts' &&
 		name !== 'summaryConfig.ts' &&
+		name !== 'order.ts' &&
+		name !== 'cv.ts' &&
 		!name.endsWith('.generated.ts') &&
 		!name.endsWith('.svelte.ts') &&
 		!name.endsWith('.test.ts') &&

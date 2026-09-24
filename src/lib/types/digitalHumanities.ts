@@ -93,3 +93,13 @@ export interface DigitalHumanitiesProject {
 	seoDescription?: string;
 	seoKeywords?: string[];
 }
+
+/**
+ * The fields a `DigitalHumanitiesSummary` drops: the long HTML `description`
+ * (72% of the dataset) and the embedded content, both printed only on the
+ * project's own page.
+ */
+export type HeavyDhField = 'description' | 'embeddableContent';
+
+/** A project as the /digital-humanities index and the CV read it. */
+export type DigitalHumanitiesSummary = Omit<DigitalHumanitiesProject, HeavyDhField>;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { mediaAppearancesByDate } from '$lib/data/media-appearances';
-	import { communicationSummariesByDate as communicationsByDate } from '$lib/data/communications/summaries';
+	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
 	import { formatDayMonth } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';

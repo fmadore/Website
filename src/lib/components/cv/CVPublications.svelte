@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { publicationSummariesByDate as publicationsByDate } from '$lib/data/publications/summaries';
-	import type { Publication } from '$lib/types';
+	import { cvPublicationsByDate as publicationsByDate } from '$lib/data/publications/cv';
+	import type { CvPublication } from '$lib/types';
 	import {
 		groupPublicationsByType,
 		formatVolumeIssueDisplay,
@@ -130,7 +130,7 @@
 			<h4>Other</h4>
 			<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 				{#each otherPublicationTypes as pubType (pubType)}
-					{#each publicationsByType[pubType as Publication['type']] as pub (pub.id)}
+					{#each publicationsByType[pubType as CvPublication['type']] as pub (pub.id)}
 						<CVEntry year={getCVDisplayYear(pub)}>
 							<!-- Simplified display for other types -->
 							<span class="font-medium">{typesetQuotes(pub.title)}</span>.

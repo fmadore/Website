@@ -100,20 +100,11 @@ jobs:
       - name: Reference index freshness
         run: node scripts/generate-reference-index.mjs --check
 
-      # The list pages render a committed projection of the publications
-      # dataset; a data edit has to be regenerated into it.
-      - name: Publication summaries freshness
-        run: node scripts/generate-publication-summaries.mjs --check
-
-      # The CV, the talks index, the slides gallery and the timeline read a
-      # committed projection of the communications dataset without abstracts.
-      - name: Communication summaries freshness
-        run: node scripts/generate-communication-summaries.mjs --check
-
-      # The activities log, its year pages and the style guide read a committed
-      # projection of the activities dataset without the entries' HTML bodies.
-      - name: Activity summaries freshness
-        run: node scripts/generate-activity-summaries.mjs --check
+      # Every page but a record's own renders a committed projection of its
+      # dataset without the heavy fields (publications, talks, activities,
+      # digital humanities); a data edit has to be regenerated into them.
+      - name: Record summaries freshness
+        run: node scripts/generate-summaries.mjs --check
 
       # The latin-ext and vietnamese font subsets are cut to fixed Unicode
       # blocks by scripts/subset-fonts.py; the check proves the committed files

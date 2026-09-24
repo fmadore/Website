@@ -1,8 +1,6 @@
 import type { Publication } from '$lib/types';
 import { loadData } from '$lib/utils/dataLoader';
-import { isForthcoming } from '$lib/utils/date-formatter';
 import {
-	sortByDate,
 	groupByYear,
 	groupByField,
 	extractUniqueTags,
@@ -14,6 +12,7 @@ import {
 	PUBLICATION_TEMPLATE_IDS as templateIds,
 	PUBLICATION_DIRECTORY_TYPES
 } from '$lib/dataMetadata';
+import { sortPublicationsByDate } from './order';
 
 // Use a single static glob import (excluding per-type template files)
 const publicationModules = import.meta.glob(
@@ -46,11 +45,7 @@ const allPublications = loadData<Publication>(
 ) as (Publication & { sourceDirType: string })[];
 
 // Sort by date (most recent first), with forthcoming items floated to the top
-const dateSorted = sortByDate(allPublications);
-export const publicationsByDate = [
-	...dateSorted.filter(isForthcoming),
-	...dateSorted.filter((p) => !isForthcoming(p))
-];
+export const publicationsByDate = sortPublicationsByDate(allPublications);
 
 // Group publications by year and type
 export const publicationsByYear = groupByYear(allPublications);

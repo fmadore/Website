@@ -94,3 +94,25 @@ describe('communication summaries', () => {
 		);
 	});
 });
+
+describe('the CV view of the talks', () => {
+	it("lists every talk in the summaries' date order", async () => {
+		const { cvCommunicationsByDate } = await import('$lib/data/communications/cv');
+		expect(cvCommunicationsByDate.map((c) => c.id)).toEqual(
+			communicationSummariesByDate.map((s) => s.id)
+		);
+	});
+
+	it('carries exactly the CV fields of each summary, unchanged', async () => {
+		const { cvCommunicationsByDate } = await import('$lib/data/communications/cv');
+		const { CV_COMMUNICATION_FIELDS } = await import('$lib/data/communications/summaryConfig');
+		const keep: readonly string[] = CV_COMMUNICATION_FIELDS;
+		for (const entry of cvCommunicationsByDate) {
+			const summary = summariesById.get(entry.id)!;
+			const expected = Object.fromEntries(
+				Object.entries(summary).filter(([key]) => keep.includes(key))
+			);
+			expect(entry, entry.id).toEqual(expected);
+		}
+	});
+});

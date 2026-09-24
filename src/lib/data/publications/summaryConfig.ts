@@ -1,8 +1,8 @@
-import type { HeavyPublicationField } from '$lib/types/publication';
+import type { CvPublicationField, HeavyPublicationField } from '$lib/types/publication';
 
 /**
  * Shared between the summaries generator
- * (scripts/generate-publication-summaries.mjs, which imports this file
+ * (scripts/generate-summaries.mjs, which imports this file
  * straight from TypeScript under Node's type stripping) and the site, so the
  * projection and its consumers agree on one definition.
  */
@@ -35,3 +35,33 @@ export const HEAVY_PUBLICATION_FIELDS = [
 	'tableOfContents',
 	'heroImage'
 ] as const satisfies readonly HeavyPublicationField[];
+
+/** The fields the CV view keeps; see `CvPublicationField`. */
+export const CV_PUBLICATION_FIELDS = [
+	'id',
+	'type',
+	'title',
+	'authors',
+	'editors',
+	'date',
+	'dateISO',
+	'year',
+	'journal',
+	'volume',
+	'issue',
+	'pages',
+	'book',
+	'series',
+	'publisher',
+	'placeOfPublication',
+	'encyclopediaTitle',
+	'proceedingsTitle',
+	'isEditedVolume',
+	'doi',
+	'url',
+	'reviewedBy'
+] as const satisfies readonly CvPublicationField[];
+
+// Fails to compile if the list above omits a member of the union.
+type MissingCvField = Exclude<CvPublicationField, (typeof CV_PUBLICATION_FIELDS)[number]>;
+export const CV_PUBLICATION_FIELDS_COMPLETE: MissingCvField extends never ? true : never = true;

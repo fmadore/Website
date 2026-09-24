@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { allDhProjects } from '$lib/data/digital-humanities';
+	import { allDhProjectSummaries as allDhProjects } from '$lib/data/digital-humanities/summaries';
 	import { formatCVYearRange, trimTerminalPeriod } from '$lib/utils/cvFormatters';
 	import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
 	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';

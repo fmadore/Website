@@ -19,7 +19,10 @@ export default ts.config(
 			'src/lib/data/analysis/keyTerms.generated.ts',
 			'src/lib/data/analysis/corpusSummary.generated.ts',
 			'src/lib/data/communications/summaries.generated.ts',
-			'src/lib/data/activities/summaries.generated.ts'
+			'src/lib/data/activities/summaries.generated.ts',
+			'src/lib/data/digital-humanities/summaries.generated.ts',
+			'src/lib/data/communications/cv.generated.ts',
+			'src/lib/data/publications/cv.generated.ts'
 		]
 	},
 	includeIgnoreFile(gitignorePath),

@@ -7,23 +7,14 @@
  * row. The publication page and the visualisations keep the full index.
  */
 import type { PublicationSummary } from '$lib/types';
-import { isForthcoming } from '$lib/utils/date-formatter';
-import {
-	sortByDate,
-	groupByYear,
-	groupByField,
-	extractUniqueTags
-} from '$lib/utils/dataAggregation';
+import { groupByYear, groupByField, extractUniqueTags } from '$lib/utils/dataAggregation';
 import { publicationSummaries } from './summaries.generated';
+import { sortPublicationsByDate } from './order';
 
 export const allPublicationSummaries: PublicationSummary[] = publicationSummaries;
 
 // Sort by date (most recent first), with forthcoming items floated to the top.
-const dateSorted = sortByDate(allPublicationSummaries);
-export const publicationSummariesByDate = [
-	...dateSorted.filter(isForthcoming),
-	...dateSorted.filter((p) => !isForthcoming(p))
-];
+export const publicationSummariesByDate = sortPublicationsByDate(allPublicationSummaries);
 
 export const publicationSummariesByYear = groupByYear(allPublicationSummaries);
 export const publicationSummariesByType = groupByField(allPublicationSummaries, 'type');

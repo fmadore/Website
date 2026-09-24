@@ -19,7 +19,7 @@
 		"check:fonts": "node scripts/check-fonts.mjs",
 		"preview": "vite preview",
 		"gen:refs": "node scripts/generate-reference-index.mjs",
-		"gen:summaries": "node scripts/generate-publication-summaries.mjs && node scripts/generate-communication-summaries.mjs && node scripts/generate-activity-summaries.mjs",
+		"gen:summaries": "node scripts/generate-summaries.mjs",
 		"gen:analysis": "node scripts/generate-analysis-summaries.mjs",
 		"gen:prose": "node scripts/generate-research-prose.mjs",
 		"gen:posters": "node scripts/generate-slide-posters.mjs",
@@ -53,7 +53,7 @@
 		"sync:publications": "node scripts/sync-publications-to-vault.mjs",
 		"sync:vault": "npm run sync:publications -- --write && npm run sync:projects -- --write && npm run sync:sections -- --write && npm run sync:talks -- --write",
 		"sync:sections": "node scripts/sync-sections-to-vault.mjs",
-		"check:generated": "node scripts/generate-reference-index.mjs --check && node scripts/generate-publication-summaries.mjs --check && node scripts/generate-communication-summaries.mjs --check && node scripts/generate-activity-summaries.mjs --check && node scripts/generate-analysis-summaries.mjs --check && node scripts/generate-research-prose.mjs --check",
+		"check:generated": "node scripts/generate-reference-index.mjs --check && node scripts/generate-summaries.mjs --check && node scripts/generate-analysis-summaries.mjs --check && node scripts/generate-research-prose.mjs --check",
 		"test:lifecycle": "tsc --project tests-lifecycle/tsconfig.json --noEmit && vitest run --config vitest.lifecycle.config.ts",
 		"verify": "node scripts/verify.mjs"
 	},

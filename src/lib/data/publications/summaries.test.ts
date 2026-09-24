@@ -84,3 +84,27 @@ describe('publication summaries', () => {
 		}
 	});
 });
+
+describe('the CV view of the publications', () => {
+	it("lists every publication in the summaries' date order", async () => {
+		const { cvPublicationsByDate } = await import('$lib/data/publications/cv');
+		const { publicationSummariesByDate } = await import('$lib/data/publications/summaries');
+		expect(cvPublicationsByDate.map((p) => p.id)).toEqual(
+			publicationSummariesByDate.map((s) => s.id)
+		);
+	});
+
+	it('carries exactly the CV fields of each summary, unchanged', async () => {
+		const { cvPublicationsByDate } = await import('$lib/data/publications/cv');
+		const { allPublicationSummaries } = await import('$lib/data/publications/summaries');
+		const { CV_PUBLICATION_FIELDS } = await import('$lib/data/publications/summaryConfig');
+		const keep: readonly string[] = CV_PUBLICATION_FIELDS;
+		const byId = new Map(allPublicationSummaries.map((s) => [s.id, s]));
+		for (const entry of cvPublicationsByDate) {
+			const expected = Object.fromEntries(
+				Object.entries(byId.get(entry.id)!).filter(([key]) => keep.includes(key))
+			);
+			expect(entry, entry.id).toEqual(expected);
+		}
+	});
+});
