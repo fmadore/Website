@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getActivities } from '$lib/stores/activities.svelte';
+	import { getActivities } from '$lib/stores/activities';
 	import type { ActivitySummary } from '$lib/types';
 	import { base, resolve } from '$app/paths';
 	import SEO from '$lib/SEO.svelte';

@@ -14,10 +14,7 @@
 		communicationSummariesByProject as communicationsByProject
 	} from '$lib/data/communications/summaries';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import {
-		buildBreadcrumbJsonLd,
-		createSubsectionBreadcrumbs
-	} from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import NetworkGraph from '$lib/components/visualisations/NetworkGraph.svelte';

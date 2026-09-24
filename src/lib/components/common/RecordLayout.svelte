@@ -60,7 +60,7 @@ Usage:
 		buildBreadcrumbJsonLd,
 		BREADCRUMB_SCRIPT_ID,
 		type BreadcrumbNavItem
-	} from '$lib/utils/breadcrumbJsonLd.svelte';
+	} from '$lib/utils/breadcrumbJsonLd';
 
 	interface Props {
 		/** Section this record belongs to — the breadcrumb's back-link. */

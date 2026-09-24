@@ -9,7 +9,7 @@
  * ```svelte
  * <script lang="ts">
  *   import JsonLd from '$lib/components/common/JsonLd.svelte';
- *   import { buildBreadcrumbJsonLd, BREADCRUMB_SCRIPT_ID } from '$lib/utils/breadcrumbJsonLd.svelte';
+ *   import { buildBreadcrumbJsonLd, BREADCRUMB_SCRIPT_ID } from '$lib/utils/breadcrumbJsonLd';
  *
  *   const breadcrumbItems = $derived([
  *     { label: 'Research', href: '/research' },
@@ -37,7 +37,7 @@ export const BREADCRUMB_SCRIPT_ID = 'breadcrumb-json-ld';
 /**
  * Builds the two-level breadcrumb trail used by sub-pages
  * (section index → sub-page), for both the visible `Breadcrumb`
- * component and `useBreadcrumbJsonLd`.
+ * component and `buildBreadcrumbJsonLd`.
  *
  * @example
  * createSubsectionBreadcrumbs(base, 'Publications', '/publications', 'Visualisations', '/publications/visualisations')

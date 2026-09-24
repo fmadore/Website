@@ -322,30 +322,20 @@ function buildTools(): ToolDescriptor[] {
 				required: []
 			},
 			async execute() {
-				const { allDhProjects } = await import('$lib/data/digital-humanities');
-				const research = [
-					{
-						id: 'islams-peripheries-dh-ai-west-africa-central-asia',
-						title:
-							"Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"
-					},
-					{
-						id: 'dh-ai-african-studies',
-						title: 'Digital Humanities and Artificial Intelligence in African Studies'
-					},
-					{
-						id: 'religious-activism-campuses-togo-benin',
-						title: 'Religious Activism on Campuses in Togo and Benin'
-					},
-					{
-						id: 'muslim-minorities-southern-cities-benin-togo',
-						title: 'Muslim Minorities in Southern Cities of Benin and Togo'
-					},
-					{
-						id: 'youth-womens-islamic-activism-cote-divoire-burkina-faso',
-						title: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
-					}
-				].map((p) => ({ ...p, url: `${SITE}/research/${p.id}` }));
+				const [{ allResearchProjects }, { allDhProjects }] = await Promise.all([
+					import('$lib/data/research'),
+					import('$lib/data/digital-humanities')
+				]);
+				// Read from the dataset, as the research landing page does: the
+				// hand-kept list this replaced had already fallen a project behind.
+				const research = allResearchProjects.map((p) => ({
+					id: p.id,
+					title: p.title,
+					years: p.years,
+					current: p.current ?? false,
+					shortDescription: p.shortDescription,
+					url: `${SITE}/research/${p.id}`
+				}));
 
 				const digitalHumanities = allDhProjects.map((p) => ({
 					id: p.id,

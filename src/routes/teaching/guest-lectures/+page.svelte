@@ -9,10 +9,7 @@
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import guestLectures from '$lib/data/teaching/guest-lectures';
 	import type { GuestLecture } from '$lib/types';
-	import {
-		buildBreadcrumbJsonLd,
-		createSubsectionBreadcrumbs
-	} from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
 
 	// Define breadcrumb items
 	const breadcrumbItems = createSubsectionBreadcrumbs(

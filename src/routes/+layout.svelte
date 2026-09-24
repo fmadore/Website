@@ -44,7 +44,7 @@
 
 		let disposed = false;
 		let unregister = () => {};
-		void import('$lib/utils/webmcp.svelte')
+		void import('$lib/utils/webmcp')
 			.then(({ registerWebMcp }) => {
 				if (disposed) return;
 				unregister = registerWebMcp();

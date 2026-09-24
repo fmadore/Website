@@ -27,7 +27,7 @@ co-director, programme or grant simply drop those rows.
 	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
 	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
 	import ResearchProjectAside from '$lib/components/research/ResearchProjectAside.svelte';
-	import { GRANTS_SCRIPT_ID, buildGrantsJsonLd } from '$lib/utils/grantsJsonLd.svelte';
+	import { GRANTS_SCRIPT_ID, buildGrantsJsonLd } from '$lib/utils/grantsJsonLd';
 	import { allGrants } from '$lib/data/grants/index';
 	import { allPublicationSummaries as allPublications } from '$lib/data/publications/summaries';
 	import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';

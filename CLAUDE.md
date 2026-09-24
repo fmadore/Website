@@ -162,7 +162,7 @@ in step).
 **Activity summaries**: the same projection for the activity log —
 `data/activities/summaries.ts` drops `content`, the HTML body (60% of the
 dataset's source). `/activities`, its year pages and the style guide read it
-through `stores/activities.svelte.ts`; `/activities/[id]` receives its one full
+through `stores/activities.ts`; `/activities/[id]` receives its one full
 record from a server load, and the home page's latest-activities rail receives
 five rows and a year meter (`utils/activityLog.ts`) from its server load. Only
 server code (API, RSS, sitemap, those loads) imports the full `index.ts`. The

@@ -16,7 +16,7 @@ its share — so the step is a convenience, not the only route.
 -->
 <script lang="ts">
 	import { page } from '$app/state';
-	import { getActivities } from '$lib/stores/activities.svelte';
+	import { getActivities } from '$lib/stores/activities';
 	import type { ActivitySummary } from '$lib/types';
 	import { base, resolve } from '$app/paths';
 	import SEO from '$lib/SEO.svelte';
@@ -26,7 +26,7 @@ its share — so the step is a convenience, not the only route.
 	import '$styles/components/activity-list.css';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import { buildBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { buildBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd';
 	import { formatShortDateMono } from '$lib/utils/date-formatter';
 
 	// Get the year parameter from the URL - reactive to route changes

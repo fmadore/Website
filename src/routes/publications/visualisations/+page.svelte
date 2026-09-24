@@ -7,10 +7,7 @@
 	import { base } from '$app/paths';
 	import { allPublications, publicationsByType } from '$lib/data/publications';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import {
-		buildBreadcrumbJsonLd,
-		createSubsectionBreadcrumbs
-	} from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
 	import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';

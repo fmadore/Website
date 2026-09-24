@@ -12,10 +12,7 @@
 	import { resolveSlidePoster } from '$lib/utils/slidePoster';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import { COMMUNICATION_TYPE_LIST_LABELS } from '$lib/utils/typeUtils';
-	import {
-		buildBreadcrumbJsonLd,
-		createSubsectionBreadcrumbs
-	} from '$lib/utils/breadcrumbJsonLd.svelte';
+	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
 
 	/**
 	 * The gallery was six equal tiles with ragged bottoms, a `01 02 03` stamp

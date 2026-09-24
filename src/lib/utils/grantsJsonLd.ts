@@ -11,7 +11,7 @@
  * ```svelte
  * <script lang="ts">
  *   import JsonLd from '$lib/components/common/JsonLd.svelte';
- *   import { buildGrantsJsonLd, GRANTS_SCRIPT_ID } from '$lib/utils/grantsJsonLd.svelte';
+ *   import { buildGrantsJsonLd, GRANTS_SCRIPT_ID } from '$lib/utils/grantsJsonLd';
  *
  *   const grantsJsonLd = $derived(
  *     buildGrantsJsonLd('Digital Humanities and AI in African Studies', pageUrl)
