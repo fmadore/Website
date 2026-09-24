@@ -6,9 +6,11 @@ trigger: always_on
 
 ## Project Overview
 
-SvelteKit academic website using **Svelte 5** with runes, TypeScript, and glassmorphism design. Uses modular CSS architecture with design tokens.
+SvelteKit academic website using **Svelte 5** with runes, TypeScript, and the **Ink + Signal** design language: a flat print register — no glass, no shadows, no gradients, square corners, near-zero motion. Uses modular CSS architecture with design tokens.
 
-> **📘 Full CSS Documentation**: See [CSS-README.md](../src/styles/CSS-README.md) for comprehensive details.
+> **Source of truth**: [CLAUDE.md](../../CLAUDE.md) (conventions, commands, architecture) and [DESIGN.md](../../DESIGN.md) (the design system). Where this file and they disagree, they win.
+
+> **📘 Full CSS Documentation**: See [CSS-README.md](../../src/styles/CSS-README.md) for comprehensive details.
 
 ## Critical: Svelte MCP Usage
 
@@ -46,12 +48,14 @@ When writing Svelte code, use Context7 MCP to fetch up-to-date Svelte 5 document
 
 ```svelte
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
 	let {
 		variant = 'default',
 		children
 	}: {
 		variant?: 'default' | 'compact';
-		children: any;
+		children: Snippet;
 	} = $props();
 
 	const combinedClasses = $derived(`base-class ${variant}`.trim());
@@ -99,48 +103,42 @@ When writing Svelte code, use Context7 MCP to fetch up-to-date Svelte 5 document
 
 Use `color-mix()` instead of `rgba(var(--*-rgb), opacity)` for transparent colors:
 
-````css
+```css
 /* ✅ Preferred - uses color directly */
 background: color-mix(in srgb, var(--color-primary) 10%, transparent);
-border: 1px solid color-mix(in srgb, var(--color-white) calc(var(--opacity-low) * 100%), transparent);
 
 /* ❌ Deprecated - requires separate -rgb variable */
 background: rgba(var(--color-primary-rgb), 0.1);
+```
 
-## Glassmorphism Classes
+## Ink + Signal Idioms
 
-| Class                       | Use For                  |
-| --------------------------- | ------------------------ |
-| `.glass-card`               | Cards with hover effects |
-| `.glass-panel`              | Panels/sidebars          |
-| `.glass-button`             | Buttons                  |
-| `.glass-light/medium/heavy` | Intensity variants       |
+Depth comes from ink density and rule weight, never from effects. The idiom
+classes live in `src/styles/components/ink-signal.css` and are demonstrated on
+`/style-guide`.
 
-## Animation System (CSS-Only)
+| Idiom                   | Use For                                                |
+| ----------------------- | ------------------------------------------------------ |
+| Rules (5px / 3px / 1px) | Masthead, section, and hairline separators — hierarchy |
+| Ruled section           | The standard module: 3px ink rule + Archivo head       |
+| Ledger row              | Every dated or keyed record (not a card)               |
+| Flat chip               | Facets and tags: 1px border, mono caps, count appended |
+| Plate                   | Photographs, covers, scans: 1px border, caption below  |
 
-**Use CSS classes, NOT the deprecated `scrollAnimations.ts`:**
+**Never add** `backdrop-filter`, `box-shadow`, `border-radius`, gradients, or new
+`.glass-*` usages (the few legacy `.glass-*` names left render flat).
 
-| Class                  | Effect                      |
-| ---------------------- | --------------------------- |
-| `.scroll-reveal`       | Fade-up on viewport entry   |
-| `.scroll-reveal-scale` | Scale-in for cards/images   |
-| `.grid-stagger`        | Stagger children animations |
-| `.page-enter`          | Page load animation         |
+## Motion
 
-```svelte
-<section class="scroll-reveal">...</section>
-<div class="card scroll-reveal-scale">...</div>
-<ul class="grid-stagger">{#each items}<li>...</li>{/each}</ul>
-````
-
-**Legacy classes** (`fade-in-up`, `stagger-1`-`6`) are valid for mount-time animations only.
-
-> [!WARNING]
-> **Don't animate:** buttons, navigation, modals, or components with custom IntersectionObserver.
+Near-zero by design. There is no animation utility sheet and no entrance or
+scroll-reveal class: page navigation is one short opacity transition in the
+root layout, and component transitions animate colour and border only, at
+150ms, each with its own `prefers-reduced-motion` rule. Transforms on hover are
+violations.
 
 ## Key Guidelines
 
-1. **Styling Priority**: Component-scoped → Utility classes → Glass utilities → CSS variables
+1. **Styling Priority**: Component-scoped → Ink + Signal idioms → Utility classes → CSS variables
 2. **Accessibility**: ARIA labels, semantic HTML, keyboard nav, `prefers-reduced-motion`
 3. **TypeScript**: Strict mode, proper types, `import type` for type-only imports
 4. **File Paths**: Use `$lib` alias for imports
@@ -160,6 +158,8 @@ background: rgba(var(--color-primary-rgb), 0.1);
 npm run dev      # Start development server
 npm run build    # Build for production
 npm run check    # TypeScript and Svelte validation
-npm run lint     # ESLint
+npm run lint     # Prettier + ESLint
 npm run format   # Prettier formatting
+npm run test     # Vitest unit tests
+npm run verify   # the deterministic CI sequence, locally (one build)
 ```
