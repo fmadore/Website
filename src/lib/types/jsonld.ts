@@ -230,10 +230,3 @@ export function formatPlaces(countries: string[]): JsonLdPlace[] {
 export function formatJsonLdDate(dateISO: string): string {
 	return `${dateISO}T00:00:00+01:00`;
 }
-
-/**
- * Create an Organization JSON-LD object from a name string.
- */
-export function formatOrganization(name: string): JsonLdOrganization {
-	return { '@type': 'Organization', name };
-}

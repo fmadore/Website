@@ -150,8 +150,6 @@
 	--color-print-ground: var(--color-white);
 	--color-print-ink: var(--sys-color-ink);
 
-	--color-black: #000000;
-
 	/* ===== COMPONENT COLOR LAYERS ===== */
 	/* Footer — the colophon "back page". In daylight it inverts: the ink ground
 	 * with cream type, a printed endpaper. (Midnight cannot invert an inverted
@@ -554,9 +552,6 @@
 	 * distances went with the last staggered reveal (2.11). */
 	--rotate-180: 180deg;
 
-	/* ===== CARD TOKENS ===== */
-	--card-height-image: 14rem;
-
 	/* ===== COMPONENT-SPECIFIC TOKENS ===== */
 	/* Iframe heights */
 	--iframe-height-xs: 18.75rem;
@@ -570,10 +565,6 @@
 	/* 800px */
 	--iframe-height-xl: 62.5rem;
 	/* 1000px */
-	--iframe-header-height: 2.5rem;
-	/* 40px */
-	--iframe-header-height-mobile: 2.25rem;
-	/* 36px */
 }
 
 /*

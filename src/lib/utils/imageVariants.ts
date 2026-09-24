@@ -12,9 +12,6 @@ import {
  */
 export const VARIANT_WIDTHS = [160, 240, 400, 800, 1600] as const;
 
-export const HERO_SIZES =
-	'(max-width: 640px) 100vw, (max-width: 768px) 330px, (max-width: 1024px) 600px, 800px';
-
 const IMAGE_PATH_RE = /^(.*\/images\/)(.+)\.(webp|jpe?g|png|avif)$/i;
 
 /** Intrinsic pixel size of a static/images source, for `<img width height>`. */

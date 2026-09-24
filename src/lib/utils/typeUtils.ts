@@ -111,25 +111,3 @@ export const ACTIVITY_TYPE_SEO_LABELS: Record<string, string> = {
 export function getCommunicationTypeBadge(type: string): string {
 	return COMMUNICATION_TYPE_BADGE_LABELS[type] || type;
 }
-
-/**
- * Maps activity type identifiers to human-readable display text.
- * Uses engaging, blog-friendly labels.
- *
- * @example
- * getActivityTypeBadge('conference') // Returns: 'Conference'
- * getActivityTypeBadge('grant') // Returns: 'Research Grant'
- */
-export function getActivityTypeBadge(type: string | undefined): string {
-	if (!type) return 'Activity';
-	return ACTIVITY_TYPE_BADGE_LABELS[type] || type;
-}
-
-/**
- * Formats a panel type for display by capitalizing the first letter.
- * Used for activity panel types.
- *
- * Retired 2026-09-08: the activity record's masthead read `panelType` through
- * this while its index row read `type` through the shared label map, so one
- * record printed two kinds ("Media" / "Podcast"). The map is the one source.
- */

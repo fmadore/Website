@@ -35,22 +35,6 @@ export function getCSSVariableValueWithFallback(variableName: string, fallback: 
 }
 
 /**
- * Gets a CSS variable value as a pixel number.
- * Useful for spacing variables used in chart calculations.
- *
- * @param variableName - CSS variable name (e.g., '--space-2')
- * @param fallbackPx - Fallback pixel value
- * @returns The numeric pixel value
- */
-export function getCSSPx(variableName: string, fallbackPx: number): number {
-	if (typeof window === 'undefined') return fallbackPx;
-	const computedStyle = getComputedStyle(document.documentElement);
-	const value = computedStyle.getPropertyValue(variableName).trim();
-	const match = value.match(/^([\d.]+)px$/);
-	return match ? Number(match[1]) : fallbackPx;
-}
-
-/**
  * Resolves a color string, handling CSS variable references.
  * Supports:
  * - Plain colors (returned as-is)
@@ -175,64 +159,6 @@ export function getChartMotion(preset: ChartMotionPreset = 'quick'): ChartMotion
 		animationDurationUpdate: 240,
 		animationEasing: 'cubicOut',
 		animationEasingUpdate: 'cubicOut'
-	};
-}
-
-/** Size payload ECharts passes to a tooltip `position` callback. */
-export interface EChartsTooltipSize {
-	contentSize: [number, number];
-	viewSize: [number, number];
-}
-
-/**
- * Factory for an ECharts tooltip `position` callback that keeps the tooltip
- * fully inside the chart's view box on both desktop and mobile. Extracted from
- * the network graph so every chart with a custom position shares one bounded
- * implementation instead of reimplementing the clamps.
- *
- * Desktop: placed beside the cursor, flipping to the other side / clamping
- * vertically when it would overflow. Mobile: centred horizontally and lifted
- * above the point (dropping below only when there isn't room above).
- *
- * @param isMobile - Use the mobile placement strategy.
- * @param gap - Pixel gap between cursor and tooltip / view edges.
- */
-export function getBoundedTooltipPosition(isMobile: boolean = false, gap: number = 12) {
-	return function boundedPosition(
-		point: [number, number],
-		_params: unknown,
-		_dom: HTMLElement,
-		_rect: unknown,
-		size: EChartsTooltipSize
-	): [number, number] {
-		const [tooltipWidth, tooltipHeight] = size.contentSize;
-		const [viewWidth, viewHeight] = size.viewSize;
-
-		if (isMobile) {
-			const x = Math.max(
-				gap,
-				Math.min(viewWidth - tooltipWidth - gap, point[0] - tooltipWidth / 2)
-			);
-			let y = point[1] - tooltipHeight - gap;
-			if (y < gap) {
-				y = point[1] + gap;
-				if (y + tooltipHeight > viewHeight) {
-					y = Math.max(gap, viewHeight - tooltipHeight - gap);
-				}
-			}
-			return [x, y];
-		}
-
-		let x = point[0] + gap;
-		if (x + tooltipWidth > viewWidth) {
-			x = point[0] - tooltipWidth - gap;
-		}
-		x = Math.max(gap, Math.min(x, viewWidth - tooltipWidth - gap));
-
-		let y = point[1] - tooltipHeight / 2;
-		y = Math.max(gap, Math.min(y, viewHeight - tooltipHeight - gap));
-
-		return [x, y];
 	};
 }
 
@@ -431,32 +357,6 @@ export function getResolvedChartColors(): ResolvedChartColors {
 		// Include theme to make $derived reactive to theme changes
 		currentTheme: theme
 	};
-}
-
-/**
- * The curated 7-hue timeline palette — use as a default categorical series
- * palette on visualization pages when a balanced, coordinated set of hues
- * is preferred over the broader brand palette.
- *
- * Returns resolved hex values (canvas-safe) for ECharts/D3 consumption.
- */
-export function getTimelinePalette(): string[] {
-	// The timeline tokens alias --sys-viz-*, in both themes, so the fallbacks
-	// are the same records the rest of this module uses rather than a third
-	// hand-copied set. (They were exactly that, and went stale.)
-	const fb: Record<keyof typeof CHART_COLOR_FALLBACKS, string> =
-		getTheme() === 'dark'
-			? { ...CHART_COLOR_FALLBACKS, ...CHART_COLOR_FALLBACKS_DARK }
-			: CHART_COLOR_FALLBACKS;
-	return [
-		getCSSVariableValueWithFallback('--color-timeline-positions', fb.accent), // viz-1 pine
-		getCSSVariableValueWithFallback('--color-timeline-education', fb.sage), // viz-3 olive
-		getCSSVariableValueWithFallback('--color-timeline-grants', fb.ochre), // viz-4 ochre
-		getCSSVariableValueWithFallback('--color-timeline-publications', fb.slateBlue), // viz-2 slate
-		getCSSVariableValueWithFallback('--color-timeline-presentations', fb.mauve), // viz-5 mauve
-		getCSSVariableValueWithFallback('--color-timeline-awards', fb.umber), // viz-7 umber
-		getCSSVariableValueWithFallback('--color-timeline-fieldwork', fb.plum) // viz-6 plum
-	];
 }
 
 /**

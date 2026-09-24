@@ -3,39 +3,7 @@
  * Provides formatted output for various contexts (HTML, PDF, SEO, RSS)
  */
 
-import {
-	address,
-	author,
-	contact,
-	website,
-	socialLinks,
-	type SocialLink
-} from '$lib/data/siteConfig';
-
-/**
- * Get formatted multi-line address
- */
-export function getFormattedAddress(options: { includeInstitution?: boolean } = {}): string {
-	const { includeInstitution = true } = options;
-	const lines: string[] = [];
-
-	if (includeInstitution) {
-		lines.push(address.institution);
-	}
-	if (address.department) {
-		lines.push(address.department);
-	}
-	if (address.street) {
-		lines.push(`${address.street}, ${address.postalCode} ${address.city}`);
-	} else {
-		lines.push(`${address.postalCode} ${address.city}`);
-	}
-	if (address.room) {
-		lines.push(address.room);
-	}
-
-	return lines.join('\n');
-}
+import { address, author, contact, website, socialLinks } from '$lib/data/siteConfig';
 
 /**
  * Get address as array of lines (for PDF generation)
@@ -60,13 +28,6 @@ export function getAddressLines(options: { includeInstitution?: boolean } = {}):
 	}
 
 	return lines;
-}
-
-/**
- * Get mailto link for email
- */
-export function getEmailLink(): string {
-	return `mailto:${contact.email}`;
 }
 
 /**
@@ -101,24 +62,10 @@ export function getRssDescription(): string {
 }
 
 /**
- * Get social links as array for iteration
- */
-export function getSocialLinksArray(): SocialLink[] {
-	return Object.values(socialLinks);
-}
-
-/**
  * Get formatted email with name for RSS/email headers
  */
 export function getEmailWithName(): string {
 	return `${contact.email} (${author.name})`;
-}
-
-/**
- * Get institution name with abbreviation
- */
-export function getInstitutionWithAbbr(): string {
-	return `${address.institution} (${address.institutionAbbreviation})`;
 }
 
 // Re-export commonly used values for convenience

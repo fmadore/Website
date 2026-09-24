@@ -112,9 +112,6 @@ describe('the hairline pairing', () => {
 		 * a ban: each legitimate site is named, with what it encloses.
 		 */
 		const sanctioned = [
-			// The card's own image tile: the foot of a bordered box, not a rule
-			// between entries.
-			'lib/components/common/Card.svelte — border-bottom: var(--border-width-thin) solid var(--color-border);',
 			// Deck chrome: the embed frame's own edges.
 			'lib/components/communications/SlideDeckEmbed.svelte — border-bottom: var(--border-width-thin) solid var(--color-border);',
 			'lib/components/communications/SlideDeckEmbed.svelte — border-top: var(--border-width-thin) solid var(--color-border);',

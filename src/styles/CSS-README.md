@@ -200,7 +200,7 @@ Buttons speak the **data voice**: Spline Sans Mono, uppercase, letterspaced, squ
 
 ### Cards
 
-There is no cards sheet. The bounded-tile `.card` primitive (flat warm-paper tile: 1px hairline border, square corners, no shadow, border-colour hover only) is **owned by `Card.svelte`** (`src/lib/components/common/`) as component-scoped CSS, including its `.card-image` / `.card-body` / `.card-title` / `.card-subtitle` elements, the `.card--editorial` lead variant, and dark-mode rules. The former global `.card-accent-border` had one consumer, the research panels' `RelevantItemCard`, which was retired in the 6.1 ledger conversion; the rule went with it. Every dated or keyed record renders as a ledger row, not a card (DESIGN.md, principle 3).
+There is no cards sheet and no generic card component. The bounded-tile `Card.svelte` lost its last consumer to the ledger conversions and was removed in September 2026, with its `--card-height-image` token; the former global `.card-accent-border` went earlier, with the research panels' `RelevantItemCard` in the 6.1 ledger conversion. Every dated or keyed record renders as a ledger row, not a card (DESIGN.md, principle 3); the few surfaces that are genuinely tiles (`RelatedItemCard`, `ReferencePreviewCard`, `VizChartCard`) own their styles.
 
 ### Bibliography (`components/bibliography.css`) — route-scoped
 

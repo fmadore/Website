@@ -25,13 +25,3 @@ export function formatProjectPeriod(years: string | undefined): string {
 	if (trimmed.endsWith('-')) return `Since ${trimmed.slice(0, -1)}`;
 	return trimmed.replace('-', ' – ');
 }
-
-/**
- * Whether a period is open-ended — the record says the work is still running
- * without naming an end year. The formatted string already says so ("Since
- * 2026"), which is why the index appends "Ongoing" only to the closed spans of
- * projects still marked current.
- */
-export function isOpenEndedPeriod(years: string | undefined): boolean {
-	return Boolean(years?.trim().endsWith('-'));
-}

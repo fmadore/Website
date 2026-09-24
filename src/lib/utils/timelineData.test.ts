@@ -14,9 +14,7 @@ import {
 	communicationToTimelineItem,
 	awardToTimelineItem,
 	fieldworkToTimelineItem,
-	getAllTimelineItems,
-	getTimelineItemsByCategory,
-	getTimelineYearRange
+	getAllTimelineItems
 } from './timelineData';
 
 describe('timeline data transformations', () => {
@@ -160,15 +158,5 @@ describe('timeline collections', () => {
 		expect(items.map(({ startDate }) => startDate.getTime())).toEqual(
 			[...items].map(({ startDate }) => startDate.getTime()).sort((a, b) => a - b)
 		);
-	});
-
-	it('filters by category and reports a valid year range', () => {
-		const publications = getTimelineItemsByCategory('publications');
-		expect(publications.length).toBeGreaterThan(0);
-		expect(publications.every(({ category }) => category === 'publications')).toBe(true);
-
-		const range = getTimelineYearRange();
-		expect(range.minYear).toBeLessThanOrEqual(range.maxYear);
-		expect(range.maxYear).toBeGreaterThanOrEqual(new Date().getFullYear());
 	});
 });

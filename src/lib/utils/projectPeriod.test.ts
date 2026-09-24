@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatProjectPeriod, isOpenEndedPeriod } from './projectPeriod';
+import { formatProjectPeriod } from './projectPeriod';
 import { allResearchProjects } from '$lib/data/research';
 
 describe('formatProjectPeriod', () => {
@@ -26,13 +26,5 @@ describe('formatProjectPeriod', () => {
 			expect(printed).not.toMatch(/-\s*$/);
 			expect(printed).not.toBe('');
 		}
-	});
-});
-
-describe('isOpenEndedPeriod', () => {
-	it('is true only for a trailing hyphen', () => {
-		expect(isOpenEndedPeriod('2026-')).toBe(true);
-		expect(isOpenEndedPeriod('2025-2027')).toBe(false);
-		expect(isOpenEndedPeriod(undefined)).toBe(false);
 	});
 });
