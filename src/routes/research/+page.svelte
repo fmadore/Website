@@ -1,4 +1,5 @@
 <script>
+	import { BUILT_AT } from '$lib/utils/buildDate';
 	import { base, resolve } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
@@ -72,7 +73,7 @@
 	const spans = researchProjects.map((p) => parseSpan(p.years));
 	const CAREER_START = Math.min(...spans.map((s) => s.start));
 	const CAREER_END = Math.max(
-		new Date().getFullYear(),
+		BUILT_AT.getFullYear(),
 		...spans.flatMap((s) => (s.end === null ? [] : [s.end]))
 	);
 	const AXIS_SPAN = Math.max(1, CAREER_END - CAREER_START);

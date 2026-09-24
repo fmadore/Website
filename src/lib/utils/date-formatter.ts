@@ -84,6 +84,17 @@ export function getYearFromISODate(isoDate: string): number {
  * Recognises the English and French (accented and unaccented) labels used
  * across the dataset. Such items are floated above dated entries when sorting.
  */
+/**
+ * A date as `YYYY-MM-DD` in the reader's own time zone — not
+ * `toISOString()`, which is UTC and turns the evening before midnight UTC
+ * into the next day (or the morning after into the previous one).
+ */
+export function localISODate(date: Date): string {
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+	return `${date.getFullYear()}-${month}-${day}`;
+}
+
 export function isForthcoming(item: { date?: string }): boolean {
 	const d = item.date?.trim().toLowerCase();
 	return d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre';

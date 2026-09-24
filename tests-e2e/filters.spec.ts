@@ -156,3 +156,26 @@ test('type counts remain selectable totals when another type is active', async (
 	// The bibliography paginates at 12 while the summary reports the complete set.
 	await expect(page.locator(bibItems)).toHaveCount(Math.min(combinedCount, 12));
 });
+
+test('a talk that has happened since the build leaves the upcoming block after hydration', async ({
+	page,
+	request
+}) => {
+	// Prerendered with the build's date, the page carries an "Upcoming" block
+	// while any talk lies ahead of the build. A reader whose today is past every
+	// talk must see it fold back into the record: no block, and the newest talk
+	// heading the chronological list.
+	const { items } = (await (await request.get('/api/communications.json')).json()) as {
+		items: { title: string; dateISO?: string }[];
+	};
+	const newest = items.reduce((a, b) => ((b.dateISO ?? '') > (a.dateISO ?? '') ? b : a));
+	const plain = (text: string) => text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
+
+	await page.clock.setFixedTime(new Date('2100-01-01T12:00:00'));
+	await page.goto('/conference-activity');
+	await ready(page);
+	await expect(page.getByRole('heading', { name: 'Upcoming', exact: true })).toHaveCount(0);
+	await expect
+		.poll(async () => plain(await page.locator('main .bib-list .bib-row').first().innerText()))
+		.toContain(plain(newest.title));
+});

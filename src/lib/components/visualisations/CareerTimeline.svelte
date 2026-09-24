@@ -22,6 +22,8 @@
 	import { type TimelineItem, TIMELINE_CATEGORIES, getCategoryColor } from '$lib/types/timeline';
 	import TimelineTooltip from './timeline/TimelineTooltip.svelte';
 	import TimelineDetailCard from './timeline/TimelineDetailCard.svelte';
+	import { onMount } from 'svelte';
+	import { BUILT_AT } from '$lib/utils/buildDate';
 
 	interface Props {
 		items?: TimelineItem[];
@@ -51,10 +53,18 @@
 	const innerWidth = $derived(chartWidth - margin.left - margin.right);
 	const innerHeight = $derived(Math.max(1, activeCategories.length) * LANE_HEIGHT);
 
+	// Where an ongoing bar ends. The plate is prerendered, so it hydrates drawn
+	// to the build's date — the geometry in the HTML — and redraws to the
+	// reader's today once mounted.
+	let now = $state(BUILT_AT);
+	onMount(() => {
+		now = new Date();
+	});
+
 	// Calculate the year domain
 	const yearDomain = $derived.by((): [Date, Date] => {
 		if (items.length === 0) {
-			const currentYear = new Date().getFullYear();
+			const currentYear = now.getFullYear();
 			return [new Date(currentYear - 20, 0, 1), new Date(currentYear + 1, 11, 31)];
 		}
 
@@ -62,7 +72,7 @@
 			const dates = [item.startDate];
 			if (item.endDate) dates.push(item.endDate);
 			// For ongoing items, use current date
-			if (item.isOngoing) dates.push(new Date());
+			if (item.isOngoing) dates.push(now);
 			return dates;
 		});
 
@@ -138,7 +148,7 @@
 			lane.items.map((item) => {
 				const x = xScale(item.startDate);
 				const duration = !!(item.endDate || item.isOngoing);
-				const end = item.endDate ?? new Date();
+				const end = item.endDate ?? now;
 				return {
 					item,
 					laneIndex: lane.index,

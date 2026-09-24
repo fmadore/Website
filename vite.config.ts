@@ -67,6 +67,12 @@ const APP_SHARED_DENY =
 
 export default defineConfig({
 	plugins: [sveltekit()],
+	// When the build ran, baked into the server and client bundles alike, so a
+	// date the page renders is the same in the prerendered HTML and in the
+	// client that hydrates it (see $lib/utils/buildDate.ts).
+	define: {
+		__BUILT_AT__: JSON.stringify(new Date().toISOString())
+	},
 	build: {
 		// Note: cssCodeSplit is controlled by SvelteKit internally
 		// Use kit.inlineStyleThreshold in svelte.config.js instead

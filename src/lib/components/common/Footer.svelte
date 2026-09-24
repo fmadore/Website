@@ -2,8 +2,9 @@
 	import Icon from '@iconify/svelte';
 	import { resolve } from '$app/paths';
 	import { socialGroups, author, address } from '$lib/data/siteConfig';
+	import { BUILT_AT } from '$lib/utils/buildDate';
 
-	const currentYear = new Date().getFullYear();
+	const currentYear = BUILT_AT.getFullYear();
 </script>
 
 <footer class="site-footer">

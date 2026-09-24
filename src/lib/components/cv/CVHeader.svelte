@@ -1,9 +1,11 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { address, contact, website, socialLinks, author } from '$lib/data/siteConfig';
+	import { BUILT_AT } from '$lib/utils/buildDate';
 
-	// Get current date formatted as "Day Month Year"
-	const today = new Date().toLocaleDateString('en-GB', {
+	// "As of" the build: the CV prints the records as they stood when the site
+	// was built, and the prerendered page and its hydration agree on the date.
+	const today = BUILT_AT.toLocaleDateString('en-GB', {
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric'

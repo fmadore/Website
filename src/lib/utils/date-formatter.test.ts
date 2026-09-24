@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+	localISODate,
 	formatDisplayDate,
 	formatDayMonth,
 	formatShortDateMono,
@@ -67,5 +68,12 @@ describe('isForthcoming', () => {
 	it('is false for a real date or missing value', () => {
 		expect(isForthcoming({ date: '2025' })).toBe(false);
 		expect(isForthcoming({})).toBe(false);
+	});
+});
+
+describe('localISODate', () => {
+	it('prints the local calendar date, zero-padded', () => {
+		expect(localISODate(new Date(2026, 0, 5, 23, 59))).toBe('2026-01-05');
+		expect(localISODate(new Date(2026, 10, 30, 0, 1))).toBe('2026-11-30');
 	});
 });

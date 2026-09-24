@@ -6,6 +6,9 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 declare global {
+	/** ISO timestamp of the build, from `define` in vite.config.ts; read it through `$lib/utils/buildDate`. */
+	const __BUILT_AT__: string;
+
 	namespace App {
 		// interface Error {}
 		// interface Locals {}

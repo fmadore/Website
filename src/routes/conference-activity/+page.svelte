@@ -9,7 +9,10 @@
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import EntityFilterBar from '$lib/components/entity-index/EntityFilterBar.svelte';
 	import EntityFacetGrid from '$lib/components/entity-index/EntityFacetGrid.svelte';
+	import { onMount } from 'svelte';
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
+	import { BUILT_AT } from '$lib/utils/buildDate';
+	import { localISODate } from '$lib/utils/date-formatter';
 	import { sortItems } from '$lib/utils/sortUtils';
 	import {
 		COMMUNICATION_TYPE_LIST_LABELS,
@@ -101,8 +104,14 @@
 		return parts;
 	}
 
-	// Today (YYYY-MM-DD) for the upcoming/past split.
-	const today = new Date().toISOString().split('T')[0]!;
+	// Today (YYYY-MM-DD, local) for the upcoming/past split. The page is
+	// prerendered, so it hydrates with the build's date — the split the HTML was
+	// rendered with — and moves to the reader's own day once mounted, when a
+	// talk that has happened since the build drops out of "Upcoming".
+	let today = $state(localISODate(BUILT_AT));
+	onMount(() => {
+		today = localISODate(new Date());
+	});
 
 	// The system's filtered list, narrowed by the free-text search.
 	const searchedCommunications = $derived(

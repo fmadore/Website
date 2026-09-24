@@ -11,6 +11,7 @@
 	import { allDhProjectSummaries as allDhProjects } from '$lib/data/digital-humanities/summaries';
 	import { buildSrcset } from '$lib/utils/imageVariants';
 	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
+	import { BUILT_AT } from '$lib/utils/buildDate';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 
 	// Breadcrumbs for this section
@@ -39,7 +40,7 @@
 		const years = allDhProjects
 			.map((p) => parseInt(p.years.slice(0, 4), 10))
 			.filter((y) => !Number.isNaN(y));
-		const earliest = years.length > 0 ? Math.min(...years) : new Date().getFullYear();
+		const earliest = years.length > 0 ? Math.min(...years) : BUILT_AT.getFullYear();
 		return formatProjectPeriod(`${earliest}-`);
 	})();
 
@@ -72,7 +73,7 @@
 		);
 	const AXIS_START = spans.length > 0 ? Math.min(...spans.map((row) => row.span.start)) : 0;
 	const AXIS_END = Math.max(
-		new Date().getFullYear(),
+		BUILT_AT.getFullYear(),
 		...spans.map((row) => (row.span.open ? 0 : row.span.end))
 	);
 	const AXIS_SPAN = Math.max(1, AXIS_END - AXIS_START);
