@@ -18,6 +18,9 @@
  *   2. Has the shared entry bundle — the JS every page pays for, whatever it
  *      is — grown past its budget?
  *
+ * and, read off each chunk's sourcemap, whether a route follows a chunk group
+ * the wrong way (section 4) or the app shell carries a dataset (section 5).
+ *
  * Heavy chunks are identified by content signature rather than by filename,
  * because output filenames are content-hashed and the codeSplitting group names never
  * reach disk.
@@ -29,7 +32,12 @@
  */
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import { exit } from 'node:process';
-import { staticGraph as walkGraph, pageRoots, graphBytes } from './lib/bundle-graph.mjs';
+import {
+	staticGraph as walkGraph,
+	pageRoots,
+	graphBytes,
+	datasetSources
+} from './lib/bundle-graph.mjs';
 
 const MANIFEST = '.svelte-kit/output/client/.vite/manifest.json';
 const BUILD_DIR = 'build';
@@ -217,24 +225,33 @@ function nodeKeyFor(source) {
 }
 
 /**
+ * The source modules a chunk was built from, read off its sourcemap — or null
+ * when the map is absent (they are stripped before the Pages upload).
+ */
+const sourceCache = new Map();
+function sourcesIn(file) {
+	if (!sourceCache.has(file)) {
+		const mapPath = `${BUILD_DIR}/${file}.map`;
+		sourceCache.set(
+			file,
+			existsSync(mapPath) ? (JSON.parse(readFileSync(mapPath, 'utf8')).sources ?? []) : null
+		);
+	}
+	return sourceCache.get(file);
+}
+
+/**
  * Which node_modules packages a chunk was built from, read off its sourcemap.
  * Exact where a content signature would be a guess — and the reason the `HEAVY`
  * list above cannot police D3 by signature at all.
  */
-const packageCache = new Map();
 function packagesIn(file) {
-	if (!packageCache.has(file)) {
-		const mapPath = `${BUILD_DIR}/${file}.map`;
-		const packages = new Set();
-		if (existsSync(mapPath)) {
-			for (const source of JSON.parse(readFileSync(mapPath, 'utf8')).sources ?? []) {
-				const match = /node_modules\/((?:@[^/]+\/)?[^/]+)\//.exec(source.replace(/\\/g, '/'));
-				if (match) packages.add(match[1]);
-			}
-		}
-		packageCache.set(file, packages);
+	const packages = new Set();
+	for (const source of sourcesIn(file) ?? []) {
+		const match = /node_modules\/((?:@[^/]+\/)?[^/]+)\//.exec(source.replace(/\\/g, '/'));
+		if (match) packages.add(match[1]);
 	}
-	return packageCache.get(file);
+	return packages;
 }
 
 let mapsSeen = 0;
@@ -267,6 +284,40 @@ console.log(
 	mapsSeen > 0
 		? `[bundle-budget] chunk-group direction: checked ${FORBIDDEN_PACKAGES.length} route(s) against their sourcemaps`
 		: '[bundle-budget] chunk-group direction: SKIPPED — no sourcemaps beside the chunks (they are stripped before the Pages upload; run this straight after `npm run build`)'
+);
+
+// --- 5. The shell carries no dataset ---------------------------------------
+
+/**
+ * The app entry and the root layout are paid for on every page, so a dataset
+ * reached from them is a dataset every visitor downloads — and, since each
+ * category index validates its records as it loads, parses — whatever page
+ * they asked for. That happened silently: `SEO.svelte` imports the generic
+ * JSON-LD factories, which also built the home page's Person schema out of
+ * the education, languages and affiliations datasets, so all three rode in
+ * the root layout's chunk on every route. The route budget above could not
+ * notice ~17 KiB of source; only reading the chunk's own sources can.
+ */
+const ROOT_LAYOUT = `${NODE_DIR}/0.js`;
+let shellMapsSeen = 0;
+const shellDatasets = new Set();
+for (const key of staticGraph(APP_ENTRY, KIT_ENTRY, ROOT_LAYOUT)) {
+	const file = manifest[key]?.file;
+	if (!file?.endsWith('.js')) continue;
+	const sources = sourcesIn(file);
+	if (!sources) continue;
+	shellMapsSeen += 1;
+	for (const dataset of datasetSources(sources)) shellDatasets.add(dataset);
+}
+if (shellDatasets.size > 0) {
+	problems.push(
+		`The app shell (entry + root layout) statically loads ${shellDatasets.size} dataset module(s): ${[...shellDatasets].sort().join(', ')}. Every page pays for them; import the dataset from the route (or a \`$lib/server\` module) that needs it.`
+	);
+}
+console.log(
+	shellMapsSeen > 0
+		? `[bundle-budget] shell datasets: ${shellDatasets.size} dataset module(s) in the entry + root layout`
+		: '[bundle-budget] shell datasets: SKIPPED — no sourcemaps beside the chunks (run this straight after `npm run build`)'
 );
 
 // --- Report ----------------------------------------------------------------

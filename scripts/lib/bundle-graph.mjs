@@ -24,3 +24,15 @@ export function graphBytes(manifest, keys, sizeOf) {
 	const files = new Set([...keys].map((k) => manifest[k].file).filter((f) => f.endsWith('.js')));
 	return [...files].reduce((sum, file) => sum + sizeOf(file), 0);
 }
+
+/**
+ * The dataset modules among a chunk's sourcemap sources: anything inside a
+ * `src/lib/data/<category>/` directory. The files directly in `src/lib/data/`
+ * (siteConfig, navigation) are configuration every page genuinely needs.
+ */
+export function datasetSources(sources) {
+	return sources
+		.map((source) => source.replace(/\\/g, '/'))
+		.map((source) => /(?:^|\/)(src\/lib\/data\/[^/]+\/.+)$/.exec(source)?.[1])
+		.filter(Boolean);
+}

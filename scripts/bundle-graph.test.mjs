@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { graphBytes, pageRoots, staticGraph } from './lib/bundle-graph.mjs';
+import { datasetSources, graphBytes, pageRoots, staticGraph } from './lib/bundle-graph.mjs';
 it('includes nested layouts and counts shared chunks once, excluding dynamic imports', () => {
 	const manifest = {
 		'nodes/0.js': { file: 'layout.js', imports: ['shared'] },
@@ -21,4 +21,16 @@ it('rejects missing roots, dependencies, and emitted files', () => {
 			throw new Error('file missing');
 		})
 	).toThrow('file missing');
+});
+it('names dataset modules and lets top-level configuration through', () => {
+	expect(
+		datasetSources([
+			'../../../../../../src/lib/data/siteConfig.ts',
+			'../../../../../../src/lib/data/navigation.ts',
+			'../../../../../../src/lib/data/education/phd-hist-ulaval.ts',
+			'..\\..\\src\\lib\\data\\languages\\index.ts',
+			'../../../../../../src/lib/dataRecords.ts',
+			'../../../../../../node_modules/svelte/src/index.js'
+		])
+	).toEqual(['src/lib/data/education/phd-hist-ulaval.ts', 'src/lib/data/languages/index.ts']);
 });

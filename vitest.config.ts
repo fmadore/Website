@@ -51,7 +51,7 @@ export default defineConfig({
 			provider: 'v8',
 			// Pure-logic modules only: components and routes are exercised by the
 			// Playwright smoke suite, not these plain-Node tests.
-			include: ['src/lib/utils/**/*.ts', 'src/lib/data/**/index.ts'],
+			include: ['src/lib/utils/**/*.ts', 'src/lib/server/**/*.ts', 'src/lib/data/**/index.ts'],
 			exclude: ['src/lib/**/*.test.ts', 'src/lib/**/*.d.ts'],
 			reporter: ['text', 'html'],
 			// A ratchet, not an aspirational target: new work may raise these

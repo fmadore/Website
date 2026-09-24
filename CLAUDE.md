@@ -27,7 +27,8 @@ Checks that read the **build output** (run `npm run build` first):
 
 ```bash
 npm run check:build     # bundle budget + prerender coverage (both run in CI)
-npm run check:bundle    # heavy libs stay dynamically imported; entry/route size budgets
+npm run check:bundle    # heavy libs stay dynamically imported; entry/route size budgets;
+                        # no dataset in the app shell (entry + root layout)
 npm run check:prerender # every URL in sitemap.xml resolves to a page that shipped
 npm run check:lighthouse # Lighthouse (mobile, the PageSpeed Insights lab profile) on five
                         # representative pages, asserted against lighthouserc.yml — score
