@@ -79,11 +79,9 @@ export default defineConfig({
 			output: {
 				// Chunking policy. Rolldown's automatic splitting emits one file per
 				// module shared between routes, however small: the index pages were
-				// fetching ~30 scripts, two thirds of them under 2 KB. Every one of
-				// those is a request in the critical path of PageSpeed's simulated
-				// mobile network, where a round trip costs far more than the bytes.
-				// The `shared` group below folds them into a handful of files
-				// without making any route load code it does not use.
+				// fetching ~30 scripts, two thirds of them under 2 KB. The `shared`
+				// group below folds the modules each set of routes shares into one
+				// file per set, without making any route load code it does not use.
 				codeSplitting: {
 					// Groups are processed in priority order, and a group also captures
 					// its modules' dependencies (SvelteKit's strict entry signatures rule
@@ -135,16 +133,28 @@ export default defineConfig({
 						// `$lib/utils/maplibre.ts` — see that file before touching this.
 
 						// Site utilities and small components shared by two or more routes.
-						// `entriesAware` keeps them grouped by the set of routes that
-						// import them (a page still loads only what it uses); the merge
-						// threshold then folds the sub-8 KB slivers into their nearest
-						// neighbour instead of leaving each as its own request.
+						// `entriesAware` groups them by the exact set of routes that import
+						// them, so a page loads only what it uses.
+						//
+						// No merge threshold. At 8 KiB it folded each small subgroup into a
+						// neighbour, and every fold made passengers: /teaching downloaded
+						// the network and chart utilities of the visualisation pages
+						// because they had been merged into the chunk holding PageIntro.
+						// Across the 26 routes that averaged 17 KiB of minified JS a page
+						// never imports, and one unrelated import could reshuffle it —
+						// a new edge in siteHelpers once put RecordLayout's JS and CSS on
+						// five pages that do not render it. The requests it saved (about
+						// five per index page) bought nothing measurable: mobile
+						// Lighthouse, three runs each on /, /publications and
+						// /conference-activity, scored within noise either way (91/90/94
+						// merged, 91/92/92 unmerged). scripts/check-bundle-budget.mjs now
+						// fails on any passenger, so re-adding a threshold fails CI.
 						{
 							name: 'shared',
 							test: (id) => APP_SHARED.test(id) && !APP_SHARED_DENY.test(id),
 							minShareCount: 2,
 							entriesAware: true,
-							entriesAwareMergeThreshold: 8 * 1024,
+							entriesAwareMergeThreshold: 0,
 							priority: 5
 						}
 					]

@@ -19,7 +19,8 @@
  *      is — grown past its budget?
  *
  * and, read off each chunk's sourcemap, whether a route follows a chunk group
- * the wrong way (section 4) or the app shell carries a dataset (section 5).
+ * the wrong way (section 4), whether the app shell carries a dataset (section
+ * 5), and whether a route downloads a site module it never imports (section 6).
  *
  * Heavy chunks are identified by content signature rather than by filename,
  * because output filenames are content-hashed and the codeSplitting group names never
@@ -31,6 +32,7 @@
  * Exit code 1 on a budget breach or a static leak.
  */
 import { readFileSync, existsSync, statSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { exit } from 'node:process';
 import {
 	staticGraph as walkGraph,
@@ -38,6 +40,7 @@ import {
 	graphBytes,
 	datasetSources
 } from './lib/bundle-graph.mjs';
+import { sourceClosure } from './lib/source-graph.mjs';
 
 const MANIFEST = '.svelte-kit/output/client/.vite/manifest.json';
 const BUILD_DIR = 'build';
@@ -318,6 +321,54 @@ console.log(
 	shellMapsSeen > 0
 		? `[bundle-budget] shell datasets: ${shellDatasets.size} dataset module(s) in the entry + root layout`
 		: '[bundle-budget] shell datasets: SKIPPED — no sourcemaps beside the chunks (run this straight after `npm run build`)'
+);
+
+// --- 6. No passengers ------------------------------------------------------
+
+/**
+ * A passenger is a site module that rides in a chunk a route loads without the
+ * route ever importing it: the chunk grouping put it beside something the
+ * route does need. The `shared` group's merge threshold made them — 17 KiB of
+ * minified JS per route on average, the chart and network utilities on
+ * /teaching among them — and it made them silently, because the page still
+ * works and the budgets above absorb a few KiB. With the threshold at 0 a
+ * chunk holds exactly the modules one set of routes shares, so there should be
+ * none; any that appears names a grouping change to undo, not a budget to
+ * raise. A route's imports are read from its source (scripts/lib/
+ * source-graph.mjs), static edges only, from the route files Kit's generated
+ * client nodes point at.
+ */
+const nodeSources = (key) =>
+	[...readFileSync(key, 'utf8').matchAll(/"(?:\.\.\/)+(src\/[^"]+)"/g)].map((m) => resolve(m[1]));
+let passengerMapsSeen = 0;
+for (const { name, roots } of pages) {
+	const imported = sourceClosure(roots.flatMap(nodeSources));
+	const passengers = new Set();
+	for (const key of staticGraph(APP_ENTRY, KIT_ENTRY, ...roots)) {
+		const file = manifest[key]?.file;
+		if (!file?.endsWith('.js')) continue;
+		const sources = sourcesIn(file);
+		if (!sources) continue;
+		passengerMapsSeen += 1;
+		for (const source of sources) {
+			// Repo modules only: the relative path climbs to the root and enters
+			// `src/` directly, where a package's own src/ sits under node_modules.
+			const module = source.replace(/\\/g, '/').replace(/^(\.\.\/)+/, '');
+			if (/^src\/.+\.(ts|js|svelte)$/.test(module) && !imported.has(module)) {
+				passengers.add(module);
+			}
+		}
+	}
+	if (passengers.size > 0) {
+		problems.push(
+			`Route ${name} downloads ${passengers.size} module(s) it never imports: ${[...passengers].sort().join(', ')}. A chunk group merged them beside code the route does need — check the \`shared\` group in vite.config.ts (entriesAwareMergeThreshold must stay 0).`
+		);
+	}
+}
+console.log(
+	passengerMapsSeen > 0
+		? `[bundle-budget] passengers: checked ${pages.length} routes' chunks against their source imports`
+		: '[bundle-budget] passengers: SKIPPED — no sourcemaps beside the chunks (run this straight after `npm run build`)'
 );
 
 // --- Report ----------------------------------------------------------------
