@@ -72,3 +72,31 @@ for (const { from, family, jsonLd } of [
 		).toBe(42);
 	});
 }
+
+/**
+ * Inline citations resolve from the entries each page's server load sends
+ * (`$lib/server/references`), not from a client-side copy of the index — so
+ * they must resolve on a first load and again after a client-side navigation,
+ * when `page.data` is replaced. An unresolved citation prints its raw id.
+ */
+test('inline citations resolve on load and after client-side navigation', async ({ page }) => {
+	const expectResolved = async (id: string) => {
+		const references = page.locator('main .item-reference');
+		expect(await references.count()).toBeGreaterThan(0);
+		await expect(page.locator('main')).not.toContainText(id);
+		await references.first().locator('a').first().focus();
+		await page.keyboard.press('Enter');
+		await expect(page.locator('[role="dialog"] .card-title').first()).not.toBeEmpty();
+		await page.keyboard.press('Escape');
+	};
+
+	await page.goto('/');
+	await ready(page);
+	await expectResolved('religious-activism-campuses');
+
+	await page.goto('/research');
+	await ready(page);
+	await page.locator('main a[href="/research/dh-ai-african-studies"]').first().click();
+	await expect(page).toHaveURL(/\/research\/dh-ai-african-studies$/);
+	await expectResolved('stias-dh-ai-african-studies-workshop-2026');
+});

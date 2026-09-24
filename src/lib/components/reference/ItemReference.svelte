@@ -11,10 +11,9 @@
 
 	import { browser } from '$app/environment';
 	import { beforeNavigate } from '$app/navigation';
+	import { page } from '$app/state';
 	import { crossfade, fade } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
-
-	import { referenceIndex } from '$lib/data/referenceIndex.generated';
 
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
@@ -35,11 +34,11 @@
 		easing: quintOut,
 		fallback: (node: Element) => fade(node, { duration: 200, easing: quintOut })
 	}); /* ───────────────────────── Derived data ──────────────────────────── */
-	// Resolve the referenced item from the slim, build-time reference index. This
-	// avoids importing the full publications/communications datasets (~117 KiB)
-	// just to render a handful of inline citations. Historical cross-dataset
-	// collisions are stored under explicit `publication:` / `communication:` keys.
-	const entry = $derived(referenceIndex[id]);
+	// Resolve the referenced item from the entries the page's server load passed
+	// (`$lib/server/references`): only the ones this page cites, never the whole
+	// reference index. Historical cross-dataset collisions are stored under
+	// explicit `publication:` / `communication:` keys.
+	const entry = $derived(page.data.references?.[id]);
 	const item = $derived(entry);
 	const itemType = $derived(entry?.itemType);
 

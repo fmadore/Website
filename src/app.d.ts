@@ -9,7 +9,14 @@ declare global {
 	namespace App {
 		// interface Error {}
 		// interface Locals {}
-		// interface PageData {}
+		interface PageData {
+			/**
+			 * The reference-index entries a page's inline citations need, keyed by
+			 * id, from its server load (`$lib/server/references`). Read by
+			 * `<ItemReference>`; absent on pages that cite nothing.
+			 */
+			references?: Record<string, import('$lib/types/referenceIndex').ReferenceIndexEntry>;
+		}
 		// interface PageState {}
 		// interface Platform {}
 	}

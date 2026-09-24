@@ -21,7 +21,7 @@
  *       committed file is stale, OR if any `<ItemReference id="…">` in the site
  *       source names an id the index cannot resolve.
  */
-import { globSync, readFileSync } from 'node:fs';
+import { existsSync, globSync, readFileSync } from 'node:fs';
 import { CHECK_MODE, emitGenerated } from './lib/generated-file.mjs';
 import { collectRecords } from './lib/data-records.mjs';
 
@@ -102,14 +102,24 @@ export function collectReferenceUsages(sources) {
 	return usages;
 }
 
+/** The places a server load reads citations from (see src/lib/server/references.ts). */
+export function isCitationSite(file) {
+	const path = file.split('\\').join('/');
+	return (
+		/^src\/routes\/(.+\/)?\+page\.svelte$/.test(path) ||
+		/^src\/lib\/data\/activities\/[^/]+\.ts$/.test(path)
+	);
+}
+
 /**
  * Read the source files an occurrence can appear in: the routes, and the
  * library outside the reference components themselves — `ItemReference.svelte`
  * documents its own usage in a comment, which is a mention, not a citation.
  */
 function readReferenceSources() {
+	// Tests are not site source: their fixtures quote citations on purpose.
 	const files = globSync(['src/routes/**/*.svelte', 'src/lib/**/*.{svelte,ts}']).filter(
-		(file) => !/[\\/]components[\\/]reference[\\/]/.test(file)
+		(file) => !/[\\/]components[\\/]reference[\\/]/.test(file) && !file.endsWith('.test.ts')
 	);
 	return files.map((file) => ({ file, text: readFileSync(file, 'utf8') }));
 }
@@ -121,6 +131,44 @@ if (CHECK_MODE) {
 	// and logs to a console nobody is watching in production. It is an authoring
 	// fault with a build-time answer, so the build is where it is caught.
 	const usages = collectReferenceUsages(readReferenceSources());
+
+	// The client never sees the index: pages receive the entries they cite from
+	// their server loads (src/lib/server/references.ts), which read a route's
+	// own +page.svelte and an activity's body. A citation anywhere else would
+	// render with no entry to show, so it is refused here.
+	const misplaced = usages.filter(({ file }) => !isCitationSite(file));
+	if (misplaced.length > 0) {
+		for (const { file, id } of misplaced) {
+			console.error(
+				`[gen:refs] ERROR: ${file} cites "${id}", but only a route's +page.svelte or an activity record may: no server load supplies entries to it.`
+			);
+		}
+		process.exit(1);
+	}
+
+	// A citing page is only supplied if its own server load asks for its entries.
+	const unsupplied = [
+		...new Set(
+			usages
+				.map(({ file }) => file.split('\\').join('/'))
+				.filter((file) => file.startsWith('src/routes/'))
+		)
+	].filter((file) => {
+		const server = file.replace(/\+page\.svelte$/, '+page.server.ts');
+		return (
+			!existsSync(server) ||
+			!/citedReferences|referencesForRoute/.test(readFileSync(server, 'utf8'))
+		);
+	});
+	if (unsupplied.length > 0) {
+		for (const file of unsupplied) {
+			console.error(
+				`[gen:refs] ERROR: ${file} cites with <ItemReference>, but its +page.server.ts does not load its references (use citedReferences from $lib/server/references).`
+			);
+		}
+		process.exit(1);
+	}
+
 	const unresolved = usages.filter(({ id }) => !(id in index));
 	if (unresolved.length > 0) {
 		for (const { file, id } of unresolved) {

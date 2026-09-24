@@ -1,6 +1,7 @@
 import { activitiesByDate } from '$lib/data/activities';
 import { buildActivityJsonLd } from '$lib/utils/entityJsonLd';
 import { loadEntityDetail } from '$lib/utils/entityPageLoader';
+import { referencesIn } from '$lib/server/references';
 import type { PageServerLoad } from './$types';
 
 /** Every activity gets a page — see the note in publications/[id]/+page.server.ts. */
@@ -19,5 +20,7 @@ export const load: PageServerLoad = ({ params }) => {
 		notFound: 'Activity not found'
 	});
 
-	return { activity, jsonLdString };
+	// A body may cite publications and talks inline (ItemReference by id); send
+	// just those entries, not the reference index.
+	return { activity, jsonLdString, references: referencesIn(activity.content ?? '') };
 };

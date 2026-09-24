@@ -154,6 +154,16 @@ server code (API, RSS, sitemap, those loads) imports the full `index.ts`. The
 activity records import `$lib` at runtime (`formatDisplayDate`), which
 `scripts/lib/data-records.mjs` resolves with a Node resolve hook.
 
+**Reference index**: `referenceIndex.generated.ts` never reaches the client.
+A page that cites with `<ItemReference id="…">` gets the entries it cites from
+its `+page.server.ts` (`citedReferences` from `$lib/server/references`; the
+activity record extracts them from its body), and `ItemReference` reads
+`page.data.references`. Citations may live only in a route's `+page.svelte` or
+an activity record, and a citing route needs that load: `gen:refs -- --check`
+fails otherwise. Prefer a page load to a nested `+layout.server.ts` for this —
+a deeper layout chain changes Kit's generated root component, and with it the
+hydration markup and shared code of every page.
+
 **Detail routes load on the server.** Every `[id]` route (publications, talks,
 activities, digital humanities) has a `+page.server.ts`, so a record page
 receives its record rather than importing its whole dataset. A universal
