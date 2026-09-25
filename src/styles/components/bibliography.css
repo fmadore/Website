@@ -408,6 +408,14 @@
 		text-align: left;
 	}
 
+	/* A four-letter "Cite" is 29px wide; under a coarse pointer the box keeps
+	 * the 44px floor across as well as down, the label still flush left. */
+	@media (--touch) {
+		.bib-cite {
+			min-width: 44px;
+		}
+	}
+
 	/* The lead pops through a larger key and title, one step down each on a
 	 * phone: beside the shelf the body is a 219px column, and the 2xl serif
 	 * broke a French chapter title into a dozen one-word lines. */

@@ -107,20 +107,15 @@ record pages.
 
 **Design**
 
-- Links set inside a line of text stay at their line height under touch: the
-  CV's `.doi-link` and `[Link]` asides, the publication record's review links.
-  WCAG 2.5.8 exempts inline targets, and a 44px box would break the line.
-  `.sort-opt` and `.bib-cite` are 44px tall but narrower than 44px on a
-  short label; SVG data marks (matrix cells, graph nodes) have their table
-  equivalents.
-- SVG plates (programme logos on nine talk and activity records) carry no
-  `width`/`height`: the image manifest reads raster sources only, so a vector
-  plate reserves no box before it loads.
-- `/cv/timeline` prints a sentence in the `.dateline` register; the masthead's
-  `translateY` scroll-hide is the one element-moving transition left in the
-  chrome (guarded by reduced motion).
-- `/` measured 81 in a single contended Lighthouse run against the 80 floor;
-  CI takes best of three.
+None open. The last four closed on 2026-09-25: short-label controls took the
+touch floor across as well as down, and what stays below it is now a stated
+decision (DESIGN.md, The Touch Floor Rule); vector plates carry their
+intrinsic size from the image manifest; the `/cv/timeline` overflow note is
+a plate caption rather than a sentence in the data voice; and the masthead's
+scroll-hide is an instant state change rather than a 200ms slide. `/`, the
+Lighthouse watch item, measured a median 92 over three mobile runs (TBT 21ms,
+LCP 3.3s) against the 81 recorded here, after this round's bundle work cut
+its static JavaScript from 427 to 239 KiB.
 
 **Engineering**
 

@@ -273,6 +273,7 @@
 	.sort-opt {
 		padding: var(--space-2-5) var(--space-2) calc(var(--space-2-5) - var(--space-0-5));
 		min-height: 44px;
+		min-width: 44px;
 		border-bottom-width: var(--border-width-medium);
 	}
 

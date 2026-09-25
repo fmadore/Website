@@ -96,6 +96,7 @@
 			display: inline-flex;
 			align-items: center;
 			min-height: var(--space-11);
+			min-width: var(--space-11);
 		}
 	}
 
