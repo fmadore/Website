@@ -68,6 +68,15 @@ than waiting for a review:
 - `src/lib/utils/designTokenParity.test.ts` — the hand-copied hexes in
   `pdfDesignTokens.ts`, the chart fallbacks, `src/app.html`, `static/404.html`
   and the PWA icon script all trace to the tokens
+- `src/styles/customProperties.test.ts` — every bare `var(--x)` names a
+  declared property (twice a dead token silently deleted a focus ring)
+- `src/styles/utilityClasses.test.ts` — no utility without a consumer, and no
+  utility-shaped class in markup that no stylesheet defines
+- `tests-e2e/hover-contrast.spec.ts` — every control on `/style-guide` and
+  `/publications`, hovered, in both themes, clears AA: the state axe never
+  enters
+- `tests-e2e/a11y.spec.ts` runs axe with Label in Name switched on, and
+  `responsive.spec.ts` holds the visualisation chrome to the 44px touch floor
 - `lighthouserc.yml` — score floors, Core Web Vitals and resource budgets;
   `npm run check:bundle` and `check:prerender` on the build output
 
@@ -98,13 +107,15 @@ record pages.
 
 **Design**
 
-- A second tier of controls sits below the site's own 44 px touch floor:
-  visualisation toolbars (36 px), `.doi-link` on the CV (16 px, thirty of
-  them), the year-slider handle (12×24). All pass WCAG 2.5.8 on the spacing
-  exception.
-- Eleven of the twenty-two CV components are authored in a Tailwind-shaped
-  utility vocabulary (`mt-1`, `hover:underline`, five classes no sheet
-  defines) rather than the ledger idioms.
+- Links set inside a line of text stay at their line height under touch: the
+  CV's `.doi-link` and `[Link]` asides, the publication record's review links.
+  WCAG 2.5.8 exempts inline targets, and a 44px box would break the line.
+  `.sort-opt` and `.bib-cite` are 44px tall but narrower than 44px on a
+  short label; SVG data marks (matrix cells, graph nodes) have their table
+  equivalents.
+- SVG plates (programme logos on nine talk and activity records) carry no
+  `width`/`height`: the image manifest reads raster sources only, so a vector
+  plate reserves no box before it loads.
 - `/cv/timeline` prints a sentence in the `.dateline` register; the masthead's
   `translateY` scroll-hide is the one element-moving transition left in the
   chrome (guarded by reduced motion).

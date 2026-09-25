@@ -112,6 +112,7 @@ place to decide that.
 			width={plateSize?.width}
 			height={plateSize?.height}
 			alt={plateAlt}
+			loading="eager"
 			fetchpriority="high"
 			decoding="async"
 			use:plateFallback

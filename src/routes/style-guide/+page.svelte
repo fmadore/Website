@@ -1848,6 +1848,7 @@
 					width={pagePlate.width}
 					height={pagePlate.height}
 					loading="lazy"
+					decoding="async"
 				/>
 				<figcaption class="plate-caption">
 					Fig. 1. Cahiers d’études africaines 229 (2018), the issue carrying “L’organisation du hadj
@@ -1874,6 +1875,7 @@
 							width={railPlate.width}
 							height={railPlate.height}
 							loading="lazy"
+							decoding="async"
 						/>
 						<figcaption class="plate-caption">Fig. 2. Cover.</figcaption>
 					</figure>
