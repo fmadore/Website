@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
  * adds nothing. Lint, `svelte-check`, the unit suite and every axe scan pass.
  * Both instances the audits found were exactly that, on a focus indicator
  * (`--color-focus` in `LocationMap.svelte`, `--focus-ring` in
- * `TimelineDetailCard.svelte`; docs/audits/2026-09-audit.md).
+ * `TimelineDetailCard.svelte`; the September 2026 design audit).
  *
  * So every bare `var(--x)` in the site's own sources must name a property
  * declared somewhere in them: in a stylesheet or `<style>` block, a `style`

@@ -50,7 +50,7 @@ test('mobile navigation is usable without horizontal overflow', async ({ page, i
  * The second tier. Every sweep of the touch floor used to reach the index and
  * record templates and stop at the plate chrome one click away: toolbars at
  * 36px, zoom buttons at 32, the data-table disclosure at 32, the viz search
- * field at 37 (docs/audits/2026-09-audit.md). The visualisation pages are
+ * field at 37 (the September 2026 design audit). The visualisation pages are
  * first-class templates, so their controls are measured here like the chips.
  */
 const TOUCH_FLOOR = 43.5;

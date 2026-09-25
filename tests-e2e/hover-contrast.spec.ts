@@ -7,7 +7,7 @@ import type { Page } from '@playwright/test';
  * axe evaluates the page at rest, so a hover rule that repaints a label into
  * its own fill passes every scan. That shipped twice in one idiom family:
  * `.pager-item--current` went to 1.00:1 on hover and `.page-btn--current` to
- * 1.92:1 (docs/audits/2026-09-audit.md), both because a family `:hover` rule
+ * 1.92:1 (the September 2026 design audit), both because a family `:hover` rule
  * out-ranked the selected state it sat under, and `.btn-accent:hover` and
  * `.btn-danger:hover` had the midnight version of the same fault.
  *

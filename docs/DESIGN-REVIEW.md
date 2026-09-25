@@ -16,7 +16,7 @@ break, the pattern that worked, and the backlog that outlived the last gate.
 | Every idiom, rendered live           | `/style-guide` (`src/routes/style-guide/+page.svelte`); `styleGuideCoverage.test.ts` fails the build when an idiom is undocumented |
 | Idiom CSS                            | `src/styles/components/ink-signal.css`                                                                                             |
 | Conventions for code                 | `CLAUDE.md`                                                                                                                        |
-| Last technical audit                 | [`audits/2026-09-audit.md`](audits/2026-09-audit.md) (17/20; compares against the August baseline beside it)                       |
+| Past audits                          | Removed once every finding closed; `git show c0343ec:docs/audits/2026-09-audit.md` (and `2026-08-audit.md`) recovers them          |
 
 ## Invocation
 

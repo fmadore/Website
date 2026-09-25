@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
  * stylesheet defined at all — `mt-1` on eleven CV detail lines,
  * `hover:underline` on six links, `md:py-10` on the root layout — twenty
  * attribute tokens that styled nothing and read as if they did
- * (docs/audits/2026-09-audit.md). Nothing failed: an unknown class is valid
+ * (the September 2026 design audit). Nothing failed: an unknown class is valid
  * HTML, and an unused rule is valid CSS.
  *
  * Two assertions keep it from growing back:

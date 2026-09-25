@@ -4,7 +4,9 @@
 > phases 0–6 landed, the last as the ship gate (audit in `../audits/2026-09-audit.md`). Its
 > rulings live in `DESIGN.md`, `CLAUDE.md` and the guard tests; the reusable method and the
 > backlog that outlived it are in `../DESIGN-REVIEW.md`. Kept for the reasoning in its outcome
-> log. Nothing below is a plan.
+> log. Nothing below is a plan. The two audits it cites were removed on 2026-09-25 once every
+> finding had closed; `git show c0343ec:docs/audits/2026-09-audit.md` (or `2026-08-audit.md`)
+> recovers them.
 
 A phased plan for running the `/impeccable` commands across the site to sharpen design
 quality and consistency under **Ink + Signal**. Written 2026-08-16, after the
@@ -306,7 +308,7 @@ based on a false premise and has been removed from `DESIGN.md`; the PDF generato
 `pdfCvGenerator.ts` + `pdfDesignTokens.ts`). Agent file updated so the next run starts from truth.
 
 **2026-08-16 — 0.2 baseline audit — 15/20 as found → 17/20 after fixes.** Full report at
-[docs/audits/2026-08-audit.md](../audits/2026-08-audit.md). 0 P0, 3 P1 (all fixed), 4 P2, 3 P3.
+`docs/audits/2026-08-audit.md`. 0 P0, 3 P1 (all fixed), 4 P2, 3 P3.
 
 The headline finding was a chain, not a point defect: `.btn-accent` set its label to raw
 `--sys-color-paper`, which does not flip with the theme, so the "Access publication" CTA on every
