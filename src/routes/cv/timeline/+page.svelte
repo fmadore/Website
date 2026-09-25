@@ -62,10 +62,12 @@
 		</div>
 		<!-- At 375 the plate is 776px in a 263px column, so nearly 60% of the axis
 		     is off-screen and nothing said so: the standfirst named the arrow keys
-		     and stopped there. A one-line caption in the data voice, printed only
-		     where the plate actually overflows. -->
+		     and stopped there. A one-line caption, printed only where the plate
+		     actually overflows. It is a sentence about the plate, so it is set as a
+		     plate caption (serif italic), not in the data voice, which is for
+		     what the machine indexes. -->
 		{#if overflows}
-			<p class="dateline timeline-scroll-note">The plate scrolls sideways.</p>
+			<p class="plate-caption timeline-scroll-note">The plate scrolls sideways.</p>
 		{/if}
 	</ContentBody>
 </div>
@@ -93,6 +95,6 @@
 	}
 
 	.timeline-scroll-note {
-		margin: var(--rule-gap) 0 0;
+		margin-bottom: 0;
 	}
 </style>

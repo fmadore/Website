@@ -223,20 +223,24 @@
 		top: 0;
 		z-index: var(--z-sticky);
 		transform: translateY(0);
-		transition: transform var(--duration-normal) var(--ease-out);
 	}
 
 	/* Scroll-direction hide: transform rather than top/display so the
-	 * sticky behaviour and layout are unaffected when revealed again. */
+	 * sticky behaviour and layout are unaffected when revealed again. It is an
+	 * instant state change, not a slide: the register is print, and component
+	 * transitions animate colour and border only (CLAUDE.md, Animation). The
+	 * masthead's 200ms translate was the last element-moving transition left
+	 * in the chrome. */
 	:global(.site-header.header-hidden) {
 		transform: translateY(-100%);
 	}
 
+	/* A bar vanishing mid-scroll is still movement on the page, so under
+	 * reduced motion the masthead simply stays put. */
 	@media (prefers-reduced-motion: reduce) {
 		:global(.site-header),
 		:global(.site-header.header-hidden) {
 			transform: none;
-			transition: none;
 		}
 	}
 
