@@ -370,6 +370,14 @@
 		color: var(--color-text-emphasis);
 	}
 
+	@media (--touch) {
+		.map-toggle {
+			display: inline-flex;
+			align-items: center;
+			min-height: var(--space-11);
+		}
+	}
+
 	.map-toggle--active {
 		color: var(--color-accent);
 	}

@@ -358,8 +358,9 @@
 		touch-action: none;
 	}
 
-	/* Larger touch target for mobile devices */
-	@media (pointer: coarse) {
+	/* A coarse pointer gets a 44×44 hit area from the invisible ::before; the
+	 * visible handle stays a thin mark. */
+	@media (--touch) {
 		.range-handle {
 			width: var(--space-3);
 			height: var(--space-6);

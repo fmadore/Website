@@ -110,6 +110,14 @@
 		z-index: 2;
 	}
 
+	/* The scoped floor above out-ranks the global `.chip` touch step, so the
+	 * 44px step is restated here rather than inherited. */
+	@media (--touch) {
+		.toggle-btn {
+			min-height: var(--space-11);
+		}
+	}
+
 	@media (--sm-down) {
 		.language-toggle {
 			flex-direction: column;

@@ -51,7 +51,7 @@
 >
 	{#if backLinkHref}
 		<!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic path resolved at runtime -->
-		<a href={resolve(`/${backLinkHref}` as any)} class="back-link mb-4 inline-block"
+		<a href={resolve(`/${backLinkHref}` as any)} class="back-link"
 			><span aria-hidden="true">← </span>{backLinkLabel.replace(/^←s*/, '')}</a
 		>
 	{/if}
@@ -162,7 +162,14 @@
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1);
+		margin-bottom: var(--space-4);
 		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	@media (--touch) {
+		.back-link {
+			min-height: var(--space-11);
+		}
 	}
 
 	.back-link:hover {

@@ -205,10 +205,11 @@ export themselves via `downloadSvgAsImage`.
 		}
 	}
 
+	/* The site's 44px touch floor, as on the index controls. */
 	@media (--touch) {
 		.toolbar-btn {
-			width: var(--space-9);
-			height: var(--space-9);
+			width: var(--space-11);
+			height: var(--space-11);
 		}
 	}
 </style>

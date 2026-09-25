@@ -640,6 +640,18 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		border-inline-end: 0;
 	}
 
+	@media (--touch) {
+		.map-mode-toggle button {
+			min-height: var(--space-11);
+		}
+
+		/* MapLibre's own 29px controls, as in MapVisualization. */
+		.map-container :global(.maplibregl-ctrl-group button) {
+			width: var(--space-11);
+			height: var(--space-11);
+		}
+	}
+
 	.map-mode-toggle button:hover {
 		color: var(--color-text);
 		background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface-elevated));

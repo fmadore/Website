@@ -292,6 +292,15 @@
 			.home-link:focus-visible {
 				color: var(--accent);
 			}
+
+			/* --touch in media.css; this page is served without PostCSS. */
+			@media (hover: none), (pointer: coarse) {
+				.home-link {
+					display: inline-flex;
+					align-items: center;
+					min-height: 2.75rem;
+				}
+			}
 		</style>
 	</head>
 	<body>

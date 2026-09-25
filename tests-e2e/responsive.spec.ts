@@ -45,3 +45,59 @@ test('mobile navigation is usable without horizontal overflow', async ({ page, i
 		expect(overflow, `${path} should not overflow horizontally`).toBeLessThanOrEqual(1);
 	}
 });
+
+/**
+ * The second tier. Every sweep of the touch floor used to reach the index and
+ * record templates and stop at the plate chrome one click away: toolbars at
+ * 36px, zoom buttons at 32, the data-table disclosure at 32, the viz search
+ * field at 37 (docs/audits/2026-09-audit.md). The visualisation pages are
+ * first-class templates, so their controls are measured here like the chips.
+ */
+const TOUCH_FLOOR = 43.5;
+const vizChrome: Record<string, { selector: string; square?: boolean }[]> = {
+	'/publications/visualisations': [
+		{ selector: '.toolbar-btn', square: true },
+		{ selector: '.toggle-btn' },
+		{ selector: '.chart-table > summary' },
+		{ selector: '.breadcrumb-link' },
+		{ selector: '.map-mode-toggle button' },
+		{ selector: '.maplibregl-ctrl-group button', square: true }
+	],
+	'/conference-activity/visualisations': [
+		{ selector: '.toolbar-btn', square: true },
+		{ selector: '.viz-zoom-btn', square: true },
+		{ selector: '.search-input' },
+		{ selector: '.chart-table > summary' }
+	]
+};
+
+for (const [path, controls] of Object.entries(vizChrome)) {
+	test(`${path}: plate chrome takes the 44px touch floor`, async ({ page, isMobile }) => {
+		test.skip(!isMobile, 'Covered by the mobile Chromium project');
+		test.setTimeout(60_000);
+		await page.goto(path);
+		await ready(page);
+		expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);
+		// The plates mount as they scroll into view; walk the page so every one does.
+		await page.evaluate(async () => {
+			for (let y = 0; y < document.body.scrollHeight; y += 500) {
+				scrollTo(0, y);
+				await new Promise((resolve) => setTimeout(resolve, 80));
+			}
+		});
+		for (const { selector, square } of controls) {
+			const targets = page.locator(selector);
+			await expect(targets.first(), `${selector} on ${path}`).toBeAttached({ timeout: 15_000 });
+			const undersized = await targets.evaluateAll(
+				(nodes, [floor, needsWidth]) =>
+					nodes
+						.map((node) => node.getBoundingClientRect())
+						.filter((box) => box.width > 0 && box.height > 0)
+						.filter((box) => box.height < floor || (needsWidth && box.width < floor))
+						.map((box) => `${box.width.toFixed(1)}×${box.height.toFixed(1)}`),
+				[TOUCH_FLOOR, Boolean(square)] as const
+			);
+			expect(undersized, `${selector} on ${path}`).toEqual([]);
+		}
+	});
+}

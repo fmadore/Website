@@ -442,6 +442,16 @@
 		z-index: calc(var(--z-above) + 6) !important;
 	}
 
+	/* MapLibre draws its controls as 29px squares; on a coarse pointer they take
+	 * the site's 44px floor. The container selector out-ranks the library's own
+	 * rule, so no !important is needed. */
+	@media (--touch) {
+		.map-container :global(.maplibregl-ctrl-group button) {
+			width: var(--space-11);
+			height: var(--space-11);
+		}
+	}
+
 	:global(.maplibregl-ctrl-top-right),
 	:global(.maplibregl-ctrl-top-left),
 	:global(.maplibregl-ctrl-bottom-right),

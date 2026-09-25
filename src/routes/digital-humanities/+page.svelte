@@ -311,7 +311,7 @@
 						</h3>
 						<p class="dossier-desc">{leadProject.shortDescription}</p>
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved route -->
-						<a class="dossier-action" href={leadProject.href}>
+						<a class="mono-action" href={leadProject.href}>
 							View project <span aria-hidden="true">→</span>
 						</a>
 					</div>
@@ -549,28 +549,6 @@ own methods close the entry as apparatus.
 		color: var(--color-text-soft);
 		margin: 0 0 var(--space-md);
 		max-width: var(--measure-prose);
-	}
-
-	/* The page's single accent action. Every other route into a project is the
-	 * entry's own title, so pine still means "the current thing". */
-	.dossier-action {
-		display: inline-block;
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-semibold);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
-		color: var(--color-accent);
-		text-decoration: none;
-	}
-
-	.dossier-action:hover {
-		color: var(--color-accent-dark);
-	}
-
-	.dossier-action:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
 	}
 
 	/* Entries under the dossier open a second block inside the same section, so

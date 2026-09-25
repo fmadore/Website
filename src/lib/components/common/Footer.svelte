@@ -300,6 +300,14 @@
 		color: var(--color-footer-accent);
 	}
 
+	@media (--touch) {
+		.footer-typecredit {
+			display: inline-flex;
+			align-items: center;
+			min-height: var(--space-11);
+		}
+	}
+
 	/* Responsive design improvements */
 	@media (--md) {
 		.footer-container {

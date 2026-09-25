@@ -202,8 +202,8 @@
 						</h3>
 						<p class="dossier-desc">{leadProject.shortDescription}</p>
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
-						<a class="dossier-action" href={resolvePath(`/research/${leadProject.id}`)}>
-							View project<span aria-hidden="true">&nbsp;→</span>
+						<a class="mono-action" href={resolvePath(`/research/${leadProject.id}`)}>
+							View project <span aria-hidden="true">→</span>
 						</a>
 					</div>
 				</article>
@@ -349,22 +349,6 @@
 		color: var(--color-text-soft);
 		margin: 0 0 var(--space-md);
 		max-width: var(--measure-prose);
-	}
-
-	/* The page's single accent action. Every other route into a project is the
-	   ledger row itself, so pine still means "the current thing". */
-	.dossier-action {
-		font-family: var(--font-family-mono);
-		font-size: var(--font-size-2xs);
-		font-weight: var(--font-weight-semibold);
-		letter-spacing: var(--tracking-label);
-		text-transform: uppercase;
-		color: var(--color-accent);
-		text-decoration: none;
-	}
-
-	.dossier-action:hover {
-		color: var(--color-accent-dark);
 	}
 
 	/* ---- Ledger entries ---- */

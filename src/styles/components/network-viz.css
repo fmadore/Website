@@ -228,3 +228,13 @@
 		height: var(--space-8);
 	}
 }
+
+/* The site's 44px touch floor, as on the chart toolbar beside it. Last in the
+ * file: the --xs-down step above sets 32px at the same specificity, and on a
+ * phone the coarse pointer is the stronger fact. */
+@media (--touch) {
+	.viz-zoom-btn {
+		width: var(--space-11);
+		height: var(--space-11);
+	}
+}

@@ -389,7 +389,8 @@
 }
 
 @media (--touch) {
-	.year-step-link {
+	.year-step-link,
+	.aside-rss {
 		min-height: 44px;
 		display: inline-flex;
 		align-items: center;

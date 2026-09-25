@@ -91,6 +91,14 @@
 		color: var(--color-accent);
 	}
 
+	@media (--touch) {
+		.breadcrumb-link {
+			display: inline-flex;
+			align-items: center;
+			min-height: var(--space-11);
+		}
+	}
+
 	.breadcrumb-link:focus-visible {
 		outline: var(--border-width-medium) solid var(--color-accent);
 		outline-offset: var(--space-2xs);

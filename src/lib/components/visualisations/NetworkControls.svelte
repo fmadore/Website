@@ -220,6 +220,12 @@
 		transition: border-color var(--duration-fast) var(--ease-out);
 	}
 
+	@media (--touch) {
+		.search-input {
+			min-height: var(--space-11);
+		}
+	}
+
 	.search-input:focus-visible {
 		outline: none;
 		border-color: var(--color-accent);
