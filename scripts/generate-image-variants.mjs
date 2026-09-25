@@ -29,6 +29,10 @@ const CHECK_ONLY = process.argv.includes('--check');
 // (`VARIANT_WIDTHS`); imageVariants.test.ts asserts the two agree.
 export const VARIANT_WIDTHS = [160, 240, 400, 800, 1600];
 const RASTER_EXT = new Set(['.webp', '.jpg', '.jpeg', '.png', '.avif']);
+// Vector plates (programme logos, a diagram) get no derivatives — they scale
+// themselves — but they still need an intrinsic size in the manifest, or an
+// <img> of one reserves no box before it loads.
+const VECTOR_EXT = new Set(['.svg']);
 const RECIPE_VERSION = 'webp-q80-v2';
 
 async function* walk(dir) {
@@ -98,7 +102,8 @@ const startedAt = Date.now();
 const previousCache = await readJson(CACHE_FILE, { recipeVersion: '', images: {} });
 const files = [];
 for await (const file of walk(IMAGES_DIR)) {
-	if (RASTER_EXT.has(extname(file).toLowerCase())) files.push(file);
+	const extension = extname(file).toLowerCase();
+	if (RASTER_EXT.has(extension) || VECTOR_EXT.has(extension)) files.push(file);
 }
 files.sort((a, b) => a.localeCompare(b));
 
@@ -117,6 +122,11 @@ for (const file of files) {
 	const metadata = await sharp(sourceBuffer).metadata();
 	if (!metadata.width || !metadata.height) {
 		throw new Error(`Unable to determine the intrinsic size of ${rel}`);
+	}
+	if (VECTOR_EXT.has(extension.toLowerCase())) {
+		// librsvg reads the size from width/height, else the viewBox.
+		clientImages[rel] = { sourceWidth: metadata.width, sourceHeight: metadata.height, widths: [] };
+		continue;
 	}
 
 	const widths = VARIANT_WIDTHS.filter((width) => width < metadata.width);

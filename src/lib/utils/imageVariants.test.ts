@@ -7,7 +7,8 @@ import { buildSrcset, imageDimensions, resolveImagePath, VARIANT_WIDTHS } from '
 const manifest = {
 	'activities/talk.webp': [1280, 720],
 	'foo.jpg': [640, 480],
-	'small.png': [150, 150]
+	'small.png': [150, 150],
+	'communications/logo.svg': [303, 176]
 } as const;
 
 describe('imageDimensions', () => {
@@ -19,7 +20,14 @@ describe('imageDimensions', () => {
 		expect(imageDimensions('./images/foo.jpg', manifest)).toEqual({ width: 640, height: 480 });
 	});
 
-	it('is undefined for unknown, external and vector paths', () => {
+	it('sizes a vector source from its declared size, so it reserves a box too', () => {
+		expect(imageDimensions('/images/communications/logo.svg', manifest)).toEqual({
+			width: 303,
+			height: 176
+		});
+	});
+
+	it('is undefined for unknown and external paths', () => {
 		expect(imageDimensions('/images/unknown.webp', manifest)).toBeUndefined();
 		expect(imageDimensions('https://example.com/images/foo.jpg', manifest)).toBeUndefined();
 		expect(imageDimensions('/images/logo.svg', manifest)).toBeUndefined();
@@ -48,6 +56,10 @@ describe('buildSrcset', () => {
 		expect(buildSrcset('https://example.com/images/foo.webp', manifest)).toBeUndefined();
 		expect(buildSrcset('/images/logo.svg', manifest)).toBeUndefined();
 		expect(buildSrcset('/files/paper.pdf', manifest)).toBeUndefined();
+	});
+
+	it('builds no srcset for a vector, which scales itself', () => {
+		expect(buildSrcset('/images/communications/logo.svg', manifest)).toBeUndefined();
 	});
 
 	it('never derives variants of a generated variant', () => {

@@ -38,6 +38,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'communications/ai-africa-symposium-kansas-2026.webp': [800, 566],
 	'communications/ALMEDA-logo-hero.webp': [1173, 573],
 	'communications/ALMEDA-logo.webp': [1173, 573],
+	'communications/ASA-Logo.svg': [303, 176],
 	'communications/associations-chretiennes-islamiques-campus-hero.webp': [900, 1200],
 	'communications/associations-chretiennes-islamiques-campus.webp': [600, 800],
 	'communications/c2dh-hero.webp': [1280, 661],
@@ -110,6 +111,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'communications/perspectives-in-motion.webp': [874, 1240],
 	'communications/point-de-passage-frontieres-religieuses-hero.webp': [900, 1297],
 	'communications/point-de-passage-frontieres-religieuses.webp': [600, 864],
+	'communications/point-sud-logo.svg': [183, 100],
 	'communications/poster-launch-IWAC-hero.webp': [900, 1274],
 	'communications/poster-launch-IWAC.webp': [600, 849],
 	'communications/public-islam-cote-ivoire-burkina-faso-hero.webp': [900, 1256],
@@ -166,6 +168,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'digital-humanities/global-heshmat.webp': [1280, 729],
 	'digital-humanities/islam-burkinafaso-banner.webp': [1280, 533],
 	'digital-humanities/iwac-ai-pipelines.webp': [1280, 746],
+	'digital-humanities/iwac-bibliographic-data-wikidata.svg': [816, 816],
 	'digital-humanities/iwac-mcp-server.webp': [1280, 816],
 	'digital-humanities/iwac-sentiment-analysis.webp': [1280, 800],
 	'digital-humanities/IWAC.webp': [1280, 696],
@@ -247,6 +250,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'research/muslim-minorities.webp': [1280, 622],
 	'research/youth-women-activism.webp': [1280, 960],
 	'teaching/guest-lecture.webp': [1920, 1274],
+	'teaching/universite-Laval-logo.svg': [320, 139],
 	'teaching/university-of-florida-logo.png': [226, 43],
 	'teaching/uottawa.png': [179, 48]
 };

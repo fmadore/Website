@@ -12,7 +12,7 @@ import {
  */
 export const VARIANT_WIDTHS = [160, 240, 400, 800, 1600] as const;
 
-const IMAGE_PATH_RE = /^(.*\/images\/)(.+)\.(webp|jpe?g|png|avif)$/i;
+const IMAGE_PATH_RE = /^(.*\/images\/)(.+)\.(webp|jpe?g|png|avif|svg)$/i;
 
 /** Intrinsic pixel size of a static/images source, for `<img width height>`. */
 export interface ImageDimensions {
@@ -56,8 +56,9 @@ function manifestEntryFor(
 
 /**
  * Intrinsic width/height of a source image, read from the generated manifest,
- * so an `<img>` can reserve its box before the file loads. Undefined for
- * external, vector, and unknown paths.
+ * so an `<img>` can reserve its box before the file loads. Vector sources are
+ * in the manifest too, at the size their SVG declares. Undefined for external
+ * and unknown paths.
  */
 export function imageDimensions(
 	src: string | null | undefined,
@@ -76,7 +77,8 @@ export function buildSrcset(
 	manifest: Readonly<Record<string, ImageVariantManifestEntry>> = imageVariantManifest
 ): string | undefined {
 	const found = manifestEntryFor(src, manifest);
-	if (!found) return undefined;
+	// A vector scales itself: it has a size but no derivatives.
+	if (!found || found.extension.toLowerCase() === 'svg') return undefined;
 	const { entry, prefix, name } = found;
 	const [sourceWidth] = entry;
 	// The generator writes a derivative at every ladder width narrower than the
