@@ -25,7 +25,7 @@
 						>{/if}{#if podcast.episode}, ep. {podcast.episode}{/if}.
 					{formatDayMonth(podcast.dateISO)}.
 					{#if podcast.doi}
-						<span class="block text-sm text-light mt-1"
+						<span class="cv-note"
 							><Icon
 								icon="academicons:doi"
 								width="1.2em"
@@ -34,11 +34,7 @@
 								aria-hidden="true"
 							/> DOI:
 							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-							<a
-								href="https://doi.org/{podcast.doi}"
-								target="_blank"
-								rel="noopener noreferrer"
-								class="text-primary hover:underline"
+							<a href="https://doi.org/{podcast.doi}" target="_blank" rel="noopener noreferrer"
 								>{podcast.doi}<span class="sr-only"> (opens in new tab)</span></a
 							><!-- eslint-enable svelte/no-navigation-without-resolve --></span
 						>
@@ -50,8 +46,7 @@
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Listen to {podcast.title} (opens in new tab)"
-							class="text-primary hover:underline text-sm"
-							>Listen<span aria-hidden="true">&nbsp;↗</span></a
+							class="cv-detail">Listen<span aria-hidden="true">&nbsp;↗</span></a
 						>
 						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}
@@ -72,7 +67,7 @@
 							media.program
 						)}{/if}.
 					{formatDayMonth(media.dateISO)}.
-					<span class="block text-sm text-light mt-1">Topic: {typesetQuotes(media.topic)}</span>
+					<span class="cv-note">Topic: {typesetQuotes(media.topic)}</span>
 					{#if media.url}
 						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 						<a
@@ -80,8 +75,7 @@
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Link to {media.outlet}: {media.topic} (opens in new tab)"
-							class="text-primary hover:underline text-sm"
-							>Link<span aria-hidden="true">&nbsp;↗</span></a
+							class="cv-detail">Link<span aria-hidden="true">&nbsp;↗</span></a
 						>
 						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}

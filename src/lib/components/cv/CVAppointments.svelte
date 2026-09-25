@@ -19,10 +19,10 @@
 					year={formatCVYearRange(appt.startYear, appt.endYear)}
 					current={appt.endYear === null}
 				>
-					<span class="font-medium">{typesetQuotes(appt.title)}</span>,
+					<span class="cv-title">{typesetQuotes(appt.title)}</span>,
 					{typesetQuotes(appt.institution)}{#if appt.location}, {typesetQuotes(appt.location)}{/if}.
 					{#if appt.details}
-						<p class="text-sm mt-1">{typesetQuotes(appt.details)}</p>
+						<p class="cv-detail">{typesetQuotes(appt.details)}</p>
 					{/if}
 				</CVEntry>
 			{/each}

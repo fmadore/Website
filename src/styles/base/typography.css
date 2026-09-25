@@ -335,26 +335,6 @@ small {
 	font-size: var(--font-size-xs);
 }
 
-.text-sm {
-	font-size: var(--font-size-sm);
-}
-
-.font-medium {
-	font-weight: var(--font-weight-medium);
-}
-
-.font-semibold {
-	font-weight: var(--font-weight-semibold);
-}
-
-.text-nowrap {
-	white-space: nowrap;
-}
-
-.leading-relaxed {
-	line-height: var(--line-height-relaxed);
-}
-
 .no-underline {
 	text-decoration: none;
 }
@@ -367,10 +347,6 @@ small {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-
-.list-disc {
-	list-style-type: disc;
 }
 
 /* Prose typography for long-form content */

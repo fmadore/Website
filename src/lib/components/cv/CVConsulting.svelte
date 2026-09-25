@@ -24,7 +24,7 @@
 	{#snippet entry(item)}
 		{item.role}, {item.organization}.
 		{#each item.descriptions as description (description)}
-			<p class="text-sm mt-1">{description}</p>
+			<p class="cv-detail">{description}</p>
 		{/each}
 	{/snippet}
 </CVSection>

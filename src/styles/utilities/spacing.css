@@ -13,9 +13,6 @@
 .mt-4 {
 	margin-top: var(--space-md);
 }
-.mt-8 {
-	margin-top: var(--space-xl);
-}
 .mt-12 {
 	margin-top: var(--space-2xl);
 }
@@ -24,36 +21,13 @@
 .mb-1 {
 	margin-bottom: var(--space-2xs);
 }
-.mb-2 {
-	margin-bottom: var(--space-xs);
-}
-.mb-4 {
-	margin-bottom: var(--space-md);
-}
-.mb-6 {
-	margin-bottom: var(--space-lg);
-}
 .mb-8 {
 	margin-bottom: var(--space-xl);
-}
-.mb-12 {
-	margin-bottom: var(--space-2xl);
-}
-
-/* Margin Left - Essential values */
-.ml-1 {
-	margin-left: var(--space-2xs);
-}
-.ml-4 {
-	margin-left: var(--space-md);
 }
 
 /* Base padding */
 .p-4 {
 	padding: var(--space-md);
-}
-.p-6 {
-	padding: var(--space-lg);
 }
 .p-8 {
 	padding: var(--space-xl);
@@ -70,16 +44,3 @@
 	padding-top: var(--space-xl);
 	padding-bottom: var(--space-xl);
 }
-
-/* Gap for flex and grid - Essential values */
-.gap-4 {
-	gap: var(--space-md);
-}
-.gap-6 {
-	gap: var(--space-lg);
-}
-
-/*
-Note: responsive variants (e.g. .sm\:flex-row) live with their base
-utilities — see flex.css. Add more classes as needed based on actual usage.
-*/

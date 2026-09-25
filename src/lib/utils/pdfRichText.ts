@@ -101,21 +101,20 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 		let style: 'normal' | 'italic' | 'bold' | 'bolditalic' = 'normal';
 		if (tagName === 'EM' || tagName === 'I') style = 'italic';
 		if (tagName === 'STRONG' || tagName === 'B') style = 'bold';
-		if (el.classList.contains('font-semibold') || el.classList.contains('font-medium'))
-			style = 'bold';
+		// An entry's title (`.cv-title`, medium weight on screen) prints bold.
+		if (el.classList.contains('cv-title')) style = 'bold';
 
 		// Handle links
 		if (tagName === 'A') {
 			const href = el.getAttribute('href') || '';
 			// Normalize link text
 			const linkText = (el.textContent?.trim() || '').replace(/\s+/g, ' ');
-			// Honor bold-implying classes on the <a> itself (e.g. grant titles
-			// rendered as <a class="font-medium">). Without this, linked
-			// entries render in regular weight while non-linked siblings bold.
-			const linkStyle: TextFragment['style'] =
-				el.classList.contains('font-semibold') || el.classList.contains('font-medium')
-					? 'bold'
-					: 'normal';
+			// Honor the title class on the <a> itself (grant and award titles
+			// render as <a class="cv-title">). Without this, linked entries
+			// render in regular weight while non-linked siblings bold.
+			const linkStyle: TextFragment['style'] = el.classList.contains('cv-title')
+				? 'bold'
+				: 'normal';
 
 			// Handle special links logic (similar to originalPdfGenerator)
 			if (!linkText || el.classList.contains('doi-link')) {

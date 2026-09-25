@@ -82,7 +82,7 @@
 	<NetworkStatusIndicator />
 
 	<main id="main" class="main-content-area" tabindex="-1">
-		<div class="container py-6 md:py-10">
+		<div class="container">
 			<!-- Enter-only fade. An `out:` transition here kept the outgoing branch
 			     alive waiting for an outro that never completed — the snippet inside
 			     it is owned by the router, which had already swapped in the next

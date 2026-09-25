@@ -234,40 +234,29 @@ There is intentionally no `styles/pages/` directory. Page-level design lives alo
 
 ## Utilities
 
-The utility sheets are intentionally lean: each class exists because markup actually uses it. Add new utilities only alongside real usage (and delete them again when the last usage goes).
+The utility sheets are intentionally lean: each class exists because markup actually uses it. Add new utilities only alongside real usage, and delete them when the last usage goes. `src/styles/utilityClasses.test.ts` enforces both halves: a utility with no consumer fails, and so does a utility-shaped class in markup (`mt-1`, `text-sm`, `sm:flex-row`, …) that no stylesheet defines.
+
+The utilities are not a design vocabulary. Records are set in the idioms (`.ledger`, `.section`, `.chip`, `.plate`, `.mono-action`), and a page's own text roles belong to that page: the CV's are `.cv-title`, `.cv-detail` and `.cv-note`, defined beside its other `#cv-content` rules in `routes/cv/+page.svelte`.
 
 ### Spacing (`utilities/spacing.css`)
 
-Margin (`.mx-auto`, `.mt-*`, `.mb-*`, `.ml-*`), padding (`.p-*`, `.px-4`, `.py-8`), and gap (`.gap-4/-6`) utilities on the 8-point grid. Values map to the semantic tokens.
-
-### Colors (`utilities/colors.css`)
-
-Text colour utilities only: `.text-primary`, `.text-light`, `.text-muted`, `.text-emphasis`.
-
-### Flexbox (`utilities/flex.css`)
-
-`.flex`, `.flex-col`, `.flex-1`, `.justify-center`, `.justify-between`, `.items-center`, `.items-baseline`, plus the `sm:` variants in use (`.sm:flex-row`, `.sm:justify-between`, `.sm:items-center`).
+`.mx-auto`, `.mt-2/-4/-12`, `.mb-1/-8`, `.p-4/-8`, `.px-4`, `.py-8`, used by the route shells and the related-items card. Values map to the semantic tokens.
 
 ### Layout (`utilities/layout.css`)
 
-`.block`, `.inline-block`, and `.sveltekit-body-container`.
+`.sveltekit-body-container` (the `display: contents` wrapper in `app.html`).
 
 ### Sizing (`utilities/sizing.css`)
 
-`.w-full`, fixed CV-column widths (`.w-20`, `.w-60`), `.h-auto`, and the `.max-w-md/-6xl/-7xl` widths in use.
-
-### Images (`utilities/images.css`)
-
-`.responsive-image` and `.hero-image`. Prefer the `.plate` idiom for content imagery (scans, covers, photos).
+`.max-w-6xl`, the route shells' reading cap.
 
 ### Surfaces (`utilities/surfaces.css`)
 
 Flat surface utilities — formerly the glassmorphism classes, neutralised for Ink + Signal (no `backdrop-filter`, no blur, no translucency, no glow) and since renamed `.glass-*` → `.surface-*`. Every class renders a **flat surface**:
 
-- `.surface`, `.surface-light/-medium/-heavy`, `.surface-frosted`, `.surface-primary`: Flat `--color-surface` tile with a 1px border
+- `.surface`, `.surface-light`, `.surface-medium`: Flat `--color-surface` tile with a 1px border
 - `.surface-card`, `.surface-panel`, `.surface-panel-light`: The workhorse paper/film tiles — flat background, hairline border, square corners; `.surface-card` gets a border-colour hover only
 - `.surface-button` (and its `.btn-*` combos): Square flat ink/paper control
-- `.surface-animate`: Border-colour transition helper (IframeRenderer variants)
 
 New code should prefer the idiom classes (`.ledger`, `.section`, `.chip`, `.plate`) or `.card` over the `.surface-*` names.
 

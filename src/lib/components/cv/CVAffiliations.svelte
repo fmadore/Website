@@ -10,8 +10,8 @@
 	in the data voice, under a record that hung nothing in the gutter — a
 	hanging key set inline. Roles are dated sub-lines rather than a bulleted
 	list: `list-disc` inside a ledger is the templated-CMS gesture, and the
-	system's answer for a secondary dated line is the same quiet `.text-sm`
-	line grants and appointments already use.
+	system's answer for a secondary dated line is the same quiet `.cv-note`
+	line grants already use.
 -->
 <section>
 	<h3>Professional Affiliations</h3>
@@ -22,14 +22,14 @@
 				     and an accent that marks half a section has stopped marking
 				     anything. The one standing appointment keeps the signal. -->
 				<CVEntry year={formatAffiliationPeriod(aff.period)}>
-					<span class="font-medium">{typesetQuotes(aff.name)}</span>{#if aff.abbreviation}<span
+					<span class="cv-title">{typesetQuotes(aff.name)}</span>{#if aff.abbreviation}<span
 							>&nbsp;({aff.abbreviation})</span
 						>{/if}{#if aff.parentOrganization}<span
 							>,&nbsp;{typesetQuotes(aff.parentOrganization)}</span
 						>{/if}.
 					{#if aff.roles && aff.roles.length > 0}
 						{#each aff.roles as role (role.title + role.period.start)}
-							<div class="text-sm text-light">
+							<div class="cv-note">
 								{typesetQuotes(role.title)} ({formatAffiliationPeriod(role.period)})
 							</div>
 						{/each}

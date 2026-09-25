@@ -17,28 +17,28 @@
 				href={grant.url}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="font-medium"
+				class="cv-title"
 				>{typesetQuotes(grant.title)}<span class="sr-only"> (opens in new tab)</span></a
-			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="font-medium"
+			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title"
 				>{typesetQuotes(grant.title)}</span
 			>{/if}, {typesetQuotes(grant.funder)}.
 		{#if grant.amount}
-			<div class="text-sm text-light">
+			<div class="cv-note">
 				{grant.amount.toLocaleString('en-US')}
 				{grant.currency}{#if grant.status && grant.status !== 'Awarded'}&nbsp;[{grant.status}]{/if}
 			</div>
 		{:else if grant.status && grant.status !== 'Awarded'}
-			<div class="text-sm text-light">
+			<div class="cv-note">
 				[{grant.status}]
 			</div>
 		{/if}
 		{#if grant.coApplicants && grant.coApplicants.length > 0}
-			<div class="text-sm text-light">
+			<div class="cv-note">
 				Co-applicant{grant.coApplicants.length > 1 ? 's' : ''}: {grant.coApplicants.join(', ')}
 			</div>
 		{/if}
 		{#if grant.details}
-			<p class="text-sm">{typesetQuotes(grant.details)}</p>
+			<p class="cv-detail">{typesetQuotes(grant.details)}</p>
 		{/if}
 	{/snippet}
 </CVSection>

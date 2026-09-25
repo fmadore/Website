@@ -99,11 +99,10 @@
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label="Link to {pub.title} (opens in new tab)"
-									class="ml-1 text-primary hover:underline text-sm"
-									>Link<span aria-hidden="true">&nbsp;↗</span></a
+									class="cv-aside-link">Link<span aria-hidden="true">&nbsp;↗</span></a
 								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.reviewedBy && pub.reviewedBy.length > 0}
-								<p class="text-sm mt-1">
+								<p class="cv-detail">
 									Reviewed in
 									{#each pub.reviewedBy as review, i (review.title + review.year)}
 										<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
@@ -111,7 +110,7 @@
 											href={review.url}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="text-primary review-link no-underline"
+											class="review-link no-underline"
 											>{typesetQuotes(review.journal)}<span class="sr-only">
 												(opens in new tab)</span
 											></a
@@ -133,15 +132,14 @@
 					{#each publicationsByType[pubType as CvPublication['type']] as pub (pub.id)}
 						<CVEntry year={getCVDisplayYear(pub)}>
 							<!-- Simplified display for other types -->
-							<span class="font-medium">{typesetQuotes(pub.title)}</span>.
+							<span class="cv-title">{typesetQuotes(pub.title)}</span>.
 							{#if pub.type}<span class="pub-type-badge">{pub.type}</span>{/if}
 							{#if pub.url}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label="Link to {pub.title} (opens in new tab)"
-									class="ml-1 text-primary hover:underline text-sm"
-									>Link<span aria-hidden="true">&nbsp;↗</span></a
+									class="cv-aside-link">Link<span aria-hidden="true">&nbsp;↗</span></a
 								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 						</CVEntry>
 					{/each}
@@ -154,6 +152,12 @@
 </section>
 
 <style>
+	/* The [Link] after a citation that has no DOI: set a step down, a space off. */
+	.cv-aside-link {
+		margin-left: var(--space-2xs);
+		font-size: var(--font-size-sm);
+	}
+
 	/* DOI — the Academicons mark and the identifier in the data voice. An
 	 * inline SVG in place of the former Zenodo badge image, which cost one
 	 * third-party request per publication and reserved a width that varied

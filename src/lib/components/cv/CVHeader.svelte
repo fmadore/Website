@@ -31,10 +31,10 @@
 </header>
 
 <!-- Contact Info Section -->
-<section class="cv-contact-section mb-8">
+<section class="cv-contact-section">
 	<!-- Address -->
 	<div class="cv-contact-group">
-		<Icon icon="mdi:map-marker" class="text-light shrink-0" width="16" height="16" />
+		<Icon icon="mdi:map-marker" class="cv-contact-icon" width="16" height="16" />
 		<div>
 			{address.institution}<br />
 			{#if address.department}
@@ -54,7 +54,7 @@
 	<div class="cv-links-group">
 		{#each cvLinks as link (link.url)}
 			<div class="cv-link-item">
-				<Icon icon={link.icon} class="text-light shrink-0" width="16" height="16" />
+				<Icon icon={link.icon} class="cv-contact-icon" width="16" height="16" />
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 				<a href={link.url} target="_blank" rel="noopener noreferrer"
 					>{link.displayUrl}<span class="sr-only"> (opens in new tab)</span></a
@@ -149,6 +149,13 @@
 		letter-spacing: var(--tracking-figures);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-light);
+		margin-bottom: var(--space-xl);
+	}
+
+	/* The glyphs take the section's ink by inheritance; they only need to hold
+	 * their 16px box when a long handle wraps beside them. */
+	.cv-contact-section :global(.cv-contact-icon) {
+		flex-shrink: 0;
 	}
 
 	.cv-contact-group {

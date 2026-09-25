@@ -13,10 +13,7 @@
 /* Generic flat surfaces (formerly translucent glass over media/chrome). */
 .surface,
 .surface-light,
-.surface-medium,
-.surface-heavy,
-.surface-frosted,
-.surface-primary {
+.surface-medium {
 	background: var(--color-surface);
 	border: var(--border-width-thin) solid var(--color-border);
 	border-radius: 0;
@@ -27,10 +24,7 @@
 
 html.dark .surface,
 html.dark .surface-light,
-html.dark .surface-medium,
-html.dark .surface-heavy,
-html.dark .surface-frosted,
-html.dark .surface-primary {
+html.dark .surface-medium {
 	background: var(--color-surface);
 	border-color: var(--color-border);
 }
@@ -149,15 +143,9 @@ html.dark .surface-button.surface-button:hover {
 	border-color: var(--color-primary);
 }
 
-/* Animation utility (used by IframeRenderer variants) — border only. */
-.surface-animate {
-	transition: border-color var(--duration-fast) var(--ease-out);
-}
-
 @media (prefers-reduced-motion: reduce) {
 	.surface-card,
-	.surface-button.surface-button,
-	.surface-animate {
+	.surface-button.surface-button {
 		transition: none;
 	}
 }

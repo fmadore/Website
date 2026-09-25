@@ -224,6 +224,29 @@
 		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
+	/*
+	 * The CV's own text vocabulary, shared by its section components the way the
+	 * heading rules above are. An entry names its work (`.cv-title`), qualifies it
+	 * with a detail line a step down (`.cv-detail`), and may add a quieter note
+	 * (`.cv-note`: a description, a topic, a DOI line). These replace a
+	 * Tailwind-shaped utility vocabulary the design system never documented.
+	 * `:where()` keeps each at one class of specificity, which is what the
+	 * utilities they replace carried, so a component's own class still wins.
+	 */
+	:global(:where(#cv-content) .cv-title) {
+		font-weight: var(--font-weight-medium);
+	}
+
+	:global(:where(#cv-content) .cv-detail) {
+		font-size: var(--font-size-sm);
+	}
+
+	:global(:where(#cv-content) .cv-note) {
+		display: block;
+		font-size: var(--font-size-sm);
+		color: var(--color-text-light);
+	}
+
 	/* Empty-state note. */
 	:global(#cv-content .cv-empty) {
 		font-family: var(--font-family-serif);

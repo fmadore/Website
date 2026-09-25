@@ -71,8 +71,8 @@
 </script>
 
 {#snippet headerContent()}
-	<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between w-full">
-		<h2 class="panel-title mb-0">{title}</h2>
+	<div class="panel-header-row">
+		<h2 class="panel-title">{title}</h2>
 		{#if filters}
 			<div class="filters-wrapper">
 				{@render filters()}
@@ -131,6 +131,22 @@
 <PanelBase {title} variant="items" header={headerContent} content={panelContent} />
 
 <style>
+	/* Title above its filters on a phone, beside them from --sm up. */
+	.panel-header-row {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-md);
+		width: 100%;
+	}
+
+	@media (--sm) {
+		.panel-header-row {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+
 	.relevant-ledger {
 		list-style: none;
 		margin: 0;

@@ -459,7 +459,7 @@
 		</div>
 	{:else}
 		<div class="empty-state">
-			<p class="text-muted">No records to plot.</p>
+			<p>No records to plot.</p>
 		</div>
 	{/if}
 </div>
@@ -600,6 +600,10 @@
 	}
 
 	/* Empty state */
+	.empty-state p {
+		color: var(--color-text-muted);
+	}
+
 	.empty-state {
 		display: flex;
 		align-items: center;

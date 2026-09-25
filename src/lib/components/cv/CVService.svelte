@@ -25,7 +25,7 @@
 				<CVEntry year={member.dateRangeString}>
 					{member.role}, <em>{typesetQuotes(member.journal)}</em>.
 					{#if member.details}
-						<div class="text-sm">{typesetQuotes(member.details)}</div>
+						<div class="cv-detail">{typesetQuotes(member.details)}</div>
 					{/if}
 				</CVEntry>
 			{/each}
@@ -42,7 +42,7 @@
 							>{typesetQuotes(review.journal)}</em
 						>{:else if review.publisher}&nbsp;–&nbsp;{typesetQuotes(review.publisher)}{/if}.
 					{#if review.details}
-						<div class="text-sm">{typesetQuotes(review.details)}</div>
+						<div class="cv-detail">{typesetQuotes(review.details)}</div>
 					{/if}
 					{#if review.publons_record}
 						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
@@ -53,13 +53,7 @@
 							class="verification-badge"
 							data-pdf-hide
 						>
-							<Icon
-								icon="academicons:publons"
-								width="16"
-								height="16"
-								class="shrink-0"
-								aria-hidden="true"
-							/>
+							<Icon icon="academicons:publons" width="16" height="16" aria-hidden="true" />
 							<span>Verified on Web of Science</span>
 							<span class="sr-only"> (opens in new tab)</span></a
 						>
@@ -99,6 +93,16 @@
 			color var(--duration-fast) var(--ease-out),
 			border-color var(--duration-fast) var(--ease-out);
 		text-decoration: none;
+	}
+
+	.verification-badge :global(svg) {
+		flex-shrink: 0;
+	}
+
+	@media (--touch) {
+		.verification-badge {
+			min-height: var(--space-11);
+		}
 	}
 
 	.verification-badge:hover {

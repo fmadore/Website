@@ -4,12 +4,3 @@
 .sveltekit-body-container {
 	display: contents;
 }
-
-/* Display utilities */
-.block {
-	display: block;
-}
-.inline-block {
-	display: inline-block;
-}
-/* Note: .flex moved to flex.css, .grid to grid.css for better organization */

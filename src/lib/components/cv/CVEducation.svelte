@@ -23,9 +23,9 @@
 					{typesetQuotes(edu.degree)}.
 					{typesetQuotes(edu.institution)}{#if edu.location}, {typesetQuotes(edu.location)}{/if}.
 					{#if edu.thesisTitle}
-						<p class="text-sm mt-1">Dissertation: {quoteTitle(edu.thesisTitle)}</p>{/if}
+						<p class="cv-detail">Dissertation: {quoteTitle(edu.thesisTitle)}</p>{/if}
 					{#if edu.details}
-						<p class="text-sm mt-1">{typesetQuotes(edu.details)}</p>{/if}
+						<p class="cv-detail">{typesetQuotes(edu.details)}</p>{/if}
 				</CVEntry>
 			{/each}
 		</div>
@@ -67,7 +67,7 @@
 					{typesetQuotes(edu.degree)}.
 					{typesetQuotes(edu.institution)}{#if edu.location}, {typesetQuotes(edu.location)}{/if}.
 					{#if edu.details}
-						<p class="text-sm mt-1">{typesetQuotes(edu.details)}</p>{/if}
+						<p class="cv-detail">{typesetQuotes(edu.details)}</p>{/if}
 				</CVEntry>
 			{/each}
 		</div>

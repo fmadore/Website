@@ -213,7 +213,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	const sections = element.querySelectorAll('section');
 	sections.forEach((section) => {
 		// Skip the contact section - it's already been processed in the header
-		if (section.classList.contains('cv-contact-section') || section.classList.contains('mb-6')) {
+		if (section.classList.contains('cv-contact-section')) {
 			return;
 		}
 
@@ -244,7 +244,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 				while (nextElement) {
 					if (nextElement.tagName === 'DIV' && nextElement.hasAttribute('data-cv-ledger')) {
 						// Handle flex layout entries
-						const entries = nextElement.querySelectorAll('.cv-entry, .flex.gap-4');
+						const entries = nextElement.querySelectorAll('.cv-entry');
 
 						// If no entries, check for simple div children (e.g., Fieldwork section)
 						if (entries.length === 0) {
@@ -283,8 +283,7 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 						entries.forEach((entry) => {
 							const yearDiv =
 								entry.querySelector('.cv-entry-year') || entry.querySelector('div:first-child');
-							const contentDiv =
-								entry.querySelector('.cv-entry-content') || entry.querySelector('div.flex-1');
+							const contentDiv = entry.querySelector('.cv-entry-content');
 
 							if (yearDiv && contentDiv) {
 								const year = yearDiv.textContent?.trim() || '';
@@ -307,8 +306,8 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 			// Add extra spacing to match sections with subsections
 			layout.y += SPACING.SUBSECTION_TOP;
 
-			// First check for flex layout entries - CVEntry uses .cv-entry, some use .flex.gap-4
-			const flexEntries = section.querySelectorAll('.cv-entry, .flex.gap-4');
+			// Ledger rows: every keyed CV entry renders as .cv-entry.
+			const flexEntries = section.querySelectorAll('.cv-entry');
 			if (flexEntries.length > 0) {
 				flexEntries.forEach((entry) => {
 					// Languages and Computer Skills used to be hand-rolled flex rows
@@ -321,15 +320,10 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 					const firstDiv =
 						entry.querySelector('.cv-entry-year') || entry.querySelector('div:first-child');
 					const contentDiv =
-						entry.querySelector('.cv-entry-content') ||
-						entry.querySelector('div.flex-1, div:last-child');
+						entry.querySelector('.cv-entry-content') || entry.querySelector('div:last-child');
 
 					if (firstDiv && contentDiv) {
-						const hasYearColumn =
-							firstDiv.classList.contains('cv-entry-year') ||
-							firstDiv.classList.contains('text-nowrap') ||
-							firstDiv.classList.contains('w-20') ||
-							firstDiv.classList.contains('font-semibold');
+						const hasYearColumn = firstDiv.classList.contains('cv-entry-year');
 
 						if (hasYearColumn) {
 							// Layout with year column
@@ -399,10 +393,8 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 				});
 			} else {
 				// Fallback: handle simple paragraph content (for sections like Fieldwork)
-				const paragraphs = section.querySelectorAll('p:not(.text-light)');
-				const divs = section.querySelectorAll(
-					'div:not([data-cv-ledger]):not(.flex):not(.cv-entry)'
-				);
+				const paragraphs = section.querySelectorAll('p:not(.cv-note)');
+				const divs = section.querySelectorAll('div:not([data-cv-ledger]):not(.cv-entry)');
 
 				const contentElements = paragraphs.length > 0 ? paragraphs : divs;
 				pdf.setTextColor(...COLORS.TEXT); // Ensure text color is reset for fallback content

@@ -35,9 +35,9 @@
 	emptyMessage="No digital humanities projects listed."
 >
 	{#snippet entry(project)}
-		<span class="font-medium">{typesetQuotes(project.title)}</span>
+		<span class="cv-title">{typesetQuotes(project.title)}</span>
 		{#if project.shortDescription}
-			<div class="text-sm text-light">{typesetQuotes(project.shortDescription)}</div>
+			<div class="cv-note">{typesetQuotes(project.shortDescription)}</div>
 		{/if}
 		{#each groupProjectLinks(project) as group (group.type)}
 			<!-- Ledger of addresses: mono key, then the sites/repos/datasets it holds. -->
@@ -56,18 +56,14 @@
 			</div>
 		{/each}
 		{#if project.reviews && project.reviews.length > 0}
-			<div class="mt-2 ml-4 text-sm">
+			<div class="dh-link-list">
 				{project.reviews.length === 1 ? 'Review:' : 'Reviews:'}
 				{#each project.reviews as review, i (review.url)}
 					{@const isLast = i === project.reviews.length - 1}
 					<!-- Citations are separated by semicolons, so all but the last shed
 					     their terminal full stop rather than reading "(2023).;". -->
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-					<a
-						href={review.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="text-primary hover:underline"
+					<a href={review.url} target="_blank" rel="noopener noreferrer"
 						><!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html typesetQuotesInHtml(
 							isLast ? review.text : trimTerminalPeriod(review.text)
 						)}<!-- eslint-enable svelte/no-at-html-tags --><span class="sr-only">
@@ -83,6 +79,14 @@
 </CVSection>
 
 <style>
+	/* A project's reviews, indented under its addresses. */
+	.dh-link-list {
+		margin-top: var(--space-xs);
+		margin-left: var(--space-md);
+		max-width: var(--measure-prose);
+		font-size: var(--font-size-sm);
+	}
+
 	/* Addresses are apparatus — DATA voice, set below the record they belong to. */
 	.dh-links {
 		display: flex;

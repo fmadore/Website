@@ -72,15 +72,15 @@
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each researchRolesByDate as role (role.id)}
 				<CVEntry year={formatCVYearRange(role.startYear, role.endYear)}>
-					<span class="font-medium">{typesetQuotes(role.title)}</span>, {typesetQuotes(
+					<span class="cv-title">{typesetQuotes(role.title)}</span>, {typesetQuotes(
 						role.institution
 					)}.
 					{#if Array.isArray(role.details)}
 						{#each role.details as detail (detail)}
-							<p class="text-sm mt-1">{typesetQuotes(detail)}</p>
+							<p class="cv-detail">{typesetQuotes(detail)}</p>
 						{/each}
 					{:else}
-						<p class="text-sm mt-1">{typesetQuotes(role.details)}</p>
+						<p class="cv-detail">{typesetQuotes(role.details)}</p>
 					{/if}
 				</CVEntry>
 			{/each}

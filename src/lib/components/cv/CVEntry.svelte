@@ -71,7 +71,7 @@
 	 * but the column also holds mono address rows, and narrowing those only
 	 * makes them wrap, which stacks 15px link targets closer than the 24px WCAG
 	 * 2.5.8 asks for. Cap what is read; leave what is scanned. */
-	.cv-entry-content :global(.text-sm) {
+	.cv-entry-content :global(:is(.cv-detail, .cv-note)) {
 		max-width: var(--measure-prose);
 	}
 </style>

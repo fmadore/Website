@@ -16,13 +16,13 @@
 				href={award.url}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="font-medium"
+				class="cv-title"
 				>{typesetQuotes(award.title)}<span class="sr-only"> (opens in new tab)</span></a
-			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="font-medium"
+			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title"
 				>{typesetQuotes(award.title)}</span
 			>{/if}, {typesetQuotes(award.institution)}.
 		{#if award.details}
-			<p class="text-sm mt-1">{typesetQuotes(award.details)}</p>
+			<p class="cv-detail">{typesetQuotes(award.details)}</p>
 		{/if}
 	{/snippet}
 </CVSection>
