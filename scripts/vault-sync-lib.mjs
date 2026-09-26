@@ -75,10 +75,11 @@ export function walkData(dir) {
 		else if (
 			name.endsWith('.ts') &&
 			name !== 'index.ts' &&
+			name !== 'cv.ts' &&
 			!name.endsWith('.svelte.ts') &&
 			// A record module stands alone once transpiled, which is what lets
 			// `loadModule` import it from a data: URL. The data trees also hold
-			// modules that do not: the summary projection (`summaries.ts`, which
+			// modules that do not: the CV view (`cv.ts`), the summary projection (`summaries.ts`, which
 			// imports its generated sibling), the generated projection itself,
 			// its config, and the Vitest spec that proves the projection faithful
 			// (`summaries.test.ts`, whose `import 'vitest'` cannot resolve from a

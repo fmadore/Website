@@ -59,8 +59,18 @@ jobs:
         run: |
           set +e
           node scripts/check-slides.mjs --report=slides-report.md
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+          status=$?
           set -e
+          # Exit 1 is a finding only when reconciliation produced its report.
+          # An uncaught script error also exits 1; do not turn it into drift.
+          if [ "$status" != "0" ] && [ "$status" != "1" ] && [ "$status" != "2" ]; then
+            exit "$status"
+          fi
+          if [ "$status" != "2" ] && [ ! -s slides-report.md ]; then
+            echo "::error::Slide reconciliation failed before producing a report."
+            exit 1
+          fi
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
 
       - name: Fail loudly when the deck site could not be read
         if: steps.decks.outputs.exit_code == '2'
