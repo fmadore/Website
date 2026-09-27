@@ -248,16 +248,24 @@ test('sitemap.xml is served and is a well-formed urlset', async ({ page, request
 	const xml = await response.text();
 	const parsed = await page.evaluate((xmlText) => {
 		const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
-		const locs = Array.from(doc.getElementsByTagName('loc')).map((el) => el.textContent ?? '');
+		const locs = Array.from(
+			doc.getElementsByTagNameNS('http://www.sitemaps.org/schemas/sitemap/0.9', 'loc')
+		).map((el) => el.textContent ?? '');
 		return {
 			hasParseError: doc.getElementsByTagName('parsererror').length > 0,
 			root: doc.documentElement.nodeName,
-			urlCount: doc.getElementsByTagName('url').length,
+			namespace: doc.documentElement.namespaceURI,
+			lastmodCount: doc.getElementsByTagName('lastmod').length,
+			urlCount: doc.getElementsByTagNameNS('http://www.sitemaps.org/schemas/sitemap/0.9', 'url')
+				.length,
 			firstLoc: locs[0] ?? ''
 		};
 	}, xml);
 	expect(parsed.hasParseError).toBe(false);
 	expect(parsed.root).toBe('urlset');
+	expect(parsed.namespace).toBe('http://www.sitemaps.org/schemas/sitemap/0.9');
+	// No modification metadata exists; event dates must never stand in for it.
+	expect(parsed.lastmodCount).toBe(0);
 	expect(parsed.urlCount).toBeGreaterThanOrEqual(50);
 	expect(parsed.firstLoc).toContain('frederickmadore.com');
 });

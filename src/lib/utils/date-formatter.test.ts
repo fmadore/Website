@@ -77,3 +77,14 @@ describe('localISODate', () => {
 		expect(localISODate(new Date(2026, 10, 30, 0, 1))).toBe('2026-11-30');
 	});
 });
+
+// The timezone runner executes these examples in UTC, Toronto, and Johannesburg.
+it.each([
+	['2026-01-01', '1 January 2026', '1 January'],
+	['2026-03-08', '8 March 2026', '8 March'],
+	['2026-11-01', '1 November 2026', '1 November']
+])('preserves calendar date %s across year and DST boundaries', (iso, display, short) => {
+	expect(formatDisplayDate(iso)).toBe(display);
+	expect(formatDayMonth(iso)).toBe(short);
+	expect(getYearFromISODate(iso)).toBe(2026);
+});

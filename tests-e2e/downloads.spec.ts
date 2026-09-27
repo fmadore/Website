@@ -1,3 +1,4 @@
+import { getDocument } from 'pdfjs-dist/legacy/build/pdf.mjs';
 import { readFile } from 'node:fs/promises';
 import { test, expect, ready } from './fixtures';
 
@@ -17,10 +18,11 @@ test('BibTeX export contains the selected record', async ({ page }) => {
 	expect(text).toMatch(/imam/i);
 });
 
-for (const failFonts of [false, true]) {
-	test(`CV PDF is complete${failFonts ? ' when font loading fails' : ''}`, async ({ page }) => {
+for (const fontMode of ['loaded', 'failed', 'stalled'] as const) {
+	test(`CV PDF preserves content with ${fontMode} fonts`, async ({ page }) => {
 		test.setTimeout(60000);
-		if (failFonts) await page.route('**/fonts/pdf/**', (route) => route.abort());
+		if (fontMode === 'failed') await page.route('**/fonts/pdf/**', (route) => route.abort());
+		if (fontMode === 'stalled') await page.route('**/fonts/pdf/**', () => {});
 		await page.goto('/cv');
 		await ready(page);
 		expect(await page.locator('#cv-content .cv-section-wrapper').count()).toBeGreaterThan(15);
@@ -32,6 +34,33 @@ for (const failFonts of [false, true]) {
 		expect(bytes.toString('latin1')).toContain('%%EOF');
 		expect(bytes.toString('latin1').match(/\/Type \/Page\b/g)!.length).toBeGreaterThan(3);
 		expect(bytes.length).toBeGreaterThan(20000);
+		const loadingTask = getDocument({
+			data: new Uint8Array(bytes),
+			verbosity: 0,
+			useSystemFonts: true
+		});
+		const pdf = await loadingTask.promise;
+		try {
+			const text: string[] = [];
+			const urls: string[] = [];
+			for (let i = 1; i <= pdf.numPages; i++) {
+				const pdfPage = await pdf.getPage(i);
+				const content = await pdfPage.getTextContent();
+				text.push(content.items.map((item) => ('str' in item ? item.str : '')).join(' '));
+				const annotations = await pdfPage.getAnnotations();
+				urls.push(...annotations.flatMap((item) => (item.url ? [String(item.url)] : [])));
+			}
+			const exported = text.join(' ').replace(/\s+/g, ' ');
+			expect(exported).toContain('Frédérick Madore');
+			expect(exported).toMatch(/Publications/i);
+			expect(exported).toContain('Religious Activism');
+			expect(exported).toMatch(/Teaching/i);
+			expect(exported).toContain('2026');
+			expect(urls.some((url) => url.includes('frederickmadore.com'))).toBe(true);
+		} finally {
+			await loadingTask.destroy();
+		}
+
 		await expect(page.getByRole('button', { name: 'Download PDF', exact: true })).toBeEnabled();
 	});
 }

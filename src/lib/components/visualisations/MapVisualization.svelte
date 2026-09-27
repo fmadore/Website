@@ -394,7 +394,7 @@
 			<RecoveryActions retry={ml.retry} label="Retry map" />
 		</div>
 	{/if}
-	{#if showLegend && legendEntries.length > 0}
+	{#if showLegend && !importError && legendEntries.length > 0}
 		<div class="map-legend surface-panel" role="group" aria-label="Activity type legend">
 			<ul>
 				{#each legendEntries as entry (entry.type)}
@@ -555,6 +555,10 @@
 	 * itself is the shared `.state-note` idiom (ink-signal.css). A failed fetch
 	 * is not the reader's mistake, so it is set in apparatus ink, not danger. */
 	.map-state-note {
+		position: absolute;
+		inset: 0;
+		z-index: calc(var(--z-dropdown) + 1);
+		background: var(--color-surface);
 		width: 100%;
 		height: 100%;
 	}

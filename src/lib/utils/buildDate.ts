@@ -15,3 +15,6 @@
 export const BUILT_AT: Date = new Date(
 	typeof __BUILT_AT__ === 'string' ? __BUILT_AT__ : Date.now()
 );
+
+/** Stable calendar date for prerendering and hydration in any time zone. */
+export const BUILT_DATE = BUILT_AT.toISOString().slice(0, 10);

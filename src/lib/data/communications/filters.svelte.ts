@@ -4,6 +4,7 @@
  * Instantiates the runed EntityFilterSystem for the /conference-activity index.
  */
 
+import { countOccurrences, byFrequencyThenAlpha } from '$lib/utils/facetOrdering';
 import type { CommunicationSummary, YearRange } from '$lib/types';
 import {
 	allCommunicationSummaries as allCommunications,
@@ -12,12 +13,13 @@ import {
 	communicationSummaryTags as allTags,
 	communicationSummariesByCountry as communicationsByCountry
 } from './summaries';
+import { author as siteAuthor } from '$lib/data/siteConfig';
 import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 
 // --- Computed unique values ---
 
 const allCoAuthors = Array.from(new Set(allCommunications.flatMap((comm) => comm.authors || [])))
-	.filter((author) => author !== 'Frédérick Madore')
+	.filter((author) => author !== siteAuthor.name)
 	.sort();
 
 const allLanguages = Array.from(
@@ -39,22 +41,10 @@ const allProjects = Array.from(
 // --- Facet ordering by frequency ---
 // Tags and co-authors surface most-used first so the truncated sidebar facet
 // lists show the meaningful ones; ties fall back to alphabetical.
-function countOccurrences(lists: string[][]): Map<string, number> {
-	// eslint-disable-next-line svelte/prefer-svelte-reactivity -- build-time tally, never reactive
-	const freq = new Map<string, number>();
-	for (const list of lists) {
-		for (const value of list) freq.set(value, (freq.get(value) ?? 0) + 1);
-	}
-	return freq;
-}
-
-function byFrequencyThenAlpha(values: string[], freq: Map<string, number>): string[] {
-	return [...values].sort((a, b) => (freq.get(b) ?? 0) - (freq.get(a) ?? 0) || a.localeCompare(b));
-}
 
 const tagFrequency = countOccurrences(allCommunications.map((comm) => comm.tags ?? []));
 const coAuthorFrequency = countOccurrences(
-	allCommunications.map((comm) => (comm.authors ?? []).filter((a) => a !== 'Frédérick Madore'))
+	allCommunications.map((comm) => (comm.authors ?? []).filter((a) => a !== siteAuthor.name))
 );
 
 // --- Filter System ---
@@ -93,10 +83,10 @@ export const communicationFilters = new EntityFilterSystem<CommunicationSummary>
 		authors: {
 			match: (comm: CommunicationSummary, values: string[]) => {
 				const authors = comm.authors || [];
-				return authors.some((a) => a !== 'Frédérick Madore' && values.includes(a));
+				return authors.some((a) => a !== siteAuthor.name && values.includes(a));
 			},
 			countExtractor: (comm: CommunicationSummary) =>
-				comm.authors?.filter((a) => a !== 'Frédérick Madore')
+				comm.authors?.filter((a) => a !== siteAuthor.name)
 		},
 		countries: {
 			match: (comm: CommunicationSummary, values: string[]) =>

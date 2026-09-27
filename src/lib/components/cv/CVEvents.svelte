@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
 	import { formatCVAuthorList, terminalPeriod } from '$lib/utils/cvFormatters';
-	import { formatDayMonth } from '$lib/utils/date-formatter';
+	import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVSection from './CVSection.svelte';
 
@@ -11,7 +11,7 @@
 <CVSection
 	title="Organisation of Academic Events"
 	items={organizedEvents}
-	year={(comm) => new Date(comm.dateISO).getFullYear()}
+	year={(comm) => getYearFromISODate(comm.dateISO)}
 	key={(comm) => comm.id}
 	conditional
 >

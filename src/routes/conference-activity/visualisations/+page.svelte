@@ -17,7 +17,7 @@
 	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
 	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
-	import NetworkGraph from '$lib/components/visualisations/NetworkGraph.svelte';
+	import InstitutionNetworkSection from '$lib/components/visualisations/InstitutionNetworkSection.svelte';
 	import NetworkMatrix from '$lib/components/visualisations/NetworkMatrix.svelte';
 	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
@@ -194,9 +194,6 @@
 	// same panel, workshop, or event. Small affiliation corpus, so thresholds stay
 	// at 1/1 (see buildInstitutionNetwork). Olive entity nodes.
 	const institutionNetwork = $derived(buildInstitutionNetwork(allCommunications));
-	const institutionSuggestions = $derived(institutionNetwork.nodes.map((n) => n.id));
-	let institutionTopN = $state(20);
-	let institutionSearch = $state('');
 
 	// Tag co-occurrence network: tags linked when they appear on the same
 	// communication. Keeps the page symmetric with the publications one.
@@ -664,43 +661,7 @@
 		/>
 	</VizSection>
 
-	<VizSection
-		{...sections.institutions}
-		description="Institutions are linked when their members appeared in the same panel, workshop, or event. Node size reflects how many talks each institution took part in. This one stays a map rather than a matrix: the question here is which institutions cluster together, and spatial grouping answers it more directly than a grid of pairs."
-		variant="network"
-		height="500px"
-		hasData={institutionNetwork.nodes.length > 0}
-		empty="No institutions recorded."
-	>
-		{#snippet controls()}
-			{#if institutionNetwork.nodes.length > 0}
-				<NetworkControls
-					bind:topN={institutionTopN}
-					bind:searchQuery={institutionSearch}
-					maxN={institutionNetwork.nodes.length}
-					searchLabel="Search institutions"
-					searchPlaceholder="Type an institution…"
-					entityLabel="institutions"
-					suggestions={institutionSuggestions}
-				/>
-			{/if}
-		{/snippet}
-		<NetworkGraph
-			nodes={institutionNetwork.nodes}
-			edges={institutionNetwork.edges}
-			entityColor="sage"
-			maxNodes={institutionTopN}
-			highlightQuery={institutionSearch}
-			filename="institution-network"
-			labels={{
-				itemSingular: 'talk',
-				itemPlural: 'Talks',
-				entityNode: 'Institutions',
-				cooccurrenceEdge: 'Shared event',
-				cooccurrenceShared: 'Talks in common'
-			}}
-		/>
-	</VizSection>
+	<InstitutionNetworkSection network={institutionNetwork} section={sections.institutions} />
 
 	<VizSection
 		{...sections.projects}

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
 	import { formatCVAuthorList, terminalPeriod } from '$lib/utils/cvFormatters';
-	import { formatDayMonth } from '$lib/utils/date-formatter';
+	import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
@@ -20,9 +20,8 @@
 			<h4>Panels organised</h4>
 			<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 				{#each organizedPanels as comm (comm.id)}
-					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
-					<CVEntry year={commDate.getFullYear()}>
+					<CVEntry year={getYearFromISODate(comm.dateISO)}>
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}
@@ -41,9 +40,8 @@
 			<h4>Papers presented</h4>
 			<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 				{#each presentedPapers as comm (comm.id)}
-					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
-					<CVEntry year={commDate.getFullYear()}>
+					<CVEntry year={getYearFromISODate(comm.dateISO)}>
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}
@@ -60,9 +58,8 @@
 			<h4>Posters presented</h4>
 			<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 				{#each presentedPosters as comm (comm.id)}
-					{@const commDate = new Date(comm.dateISO)}
 					{@const formattedAuthors = formatCVAuthorList(comm.authors)}
-					<CVEntry year={commDate.getFullYear()}>
+					<CVEntry year={getYearFromISODate(comm.dateISO)}>
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}

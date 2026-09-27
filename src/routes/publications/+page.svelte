@@ -5,6 +5,7 @@
 	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
 	import { publicationFilters } from '$lib/data/publications/filters.svelte';
 	import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
+	import { usePagination } from '$lib/utils/pagination.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import EntityFilterBar from '$lib/components/entity-index/EntityFilterBar.svelte';
 	import EntityFacetGrid from '$lib/components/entity-index/EntityFacetGrid.svelte';
@@ -53,7 +54,6 @@
 		}
 	};
 	let activeSort = $state<'date' | 'title'>('date');
-	let currentPage = $state(1);
 	const PER_PAGE = 12;
 
 	// Mobile: the whole facet apparatus collapses behind a toggle.
@@ -109,19 +109,8 @@
 	// Count of active filter dimensions, for the "N FILTERS ACTIVE" readout.
 	const activeFilterCount = $derived(filters.activeFilterCount + (searchTerm.trim() ? 1 : 0));
 
-	// Reset to page 1 whenever the visible list identity changes (filters/search/sort).
-	// Reading the derived lengths + sort registers the dependencies.
-	$effect(() => {
-		void matchCount;
-		void activeSort;
-		void searchTerm;
-		currentPage = 1;
-	});
-
-	// Clamp page if the list shrinks below the current window.
-	const totalPages = $derived(Math.max(1, Math.ceil(matchCount / PER_PAGE)));
-	const pageStart = $derived((Math.min(currentPage, totalPages) - 1) * PER_PAGE);
-	const pagePublications = $derived(sortedPublications.slice(pageStart, pageStart + PER_PAGE));
+	const pagination = usePagination(() => sortedPublications, PER_PAGE);
+	const pagePublications = $derived(pagination.items);
 
 	// Bibliography rows carry a hanging year, printed only when the year changes
 	// down the (date-sorted) list. Also flag the single newest entry as the lead.
@@ -132,7 +121,7 @@
 			lastYear = pub.year;
 			// The featured lead: first row of page 1 when sorted by date and
 			// nothing is being filtered — the newest record, given the plate.
-			const isLead = i === 0 && currentPage === 1 && activeSort === 'date' && !anyNarrowing;
+			const isLead = i === 0 && pagination.page === 1 && activeSort === 'date' && !anyNarrowing;
 			return { pub, yearLabel: showYear ? pub.year : null, isLead };
 		});
 	});
@@ -234,10 +223,10 @@
 			</ol>
 
 			<Pagination
-				page={currentPage}
+				page={pagination.page}
 				perPage={PER_PAGE}
 				total={matchCount}
-				onchange={(p) => (currentPage = p)}
+				onchange={(p) => (pagination.page = p)}
 				scrollTargetId="bibliography"
 			/>
 		{:else}

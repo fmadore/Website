@@ -756,6 +756,10 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	/* The honest state fills the plate the map would have occupied; the panel
 	 * itself is the shared `.state-note` idiom (ink-signal.css). */
 	.map-state-note {
+		position: absolute;
+		inset: 0;
+		z-index: calc(var(--z-dropdown) + 1);
+		background: var(--color-surface);
 		width: 100%;
 		height: 100%;
 	}

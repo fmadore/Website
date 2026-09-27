@@ -15,14 +15,13 @@
 	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
 	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
-	import VizChartCard from '$lib/components/visualisations/VizChartCard.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
 	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
 	import LanguageToggle, {
 		languageToggleOptions
 	} from '$lib/components/visualisations/LanguageToggle.svelte';
-	import Pagination from '$lib/components/molecules/Pagination.svelte';
+	import CitationSections from '$lib/components/visualisations/CitationSections.svelte';
 	import {
 		buildLocationData,
 		tallyBy,
@@ -67,11 +66,6 @@
 		tallyBy(allPublications, (pub) =>
 			pub.citedBy?.flatMap((citation) => (Array.isArray(citation.authors) ? citation.authors : []))
 		).map(({ key, count }) => ({ author: key, count }))
-	);
-
-	// Calculate maximum citation count for consistent x-axis scale across pagination
-	const maxCitationCount = $derived(
-		citedAuthorsData.length > 0 ? Math.max(...citedAuthorsData.map((d) => d.count)) : 0
 	);
 
 	// Split comma-separated languages and count each one
@@ -178,7 +172,6 @@
 	// The newest bar on a year axis takes pine — the Year-Bar Strip idiom. Every
 	// other bar on the page is ink.
 	const latestPagesYear = $derived(pagesPerYearData.at(-1)?.year);
-	const latestCitationYear = $derived(citationsPerYearData.at(-1)?.year);
 
 	// Author collaboration network (nodes + weighted edges), built by the shared
 	// tested aggregator. `collaborators` counts the non-centre nodes for the heading.
@@ -339,14 +332,8 @@
 	);
 
 	// Accessor functions for the year-axis bar charts
-	const getYear = (d: CitationYearData) => d.year;
-	const getCitationCount = (d: CitationYearData) => d.count;
 	const getPagesYear = (d: PagesPerYearData) => d.year;
 	const getPagesCount = (d: PagesPerYearData) => d.pages;
-
-	// Accessor functions for the horizontal bar charts
-	const getAuthorName = (d: CitedAuthorData) => d.author;
-	const getAuthorCitationCount = (d: CitedAuthorData) => d.count;
 
 	/*
 	 * The figures behind each plate.
@@ -421,17 +408,6 @@
 			? 'The countries of the publishers and journals, taken from the place of publication recorded on each work.'
 			: 'The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications.'
 	);
-	const citationsTableRows = $derived(
-		citationsPerYearData.map((d) => ({ label: String(d.year), value: d.count }))
-	);
-
-	// Pagination state for the cited-authors chart (1-based, Pagination component)
-	const AUTHORS_PER_PAGE = 15;
-	let currentPage = $state(1);
-	const pagedAuthors = $derived(
-		citedAuthorsData.slice((currentPage - 1) * AUTHORS_PER_PAGE, currentPage * AUTHORS_PER_PAGE)
-	);
-
 	// Full-text language filter, shared by the term cloud and the bigrams chart.
 	type CorpusLanguage = 'all' | 'en' | 'fr';
 	let corpusLanguage = $state<CorpusLanguage>('all');
@@ -951,83 +927,12 @@
 		{/snippet}
 	</VizSection>
 
-	<VizSection
-		{...sections.citationsPerYear}
-		description="Citations counted in the year the citing work appeared. They are swept from OpenAlex and from full-text searches of Google Books, HAL and Wikipedia, then recorded against the work cited, so this counts what the record holds rather than what an index estimates."
-		height="400px"
-		hasData={citationsPerYearData.length > 0}
-		empty="No citations recorded."
-	>
-		<EChartsBarChart
-			data={citationsPerYearData}
-			xAccessor={getYear}
-			yAccessor={getCitationCount}
-			accentKey={latestCitationYear}
-			measure="Citations per year"
-			itemSingular="citation"
-			itemPlural="citations"
-		/>
-		{#snippet table()}
-			<VizDataTable
-				rows={citationsTableRows}
-				keyLabel="Year"
-				valueLabel="Citations"
-				caption="Recorded citations counted in the year the citing work appeared."
-			/>
-		{/snippet}
-	</VizSection>
-
-	<!-- Paginated: the chart is followed by the pager, so this section composes
-	     VizChartCard itself rather than delegating. The `{#key}` sits INSIDE the
-	     card, not around it: re-creating the card on every page turn would also
-	     re-create its `use:inView` gate, and the reader would see "Loading
-	     chart…" flash between two instant states. This way the plate is gated
-	     once, on the way down the page, and the pager only redraws the chart. -->
-	<VizSection
-		{...sections.citingAuthors}
-		description="The authors who cite the work most often, from the same recorded citations. The scale is fixed across pages so bars stay comparable."
-	>
-		{#if citedAuthorsData.length > 0}
-			<VizChartCard height="{Math.max(350, pagedAuthors.length * 35 + 70)}px">
-				{#key currentPage}
-					<EChartsHorizontalBarChart
-						data={pagedAuthors}
-						xAccessor={getAuthorCitationCount}
-						yAccessor={getAuthorName}
-						measure="Citations per author"
-						maxValue={maxCitationCount}
-						itemSingular="author"
-						itemPlural="authors"
-						descriptionLead="Most citations"
-					/>
-				{/key}
-				{#snippet table()}
-					<VizDataTable
-						rows={pagedAuthors.map((d) => ({ label: d.author, value: d.count }))}
-						keyLabel="Author"
-						valueLabel="Citations"
-						caption="The authors on this page of the chart, with the number of times each cites the record."
-					/>
-				{/snippet}
-			</VizChartCard>
-
-			<Pagination
-				page={currentPage}
-				perPage={AUTHORS_PER_PAGE}
-				total={citedAuthorsData.length}
-				onchange={(p) => (currentPage = p)}
-			/>
-		{:else}
-			<VizChartCard hasData={false}>
-				{#snippet placeholder()}
-					<div class="viz-empty">
-						<span class="dateline">No data</span>
-						<p>No citing authors recorded.</p>
-					</div>
-				{/snippet}
-			</VizChartCard>
-		{/if}
-	</VizSection>
+	<CitationSections
+		years={citationsPerYearData}
+		authors={citedAuthorsData}
+		yearSection={sections.citationsPerYear}
+		authorSection={sections.citingAuthors}
+	/>
 </div>
 
 <style>

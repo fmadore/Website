@@ -18,7 +18,7 @@
 </script>
 
 <script lang="ts">
-	import { scaleTime } from 'd3-scale';
+	import { scaleUtc } from 'd3-scale';
 	import { type TimelineItem, TIMELINE_CATEGORIES, getCategoryColor } from '$lib/types/timeline';
 	import TimelineTooltip from './timeline/TimelineTooltip.svelte';
 	import TimelineDetailCard from './timeline/TimelineDetailCard.svelte';
@@ -64,8 +64,11 @@
 	// Calculate the year domain
 	const yearDomain = $derived.by((): [Date, Date] => {
 		if (items.length === 0) {
-			const currentYear = now.getFullYear();
-			return [new Date(currentYear - 20, 0, 1), new Date(currentYear + 1, 11, 31)];
+			const currentYear = now.getUTCFullYear();
+			return [
+				new Date(Date.UTC(currentYear - 20, 0, 1)),
+				new Date(Date.UTC(currentYear + 1, 11, 31))
+			];
 		}
 
 		const allDates = items.flatMap((item) => {
@@ -82,31 +85,31 @@
 		const maxDate = new Date(Math.max(...allDates.map((d) => d.getTime())));
 
 		// Add some padding
-		minDate.setFullYear(minDate.getFullYear() - 2);
-		maxDate.setFullYear(maxDate.getFullYear() + 1);
+		minDate.setUTCFullYear(minDate.getUTCFullYear() - 2);
+		maxDate.setUTCFullYear(maxDate.getUTCFullYear() + 1);
 
 		return [minDate, maxDate];
 	});
 
-	const xScale = $derived(scaleTime().domain(yearDomain).range([0, innerWidth]));
+	const xScale = $derived(scaleUtc().domain(yearDomain).range([0, innerWidth]));
 
 	// Generate x-axis ticks
 	const xTicks = $derived.by(() => {
 		const [minDate, maxDate] = yearDomain;
 		const ticks: Date[] = [];
-		const startYear = Math.ceil(minDate.getFullYear() / 5) * 5;
-		const endYear = maxDate.getFullYear();
+		const startYear = Math.ceil(minDate.getUTCFullYear() / 5) * 5;
+		const endYear = maxDate.getUTCFullYear();
 
 		for (let year = startYear; year <= endYear; year += 5) {
-			ticks.push(new Date(year, 0, 1));
+			ticks.push(new Date(Date.UTC(year, 0, 1)));
 		}
 		return ticks;
 	});
 
 	function formatRange(item: TimelineItem): string {
-		const start = item.startDate.getFullYear();
+		const start = item.startDate.getUTCFullYear();
 		if (item.endDate) {
-			const end = item.endDate.getFullYear();
+			const end = item.endDate.getUTCFullYear();
 			return end === start ? `${start}` : `${start}–${end}`;
 		}
 		if (item.isOngoing) return `${start}–present`;
@@ -346,7 +349,7 @@
 							<g transform="translate({x}, 0)">
 								<line y1="0" y2="-6" class="tick-line" />
 								<text y="-12" text-anchor="middle" class="tick-label">
-									{tick.getFullYear()}
+									{tick.getUTCFullYear()}
 								</text>
 							</g>
 						{/if}

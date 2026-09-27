@@ -40,7 +40,7 @@
 		const years = allDhProjects
 			.map((p) => parseInt(p.years.slice(0, 4), 10))
 			.filter((y) => !Number.isNaN(y));
-		const earliest = years.length > 0 ? Math.min(...years) : BUILT_AT.getFullYear();
+		const earliest = years.length > 0 ? Math.min(...years) : BUILT_AT.getUTCFullYear();
 		return formatProjectPeriod(`${earliest}-`);
 	})();
 
@@ -73,7 +73,7 @@
 		);
 	const AXIS_START = spans.length > 0 ? Math.min(...spans.map((row) => row.span.start)) : 0;
 	const AXIS_END = Math.max(
-		BUILT_AT.getFullYear(),
+		BUILT_AT.getUTCFullYear(),
 		...spans.map((row) => (row.span.open ? 0 : row.span.end))
 	);
 	const AXIS_SPAN = Math.max(1, AXIS_END - AXIS_START);

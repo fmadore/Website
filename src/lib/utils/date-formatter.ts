@@ -10,8 +10,9 @@ export function formatDisplayDate(isoDate: string): string {
 
 	const date = new Date(isoDate);
 
-	// Format the date as "DD Month YYYY"
+	// Date-only input is a calendar date. UTC keeps it unchanged for every reader.
 	return date.toLocaleDateString('en-GB', {
+		timeZone: 'UTC',
 		day: 'numeric',
 		month: 'long',
 		year: 'numeric'
@@ -30,6 +31,7 @@ export function formatDayMonth(isoDate: string): string {
 	}
 
 	return new Date(isoDate).toLocaleDateString('en-GB', {
+		timeZone: 'UTC',
 		day: 'numeric',
 		month: 'long'
 	});

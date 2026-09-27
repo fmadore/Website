@@ -23,24 +23,8 @@
  * counts key, and folding it into the display form would break all three.
  */
 
-/** Combining marks left behind by NFD decomposition. */
-const COMBINING_MARKS = /\p{M}/gu;
-
-/** Typographic apostrophes and single quotes, folded to the typed one. */
-const CURLY_APOSTROPHES = /[‘’ʼ′]/g;
-
-/**
- * Folds a string for comparison: NFD-decomposed, combining marks stripped,
- * apostrophes normalised, lower-cased. `foldFacetText("Côte d’Ivoire")` and a
- * typed `cote d'ivoire` land on the same string.
- */
-export function foldFacetText(value: string): string {
-	return value
-		.normalize('NFD')
-		.replace(COMBINING_MARKS, '')
-		.replace(CURLY_APOSTROPHES, "'")
-		.toLowerCase();
-}
+export { normalizeSearchText as foldFacetText } from '$lib/utils/searchText';
+import { normalizeSearchText as foldFacetText } from '$lib/utils/searchText';
 
 /**
  * Orders options by live count descending, then alphabetically. The count is

@@ -7,6 +7,7 @@ for (const command of [
 	'check',
 	'mcp:check',
 	'test:coverage',
+	'test:timezones',
 	'test:lifecycle',
 	'check:generated',
 	'check:fonts',

@@ -123,8 +123,16 @@ npm run start:http -w mcp
 ```
 
 The MCP endpoint is `http://localhost:7860/mcp`; `/` and `/healthz` return a small health
-document. Set `PORT`, `WEBSITE_API_BASE`, and (for a public deployment outside Hugging Face)
-`ALLOWED_HOSTS` as needed. `SPACE_HOST` is accepted automatically on Hugging Face Spaces.
+document. Local runs bind to `127.0.0.1`. Set `MCP_BIND_HOST=0.0.0.0` deliberately for
+containers or public hosting; Hugging Face Spaces select this automatically when
+`SPACE_HOST` is present. `PORT` and `WEBSITE_API_BASE` remain configurable.
+
+Host and Origin guards use the SDK validators. Loopback hostnames and `SPACE_HOST`
+are trusted; add comma-separated hostnames (without scheme or port) through
+`ALLOWED_HOSTS` and, separately, `ALLOWED_ORIGIN_HOSTS`. The Origin policy is
+hostname-based; ports on those trusted hosts are not restricted. Native clients
+without Origin are accepted; untrusted, malformed, and null origins are rejected.
+Forwarded headers do not override these guards; configure the proxy's actual Host.
 
 `get_citation` is not reimplemented here — the build aliases `$lib` and bundles the site's
 own `bibtexGenerator` and `citationFormatter`, so the BibTeX this returns is byte-identical

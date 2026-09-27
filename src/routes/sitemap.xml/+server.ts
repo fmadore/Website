@@ -21,7 +21,6 @@ interface SitemapEntry {
 	path: string;
 	priority: number;
 	changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
-	lastmod?: string;
 }
 
 // Research project routes derived from the route tree so the sitemap can't
@@ -52,11 +51,8 @@ const researchProjectPaths = Object.keys(researchRouteModules)
 	.map((file) => file.replace('/src/routes', '').replace('/+page.svelte', ''))
 	.filter((path) => !path.includes('[') && !redirectStubPaths.has(path));
 
-// Valid W3C datetime forms accepted by sitemap <lastmod>: YYYY, YYYY-MM, YYYY-MM-DD.
-const W3C_DATE = /^\d{4}(-\d{2}(-\d{2})?)?$/;
-const toLastmod = (dateISO?: string): string | undefined =>
-	dateISO && W3C_DATE.test(dateISO) ? dateISO : undefined;
-
+// Event and publication dates are not modification dates. Omit lastmod until
+// records provide explicit page-modification metadata.
 export const GET: RequestHandler = async () => {
 	const website = site.url;
 
@@ -108,8 +104,7 @@ export const GET: RequestHandler = async () => {
 	const activityPages: SitemapEntry[] = activitiesByDate.map((activity) => ({
 		path: `/activities/${activity.id}`,
 		priority: 0.7,
-		changefreq: 'yearly' as const,
-		lastmod: toLastmod(activity.dateISO)
+		changefreq: 'yearly' as const
 	}));
 
 	// Activity year archive pages
@@ -124,16 +119,14 @@ export const GET: RequestHandler = async () => {
 	const publicationPages: SitemapEntry[] = allPublications.map((pub) => ({
 		path: `/publications/${pub.id}`,
 		priority: 0.7,
-		changefreq: 'yearly' as const,
-		lastmod: toLastmod(pub.dateISO)
+		changefreq: 'yearly' as const
 	}));
 
 	// Communication pages
 	const communicationPages: SitemapEntry[] = allCommunications.map((comm) => ({
 		path: `/communications/${comm.id}`,
 		priority: 0.7,
-		changefreq: 'yearly' as const,
-		lastmod: toLastmod(comm.dateISO)
+		changefreq: 'yearly' as const
 	}));
 
 	// Combine all entries
@@ -150,15 +143,12 @@ export const GET: RequestHandler = async () => {
 	// Build the sitemap XML with proper formatting
 	const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset
-    xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
-    xmlns:xhtml="https://www.w3.org/1999/xhtml"
-    xmlns:image="https://www.google.com/schemas/sitemap-image/1.1"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 >
 ${allEntries
 	.map((entry) => {
-		const lastmod = entry.lastmod ? `\n        <lastmod>${entry.lastmod}</lastmod>` : '';
 		return `    <url>
-        <loc>${website}${entry.path}</loc>${lastmod}
+        <loc>${website}${entry.path}</loc>
         <changefreq>${entry.changefreq}</changefreq>
         <priority>${entry.priority.toFixed(1)}</priority>
     </url>`;

@@ -26,13 +26,52 @@ test('visited pages reload offline and unvisited pages show the offline document
 	await page.goto('/publications?type=book');
 	await ready(page);
 	await expect(page.getByRole('button', { name: /^Books/ })).toHaveClass(/chip--selected/);
-	await page.waitForFunction(async () => !!(await caches.match(location.href)));
+	await page.waitForFunction(
+		async () => !!(await caches.match(location.origin + location.pathname))
+	);
 	await context.setOffline(true);
 	await page.reload();
 	await ready(page);
 	await expect(page.getByRole('button', { name: /^Books/ })).toHaveClass(/chip--selected/);
 	await page.goto('/not-previously-visited-offline');
 	await expect(page.getByRole('heading', { level: 1 })).toContainText('offline');
+});
+
+test('client-side visits to an index and detail page survive offline reloads', async ({
+	page,
+	context
+}) => {
+	await page.goto('/');
+	await ready(page);
+	await page.waitForFunction(() => !!navigator.serviceWorker.controller);
+	await page.evaluate(() => {
+		(window as Window & { navigationMarker?: boolean }).navigationMarker = true;
+	});
+	await page.getByRole('link', { name: 'Publications', exact: true }).first().click();
+	await expect(page).toHaveURL(/\/publications$/);
+	expect(
+		await page.evaluate(() => (window as Window & { navigationMarker?: boolean }).navigationMarker)
+	).toBe(true);
+	await page.getByRole('button', { name: /^Books/ }).click();
+	await expect(page).toHaveURL(/type=book/);
+	await page.waitForFunction(
+		async () => !!(await caches.match(location.origin + location.pathname))
+	);
+	await context.setOffline(true);
+	await page.reload();
+	await ready(page);
+	await expect(page.getByRole('button', { name: /^Books/ })).toHaveClass(/chip--selected/);
+	await context.setOffline(false);
+	await page.locator('.bib-item a[href^="/publications/"]').first().click();
+	await expect(page).toHaveURL(/\/publications\/[^?]+$/);
+	const title = await page.getByRole('heading', { level: 1 }).textContent();
+	await page.waitForFunction(
+		async () => !!(await caches.match(location.origin + location.pathname))
+	);
+	await context.setOffline(true);
+	await page.reload();
+	await ready(page);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(title!);
 });
 
 /** Exercise the update prompt deterministically; caching itself uses a real worker above. */
