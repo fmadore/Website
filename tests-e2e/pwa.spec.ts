@@ -41,8 +41,30 @@ test('client-side visits to an index and detail page survive offline reloads', a
 	page,
 	context
 }) => {
+	// Bootstrap modules loaded before worker control must be in CacheStorage;
+	// the browser's HTTP cache must not make an incomplete offline cache pass.
+	const network = await context.newCDPSession(page);
+	await network.send('Network.setCacheDisabled', { cacheDisabled: true });
+	await page.addInitScript(() => {
+		if (sessionStorage.getItem('worker-started')) return;
+		const register = navigator.serviceWorker.register.bind(navigator.serviceWorker);
+		const gate = new Promise<void>((resolve) => {
+			(window as Window & { startWorker?: () => void }).startWorker = () => {
+				sessionStorage.setItem('worker-started', 'true');
+				resolve();
+			};
+		});
+		navigator.serviceWorker.register = async (...args) => {
+			await gate;
+			return register(...args);
+		};
+	});
 	await page.goto('/');
 	await ready(page);
+	expect(await page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(false);
+	await page.evaluate(() => {
+		(window as Window & { startWorker?: () => void }).startWorker?.();
+	});
 	await page.waitForFunction(() => !!navigator.serviceWorker.controller);
 	await page.evaluate(() => {
 		(window as Window & { navigationMarker?: boolean }).navigationMarker = true;
@@ -54,9 +76,17 @@ test('client-side visits to an index and detail page survive offline reloads', a
 	).toBe(true);
 	await page.getByRole('button', { name: /^Books/ }).click();
 	await expect(page).toHaveURL(/type=book/);
-	await page.waitForFunction(
-		async () => !!(await caches.match(location.origin + location.pathname))
-	);
+	await page.waitForFunction(async () => {
+		const assets = performance
+			.getEntriesByType('resource')
+			.map(({ name }) => name)
+			.filter((url) => /\/app\/immutable\/.*\.(?:js|css)$/.test(url));
+		const cached = await Promise.all(
+			[location.origin + location.pathname, ...assets].map((url) => caches.match(url))
+		);
+		return cached.every(Boolean);
+	});
+	await network.send('Network.clearBrowserCache');
 	await context.setOffline(true);
 	await page.reload();
 	await ready(page);
@@ -68,6 +98,7 @@ test('client-side visits to an index and detail page survive offline reloads', a
 	await page.waitForFunction(
 		async () => !!(await caches.match(location.origin + location.pathname))
 	);
+	await network.send('Network.clearBrowserCache');
 	await context.setOffline(true);
 	await page.reload();
 	await ready(page);

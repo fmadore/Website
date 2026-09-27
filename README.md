@@ -74,7 +74,8 @@ Visited pages are cached after both direct and in-app navigation, including page
 first opened before the service worker takes control. Filter/search URLs reuse
 one static document while retaining their URL state. Documents and API responses
 share a 150-entry runtime cache; images use a separate 80-entry cache. Immutable
-build scripts are retained for that deployment. Unvisited or evicted pages show
+build scripts and styles already used before worker control are copied into that
+deployment's asset cache. Unvisited or evicted pages show
 the offline fallback. Fonts retain normal browser HTTP caching.
 
 ## Development

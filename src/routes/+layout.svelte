@@ -39,7 +39,13 @@
 
 	function cacheCurrentPage() {
 		if ('serviceWorker' in navigator) {
-			navigator.serviceWorker.controller?.postMessage?.({ type: 'CACHE_PAGE', url: location.href });
+			navigator.serviceWorker.controller?.postMessage?.({
+				type: 'CACHE_PAGE',
+				url: location.href,
+				// The first document's modules may have loaded before worker control.
+				// Seed only resources already used, never the whole build manifest.
+				assets: performance.getEntriesByType('resource').map(({ name }) => name)
+			});
 		}
 	}
 	onMount(() => {

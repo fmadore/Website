@@ -22,3 +22,20 @@ export function navigationTarget(
 		return null;
 	}
 }
+
+/** Already-used resources are accepted only if they belong to this build. */
+export function navigationAssets(
+	hrefs: unknown,
+	origin: string,
+	assets: ReadonlySet<string>
+): string[] {
+	if (!Array.isArray(hrefs)) return [];
+	return [
+		...new Set(
+			hrefs.flatMap((href) => {
+				const target = navigationTarget(href, origin, assets);
+				return target ? [target] : [];
+			})
+		)
+	];
+}
