@@ -1,5 +1,18 @@
 import { test, expect, ready } from './fixtures';
 
+async function cachedPage(page: import('@playwright/test').Page) {
+	await page.waitForFunction(async () => {
+		const assets = performance
+			.getEntriesByType('resource')
+			.map(({ name }) => name)
+			.filter((url) => /\/app\/immutable\/.*\.(?:js|css)$/.test(url));
+		const cached = await Promise.all(
+			[location.origin + location.pathname, ...assets].map((url) => caches.match(url))
+		);
+		return cached.every(Boolean);
+	});
+}
+
 test('the app owns exactly one service-worker registration', async ({ page }) => {
 	await page.goto('/');
 	await ready(page);
@@ -76,16 +89,7 @@ test('client-side visits to an index and detail page survive offline reloads', a
 	).toBe(true);
 	await page.getByRole('button', { name: /^Books/ }).click();
 	await expect(page).toHaveURL(/type=book/);
-	await page.waitForFunction(async () => {
-		const assets = performance
-			.getEntriesByType('resource')
-			.map(({ name }) => name)
-			.filter((url) => /\/app\/immutable\/.*\.(?:js|css)$/.test(url));
-		const cached = await Promise.all(
-			[location.origin + location.pathname, ...assets].map((url) => caches.match(url))
-		);
-		return cached.every(Boolean);
-	});
+	await cachedPage(page);
 	await network.send('Network.clearBrowserCache');
 	await context.setOffline(true);
 	await page.reload();
@@ -95,9 +99,7 @@ test('client-side visits to an index and detail page survive offline reloads', a
 	await page.locator('.bib-item a[href^="/publications/"]').first().click();
 	await expect(page).toHaveURL(/\/publications\/[^?]+$/);
 	const title = await page.getByRole('heading', { level: 1 }).textContent();
-	await page.waitForFunction(
-		async () => !!(await caches.match(location.origin + location.pathname))
-	);
+	await cachedPage(page);
 	await network.send('Network.clearBrowserCache');
 	await context.setOffline(true);
 	await page.reload();
