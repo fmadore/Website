@@ -59,3 +59,37 @@ test('facet combobox supports keyboard selection and accessible open state', asy
 	const results = await wcagScan(page).include('.facet-combobox').analyze();
 	expect(results.violations).toEqual([]);
 });
+
+test('an unavailable basemap offers a retry that restores the map', async ({ page }) => {
+	const style = '**://basemaps.cartocdn.com/**/style.json';
+	await page.route(style, (route) => route.abort());
+	await page.goto('/conference-activity');
+	await ready(page);
+	await page.getByRole('button', { name: 'Map', exact: true }).click();
+	await expect(page.locator('.maplibregl-canvas')).toBeVisible();
+	const retry = page.getByRole('button', { name: 'Retry map', exact: true });
+	await expect(retry).toBeVisible();
+	await page.route(style, (route) =>
+		route.fulfill({ json: { version: 8, sources: {}, layers: [] } })
+	);
+	await retry.click();
+	await expect(retry).toHaveCount(0);
+	await expect(page.locator('.maplibregl-canvas')).toBeVisible();
+	await expect(page.locator('.map-legend')).toBeVisible();
+});
+
+test('the talks map and list both apply the text query', async ({ page }) => {
+	await page.route('**://basemaps.cartocdn.com/**/style.json', (route) =>
+		route.fulfill({ json: { version: 8, sources: {}, layers: [] } })
+	);
+	await page.goto('/conference-activity?q=zzzz_no_results');
+	await ready(page);
+	await page.getByRole('button', { name: 'Map', exact: true }).click();
+	await expect(page.locator('.maplibregl-canvas')).toBeVisible();
+	await expect(page.locator('.bib-item')).toHaveCount(0);
+	await expect(page.locator('.map-legend')).toHaveCount(0);
+	const search = page.getByRole('searchbox');
+	await search.fill('');
+	await expect(page.locator('.bib-item').first()).toBeVisible();
+	await expect(page.locator('.map-legend')).toBeVisible();
+});

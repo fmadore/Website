@@ -6,12 +6,13 @@
 	import { communicationFilters } from '$lib/data/communications/filters.svelte';
 	import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
 	import UpcomingCommunications from '$lib/components/communications/UpcomingCommunications.svelte';
+	import { usePagination } from '$lib/utils/pagination.svelte';
 	import Pagination from '$lib/components/molecules/Pagination.svelte';
 	import EntityFilterBar from '$lib/components/entity-index/EntityFilterBar.svelte';
 	import EntityFacetGrid from '$lib/components/entity-index/EntityFacetGrid.svelte';
 	import { onMount } from 'svelte';
 	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
-	import { BUILT_AT } from '$lib/utils/buildDate';
+	import { BUILT_DATE } from '$lib/utils/buildDate';
 	import { localISODate } from '$lib/utils/date-formatter';
 	import { sortItems } from '$lib/utils/sortUtils';
 	import {
@@ -58,7 +59,6 @@
 		}
 	};
 	let activeSort = $state<'date' | 'title'>('date');
-	let currentPage = $state(1);
 	const PER_PAGE = 15;
 
 	// Mobile: the whole facet apparatus collapses behind a toggle.
@@ -108,7 +108,7 @@
 	// prerendered, so it hydrates with the build's date — the split the HTML was
 	// rendered with — and moves to the reader's own day once mounted, when a
 	// talk that has happened since the build drops out of "Upcoming".
-	let today = $state(localISODate(BUILT_AT));
+	let today = $state(BUILT_DATE);
 	onMount(() => {
 		today = localISODate(new Date());
 	});
@@ -145,7 +145,7 @@
 
 	// Map markers from the filtered set (independent of the upcoming/past split).
 	const mapMarkers = $derived(
-		filters.filteredItems
+		searchedCommunications
 			.filter((comm: CommunicationSummary) => comm.coordinates)
 			.map((comm: CommunicationSummary) => ({
 				id: comm.id,
@@ -157,18 +157,8 @@
 			}))
 	);
 
-	// Reset to page 1 whenever the visible list identity changes.
-	$effect(() => {
-		void matchCount;
-		void activeSort;
-		void searchTerm;
-		currentPage = 1;
-	});
-
-	// Clamp page if the list shrinks below the current window.
-	const totalPages = $derived(Math.max(1, Math.ceil(matchCount / PER_PAGE)));
-	const pageStart = $derived((Math.min(currentPage, totalPages) - 1) * PER_PAGE);
-	const pageCommunications = $derived(sortedCommunications.slice(pageStart, pageStart + PER_PAGE));
+	const pagination = usePagination(() => sortedCommunications, PER_PAGE);
+	const pageCommunications = $derived(pagination.items);
 
 	// Bibliography rows carry a hanging year, printed only when the year changes.
 	// The single newest past entry is the lead — but only when the upcoming block
@@ -180,7 +170,7 @@
 			lastYear = comm.year;
 			const isLead =
 				i === 0 &&
-				currentPage === 1 &&
+				pagination.page === 1 &&
 				activeSort === 'date' &&
 				!anyNarrowing &&
 				!shouldShowUpcoming;
@@ -327,10 +317,10 @@
 			</ol>
 
 			<Pagination
-				page={currentPage}
+				page={pagination.page}
 				perPage={PER_PAGE}
 				total={matchCount}
-				onchange={(p) => (currentPage = p)}
+				onchange={(p) => (pagination.page = p)}
 				scrollTargetId="bibliography"
 			/>
 		{:else}

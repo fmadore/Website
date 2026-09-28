@@ -73,7 +73,7 @@
 	const spans = researchProjects.map((p) => parseSpan(p.years));
 	const CAREER_START = Math.min(...spans.map((s) => s.start));
 	const CAREER_END = Math.max(
-		BUILT_AT.getFullYear(),
+		BUILT_AT.getUTCFullYear(),
 		...spans.flatMap((s) => (s.end === null ? [] : [s.end]))
 	);
 	const AXIS_SPAN = Math.max(1, CAREER_END - CAREER_START);

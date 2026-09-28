@@ -3,9 +3,8 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * Playwright E2E config. Tests run against the production build served by a
  * plain static file server (`serve build`), which mirrors GitHub Pages — the
- * prerendered route output that actually ships. We deliberately avoid
- * `vite preview` here: the legacy `static/index.html` SPA shell shadows the
- * prerendered home route under preview, so `/` would never boot the app.
+ * prerendered route output that actually ships, without a development or preview
+ * server supplying routes that a static deployment does not contain.
  * Run with `npm run test:e2e`.
  */
 // Overridable so a preview of another project on 4173 cannot be mistaken for ours.

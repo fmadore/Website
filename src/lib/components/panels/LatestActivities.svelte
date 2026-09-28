@@ -30,13 +30,13 @@
 	function formatDayMonth(dateString: string): string {
 		const date = new Date(dateString);
 		if (isNaN(date.getTime())) return dateString;
-		const day = String(date.getDate()).padStart(2, '0');
-		return `${day} ${date.toLocaleString('en-GB', { month: 'short' })}`;
+		const day = String(date.getUTCDate()).padStart(2, '0');
+		return `${day} ${date.toLocaleString('en-GB', { month: 'short', timeZone: 'UTC' })}`;
 	}
 
 	function formatYear(dateString: string): string {
 		const date = new Date(dateString);
-		return isNaN(date.getTime()) ? '' : String(date.getFullYear());
+		return isNaN(date.getTime()) ? '' : String(date.getUTCFullYear());
 	}
 </script>
 

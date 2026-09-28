@@ -62,21 +62,34 @@ function arrayBufferToBase64(buffer: ArrayBuffer): string {
  * when every face loaded, false on any failure — the caller then falls back to
  * the standard PDF fonts so a font hiccup never blocks the download.
  */
+export const CV_FONT_TIMEOUT_MS = 5000;
+
 export async function registerCvFonts(pdf: JsPdf): Promise<boolean> {
+	const controller = new AbortController();
+	const timeout = setTimeout(() => controller.abort(), CV_FONT_TIMEOUT_MS);
 	try {
-		await Promise.all(
-			CV_FONTS.map(async ({ file, family, style }) => {
-				const res = await fetch(`${base}/fonts/pdf/${file}`);
-				if (!res.ok) throw new Error(`${file}: HTTP ${res.status}`);
-				const b64 = arrayBufferToBase64(await res.arrayBuffer());
-				pdf.addFileToVFS(file, b64);
-				pdf.addFont(file, family, style);
+		// Load the entire set before touching the document. A late response must not
+		// mutate a PDF that has already selected its fallback voices.
+		const fonts = await Promise.all(
+			CV_FONTS.map(async (font) => {
+				const response = await fetch(`${base}/fonts/pdf/${font.file}`, {
+					signal: controller.signal
+				});
+				if (!response.ok) throw new Error(`${font.file}: HTTP ${response.status}`);
+				return { ...font, data: arrayBufferToBase64(await response.arrayBuffer()) };
 			})
 		);
+		for (const { file, family, style, data } of fonts) {
+			pdf.addFileToVFS(file, data);
+			pdf.addFont(file, family, style);
+		}
 		return true;
 	} catch (err) {
 		if (import.meta.env.DEV) console.error('CV font embedding failed; using standard fonts:', err);
 		return false;
+	} finally {
+		clearTimeout(timeout);
+		controller.abort();
 	}
 }
 

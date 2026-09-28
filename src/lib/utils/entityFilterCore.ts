@@ -178,12 +178,7 @@ export function countActiveFilters(filters: EntityIndexFilters): number {
  * semantics). A term holds no whitespace, so it can never match across the
  * boundary between two fields. An empty or blank query matches everything.
  */
-export function matchesSearchTerms(fields: readonly string[], query: string): boolean {
-	const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-	if (terms.length === 0) return true;
-	const haystack = fields.join(' ').toLowerCase();
-	return terms.every((term) => haystack.includes(term));
-}
+export { matchesSearchTerms } from '$lib/utils/searchText';
 
 /** One bar of an index hero's year strip. */
 export interface YearBar {

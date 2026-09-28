@@ -2,7 +2,7 @@
 	import Icon from '@iconify/svelte';
 	import { mediaAppearancesByDate } from '$lib/data/media-appearances';
 	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
-	import { formatDayMonth } from '$lib/utils/date-formatter';
+	import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
@@ -18,8 +18,7 @@
 		<h4>Podcasts</h4>
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each podcasts as podcast (podcast.id)}
-				{@const podcastDate = new Date(podcast.dateISO)}
-				<CVEntry year={podcastDate.getFullYear()}>
+				<CVEntry year={getYearFromISODate(podcast.dateISO)}>
 					{quoteTitle(podcast.title)}{#if podcast.conference}, <em
 							>{typesetQuotes(podcast.conference)}</em
 						>{/if}{#if podcast.episode}, ep. {podcast.episode}{/if}.
@@ -60,8 +59,7 @@
 		<h4>Interviews and Appearances</h4>
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each mediaAppearancesByDate as media (media.id)}
-				{@const mediaDate = new Date(media.dateISO)}
-				<CVEntry year={mediaDate.getFullYear()}>
+				<CVEntry year={getYearFromISODate(media.dateISO)}>
 					{media.type === 'interview' ? 'Interviewed by' : 'Appeared in'}
 					<em>{typesetQuotes(media.outlet)}</em>{#if media.program}, {typesetQuotes(
 							media.program

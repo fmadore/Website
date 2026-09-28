@@ -1,6 +1,6 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import { flushSync } from 'svelte';
-import { useMapLibre } from '../src/lib/utils/useMapLibre.svelte';
+import { useMapLibre, MAP_STYLE_TIMEOUT_MS } from '../src/lib/utils/useMapLibre.svelte';
 
 const mocks = vi.hoisted(() => ({ load: vi.fn(), layout: vi.fn() }));
 vi.mock('$lib/utils/maplibre', () => ({
@@ -14,12 +14,13 @@ afterEach(() => {
 	stop?.();
 	stop = undefined;
 	vi.clearAllMocks();
+	vi.useRealTimers();
 });
 
 function setup() {
 	// Test event registry is deliberately nonreactive.
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
-	const handlers = new Map<string, () => void>();
+	const handlers = new Map<string, (event?: { error: Error }) => void>();
 	const map = {
 		on: vi.fn((event: string, fn: () => void) => handlers.set(event, fn)),
 		once: vi.fn((event: string, fn: () => void) => handlers.set(event, fn)),
@@ -29,6 +30,7 @@ function setup() {
 		setStyle: vi.fn(),
 		remove: vi.fn(),
 		addControl: vi.fn(),
+		getStyle: vi.fn((): object | undefined => ({ version: 8 })),
 		isStyleLoaded: () => true
 	};
 	mocks.layout.mockResolvedValue(true);
@@ -100,4 +102,45 @@ it('can retry a failed initialization', async () => {
 	await vi.waitFor(() => expect(s.hook.map).not.toBeNull());
 	expect(s.hook.importError).toBeNull();
 	expect(mocks.load).toHaveBeenCalledTimes(2);
+});
+
+it('offers recovery for a failed initial style and successfully retries', async () => {
+	const s = setup();
+	await vi.waitFor(() => expect(s.hook.map).not.toBeNull());
+	s.map.getStyle.mockReturnValue(undefined);
+	s.handlers.get('error')!({ error: new Error('style request failed') });
+	flushSync();
+	expect(s.hook.importError).toContain('style');
+	s.hook.retry();
+	flushSync();
+	await vi.waitFor(() => expect(mocks.load).toHaveBeenCalledTimes(2));
+	s.handlers.get('load')!();
+	flushSync();
+	expect(s.hook.importError).toBeNull();
+	expect(s.hook.isMapLoaded).toBe(true);
+	expect(s.map.remove).toHaveBeenCalledOnce();
+});
+
+it('does not replace a usable map when one tile fails', async () => {
+	const s = setup();
+	await vi.waitFor(() => expect(s.hook.map).not.toBeNull());
+	s.handlers.get('load')!();
+	s.handlers.get('error')!({ error: new Error('one tile failed') });
+	expect(s.hook.importError).toBeNull();
+});
+
+it('times out a stalled style and cancels the next timer on disposal', async () => {
+	vi.useFakeTimers();
+	const s = setup();
+	await vi.waitFor(() => expect(s.hook.map).not.toBeNull());
+	await vi.advanceTimersByTimeAsync(MAP_STYLE_TIMEOUT_MS);
+	expect(s.hook.importError).toContain('in time');
+	s.hook.retry();
+	flushSync();
+	await vi.waitFor(() => expect(mocks.load).toHaveBeenCalledTimes(2));
+	stop?.();
+	stop = undefined;
+	await vi.advanceTimersByTimeAsync(MAP_STYLE_TIMEOUT_MS);
+	expect(s.hook.importError).toBeNull();
+	expect(s.hook.map).toBeNull();
 });

@@ -37,10 +37,28 @@
 	// Monitor network status
 	useNetworkMonitor();
 
+	function cacheCurrentPage() {
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.controller?.postMessage?.({
+				type: 'CACHE_PAGE',
+				url: location.href,
+				// The first document's modules may have loaded before worker control.
+				// Seed only resources already used, never the whole build manifest.
+				assets: performance.getEntriesByType('resource').map(({ name }) => name)
+			});
+		}
+	}
+	onMount(() => {
+		if (!('serviceWorker' in navigator)) return;
+		// Include the initial page when a newly installed worker first takes control.
+		navigator.serviceWorker.addEventListener('controllerchange', cacheCurrentPage);
+		return () => navigator.serviceWorker.removeEventListener('controllerchange', cacheCurrentPage);
+	});
+
 	// WebMCP is experimental and uncommon. Keep its implementation out of the
 	// shared entry chunk and load it only in browsers that expose the API.
 	$effect(() => {
-		if (!browser || !('modelContext' in navigator)) return;
+		if (!browser || !('modelContext' in document)) return;
 
 		let disposed = false;
 		let unregister = () => {};
@@ -65,6 +83,7 @@
 
 	afterNavigate(() => {
 		trackPageView();
+		cacheCurrentPage();
 	});
 </script>
 

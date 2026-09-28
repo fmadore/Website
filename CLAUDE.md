@@ -111,9 +111,9 @@ npm run gen:posters -- --check  # report stale/missing posters, write nothing
 ### Prerendering
 
 The `[id]` routes each export `entries`, enumerating their dataset so every item
-is prerendered. Do not drop it: the index pages build their lists on the client,
-so the prerender crawler finds no anchors to follow, while `sitemap.xml` is
-generated from the datasets and would keep advertising URLs that ship no page.
+is prerendered. Do not drop it: paginated index pages expose only part of the
+corpus to the prerender crawler, while `sitemap.xml` is generated from the
+datasets and would keep advertising URLs that ship no page.
 `npm run check:prerender` enforces this.
 
 ### Generated data files
@@ -244,9 +244,9 @@ Components in `src/lib/components/` follow atomic design:
 
 ### Routing Pattern
 
-- List pages: `/publications/`, `/communications/`, `/activities/`
+- List pages: `/publications/`, `/conference-activity/`, `/activities/`
 - Detail pages: `/publications/[id]/`, `/communications/[id]/`
-- Data loading in `+page.ts`, prerendered with `entries: ['*']`
+- Detail data loads in `+page.server.ts`, with explicit `entries` exports
 
 ### CSS Architecture
 

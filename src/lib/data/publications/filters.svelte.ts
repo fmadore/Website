@@ -6,6 +6,7 @@
  * is handled via dimension match functions.
  */
 
+import { countOccurrences, byFrequencyThenAlpha } from '$lib/utils/facetOrdering';
 import type { PublicationSummary, YearRange } from '$lib/types';
 import {
 	allPublicationSummaries,
@@ -83,18 +84,6 @@ const uniqueLanguages = Array.from(new Set(allPublications.flatMap(publicationLa
 // --- Facet ordering by frequency ---
 // Tags and authors surface most-used first so the truncated sidebar facet lists
 // show the meaningful ones; ties fall back to alphabetical.
-function countOccurrences(lists: string[][]): Map<string, number> {
-	// eslint-disable-next-line svelte/prefer-svelte-reactivity -- build-time tally, never reactive
-	const freq = new Map<string, number>();
-	for (const list of lists) {
-		for (const value of list) freq.set(value, (freq.get(value) ?? 0) + 1);
-	}
-	return freq;
-}
-
-function byFrequencyThenAlpha(values: string[], freq: Map<string, number>): string[] {
-	return [...values].sort((a, b) => (freq.get(b) ?? 0) - (freq.get(a) ?? 0) || a.localeCompare(b));
-}
 
 const tagFrequency = countOccurrences(allPublications.map((pub) => pub.tags ?? []));
 const authorFrequency = countOccurrences(allPublications.map(publicationAuthorNames));

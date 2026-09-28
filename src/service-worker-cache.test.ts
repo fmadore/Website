@@ -4,15 +4,22 @@ import { createCacheHandler } from './service-worker-cache';
 function setup() {
 	const entries = new Map<string, Response>();
 	const key = (r: Request | string) => (typeof r === 'string' ? r : r.url);
-	const put = vi.fn(async (request: Request, response: Response) => {
-		entries.set(key(request), response);
+	const stores = new Map([
+		['runtime', entries],
+		['assets', new Map<string, Response>()],
+		['media', new Map<string, Response>()]
+	]);
+	const put = vi.fn(async (request: Request, response: Response, name: string) => {
+		stores.get(name)!.set(key(request), response);
 	});
 	const storage = {
-		match: vi.fn(async (r: Request | string) => entries.get(key(r))?.clone()),
-		open: vi.fn(async () => ({
-			put,
-			keys: async () => [...entries.keys()],
-			delete: async (r: string) => entries.delete(r)
+		match: vi.fn(async (r: Request | string, options: MultiCacheQueryOptions) =>
+			stores.get(options.cacheName!)?.get(key(r))?.clone()
+		),
+		open: vi.fn(async (name: string) => ({
+			put: (r: Request, response: Response) => put(r, response, name),
+			keys: async () => [...stores.get(name)!.keys()],
+			delete: async (r: string) => stores.get(name)!.delete(r)
 		}))
 	} as unknown as Pick<CacheStorage, 'match' | 'open'>;
 	const fetch = vi.fn(async () => new Response('fresh'));
@@ -21,9 +28,11 @@ function setup() {
 		fetch,
 		assetCache: 'assets',
 		runtimeCache: 'runtime',
-		maxEntries: 2
+		maxEntries: 2,
+		mediaCache: 'media',
+		maxMediaEntries: 2
 	});
-	return { entries, put, storage, fetch, handle };
+	return { entries, stores, put, storage, fetch, handle };
 }
 const request = () => new Request('https://example.org/api/items.json');
 const navigation = () => Object.defineProperty(request(), 'destination', { value: 'document' });
@@ -106,4 +115,30 @@ describe('worker cache strategies', () => {
 		await s.handle(request(), 'network-first').done;
 		expect([...s.entries.keys()]).toEqual(['newer', request().url]);
 	});
+});
+
+it('limits media independently while retaining documents and immutable scripts', async () => {
+	const s = setup();
+	await s.handle(new Request('https://example.org/app/hash.js'), 'cache-first').done;
+	await s.handle(navigation(), 'network-first').done;
+	for (const id of [1, 2, 3])
+		await s.handle(new Request(`https://example.org/images/${id}.webp`), 'cache-first').done;
+	expect([...s.stores.get('media')!.keys()]).toEqual([
+		'https://example.org/images/2.webp',
+		'https://example.org/images/3.webp'
+	]);
+	expect(s.stores.get('assets')!.size).toBe(1);
+	expect(s.entries.size).toBe(1);
+});
+
+it('uses a cached static document when offline with different filter parameters', async () => {
+	const s = setup();
+	const req = Object.defineProperty(
+		new Request('https://example.org/publications?q=Islam'),
+		'destination',
+		{ value: 'document' }
+	);
+	s.entries.set('https://example.org/publications', new Response('visited'));
+	s.fetch.mockRejectedValue(new Error('offline'));
+	expect(await (await s.handle(req, 'network-first').response).text()).toBe('visited');
 });

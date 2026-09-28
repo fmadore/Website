@@ -2,7 +2,7 @@
 	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
 	import type { CvCommunication } from '$lib/types/communication';
 	import { formatCVAuthorList, terminalPeriod } from '$lib/utils/cvFormatters';
-	import { formatDayMonth } from '$lib/utils/date-formatter';
+	import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVSection from './CVSection.svelte';
 
@@ -20,7 +20,7 @@
 <CVSection
 	title="Invited Talks"
 	items={invitedTalks}
-	year={(comm) => new Date(comm.dateISO).getFullYear()}
+	year={(comm) => getYearFromISODate(comm.dateISO)}
 	key={(comm) => comm.id}
 	conditional
 >

@@ -3,9 +3,10 @@
 /// <reference lib="webworker" />
 /// <reference types="@sveltejs/kit" />
 
-import { version } from '$service-worker';
+import { version, prerendered, build } from '$service-worker';
 import { chooseStrategy } from './service-worker-routes';
 import { createCacheHandler } from './service-worker-cache';
+import { navigationTarget, navigationAssets } from './service-worker-navigation';
 
 // Cast self to ServiceWorkerGlobalScope for proper typing
 const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (globalThis.self));
@@ -13,6 +14,13 @@ const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (glob
 // Cache names
 const CACHE_NAME = `cache-v${version}`;
 const RUNTIME_CACHE = `runtime-v${version}`;
+const MEDIA_CACHE = `media-v${version}`;
+const pages = new Set(prerendered.filter((path) => !/\.[^/]+$/.test(path)));
+const buildAssets = new Set(build.filter((path) => /\.(?:js|css)$/.test(path)));
+/** @type {Map<string, Promise<void>>} */
+const pendingPages = new Map();
+/** @type {Map<string, Promise<void>>} */
+const pendingAssets = new Map();
 
 // Assets to precache — app shell + offline fallback ONLY.
 // Previously this precached [...build, ...files, ...prerendered], which on a
@@ -38,7 +46,9 @@ const handleRequest = createCacheHandler({
 	fetch: (request) => fetch(request),
 	assetCache: CACHE_NAME,
 	runtimeCache: RUNTIME_CACHE,
-	maxEntries: 150
+	maxEntries: 150,
+	mediaCache: MEDIA_CACHE,
+	maxMediaEntries: 80
 });
 
 // Install event: Cache essential assets
@@ -98,7 +108,10 @@ sw.addEventListener('activate', (event) => {
 			caches.keys().then((cacheNames) => {
 				return Promise.all(
 					cacheNames.map((cacheName) => {
-						if (cacheName !== CACHE_NAME && cacheName !== RUNTIME_CACHE) {
+						if (
+							/^(cache|runtime|media)-v/.test(cacheName) &&
+							![CACHE_NAME, RUNTIME_CACHE, MEDIA_CACHE].includes(cacheName)
+						) {
 							console.log('[SW] Removing old cache:', cacheName);
 							return caches.delete(cacheName);
 						}
@@ -148,5 +161,42 @@ sw.addEventListener('fetch', (event) => {
 sw.addEventListener('message', (event) => {
 	if (event.data?.type === 'SKIP_WAITING') {
 		sw.skipWaiting();
+	}
+	if (event.data?.type === 'CACHE_PAGE') {
+		const target = navigationTarget(event.data.url, sw.location.origin, pages);
+		if (!target) return;
+		const assets = navigationAssets(event.data.assets, sw.location.origin, buildAssets);
+		const assetWork = assets.map((asset) => {
+			let pending = pendingAssets.get(asset);
+			if (!pending) {
+				pending = handleRequest(new Request(asset), 'cache-first').done.finally(() =>
+					pendingAssets.delete(asset)
+				);
+				pendingAssets.set(asset, pending);
+			}
+			return pending;
+		});
+		let pending = pendingPages.get(target);
+		if (!pending) {
+			pending = (async () => {
+				try {
+					const cache = await caches.open(RUNTIME_CACHE);
+					if (
+						(await cache.match(target)) ||
+						(await caches.match(target, { cacheName: CACHE_NAME }))
+					)
+						return;
+					const work = handleRequest(
+						new Request(target, { headers: { Accept: 'text/html' } }),
+						'network-first'
+					);
+					await work.done;
+				} catch {
+					// Offline/storage failures leave online navigation unaffected; a later visit retries.
+				}
+			})().finally(() => pendingPages.delete(target));
+			pendingPages.set(target, pending);
+		}
+		event.waitUntil(Promise.all([pending, ...assetWork]));
 	}
 });

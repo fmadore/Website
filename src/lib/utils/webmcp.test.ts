@@ -22,14 +22,14 @@ afterEach(() => {
 
 /** Stub a WebMCP runtime and register the site's tools against it. */
 function register(
-	registerTool: (tool: Tool) => { unregister?: () => void } | undefined = () => ({})
+	registerTool: (tool: Tool, options: { signal: AbortSignal }) => Promise<void> = async () => {}
 ) {
 	const tools = new Map<string, Tool>();
-	const spy = vi.fn((tool: Tool) => {
+	const spy = vi.fn((tool: Tool, options: { signal: AbortSignal }) => {
 		tools.set(tool.name, tool);
-		return registerTool(tool);
+		return registerTool(tool, options);
 	});
-	vi.stubGlobal('navigator', { modelContext: { registerTool: spy } });
+	vi.stubGlobal('document', { modelContext: { registerTool: spy } });
 	const cleanup = registerWebMcp();
 	return { tools, spy, cleanup };
 }
@@ -56,9 +56,9 @@ interface SearchPayload {
 
 describe('registerWebMcp', () => {
 	it('is a no-op without a WebMCP runtime', () => {
-		vi.stubGlobal('navigator', {});
+		vi.stubGlobal('document', {});
 		expect(() => registerWebMcp()()).not.toThrow();
-		vi.stubGlobal('navigator', { modelContext: {} });
+		vi.stubGlobal('document', { modelContext: {} });
 		expect(() => registerWebMcp()()).not.toThrow();
 	});
 
@@ -81,23 +81,38 @@ describe('registerWebMcp', () => {
 		}
 	});
 
-	it('keeps registering when one tool is refused, and unregisters the rest on cleanup', () => {
-		const unregister = vi.fn();
-		const { tools, cleanup } = register((tool) => {
+	it('handles rejected promises and aborts all registrations on cleanup', async () => {
+		const aborted = vi.fn();
+		const { tools, cleanup } = register(async (tool, { signal }) => {
+			signal.addEventListener('abort', () => aborted(), { once: true });
 			if (tool.name === 'search_publications') throw new Error('refused');
-			// A throwing unregister must not stop the others from running.
-			if (tool.name === 'get_author_info')
-				return {
-					unregister: () => {
-						throw new Error('gone');
-					}
-				};
-			return { unregister };
 		});
+		await Promise.resolve();
 		expect(tools.size).toBe(6);
-		expect(unregister).not.toHaveBeenCalled();
-		expect(() => cleanup()).not.toThrow();
-		expect(unregister).toHaveBeenCalledTimes(4);
+		expect(aborted).not.toHaveBeenCalled();
+		cleanup();
+		cleanup();
+		expect(aborted).toHaveBeenCalledTimes(6);
+	});
+
+	it('aborts pending registrations when disposed before they settle', async () => {
+		let finish!: () => void;
+		const pending = new Promise<void>((resolve) => {
+			finish = resolve;
+		});
+		const { spy, cleanup } = register(() => pending);
+		cleanup();
+		finish();
+		await pending;
+		for (const [, options] of spy.mock.calls) expect(options.signal.aborted).toBe(true);
+	});
+
+	it('continues after a synchronous registration failure', () => {
+		const { spy, cleanup } = register(() => {
+			throw new Error('unavailable');
+		});
+		expect(spy).toHaveBeenCalledTimes(6);
+		expect(cleanup).not.toThrow();
 	});
 });
 

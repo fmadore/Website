@@ -18,8 +18,8 @@
 	 * template lines, Svelte's whitespace handling rendered "2018 –2020".
 	 */
 	const formatRange = (entry: TimelineItem): string => {
-		const start = entry.startDate.getFullYear();
-		const end = entry.endDate?.getFullYear();
+		const start = entry.startDate.getUTCFullYear();
+		const end = entry.endDate?.getUTCFullYear();
 		if (end !== undefined && end !== start) return `${start}–${end}`;
 		if (entry.isOngoing) return `${start}–present`;
 		return String(start);

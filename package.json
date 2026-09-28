@@ -54,6 +54,7 @@
 		"sync:vault": "npm run sync:publications -- --write && npm run sync:projects -- --write && npm run sync:sections -- --write && npm run sync:talks -- --write",
 		"sync:sections": "node scripts/sync-sections-to-vault.mjs",
 		"check:generated": "node scripts/generate-reference-index.mjs --check && node scripts/generate-summaries.mjs --check && node scripts/generate-analysis-summaries.mjs --check && node scripts/generate-research-prose.mjs --check",
+		"test:timezones": "node scripts/test-timezones.mjs",
 		"test:lifecycle": "tsc --project tests-lifecycle/tsconfig.json --noEmit && vitest run --config vitest.lifecycle.config.ts --coverage",
 		"verify": "node scripts/verify.mjs"
 	},
@@ -75,6 +76,7 @@
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.23.0",
 		"globals": "^17.11.0",
+		"pdfjs-dist": "^6.3.289",
 		"postcss": "^8.5.26",
 		"postcss-custom-media": "^12.0.0",
 		"prettier": "^3.9.6",

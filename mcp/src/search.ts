@@ -9,13 +9,8 @@ import type { Item } from './datasets.js';
  * "cote d'ivoire" has to reach "Côte d'Ivoire".
  */
 
-/** Lowercase and strip diacritics, so "Côte" and "cote" compare equal. */
-export function normalise(value: string): string {
-	return value
-		.normalize('NFD')
-		.replace(/\p{Diacritic}/gu, '')
-		.toLowerCase();
-}
+import { normalizeSearchText as normalise, searchTerms } from '$lib/utils/searchText';
+export { normalise };
 
 /** Flatten any nested value into searchable text. */
 function textOf(value: unknown): string {
@@ -69,7 +64,7 @@ export function search(items: Item[], options: SearchOptions): SearchResult {
 		limit = 25,
 		offset = 0
 	} = options;
-	const terms = query ? normalise(query).split(/\s+/).filter(Boolean) : [];
+	const terms = searchTerms(query ?? '');
 
 	const scored: Array<{ item: Item; score: number; index: number }> = [];
 

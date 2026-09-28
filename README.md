@@ -68,6 +68,16 @@ It ships two ways. `npm run mcp:pack` produces `frederickmadore-website.mcpb` â€
 
 Citation output is not reimplemented there â€” the build aliases `$lib` and bundles the site's own `bibtexGenerator`, so what the server returns is byte-identical to the site's download button.
 
+## Offline browsing
+
+Visited pages are cached after both direct and in-app navigation, including pages
+first opened before the service worker takes control. Filter/search URLs reuse
+one static document while retaining their URL state. Documents and API responses
+share a 150-entry runtime cache; images use a separate 80-entry cache. Immutable
+build scripts and styles already used before worker control are copied into that
+deployment's asset cache. Unvisited or evicted pages show
+the offline fallback. Fonts retain normal browser HTTP caching.
+
 ## Development
 
 ### Running Locally
@@ -114,8 +124,9 @@ link, citation, and Lighthouse checks remain separate from the deterministic wor
 
 For focused work, `npm run test:lifecycle` checks chart/map updates, retry, late imports,
 and cleanup using the Svelte client compiler. `npm run check:generated` checks committed
-content projections without rewriting them. Pure-logic coverage floors are 60% statements,
-55% branches, 66% functions, and 61% lines; browser/lifecycle tests cover separate behavior.
+content projections without rewriting them. Pure-logic coverage floors are defined in `vitest.config.ts`; browser/lifecycle tests
+cover separate behaviour. `npm run test:timezones` checks calendar-date handling in
+UTC, America/Toronto, and Africa/Johannesburg.
 
 ## License
 

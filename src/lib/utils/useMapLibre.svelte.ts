@@ -43,6 +43,8 @@ import {
 	type MapLibreModule
 } from '$lib/utils/maplibre';
 
+export const MAP_STYLE_TIMEOUT_MS = 15000;
+
 export interface UseMapLibreOptions {
 	/** Returns the container element (may be undefined during initial render). */
 	getContainer: () => HTMLElement | undefined;
@@ -113,6 +115,12 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 		if (!browser || !container) return;
 
 		let cancelled = false;
+		let styleTimer: ReturnType<typeof setTimeout> | undefined;
+		const failStyle = (message: string) => {
+			if (cancelled || isMapLoaded) return;
+			clearTimeout(styleTimer);
+			importError = message;
+		};
 		importError = null;
 
 		(async () => {
@@ -152,6 +160,10 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 					...untrack(getMapOptions)
 				});
 				map = mapInstance;
+				styleTimer = setTimeout(
+					() => failStyle('The map style did not load in time.'),
+					MAP_STYLE_TIMEOUT_MS
+				);
 
 				mapInstance.addControl(new gl.NavigationControl(), 'top-right');
 				// Default to the mercator (flat) projection; the GlobeControl button
@@ -163,11 +175,16 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 
 				mapInstance.on('load', () => {
 					if (cancelled) return;
+					clearTimeout(styleTimer);
+					importError = null;
 					isMapLoaded = true;
 					untrack(() => onStyleReady(mapInstance, gl));
 				});
 
 				mapInstance.on('error', (e) => {
+					// A missing initial style prevents every layer from loading. Tile errors
+					// after a style exists are recoverable and must not hide a usable map.
+					if (!mapInstance.getStyle()) failStyle('The map style could not be loaded.');
 					if (import.meta.env.DEV) console.error('MapLibre error:', e.error);
 				});
 			} catch (error) {
@@ -179,6 +196,7 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 
 		return () => {
 			cancelled = true;
+			clearTimeout(styleTimer);
 			isMapLoaded = false;
 			currentThemeIsDark = null;
 			onCleanup?.();

@@ -2,7 +2,7 @@
  * WebMCP integration.
  *
  * Registers a small set of read-only "tools" with the browser's WebMCP runtime
- * (`navigator.modelContext`) so that AI agents browsing the site can query its
+ * (`document.modelContext`) so that AI agents browsing the site can query its
  * content reliably — searching publications and talks/events, reading their
  * details, listing research/digital-humanities projects, and fetching
  * author/contact information — instead of scraping the DOM.
@@ -10,10 +10,11 @@
  * The API is progressively enhanced: when no WebMCP runtime is present the hook is
  * a no-op. Tools are registered when the layout mounts and unregistered on cleanup.
  *
- * Spec: https://webmachinelearning.github.io/webmcp/ — `navigator.modelContext`.
+ * Spec: https://webmachinelearning.github.io/webmcp/ — `document.modelContext`.
  */
 
 import { author, website } from '$lib/data/siteConfig';
+import { matchesSearchTerms } from '$lib/utils/searchText';
 
 // ---------------------------------------------------------------------------
 // Minimal typings for the (still-experimental) WebMCP API.
@@ -36,12 +37,8 @@ interface ToolDescriptor {
 	execute: (args: Record<string, unknown>) => Promise<ToolResult> | ToolResult;
 }
 
-interface ToolRegistration {
-	unregister?: () => void;
-}
-
 interface ModelContext {
-	registerTool?: (tool: ToolDescriptor) => ToolRegistration | undefined;
+	registerTool?: (tool: ToolDescriptor, options: { signal: AbortSignal }) => Promise<void>;
 }
 
 const SITE = website.url;
@@ -108,7 +105,7 @@ function buildTools(): ToolDescriptor[] {
 			},
 			async execute(args) {
 				const { publicationsByDate } = await import('$lib/data/publications/index');
-				const query = typeof args.query === 'string' ? args.query.toLowerCase().trim() : '';
+				const query = typeof args.query === 'string' ? args.query.trim() : '';
 				const type = typeof args.type === 'string' ? args.type : '';
 				const year = typeof args.year === 'number' ? args.year : undefined;
 				const limit = Math.min(Math.max(Number(args.limit) || 10, 1), 50);
@@ -118,15 +115,13 @@ function buildTools(): ToolDescriptor[] {
 						if (type && pub.type !== type) return false;
 						if (year !== undefined && pub.year !== year) return false;
 						if (query) {
-							const haystack = [
+							const fields = [
 								pub.title,
-								pub.authors?.join(' '),
+								pub.authors?.join(' ') ?? '',
 								pub.abstract ?? '',
 								pub.tags?.join(' ') ?? ''
-							]
-								.join(' ')
-								.toLowerCase();
-							if (!haystack.includes(query)) return false;
+							];
+							if (!matchesSearchTerms(fields, query)) return false;
 						}
 						return true;
 					})
@@ -229,7 +224,7 @@ function buildTools(): ToolDescriptor[] {
 			},
 			async execute(args) {
 				const { communicationsByDate } = await import('$lib/data/communications/index');
-				const query = typeof args.query === 'string' ? args.query.toLowerCase().trim() : '';
+				const query = typeof args.query === 'string' ? args.query.trim() : '';
 				const type = typeof args.type === 'string' ? args.type : '';
 				const year = typeof args.year === 'number' ? args.year : undefined;
 				const limit = Math.min(Math.max(Number(args.limit) || 10, 1), 50);
@@ -239,16 +234,14 @@ function buildTools(): ToolDescriptor[] {
 						if (type && comm.type !== type) return false;
 						if (year !== undefined && comm.year !== year) return false;
 						if (query) {
-							const haystack = [
+							const fields = [
 								comm.title,
 								comm.conference ?? '',
 								comm.location ?? '',
 								comm.abstract ?? '',
 								comm.tags?.join(' ') ?? ''
-							]
-								.join(' ')
-								.toLowerCase();
-							if (!haystack.includes(query)) return false;
+							];
+							if (!matchesSearchTerms(fields, query)) return false;
 						}
 						return true;
 					})
@@ -389,26 +382,23 @@ function buildTools(): ToolDescriptor[] {
  * feature detection, keeping the uncommon integration out of the main chunk.
  */
 export function registerWebMcp(): () => void {
-	const modelContext = (navigator as Navigator & { modelContext?: ModelContext }).modelContext;
-	if (!modelContext || typeof modelContext.registerTool !== 'function') return () => {};
-
-	const registrations: ToolRegistration[] = [];
+	const modelContext =
+		typeof document === 'undefined'
+			? undefined
+			: (document as Document & { modelContext?: ModelContext }).modelContext;
+	if (typeof modelContext?.registerTool !== 'function') return () => {};
+	const controller = new AbortController();
 	for (const tool of buildTools()) {
 		try {
-			const registration = modelContext.registerTool(tool);
-			if (registration) registrations.push(registration);
-		} catch (err) {
-			if (import.meta.env.DEV) console.error('[WebMCP] Failed to register tool:', tool.name, err);
+			void Promise.resolve(modelContext.registerTool(tool, { signal: controller.signal })).catch(
+				(error: unknown) => {
+					if (!controller.signal.aborted && import.meta.env.DEV)
+						console.error('[WebMCP] Failed to register tool:', tool.name, error);
+				}
+			);
+		} catch (error) {
+			if (import.meta.env.DEV) console.error('[WebMCP] Failed to register tool:', tool.name, error);
 		}
 	}
-
-	return () => {
-		for (const registration of registrations) {
-			try {
-				registration.unregister?.();
-			} catch {
-				// Ignore cleanup failures — the document is going away anyway.
-			}
-		}
-	};
+	return () => controller.abort();
 }

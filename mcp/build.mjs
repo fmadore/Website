@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
  *
  * A bundler rather than plain `tsc` because the server shares the site's own
  * `citationFormatter` (see src/citations.ts), which imports through the `$lib`
- * alias. Resolving that alias here is what lets the four citation styles live
- * in one place instead of being reimplemented and left to drift.
+ * alias. Resolving that alias keeps citation formatting and search normalization
+ * shared with the site.
  */
 const entries = ['index', 'http', 'server'];
 

@@ -6,6 +6,7 @@
 	// "As of" the build: the CV prints the records as they stood when the site
 	// was built, and the prerendered page and its hydration agree on the date.
 	const today = BUILT_AT.toLocaleDateString('en-GB', {
+		timeZone: 'UTC',
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric'

@@ -4,7 +4,7 @@
 	import { socialGroups, author, address } from '$lib/data/siteConfig';
 	import { BUILT_AT } from '$lib/utils/buildDate';
 
-	const currentYear = BUILT_AT.getFullYear();
+	const currentYear = BUILT_AT.getUTCFullYear();
 </script>
 
 <footer class="site-footer">

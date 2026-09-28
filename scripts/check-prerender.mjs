@@ -1,19 +1,10 @@
 /**
  * Prerender coverage guard.
  *
- * The detail routes (`/publications/[id]`, `/communications/[id]`, …) declare
- * no `entries`, so SvelteKit decides what to prerender by crawling links out of
- * pages it has already rendered. That only reaches items something links to.
- * The index pages build their lists on the client, so they contribute no
- * crawlable anchors, and an item reachable by no other route — no "recent" slot
- * on the home page, no related-items card, no inline `<ItemReference>` — never
- * gets prerendered at all.
- *
- * Nothing catches that today, and the failure is worse than a missing page:
- * `sitemap.xml` is generated from the datasets rather than from the build
- * output, so every one of those URLs is still advertised to search engines and
- * 404s when anyone follows it. Every existing test passes while this happens —
- * the data is valid, the route is correct, the page simply does not exist.
+ * Detail routes export explicit entries so every dataset item is prerendered.
+ * Index pagination and related-item links alone cannot discover the whole corpus.
+ * The sitemap is generated independently from the build, so this guard catches
+ * any regression that advertises a URL without shipping its document.
  *
  * The check is therefore stated as the invariant that actually matters: every
  * URL the site advertises must resolve to a file the site ships. Reading the

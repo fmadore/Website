@@ -75,6 +75,11 @@ for (const [path, controls] of Object.entries(vizChrome)) {
 	test(`${path}: plate chrome takes the 44px touch floor`, async ({ page, isMobile }) => {
 		test.skip(!isMobile, 'Covered by the mobile Chromium project');
 		test.setTimeout(60_000);
+		// Measure the controls independently of the third-party basemap service.
+		// Its failure and recovery are covered by the resilience tests.
+		await page.route('**://basemaps.cartocdn.com/**/style.json', (route) =>
+			route.fulfill({ json: { version: 8, sources: {}, layers: [] } })
+		);
 		await page.goto(path);
 		await ready(page);
 		expect(await page.evaluate(() => matchMedia('(pointer: coarse)').matches)).toBe(true);

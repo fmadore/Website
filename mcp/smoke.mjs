@@ -317,7 +317,13 @@ async function exerciseHttp() {
 
 async function exerciseHttpProcess() {
 	const child = spawn(process.execPath, [here('./dist/http.js')], {
-		env: { ...process.env, PORT: '0', WEBSITE_API_BASE: base },
+		env: {
+			...process.env,
+			PORT: '0',
+			MCP_BIND_HOST: '127.0.0.1',
+			ALLOWED_ORIGIN_HOSTS: 'trusted.example',
+			WEBSITE_API_BASE: base
+		},
 		stdio: ['ignore', 'ignore', 'pipe', 'ipc']
 	});
 	const exited = once(child, 'exit');
@@ -328,7 +334,7 @@ async function exerciseHttpProcess() {
 			let output = '';
 			child.stderr.on('data', (data) => {
 				output += data;
-				const match = output.match(/listening on 0.0.0.0:(\d+)\/mcp/);
+				const match = output.match(/listening on 127\.0\.0\.1:(\d+)\/mcp/);
 				if (match) {
 					clearTimeout(timer);
 					resolve('http://127.0.0.1:' + match[1]);
@@ -357,6 +363,37 @@ async function exerciseHttpProcess() {
 			req.end();
 		});
 		check('HTTP process rejects untrusted hosts', forbiddenStatus === 403);
+		for (const origin of [
+			'https://untrusted.example',
+			'null',
+			'not-an-origin',
+			'',
+			'file://localhost',
+			'https://trusted.example/path',
+			'https://user:password@trusted.example'
+		]) {
+			check(
+				`HTTP process rejects Origin ${origin}`,
+				(
+					await fetch(endpoint + '/mcp', {
+						method: 'POST',
+						headers: {
+							Origin: origin,
+							'Content-Type': 'application/json',
+							'X-Forwarded-Host': 'localhost'
+						},
+						body: '{}'
+					})
+				).status === 403
+			);
+		}
+		for (const origin of ['http://localhost:3000', 'https://trusted.example']) {
+			check(
+				`HTTP process accepts Origin ${origin}`,
+				(await fetch(endpoint + '/healthz', { headers: { Origin: origin } })).status === 200
+			);
+		}
+
 		check(
 			'HTTP process returns 404 for unknown routes',
 			(await fetch(endpoint + '/missing')).status === 404
