@@ -1,5 +1,6 @@
 import type { Communication } from '$lib/types/communication';
 import type { Publication } from '$lib/types';
+import { getContributorName, getContributorNames } from '$lib/utils/contributor';
 import type { Activity } from '$lib/types/activity';
 import { author } from '$lib/data/siteConfig';
 import { smartTruncate, stripHtml } from '$lib/utils/textUtils';
@@ -176,7 +177,7 @@ const COMMUNICATION_SEO_DESCRIPTION: SeoDescriptionConfig<Communication> = {
 		abstractSegment(({ abstract }) => abstract)
 	],
 	fallback: ({ conference, authors, year }) => {
-		const authorText = authors?.length ? ` by ${authors[0]}` : '';
+		const authorText = authors?.length ? ` by ${getContributorName(authors[0]!)}` : '';
 		const eventText = conference ? ` at ${conference}` : '';
 		const yearText = year ? ` (${year})` : '';
 		return `Academic presentation${eventText}${authorText}${yearText}`;
@@ -188,7 +189,7 @@ const COMMUNICATION_SEO_KEYWORDS: SeoKeywordConfig<Communication> = {
 		// Communication-specific keywords
 		(communication) => communication.type,
 		(communication) => communication.tags,
-		(communication) => communication.authors,
+		(communication) => getContributorNames(communication.authors),
 		(communication) => communication.country,
 		(communication) => communication.language,
 		// Context-appropriate academic keywords
@@ -297,7 +298,7 @@ const PUBLICATION_SEO_DESCRIPTION: SeoDescriptionConfig<Publication> = {
 	],
 	fallback: ({ type, authors, year }) => {
 		const typeLabel = PUBLICATION_TYPE_SEO_LABELS[type] || 'Academic publication';
-		const authorText = authors?.length ? ` by ${authors[0]}` : '';
+		const authorText = authors?.length ? ` by ${getContributorName(authors[0]!)}` : '';
 		const yearText = year ? ` (${year})` : '';
 		return `${typeLabel}${authorText}${yearText}`;
 	}
@@ -308,7 +309,7 @@ const PUBLICATION_SEO_KEYWORDS: SeoKeywordConfig<Publication> = {
 		// Publication-specific keywords
 		(publication) => publication.type,
 		(publication) => publication.tags,
-		(publication) => publication.authors,
+		(publication) => getContributorNames(publication.authors),
 		(publication) => publication.language,
 		// Venue-specific keywords
 		(publication) => publication.journal,

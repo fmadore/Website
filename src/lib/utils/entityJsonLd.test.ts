@@ -26,6 +26,14 @@ const pub = (over: Partial<Publication>): Publication & { sourceDirType: string 
 	}) as Publication & { sourceDirType: string };
 
 describe('buildPublicationJsonLd', () => {
+	it('keeps credited people and the site identity unchanged for linked author references', () => {
+		const legacy = pub({ authors: ['Frédérick Madore', 'Jane Doe'] });
+		const linked = pub({
+			authors: [{ name: 'Frédérick Madore', personId: 'frederick-madore' }, 'Jane Doe']
+		});
+		expect(buildPublicationJsonLd(linked, BASE)).toEqual(buildPublicationJsonLd(legacy, BASE));
+	});
+
 	it('builds a Book with schema.org context, url and language', () => {
 		const ld = buildPublicationJsonLd(pub({ type: 'book', publisher: 'Brill' }), BASE);
 		expect(ld['@context']).toBe('https://schema.org');

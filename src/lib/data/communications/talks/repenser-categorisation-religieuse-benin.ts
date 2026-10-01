@@ -3,7 +3,7 @@ import type { Communication } from '$lib/types/communication';
 export const repenserCategorisationReligieuse: Communication = {
 	id: 'repenser-categorisation-religieuse-benin',
 	title: 'Repenser la catégorisation religieuse à partir du Bénin, terre du vodun',
-	authors: ['Frédérick Madore', 'Fiacre Anato'],
+	authors: ['Frédérick Madore', { name: 'Fiacre Anato', personId: 'fiacre-anato' }],
 	date: '5 December 2024',
 	dateISO: '2024-12-05',
 	year: 2024,

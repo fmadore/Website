@@ -8,6 +8,13 @@ import {
 import { author as siteAuthor } from '$lib/data/siteConfig';
 
 describe('formatCVAuthorList', () => {
+	it('recognizes the site owner and coauthors represented by person references', () => {
+		expect(formatCVAuthorList([{ name: siteAuthor.name, personId: 'frederick-madore' }])).toBe('');
+		expect(
+			formatCVAuthorList([{ name: siteAuthor.name, personId: 'frederick-madore' }, 'Jane Doe'])
+		).toBe(`<strong>${siteAuthor.name}</strong> and Jane Doe`);
+	});
+
 	it('returns an empty string for no authors', () => {
 		expect(formatCVAuthorList(undefined)).toBe('');
 		expect(formatCVAuthorList([])).toBe('');

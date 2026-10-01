@@ -31,18 +31,30 @@ export const launchIslamWestAfricaCollection: Communication = {
 			role: 'Speaker and Organiser',
 			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		},
-		{ name: 'Ulrike Freitag', role: 'Speaker', affiliation: 'Leibniz-Zentrum Moderner Orient' },
+		{
+			name: 'Ulrike Freitag',
+			personId: 'ulrike-freitag',
+			role: 'Speaker',
+			affiliation: 'Leibniz-Zentrum Moderner Orient'
+		},
 		{
 			name: 'Mauro Nobili',
+			personId: 'mauro-nobili',
 			role: 'Speaker',
 			affiliation: 'University of Illinois at Urbana Champaign, USA'
 		},
 		{
 			name: 'Issouf Binaté',
+			personId: 'issouf-binate',
 			role: 'Speaker',
 			affiliation: "Université Alassane Ouattara, Côte d'Ivoire"
 		},
-		{ name: 'Kai Kresse', role: 'Speaker', affiliation: 'Leibniz-Zentrum Moderner Orient' }
+		{
+			name: 'Kai Kresse',
+			personId: 'kai-kresse',
+			role: 'Speaker',
+			affiliation: 'Leibniz-Zentrum Moderner Orient'
+		}
 	],
 	project: 'Digital Humanities and AI in African Studies'
 };

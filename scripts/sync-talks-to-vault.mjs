@@ -14,6 +14,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { getContributorNames } from '../src/lib/utils/contributor.ts';
 import {
 	BEGIN,
 	END,
@@ -105,7 +106,7 @@ function renderFrontmatter(c, ctx) {
 	if (langs.length) lines.push(`language: [${langs.join(', ')}]`);
 	if (Array.isArray(c.authors) && c.authors.length) {
 		lines.push('authors:');
-		for (const a of c.authors) lines.push(`  - ${yamlStr(a)}`);
+		for (const a of getContributorNames(c.authors)) lines.push(`  - ${yamlStr(a)}`);
 	}
 	const proj = projectLink(c.project, ctx);
 	if (proj && proj.startsWith('[[')) lines.push(`project: ${yamlStr(proj)}`);
@@ -131,7 +132,9 @@ function renderGenerated(c, ctx) {
 	const proj = projectLink(c.project, ctx);
 	if (proj) L.push(`> Project: ${proj}`);
 	if (HUB_BY_ID[c.id]) L.push(`> Workshop: [[${HUB_BY_ID[c.id]}]]`);
-	const coAuthors = (c.authors || []).map((a) => linkAuthor(a, ctx)).join(', ');
+	const coAuthors = getContributorNames(c.authors)
+		.map((a) => linkAuthor(a, ctx))
+		.join(', ');
 	if (coAuthors) L.push(`> By: ${coAuthors}`);
 	const concepts = linkedConcepts(c.tags, ctx);
 	if (concepts.length) L.push(`> Topics: ${concepts.join(' · ')}`);

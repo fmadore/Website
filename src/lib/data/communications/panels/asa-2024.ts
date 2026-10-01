@@ -40,26 +40,31 @@ export const asa2024Panel: Communication = {
 		},
 		{
 			name: 'Ebenezer Obadare',
+			personId: 'ebenezer-obadare',
 			role: 'Critic',
 			affiliation: 'Council on Foreign Relations'
 		},
 		{
 			name: 'Marius Kothor',
+			personId: 'marius-kothor',
 			role: 'Critic',
 			affiliation: 'Harvard University'
 		},
 		{
 			name: 'Benjamin N. Lawrance',
+			personId: 'benjamin-n-lawrance',
 			role: 'Critic',
 			affiliation: 'University of Arizona'
 		},
 		{
 			name: 'Leonardo A. Villalón',
+			personId: 'leonardo-a-villalon',
 			role: 'Critic',
 			affiliation: 'University of Florida'
 		},
 		{
 			name: 'K. D. Thompson',
+			personId: 'k-d-thompson',
 			role: 'Chair',
 			affiliation: 'University of Wisconsin-Madison'
 		}

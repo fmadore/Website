@@ -7,6 +7,7 @@
  */
 import type { Activity } from '$lib/types/activity';
 import type { Publication } from '$lib/types/publication';
+import type { Contributor } from '$lib/types/contributor';
 import type { Communication } from '$lib/types/communication';
 import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 import type { ReviewWork } from '$lib/types';
@@ -54,7 +55,7 @@ function withSiteAuthorIdentity(persons: JsonLdPerson[]): JsonLdPerson[] {
 }
 
 /** Format a complete contributor list without collapsing co-authors or co-editors. */
-function formatPeopleWithSiteIdentity(names: string[]): JsonLdPerson[] {
+function formatPeopleWithSiteIdentity(names: readonly Contributor[]): JsonLdPerson[] {
 	return withSiteAuthorIdentity(formatAuthors(names));
 }
 

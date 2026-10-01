@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Contributor } from '$lib/types/contributor';
 	import { resolve } from '$app/paths';
 	import { formatByline } from '$lib/utils/byline';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
@@ -22,7 +23,7 @@
 		date?: string | undefined;
 		tags?: string[] | undefined;
 		typeBadgeText?: string | undefined;
-		authors?: string[] | undefined;
+		authors?: Contributor[] | undefined;
 		editors?: string | string[] | undefined;
 		/**
 		 * Which masthead tier this page opens on.

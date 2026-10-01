@@ -1,10 +1,12 @@
 import type { Publication } from '$lib/types';
+import type { Contributor } from '$lib/types/contributor';
+import { getContributorNames } from '$lib/utils/contributor';
 import { splitNames } from '$lib/utils/nameUtils';
 
 // Helper function to format authors for BibTeX
-function formatAuthors(authors: string[] | undefined): string {
+function formatAuthors(authors: readonly Contributor[] | undefined): string {
 	if (!authors || authors.length === 0) return '';
-	return authors.map(escapeBibtex).join(' and ');
+	return getContributorNames(authors).map(escapeBibtex).join(' and ');
 }
 
 // Helper function to format page ranges for BibTeX

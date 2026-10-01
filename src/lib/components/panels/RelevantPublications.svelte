@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getContributorNames } from '$lib/utils/contributor';
 	import { allPublicationSummaries } from '$lib/data/publications/summaries';
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
@@ -34,7 +35,7 @@
 				date: pub.date,
 				dateISO: pub.dateISO,
 				title: pub.title,
-				authors: pub.authors,
+				authors: getContributorNames(pub.authors),
 				abstract: pub.abstractExcerpt
 			}))
 	);

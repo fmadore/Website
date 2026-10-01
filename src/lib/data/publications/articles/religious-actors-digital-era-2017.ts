@@ -4,7 +4,7 @@ export const religiousActorsDigitalEra: Publication = {
 	id: 'religious-actors-digital-era-2017',
 	type: 'article',
 	title: "Pour de nouvelles études sur les acteurs religieux africains à l'ère du numérique",
-	authors: ['Pamela Millet-Mouity', 'Frédérick Madore'],
+	authors: [{ name: 'Pamela Millet-Mouity', personId: 'pamela-millet-mouity' }, 'Frédérick Madore'],
 	date: '2017',
 	dateISO: '2017',
 	year: 2017,

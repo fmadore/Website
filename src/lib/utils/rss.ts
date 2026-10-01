@@ -1,5 +1,6 @@
 import type { Activity } from '$lib/types/activity';
 import type { Publication } from '$lib/types/publication';
+import { getContributorNames } from '$lib/utils/contributor';
 import { author, website } from '$lib/data/siteConfig';
 import { getRssDescription, getEmailWithName } from '$lib/utils/siteHelpers';
 import { stripHtml } from '$lib/utils/textUtils';
@@ -148,7 +149,9 @@ export function publicationToRSSItem(publication: Publication, siteUrl: string):
 		description,
 		pubDate,
 		guid: `${siteUrl}/publications/${publication.id}`,
-		author: Array.isArray(publication.authors) ? publication.authors.join(', ') : author.name,
+		author: Array.isArray(publication.authors)
+			? getContributorNames(publication.authors).join(', ')
+			: author.name,
 		categories: publication.tags || []
 	};
 }

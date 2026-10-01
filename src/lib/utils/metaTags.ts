@@ -4,6 +4,7 @@
  */
 
 import { toLastFirstFormat } from '$lib/utils/nameUtils';
+import type { Contributor } from '$lib/types/contributor';
 
 // Name-string helpers live in nameUtils; re-exported here so existing
 // `$lib/utils/metaTags` imports keep working unchanged.
@@ -29,7 +30,10 @@ export function createConditionalTag(
 /**
  * Creates meta tags for authors/editors with "Last, First" formatting.
  */
-export function createAuthorTags(authors: string[] | undefined, tagName: string): MetaTag[] {
+export function createAuthorTags(
+	authors: readonly Contributor[] | undefined,
+	tagName: string
+): MetaTag[] {
 	if (!authors) return [];
 	return authors.map((author) => ({
 		name: tagName,

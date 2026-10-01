@@ -3,6 +3,8 @@
  * Used across route load functions (publications, activities, communications, etc.)
  * to generate schema.org compliant structured data.
  */
+import type { Contributor } from '$lib/types/contributor';
+import { getContributorName } from '$lib/utils/contributor';
 
 // --- Primitive Schema Types ---
 
@@ -211,11 +213,12 @@ export interface PersonPageJsonLd {
 
 // --- Utility Functions ---
 
-export function formatAuthor(authorName: string): JsonLdPerson {
+export function formatAuthor(contributor: Contributor): JsonLdPerson {
+	const authorName = getContributorName(contributor);
 	return { '@type': 'Person', name: authorName.trim() };
 }
 
-export function formatAuthors(authors: string[]): JsonLdPerson[] {
+export function formatAuthors(authors: readonly Contributor[]): JsonLdPerson[] {
 	return authors.map(formatAuthor);
 }
 

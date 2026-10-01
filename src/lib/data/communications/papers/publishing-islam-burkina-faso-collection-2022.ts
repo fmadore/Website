@@ -3,7 +3,7 @@ import type { Communication } from '$lib/types/communication';
 export const publishingIslamBurkinaFasoCollection: Communication = {
 	id: 'publishing-islam-burkina-faso-collection-2022',
 	title: 'Publishing the Islam Burkina Faso Collection: Collaboration for Digital Scholarship',
-	authors: ['Frédérick Madore', 'Perry Collins'],
+	authors: ['Frédérick Madore', { name: 'Perry Collins', personId: 'perry-collins' }],
 	date: '15 September 2022',
 	dateISO: '2022-09-15',
 	year: 2022,

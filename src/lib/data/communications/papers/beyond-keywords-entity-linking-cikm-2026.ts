@@ -4,12 +4,12 @@ export const beyondKeywordsEntityLinkingCikm2026: Communication = {
 	id: 'beyond-keywords-entity-linking-cikm-2026',
 	title: 'Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata',
 	authors: [
-		'Jiayu Yang',
-		'Durgesh Nandini',
-		'Mirco Schönfeld',
+		{ name: 'Jiayu Yang', personId: 'jiayu-yang' },
+		{ name: 'Durgesh Nandini', personId: 'durgesh-nandini' },
+		{ name: 'Mirco Schönfeld', personId: 'mirco-schonfeld' },
 		'Frédérick Madore',
-		'Neeraj Thandayan Viswajith',
-		'Oliver Baumann'
+		{ name: 'Neeraj Thandayan Viswajith', personId: 'neeraj-thandayan-viswajith' },
+		{ name: 'Oliver Baumann', personId: 'oliver-baumann' }
 	],
 	date: '9 November 2026',
 	dateISO: '2026-11-09',

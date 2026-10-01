@@ -5,11 +5,11 @@ export const responsibleAiAccessMcpServer2026: Communication = {
 	title: 'Responsible AI Access to Research Repositories: An MCP Server for African Studies Data',
 	authors: [
 		'Frédérick Madore',
-		'Oliver Baumann',
-		'Durgesh Nandini',
-		'Neeraj Thandayan Viswajith',
-		'Jiayu Yang',
-		'Mirco Schönfeld'
+		{ name: 'Oliver Baumann', personId: 'oliver-baumann' },
+		{ name: 'Durgesh Nandini', personId: 'durgesh-nandini' },
+		{ name: 'Neeraj Thandayan Viswajith', personId: 'neeraj-thandayan-viswajith' },
+		{ name: 'Jiayu Yang', personId: 'jiayu-yang' },
+		{ name: 'Mirco Schönfeld', personId: 'mirco-schonfeld' }
 	],
 	date: '25 September 2026',
 	dateISO: '2026-09-25',

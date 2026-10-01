@@ -4,7 +4,7 @@ export const islamPeripheriesOpenUp: Communication = {
 	id: 'islam-peripheries-open-up-2026',
 	title:
 		'Islam\'s "Peripheries": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia',
-	authors: ['Frédérick Madore', 'Aksana Ismailbekova'],
+	authors: ['Frédérick Madore', { name: 'Aksana Ismailbekova', personId: 'aksana-ismailbekova' }],
 	date: '4 March 2026',
 	dateISO: '2026-03-04',
 	year: 2026,

@@ -24,12 +24,13 @@
 import { existsSync, globSync, readFileSync } from 'node:fs';
 import { CHECK_MODE, emitGenerated } from './lib/generated-file.mjs';
 import { collectRecords } from './lib/data-records.mjs';
+import { getContributorNames } from '../src/lib/utils/contributor.ts';
 
 const OUT_FILE = 'src/lib/data/referenceIndex.generated.ts';
 
 /** Project a full record down to the slim, render-only fields. */
 function slim(obj, itemType) {
-	const e = { id: obj.id, itemType, title: obj.title, authors: obj.authors ?? [] };
+	const e = { id: obj.id, itemType, title: obj.title, authors: getContributorNames(obj.authors) };
 	if (obj.type) e.type = obj.type;
 	if (obj.date) e.date = obj.date;
 	if (obj.dateISO) e.dateISO = obj.dateISO;

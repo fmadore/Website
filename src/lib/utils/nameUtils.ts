@@ -2,12 +2,15 @@
  * Pure helpers for parsing and formatting person-name strings
  * (authors, editors). Shared by metaTags, citation and BibTeX code.
  */
+import type { Contributor } from '$lib/types/contributor';
+import { getContributorName, getContributorNames } from '$lib/utils/contributor';
 
 /**
  * Converts "First Last" to "Last, First" format for citation managers (Zotero).
  * Names already in "Last, First" format are returned as-is.
  */
-export function toLastFirstFormat(name: string): string {
+export function toLastFirstFormat(contributor: Contributor): string {
+	const name = getContributorName(contributor);
 	if (name.includes(',')) return name;
 	const parts = name.trim().split(/\s+/);
 	if (parts.length <= 1) return name;
@@ -74,7 +77,11 @@ export interface JoinNamesOptions {
  * display formatters. Each caller supplies its own style config; outputs
  * intentionally differ per citation style.
  */
-export function joinNames(names: string[], options: JoinNamesOptions = {}): string {
+export function joinNames(
+	contributors: readonly Contributor[],
+	options: JoinNamesOptions = {}
+): string {
+	const names = getContributorNames(contributors);
 	const {
 		separator = ', ',
 		conjunction = ' and ',
@@ -108,7 +115,7 @@ export function joinNames(names: string[], options: JoinNamesOptions = {}): stri
  * Compact author display for list/panel cards: single name as-is,
  * two names joined with "and", three or more collapsed to "First et al.".
  */
-export function formatAuthorsCompact(authors: string[]): string {
+export function formatAuthorsCompact(authors: readonly Contributor[]): string {
 	if (!authors) return '';
 	return joinNames(authors, { maxBeforeEtAl: 2 });
 }
@@ -129,7 +136,7 @@ const ET_AL_NAMES_SHOWN = 3;
  * held in view wherever it falls in the running order.
  */
 export function formatAuthorsWithEtAl(
-	authors: string[] | undefined,
+	authors: readonly Contributor[] | undefined,
 	options: { max?: number; shown?: number; mustInclude?: string } = {}
 ): string {
 	if (!authors) return '';
@@ -145,7 +152,8 @@ export function formatAuthorsWithEtAl(
  * Parses an author name into first/last parts for COinS metadata.
  * Handles both "Last, First" and "First Last" formats.
  */
-export function parseAuthorName(author: string): { first?: string; last?: string } {
+export function parseAuthorName(contributor: Contributor): { first?: string; last?: string } {
+	const author = getContributorName(contributor);
 	if (author.includes(',')) {
 		const [last, first] = author.split(',').map((s) => s.trim());
 		return { first, last };

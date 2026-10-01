@@ -39,6 +39,7 @@ export const talkAiAfricaSymposiumKansas2026: Communication = {
 	participants: [
 		{
 			name: 'Rahina Muazu',
+			personId: 'rahina-muazu',
 			role: 'Moderator, Panel I: African History'
 		},
 		{
@@ -48,30 +49,36 @@ export const talkAiAfricaSymposiumKansas2026: Communication = {
 		},
 		{
 			name: 'Karen Ijumba',
+			personId: 'karen-byera-ijumba',
 			role: 'Panellist, Panel I: African History',
 			affiliation: 'Open Restitution'
 		},
 		{
 			name: 'Fu’ad Lawal',
+			personId: 'fuad-lawal',
 			role: 'Panellist, Panel I: African History',
 			affiliation: 'Founder, Archivi.ng'
 		},
 		{
 			name: 'Martha Ndakalako',
+			personId: 'martha-ndakalako',
 			role: 'Moderator, Panel II: African Writers Discuss AI'
 		},
 		{
 			name: 'Mubanga Kalimamukwento',
+			personId: 'mubanga-kalimamukwento',
 			role: 'Panellist, Panel II: African Writers Discuss AI',
 			affiliation: 'Author of The Shipikisha Club'
 		},
 		{
 			name: 'Ukamaka Olisakwe',
+			personId: 'ukamaka-olisakwe',
 			role: 'Panellist, Panel II: African Writers Discuss AI',
 			affiliation: 'Author of Don’t Answer When They Call Your Name'
 		},
 		{
 			name: 'Munyao Kilolo',
+			personId: 'munyao-kilolo',
 			role: 'Panellist, Panel II: African Writers Discuss AI',
 			affiliation: 'Translator and Editor at Ituĩka'
 		}

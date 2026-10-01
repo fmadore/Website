@@ -1,4 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
+import { getContributorNames } from '$lib/utils/contributor';
 import { communicationsByDate } from '$lib/data/communications/index';
 import type { Communication } from '$lib/types/communication';
 import {
@@ -18,7 +19,7 @@ const serialise = (comm: Communication) =>
 		url: absoluteUrl(`/communications/${comm.id}`),
 		type: comm.type,
 		title: comm.title,
-		authors: comm.authors,
+		authors: getContributorNames(comm.authors),
 		date: comm.date,
 		dateISO: comm.dateISO,
 		year: comm.year,

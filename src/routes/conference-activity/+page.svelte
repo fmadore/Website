@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getContributorNames } from '$lib/utils/contributor';
 	import SEO from '$lib/SEO.svelte';
 	import { pageTitle } from '$lib/utils/siteHelpers';
 	import '$styles/components/entity-index.css';
@@ -96,7 +97,7 @@
 	// The fields a scholar scans by, for the free-text search.
 	function searchFields(comm: CommunicationSummary): string[] {
 		const parts: string[] = [comm.title, String(comm.year ?? '')];
-		if (comm.authors) parts.push(...comm.authors);
+		if (comm.authors) parts.push(...getContributorNames(comm.authors));
 		if (comm.tags) parts.push(...comm.tags);
 		if (comm.conference) parts.push(comm.conference);
 		if (comm.location) parts.push(comm.location);

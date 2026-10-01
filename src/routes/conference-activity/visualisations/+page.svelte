@@ -24,6 +24,9 @@
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
+	import CollaboratorExplorer from '$lib/components/visualisations/CollaboratorExplorer.svelte';
+	import { buildCommunicationCollaborators } from '$lib/utils/collaboratorAggregation';
+	import type { Institution, Person } from '$lib/types/person';
 	import { inView } from '$lib/actions/inView';
 	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
 	import {
@@ -229,6 +232,50 @@
 	);
 	const totalMapped = $derived(locationMapData.reduce((sum, loc) => sum + loc.count, 0));
 
+	let locationDataset = $state<'locations' | 'collaborators'>('locations');
+	let collaborationYear = $state<number | undefined>(undefined);
+	let includeUncertain = $state(false);
+	let affiliationStatus = $state<'idle' | 'loading' | 'ready' | 'error'>('idle');
+	let collaboratorPeople = $state.raw<Person[]>([]);
+	let collaboratorInstitutions = $state.raw<Institution[]>([]);
+	const collaborationYears = $derived(
+		[...new Set(allCommunications.map((talk) => talk.year))].sort((a, b) => b - a)
+	);
+	const collaboratorLocations = $derived(
+		buildCommunicationCollaborators(
+			allCommunications,
+			collaboratorPeople,
+			collaboratorInstitutions,
+			collaborationYear,
+			includeUncertain
+		)
+	);
+	const selectedLocationData = $derived(
+		locationDataset === 'collaborators' ? collaboratorLocations.locations : locationMapData
+	);
+
+	async function loadAffiliations() {
+		if (affiliationStatus === 'loading' || affiliationStatus === 'ready') return;
+		affiliationStatus = 'loading';
+		try {
+			const [peopleModule, institutionsModule] = await Promise.all([
+				import('$lib/data/people'),
+				import('$lib/data/institutions')
+			]);
+			collaboratorPeople = peopleModule.allPeople;
+			collaboratorInstitutions = institutionsModule.institutions;
+			affiliationStatus = 'ready';
+		} catch (error) {
+			affiliationStatus = 'error';
+			if (import.meta.env.DEV) console.error('Affiliation evidence failed to load:', error);
+		}
+	}
+
+	$effect(() => {
+		if (locationDataset === 'collaborators' && affiliationStatus === 'idle')
+			void loadAffiliations();
+	});
+
 	// 10. Research project timeline — project spans with communication markers.
 	const projectTimelineData = $derived(
 		buildProjectTimeline(communicationsByProject, (comm) => ({
@@ -264,9 +311,6 @@
 			value: node.children.reduce((sum, child) => sum + child.value, 0)
 		}))
 	);
-	const locationTableRows = $derived(
-		locationMapData.map((d) => ({ label: d.country, value: d.count }))
-	);
 	const projectTimelineTableRows = $derived(
 		projectTimelineData.map((entry) => ({ label: entry.name, value: entry.publications.length }))
 	);
@@ -300,9 +344,11 @@
 	// section's note must stop promising them.
 	let venueMapFailed = $state(false);
 	const locationDescription = $derived(
-		venueMapFailed || mapChunkFailed
-			? 'The countries of the venues, taken from the location recorded on each talk.'
-			: 'The countries of the venues, taken from the location recorded on each talk. Switch between proportional markers and country shading; select a country to list its titles and cities.'
+		locationDataset === 'collaborators'
+			? 'Institutional affiliations of co-presenters and event participants, with the evidence and shared talks recorded for each person.'
+			: venueMapFailed || mapChunkFailed
+				? 'The countries of the venues, taken from the location recorded on each talk.'
+				: 'The countries of the venues, taken from the location recorded on each talk. Switch between proportional markers and country shading; select a country to list its titles and cities.'
 	);
 
 	// ---------- The record, in numbers ----------
@@ -392,11 +438,15 @@
 		locations: {
 			id: 'venue-locations',
 			no: '§ 10',
-			title: 'Conference venue locations',
+			title: 'Venue and collaborator locations',
 			count:
-				locationMapData.length > 0
-					? `${countOf(locationMapData.length, 'country', 'countries')}, ${countOf(totalMapped, 'talk')}`
-					: ''
+				locationDataset === 'collaborators'
+					? affiliationStatus === 'ready'
+						? countOf(collaboratorLocations.mappedPeople, 'collaborator')
+						: ''
+					: locationMapData.length > 0
+						? `${countOf(locationMapData.length, 'country', 'countries')}, ${countOf(totalMapped, 'talk')}`
+						: ''
 		},
 		timeline: {
 			id: 'project-timeline',
@@ -689,40 +739,40 @@
 		{/snippet}
 	</VizSection>
 
-	<VizSection
-		{...sections.locations}
-		description={locationDescription}
-		variant="map"
-		height="500px"
-		placeholderHeight="400px"
-		hasData={locationMapData.length > 0}
-		empty="No venue locations recorded."
-	>
-		{#if VenueMap}
-			<VenueMap
-				data={locationMapData}
-				basePath="/communications"
-				itemLabel="talk"
-				bind:failed={venueMapFailed}
-			/>
-		{:else if mapChunkFailed}
-			<div class="state-note map-plate-note" role="status">
-				<span class="dateline">Map unavailable</span>
-				<p>The map could not be loaded. The country table below holds the same records.</p>
-			</div>
-		{:else}
-			<div class="state-note map-plate-note" role="status" use:inView={loadVenueMap}>
-				<span class="dateline">Loading map…</span>
-			</div>
-		{/if}
-		{#snippet table()}
-			<VizDataTable
-				rows={locationTableRows}
-				keyLabel="Country"
-				valueLabel="Talks"
-				caption="Conference venue locations by country."
-			/>
-		{/snippet}
+	<VizSection {...sections.locations} description={locationDescription}>
+		<CollaboratorExplorer
+			bind:dataset={locationDataset}
+			bind:year={collaborationYear}
+			bind:includeUncertain
+			locationLabel="Venues"
+			locationData={locationMapData}
+			collaborators={collaboratorLocations}
+			status={affiliationStatus}
+			retry={loadAffiliations}
+			years={collaborationYears}
+			basePath="/communications"
+			itemLabel="Talks"
+		>
+			{#if VenueMap}
+				<VenueMap
+					data={selectedLocationData}
+					precisePoints={locationDataset === 'collaborators'}
+					loadingPoints={affiliationStatus === 'idle' || affiliationStatus === 'loading'}
+					basePath="/communications"
+					itemLabel="talk"
+					bind:failed={venueMapFailed}
+				/>
+			{:else if mapChunkFailed}
+				<div class="state-note map-plate-note" role="status">
+					<span class="dateline">Map unavailable</span>
+					<p>The map could not be loaded. The data table below holds the same records.</p>
+				</div>
+			{:else}
+				<div class="state-note map-plate-note" role="status" use:inView={loadVenueMap}>
+					<span class="dateline">Loading map…</span>
+				</div>
+			{/if}
+		</CollaboratorExplorer>
 	</VizSection>
 
 	<VizSection
