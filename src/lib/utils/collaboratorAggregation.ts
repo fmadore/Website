@@ -184,6 +184,8 @@ function aggregateCollaborators(
 				}
 				// All-years views must not hide an uncertain historical attribution behind a later verification.
 				if (affiliation.confidence === 'uncertain') collaborator.confidence = 'uncertain';
+				if (affiliation.note && !collaborator.note?.includes(affiliation.note))
+					collaborator.note = [collaborator.note, affiliation.note].filter(Boolean).join(' ');
 				if (!collaborator.items.some((item) => item.href === record.item.href))
 					collaborator.items.push(record.item);
 				for (const source of affiliation.sources) {
@@ -228,7 +230,7 @@ function aggregateCollaborators(
 				},
 				items,
 				collaborators,
-				uncertainty: institution.coordinateNote
+				coordinateNote: institution.coordinateNote
 			};
 		})
 		.sort((a, b) => b.count - a.count || a.label!.localeCompare(b.label!));

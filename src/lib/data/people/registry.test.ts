@@ -54,7 +54,10 @@ describe('sourced collaborator registry', () => {
 			for (const affiliation of person.affiliations) {
 				if (affiliation.institutionId) expect(ids.has(affiliation.institutionId)).toBe(true);
 				expect(affiliation.sources.length).toBeGreaterThan(0);
-				expect(affiliation.years?.length ?? 0).toBeGreaterThan(0);
+				if (!affiliation.years?.length) {
+					expect(affiliation.confidence).toBe('uncertain');
+					expect(affiliation.note).toContain('Undated source');
+				}
 			}
 		}
 	});

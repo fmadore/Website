@@ -3,7 +3,14 @@ import type { Communication } from '$lib/types/communication';
 export const responsibleAiAccessMcpServer2026: Communication = {
 	id: 'responsible-ai-access-mcp-server-2026',
 	title: 'Responsible AI Access to Research Repositories: An MCP Server for African Studies Data',
-	authors: ["Frédérick Madore", {"name": "Oliver Baumann", "personId": "oliver-baumann"}, {"name": "Durgesh Nandini", "personId": "durgesh-nandini"}, {"name": "Neeraj Thandayan Viswajith", "personId": "neeraj-thandayan-viswajith"}, {"name": "Jiayu Yang", "personId": "jiayu-yang"}, {"name": "Mirco Schönfeld", "personId": "mirco-schonfeld"}],
+	authors: [
+		'Frédérick Madore',
+		{ name: 'Oliver Baumann', personId: 'oliver-baumann' },
+		{ name: 'Durgesh Nandini', personId: 'durgesh-nandini' },
+		{ name: 'Neeraj Thandayan Viswajith', personId: 'neeraj-thandayan-viswajith' },
+		{ name: 'Jiayu Yang', personId: 'jiayu-yang' },
+		{ name: 'Mirco Schönfeld', personId: 'mirco-schonfeld' }
+	],
 	date: '25 September 2026',
 	dateISO: '2026-09-25',
 	year: 2026,
@@ -37,4 +44,3 @@ export const responsibleAiAccessMcpServer2026: Communication = {
 	},
 	project: 'Digital Research Environment (University of Bayreuth)'
 };
-

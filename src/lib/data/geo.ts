@@ -78,5 +78,5 @@ export type LocationDatum = {
 	coordinates?: { lat: number; lng: number };
 	collaborators?: LocationCollaborator[];
 	/** Visible qualification of the institution's location, if needed. */
-	uncertainty?: string;
+	coordinateNote?: string;
 };

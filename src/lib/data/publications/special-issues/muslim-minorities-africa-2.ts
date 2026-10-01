@@ -4,7 +4,7 @@ export const muslimMinoritiesAfrica2: Publication = {
 	id: 'muslim-minorities-africa-2',
 	type: 'special-issue',
 	title: 'Muslim Minorities in Africa, Part 2',
-	authors: ["Frédérick Madore", {"name": "Dorothea Schulz", "personId": "dorothea-schulz"}],
+	authors: ['Frédérick Madore', { name: 'Dorothea Schulz', personId: 'dorothea-schulz' }],
 	editors: 'Frédérick Madore, Dorothea Schulz',
 	date: '2022',
 	dateISO: '2022-01',
@@ -59,4 +59,3 @@ export const muslimMinoritiesAfrica2: Publication = {
 		}
 	]
 };
-

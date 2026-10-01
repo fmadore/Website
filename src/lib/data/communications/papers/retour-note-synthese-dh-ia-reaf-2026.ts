@@ -4,7 +4,7 @@ export const retourNoteSyntheseDhIaReaf2026: Communication = {
 	id: 'retour-note-synthese-dh-ia-reaf-2026',
 	title:
 		'Retour sur une note de synthèse analysant la relation entre Humanités Numériques, l\u2019IA et les Études Africaines (Hanovre, février 2026)',
-	authors: [{"name": "Vincent Hiribarren", "personId": "vincent-hiribarren"}, "Frédérick Madore"],
+	authors: [{ name: 'Vincent Hiribarren', personId: 'vincent-hiribarren' }, 'Frédérick Madore'],
 	date: '30 June 2026',
 	dateISO: '2026-06-30',
 	year: 2026,
@@ -29,4 +29,3 @@ export const retourNoteSyntheseDhIaReaf2026: Communication = {
 	},
 	project: 'Digital Humanities and AI in African Studies'
 };
-

@@ -318,12 +318,11 @@ shown as markers while preserving the reader's country-shading preference.
 			const el = document.createElement('div');
 			el.className = 'location-marker';
 			const hasUncertainty = Boolean(
-				datum.uncertainty ||
 				datum.collaborators?.some((person) => person.confidence === 'uncertain')
 			);
 			el.setAttribute(
 				'aria-label',
-				`${datum.label ?? datum.country}: ${precisePoints ? `${datum.count} ${datum.count === 1 ? 'collaborator' : 'collaborators'}` : pluralLabel(datum.count)}${hasUncertainty ? '. Includes uncertain evidence' : ''}`
+				`${datum.label ?? datum.country}: ${precisePoints ? `${datum.count} ${datum.count === 1 ? 'collaborator' : 'collaborators'}` : pluralLabel(datum.count)}${hasUncertainty ? '. Includes uncertain affiliation evidence' : ''}`
 			);
 			el.style.width = `${size}px`;
 			el.style.height = `${size}px`;

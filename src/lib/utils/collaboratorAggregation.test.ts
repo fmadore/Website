@@ -12,7 +12,7 @@ import type { Publication } from '$lib/types/publication';
 const OWNER = 'Frédérick Madore';
 const SOURCE = { label: 'Dated publisher affiliation', url: 'https://example.org/article' };
 
-const campuses: Institution[] = [
+const campuses: [Institution, Institution] = [
 	{
 		id: 'alpha',
 		name: 'Alpha University',
@@ -134,12 +134,12 @@ describe('publication collaborators', () => {
 		expect(result.totalPeople).toBe(2);
 		expect(result.mappedPeople).toBe(2);
 		expect(result.locations).toHaveLength(1);
-		expect(result.locations[0].count).toBe(2);
-		expect(result.locations[0].items?.map((item) => item.href)).toEqual([
+		expect(result.locations[0]?.count).toBe(2);
+		expect(result.locations[0]?.items?.map((item) => item.href)).toEqual([
 			'/publications/one',
 			'/publications/two'
 		]);
-		const alice = result.locations[0].collaborators?.find((entry) => entry.id === 'alice');
+		const alice = result.locations[0]?.collaborators?.find((entry) => entry.id === 'alice');
 		expect(alice?.name).toBe('Alice Roë');
 		expect(alice?.items).toHaveLength(2);
 		expect(alice?.sources).toEqual([SOURCE]);
@@ -155,8 +155,8 @@ describe('publication collaborators', () => {
 		);
 		expect(result.locations).toEqual([]);
 		expect(result.totalPeople).toBe(1);
-		expect(result.unresolved[0].id).toBe('missing-person');
-		expect(result.unresolved[0].reason).toContain('reference could not be resolved');
+		expect(result.unresolved[0]?.id).toBe('missing-person');
+		expect(result.unresolved[0]?.reason).toContain('reference could not be resolved');
 	});
 
 	it('selects the affiliation supported in the publication year after a move', () => {
@@ -167,9 +167,9 @@ describe('publication collaborators', () => {
 		];
 		const result = buildPublicationCollaborators(publications, people, campuses, 2020);
 		expect(result.locations.map((location) => location.id)).toEqual(['alpha']);
-		expect(result.locations[0].items?.map((item) => item.id)).toEqual(['old']);
+		expect(result.locations[0]?.items?.map((item) => item.id)).toEqual(['old']);
 		expect(
-			buildPublicationCollaborators(publications, people, campuses, 2024).locations[0].id
+			buildPublicationCollaborators(publications, people, campuses, 2024).locations[0]?.id
 		).toBe('beta');
 	});
 
@@ -182,10 +182,10 @@ describe('publication collaborators', () => {
 		const result = buildPublicationCollaborators(publications, people, campuses, undefined, true);
 		expect(result.totalPeople).toBe(1);
 		expect(result.mappedPeople).toBe(1);
-		expect(result.locations[0].items?.map((item) => item.id)).toEqual(['known']);
+		expect(result.locations[0]?.items?.map((item) => item.id)).toEqual(['known']);
 		expect(result.unresolved).toHaveLength(1);
-		expect(result.unresolved[0].reason).toContain('2018');
-		expect(result.unresolved[0].items.map((item) => item.id)).toEqual(['unknown']);
+		expect(result.unresolved[0]?.reason).toContain('2018');
+		expect(result.unresolved[0]?.items.map((item) => item.id)).toEqual(['unknown']);
 	});
 
 	it('excludes uncertain observations by default and never hides an included historical uncertainty', () => {
@@ -197,13 +197,13 @@ describe('publication collaborators', () => {
 			publication('new', 2024, ['Alice Roe'])
 		];
 		const defaults = buildPublicationCollaborators(publications, people, campuses);
-		expect(defaults.locations[0].items?.map((item) => item.id)).toEqual(['new']);
+		expect(defaults.locations[0]?.items?.map((item) => item.id)).toEqual(['new']);
 		expect(defaults.uncertainPeople).toBe(1);
-		expect(defaults.unresolved[0].reason).toContain('Uncertain affiliation for 2018');
+		expect(defaults.unresolved[0]?.reason).toContain('Uncertain affiliation for 2018');
 		for (const records of [publications, [...publications].reverse()]) {
 			const included = buildPublicationCollaborators(records, people, campuses, undefined, true);
-			expect(included.locations[0].collaborators?.[0].confidence).toBe('uncertain');
-			expect(included.locations[0].collaborators?.[0].items).toHaveLength(2);
+			expect(included.locations[0]?.collaborators?.[0]?.confidence).toBe('uncertain');
+			expect(included.locations[0]?.collaborators?.[0]?.items).toHaveLength(2);
 			expect(included.unresolved).toEqual([]);
 		}
 	});
@@ -219,11 +219,32 @@ describe('publication collaborators', () => {
 		const publications = [publication('one', 2024, ['Alice Roe'])];
 		const defaults = buildPublicationCollaborators(publications, people, campuses);
 		expect(defaults.locations.map((location) => location.id)).toEqual(['alpha']);
-		expect(defaults.locations[0].collaborators?.[0].confidence).toBe('verified');
-		expect(defaults.unresolved[0].reason).toContain('Beta University');
+		expect(defaults.locations[0]?.collaborators?.[0]?.confidence).toBe('verified');
+		expect(defaults.unresolved[0]?.reason).toContain('Beta University');
 		const included = buildPublicationCollaborators(publications, people, campuses, undefined, true);
 		expect(included.locations.map((location) => location.id).sort()).toEqual(['alpha', 'beta']);
 		expect(included.mappedPeople).toBe(1);
+	});
+
+	it('preserves the caveats from each historical observation in an all-years view', () => {
+		const olderNote = 'The 2018 publisher lists a visiting appointment only.';
+		const laterNote = 'The 2024 affiliation remains disputed by another source.';
+		const people = [
+			person('alice', [
+				{ ...observation('alpha', [2018]), note: olderNote },
+				{ ...observation('alpha', [2024], 'uncertain'), note: laterNote }
+			])
+		];
+		const publications = [
+			publication('old', 2018, ['Alice Roe']),
+			publication('new', 2024, ['Alice Roe'])
+		];
+		for (const records of [publications, [...publications].reverse()]) {
+			const result = buildPublicationCollaborators(records, people, campuses, undefined, true);
+			const collaborator = result.locations[0]?.collaborators?.[0];
+			expect(collaborator?.note).toContain(olderNote);
+			expect(collaborator?.note).toContain(laterNote);
+		}
 	});
 
 	it('shows simultaneous verified affiliations while counting the person once', () => {
@@ -262,7 +283,7 @@ describe('publication collaborators', () => {
 		expect(result.locations).toEqual([]);
 		expect(result.mappedPeople).toBe(0);
 		expect(result.totalPeople).toBe(1);
-		expect(result.unresolved[0].reason).toContain('institutional location unverified');
+		expect(result.unresolved[0]?.reason).toContain('institutional location unverified');
 	});
 
 	it('does not assign a point to an affiliation deliberately lacking a verified institution reference', () => {
@@ -283,7 +304,7 @@ describe('publication collaborators', () => {
 			campuses
 		);
 		expect(result.locations).toEqual([]);
-		expect(result.unresolved[0].reason).toContain('The campus could not be established');
+		expect(result.unresolved[0]?.reason).toContain('The campus could not be established');
 	});
 
 	it('returns an empty result for no records, no selected year, or owner-only credits', () => {
@@ -344,8 +365,8 @@ describe('communication collaborators', () => {
 		});
 		const result = buildCommunicationCollaborators([event], people, campuses);
 		expect(result.totalPeople).toBe(1);
-		expect(result.locations[0].count).toBe(1);
-		expect(result.locations[0].collaborators?.[0].items.map((item) => item.href)).toEqual([
+		expect(result.locations[0]?.count).toBe(1);
+		expect(result.locations[0]?.collaborators?.[0]?.items.map((item) => item.href)).toEqual([
 			'/communications/conference'
 		]);
 	});
@@ -358,9 +379,9 @@ describe('communication collaborators', () => {
 		expect(defaults.locations).toEqual([]);
 		expect(defaults.uncertainPeople).toBe(1);
 		const included = buildCommunicationCollaborators([event], [], campuses, undefined, true);
-		expect(included.locations[0].id).toBe('alpha');
-		expect(included.locations[0].collaborators?.[0].confidence).toBe('uncertain');
-		expect(included.locations[0].coordinates).toEqual({ lat: 46.78, lng: -71.28 });
+		expect(included.locations[0]?.id).toBe('alpha');
+		expect(included.locations[0]?.collaborators?.[0]?.confidence).toBe('uncertain');
+		expect(included.locations[0]?.coordinates).toEqual({ lat: 46.78, lng: -71.28 });
 	});
 
 	it('never substitutes the conference venue for an unknown institutional location', () => {
@@ -371,7 +392,7 @@ describe('communication collaborators', () => {
 		expect(result.locations).toEqual([]);
 		expect(result.totalPeople).toBe(1);
 		expect(result.mappedPeople).toBe(0);
-		expect(result.unresolved[0].items[0].href).toBe('/communications/conference');
+		expect(result.unresolved[0]?.items[0]?.href).toBe('/communications/conference');
 	});
 
 	it('keeps a later participant affiliation when the same paper author has none', () => {
@@ -382,7 +403,7 @@ describe('communication collaborators', () => {
 		const result = buildCommunicationCollaborators([event], [], campuses, undefined, true);
 		expect(result.totalPeople).toBe(1);
 		expect(result.mappedPeople).toBe(1);
-		expect(result.locations[0].id).toBe('alpha');
+		expect(result.locations[0]?.id).toBe('alpha');
 		expect(result.unresolved).toEqual([]);
 	});
 
@@ -411,6 +432,6 @@ describe('communication collaborators', () => {
 			true
 		);
 		expect(result.locations[0]?.id).toBe('alpha');
-		expect(result.locations[0]?.collaborators?.[0].confidence).toBe('uncertain');
+		expect(result.locations[0]?.collaborators?.[0]?.confidence).toBe('uncertain');
 	});
 });

@@ -4,7 +4,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 	id: 'religieux-internet-ntic-burkina-faso-2019',
 	type: 'chapter',
 	title: 'Le religieux sur Internet et dans les NTIC au Burkina Faso',
-	authors: ["Frédérick Madore", {"name": "Louis Audet Gosselin", "personId": "louis-audet-gosselin"}],
+	authors: ['Frédérick Madore', { name: 'Louis Audet Gosselin', personId: 'louis-audet-gosselin' }],
 	date: '2019',
 	dateISO: '2019-06',
 	year: 2019,
@@ -81,4 +81,3 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 		}
 	]
 };
-

@@ -5,7 +5,13 @@ export const workshopReligionInHigherEducationalInstitutions2021: Communication 
 	id: 'workshop-religion-in-higher-educational-institutions-2021',
 	title:
 		'Workshop “Religion in Higher Educational Institutions in Africa and Beyond: (Re)Conversion, Power, and Authority from a Comparative Perspective”',
-	authors: [{"name": "Abdoulaye Sounaye", "personId": "abdoulaye-sounaye"}, "Frédérick Madore", {"name": "Vincent Favier", "personId": "vincent-favier"}, {"name": "Mahamadou Bello Adamou", "personId": "mahamadou-bello-adamou"}, {"name": "Adéjoké Rafiat Adétòrò", "personId": "adejoke-rafiat-adetoro"}],
+	authors: [
+		{ name: 'Abdoulaye Sounaye', personId: 'abdoulaye-sounaye' },
+		'Frédérick Madore',
+		{ name: 'Vincent Favier', personId: 'vincent-favier' },
+		{ name: 'Mahamadou Bello Adamou', personId: 'mahamadou-bello-adamou' },
+		{ name: 'Adéjoké Rafiat Adétòrò', personId: 'adejoke-rafiat-adetoro' }
+	],
 	date: '16-17 November 2021',
 	dateISO: '2021-11-16',
 	year: 2021,
@@ -41,7 +47,8 @@ export const workshopReligionInHigherEducationalInstitutions2021: Communication 
 	},
 	participants: [
 		{
-			name: 'Abdoulaye Sounaye', personId: "abdoulaye-sounaye",
+			name: 'Abdoulaye Sounaye',
+			personId: 'abdoulaye-sounaye',
 			role: 'Convenor and Speaker',
 			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		},
@@ -51,86 +58,146 @@ export const workshopReligionInHigherEducationalInstitutions2021: Communication 
 			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		},
 		{
-			name: 'Vincent Favier', personId: "vincent-favier",
+			name: 'Vincent Favier',
+			personId: 'vincent-favier',
 			role: 'Convenor and Speaker',
 			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		},
 		{
-			name: 'Mahamadou Bello Adamou', personId: "mahamadou-bello-adamou",
+			name: 'Mahamadou Bello Adamou',
+			personId: 'mahamadou-bello-adamou',
 			role: 'Convenor and Speaker',
 			affiliation: 'Université Abdou Moumouni, Niger'
 		},
 		{
-			name: 'Adéjoké Rafiat Adétòrò', personId: "adejoke-rafiat-adetoro",
+			name: 'Adéjoké Rafiat Adétòrò',
+			personId: 'adejoke-rafiat-adetoro',
 			role: 'Convenor and Speaker',
 			affiliation: 'Université Laval, Canada'
 		},
-		{ name: 'Olubunmi  Olowookere', personId: "olubunmi-olowookere", role: 'Speaker', affiliation: 'University of Ibadan, Nigeria' },
 		{
-			name: 'Sekou Sala Timbely', personId: "sekou-sala-timbely",
-			role: 'Speaker',
-			affiliation: 'Université Abdou Moumouni, Niger'
-		},
-		{ name: 'Ahmadou Hamage Issa', personId: "ahmadou-hamage-issa", role: 'Chair', affiliation: 'Université Abdou Moumouni, Niger' },
-		{ name: 'Gerd Spittler', personId: "gerd-spittler", role: 'Discussant', affiliation: 'University of Bayreuth, Germany' },
-		{
-			name: 'June Temitope Gbadamosi', personId: "june-temitope-gbadamosi",
+			name: 'Olubunmi  Olowookere',
+			personId: 'olubunmi-olowookere',
 			role: 'Speaker',
 			affiliation: 'University of Ibadan, Nigeria'
 		},
 		{
-			name: 'Ibrahim Bachir Abdoulaye', personId: "ibrahim-bachir-abdoulaye",
+			name: 'Sekou Sala Timbely',
+			personId: 'sekou-sala-timbely',
+			role: 'Speaker',
+			affiliation: 'Université Abdou Moumouni, Niger'
+		},
+		{
+			name: 'Ahmadou Hamage Issa',
+			personId: 'ahmadou-hamage-issa',
+			role: 'Chair',
+			affiliation: 'Université Abdou Moumouni, Niger'
+		},
+		{
+			name: 'Gerd Spittler',
+			personId: 'gerd-spittler',
+			role: 'Discussant',
+			affiliation: 'University of Bayreuth, Germany'
+		},
+		{
+			name: 'June Temitope Gbadamosi',
+			personId: 'june-temitope-gbadamosi',
+			role: 'Speaker',
+			affiliation: 'University of Ibadan, Nigeria'
+		},
+		{
+			name: 'Ibrahim Bachir Abdoulaye',
+			personId: 'ibrahim-bachir-abdoulaye',
 			role: 'Chair',
 			affiliation: 'University of Bayreuth, Germany'
 		},
 		{
-			name: 'Dorothea E. Schulz', personId: "dorothea-schulz",
+			name: 'Dorothea E. Schulz',
+			personId: 'dorothea-schulz',
 			role: 'Discussant',
 			affiliation: 'University of Münster, Germany'
 		},
-		{ name: 'Mara Leichtman', personId: "mara-leichtman", role: 'Speaker', affiliation: 'Michigan State University, USA' },
-		{ name: 'Ameen Kasim', personId: "ameen-kasim", role: 'Speaker', affiliation: 'Islamic University College, Ghana' },
-		{ name: 'Guy Bucumi', personId: "guy-bucumi", role: 'Speaker', affiliation: 'Université de Sherbrooke, Canada' },
-		{ name: 'Mbaye Lo', personId: "mbaye-lo", role: 'Speaker', affiliation: 'Duke University, USA' },
-		{ name: 'Karen Lauterbach', personId: "karen-lauterbach", role: 'Speaker', affiliation: 'University of Copenhagen, Denmark' },
 		{
-			name: 'Seyni Mamoudou Ibrahim', personId: "seyni-mamoudou-ibrahim",
+			name: 'Mara Leichtman',
+			personId: 'mara-leichtman',
+			role: 'Speaker',
+			affiliation: 'Michigan State University, USA'
+		},
+		{
+			name: 'Ameen Kasim',
+			personId: 'ameen-kasim',
+			role: 'Speaker',
+			affiliation: 'Islamic University College, Ghana'
+		},
+		{
+			name: 'Guy Bucumi',
+			personId: 'guy-bucumi',
+			role: 'Speaker',
+			affiliation: 'Université de Sherbrooke, Canada'
+		},
+		{
+			name: 'Mbaye Lo',
+			personId: 'mbaye-lo',
+			role: 'Speaker',
+			affiliation: 'Duke University, USA'
+		},
+		{
+			name: 'Karen Lauterbach',
+			personId: 'karen-lauterbach',
+			role: 'Speaker',
+			affiliation: 'University of Copenhagen, Denmark'
+		},
+		{
+			name: 'Seyni Mamoudou Ibrahim',
+			personId: 'seyni-mamoudou-ibrahim',
 			role: 'Chair',
 			affiliation: 'University of Bayreuth, Germany'
 		},
 		{
-			name: 'Élodie Apard', personId: "elodie-apard",
+			name: 'Élodie Apard',
+			personId: 'elodie-apard',
 			role: 'Discussant',
 			affiliation: "Laboratoire d'Anthropologie Sociale (LAM), France"
 		},
 		{
-			name: 'Nadir Abdulhadi Nasidi', personId: "nadir-abdulhadi-nasidi",
+			name: 'Nadir Abdulhadi Nasidi',
+			personId: 'nadir-abdulhadi-nasidi',
 			role: 'Speaker',
 			affiliation: 'Ahmadu Bello University, Nigeria'
 		},
 		{
-			name: 'Youssoufou Bakayoko', personId: "youssoufou-bakayoko",
+			name: 'Youssoufou Bakayoko',
+			personId: 'youssoufou-bakayoko',
 			role: 'Speaker',
 			affiliation: "Université Alassane Ouattara, Côte d'Ivoire"
 		},
 		{
-			name: 'Hamissou Rhissa Achaffert', personId: "hamissou-rhissa-achaffert",
+			name: 'Hamissou Rhissa Achaffert',
+			personId: 'hamissou-rhissa-achaffert',
 			role: 'Chair',
 			affiliation: 'University of Bayreuth, Germany'
 		},
 		{
-			name: 'Benedikt Pontzen', personId: "benedikt-pontzen",
+			name: 'Benedikt Pontzen',
+			personId: 'benedikt-pontzen',
 			role: 'Discussant',
 			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		},
-		{ name: 'Abdoulbaki Djibo', personId: "abdoulbaki-djibo", role: 'Speaker', affiliation: 'Université Abdou Moumouni, Niger' },
 		{
-			name: 'Simbarashe Gukurume', personId: "simbarashe-gukurume",
+			name: 'Abdoulbaki Djibo',
+			personId: 'abdoulbaki-djibo',
+			role: 'Speaker',
+			affiliation: 'Université Abdou Moumouni, Niger'
+		},
+		{
+			name: 'Simbarashe Gukurume',
+			personId: 'simbarashe-gukurume',
 			role: 'Speaker',
 			affiliation: 'Sol Plaatje University, South Africa'
 		},
 		{
-			name: 'Mamadou Yéro Baldé', personId: "mamadou-yero-balde",
+			name: 'Mamadou Yéro Baldé',
+			personId: 'mamadou-yero-balde',
 			role: 'Speaker',
 			affiliation: 'Université Cheikh Anta Diop, Senegal'
 		}
@@ -139,4 +206,3 @@ export const workshopReligionInHigherEducationalInstitutions2021: Communication 
 };
 
 export default workshopReligionInHigherEducationalInstitutions2021;
-

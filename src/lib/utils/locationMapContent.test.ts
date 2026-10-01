@@ -62,11 +62,11 @@ describe('collaboratorPopupContent', () => {
 
 	it('qualifies institution coordinate uncertainty independently of the affiliation', () => {
 		const content = collaboratorPopupContent(
-			{ ...location, uncertainty: 'Approximate campus location' },
+			{ ...location, coordinateNote: 'Approximate campus location' },
 			'',
 			'/publications'
 		);
-		expect(content).toContain('Location uncertain: Approximate campus location');
+		expect(content).toContain('Location note: Approximate campus location');
 	});
 
 	it('escapes registry text and rejects executable source and item URLs', () => {

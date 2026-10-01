@@ -3,7 +3,7 @@ import type { Communication } from '$lib/types/communication';
 export const historianVsAiEcas2025: Communication = {
 	id: 'historian-vs-ai-ecas-2025',
 	title: 'Historian vs AI: who reads and analyses archives best?',
-	authors: [{"name": "Vincent Hiribarren", "personId": "vincent-hiribarren"}, "Frédérick Madore"],
+	authors: [{ name: 'Vincent Hiribarren', personId: 'vincent-hiribarren' }, 'Frédérick Madore'],
 	date: '26 June 2025',
 	dateISO: '2025-06-26',
 	year: 2025,
@@ -37,4 +37,3 @@ export const historianVsAiEcas2025: Communication = {
 	},
 	project: 'Digital Humanities and AI in African Studies'
 };
-

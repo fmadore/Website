@@ -5,7 +5,33 @@ export const forWhomForWhatPurposeDhAiAfricanStudies2026: Publication = {
 	type: 'working-paper',
 	title:
 		'For Whom and For What Purpose? A Position Paper on Digital Humanities and AI in African Studies',
-	authors: ["Frédérick Madore", {"name": "Vincent Hiribarren", "personId": "vincent-hiribarren"}, {"name": "Agata Błoch", "personId": "agata-bloch"}, {"name": "Albrecht Hofheinz", "personId": "albrecht-hofheinz"}, {"name": "Ashleigh Harris", "personId": "ashleigh-harris"}, {"name": "Augustin Ndione", "personId": "augustin-ndione"}, {"name": "Britta Frede", "personId": "britta-frede"}, {"name": "Cassandra Mark-Thiesen", "personId": "cassandra-mark-thiesen"}, {"name": "Duncan Money", "personId": "duncan-money"}, {"name": "Emmanuel Ngue Um", "personId": "emmanuel-ngue-um"}, {"name": "Érika Melek Delgado", "personId": "erika-melek-delgado"}, {"name": "Fallou Ngom", "personId": "fallou-ngom"}, {"name": "Fu’ad Lawal", "personId": "fuad-lawal"}, {"name": "Irene Mwendwa", "personId": "irene-mwendwa"}, {"name": "James Yékú", "personId": "james-yeku"}, {"name": "Janeth David Nzenga", "personId": "janeth-david-nzenga"}, {"name": "Johannes Sibeko", "personId": "johannes-sibeko"}, {"name": "Karen Byera Ijumba", "personId": "karen-byera-ijumba"}, {"name": "Kọ́lá Túbọ̀sún", "personId": "kola-tubosun"}, {"name": "Leah Junck", "personId": "leah-junck"}, {"name": "Menno van Zaanen", "personId": "menno-van-zaanen"}, {"name": "Nuraddin Aman", "personId": "nuraddin-aman"}, {"name": "Oumou Sidibé", "personId": "oumou-sidibe"}, {"name": "Susan Elizabeth Gagliardi", "personId": "susan-elizabeth-gagliardi"}, {"name": "Thompson Gyedu Kwarkye", "personId": "thompson-gyedu-kwarkye"}],
+	authors: [
+		'Frédérick Madore',
+		{ name: 'Vincent Hiribarren', personId: 'vincent-hiribarren' },
+		{ name: 'Agata Błoch', personId: 'agata-bloch' },
+		{ name: 'Albrecht Hofheinz', personId: 'albrecht-hofheinz' },
+		{ name: 'Ashleigh Harris', personId: 'ashleigh-harris' },
+		{ name: 'Augustin Ndione', personId: 'augustin-ndione' },
+		{ name: 'Britta Frede', personId: 'britta-frede' },
+		{ name: 'Cassandra Mark-Thiesen', personId: 'cassandra-mark-thiesen' },
+		{ name: 'Duncan Money', personId: 'duncan-money' },
+		{ name: 'Emmanuel Ngue Um', personId: 'emmanuel-ngue-um' },
+		{ name: 'Érika Melek Delgado', personId: 'erika-melek-delgado' },
+		{ name: 'Fallou Ngom', personId: 'fallou-ngom' },
+		{ name: 'Fu’ad Lawal', personId: 'fuad-lawal' },
+		{ name: 'Irene Mwendwa', personId: 'irene-mwendwa' },
+		{ name: 'James Yékú', personId: 'james-yeku' },
+		{ name: 'Janeth David Nzenga', personId: 'janeth-david-nzenga' },
+		{ name: 'Johannes Sibeko', personId: 'johannes-sibeko' },
+		{ name: 'Karen Byera Ijumba', personId: 'karen-byera-ijumba' },
+		{ name: 'Kọ́lá Túbọ̀sún', personId: 'kola-tubosun' },
+		{ name: 'Leah Junck', personId: 'leah-junck' },
+		{ name: 'Menno van Zaanen', personId: 'menno-van-zaanen' },
+		{ name: 'Nuraddin Aman', personId: 'nuraddin-aman' },
+		{ name: 'Oumou Sidibé', personId: 'oumou-sidibe' },
+		{ name: 'Susan Elizabeth Gagliardi', personId: 'susan-elizabeth-gagliardi' },
+		{ name: 'Thompson Gyedu Kwarkye', personId: 'thompson-gyedu-kwarkye' }
+	],
 	date: '2026',
 	dateISO: '2026-09-09',
 	year: 2026,
@@ -36,4 +62,3 @@ export const forWhomForWhatPurposeDhAiAfricanStudies2026: Publication = {
 	project: 'Digital Humanities and AI in African Studies',
 	url: 'https://doi.org/10.58144/20260827-000'
 };
-

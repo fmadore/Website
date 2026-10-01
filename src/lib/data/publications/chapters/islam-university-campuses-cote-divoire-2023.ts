@@ -5,7 +5,7 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 	type: 'chapter',
 	title:
 		"Islam on University Campuses in Côte d'Ivoire since the 1970s: Muslim Intellectuals and Francophone Salafism",
-	authors: ["Frédérick Madore", {"name": "Issouf Binaté", "personId": "issouf-binate"}],
+	authors: ['Frédérick Madore', { name: 'Issouf Binaté', personId: 'issouf-binate' }],
 	date: '2023',
 	dateISO: '2023',
 	year: 2023,
@@ -68,4 +68,3 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 		}
 	]
 };
-

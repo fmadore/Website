@@ -5,7 +5,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 	type: 'article',
 	title:
 		'Muslim Women in Burkina Faso since the 1970s: Toward Recognition as Figures of Religious Authority?',
-	authors: ["Frédérick Madore", {"name": "Muriel Gomez-Perez", "personId": "muriel-gomez-perez"}],
+	authors: ['Frédérick Madore', { name: 'Muriel Gomez-Perez', personId: 'muriel-gomez-perez' }],
 	date: '2016',
 	dateISO: '2016-11-02',
 	year: 2016,
@@ -180,4 +180,3 @@ export const muslimWomenBurkinaFaso: Publication = {
 		}
 	]
 };
-

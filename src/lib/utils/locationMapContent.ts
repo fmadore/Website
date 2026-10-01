@@ -88,7 +88,7 @@ export function collaboratorPopupContent(
 	return `<div class="location-popup">
 		<strong>${escapeMapText(datum.label ?? datum.country)}</strong>
 		<div class="item-count">${countLabel} · ${escapeMapText(datum.country)}</div>
-		${datum.uncertainty ? `<p class="affiliation-note">Location uncertain: ${escapeMapText(datum.uncertainty)}</p>` : ''}
+		${datum.coordinateNote ? `<p class="affiliation-note">Location note: ${escapeMapText(datum.coordinateNote)}</p>` : ''}
 		<ul class="item-list">${people}</ul>
 	</div>`;
 }

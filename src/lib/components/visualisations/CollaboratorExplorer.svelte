@@ -96,7 +96,7 @@
 		{/if}
 		<p>
 			Affiliations use the dates supported by the evidence for each shared work. Marker size counts
-			distinct collaborators at each institution. Dashed markers include uncertain evidence.
+			distinct collaborators at each institution. Dashed markers include uncertain affiliations.
 		</p>
 	</div>
 {/if}
@@ -131,8 +131,8 @@
 								<tr>
 									<td>
 										{location.label}<span class="record-detail">{location.country}</span>
-										{#if location.uncertainty}
-											<span class="record-detail">Location uncertain: {location.uncertainty}</span>
+										{#if location.coordinateNote}
+											<span class="record-detail">Location note: {location.coordinateNote}</span>
 										{/if}
 									</td>
 									<th scope="row">{person.name}</th>
@@ -145,6 +145,7 @@
 										{#if person.note}<p>{person.note}</p>{/if}
 										{#each person.sources ?? [] as source (source.url)}
 											{#if locationSourceHref(source.url)}
+												<!-- eslint-disable svelte/no-navigation-without-resolve -- validated HTTP(S) evidence URL -->
 												<a
 													class="record-detail"
 													href={locationSourceHref(source.url)}
@@ -152,6 +153,7 @@
 													rel="noopener noreferrer"
 													>Open {source.label}<span class="sr-only"> (opens in new tab)</span></a
 												>
+												<!-- eslint-enable svelte/no-navigation-without-resolve -->
 											{/if}
 										{/each}
 									</td>
@@ -233,7 +235,7 @@
 	}
 
 	.dataset-toggle button + button {
-		border-inline-start: var(--border-width-thin) solid var(--color-border);
+		border-inline-start: var(--rule-hairline) solid var(--color-hairline);
 	}
 
 	.dataset-toggle button.active {

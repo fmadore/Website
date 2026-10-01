@@ -4,7 +4,11 @@ export const hackettInterviewDigitalMedia: Publication = {
 	id: 'hackett-interview-digital-media-2017',
 	type: 'article',
 	title: 'Interview with Rosalind I. J. Hackett on Religion and Digital Media Trends in Africa',
-	authors: [{"name": "Rosalind I. J. Hackett", "personId": "rosalind-i-j-hackett"}, "Frédérick Madore", {"name": "Pamela Millet-Mouity", "personId": "pamela-millet-mouity"}],
+	authors: [
+		{ name: 'Rosalind I. J. Hackett', personId: 'rosalind-i-j-hackett' },
+		'Frédérick Madore',
+		{ name: 'Pamela Millet-Mouity', personId: 'pamela-millet-mouity' }
+	],
 	date: '2017',
 	dateISO: '2017',
 	year: 2017,
@@ -75,4 +79,3 @@ export const hackettInterviewDigitalMedia: Publication = {
 		}
 	]
 };
-

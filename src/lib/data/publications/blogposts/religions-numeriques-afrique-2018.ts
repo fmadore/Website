@@ -4,7 +4,11 @@ export const religionsNumeriquesAfrique: Publication = {
 	id: 'religions-numeriques-afrique-2018',
 	type: 'blogpost',
 	title: 'Religions numériques en Afrique',
-	authors: [{"name": "Vincent Hiribarren", "personId": "vincent-hiribarren"}, {"name": "Pamela Millet-Mouity", "personId": "pamela-millet-mouity"}, "Frédérick Madore"],
+	authors: [
+		{ name: 'Vincent Hiribarren', personId: 'vincent-hiribarren' },
+		{ name: 'Pamela Millet-Mouity', personId: 'pamela-millet-mouity' },
+		'Frédérick Madore'
+	],
 	date: '2018',
 	dateISO: '2018-09-19',
 	year: 2018,
@@ -21,4 +25,3 @@ export const religionsNumeriquesAfrique: Publication = {
 		alt: 'Screenshot of the blogpost'
 	}
 };
-

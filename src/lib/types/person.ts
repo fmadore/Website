@@ -14,6 +14,15 @@ export type Institution = {
 	/** Institutional campus or office, never a person's home or a country centroid. */
 	coordinates: { latitude: number; longitude: number };
 	coordinateNote?: string;
+	/** Date and method of the institutional location review, separate from affiliation dates. */
+	coordinateQueriedOn?: string;
+	coordinateSourceKind?: 'reviewed-institutional-osm-feature';
+	osmFeature?: {
+		type: 'node' | 'way' | 'relation';
+		id: number;
+		category: string;
+		featureType: string;
+	};
 	sources: AffiliationSource[];
 };
 
