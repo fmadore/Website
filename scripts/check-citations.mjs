@@ -50,10 +50,10 @@
  * news, not a build failure, and a discovery source being down degrades the
  * report rather than failing it.
  */
-import { globSync, readFileSync, writeFileSync } from 'node:fs';
-import { resolve, basename } from 'node:path';
-import { pathToFileURL, fileURLToPath } from 'node:url';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { argv, exit, env } from 'node:process';
+import { collectRecords } from './lib/data-records.mjs';
 import { normDoi, normTitle, selectFreshCitations } from './citation-grouping.mjs';
 import { cleanTitle, flatten } from './citation-text.mjs';
 import {
@@ -87,30 +87,9 @@ const skipDiscovery = argv.includes('--skip-discovery');
 // Local publication data
 // ---------------------------------------------------------------------------
 
-/**
- * Loaded the same way `generate-reference-index.mjs` does it: Node's built-in
- * TypeScript type stripping lets each data file be `import()`ed directly, with
- * no Vite and no bundler. Works only because every data file is
- * erasable-syntax-only and imports types with `import type`.
- */
-function isDataItem(file) {
-	const name = basename(file);
-	return (
-		name !== 'index.ts' &&
-		!name.endsWith('.svelte.ts') &&
-		!name.includes('template') &&
-		name.endsWith('.ts')
-	);
-}
-
-const pickRecord = (mod) =>
-	Object.values(mod).find((v) => v && typeof v === 'object' && typeof v.id === 'string');
-
-const publications = [];
-for (const file of globSync('src/lib/data/publications/**/*.ts').filter(isDataItem)) {
-	const record = pickRecord(await import(pathToFileURL(resolve(file)).href));
-	if (record && !record.id.includes('template')) publications.push({ file, record });
-}
+// Share the generators' loader so CV views, summaries, tests and other helper
+// modules are excluded before import. Keep the full records, including citedBy.
+const publications = await collectRecords('src/lib/data/publications/**/*.ts', 'check-citations');
 
 if (publications.length === 0) {
 	console.error('[check-citations] Loaded no publications — glob or loader regression. Aborting.');
