@@ -78,7 +78,7 @@
 		"globals": "^17.11.0",
 		"pdfjs-dist": "^6.3.289",
 		"postcss": "^8.5.26",
-		"postcss-custom-media": "^12.0.0",
+		"postcss-custom-media": "^12.0.2",
 		"prettier": "^3.9.6",
 		"prettier-plugin-svelte": "^4.1.1",
 		"serve": "^14.2.6",
