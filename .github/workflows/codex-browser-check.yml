@@ -1,0 +1,35 @@
+name: Check collaborator browsers
+on:
+  push:
+    branches: [codex/184-browser-check]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v8
+        with:
+          name: build
+          path: build
+          run-id: 36919052436
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check collaborator maps with preinstalled Chrome
+        env:
+          PLAYWRIGHT_SKIP_BUILD: '1'
+          PLAYWRIGHT_CHROMIUM_PATH: /usr/bin/google-chrome
+        run: npx playwright test tests-e2e/collaborator-map.spec.ts --project=chromium --reporter=line,html
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: collaborator-browser-report
+          path: playwright-report/
+          retention-days: 3
