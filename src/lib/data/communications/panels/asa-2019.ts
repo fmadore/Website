@@ -23,14 +23,14 @@ export const asa2019Panel: Communication = {
 	papers: [
 		{
 			title: 'Islam and Politics in the DR Congo',
-			authors: [{ name: 'Ashley E. Leinweber', affiliation: 'Missouri State University' }],
+			authors: [{ name: 'Ashley E. Leinweber', personId: "ashley-e-leinweber", affiliation: 'Missouri State University' }],
 			abstract:
 				'The history of the Congolese Muslim minority, estimated at 5-10% of the population, was one of repression and marginalization. Islam arrived in eastern Congo in the pre-colonial period (c. 1860) as Swahili-Arab traders from east Africa penetrated the interior as far as present-day Maniema province in search of ivory and slaves. Congolese Muslims experienced intense repression during the colonial period, resulting in detachment from politics and the state that carried over after independence. In addition, deep internal divisions at the local, provincial, and national levels riddled the community for decades. Surprisingly, in the post-conflict period the Muslim minority became increasingly active, as evidenced by a proliferation of Islamic associations. In particular, there was a concerted effort to establish Muslim public schools throughout the country. In addition, members of the Muslim community have expressed interest in furthering their participation in fledgling democratic institutions. This paper analyzes the history of the Muslim community’s marginalization from the state and recent attempts to overcome internal divisions in order to increase its social and political footprint. It ultimately argues that the Muslim minority has been able to overcome historic state repression to engage in hybrid governance with the weak Congolese state.'
 		},
 		{
 			title:
 				'Un/making religious difference through auditory practices? Muslims as a religious minority in southwestern Uganda',
-			authors: [{ name: 'Dorothea E. Schulz', affiliation: 'University of Münster' }],
+			authors: [{ name: 'Dorothea E. Schulz', personId: "dorothea-schulz", affiliation: 'University of Münster' }],
 			abstract:
 				'How does a focus on auditory aesthetic practices enhance our understanding of the dynamics of religious coexistence? How do audible constructions of religious difference relate to practices and conventions that circumscribe realms of religious coexistence beyond the “public ear”? In Uganda, Muslims form numerically and politically a religious minority. In the Ankole region in southwestern Uganda, relations between Muslims and Christians are shaped by a shared repertoire of symbolic forms and patterns of sociality, yet also by past violent altercation and, more recently, by religious competition fueled by the activities of transnational actors and funds. In an urban setting characterized by latent and antagonism between specific groups of Muslims and of Christians, efforts to claim public presence through auditory practices have particular political poignancy. The paper explores how select religious leaders, Muslims and Christians, respond to a situation they deplore as a cacophony of public sound, religious argument, and normative positions. In response to this “cacophony”, Christian and Muslim leaders seek to instill in their followers particular modes of sonic (and visual) attentiveness so as to navigate the challenges of a highly heterogeneous religious and normative field. In a critical reassessment of Adorno’s seminal 1938 article on changing modes of perception (“Hörgewohnheiten”), the paper examines how religious leaders conceive of the proper relationship between believers’ (ethical and sensory) “perceptiveness”, religious devotion and dedication to “God’s cause”.'
 		},
@@ -38,7 +38,7 @@ export const asa2019Panel: Communication = {
 			title:
 				'The Challenges of Ahmadiyya Community’s Commitment for Development and Modern Humanitarianism',
 			authors: [
-				{ name: 'Katrin Langewiesche', affiliation: 'Johannes Gutenberg University of Mainz' }
+				{ name: 'Katrin Langewiesche', personId: "katrin-langewiesche", affiliation: 'Johannes Gutenberg University of Mainz' }
 			],
 			abstract:
 				'This paper offers a perspective on how a Muslim minority is engaged with the state and how its marginalization influenced struggles for recognition and participation in the public sphere through the example of the Ahmadiyya Movement and the evolution of their social welfare activities in West Africa, by placing a special emphasis on Burkina Faso. The paper describes the contemporary social welfare activities of the Ahmadiyya Muslim Community and their NGOs in Burkina Faso and the problems arising in contact with other Islamic Communities and their Faith-based organizations (FBOs) in this country. Finally, the politics of Humanitarianism of the Ahmadiyya Muslim Community is discussed, and it is argued that humanitarian aid is one of the issues favoring public recognition as well as interreligious dialogue to which the Ahmadis are equally strongly committed.'
@@ -53,10 +53,11 @@ export const asa2019Panel: Communication = {
 	],
 	participants: [
 		{
-			name: 'John H. Hanson',
+			name: 'John H. Hanson', personId: "john-h-hanson",
 			role: 'Discussant',
 			affiliation: 'Indiana University-Bloomington'
 		}
 	],
 	project: 'Muslim Minorities in Southern Cities of Benin and Togo'
 };
+

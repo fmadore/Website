@@ -24,6 +24,16 @@ const pub = (over: Partial<Publication>): Publication => ({
 });
 
 describe('getAuthorsArray', () => {
+	it('reads mixed legacy names and person references in credited order', () => {
+		expect(
+			getAuthorsArray([
+				'Jane Doe',
+				{ name: "John N'Dri", personId: 'john-ndri' },
+				{ name: 'Alex Example' }
+			])
+		).toEqual(['Jane Doe', "John N'Dri", 'Alex Example']);
+	});
+
 	it('returns an empty array for undefined', () => {
 		expect(getAuthorsArray(undefined)).toEqual([]);
 	});
@@ -430,6 +440,14 @@ describe('formatCommunicationCitation', () => {
 });
 
 describe('formatReferenceText', () => {
+	it('preserves HTML and copied references when bylines acquire person links', () => {
+		const legacy = pub({ authors: ['Jane Doe', "John N'Dri"] });
+		const linked = pub({ authors: ['Jane Doe', { name: "John N'Dri", personId: 'john-ndri' }] });
+		expect(formatReferenceHtml(linked)).toBe(formatReferenceHtml(legacy));
+		expect(formatReferenceText(linked)).toBe(formatReferenceText(legacy));
+		expect(formatReferenceText(linked)).toContain('Jane Doe and John N’Dri');
+	});
+
 	const article = pub({
 		type: 'article',
 		title: 'Muslim Minorities in Africa',

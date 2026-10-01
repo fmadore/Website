@@ -17,6 +17,7 @@ import {
 import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
 import { PUBLICATION_TYPE_FILTER_LABELS as typeLabels } from '$lib/utils/publicationTypeLabels';
 import { splitNames } from '$lib/utils/nameUtils';
+import { getContributorNames } from '$lib/utils/contributor';
 import { author } from '$lib/data/siteConfig';
 
 // The index filters over the summaries: every facet, count and sort key below
@@ -53,7 +54,7 @@ function publicationLanguages(publication: Pub): string[] {
  */
 function publicationAuthorNames(pub: Pub): string[] {
 	const names = [
-		...(pub.authors ?? []),
+		...getContributorNames(pub.authors),
 		...(creditsEditors(pub) ? extractEditors(pub) : []),
 		...(pub.prefacedBy ? [pub.prefacedBy] : []),
 		...pub.tocAuthors

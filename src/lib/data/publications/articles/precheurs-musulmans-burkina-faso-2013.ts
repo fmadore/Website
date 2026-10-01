@@ -5,7 +5,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 	type: 'article',
 	title:
 		'Prêcheurs(ses) musulmans(es) et stratégies de communication au Burkina Faso depuis 1990. Des processus différentiés de conversion interne',
-	authors: ['Muriel Gomez-Perez', 'Frédérick Madore'],
+	authors: [{"name": "Muriel Gomez-Perez", "personId": "muriel-gomez-perez"}, "Frédérick Madore"],
 	date: '2013',
 	dateISO: '2013',
 	year: 2013,
@@ -158,3 +158,4 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 		}
 	]
 };
+

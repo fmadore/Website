@@ -4,7 +4,7 @@ export const religiosityUniversityCampuses: Publication = {
 	id: 'religiosity-university-campuses',
 	type: 'book',
 	title: 'Religiosity on University Campuses in Africa: Trends and Experiences',
-	authors: ['Abdoulaye Sounaye', 'Frédérick Madore'],
+	authors: [{"name": "Abdoulaye Sounaye", "personId": "abdoulaye-sounaye"}, "Frédérick Madore"],
 	editors: 'Abdoulaye Sounaye, Frédérick Madore',
 	date: '2023',
 	dateISO: '2023-08-29',
@@ -112,3 +112,4 @@ export const religiosityUniversityCampuses: Publication = {
 		}
 	]
 };
+

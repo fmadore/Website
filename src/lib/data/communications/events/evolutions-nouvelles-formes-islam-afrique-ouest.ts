@@ -4,7 +4,7 @@ export const evolutionsNouvellesFormesIslamAfriqueOuest: Communication = {
 	id: 'evolutions-nouvelles-formes-islam-afrique-ouest',
 	title:
 		"Évolutions et nouvelles formes de l'islam en Afrique de l'Ouest: vers une radicalisation?",
-	authors: ['CIRAM'],
+	authors: [{"name": "CIRAM", "kind": "organisation"}],
 	date: '24 March 2016',
 	dateISO: '2016-03-24',
 	year: 2016,
@@ -36,15 +36,16 @@ export const evolutionsNouvellesFormesIslamAfriqueOuest: Communication = {
 		longitude: -71.2825
 	},
 	participants: [
-		{ name: 'Adib Bencherif', role: 'Panelist', affiliation: "Université d'Ottawa" },
-		{ name: 'Marie Brossier', role: 'Panelist', affiliation: 'Université Laval' },
-		{ name: 'Aurélie Campana', role: 'Panelist', affiliation: 'Université Laval' },
-		{ name: 'Muriel Gomez-Perez', role: 'Panelist', affiliation: 'Université Laval' },
-		{ name: 'Cédric Jourde', role: 'Panelist', affiliation: "Université d'Ottawa" },
+		{ name: 'Adib Bencherif', personId: "adib-bencherif", role: 'Panelist', affiliation: "Université d'Ottawa" },
+		{ name: 'Marie Brossier', personId: "marie-brossier", role: 'Panelist', affiliation: 'Université Laval' },
+		{ name: 'Aurélie Campana', personId: "aurelie-campana", role: 'Panelist', affiliation: 'Université Laval' },
+		{ name: 'Muriel Gomez-Perez', personId: "muriel-gomez-perez", role: 'Panelist', affiliation: 'Université Laval' },
+		{ name: 'Cédric Jourde', personId: "cedric-jourde", role: 'Panelist', affiliation: "Université d'Ottawa" },
 		{ name: 'Frédérick Madore', role: 'Panelist', affiliation: 'Université Laval' },
-		{ name: 'Olivier Pelletier', role: 'Panelist', affiliation: 'Université Laval' }
+		{ name: 'Olivier Pelletier', personId: "olivier-pelletier", role: 'Panelist', affiliation: 'Université Laval' }
 	],
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 };
 
 export default evolutionsNouvellesFormesIslamAfriqueOuest;
+

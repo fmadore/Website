@@ -4,7 +4,7 @@ export const acteursReligieuxNumerique: Publication = {
 	id: 'acteurs-religieux-numerique',
 	type: 'special-issue',
 	title: "Les acteurs religieux africains à l'ère du numérique",
-	authors: ['Pamela Millet-Mouity', 'Frédérick Madore'],
+	authors: [{"name": "Pamela Millet-Mouity", "personId": "pamela-millet-mouity"}, "Frédérick Madore"],
 	editors: 'Pamela Millet-Mouity, Frédérick Madore',
 	date: '2017',
 	dateISO: '2017',
@@ -76,3 +76,4 @@ export const acteursReligieuxNumerique: Publication = {
 		}
 	]
 };
+

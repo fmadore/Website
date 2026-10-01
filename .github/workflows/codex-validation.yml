@@ -1,0 +1,64 @@
+name: Validate collaborator changes
+on:
+  push:
+    branches: [codex/collaborator-affiliations-and-posters]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Regenerate committed projections and format
+        run: |
+          npm run gen:refs
+          npm run gen:summaries
+          npm run gen:analysis
+          npm run gen:prose
+          npm run gen:images
+          npm run format
+      - name: Type check
+        continue-on-error: true
+        run: npm run check
+      - name: Lint
+        continue-on-error: true
+        run: npm run lint
+      - name: Unit tests
+        continue-on-error: true
+        run: npm run test:coverage
+      - name: Lifecycle tests
+        continue-on-error: true
+        run: npm run test:lifecycle
+      - name: Production build and budgets
+        continue-on-error: true
+        run: |
+          npm run build
+          npm run check:build
+      - name: Package generated and formatted changes
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import pathlib, shutil, subprocess
+          out = pathlib.Path('validation-updates')
+          out.mkdir(exist_ok=True)
+          paths = subprocess.check_output(['git','diff','--name-only','-z']).decode().split('\0')
+          for name in filter(None, paths):
+              source = pathlib.Path(name)
+              if source.is_file():
+                  target = out / name
+                  target.parent.mkdir(parents=True,exist_ok=True)
+                  shutil.copy(source,target)
+          (out / 'changed-paths.txt').write_text('\n'.join(filter(None,paths)))
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: validated-source-updates
+          path: validation-updates/
+          retention-days: 3

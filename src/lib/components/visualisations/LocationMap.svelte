@@ -1,9 +1,11 @@
 <!--
-LocationMap - MapLibre visualization of per-country aggregated items.
+LocationMap - MapLibre visualisation of country counts or institution affiliations.
 
 Generic map component used by multiple visualisation pages (e.g. publications,
 activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 `basePath` + `itemLabel` so the popup can link items back to their detail page.
+Institution data sets `precisePoints` and supplies explicit coordinates; it is
+shown as markers while preserving the reader's country-shading preference.
 -->
 <script lang="ts">
 	import RecoveryActions from './RecoveryActions.svelte';
@@ -24,6 +26,12 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	import { prefersReducedMotion, type MapLibreModule } from '$lib/utils/maplibre';
 	import { useMapLibre } from '$lib/utils/useMapLibre.svelte';
 	import { createContainedPopup } from '$lib/utils/mapPopups';
+	import {
+		collaboratorPopupContent,
+		escapeMapText as escapeHtml,
+		locationCoordinates,
+		locationItemHref
+	} from '$lib/utils/locationMapContent';
 	import { onMount } from 'svelte';
 	import type { Map as MapLibreMap, MapLayerMouseEvent, Popup } from 'maplibre-gl';
 
@@ -44,6 +52,9 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		/** Singular label for the popup count line ("2 publications" / "2 activities"). */
 		itemLabel,
 		initialZoom = 2,
+		/** Institution data requires its own coordinates and supports markers only. */
+		precisePoints = false,
+		loadingPoints = false,
 		/**
 		 * Set to true when the map could not be initialised, so the section around
 		 * it can stop promising controls that are not there (bindable, read-only
@@ -55,6 +66,8 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		basePath: string;
 		itemLabel: string;
 		initialZoom?: number;
+		precisePoints?: boolean;
+		loadingPoints?: boolean;
 		failed?: boolean;
 	} = $props();
 
@@ -64,11 +77,13 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	// State
 	let activePopup: Popup | null = null;
 	let viewMode = $state<MapViewMode>('markers');
+	// Preserve the reader's country-view preference while showing institutions.
+	const activeViewMode = $derived(precisePoints ? 'markers' : viewMode);
 	let choroplethStatus = $state<ChoroplethStatus>('idle');
 	let boundaryCache: CountryBoundaryCollection | null = null;
 	let viewRenderId = 0;
 	let choroplethInteractionsRegistered = false;
-	// Imperative lookup keyed by country, only ever mutated from inside effects to
+	// Imperative lookup keyed by institution id or country, mutated inside effects to
 	// add/remove MapLibre markers. Not used reactively in the template, so a plain
 	// Map (not SvelteMap) is appropriate.
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
@@ -86,8 +101,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	// Calculate max count for scaling marker sizes
 	const maxCount = $derived(data.length > 0 ? Math.max(...data.map((d) => d.count)) : 1);
 
-	// Filter data to only include countries with coordinates
-	const mappableData = $derived(data.filter((d) => COUNTRY_COORDINATES[d.country]));
+	const mappableData = $derived(data.filter((datum) => locationCoordinates(datum, precisePoints)));
 	const choroplethPalette = $derived(
 		buildChoroplethPalette(resolvedColors.surface, resolvedColors.accent, 5).map(toRgbString)
 	);
@@ -113,18 +127,6 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		}
 	});
 
-	// Escape user-provided text so it's safe to interpolate into HTML strings
-	// (including attribute values). The popup content is currently populated
-	// from curated data, but escaping keeps us safe if that ever changes.
-	function escapeHtml(value: string): string {
-		return value
-			.replace(/&/g, '&amp;')
-			.replace(/</g, '&lt;')
-			.replace(/>/g, '&gt;')
-			.replace(/"/g, '&quot;')
-			.replace(/'/g, '&#39;');
-	}
-
 	function pluralizeItemLabel(count: number): string {
 		if (count === 1) return itemLabel;
 		if (/[^aeiou]y$/i.test(itemLabel)) return `${itemLabel.slice(0, -1)}ies`;
@@ -137,6 +139,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 	// Create popup content
 	function createPopupContent(datum: LocationDatum): string {
+		if (precisePoints) return collaboratorPopupContent(datum, base, basePath);
 		let content = `<div class="location-popup">
 			<strong>${escapeHtml(datum.country)}</strong>
 			<div class="item-count">${pluralLabel(datum.count)}</div>`;
@@ -149,7 +152,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 				const truncated = isTruncated
 					? escapeHtml(item.title.substring(0, 50)) + '&hellip;'
 					: fullTitle;
-				const itemUrl = `${base}${basePath}/${item.id}`;
+				const itemUrl = escapeHtml(locationItemHref(item, base, basePath));
 				content += `<li>
 					<a href="${itemUrl}" class="item-link" title="${fullTitle}">
 						<span class="item-title">${truncated}</span>
@@ -185,7 +188,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 						const truncated = isTruncated
 							? escapeHtml(item.title.substring(0, 40)) + '&hellip;'
 							: fullTitle;
-						content += `<li><a href="${base}${basePath}/${item.id}" class="item-link" title="${fullTitle}">${truncated}</a></li>`;
+						content += `<li><a href="${escapeHtml(locationItemHref(item, base, basePath))}" class="item-link" title="${fullTitle}">${truncated}</a></li>`;
 					});
 					if (data.items.length > 3) {
 						content += `<li class="more-items">+${data.items.length - 3} more</li>`;
@@ -279,7 +282,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		if (mappableData.length === 0) return;
 		const bounds = new gl.LngLatBounds();
 		for (const datum of mappableData) {
-			const coords = COUNTRY_COORDINATES[datum.country];
+			const coords = locationCoordinates(datum, precisePoints);
 			if (coords) bounds.extend([coords.lng, coords.lat]);
 		}
 		if (bounds.isEmpty()) return;
@@ -302,7 +305,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		clearActivePopup();
 
 		mappableData.forEach((datum) => {
-			const coords = COUNTRY_COORDINATES[datum.country];
+			const coords = locationCoordinates(datum, precisePoints);
 			if (!coords) return;
 
 			// Scale marker size based on item count
@@ -314,11 +317,19 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			// Create custom marker element using resolved theme colors
 			const el = document.createElement('div');
 			el.className = 'location-marker';
+			const hasUncertainty = Boolean(
+				datum.uncertainty ||
+				datum.collaborators?.some((person) => person.confidence === 'uncertain')
+			);
+			el.setAttribute(
+				'aria-label',
+				`${datum.label ?? datum.country}: ${precisePoints ? `${datum.count} ${datum.count === 1 ? 'collaborator' : 'collaborators'}` : pluralLabel(datum.count)}${hasUncertainty ? '. Includes uncertain evidence' : ''}`
+			);
 			el.style.width = `${size}px`;
 			el.style.height = `${size}px`;
 			el.innerHTML = `
-				<svg viewBox="0 0 24 24" width="${size}" height="${size}">
-					<circle cx="12" cy="12" r="10" fill="${resolvedColors.accent}" fill-opacity="0.9" stroke="${resolvedColors.surface}" stroke-width="2"/>
+				<svg viewBox="0 0 24 24" width="${size}" height="${size}" aria-hidden="true">
+					<circle cx="12" cy="12" r="10" fill="${resolvedColors.accent}" fill-opacity="0.9" stroke="${resolvedColors.surface}" stroke-width="2"${hasUncertainty ? ' stroke-dasharray="3 2"' : ''}/>
 					<text x="12" y="16" text-anchor="middle" fill="${resolvedColors.surface}" font-size="10" font-weight="bold" font-family="${resolvedColors.fontFamily}">${datum.count}</text>
 				</svg>
 			`;
@@ -341,7 +352,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 				.setPopup(popup)
 				.addTo(activeMap);
 
-			markers.set(datum.country, marker);
+			markers.set(datum.id ?? datum.country, marker);
 		});
 
 		if (fitBounds) fitDataBounds(activeMap, gl);
@@ -359,7 +370,8 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		try {
 			const boundaries = await loadCountryBoundaries();
 			boundaryCache = boundaries;
-			if (renderId !== viewRenderId || viewMode !== 'choropleth' || ml.map !== activeMap) return;
+			if (renderId !== viewRenderId || activeViewMode !== 'choropleth' || ml.map !== activeMap)
+				return;
 
 			clearMarkers();
 			clearActivePopup();
@@ -422,7 +434,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 				});
 			}
 		} catch (error) {
-			if (renderId !== viewRenderId || viewMode !== 'choropleth') return;
+			if (renderId !== viewRenderId || activeViewMode !== 'choropleth') return;
 			choroplethStatus = 'error';
 			// The reader is told what still works; the raw failure is a developer's
 			// concern, not a sentence to put on the plate.
@@ -432,7 +444,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 
 	function renderMapView() {
 		const renderId = ++viewRenderId;
-		if (viewMode === 'markers') {
+		if (activeViewMode === 'markers') {
 			choroplethStatus = 'idle';
 			addMarkers();
 			return;
@@ -501,7 +513,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			m.on('sourcedata', labelAttributionLinks);
 		},
 		onStyleReady: () => renderMapView(),
-		watchData: () => ({ data, viewMode }),
+		watchData: () => ({ data, activeViewMode, precisePoints }),
 		onDataChange: () => renderMapView(),
 		onCleanup: () => {
 			viewRenderId++;
@@ -519,7 +531,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 </script>
 
 <div class="map-wrapper">
-	{#if data.length > 0 && !failed}
+	{#if data.length > 0 && !failed && !precisePoints}
 		<div class="map-mode-panel">
 			<div class="map-mode-toggle" role="group" aria-label="Map display mode">
 				<button
@@ -539,9 +551,9 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			<!-- One persistent region, so "Try again" has somewhere to send focus
 			     and the live region is not re-created between states. -->
 			<div bind:this={choroplethStatusRegion} class="map-mode-region" tabindex="-1" role="status">
-				{#if viewMode === 'choropleth' && choroplethStatus === 'loading'}
+				{#if activeViewMode === 'choropleth' && choroplethStatus === 'loading'}
 					<p class="map-mode-status">Loading country boundaries…</p>
-				{:else if viewMode === 'choropleth' && choroplethStatus === 'error'}
+				{:else if activeViewMode === 'choropleth' && choroplethStatus === 'error'}
 					<div class="map-mode-status map-mode-error">
 						<span>Country shading could not be loaded. The marker view still works.</span>
 						<button type="button" onclick={retryChoropleth}>Try again</button>
@@ -552,7 +564,7 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	{/if}
 	<div bind:this={mapContainer} class="map-container">
 		{#if data.length > 0 && !failed}
-			{#if viewMode === 'choropleth' && choroplethStatus === 'ready' && choroplethBins.length > 0}
+			{#if activeViewMode === 'choropleth' && choroplethStatus === 'ready' && choroplethBins.length > 0}
 				<div class="choropleth-legend" aria-label={legendTitle}>
 					<span class="legend-title">{legendTitle}</span>
 					<ul class="legend-scale">
@@ -571,9 +583,22 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 			<div class="state-note map-state-note" role="status">
 				<span class="dateline">Map unavailable</span>
 				<p>
-					The map could not be loaded. The {itemLabel} counts below are the same records.
+					The map could not be loaded. The {precisePoints ? 'collaborator' : itemLabel} records below
+					remain available.
 				</p>
 				<RecoveryActions retry={ml.retry} label="Retry map" />
+			</div>
+		{:else if precisePoints && mappableData.length === 0}
+			<div class="state-note map-empty-note" role="status">
+				{#if loadingPoints}
+					<span class="dateline">Loading affiliation evidence…</span>
+				{:else}
+					<span class="dateline">No mapped affiliations</span>
+					<p>
+						No affiliations with recorded coordinates match these filters. The records below explain
+						any gaps.
+					</p>
+				{/if}
 			</div>
 		{/if}
 	</div>
@@ -764,6 +789,14 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		height: 100%;
 	}
 
+	.map-empty-note {
+		position: absolute;
+		inset: var(--space-sm) auto auto var(--space-sm);
+		z-index: 2;
+		max-width: min(var(--measure-note), calc(100% - var(--space-3xl)));
+		background: var(--color-surface-elevated);
+	}
+
 	.unmapped-note {
 		margin-top: var(--space-sm);
 		font-size: var(--font-size-xs);
@@ -788,7 +821,8 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 		z-index: var(--z-dropdown) !important;
 	}
 
-	:global(.location-marker:hover circle) {
+	:global(.location-marker:hover circle),
+	:global(.location-marker:focus-visible circle) {
 		fill-opacity: 1;
 		stroke: var(--color-primary);
 	}
@@ -888,6 +922,29 @@ activities). Consumers aggregate their data into `LocationDatum[]` and pass a
 	:global(.location-popup .item-subtitle) {
 		color: var(--color-text-muted);
 		font-style: italic;
+		font-size: var(--font-size-xs);
+	}
+
+	:global(.location-popup .collaborator-name) {
+		display: block;
+		font-weight: var(--font-weight-semibold);
+	}
+
+	:global(.location-popup .affiliation-confidence) {
+		display: block;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		color: var(--color-text-muted);
+	}
+
+	:global(.location-popup .affiliation-confidence--uncertain) {
+		font-weight: var(--font-weight-bold);
+		color: var(--color-text);
+	}
+
+	:global(.location-popup .affiliation-note),
+	:global(.location-popup .affiliation-sources) {
+		margin: var(--space-xs) 0;
 		font-size: var(--font-size-xs);
 	}
 

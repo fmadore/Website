@@ -17,6 +17,9 @@
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
+	import CollaboratorExplorer from '$lib/components/visualisations/CollaboratorExplorer.svelte';
+	import { buildPublicationCollaborators } from '$lib/utils/collaboratorAggregation';
+	import type { Institution, Person } from '$lib/types/person';
 	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
 	import LanguageToggle, {
 		languageToggleOptions
@@ -331,6 +334,51 @@
 		publisherLocationData.reduce((sum, loc) => sum + loc.count, 0)
 	);
 
+	let locationDataset = $state<'locations' | 'collaborators'>('locations');
+	let collaborationYear = $state<number | undefined>(undefined);
+	let includeUncertain = $state(false);
+	let affiliationStatus = $state<'idle' | 'loading' | 'ready' | 'error'>('idle');
+	let collaboratorPeople = $state.raw<Person[]>([]);
+	let collaboratorInstitutions = $state.raw<Institution[]>([]);
+	const collaborationYears = $derived(
+		[...new Set(allPublications.map((publication) => publication.year))].sort((a, b) => b - a)
+	);
+	const collaboratorLocations = $derived(
+		buildPublicationCollaborators(
+			allPublications,
+			collaboratorPeople,
+			collaboratorInstitutions,
+			collaborationYear,
+			includeUncertain
+		)
+	);
+	const selectedLocationData = $derived(
+		locationDataset === 'collaborators' ? collaboratorLocations.locations : publisherLocationData
+	);
+
+	async function loadAffiliations() {
+		if (affiliationStatus === 'loading' || affiliationStatus === 'ready') return;
+		affiliationStatus = 'loading';
+		try {
+			const [peopleModule, institutionsModule] = await Promise.all([
+				import('$lib/data/people'),
+				import('$lib/data/institutions')
+			]);
+			collaboratorPeople = peopleModule.allPeople;
+			collaboratorInstitutions = institutionsModule.institutions;
+			affiliationStatus = 'ready';
+		} catch (error) {
+			affiliationStatus = 'error';
+			if (import.meta.env.DEV) console.error('Affiliation evidence failed to load:', error);
+		}
+	}
+
+	// The registry is substantial and belongs only to the selected collaborator view.
+	$effect(() => {
+		if (locationDataset === 'collaborators' && affiliationStatus === 'idle')
+			void loadAffiliations();
+	});
+
 	// Accessor functions for the year-axis bar charts
 	const getPagesYear = (d: PagesPerYearData) => d.year;
 	const getPagesCount = (d: PagesPerYearData) => d.pages;
@@ -364,10 +412,6 @@
 	const projectTableRows = $derived(
 		projectTimelineData.map((entry) => ({ label: entry.name, value: entry.publications.length }))
 	);
-	const locationTableRows = $derived(
-		publisherLocationData.map((d) => ({ label: d.country, value: d.count }))
-	);
-
 	/*
 	 * The map plate, loaded when it is about to be read.
 	 *
@@ -404,9 +448,11 @@
 	// section's note must stop promising them.
 	let publisherMapFailed = $state(false);
 	const locationDescription = $derived(
-		publisherMapFailed || mapChunkFailed
-			? 'The countries of the publishers and journals, taken from the place of publication recorded on each work.'
-			: 'The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications.'
+		locationDataset === 'collaborators'
+			? 'Institutional affiliations of co-authors, editors and contributors, with the evidence and shared works recorded for each person.'
+			: publisherMapFailed || mapChunkFailed
+				? 'The countries of the publishers and journals, taken from the place of publication recorded on each work.'
+				: 'The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications.'
 	);
 	// Full-text language filter, shared by the term cloud and the bigrams chart.
 	type CorpusLanguage = 'all' | 'en' | 'fr';
@@ -530,11 +576,15 @@
 		locations: {
 			id: 'publisher-locations',
 			no: '§ 11',
-			title: 'Publisher locations',
+			title: 'Publisher and collaborator locations',
 			count:
-				publisherLocationData.length > 0
-					? `${publisherLocationData.length} countries, ${totalWithLocation} publications`
-					: ''
+				locationDataset === 'collaborators'
+					? affiliationStatus === 'ready'
+						? countOf(collaboratorLocations.mappedPeople, 'collaborator')
+						: ''
+					: publisherLocationData.length > 0
+						? `${publisherLocationData.length} countries, ${totalWithLocation} publications`
+						: ''
 		},
 		citationsPerYear: {
 			id: 'citations-per-year',
@@ -891,40 +941,40 @@
 		{/snippet}
 	</VizSection>
 
-	<VizSection
-		{...sections.locations}
-		description={locationDescription}
-		variant="map"
-		height="500px"
-		placeholderHeight="400px"
-		hasData={publisherLocationData.length > 0}
-		empty="No publisher locations recorded."
-	>
-		{#if PublisherMap}
-			<PublisherMap
-				data={publisherLocationData}
-				basePath="/publications"
-				itemLabel="publication"
-				bind:failed={publisherMapFailed}
-			/>
-		{:else if mapChunkFailed}
-			<div class="state-note map-plate-note" role="status">
-				<span class="dateline">Map unavailable</span>
-				<p>The map could not be loaded. The country table below holds the same records.</p>
-			</div>
-		{:else}
-			<div class="state-note map-plate-note" role="status" use:inView={loadPublisherMap}>
-				<span class="dateline">Loading map…</span>
-			</div>
-		{/if}
-		{#snippet table()}
-			<VizDataTable
-				rows={locationTableRows}
-				keyLabel="Country"
-				valueLabel="Publications"
-				caption="Publisher and journal locations by country."
-			/>
-		{/snippet}
+	<VizSection {...sections.locations} description={locationDescription}>
+		<CollaboratorExplorer
+			bind:dataset={locationDataset}
+			bind:year={collaborationYear}
+			bind:includeUncertain
+			locationLabel="Publishers"
+			locationData={publisherLocationData}
+			collaborators={collaboratorLocations}
+			status={affiliationStatus}
+			retry={loadAffiliations}
+			years={collaborationYears}
+			basePath="/publications"
+			itemLabel="Publications"
+		>
+			{#if PublisherMap}
+				<PublisherMap
+					data={selectedLocationData}
+					precisePoints={locationDataset === 'collaborators'}
+					loadingPoints={affiliationStatus === 'idle' || affiliationStatus === 'loading'}
+					basePath="/publications"
+					itemLabel="publication"
+					bind:failed={publisherMapFailed}
+				/>
+			{:else if mapChunkFailed}
+				<div class="state-note map-plate-note" role="status">
+					<span class="dateline">Map unavailable</span>
+					<p>The map could not be loaded. The data table below holds the same records.</p>
+				</div>
+			{:else}
+				<div class="state-note map-plate-note" role="status" use:inView={loadPublisherMap}>
+					<span class="dateline">Loading map…</span>
+				</div>
+			{/if}
+		</CollaboratorExplorer>
 	</VizSection>
 
 	<CitationSections

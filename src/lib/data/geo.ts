@@ -42,22 +42,41 @@ export const COUNTRY_COORDINATES: Record<string, CountryCoordinates> = {
 };
 
 /**
- * Generic per-country datum used by the shared location map component.
- * Each entry is a country with a count and a list of items to list in the
- * map popup. Consumers aggregate their own data into this shape before
- * passing it to the map.
+ * A linked publication or talk shown in a location popup. Consumers aggregate
+ * country counts or institution affiliations before passing them to the map.
  */
 export type LocationMapItem = {
 	id: string;
 	title: string;
+	/** Optional internal route, relative to the configured site base. */
+	href?: string;
 	/** Optional secondary line (e.g. publisher name, venue). */
 	subtitle?: string;
 	/** Optional type (e.g. publication type, activity type). */
 	type?: string;
 };
 
+/** One person at an institution, deduplicated across the linked records. */
+export type LocationCollaborator = {
+	id: string;
+	name: string;
+	confidence: 'verified' | 'uncertain';
+	items: LocationMapItem[];
+	sources?: { label: string; url: string }[];
+	note?: string;
+};
+
 export type LocationDatum = {
+	/** Stable institution id for precise markers; countries use `country`. */
+	id?: string;
+	/** Institution name, when the datum is a precise point. */
+	label?: string;
 	country: string;
 	count: number;
 	items: LocationMapItem[];
+	/** Institution coordinates never fall back to the country's centre. */
+	coordinates?: { lat: number; lng: number };
+	collaborators?: LocationCollaborator[];
+	/** Visible qualification of the institution's location, if needed. */
+	uncertainty?: string;
 };

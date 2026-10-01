@@ -4,7 +4,7 @@ export const rueIslamAssociatifEnjeuxCitoyens: Communication = {
 	id: 'rue-islam-associatif-enjeux-citoyens-2014',
 	title:
 		"Rue, islam associatif et enjeux citoyens: retour sur des orientations récentes au Sénégal, au Burkina Faso et en Côte d'Ivoire",
-	authors: ['Muriel Gomez-Perez', 'Frédérick Madore', 'Mathias Boukary Savadogo'],
+	authors: [{"name": "Muriel Gomez-Perez", "personId": "muriel-gomez-perez"}, "Frédérick Madore", {"name": "Mathias Boukary Savadogo", "personId": "mathias-boukary-savadogo"}],
 	date: '29 October 2014',
 	dateISO: '2014-10-29',
 	year: 2014,
@@ -35,3 +35,4 @@ export const rueIslamAssociatifEnjeuxCitoyens: Communication = {
 	},
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 };
+

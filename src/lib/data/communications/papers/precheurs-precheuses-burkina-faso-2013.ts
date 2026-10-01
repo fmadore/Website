@@ -4,7 +4,7 @@ export const precheursPrecheusesaBurkinaFaso: Communication = {
 	id: 'precheurs-precheuses-burkina-faso-2013',
 	title:
 		'Prêcheurs et prêcheuses au Burkina Faso: regards croisés sur leurs stratégies de communication religieuse depuis 1990',
-	authors: ['Muriel Gomez-Perez', 'Frédérick Madore'],
+	authors: [{"name": "Muriel Gomez-Perez", "personId": "muriel-gomez-perez"}, "Frédérick Madore"],
 	date: '7 May 2013',
 	dateISO: '2013-05-07',
 	year: 2013,
@@ -32,3 +32,4 @@ export const precheursPrecheusesaBurkinaFaso: Communication = {
 	image: 'images/communications/acfas_81e.webp',
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 };
+

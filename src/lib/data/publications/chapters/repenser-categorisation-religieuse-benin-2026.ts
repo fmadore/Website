@@ -4,7 +4,7 @@ export const repenserCategorisationReligieuseBenin2026: Publication = {
 	id: 'repenser-categorisation-religieuse-benin-2026',
 	type: 'chapter',
 	title: 'Repenser la catégorisation religieuse à partir du Bénin, terre du Vodun',
-	authors: ['Frédérick Madore', 'Codjo Fiacre Anato'],
+	authors: ["Frédérick Madore", {"name": "Codjo Fiacre Anato", "personId": "codjo-fiacre-anato"}],
 	date: '2026',
 	dateISO: '2026-04-02',
 	year: 2026,
@@ -36,3 +36,4 @@ export const repenserCategorisationReligieuseBenin2026: Publication = {
 	project: 'Muslim Minorities in Southern Cities of Benin and Togo',
 	url: 'https://www.hemisphereseditions.com/l-afrique-des-religions'
 };
+

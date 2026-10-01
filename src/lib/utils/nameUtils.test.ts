@@ -8,6 +8,12 @@ import {
 } from './nameUtils';
 
 describe('joinNames — defaults (citation/CV style)', () => {
+	it('formats mixed strings and person references using their credited names', () => {
+		expect(joinNames(['Jane Doe', { name: 'John Smith', personId: 'john-smith' }])).toBe(
+			'Jane Doe and John Smith'
+		);
+	});
+
 	it('returns an empty string for no names', () => {
 		expect(joinNames([])).toBe('');
 	});
