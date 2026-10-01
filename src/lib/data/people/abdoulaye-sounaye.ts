@@ -31,7 +31,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'leibniz-zentrum-moderner-orient',
-			note: 'Evidence supports 2022; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained.'
+			note: 'Uncertain affiliation considered for 2022; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained.'
 		},
 		{
 			institution: 'Leibniz-Zentrum Moderner Orient',
@@ -46,7 +46,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'leibniz-zentrum-moderner-orient',
-			note: 'Evidence supports 2023; continuous employment is not inferred. Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. DOI/publisher response redirects to a ZMO proof-of-work challenge despite HTTP200. Existing event affiliation is contextual and has not been verified against the 2023 chapter. DOI/publisher response redirects to a ZMO proof-of-work challenge despite HTTP200. Existing event affiliation is contextual and has not been verified against the 2023 publication. Existing website affiliation; independent event-year confirmation was not obtained.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. DOI/publisher response redirects to a ZMO proof-of-work challenge despite HTTP200. Existing event affiliation is contextual and has not been verified against the 2023 chapter. DOI/publisher response redirects to a ZMO proof-of-work challenge despite HTTP200. Existing event affiliation is contextual and has not been verified against the 2023 publication. Existing website affiliation; independent event-year confirmation was not obtained.'
 		}
 	]
 };

@@ -59,7 +59,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'freie-universitat-berlin',
-			note: 'Evidence supports 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Existing display string names two institutions; each affiliation is kept separately and remains uncertain for this event year.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Existing display string names two institutions; each affiliation is kept separately and remains uncertain for this event year.'
 		},
 		{
 			institution: 'Leibniz-Zentrum Moderner Orient',
@@ -74,7 +74,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'leibniz-zentrum-moderner-orient',
-			note: 'Evidence supports 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Existing display string names two institutions; each affiliation is kept separately and remains uncertain for this event year.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Existing display string names two institutions; each affiliation is kept separately and remains uncertain for this event year.'
 		}
 	]
 };

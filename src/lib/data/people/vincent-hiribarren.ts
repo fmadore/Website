@@ -23,7 +23,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'kings-college-london',
-			note: 'Evidence supports 2018; continuous employment is not inferred. Live Libération page returned HTTP403. Stored publisher screenshot confirms Pamela’s EHESS affiliation only; it gives no institution for Vincent Hiribarren. His 2026 King’s record does not establish a 2018 affiliation.'
+			note: 'Uncertain affiliation considered for 2018; continuous employment is not inferred. Live Libération page returned HTTP403. Stored publisher screenshot confirms Pamela’s EHESS affiliation only; it gives no institution for Vincent Hiribarren. His 2026 King’s record does not establish a 2018 affiliation.'
 		},
 		{
 			institution: "King's College London",
@@ -37,7 +37,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'kings-college-london',
-			note: 'Evidence supports 2025; continuous employment is not inferred. Affiliation appears in the existing website record; the original event programme or an independent source for this event year has not been inspected.'
+			note: 'Uncertain affiliation considered for 2025; continuous employment is not inferred. Affiliation appears in the existing website record; the original event programme or an independent source for this event year has not been inspected.'
 		},
 		{
 			institution: "King's College London",

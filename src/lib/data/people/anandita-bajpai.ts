@@ -16,7 +16,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'leibniz-zentrum-moderner-orient',
-			note: 'Evidence supports 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists Leibniz-Zentrum Moderner Orient, but has no per-person date; this does not independently verify the event-year affiliation.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists Leibniz-Zentrum Moderner Orient, but has no per-person date; this does not independently verify the event-year affiliation.'
 		}
 	]
 };

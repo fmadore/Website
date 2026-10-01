@@ -16,7 +16,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'university-of-bayreuth',
-			note: 'Evidence supports 2025; continuous employment is not inferred. Affiliation appears in the existing website record; the original event programme or an independent source for this event year has not been inspected.'
+			note: 'Uncertain affiliation considered for 2025; continuous employment is not inferred. Affiliation appears in the existing website record; the original event programme or an independent source for this event year has not been inspected.'
 		}
 	]
 };

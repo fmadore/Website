@@ -21,7 +21,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'university-of-munster',
-			note: 'Evidence supports 2019; continuous employment is not inferred. Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. Affiliation appears in the existing website record; the original event programme or an independent source for this event year has not been inspected.'
+			note: 'Uncertain affiliation considered for 2019; continuous employment is not inferred. Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. Affiliation appears in the existing website record; the original event programme or an independent source for this event year has not been inspected.'
 		},
 		{
 			institution: 'University of Münster',
@@ -35,7 +35,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'university-of-munster',
-			note: 'Evidence supports 2021; continuous employment is not inferred. Publisher issue-page request returned HTTP405. University of Münster is only documented in the existing 2019 panel record; no 2021 affiliation is inferred.'
+			note: 'Uncertain affiliation considered for 2021; continuous employment is not inferred. Publisher issue-page request returned HTTP405. University of Münster is only documented in the existing 2019 panel record; no 2021 affiliation is inferred.'
 		},
 		{
 			institution: 'University of Münster',
@@ -63,7 +63,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'university-of-munster',
-			note: 'Evidence supports 2022; continuous employment is not inferred. Publisher issue-page request returned HTTP405. University of Münster is only documented in the existing 2019 panel record; no 2022 affiliation is inferred.'
+			note: 'Uncertain affiliation considered for 2022; continuous employment is not inferred. Publisher issue-page request returned HTTP405. University of Münster is only documented in the existing 2019 panel record; no 2022 affiliation is inferred.'
 		}
 	],
 	aliases: ['Dorothea E. Schulz']

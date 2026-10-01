@@ -16,7 +16,7 @@ export const person: Person = {
 						"{\n\t\t\tname: 'Lucie Revilla',\n\t\t\trole: 'Speaker',\n\t\t\taffiliation: 'Institut de Recherche pour le Développement, France'\n\t\t}"
 				}
 			],
-			note: 'Evidence supports 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists Les Afriques dans le monde, but has no per-person date; this does not independently verify the event-year affiliation. Institutional coordinates are unresolved; this affiliation remains unpinned.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists Les Afriques dans le monde, but has no per-person date; this does not independently verify the event-year affiliation. Institutional coordinates are unresolved; this affiliation remains unpinned.'
 		}
 	]
 };

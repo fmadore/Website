@@ -16,7 +16,7 @@ export const person: Person = {
 						"{\n\t\t\tname: 'Munyao Kilolo',\n\t\t\trole: 'Panellist, Panel II: African Writers Discuss AI',\n\t\t\taffiliation: 'Translator and Editor at Ituĩka'\n\t\t}"
 				}
 			],
-			note: 'Evidence supports 2026; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Existing role description identifies the organization Ituĩka, but neither the affiliation nor a public institutional address was independently verified. Institutional coordinates are unresolved; this affiliation remains unpinned.'
+			note: 'Uncertain affiliation considered for 2026; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Existing role description identifies the organization Ituĩka, but neither the affiliation nor a public institutional address was independently verified. Institutional coordinates are unresolved; this affiliation remains unpinned.'
 		}
 	]
 };

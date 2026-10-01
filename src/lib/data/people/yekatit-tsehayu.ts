@@ -17,7 +17,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'university-of-florida',
-			note: 'Evidence supports 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained.'
 		}
 	]
 };

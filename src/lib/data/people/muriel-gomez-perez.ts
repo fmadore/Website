@@ -50,7 +50,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'universite-laval',
-			note: 'Evidence supports 2014; continuous employment is not inferred. Live Crossref record was retrieved but provides no author affiliations; DOI/publisher requests returned HTTP405. Other-year Laval evidence does not establish this 2014 publication affiliation.'
+			note: 'Uncertain affiliation considered for 2014; continuous employment is not inferred. Live Crossref record was retrieved but provides no author affiliations; DOI/publisher requests returned HTTP405. Other-year Laval evidence does not establish this 2014 publication affiliation.'
 		},
 		{
 			institution: 'Université Laval',
@@ -75,7 +75,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'universite-laval',
-			note: 'Evidence supports 2016; continuous employment is not inferred. Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. Crossref identifies the chapter authors but their affiliation arrays are empty. DOI/publisher HTML is a JSTOR challenge page, not chapter content. No publication-specific author institution was recovered.'
+			note: 'Uncertain affiliation considered for 2016; continuous employment is not inferred. Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. Crossref identifies the chapter authors but their affiliation arrays are empty. DOI/publisher HTML is a JSTOR challenge page, not chapter content. No publication-specific author institution was recovered.'
 		},
 		{
 			institution: 'Université Laval',

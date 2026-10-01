@@ -17,7 +17,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'german-institute-for-global-and-area-studies',
-			note: 'Evidence supports 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists German Institute for Global and Area Studies, but has no per-person date; this does not independently verify the event-year affiliation.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists German Institute for Global and Area Studies, but has no per-person date; this does not independently verify the event-year affiliation.'
 		}
 	]
 };

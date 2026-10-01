@@ -17,7 +17,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'university-of-ibadan',
-			note: 'Evidence supports 2021; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists University of Ibadan, but has no per-person date; this does not independently verify the event-year affiliation.'
+			note: 'Uncertain affiliation considered for 2021; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists University of Ibadan, but has no per-person date; this does not independently verify the event-year affiliation.'
 		}
 	]
 };

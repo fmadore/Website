@@ -17,7 +17,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'universite-alassane-ouattara',
-			note: 'Evidence supports 2023; continuous employment is not inferred. Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. DOI/publisher response redirects to a ZMO proof-of-work challenge despite HTTP200. Existing event affiliation is contextual and has not been verified against the 2023 chapter.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. DOI/publisher response redirects to a ZMO proof-of-work challenge despite HTTP200. Existing event affiliation is contextual and has not been verified against the 2023 chapter.'
 		},
 		{
 			institution: 'Université Alassane Ouattara',

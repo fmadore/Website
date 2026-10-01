@@ -15,7 +15,7 @@ export const person: Person = {
 					quote: "name: 'Naomi Bell', affiliation: 'Institut des Mondes Africains (IMAF)'"
 				}
 			],
-			note: 'Evidence supports 2026; continuous employment is not inferred. Affiliation appears in the existing website record; the original event programme or an independent source for this event year has not been inspected. Institutional coordinates are unresolved; this affiliation remains unpinned.'
+			note: 'Uncertain affiliation considered for 2026; continuous employment is not inferred. Affiliation appears in the existing website record; the original event programme or an independent source for this event year has not been inspected. Institutional coordinates are unresolved; this affiliation remains unpinned.'
 		}
 	]
 };

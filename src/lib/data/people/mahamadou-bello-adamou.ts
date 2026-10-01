@@ -45,7 +45,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'abdou-moumouni-university',
-			note: 'Evidence supports 2022; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. CONFLICT: existing event record says Abdou Moumouni University; dated report lists ZMO. The report may omit a simultaneous university affiliation.'
+			note: 'Uncertain affiliation considered for 2022; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. CONFLICT: existing event record says Abdou Moumouni University; dated report lists ZMO. The report may omit a simultaneous university affiliation.'
 		},
 		{
 			institution: 'Leibniz-Zentrum Moderner Orient',
@@ -74,7 +74,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'abdou-moumouni-university',
-			note: 'Evidence supports 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists Abdou Moumouni University, but has no per-person date; this does not independently verify the event-year affiliation.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists Abdou Moumouni University, but has no per-person date; this does not independently verify the event-year affiliation.'
 		}
 	]
 };

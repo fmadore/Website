@@ -45,7 +45,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'universite-laval',
-			note: 'Evidence supports 2021; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. CONFLICT: existing record says Université Laval, but the dated workshop report says University of Ibadan/ZMO. Laval remains uncertain.'
+			note: 'Uncertain affiliation considered for 2021; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. CONFLICT: existing record says Université Laval, but the dated workshop report says University of Ibadan/ZMO. Laval remains uncertain.'
 		},
 		{
 			institution: 'University of Ibadan',
@@ -60,7 +60,7 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'university-of-ibadan',
-			note: 'Evidence supports 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained.'
+			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained.'
 		}
 	],
 	aliases: ['Adéjoké Rafiat Adétòrò']
