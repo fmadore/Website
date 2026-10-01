@@ -1,0 +1,35 @@
+name: Prepare collaborator research and slide poster
+on:
+  push:
+    branches: [codex/82-174-preparation]
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Mirror and verify live slide covers
+        run: |
+          mkdir -p research-artifacts/posters
+          npm run gen:posters
+          npm run gen:posters -- --check
+          npm run check:slides
+          cp static/images/communications/slides/*.webp research-artifacts/posters/
+      - name: Fetch public affiliation sources
+        run: python3 scripts/research-affiliation-sources.py
+      - name: Package local formatting tools
+        run: |
+          tar -czf research-artifacts/tooling.tar.gz node_modules/prettier node_modules/prettier-plugin-svelte node_modules/svelte node_modules/typescript
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: affiliation-and-poster-evidence
+          path: research-artifacts/
+          retention-days: 3
