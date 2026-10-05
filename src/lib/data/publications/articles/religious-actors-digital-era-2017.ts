@@ -38,8 +38,9 @@ export const religiousActorsDigitalEra: Publication = {
 			authors: ['Emmanuelle Olivier'],
 			year: 2026,
 			title:
-				'Islamic Pop Music in Mali: Cultural Entrepreneurship and Religious Entertainment in the Digital Age',
-			source: 'Archives de sciences sociales des religions, no. 214 (2026): 131-54'
+				'Islamic Pop Music au Mali : entrepreneuriat culturel et entertainment religieux en régime numérique',
+			source: 'Archives de sciences sociales des religions, no. 2 (2026): 131-53',
+			url: 'https://doi.org/10.4000/16tj4'
 		},
 		{
 			authors: ['Andrea Rota', 'Oliver Krüger'],
