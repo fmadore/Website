@@ -96,6 +96,20 @@ describe('buildCommunicationJsonLd', () => {
 		const ld = buildCommunicationJsonLd(comm({ language: ['French', 'English'] }), BASE);
 		expect(ld.inLanguage).toBe('French');
 	});
+
+	it('credits an organisation as an Organization, not a Person', () => {
+		const ld = buildCommunicationJsonLd(
+			comm({
+				authors: [
+					{ name: 'CIRAM', kind: 'organisation' },
+					{ name: 'Frédérick Madore', personId: 'frederick-madore' }
+				]
+			}),
+			BASE
+		);
+		expect(ld.performer?.[0]).toEqual({ '@type': 'Organization', name: 'CIRAM' });
+		expect(ld.performer?.[1]).toMatchObject({ '@type': 'Person', '@id': `${website.url}/#person` });
+	});
 });
 
 describe('buildActivityJsonLd', () => {

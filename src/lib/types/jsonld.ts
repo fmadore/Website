@@ -4,7 +4,7 @@
  * to generate schema.org compliant structured data.
  */
 import type { Contributor } from '$lib/types/contributor';
-import { getContributorName } from '$lib/utils/contributor';
+import { getContributorName, isPersonContributor } from '$lib/utils/contributor';
 
 // --- Primitive Schema Types ---
 
@@ -29,6 +29,9 @@ export interface JsonLdPerson {
 	jobTitle?: string;
 	affiliation?: JsonLdOrganization;
 }
+
+/** A credited contributor: a person, or an organisation credited as one (e.g. a research centre). */
+export type JsonLdAgent = JsonLdPerson | JsonLdOrganization;
 
 export interface JsonLdCountry {
 	'@type': 'Country';
@@ -80,8 +83,8 @@ export interface JsonLdPublicationContainer {
 	volumeNumber?: string;
 	issueNumber?: string;
 	isbn?: string;
-	author?: JsonLdPerson[];
-	editor?: JsonLdPerson[];
+	author?: JsonLdAgent[];
+	editor?: JsonLdAgent[];
 }
 
 export interface JsonLdScholarlyArticleCitation {
@@ -98,8 +101,8 @@ export interface JsonLdScholarlyArticleCitation {
 
 export interface BookJsonLd extends BaseJsonLd {
 	'@type': 'Book';
-	author?: JsonLdPerson[];
-	editor?: JsonLdPerson[];
+	author?: JsonLdAgent[];
+	editor?: JsonLdAgent[];
 	datePublished?: string;
 	isbn?: string;
 	numberOfPages?: number;
@@ -109,8 +112,8 @@ export interface BookJsonLd extends BaseJsonLd {
 
 export interface ArticleJsonLd extends BaseJsonLd {
 	'@type': 'ScholarlyArticle' | 'Article';
-	author?: JsonLdPerson[];
-	editor?: JsonLdPerson[];
+	author?: JsonLdAgent[];
+	editor?: JsonLdAgent[];
 	datePublished?: string;
 	isPartOf?: JsonLdPublicationContainer;
 	pagination?: string;
@@ -119,7 +122,7 @@ export interface ArticleJsonLd extends BaseJsonLd {
 
 export interface ReportJsonLd extends BaseJsonLd {
 	'@type': 'Report';
-	author?: JsonLdPerson[];
+	author?: JsonLdAgent[];
 	datePublished?: string;
 	reportNumber?: string;
 	publisher?: JsonLdOrganization;
@@ -127,14 +130,14 @@ export interface ReportJsonLd extends BaseJsonLd {
 
 export interface BlogPostingJsonLd extends BaseJsonLd {
 	'@type': 'BlogPosting';
-	author?: JsonLdPerson | JsonLdPerson[];
+	author?: JsonLdAgent | JsonLdAgent[];
 	datePublished?: string;
 	publisher?: JsonLdOrganization;
 }
 
 export interface ThesisJsonLd extends BaseJsonLd {
 	'@type': 'Thesis';
-	author?: JsonLdPerson[];
+	author?: JsonLdAgent[];
 	datePublished?: string;
 	publisher?: JsonLdOrganization;
 }
@@ -151,13 +154,13 @@ export interface EventJsonLd extends BaseJsonLd {
 	endDate?: string;
 	location?: JsonLdPlace | { '@type': 'VirtualLocation'; url?: string };
 	organizer?: JsonLdOrganization;
-	performer?: JsonLdPerson[];
+	performer?: JsonLdAgent[];
 	eventAttendanceMode?: string;
 }
 
 export interface PresentationDigitalDocumentJsonLd extends BaseJsonLd {
 	'@type': 'PresentationDigitalDocument';
-	author?: JsonLdPerson[];
+	author?: JsonLdAgent[];
 	datePublished?: string;
 	publisher?: JsonLdOrganization;
 }
@@ -166,7 +169,7 @@ export interface PresentationDigitalDocumentJsonLd extends BaseJsonLd {
 
 export interface SoftwareApplicationJsonLd extends BaseJsonLd {
 	'@type': 'SoftwareApplication' | 'WebApplication';
-	author?: JsonLdPerson[];
+	author?: JsonLdAgent[];
 	datePublished?: string;
 	applicationCategory?: string;
 	operatingSystem?: string;
@@ -179,7 +182,7 @@ export interface SoftwareApplicationJsonLd extends BaseJsonLd {
 
 export interface CreativeWorkJsonLd extends BaseJsonLd {
 	'@type': 'CreativeWork' | 'WebSite' | 'Dataset';
-	author?: JsonLdPerson[];
+	author?: JsonLdAgent[];
 	datePublished?: string;
 	dateModified?: string;
 	publisher?: JsonLdOrganization;
@@ -218,8 +221,13 @@ export function formatAuthor(contributor: Contributor): JsonLdPerson {
 	return { '@type': 'Person', name: authorName.trim() };
 }
 
-export function formatAuthors(authors: readonly Contributor[]): JsonLdPerson[] {
-	return authors.map(formatAuthor);
+/** Corporate credits (`kind: 'organisation'`) become Organization nodes, never Persons. */
+export function formatAuthors(authors: readonly Contributor[]): JsonLdAgent[] {
+	return authors.map((contributor) =>
+		isPersonContributor(contributor)
+			? formatAuthor(contributor)
+			: { '@type': 'Organization', name: getContributorName(contributor).trim() }
+	);
 }
 
 export function formatPlaces(countries: string[]): JsonLdPlace[] {
