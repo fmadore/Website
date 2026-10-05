@@ -676,7 +676,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "Cet article propose une réflexion sur les possibilités inédites qu'offre le numérique pour développer de nouvelles méthodes de recherche et de diffusion de données sur l'histoire de l'islam en Afrique de l'Ouest, ainsi qu",
-		"citedByCount": 4,
+		"citedByCount": 5,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},

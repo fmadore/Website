@@ -65,6 +65,14 @@ export const islamBurkinaCollection: Publication = {
 			title: "Review of Frédérick Madore 'Islam Burkina Faso Collection'",
 			source: 'Mande Studies 24 (2022): 325-27.',
 			url: 'https://doi.org/10.2979/mnd.2022.a908483'
+		},
+		{
+			authors: ['Nurul Hayati', 'Ahsan Hakim'],
+			year: 2026,
+			title:
+				'Contemporary Islamic Educational Theory in Responding to the Challenges of Digital Education',
+			source: 'JDP (Jurnal Dinamika Pendidikan) 13, no. 3 (2026): 778-87',
+			url: 'https://doi.org/10.64540/7srw6433'
 		}
 	]
 };
