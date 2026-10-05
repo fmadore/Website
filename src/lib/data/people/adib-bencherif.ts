@@ -10,14 +10,14 @@ export const person: Person = {
 			confidence: 'verified',
 			sources: [
 				{
-					url: 'https://github.com/fmadore/Website/blob/main/static/images/communications/evolutions-nouvelles-formes-islam-afrique-ouest-hero.webp',
+					url: 'https://github.com/fmadore/Website/blob/250c6bce6209ccaee96e7c136251a969bfc97ae8/static/images/communications/evolutions-nouvelles-formes-islam-afrique-ouest-hero.webp',
 					label: 'Contemporaneous event poster',
 					quote:
 						'Adib Bencherif, Candidat au doctorat, École d’études politiques, Université d’Ottawa'
 				}
 			],
 			institutionId: 'university-of-ottawa',
-			note: 'Evidence supports 2016; continuous employment is not inferred. Affiliation read directly from the organizer’s poster, dated 24 March 2016.'
+			reviewNote: 'Affiliation read directly from the organizer’s poster, dated 24 March 2016.'
 		}
 	]
 };

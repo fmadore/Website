@@ -1,6 +1,10 @@
 import type { Institution } from '$lib/types/person';
 
-/** Public institutional sites; every point retains its source and precision note. */
+/**
+ * Public institutional sites. Every point keeps its source; how it was located is in the
+ * structured fields (`coordinateQueriedOn`, `coordinateSourceKind`, `osmFeature`), and
+ * `coordinateNote` is reserved for a qualification a reader needs.
+ */
 export const institutions: Institution[] = [
 	{
 		id: 'abdou-moumouni-university',
@@ -19,9 +23,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Abdou Moumouni University", "Country": "Niger", "Coordinate location": "13.50136111,2.09852778"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'ahmadu-bello-university',
@@ -40,9 +42,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Ahmadu Bello University", "Country": "Nigeria", "Coordinate location": "11.15,7.65"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'ardhi-university',
@@ -67,8 +67,6 @@ export const institutions: Institution[] = [
 				quote: 'Ardhi University'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -95,9 +93,7 @@ export const institutions: Institution[] = [
 				quote:
 					"affiliation: 'Bielefeld University'; affiliationCoordinates: { latitude: 52.0385, longitude: 8.4934 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the recorded campus approximation from the workshop contributor record. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'boston-university',
@@ -116,9 +112,7 @@ export const institutions: Institution[] = [
 				quote:
 					"affiliation: 'Boston University'; affiliationCoordinates: { latitude: 42.3505, longitude: -71.1054 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the recorded campus approximation from the workshop contributor record. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'cheikh-anta-diop-university',
@@ -137,9 +131,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Université Cheikh Anta Diop", "Country": "Senegal", "Coordinate location": "14.686955,-17.463338"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'duke-university',
@@ -158,19 +150,12 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Duke University", "Country": "United States of America", "Coordinate location": "36.001111111111,-78.938888888889"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'ehess',
 		name: 'École des hautes études en sciences sociales',
-		aliases: [
-			'EHESS',
-			'EHESS-Paris',
-			"Maison des Sciences de l'homme - EHESS - En réhabilitation",
-			'School for Advanced Studies in the Social Sciences'
-		],
+		aliases: ['EHESS', 'EHESS-Paris', 'School for Advanced Studies in the Social Sciences'],
 		city: 'Paris',
 		country: 'France',
 		coordinates: {
@@ -190,8 +175,7 @@ export const institutions: Institution[] = [
 				quote: "Maison des Sciences de l'homme - EHESS - En réhabilitation"
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels. This is the Paris Boulevard Raspail EHESS/Maison des Sciences de l’homme site, selected because the relevant publisher biography says EHESS-Paris. The Marseille result was rejected. The OSM name includes “En réhabilitation”; this is a source label, and current occupancy/renovation status was not verified. It is not evidence that a historical appointment occupied this building.',
+		coordinateNote: 'Paris site on Boulevard Raspail; the publisher biography says EHESS-Paris.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -224,8 +208,6 @@ export const institutions: Institution[] = [
 				quote: 'Emory University'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -252,9 +234,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Free University Berlin", "Country": "Germany", "Coordinate location": "52.453055555556,13.290555555556"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'german-institute-for-global-and-area-studies',
@@ -273,9 +253,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "German Institute for Global and Area Studies", "Country": "Germany", "Coordinate location": "53.557222,9.992222"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'harvard-university',
@@ -294,9 +272,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Harvard University", "Country": "United States of America", "Coordinate location": "42.374444, -71.116944"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'humboldt-university-of-berlin',
@@ -315,9 +291,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Humboldt University of Berlin", "Country": "Germany", "Coordinate location": "52.518055555556,13.393333333333"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'indiana-university-bloomington',
@@ -342,8 +316,6 @@ export const institutions: Institution[] = [
 				quote: 'Indiana University Bloomington'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -370,9 +342,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Islamic University College, Ghana", "Country": "Ghana", "Coordinate location": "5.655742895900232,-0.11712973230672785"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'johannes-gutenberg-university-mainz',
@@ -397,8 +367,6 @@ export const institutions: Institution[] = [
 				quote: 'Johannes Gutenberg-Universität Mainz'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -430,9 +398,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University Joseph Ki-Zerbo", "Country": "Burkina Faso", "Coordinate location": "12.37722,-1.50083"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'kings-college-london',
@@ -451,9 +417,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'kings-college-london'; name: 'King's College London'; city: 'London'; coordinates: { lat: 51.5115, lng: -0.116 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'kwame-nkrumah-university-of-science-and-technology',
@@ -472,9 +436,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Kwame Nkrumah University of Science and Technology", "Country": "Ghana", "Coordinate location": "6.684903,-1.570514"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'lasdel-niamey',
@@ -496,9 +458,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Laboratoire d\'Etudes et de Recherche sur les Dynamiques Sociales et le Développement Local", "Country": "Niger", "Coordinate location": "13.548915,2.096388"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'lasdel-parakou',
@@ -520,9 +480,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Laboratoire d\'Etudes et de Recherche sur les Dynamiques Sociales et le Développement Local Bénin", "Country": "Benin", "Coordinate location": "9.341822504659815,2.592843961135946"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'leibniz-zentrum-moderner-orient',
@@ -546,9 +504,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Leibniz-Zentrum Moderner Orient", "Country": "Germany", "Coordinate location": "52.427976,13.202396"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'leiden-university',
@@ -567,9 +523,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'leiden-university'; name: 'Leiden University'; city: 'Leiden'; coordinates: { lat: 52.157, lng: 4.481 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'les-afriques-dans-le-monde',
@@ -588,9 +542,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Les Afriques dans le monde", "Country": "France", "Coordinate location": "44.806666666666665,-0.6311111111111111"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'martin-luther-university-halle-wittenberg',
@@ -609,9 +561,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University of Halle-Wittenberg", "Country": "Germany", "Coordinate location": "51.48638889,11.96888889"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'michigan-state-university',
@@ -630,9 +580,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Michigan State University", "Country": "United States of America", "Coordinate location": "42.7018637482531,-84.48216117291386"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'missouri-state-university',
@@ -651,9 +599,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Missouri State University", "Country": "United States of America", "Coordinate location": "37.19971,-93.28079"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'moi-university',
@@ -672,9 +618,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'moi-university'; name: 'Moi University'; city: 'Eldoret'; coordinates: { lat: 0.286, lng: 35.287 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'new-york-university-abu-dhabi',
@@ -693,9 +637,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "New York University Abu Dhabi", "Country": "United Arab Emirates", "Coordinate location": "24.5239,54.4346"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'osun-state-university',
@@ -714,9 +656,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Osun State University", "Country": "Nigeria", "Coordinate location": "7.7616469,4.6012166"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'quaid-i-azam-university',
@@ -735,9 +675,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Quaid-i-Azam University", "Country": "Pakistan", "Coordinate location": "33.75,73.13333333"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'sol-plaatje-university',
@@ -756,9 +694,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Sol Plaatje University", "Country": "South Africa", "Coordinate location": "-28.74511818,24.76427601"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'sorbonne-nouvelle-university',
@@ -781,9 +717,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Sorbonne Nouvelle-Paris 3", "Country": "France", "Coordinate location": "48.84488888888889,2.396988888888889"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'uin-sunan-kalijaga-yogyakarta',
@@ -802,9 +736,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Sunan Kalijaga Islamic University", "Country": "Indonesia", "Coordinate location": "-7.784758110931052,110.39435184060227"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'universidade-federal-de-santa-catarina',
@@ -823,16 +755,14 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Universidade Federal de Santa Catarina", "Country": "Brazil", "Coordinate location": "-27.6011,-48.52"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'universite-alassane-ouattara',
 		name: 'Université Alassane Ouattara',
 		aliases: ['Alassane Ouattara University', 'Université de Bouaké'],
 		city: 'Bouaké',
-		country: 'Côte d’Ivoire',
+		country: "Côte d'Ivoire",
 		coordinates: {
 			latitude: 7.68642,
 			longitude: -5.06669
@@ -844,9 +774,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Université Alassane Ouattara", "Country": "Ivory Coast", "Coordinate location": "7.68642,-5.06669"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'universite-de-segou',
@@ -865,9 +793,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "Ségou University", "Country": "Mali", "Coordinate location": "13.42465383620792,-6.303292125339687"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'universite-de-sherbrooke',
@@ -886,9 +812,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University of Sherbrooke", "Country": "Canada", "Coordinate location": "45.379405555556,-71.927661111111"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'universite-laval',
@@ -913,8 +837,6 @@ export const institutions: Institution[] = [
 				quote: 'Université Laval'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -947,8 +869,6 @@ export const institutions: Institution[] = [
 				quote: 'Université Paris 1 Panthéon-Sorbonne'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -975,9 +895,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'university-of-alberta'; name: 'University of Alberta'; city: 'Edmonton'; coordinates: { lat: 53.5232, lng: -113.5263 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-arizona',
@@ -996,9 +914,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University of Arizona", "Country": "United States of America", "Coordinate location": "32.231667, -110.951944"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-bayreuth',
@@ -1017,9 +933,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University of Bayreuth", "Country": "Germany", "Coordinate location": "49.92885,11.5859"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-cape-town-libraries',
@@ -1038,9 +952,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'university-of-cape-town-libraries'; name: 'University of Cape Town Libraries'; city: 'Cape Town'; coordinates: { lat: -33.9577, lng: 18.4612 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-copenhagen',
@@ -1059,9 +971,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University of Copenhagen", "Country": "Denmark", "Coordinate location": "55.679722222222,12.5725"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-dar-es-salaam',
@@ -1086,8 +996,6 @@ export const institutions: Institution[] = [
 				quote: 'University of Dar es Salaam'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -1114,9 +1022,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University of Florida", "Country": "United States of America", "Coordinate location": "29.6475, -82.345"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-galway',
@@ -1141,8 +1047,6 @@ export const institutions: Institution[] = [
 				quote: 'Ollscoil na Gaillimhe - University of Galway'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -1169,9 +1073,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'university-of-helsinki'; name: 'University of Helsinki'; city: 'Helsinki'; coordinates: { lat: 60.1697, lng: 24.9501 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-ibadan',
@@ -1190,9 +1092,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University of Ibadan", "Country": "Nigeria", "Coordinate location": "7.4416666666667,3.9"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-illinois-urbana-champaign',
@@ -1217,8 +1117,6 @@ export const institutions: Institution[] = [
 				quote: 'University of Illinois Urbana-Champaign'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -1245,9 +1143,7 @@ export const institutions: Institution[] = [
 				quote:
 					"affiliation: 'University of Kansas'; affiliationCoordinates: { latitude: 38.9543, longitude: -95.2558 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the recorded campus approximation from the workshop contributor record. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-luxembourg',
@@ -1266,9 +1162,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'university-of-luxembourg'; name: 'University of Luxembourg'; city: 'Esch-sur-Alzette'; coordinates: { lat: 49.5042, lng: 5.9485 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-munster',
@@ -1287,9 +1181,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University of Münster", "Country": "Germany", "Coordinate location": "51.964,7.613"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-oslo',
@@ -1313,8 +1205,6 @@ export const institutions: Institution[] = [
 				quote: 'Universitetet i Oslo'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -1347,8 +1237,6 @@ export const institutions: Institution[] = [
 				quote: 'University of Ottawa'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -1386,7 +1274,7 @@ export const institutions: Institution[] = [
 			}
 		],
 		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels. The publication identifies the University of Tennessee Department of Religious Studies without naming a campus; Knoxville is used as the representative institutional campus, not as separately proved evidence of the historical office or appointment location.',
+			'The publication names the University of Tennessee without a campus; the Knoxville campus stands in for it.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {
@@ -1413,9 +1301,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'university-of-the-gambia'; name: 'University of the Gambia'; city: 'Faraba Banta'; coordinates: { lat: 13.2811, lng: -16.5833 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-the-witwatersrand',
@@ -1434,9 +1320,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'university-of-the-witwatersrand'; name: 'University of the Witwatersrand'; city: 'Johannesburg'; coordinates: { lat: -26.1929, lng: 28.0305 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-wisconsin-madison',
@@ -1455,9 +1339,7 @@ export const institutions: Institution[] = [
 				quote:
 					'{"Affiliation": "University of Wisconsin–Madison", "Country": "United States of America", "Coordinate location": "43.075278, -89.409722"}'
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the coordinates from the REMOBOKO project’s institutional affiliation record. Publication precision is not a claim of surveying accuracy. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'university-of-yaounde-i',
@@ -1481,9 +1363,7 @@ export const institutions: Institution[] = [
 				quote:
 					"id: 'university-of-yaounde-1'; name: 'University of Yaoundé I'; city: 'Yaoundé'; coordinates: { lat: 3.8669, lng: 11.5004 }"
 			}
-		],
-		coordinateNote:
-			'Sourced institutional/campus approximation, not independently re-geocoded. Copied without changing the point from the workshop’s explicit campus-location registry; distributed and personal work-location entries were excluded. The point represents the cited institution’s site, not a person’s home or real-time location.'
+		]
 	},
 	{
 		id: 'uppsala-university',
@@ -1508,8 +1388,6 @@ export const institutions: Institution[] = [
 				quote: 'Uppsala universitet'
 			}
 		],
-		coordinateNote:
-			'Representative institutional footprint or campus point returned by OpenStreetMap/Nominatim on 2026-10-01. Reviewed for institution identity and expected city; it does not identify a particular office, appointment location, home, or a person’s physical whereabouts. The point represents the mapped feature and may be central to multiple institutional parcels.',
 		coordinateQueriedOn: '2026-10-01',
 		coordinateSourceKind: 'reviewed-institutional-osm-feature',
 		osmFeature: {

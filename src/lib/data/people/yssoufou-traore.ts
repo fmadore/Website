@@ -20,7 +20,8 @@ export const person: Person = {
 					label: 'Publication DOI'
 				}
 			],
-			note: 'Evidence supports 2018; continuous employment is not inferred. Publisher author section explicitly names Université Félix Houphouët-Boigny for Yssoufou Traoré in issue229, published 2018-03-15 (online 2020-03-15). Only the unambiguous Félix Houphouët-Boigny affiliation is normalized as verified. The appended CIRAM/Laval phrase appears duplicated from Madore’s preceding author record and remains uncertain. Institutional coordinates are unresolved; this affiliation remains unpinned.'
+			reviewNote:
+				'Publisher author section explicitly names Université Félix Houphouët-Boigny for Yssoufou Traoré in issue229, published 2018-03-15 (online 2020-03-15). Only the unambiguous Félix Houphouët-Boigny affiliation is normalized as verified. The appended CIRAM/Laval phrase appears duplicated from Madore’s preceding author record and remains uncertain.'
 		}
 	]
 };

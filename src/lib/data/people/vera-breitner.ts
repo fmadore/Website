@@ -10,13 +10,14 @@ export const person: Person = {
 			confidence: 'verified',
 			sources: [
 				{
-					url: 'https://github.com/fmadore/dh-ai-african-studies-2026/blob/main/src/lib/data/participants/vera-breitner.ts',
+					url: 'https://github.com/fmadore/dh-ai-african-studies-2026/blob/a08ebaa9be96a6513a3208d74fe9cf37b62ddcd4/src/lib/data/participants/vera-breitner.ts',
 					label: 'Organizer website source',
 					quote: "name: 'Vera Breitner',\n\taffiliation: 'Bielefeld University'"
 				}
 			],
 			institutionId: 'bielefeld-university',
-			note: 'Evidence supports 2026; continuous employment is not inferred. Affiliation explicitly listed by the 2026 workshop organizer; evidence supports 2026 only, not an open-ended appointment.'
+			reviewNote:
+				'Affiliation explicitly listed by the 2026 workshop organizer; evidence supports 2026 only, not an open-ended appointment.'
 		}
 	]
 };

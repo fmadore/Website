@@ -13,6 +13,7 @@ export type Institution = {
 	country: string;
 	/** Institutional campus or office, never a person's home or a country centroid. */
 	coordinates: { latitude: number; longitude: number };
+	/** Shown to readers: only a qualification they should not take at face value. */
 	coordinateNote?: string;
 	/** Date and method of the institutional location review, separate from affiliation dates. */
 	coordinateQueriedOn?: string;
@@ -38,7 +39,10 @@ export type PersonAffiliation = {
 	endYear?: number;
 	confidence: 'verified' | 'uncertain';
 	sources: AffiliationSource[];
+	/** Shown to readers beside the affiliation: a short caveat, such as conflicting sources. */
 	note?: string;
+	/** Curator provenance (how the evidence was found and checked). Never rendered. */
+	reviewNote?: string;
 };
 
 export type Person = {
@@ -48,6 +52,8 @@ export type Person = {
 	affiliations: PersonAffiliation[];
 	orcid?: string;
 	url?: string;
-	/** Unresolved identities and conflicting evidence remain visible to reviewers. */
+	/** Shown to readers when no affiliation applies, e.g. an unaffiliated scholar. */
 	note?: string;
+	/** Curator provenance: unresolved identities and research trail. Never rendered. */
+	reviewNote?: string;
 };

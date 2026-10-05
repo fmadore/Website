@@ -283,7 +283,7 @@ describe('publication collaborators', () => {
 		expect(result.locations).toEqual([]);
 		expect(result.mappedPeople).toBe(0);
 		expect(result.totalPeople).toBe(1);
-		expect(result.unresolved[0]?.reason).toContain('institutional location unverified');
+		expect(result.unresolved[0]?.reason).toContain('no campus location recorded yet');
 	});
 
 	it('does not assign a point to an affiliation deliberately lacking a verified institution reference', () => {
@@ -305,6 +305,40 @@ describe('publication collaborators', () => {
 		);
 		expect(result.locations).toEqual([]);
 		expect(result.unresolved[0]?.reason).toContain('The campus could not be established');
+	});
+
+	it('shows reader notes and never the curator review notes', () => {
+		const people = [
+			{
+				...person('alice', [
+					{ ...observation('alpha', [2024]), reviewNote: 'Curator trail: HTTP 403.' },
+					{
+						institution: 'Gamma Institute',
+						years: [2024],
+						confidence: 'verified' as const,
+						sources: [SOURCE],
+						reviewNote: 'Curator trail: no campus.'
+					}
+				]),
+				reviewNote: 'Curator trail: identity checked.'
+			},
+			{
+				...person('bob', []),
+				note: 'Listed as an unaffiliated scholar.',
+				reviewNote: 'Curator trail: programme.'
+			}
+		];
+		const result = buildPublicationCollaborators(
+			[publication('one', 2024, ['Alice Roe', 'Bob Bencherif'])],
+			people,
+			campuses
+		);
+		const shown = JSON.stringify(result);
+		expect(shown).not.toContain('Curator trail');
+		expect(result.unresolved.map((entry) => entry.reason)).toEqual([
+			'Gamma Institute: no campus location recorded yet.',
+			'No sourced affiliation for 2024. Listed as an unaffiliated scholar.'
+		]);
 	});
 
 	it('returns an empty result for no records, no selected year, or owner-only credits', () => {

@@ -17,7 +17,8 @@ export const person: Person = {
 			],
 			institutionId: 'universite-laval',
 			role: 'Chargée de cours',
-			note: 'Evidence supports 2021; continuous employment is not inferred. Publisher chapter contains an explicit coauthor biography in its author presentation. The chapter is bibliographically dated 2021; the live chapter has no separate biography revision date. Supports affiliation stated for this chapter, not a continuous tenure.'
+			reviewNote:
+				'Publisher chapter contains an explicit coauthor biography in its author presentation. The chapter is bibliographically dated 2021; the live chapter has no separate biography revision date. Supports affiliation stated for this chapter, not a continuous tenure.'
 		}
 	]
 };

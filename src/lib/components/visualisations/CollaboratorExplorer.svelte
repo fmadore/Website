@@ -95,8 +95,9 @@
 			</p>
 		{/if}
 		<p>
-			Affiliations use the dates supported by the evidence for each shared work. Marker size counts
-			distinct collaborators at each institution. Dashed markers include uncertain affiliations.
+			Affiliations use the dates supported by the evidence for each shared work. Each marker is an
+			institution’s campus, never a person’s location; its size counts distinct collaborators there.
+			Dashed markers include uncertain affiliations.
 		</p>
 	</div>
 {/if}

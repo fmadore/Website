@@ -4,5 +4,6 @@ export const person: Person = {
 	id: 'louis-audet-gosselin',
 	name: 'Louis Audet Gosselin',
 	affiliations: [],
-	note: 'Unresolved: no institutional affiliation established from the inspected publication sources.'
+	reviewNote:
+		'Unresolved: no institutional affiliation established from the inspected publication sources.'
 };

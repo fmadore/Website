@@ -10,13 +10,14 @@ export const person: Person = {
 			confidence: 'uncertain',
 			sources: [
 				{
-					url: 'https://github.com/fmadore/Website/blob/main/src/lib/data/communications/events/university-campuses-africa.ts',
-					label: 'Existing site data',
+					url: 'https://github.com/fmadore/Website/blob/250c6bce6209ccaee96e7c136251a969bfc97ae8/src/lib/data/communications/events/university-campuses-africa.ts',
+					label: 'Event record (this site’s data)',
 					quote: "{ name: 'Anandita Bajpai', role: 'Discussant', affiliation: 'ZMO, Berlin' }"
 				}
 			],
 			institutionId: 'leibniz-zentrum-moderner-orient',
-			note: 'Uncertain affiliation considered for 2023; continuous employment is not inferred. Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists Leibniz-Zentrum Moderner Orient, but has no per-person date; this does not independently verify the event-year affiliation.'
+			reviewNote:
+				'Existing website affiliation; independent event-year confirmation was not obtained. Remoboko project report collaborator registry also lists Leibniz-Zentrum Moderner Orient, but has no per-person date; this does not independently verify the event-year affiliation.'
 		}
 	]
 };

@@ -143,7 +143,7 @@ function aggregateCollaborators(
 					uncertainIds.add(id);
 					if (!includeUncertain) {
 						reasons.add(
-							`Uncertain affiliation for ${record.year}: ${affiliation.institution}. Enable uncertain affiliations to include it where a campus location is available.`
+							`Uncertain affiliation for ${record.year}: ${affiliation.institution}. Include uncertain affiliations to map it where a campus location is recorded.`
 						);
 						continue;
 					}
@@ -161,7 +161,7 @@ function aggregateCollaborators(
 					Math.abs(coordinates.longitude) > 180
 				) {
 					reasons.add(
-						`${affiliation.institution}: institutional location unverified.${affiliation.note ? ` ${affiliation.note}` : ''}`
+						`${affiliation.institution}: no campus location recorded yet.${affiliation.note ? ` ${affiliation.note}` : ''}`
 					);
 					continue;
 				}

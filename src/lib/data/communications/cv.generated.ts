@@ -1035,7 +1035,7 @@ export const cvCommunications: CvCommunication[] = [
 			"Frédérick Madore",
 			{
 				"name": "Fiacre Anato",
-				"personId": "fiacre-anato"
+				"personId": "codjo-fiacre-anato"
 			}
 		],
 		"date": "5 December 2024",

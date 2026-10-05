@@ -56,9 +56,56 @@ describe('sourced collaborator registry', () => {
 				expect(affiliation.sources.length).toBeGreaterThan(0);
 				if (!affiliation.years?.length) {
 					expect(affiliation.confidence).toBe('uncertain');
-					expect(affiliation.note).toContain('Undated source');
+					expect(affiliation.reviewNote).toContain('Undated source');
 				}
 			}
 		}
+	});
+
+	it('does not file one person under two records', () => {
+		// "Fiacre Anato" and "Codjo Fiacre Anato" once held separate records. A
+		// credited name whose every word appears in another person's name is the
+		// same person until a source says otherwise; record it as an alias.
+		const words = (name: string) => new Set(collaboratorNameKey(name).split(' '));
+		for (const person of allPeople) {
+			for (const name of [person.name, ...(person.aliases ?? [])]) {
+				const own = words(name);
+				if (own.size < 2) continue;
+				for (const other of allPeople) {
+					if (other === person) continue;
+					const theirs = words(other.name);
+					expect(
+						[...own].every((word) => theirs.has(word)),
+						`${name} / ${other.name}`
+					).toBe(false);
+				}
+			}
+		}
+	});
+
+	it('links evidence at a fixed revision and ships no biography beyond the affiliation', () => {
+		// The registry is downloaded by the visualisation pages: quotes carry the
+		// affiliation line, not a participant's life story, and a link to a moving
+		// branch would drift off the quoted line as soon as the file changes.
+		const movingBranch = /github\.com\/[^/]+\/[^/]+\/blob\/(?:main|master)\//;
+		const sources = [
+			...institutions.flatMap((institution) => institution.sources),
+			...allPeople.flatMap((person) => person.affiliations.flatMap((entry) => entry.sources))
+		];
+		for (const source of sources) {
+			expect(source.url, source.url).not.toMatch(movingBranch);
+			expect((source.quote ?? '').length, source.url).toBeLessThanOrEqual(300);
+		}
+	});
+
+	it('keeps reader-facing notes short; the research trail stays in reviewNote', () => {
+		const readerNotes = [
+			...institutions.map((institution) => institution.coordinateNote),
+			...allPeople.flatMap((person) => [
+				person.note,
+				...person.affiliations.map((entry) => entry.note)
+			])
+		].filter((note): note is string => Boolean(note));
+		for (const note of readerNotes) expect(note.length, note).toBeLessThanOrEqual(160);
 	});
 });

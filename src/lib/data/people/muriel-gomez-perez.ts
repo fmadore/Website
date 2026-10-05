@@ -25,7 +25,8 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'universite-laval',
-			note: 'Evidence supports 2013; continuous employment is not inferred. Affiliation is explicitly attached to the article in the 2013 issue (citation_year and citation_publication_date both 2013). Online publication is 2015-02-03; observedYear denotes the bibliographic issue year, not a verified employment interval. Crossref independently repeats the author affiliation.'
+			reviewNote:
+				'Affiliation is explicitly attached to the article in the 2013 issue (citation_year and citation_publication_date both 2013). Online publication is 2015-02-03; observedYear denotes the bibliographic issue year, not a verified employment interval. Crossref independently repeats the author affiliation.'
 		},
 		{
 			institution: 'Université Laval',
@@ -33,24 +34,25 @@ export const person: Person = {
 			confidence: 'uncertain',
 			sources: [
 				{
-					url: 'https://github.com/fmadore/Website/blob/main/src/lib/data/communications/events/evolutions-nouvelles-formes-islam-afrique-ouest.ts',
-					label: 'Candidate affiliation evidence from another year',
+					url: 'https://github.com/fmadore/Website/blob/250c6bce6209ccaee96e7c136251a969bfc97ae8/src/lib/data/communications/events/evolutions-nouvelles-formes-islam-afrique-ouest.ts',
+					label: 'Evidence from another year',
 					quote: "{ name: 'Muriel Gomez-Perez', role: 'Panelist', affiliation: 'Université Laval' }"
 				},
 				{
 					url: 'https://api.crossref.org/works/10.1163%2F21540993-00702001',
-					label: 'Candidate affiliation evidence from another year',
+					label: 'Evidence from another year',
 					quote: 'Muriel Gomez-Perez — affiliation: Université Laval'
 				},
 				{
 					url: 'https://www.erudit.org/fr/revues/theologi/2013-v21-n2-theologi01684/1028465ar/',
-					label: 'Candidate affiliation evidence from another year',
+					label: 'Evidence from another year',
 					quote:
 						'citation_author: Gomez-Perez, Muriel; citation_author_institution: Sciences historiques, Université Laval (Canada)'
 				}
 			],
 			institutionId: 'universite-laval',
-			note: 'Uncertain affiliation considered for 2014; continuous employment is not inferred. Live Crossref record was retrieved but provides no author affiliations; DOI/publisher requests returned HTTP405. Other-year Laval evidence does not establish this 2014 publication affiliation.'
+			reviewNote:
+				'Live Crossref record was retrieved but provides no author affiliations; DOI/publisher requests returned HTTP405. Other-year Laval evidence does not establish this 2014 publication affiliation.'
 		},
 		{
 			institution: 'Université Laval',
@@ -58,24 +60,25 @@ export const person: Person = {
 			confidence: 'uncertain',
 			sources: [
 				{
-					url: 'https://github.com/fmadore/Website/blob/main/src/lib/data/communications/events/evolutions-nouvelles-formes-islam-afrique-ouest.ts',
-					label: 'Existing site event record',
+					url: 'https://github.com/fmadore/Website/blob/250c6bce6209ccaee96e7c136251a969bfc97ae8/src/lib/data/communications/events/evolutions-nouvelles-formes-islam-afrique-ouest.ts',
+					label: 'Event record (this site’s data)',
 					quote: "{ name: 'Muriel Gomez-Perez', role: 'Panelist', affiliation: 'Université Laval' }"
 				},
 				{
 					url: 'https://api.crossref.org/works/10.1163%2F21540993-00702001',
-					label: 'Candidate affiliation evidence from another year',
+					label: 'Evidence from another year',
 					quote: 'Muriel Gomez-Perez — affiliation: Université Laval'
 				},
 				{
 					url: 'https://www.erudit.org/fr/revues/theologi/2013-v21-n2-theologi01684/1028465ar/',
-					label: 'Candidate affiliation evidence from another year',
+					label: 'Evidence from another year',
 					quote:
 						'citation_author: Gomez-Perez, Muriel; citation_author_institution: Sciences historiques, Université Laval (Canada)'
 				}
 			],
 			institutionId: 'universite-laval',
-			note: 'Uncertain affiliation considered for 2016; continuous employment is not inferred. Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. Crossref identifies the chapter authors but their affiliation arrays are empty. DOI/publisher HTML is a JSTOR challenge page, not chapter content. No publication-specific author institution was recovered.'
+			reviewNote:
+				'Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. Crossref identifies the chapter authors but their affiliation arrays are empty. DOI/publisher HTML is a JSTOR challenge page, not chapter content. No publication-specific author institution was recovered.'
 		},
 		{
 			institution: 'Université Laval',
@@ -84,7 +87,7 @@ export const person: Person = {
 			sources: [
 				{
 					url: 'https://api.crossref.org/works/10.1163%2F21540993-00702001',
-					label: 'Doi registration author affiliation',
+					label: 'DOI registration author affiliation',
 					quote: 'Muriel Gomez-Perez — affiliation: Université Laval'
 				},
 				{
@@ -92,13 +95,14 @@ export const person: Person = {
 					label: 'Publication DOI'
 				},
 				{
-					url: 'https://github.com/fmadore/Website/blob/main/static/images/communications/evolutions-nouvelles-formes-islam-afrique-ouest-hero.webp',
+					url: 'https://github.com/fmadore/Website/blob/250c6bce6209ccaee96e7c136251a969bfc97ae8/static/images/communications/evolutions-nouvelles-formes-islam-afrique-ouest-hero.webp',
 					label: 'Contemporaneous event poster',
 					quote: 'Muriel Gomez-Perez, Professeure, Dép d’histoire, Université Laval'
 				}
 			],
 			institutionId: 'universite-laval',
-			note: 'Evidence supports 2016; continuous employment is not inferred. Crossref author.affiliation explicitly gives Université Laval for this paper, published 2016-11-02. Supports this publication, not uninterrupted employment. Affiliation read directly from the organizer’s poster, dated 24 March 2016.'
+			reviewNote:
+				'Crossref author.affiliation explicitly gives Université Laval for this paper, published 2016-11-02. Supports this publication, not uninterrupted employment. Affiliation read directly from the organizer’s poster, dated 24 March 2016.'
 		}
 	]
 };

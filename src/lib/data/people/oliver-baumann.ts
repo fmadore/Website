@@ -16,7 +16,8 @@ export const person: Person = {
 				}
 			],
 			institutionId: 'university-of-bayreuth',
-			note: 'Undated source; excluded from historical maps until an affiliation year is established. AMIRA institutional authority record confirms affiliation, but supplies no affiliation dates; its applicability to the event year remains uncertain. Retrieved 2026-10-01.'
+			reviewNote:
+				'Undated source; excluded from historical maps until an affiliation year is established. AMIRA institutional authority record confirms affiliation, but supplies no affiliation dates; its applicability to the event year remains uncertain. Retrieved 2026-10-01.'
 		}
 	]
 };
