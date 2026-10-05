@@ -21,6 +21,9 @@ function setup() {
 	// Test event registry is deliberately nonreactive.
 	// eslint-disable-next-line svelte/prefer-svelte-reactivity
 	const handlers = new Map<string, (event?: { error: Error }) => void>();
+	// Read through a closure: the hook keeps the map in $state, which proxies this
+	// plain mock (a real maplibre Map is a class instance and is not proxied).
+	const style = { loaded: true };
 	const map = {
 		on: vi.fn((event: string, fn: () => void) => handlers.set(event, fn)),
 		once: vi.fn((event: string, fn: () => void) => handlers.set(event, fn)),
@@ -31,7 +34,7 @@ function setup() {
 		remove: vi.fn(),
 		addControl: vi.fn(),
 		getStyle: vi.fn((): object | undefined => ({ version: 8 })),
-		isStyleLoaded: () => true
+		isStyleLoaded: () => style.loaded
 	};
 	mocks.layout.mockResolvedValue(true);
 	mocks.load.mockResolvedValue({
@@ -59,7 +62,7 @@ function setup() {
 		});
 	});
 	flushSync();
-	return { hook, state, map, handlers, styleReady, dataChanged };
+	return { hook, state, map, style, handlers, styleReady, dataChanged };
 }
 
 it('updates data and theme without rebuilding, and removes pending style listeners on disposal', async () => {
@@ -80,6 +83,25 @@ it('updates data and theme without rebuilding, and removes pending style listene
 	expect(s.map.remove).toHaveBeenCalledOnce();
 	expect(s.map.off).toHaveBeenCalled();
 	expect(mocks.load).toHaveBeenCalledOnce();
+});
+
+it('defers a data change made while tiles load to the next idle, keeping only the latest', async () => {
+	const s = setup();
+	await vi.waitFor(() => expect(s.hook.map).not.toBeNull());
+	s.handlers.get('load')!();
+	flushSync();
+	s.dataChanged.mockClear();
+	s.style.loaded = false;
+	s.state.data = 2;
+	flushSync();
+	s.state.data = 3;
+	flushSync();
+	expect(s.dataChanged).not.toHaveBeenCalled();
+	// The superseded change's listener is withdrawn, not left to fire as well.
+	expect(s.map.off).toHaveBeenCalledWith('idle', expect.any(Function));
+	s.style.loaded = true;
+	s.handlers.get('idle')!();
+	expect(s.dataChanged).toHaveBeenCalledOnce();
 });
 
 it('does not construct a map after unmount during loading', async () => {

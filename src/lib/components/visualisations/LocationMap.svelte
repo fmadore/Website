@@ -320,15 +320,22 @@ shown as markers while preserving the reader's country-shading preference.
 			const hasUncertainty = Boolean(
 				datum.collaborators?.some((person) => person.confidence === 'uncertain')
 			);
+			// MapLibre gives its own default markers a role, never a custom element,
+			// and an aria-label on a role-less div is prohibited. The marker opens its
+			// popup on click and Enter, so it is a button.
+			el.setAttribute('role', 'button');
 			el.setAttribute(
 				'aria-label',
 				`${datum.label ?? datum.country}: ${precisePoints ? `${datum.count} ${datum.count === 1 ? 'collaborator' : 'collaborators'}` : pluralLabel(datum.count)}${hasUncertainty ? '. Includes uncertain affiliation evidence' : ''}`
 			);
 			el.style.width = `${size}px`;
 			el.style.height = `${size}px`;
+			// Uncertainty is a dashed ring inside the solid edge. Dashing the edge
+			// itself let the map show through the gaps, and small markers read as cogs.
 			el.innerHTML = `
 				<svg viewBox="0 0 24 24" width="${size}" height="${size}" aria-hidden="true">
-					<circle cx="12" cy="12" r="10" fill="${resolvedColors.accent}" fill-opacity="0.9" stroke="${resolvedColors.surface}" stroke-width="2"${hasUncertainty ? ' stroke-dasharray="3 2"' : ''}/>
+					<circle cx="12" cy="12" r="10" fill="${resolvedColors.accent}" fill-opacity="0.9" stroke="${resolvedColors.surface}" stroke-width="2"/>
+					${hasUncertainty ? `<circle cx="12" cy="12" r="7.75" fill="none" stroke="${resolvedColors.surface}" stroke-width="1" pathLength="24" stroke-dasharray="2 1"/>` : ''}
 					<text x="12" y="16" text-anchor="middle" fill="${resolvedColors.surface}" font-size="10" font-weight="bold" font-family="${resolvedColors.fontFamily}">${datum.count}</text>
 				</svg>
 			`;
@@ -853,12 +860,16 @@ shown as markers while preserving the reader's country-shading preference.
 		background-color: transparent;
 	}
 
+	/* MapLibre sets Helvetica on the whole map; the popup is the page's own
+	   voices: Archivo head, Newsreader text, mono counts. */
 	:global(.location-popup) {
+		font-family: var(--font-family-serif);
 		font-size: var(--font-size-sm);
 		color: var(--color-text);
 	}
 
 	:global(.location-popup strong) {
+		font-family: var(--font-family-display);
 		color: var(--color-primary);
 		font-size: var(--font-size-base);
 		display: block;
