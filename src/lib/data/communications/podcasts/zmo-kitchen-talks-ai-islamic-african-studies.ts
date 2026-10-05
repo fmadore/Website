@@ -3,7 +3,7 @@ import type { Communication } from '$lib/types/communication';
 export const zmoKitchenTalksAiIslamicAfricanStudies: Communication = {
 	id: 'zmo-kitchen-talks-ai-islamic-african-studies',
 	title: 'Artificial Intelligence (AI) in African and Islamic Studies',
-	authors: ['Elisa Nobel-Dilaty', 'Frédérick Madore'],
+	authors: [{ name: 'Elisa Nobel-Dilaty', personId: 'elisa-nobel-dilaty' }, 'Frédérick Madore'],
 	date: '11 December 2025',
 	dateISO: '2025-12-11',
 	year: 2025,

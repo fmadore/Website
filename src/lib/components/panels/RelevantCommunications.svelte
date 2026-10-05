@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getContributorNames } from '$lib/utils/contributor';
 	import { allCommunicationSummaries } from '$lib/data/communications/summaries';
 	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
 	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
@@ -29,7 +30,7 @@
 				date: comm.date,
 				dateISO: comm.dateISO,
 				title: comm.title,
-				authors: comm.authors,
+				authors: getContributorNames(comm.authors),
 				abstract: comm.abstractExcerpt
 			}))
 	);

@@ -8,7 +8,10 @@ export const cvPublications: CvPublication[] = [
 		"type": "special-issue",
 		"title": "Les acteurs religieux africains à l'ère du numérique",
 		"authors": [
-			"Pamela Millet-Mouity",
+			{
+				"name": "Pamela Millet-Mouity",
+				"personId": "pamela-millet-mouity"
+			},
 			"Frédérick Madore"
 		],
 		"editors": "Pamela Millet-Mouity, Frédérick Madore",
@@ -60,7 +63,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Charting New Territory: Digital Humanities und Künstliche Intelligenz in den African Studies",
 		"authors": [
 			"Frédérick Madore",
-			"Vincent Hiribarren"
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			}
 		],
 		"date": "2026",
 		"dateISO": "2026-03-31",
@@ -74,7 +80,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Communauté Musulmane du Burkina Faso",
 		"authors": [
 			"Frédérick Madore",
-			"Muriel Gomez-Perez"
+			{
+				"name": "Muriel Gomez-Perez",
+				"personId": "muriel-gomez-perez"
+			}
 		],
 		"date": "2014",
 		"dateISO": "2014-09-01",
@@ -111,30 +120,102 @@ export const cvPublications: CvPublication[] = [
 		"title": "For Whom and For What Purpose? A Position Paper on Digital Humanities and AI in African Studies",
 		"authors": [
 			"Frédérick Madore",
-			"Vincent Hiribarren",
-			"Agata Błoch",
-			"Albrecht Hofheinz",
-			"Ashleigh Harris",
-			"Augustin Ndione",
-			"Britta Frede",
-			"Cassandra Mark-Thiesen",
-			"Duncan Money",
-			"Emmanuel Ngue Um",
-			"Érika Melek Delgado",
-			"Fallou Ngom",
-			"Fu’ad Lawal",
-			"Irene Mwendwa",
-			"James Yékú",
-			"Janeth David Nzenga",
-			"Johannes Sibeko",
-			"Karen Byera Ijumba",
-			"Kọ́lá Túbọ̀sún",
-			"Leah Junck",
-			"Menno van Zaanen",
-			"Nuraddin Aman",
-			"Oumou Sidibé",
-			"Susan Elizabeth Gagliardi",
-			"Thompson Gyedu Kwarkye"
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
+			{
+				"name": "Agata Błoch",
+				"personId": "agata-bloch"
+			},
+			{
+				"name": "Albrecht Hofheinz",
+				"personId": "albrecht-hofheinz"
+			},
+			{
+				"name": "Ashleigh Harris",
+				"personId": "ashleigh-harris"
+			},
+			{
+				"name": "Augustin Ndione",
+				"personId": "augustin-ndione"
+			},
+			{
+				"name": "Britta Frede",
+				"personId": "britta-frede"
+			},
+			{
+				"name": "Cassandra Mark-Thiesen",
+				"personId": "cassandra-mark-thiesen"
+			},
+			{
+				"name": "Duncan Money",
+				"personId": "duncan-money"
+			},
+			{
+				"name": "Emmanuel Ngue Um",
+				"personId": "emmanuel-ngue-um"
+			},
+			{
+				"name": "Érika Melek Delgado",
+				"personId": "erika-melek-delgado"
+			},
+			{
+				"name": "Fallou Ngom",
+				"personId": "fallou-ngom"
+			},
+			{
+				"name": "Fu’ad Lawal",
+				"personId": "fuad-lawal"
+			},
+			{
+				"name": "Irene Mwendwa",
+				"personId": "irene-mwendwa"
+			},
+			{
+				"name": "James Yékú",
+				"personId": "james-yeku"
+			},
+			{
+				"name": "Janeth David Nzenga",
+				"personId": "janeth-david-nzenga"
+			},
+			{
+				"name": "Johannes Sibeko",
+				"personId": "johannes-sibeko"
+			},
+			{
+				"name": "Karen Byera Ijumba",
+				"personId": "karen-byera-ijumba"
+			},
+			{
+				"name": "Kọ́lá Túbọ̀sún",
+				"personId": "kola-tubosun"
+			},
+			{
+				"name": "Leah Junck",
+				"personId": "leah-junck"
+			},
+			{
+				"name": "Menno van Zaanen",
+				"personId": "menno-van-zaanen"
+			},
+			{
+				"name": "Nuraddin Aman",
+				"personId": "nuraddin-aman"
+			},
+			{
+				"name": "Oumou Sidibé",
+				"personId": "oumou-sidibe"
+			},
+			{
+				"name": "Susan Elizabeth Gagliardi",
+				"personId": "susan-elizabeth-gagliardi"
+			},
+			{
+				"name": "Thompson Gyedu Kwarkye",
+				"personId": "thompson-gyedu-kwarkye"
+			}
 		],
 		"date": "2026",
 		"dateISO": "2026-09-09",
@@ -187,9 +268,15 @@ export const cvPublications: CvPublication[] = [
 		"type": "article",
 		"title": "Interview with Rosalind I. J. Hackett on Religion and Digital Media Trends in Africa",
 		"authors": [
-			"Rosalind I. J. Hackett",
+			{
+				"name": "Rosalind I. J. Hackett",
+				"personId": "rosalind-i-j-hackett"
+			},
 			"Frédérick Madore",
-			"Pamela Millet-Mouity"
+			{
+				"name": "Pamela Millet-Mouity",
+				"personId": "pamela-millet-mouity"
+			}
 		],
 		"date": "2017",
 		"dateISO": "2017",
@@ -207,7 +294,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "L'organisation du hadj en Côte d'Ivoire: entre facteur de cohésion et source de rivalités au sein de la communauté musulmane (1993-2010)",
 		"authors": [
 			"Frédérick Madore",
-			"Yssoufou Traoré"
+			{
+				"name": "Yssoufou Traoré",
+				"personId": "yssoufou-traore"
+			}
 		],
 		"date": "2018",
 		"dateISO": "2018",
@@ -241,7 +331,10 @@ export const cvPublications: CvPublication[] = [
 		"type": "chapter",
 		"title": "Introduction: Religiosity on University Campuses in Africa",
 		"authors": [
-			"Abdoulaye Sounaye",
+			{
+				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye"
+			},
 			"Frédérick Madore"
 		],
 		"date": "2023",
@@ -311,7 +404,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Islam on University Campuses in Côte d'Ivoire since the 1970s: Muslim Intellectuals and Francophone Salafism",
 		"authors": [
 			"Frédérick Madore",
-			"Issouf Binaté"
+			{
+				"name": "Issouf Binaté",
+				"personId": "issouf-binate"
+			}
 		],
 		"date": "2023",
 		"dateISO": "2023",
@@ -329,9 +425,15 @@ export const cvPublications: CvPublication[] = [
 		"type": "chapter",
 		"title": "Leaders of National and Transnational Muslim NGOs in Burkina Faso: Diverse Forms and Experiences of Islamic Civic Engagement",
 		"authors": [
-			"Kathéry Couillard",
+			{
+				"name": "Kathéry Couillard",
+				"personId": "kathery-couillard"
+			},
 			"Frédérick Madore",
-			"Muriel Gomez-Perez"
+			{
+				"name": "Muriel Gomez-Perez",
+				"personId": "muriel-gomez-perez"
+			}
 		],
 		"date": "2016",
 		"dateISO": "2016",
@@ -475,7 +577,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Muslim Minorities in Africa, Part 1",
 		"authors": [
 			"Frédérick Madore",
-			"Dorothea Schulz"
+			{
+				"name": "Dorothea Schulz",
+				"personId": "dorothea-schulz"
+			}
 		],
 		"editors": "Frédérick Madore, Dorothea Schulz",
 		"date": "2021",
@@ -493,7 +598,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Muslim Minorities in Africa, Part 2",
 		"authors": [
 			"Frédérick Madore",
-			"Dorothea Schulz"
+			{
+				"name": "Dorothea Schulz",
+				"personId": "dorothea-schulz"
+			}
 		],
 		"editors": "Frédérick Madore, Dorothea Schulz",
 		"date": "2022",
@@ -511,7 +619,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Muslim Women in Burkina Faso since the 1970s: Toward Recognition as Figures of Religious Authority?",
 		"authors": [
 			"Frédérick Madore",
-			"Muriel Gomez-Perez"
+			{
+				"name": "Muriel Gomez-Perez",
+				"personId": "muriel-gomez-perez"
+			}
 		],
 		"date": "2016",
 		"dateISO": "2016-11-02",
@@ -530,7 +641,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Du plan au brouillon : l'essentiel pour structurer ses idées et éviter le syndrome de la page blanche",
 		"authors": [
 			"Frédérick Madore",
-			"Andrée-Ann Brassard"
+			{
+				"name": "Andrée-Ann Brassard",
+				"personId": "andree-ann-brassard"
+			}
 		],
 		"date": "2021",
 		"dateISO": "2021",
@@ -546,7 +660,10 @@ export const cvPublications: CvPublication[] = [
 		"type": "article",
 		"title": "Prêcheurs(ses) musulmans(es) et stratégies de communication au Burkina Faso depuis 1990. Des processus différentiés de conversion interne",
 		"authors": [
-			"Muriel Gomez-Perez",
+			{
+				"name": "Muriel Gomez-Perez",
+				"personId": "muriel-gomez-perez"
+			},
 			"Frédérick Madore"
 		],
 		"date": "2013",
@@ -566,7 +683,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Le religieux sur Internet et dans les NTIC au Burkina Faso",
 		"authors": [
 			"Frédérick Madore",
-			"Louis Audet Gosselin"
+			{
+				"name": "Louis Audet Gosselin",
+				"personId": "louis-audet-gosselin"
+			}
 		],
 		"date": "2019",
 		"dateISO": "2019-06",
@@ -584,7 +704,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Religion on the Internet and New Information and Communication Technologies in Burkina Faso",
 		"authors": [
 			"Frédérick Madore",
-			"Louis Audet Gosselin"
+			{
+				"name": "Louis Audet Gosselin",
+				"personId": "louis-audet-gosselin"
+			}
 		],
 		"date": "2024",
 		"dateISO": "2024",
@@ -601,8 +724,14 @@ export const cvPublications: CvPublication[] = [
 		"type": "blogpost",
 		"title": "Religions numériques en Afrique",
 		"authors": [
-			"Vincent Hiribarren",
-			"Pamela Millet-Mouity",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
+			{
+				"name": "Pamela Millet-Mouity",
+				"personId": "pamela-millet-mouity"
+			},
 			"Frédérick Madore"
 		],
 		"date": "2018",
@@ -616,7 +745,10 @@ export const cvPublications: CvPublication[] = [
 		"type": "book",
 		"title": "Religiosity on University Campuses in Africa: Trends and Experiences",
 		"authors": [
-			"Abdoulaye Sounaye",
+			{
+				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye"
+			},
 			"Frédérick Madore"
 		],
 		"editors": "Abdoulaye Sounaye, Frédérick Madore",
@@ -696,7 +828,10 @@ export const cvPublications: CvPublication[] = [
 		"type": "article",
 		"title": "Pour de nouvelles études sur les acteurs religieux africains à l'ère du numérique",
 		"authors": [
-			"Pamela Millet-Mouity",
+			{
+				"name": "Pamela Millet-Mouity",
+				"personId": "pamela-millet-mouity"
+			},
 			"Frédérick Madore"
 		],
 		"date": "2017",
@@ -715,7 +850,10 @@ export const cvPublications: CvPublication[] = [
 		"title": "Repenser la catégorisation religieuse à partir du Bénin, terre du Vodun",
 		"authors": [
 			"Frédérick Madore",
-			"Codjo Fiacre Anato"
+			{
+				"name": "Codjo Fiacre Anato",
+				"personId": "codjo-fiacre-anato"
+			}
 		],
 		"date": "2026",
 		"dateISO": "2026-04-02",
@@ -828,7 +966,10 @@ export const cvPublications: CvPublication[] = [
 		"type": "blogpost",
 		"title": "Three Questions to Dr. Frédérick Madore",
 		"authors": [
-			"Rand El Zein",
+			{
+				"name": "Rand El Zein",
+				"personId": "rand-el-zein"
+			},
 			"Frédérick Madore"
 		],
 		"date": "2022",

@@ -1,4 +1,6 @@
 import type { Publication } from '$lib/types/publication';
+import type { Contributor } from '$lib/types/contributor';
+import { getContributorNames } from '$lib/utils/contributor';
 import { formatDisplayDate, isForthcoming } from '$lib/utils/date-formatter';
 import { joinNames, splitNames } from '$lib/utils/nameUtils';
 import { PUBLICATION_TYPE_CITATION_LABELS } from '$lib/utils/publicationTypeLabels';
@@ -9,10 +11,11 @@ import { quoteTitle, typesetQuotes, typesetQuotesInHtml } from '$lib/utils/types
 export const typeLabels = PUBLICATION_TYPE_CITATION_LABELS;
 
 // Helper function to handle authors that might be string or array
-export function getAuthorsArray(authors: string[] | string | undefined): string[] {
+export function getAuthorsArray(authors: Contributor[] | string | undefined): string[] {
 	if (!authors) return [];
 	if (typeof authors === 'string') return authors.split(' and ');
-	return authors;
+	if (authors.every((author): author is string => typeof author === 'string')) return authors;
+	return getContributorNames(authors);
 }
 
 // New function to format author list. Citation style: ", " between entries,
@@ -21,7 +24,7 @@ export function getAuthorsArray(authors: string[] | string | undefined): string[
 // Typeset here, not in `joinNames`: nameUtils is shared with the BibTeX and
 // COinS generators, where a curled apostrophe in "N'Dri" would corrupt an
 // export. This is the display byline, so it takes the typographic register.
-export function formatAuthorList(authorsInput: string[] | string | undefined): string {
+export function formatAuthorList(authorsInput: Contributor[] | string | undefined): string {
 	return typesetQuotes(joinNames(getAuthorsArray(authorsInput)));
 }
 

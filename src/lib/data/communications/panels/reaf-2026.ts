@@ -3,7 +3,7 @@ import type { Communication } from '$lib/types/communication';
 export const reaf2026Panel: Communication = {
 	id: 'humanites-numeriques-dh-ia-etudes-africaines-reaf-2026',
 	title: 'Humanités numériques (DH) et IA dans les études africaines',
-	authors: ['Vincent Hiribarren', 'Frédérick Madore'],
+	authors: [{ name: 'Vincent Hiribarren', personId: 'vincent-hiribarren' }, 'Frédérick Madore'],
 	date: '30 juin 2026',
 	dateISO: '2026-06-30',
 	year: 2026,
@@ -51,7 +51,13 @@ Ce panel organisé par Frédérick Madore et Vincent Hiribarren fait suite à la
 		{
 			title:
 				'Intelligence artificielle et patrimonialisation : entre indexation automatisée et perte de sens',
-			authors: [{ name: 'Mbaye Diouf', affiliation: 'Université Cheikh Anta Diop de Dakar' }],
+			authors: [
+				{
+					name: 'Mbaye Diouf',
+					personId: 'mbaye-diouf',
+					affiliation: 'Université Cheikh Anta Diop de Dakar'
+				}
+			],
 			abstract: `Dans un contexte de multiplication et de numérisation des archives audiovisuelles, l'intelligence artificielle (IA) s'affirme comme un levier incontournable dans les processus d'indexation et de mise en valeur du patrimoine.
 
 Cette communication interroge les effets de l'automatisation sur la construction du sens, en particulier dans le cadre du traitement des patrimoines immatériels africains. À partir d'une étude de cas centrée sur le Xooy, cérémonie divinatoire sérère reconnue comme patrimoine immatériel au Sénégal, l'analyse met en évidence les limites des systèmes algorithmiques face à la complexité des savoirs rituels, des langues vernaculaires et des contextes d'énonciation. L'indexation automatisée, bien qu'efficace, peut également engendrer des réductions sémantiques, des ruptures contextuelles et une occultation des logiques culturelles sous-jacentes de ce réservoir complexe de savoirs oraux, de pratiques symboliques et de cosmologies locales.
@@ -64,6 +70,7 @@ En mobilisant les apports de l'histoire culturelle, les études critiques sur le
 			authors: [
 				{
 					name: 'Promise Dodzi Kpoglu',
+					personId: 'promise-dodzi-kpoglu',
 					affiliation: 'LLACAN, Centre national de la recherche scientifique'
 				}
 			],
@@ -75,7 +82,13 @@ Les résultats suggèrent que, contre l'hypothèse existante, la diversité s'ex
 		},
 		{
 			title: "Quels impacts de l'IA sur les sciences humaines ?",
-			authors: [{ name: "Racine Oumar N'Diaye", affiliation: 'Université de Nouadhibou' }],
+			authors: [
+				{
+					name: "Racine Oumar N'Diaye",
+					personId: 'racine-oumar-n-diaye',
+					affiliation: 'Université de Nouadhibou'
+				}
+			],
 			abstract: `L'Intelligence Artificielle (IA) est l'ensemble des théories et techniques mises en œuvre en vue de réaliser des machines capables de simuler l'intelligence humaine. L'IA, classée dans le domaine des sciences dites cognitives peut-elle être utile aux humanités, plus précisément à l'Histoire ?
 
 Certes, l'IA favorise considérablement l'individualisation des parcours. Elle permet de travailler sur le tutorat intelligent et au plus près des besoins de l'apprenant, de son rythme, etc. Mieux, elle prend en compte le profil au plus près de son évolution, elle permet ainsi d'aller vers « l'educational data mining ». Cet ensemble permet de faire évoluer le scénario même de l'apprentissage.
@@ -88,9 +101,14 @@ D'autre part, les études ont démontré que l'on pouvait réellement apprendre 
 			title:
 				'Retrouver la révolte malgache de 1947. Le deep learning appliqué aux inventaires de destruction.',
 			authors: [
-				{ name: 'Naomi Bell', affiliation: 'Institut des Mondes Africains (IMAF)' },
+				{
+					name: 'Naomi Bell',
+					personId: 'naomi-bell',
+					affiliation: 'Institut des Mondes Africains (IMAF)'
+				},
 				{
 					name: 'Stéphane Lamassé',
+					personId: 'stephane-lamasse',
 					affiliation: 'LAMOP, PIREH, Université Paris 1 Panthéon-Sorbonne'
 				}
 			],
@@ -104,7 +122,11 @@ Comment l'entrainement d'un modèle de deep learning pour affronter cette docume
 			title: `Retour sur une note de synthèse analysant la relation entre Humanités Numériques, l'IA et les Études Africaines (Hanovre, février 2025)`,
 			authors: [
 				{ name: 'Frédérick Madore', affiliation: 'Université de Bayreuth' },
-				{ name: 'Vincent Hiribarren', affiliation: "King's College London" }
+				{
+					name: 'Vincent Hiribarren',
+					personId: 'vincent-hiribarren',
+					affiliation: "King's College London"
+				}
 			],
 			abstract: `Dans ce papier, Frédérick Madore et Vincent Hiribarren analysent le contenu d'une note de synthèse préparée par une équipe de trente chercheur.es et praticien·nes en Humanités numériques sur le rapport entre Humanités numériques, l'IA et études africaines (financement Fondation Volkswagen) en février 2025. Cette note de synthèse s'attarde principalement sur les trois points suivants 1) Intégration méthodologique et préservation numérique 2) Favoriser une collaboration équitable 3) Cadre éthique et souveraineté numérique.`
 		}

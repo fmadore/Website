@@ -18,6 +18,16 @@ const pub = (over: Partial<Publication>): Publication =>
 	}) as Publication;
 
 describe('generateBibtex', () => {
+	it('exports linked authors and editors with unchanged names and escaping', () => {
+		const names = ['Jane Doe', "John N'Dri & Co"];
+		const linked = ['Jane Doe', { name: "John N'Dri & Co", personId: 'john-ndri' }];
+		for (const isEditedVolume of [false, true]) {
+			expect(generateBibtex(pub({ authors: linked, isEditedVolume }))).toBe(
+				generateBibtex(pub({ authors: names, isEditedVolume }))
+			);
+		}
+	});
+
 	it('emits an @book entry keyed by the publication id', () => {
 		const bib = generateBibtex(pub({ id: 'madore2024', type: 'book', publisher: 'Brill' }));
 		expect(bib).toMatch(/^@book\{madore2024,/);

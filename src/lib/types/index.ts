@@ -18,3 +18,5 @@ export * from './teachingExperience';
 export * from './digitalHumanities';
 export * from './research';
 export * from './researchRole';
+export type { Contributor } from './contributor';
+export type { Person, PersonAffiliation, Institution, AffiliationSource } from './person';

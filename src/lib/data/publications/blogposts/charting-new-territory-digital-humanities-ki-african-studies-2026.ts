@@ -5,7 +5,7 @@ export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication 
 	type: 'blogpost',
 	title:
 		'Charting New Territory: Digital Humanities und Künstliche Intelligenz in den African Studies',
-	authors: ['Frédérick Madore', 'Vincent Hiribarren'],
+	authors: ['Frédérick Madore', { name: 'Vincent Hiribarren', personId: 'vincent-hiribarren' }],
 	date: '2026',
 	dateISO: '2026-03-31',
 	year: 2026,

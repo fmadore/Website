@@ -4,7 +4,7 @@ export const threeQuestionsToMadore: Publication = {
 	id: 'three-questions-madore-2022',
 	type: 'blogpost',
 	title: 'Three Questions to Dr. Frédérick Madore',
-	authors: ['Rand El Zein', 'Frédérick Madore'],
+	authors: [{ name: 'Rand El Zein', personId: 'rand-el-zein' }, 'Frédérick Madore'],
 	date: '2022',
 	dateISO: '2022-04-07',
 	year: 2022,

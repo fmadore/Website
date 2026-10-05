@@ -1,7 +1,9 @@
+import type { Contributor } from '$lib/types/contributor';
+
 export type Communication = {
 	id: string; // URL-friendly ID for routing
 	title: string; // Communication title
-	authors: string[]; // Array of authors
+	authors: Contributor[]; // Credited authors, optionally linked to the people registry
 	date: string; // Display date (e.g., "2023")
 	dateISO: string; // ISO date format (YYYY-MM-DD) for sorting
 	year: number; // Year for filtering
@@ -33,12 +35,14 @@ export type Communication = {
 	papers?: Array<{
 		// Papers presented at the panel
 		title: string; // Paper title
-		authors: Array<{ name: string; affiliation?: string }>; // Paper authors with optional affiliation
+		// Paper authors with optional affiliation and person link
+		authors: Array<{ name: string; affiliation?: string; personId?: string }>;
 		abstract?: string; // Optional paper abstract
 	}>;
 	participants?: Array<{
 		// Additional participants
 		name: string; // Participant name
+		personId?: string; // Optional link to the people registry
 		role?: string; // Optional role (chair, discussant, etc.)
 		affiliation?: string; // Optional institutional affiliation
 	}>;

@@ -4,7 +4,7 @@ export const introductionReligiosityUniversityCampuses: Publication = {
 	id: 'introduction-religiosity-university-campuses-2023',
 	type: 'chapter',
 	title: 'Introduction: Religiosity on University Campuses in Africa',
-	authors: ['Abdoulaye Sounaye', 'Frédérick Madore'],
+	authors: [{ name: 'Abdoulaye Sounaye', personId: 'abdoulaye-sounaye' }, 'Frédérick Madore'],
 	date: '2023',
 	dateISO: '2023',
 	year: 2023,

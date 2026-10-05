@@ -26,6 +26,7 @@
 import { readFileSync, writeFileSync, mkdirSync, globSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { getContributorNames } from '../src/lib/utils/contributor.ts';
 import {
 	BEGIN,
 	END,
@@ -166,8 +167,9 @@ for (const [dir, section] of [
 	for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data', dir))) {
 		const record = await loadModule(file);
 		if (!record?.id) continue;
-		const surnames = (record.authors || [])
-			.map((a) => String(a).trim().split(/\s+/).pop())
+		// Credits may be linked to the people registry ({ name, personId }); read the name.
+		const surnames = getContributorNames(record.authors)
+			.map((a) => a.trim().split(/\s+/).pop())
 			.filter(Boolean);
 		const who =
 			surnames.length === 1

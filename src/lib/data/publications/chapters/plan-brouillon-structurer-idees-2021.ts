@@ -5,7 +5,7 @@ export const planBrouillonStructurerIdees: Publication = {
 	type: 'chapter',
 	title:
 		"Du plan au brouillon : l'essentiel pour structurer ses idées et éviter le syndrome de la page blanche",
-	authors: ['Frédérick Madore', 'Andrée-Ann Brassard'],
+	authors: ['Frédérick Madore', { name: 'Andrée-Ann Brassard', personId: 'andree-ann-brassard' }],
 	date: '2021',
 	dateISO: '2021',
 	year: 2021,

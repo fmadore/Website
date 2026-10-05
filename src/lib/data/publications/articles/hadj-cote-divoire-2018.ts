@@ -5,7 +5,7 @@ export const hadjCoteDIvoire: Publication = {
 	type: 'article',
 	title:
 		"L'organisation du hadj en Côte d'Ivoire: entre facteur de cohésion et source de rivalités au sein de la communauté musulmane (1993-2010)",
-	authors: ['Frédérick Madore', 'Yssoufou Traoré'],
+	authors: ['Frédérick Madore', { name: 'Yssoufou Traoré', personId: 'yssoufou-traore' }],
 	date: '2018',
 	dateISO: '2018',
 	year: 2018,

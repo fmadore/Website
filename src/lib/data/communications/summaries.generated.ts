@@ -7,7 +7,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "evolutions-nouvelles-formes-islam-afrique-ouest",
 		"title": "Évolutions et nouvelles formes de l'islam en Afrique de l'Ouest: vers une radicalisation?",
 		"authors": [
-			"CIRAM"
+			{
+				"name": "CIRAM",
+				"kind": "organisation"
+			}
 		],
 		"date": "24 March 2016",
 		"dateISO": "2016-03-24",
@@ -39,26 +42,31 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"participants": [
 			{
 				"name": "Adib Bencherif",
+				"personId": "adib-bencherif",
 				"role": "Panelist",
 				"affiliation": "Université d'Ottawa"
 			},
 			{
 				"name": "Marie Brossier",
+				"personId": "marie-brossier",
 				"role": "Panelist",
 				"affiliation": "Université Laval"
 			},
 			{
 				"name": "Aurélie Campana",
+				"personId": "aurelie-campana",
 				"role": "Panelist",
 				"affiliation": "Université Laval"
 			},
 			{
 				"name": "Muriel Gomez-Perez",
+				"personId": "muriel-gomez-perez",
 				"role": "Panelist",
 				"affiliation": "Université Laval"
 			},
 			{
 				"name": "Cédric Jourde",
+				"personId": "cedric-jourde",
 				"role": "Panelist",
 				"affiliation": "Université d'Ottawa"
 			},
@@ -69,6 +77,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			},
 			{
 				"name": "Olivier Pelletier",
+				"personId": "olivier-pelletier",
 				"role": "Panelist",
 				"affiliation": "Université Laval"
 			}
@@ -117,21 +126,25 @@ export const communicationSummaries: CommunicationSummary[] = [
 			},
 			{
 				"name": "Ulrike Freitag",
+				"personId": "ulrike-freitag",
 				"role": "Speaker",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			},
 			{
 				"name": "Mauro Nobili",
+				"personId": "mauro-nobili",
 				"role": "Speaker",
 				"affiliation": "University of Illinois at Urbana Champaign, USA"
 			},
 			{
 				"name": "Issouf Binaté",
+				"personId": "issouf-binate",
 				"role": "Speaker",
 				"affiliation": "Université Alassane Ouattara, Côte d'Ivoire"
 			},
 			{
 				"name": "Kai Kresse",
+				"personId": "kai-kresse",
 				"role": "Speaker",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			}
@@ -144,9 +157,18 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"title": "Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices",
 		"authors": [
 			"Frédérick Madore",
-			"Vincent Hiribarren",
-			"Emmanuel Ngue Um",
-			"Menno van Zaanen"
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
+			{
+				"name": "Emmanuel Ngue Um",
+				"personId": "emmanuel-ngue-um"
+			},
+			{
+				"name": "Menno van Zaanen",
+				"personId": "menno-van-zaanen"
+			}
 		],
 		"date": "21-24 September 2026",
 		"dateISO": "2026-09-21",
@@ -189,145 +211,180 @@ export const communicationSummaries: CommunicationSummary[] = [
 			},
 			{
 				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren",
 				"role": "Organiser",
 				"affiliation": "King's College London"
 			},
 			{
 				"name": "Emmanuel Ngue Um",
+				"personId": "emmanuel-ngue-um",
 				"role": "Organiser",
 				"affiliation": "University of Yaoundé 1"
 			},
 			{
 				"name": "Menno van Zaanen",
+				"personId": "menno-van-zaanen",
 				"role": "Organiser",
 				"affiliation": "South African Centre for Digital Language Resources (SADiLaR)"
 			},
 			{
 				"name": "Aminata Kane",
+				"personId": "aminata-kane",
 				"affiliation": "Cheikh Anta Diop University"
 			},
 			{
 				"name": "Augustin Ndione",
+				"personId": "augustin-ndione",
 				"affiliation": "Cheikh Anta Diop University"
 			},
 			{
 				"name": "Augustine A. Farinola",
+				"personId": "augustine-a-farinola",
 				"affiliation": "University of Alberta"
 			},
 			{
 				"name": "Benito Trollip",
+				"personId": "benito-trollip",
 				"affiliation": "South African Centre for Digital Language Resources (SADiLaR)"
 			},
 			{
 				"name": "Bruno Allahissem",
+				"personId": "bruno-allahissem",
 				"affiliation": "Leiden University"
 			},
 			{
 				"name": "Christine Mataranyika",
+				"personId": "christine-mataranyika",
 				"affiliation": "University of the Witwatersrand"
 			},
 			{
 				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini",
 				"affiliation": "University of Bayreuth"
 			},
 			{
 				"name": "Eliette Ngo Tjomb Assembe",
+				"personId": "eliette-ngo-tjomb-assembe",
 				"affiliation": "University of Yaoundé 1"
 			},
 			{
 				"name": "Evelyne Amana",
+				"personId": "evelyne-amana",
 				"affiliation": "University of Yaoundé I"
 			},
 			{
 				"name": "Falimatou Pemgbou",
+				"personId": "falimatou-pemgbou",
 				"affiliation": "University of Ebolowa"
 			},
 			{
 				"name": "Friederike Lüpke",
+				"personId": "friederike-lupke",
 				"affiliation": "University of Helsinki"
 			},
 			{
 				"name": "Hammed Olalekan Lawal",
+				"personId": "hammed-olalekan-lawal",
 				"affiliation": "University of Bayreuth"
 			},
 			{
 				"name": "Iginio Gagliardone",
+				"personId": "iginio-gagliardone",
 				"affiliation": "University of the Witwatersrand"
 			},
 			{
 				"name": "Jelena Prokic",
+				"personId": "jelena-prokic",
 				"affiliation": "Leiden University"
 			},
 			{
 				"name": "Jiayu Yang",
+				"personId": "jiayu-yang",
 				"affiliation": "University of Bayreuth"
 			},
 			{
 				"name": "John Oluwafemi Daniel",
+				"personId": "john-oluwafemi-daniel",
 				"affiliation": "University of Ibadan"
 			},
 			{
 				"name": "Jules Mansaly",
+				"personId": "jules-mansaly",
 				"affiliation": "University of the Gambia"
 			},
 			{
 				"name": "Karabo Mohapeloa",
+				"personId": "karabo-mohapeloa",
 				"affiliation": "University of the Witwatersrand"
 			},
 			{
 				"name": "Khaoula Stiti",
+				"personId": "khaoula-stiti",
 				"affiliation": "Unaffiliated scholar"
 			},
 			{
 				"name": "Lauren Coetzee",
+				"personId": "lauren-coetzee",
 				"affiliation": "University of Luxembourg"
 			},
 			{
 				"name": "Leonard Kibet Kirui",
+				"personId": "leonard-kibet-kirui",
 				"affiliation": "Moi University"
 			},
 			{
 				"name": "Luca Bruls",
+				"personId": "luca-bruls",
 				"affiliation": "Leiden University"
 			},
 			{
 				"name": "Lydia Kila Taban",
+				"personId": "lydia-kila-taban",
 				"affiliation": "Masakhane"
 			},
 			{
 				"name": "Matthew Sung",
+				"personId": "matthew-sung",
 				"affiliation": "Leiden University"
 			},
 			{
 				"name": "Max Milella",
+				"personId": "max-milella",
 				"affiliation": "University of the Witwatersrand"
 			},
 			{
 				"name": "Mirjam de Bruijn",
+				"personId": "mirjam-de-bruijn",
 				"affiliation": "Leiden University"
 			},
 			{
 				"name": "Mohamadou Konaté",
+				"personId": "mohamadou-konate",
 				"affiliation": "Joseph Ki-Zerbo University"
 			},
 			{
 				"name": "Oreen Yousuf",
+				"personId": "oreen-yousuf",
 				"affiliation": "Uppsala University"
 			},
 			{
 				"name": "Rachel Maina",
+				"personId": "rachel-maina",
 				"affiliation": "University of Wisconsin–Madison"
 			},
 			{
 				"name": "Sanjin Muftić",
+				"personId": "sanjin-muftic",
 				"affiliation": "University of Cape Town Libraries"
 			},
 			{
 				"name": "Sarah Oberbichler",
+				"personId": "sarah-oberbichler",
 				"affiliation": "University of Luxembourg"
 			},
 			{
 				"name": "Tajuddeen Gwadabe",
+				"personId": "tajuddeen-gwadabe",
 				"affiliation": "Masakhane"
 			}
 		],
@@ -338,7 +395,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "university-campuses-africa-beyond",
 		"title": "University Campuses in Africa and Beyond: Training Grounds, Moral Spaces and Political Arenas",
 		"authors": [
-			"Abdoulaye Sounaye",
+			{
+				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye"
+			},
 			"Frédérick Madore"
 		],
 		"date": "6-8 September 2023",
@@ -369,6 +429,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"participants": [
 			{
 				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye",
 				"role": "Convenor and Speaker",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			},
@@ -379,131 +440,157 @@ export const communicationSummaries: CommunicationSummary[] = [
 			},
 			{
 				"name": "Stefan Kirmse",
+				"personId": "stefan-kirmse",
 				"role": "Discussant",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			},
 			{
 				"name": "Mahamadou Bello Adamou",
+				"personId": "mahamadou-bello-adamou",
 				"role": "Speaker",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Vincent Favier",
+				"personId": "vincent-favier",
 				"role": "Speaker",
 				"affiliation": "ZMO / Freie Universität, Germany"
 			},
 			{
 				"name": "Daniele Cantini",
+				"personId": "daniele-cantini",
 				"role": "Discussant",
 				"affiliation": "Martin-Luther-Universität Halle-Wittenberg, Germany"
 			},
 			{
 				"name": "Rebecca Babirye",
+				"personId": "rebecca-babirye",
 				"role": "Speaker",
 				"affiliation": "Tokyo Christian University, Japan"
 			},
 			{
 				"name": "Lucie Revilla",
+				"personId": "lucie-revilla",
 				"role": "Speaker",
 				"affiliation": "Institut de Recherche pour le Développement, France"
 			},
 			{
 				"name": "Laure Assaf",
+				"personId": "laure-assaf",
 				"role": "Speaker",
 				"affiliation": "NYU Abu Dhabi, United Arab Emirates"
 			},
 			{
 				"name": "Amanda tho Seeth",
+				"personId": "amanda-tho-seeth",
 				"role": "Discussant",
 				"affiliation": "German Institute for Global and Area Studies, Germany"
 			},
 			{
 				"name": "Muhammad Wildan",
+				"personId": "muhammad-wildan",
 				"role": "Speaker",
 				"affiliation": "UIN Sunan Kalijaga Yogyakarta, Indonesia"
 			},
 			{
 				"name": "Dr. Afdawaiza",
+				"personId": "afdawaiza",
 				"role": "Speaker",
 				"affiliation": "UIN Sunan Kalijaga Yogyakarta, Indonesia"
 			},
 			{
 				"name": "Robby Habiba Abror",
+				"personId": "robby-habiba-abror",
 				"role": "Speaker",
 				"affiliation": "UIN Sunan Kalijaga Yogyakarta, Indonesia"
 			},
 			{
 				"name": "Shofiyullah Muzammil",
+				"personId": "shofiyullah-muzammil",
 				"role": "Speaker",
 				"affiliation": "UIN Sunan Kalijaga Yogyakarta, Indonesia"
 			},
 			{
 				"name": "Adéjọkẹ Rafiat Adétòrò",
+				"personId": "adejoke-rafiat-adetoro",
 				"role": "Speaker",
 				"affiliation": "University of Ibadan, Nigeria"
 			},
 			{
 				"name": "Sana Chavoshian",
+				"personId": "sana-chavoshian",
 				"role": "Discussant",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			},
 			{
 				"name": "Inayah Rohmaniyah",
+				"personId": "inayah-rohmaniyah",
 				"role": "Speaker",
 				"affiliation": "UIN Sunan Kalijaga Yogyakarta, Indonesia"
 			},
 			{
 				"name": "Yekatit Tsehayu",
+				"personId": "yekatit-tsehayu",
 				"role": "Speaker",
 				"affiliation": "University of Florida, United States"
 			},
 			{
 				"name": "Eva Spies",
+				"personId": "eva-spies",
 				"role": "Discussant",
 				"affiliation": "Universität Bayreuth, Germany"
 			},
 			{
 				"name": "Olutayo C. Adesina",
+				"personId": "olutayo-c-adesina",
 				"role": "Speaker",
 				"affiliation": "University of Ibadan, Nigeria"
 			},
 			{
 				"name": "Bruno Reinhardt",
+				"personId": "bruno-reinhardt",
 				"role": "Speaker",
 				"affiliation": "Universidade Federal de Santa Catarina, Brazil"
 			},
 			{
 				"name": "John Schmalzbauer",
+				"personId": "john-schmalzbauer",
 				"role": "Speaker",
 				"affiliation": "Missouri State University, United States"
 			},
 			{
 				"name": "Yunus Dumbe",
+				"personId": "yunus-dumbe",
 				"role": "Speaker",
 				"affiliation": "Kwame Nkrumah University of Science & Technology, Ghana"
 			},
 			{
 				"name": "Sadia Mahmood",
+				"personId": "sadia-mahmood",
 				"role": "Speaker",
 				"affiliation": "Quaid-i-Azam University, Islamabad, Pakistan"
 			},
 			{
 				"name": "Anandita Bajpai",
+				"personId": "anandita-bajpai",
 				"role": "Discussant",
 				"affiliation": "ZMO, Berlin"
 			},
 			{
 				"name": "Sadia Bajwa",
+				"personId": "sadia-bajwa",
 				"role": "Speaker",
 				"affiliation": "Humboldt-Universität zu Berlin, Germany"
 			},
 			{
 				"name": "Adeyemi Balogun",
+				"personId": "adeyemi-balogun",
 				"role": "Speaker",
 				"affiliation": "Osun State University, Nigeria"
 			},
 			{
 				"name": "Anna Schnieder-Krüger",
+				"personId": "anna-schnieder-kruger",
 				"role": "Speaker",
 				"affiliation": "Humboldt-Universität zu Berlin, Germany"
 			}
@@ -516,7 +603,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"title": "Charting New Territory: Digital Humanities and AI in African Studies",
 		"authors": [
 			"Frédérick Madore",
-			"Vincent Hiribarren"
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			}
 		],
 		"date": "18-20 February 2026",
 		"dateISO": "2026-02-18",
@@ -549,126 +639,151 @@ export const communicationSummaries: CommunicationSummary[] = [
 			},
 			{
 				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren",
 				"role": "Co-organiser",
 				"affiliation": "King's College London"
 			},
 			{
 				"name": "Nuraddin Aman",
+				"personId": "nuraddin-aman",
 				"role": "Participant",
 				"affiliation": "Addis Ababa University, Institute of Ethiopian Studies"
 			},
 			{
 				"name": "Agata Błoch",
+				"personId": "agata-bloch",
 				"role": "Participant",
 				"affiliation": "Institute of History, Polish Academy of Sciences"
 			},
 			{
 				"name": "Vera Breitner",
+				"personId": "vera-breitner",
 				"role": "Participant",
 				"affiliation": "Bielefeld University"
 			},
 			{
 				"name": "Erika Melek Delgado",
+				"personId": "erika-melek-delgado",
 				"role": "Participant",
 				"affiliation": "King's College London"
 			},
 			{
 				"name": "Britta Frede",
+				"personId": "britta-frede",
 				"role": "Participant",
 				"affiliation": "University of Bayreuth"
 			},
 			{
 				"name": "Susan Elizabeth Gagliardi",
+				"personId": "susan-elizabeth-gagliardi",
 				"role": "Participant",
 				"affiliation": "Emory University"
 			},
 			{
 				"name": "Thompson Gyedu Kwarkye",
+				"personId": "thompson-gyedu-kwarkye",
 				"role": "Participant",
 				"affiliation": "University of Galway"
 			},
 			{
 				"name": "Ashleigh Harris",
+				"personId": "ashleigh-harris",
 				"role": "Participant",
 				"affiliation": "African Literary Metadata (ALMEDA)"
 			},
 			{
 				"name": "Albrecht Hofheinz",
+				"personId": "albrecht-hofheinz",
 				"role": "Participant",
 				"affiliation": "University of Oslo"
 			},
 			{
 				"name": "Karen Byera Ijumba",
+				"personId": "karen-byera-ijumba",
 				"role": "Participant",
 				"affiliation": "Open Restitution Africa"
 			},
 			{
 				"name": "Leah Junck",
+				"personId": "leah-junck",
 				"role": "Participant",
 				"affiliation": "Global Center on AI Governance"
 			},
 			{
 				"name": "Fu'ad Lawal",
+				"personId": "fuad-lawal",
 				"role": "Participant",
 				"affiliation": "Archivi.ng"
 			},
 			{
 				"name": "Cassandra Mark-Thiesen",
+				"personId": "cassandra-mark-thiesen",
 				"role": "Participant",
 				"affiliation": "University of Regensburg"
 			},
 			{
 				"name": "Duncan Money",
+				"personId": "duncan-money",
 				"role": "Participant",
 				"affiliation": "Zambia Congress of Trade Unions (ZCTU) project"
 			},
 			{
 				"name": "Irene Mwendwa",
+				"personId": "irene-mwendwa",
 				"role": "Participant",
 				"affiliation": "Sulwe Labs"
 			},
 			{
 				"name": "Augustin Ndione",
+				"personId": "augustin-ndione",
 				"role": "Participant",
 				"affiliation": "Cheikh Anta Diop University"
 			},
 			{
 				"name": "Fallou Ngom",
+				"personId": "fallou-ngom",
 				"role": "Participant",
 				"affiliation": "Boston University"
 			},
 			{
 				"name": "Emmanuel Ngue Um",
+				"personId": "emmanuel-ngue-um",
 				"role": "Participant",
 				"affiliation": "University of Yaounde 1"
 			},
 			{
 				"name": "Janeth David Nzenga",
+				"personId": "janeth-david-nzenga",
 				"role": "Participant",
 				"affiliation": "Ardhi University"
 			},
 			{
 				"name": "Johannes Sibeko",
+				"personId": "johannes-sibeko",
 				"role": "Participant",
 				"affiliation": "Nelson Mandela University"
 			},
 			{
 				"name": "Oumou Sidibe",
+				"personId": "oumou-sidibe",
 				"role": "Participant",
 				"affiliation": "Projet Archives des Femmes du Mali"
 			},
 			{
 				"name": "Kọ́lá Túbọ̀sún",
+				"personId": "kola-tubosun",
 				"role": "Participant",
 				"affiliation": "www.OlongoAfrica.com"
 			},
 			{
 				"name": "Menno van Zaanen",
+				"personId": "menno-van-zaanen",
 				"role": "Participant",
 				"affiliation": "South African Centre for Digital Language Resources"
 			},
 			{
 				"name": "James Yékú",
+				"personId": "james-yeku",
 				"role": "Participant",
 				"affiliation": "University of Kansas"
 			}
@@ -680,11 +795,23 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "workshop-religion-in-higher-educational-institutions-2021",
 		"title": "Workshop “Religion in Higher Educational Institutions in Africa and Beyond: (Re)Conversion, Power, and Authority from a Comparative Perspective”",
 		"authors": [
-			"Abdoulaye Sounaye",
+			{
+				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye"
+			},
 			"Frédérick Madore",
-			"Vincent Favier",
-			"Mahamadou Bello Adamou",
-			"Adéjoké Rafiat Adétòrò"
+			{
+				"name": "Vincent Favier",
+				"personId": "vincent-favier"
+			},
+			{
+				"name": "Mahamadou Bello Adamou",
+				"personId": "mahamadou-bello-adamou"
+			},
+			{
+				"name": "Adéjoké Rafiat Adétòrò",
+				"personId": "adejoke-rafiat-adetoro"
+			}
 		],
 		"date": "16-17 November 2021",
 		"dateISO": "2021-11-16",
@@ -719,6 +846,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"participants": [
 			{
 				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye",
 				"role": "Convenor and Speaker",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			},
@@ -729,121 +857,145 @@ export const communicationSummaries: CommunicationSummary[] = [
 			},
 			{
 				"name": "Vincent Favier",
+				"personId": "vincent-favier",
 				"role": "Convenor and Speaker",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			},
 			{
 				"name": "Mahamadou Bello Adamou",
+				"personId": "mahamadou-bello-adamou",
 				"role": "Convenor and Speaker",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Adéjoké Rafiat Adétòrò",
+				"personId": "adejoke-rafiat-adetoro",
 				"role": "Convenor and Speaker",
 				"affiliation": "Université Laval, Canada"
 			},
 			{
 				"name": "Olubunmi  Olowookere",
+				"personId": "olubunmi-olowookere",
 				"role": "Speaker",
 				"affiliation": "University of Ibadan, Nigeria"
 			},
 			{
 				"name": "Sekou Sala Timbely",
+				"personId": "sekou-sala-timbely",
 				"role": "Speaker",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Ahmadou Hamage Issa",
+				"personId": "ahmadou-hamage-issa",
 				"role": "Chair",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Gerd Spittler",
+				"personId": "gerd-spittler",
 				"role": "Discussant",
 				"affiliation": "University of Bayreuth, Germany"
 			},
 			{
 				"name": "June Temitope Gbadamosi",
+				"personId": "june-temitope-gbadamosi",
 				"role": "Speaker",
 				"affiliation": "University of Ibadan, Nigeria"
 			},
 			{
 				"name": "Ibrahim Bachir Abdoulaye",
+				"personId": "ibrahim-bachir-abdoulaye",
 				"role": "Chair",
 				"affiliation": "University of Bayreuth, Germany"
 			},
 			{
 				"name": "Dorothea E. Schulz",
+				"personId": "dorothea-schulz",
 				"role": "Discussant",
 				"affiliation": "University of Münster, Germany"
 			},
 			{
 				"name": "Mara Leichtman",
+				"personId": "mara-leichtman",
 				"role": "Speaker",
 				"affiliation": "Michigan State University, USA"
 			},
 			{
 				"name": "Ameen Kasim",
+				"personId": "ameen-kasim",
 				"role": "Speaker",
 				"affiliation": "Islamic University College, Ghana"
 			},
 			{
 				"name": "Guy Bucumi",
+				"personId": "guy-bucumi",
 				"role": "Speaker",
 				"affiliation": "Université de Sherbrooke, Canada"
 			},
 			{
 				"name": "Mbaye Lo",
+				"personId": "mbaye-lo",
 				"role": "Speaker",
 				"affiliation": "Duke University, USA"
 			},
 			{
 				"name": "Karen Lauterbach",
+				"personId": "karen-lauterbach",
 				"role": "Speaker",
 				"affiliation": "University of Copenhagen, Denmark"
 			},
 			{
 				"name": "Seyni Mamoudou Ibrahim",
+				"personId": "seyni-mamoudou-ibrahim",
 				"role": "Chair",
 				"affiliation": "University of Bayreuth, Germany"
 			},
 			{
 				"name": "Élodie Apard",
+				"personId": "elodie-apard",
 				"role": "Discussant",
 				"affiliation": "Laboratoire d'Anthropologie Sociale (LAM), France"
 			},
 			{
 				"name": "Nadir Abdulhadi Nasidi",
+				"personId": "nadir-abdulhadi-nasidi",
 				"role": "Speaker",
 				"affiliation": "Ahmadu Bello University, Nigeria"
 			},
 			{
 				"name": "Youssoufou Bakayoko",
+				"personId": "youssoufou-bakayoko",
 				"role": "Speaker",
 				"affiliation": "Université Alassane Ouattara, Côte d'Ivoire"
 			},
 			{
 				"name": "Hamissou Rhissa Achaffert",
+				"personId": "hamissou-rhissa-achaffert",
 				"role": "Chair",
 				"affiliation": "University of Bayreuth, Germany"
 			},
 			{
 				"name": "Benedikt Pontzen",
+				"personId": "benedikt-pontzen",
 				"role": "Discussant",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			},
 			{
 				"name": "Abdoulbaki Djibo",
+				"personId": "abdoulbaki-djibo",
 				"role": "Speaker",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Simbarashe Gukurume",
+				"personId": "simbarashe-gukurume",
 				"role": "Speaker",
 				"affiliation": "Sol Plaatje University, South Africa"
 			},
 			{
 				"name": "Mamadou Yéro Baldé",
+				"personId": "mamadou-yero-balde",
 				"role": "Speaker",
 				"affiliation": "Université Cheikh Anta Diop, Senegal"
 			}
@@ -855,11 +1007,23 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "workshop-religions-on-campus-2022",
 		"title": "Workshop “Religions on Campus: Coexisting Traditions, Reformulating the Secular and Life Projects”",
 		"authors": [
-			"Abdoulaye Sounaye",
+			{
+				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye"
+			},
 			"Frédérick Madore",
-			"Vincent Favier",
-			"Mahamadou Bello Adamou",
-			"Rakiya El Matine"
+			{
+				"name": "Vincent Favier",
+				"personId": "vincent-favier"
+			},
+			{
+				"name": "Mahamadou Bello Adamou",
+				"personId": "mahamadou-bello-adamou"
+			},
+			{
+				"name": "Rakiya El Matine",
+				"personId": "rakiya-el-matine"
+			}
 		],
 		"date": "31 October - 4 November 2022",
 		"dateISO": "2022-10-31",
@@ -895,6 +1059,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"participants": [
 			{
 				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye",
 				"role": "Convenor and Speaker",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			},
@@ -905,66 +1070,79 @@ export const communicationSummaries: CommunicationSummary[] = [
 			},
 			{
 				"name": "Vincent Favier",
+				"personId": "vincent-favier",
 				"role": "Convenor and Speaker",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			},
 			{
 				"name": "Mahamadou Bello Adamou",
+				"personId": "mahamadou-bello-adamou",
 				"role": "Convenor and Speaker",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Thomas Veret",
+				"personId": "thomas-veret",
 				"role": "Speaker",
 				"affiliation": "Université Paris 3 Sorbonne Nouvelle"
 			},
 			{
 				"name": "Agnès Badou",
+				"personId": "agnes-badou",
 				"role": "Discussant",
 				"affiliation": "LASDEL Parakou, Benin"
 			},
 			{
 				"name": "Mounkaila Abdou",
+				"personId": "mounkaila-abdou",
 				"role": "Speaker",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Abdoulbaki Djibo",
+				"personId": "abdoulbaki-djibo",
 				"role": "Speaker",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Jean Pierre Olivier de Sardan",
+				"personId": "jean-pierre-olivier-de-sardan",
 				"role": "Speaker",
 				"affiliation": "LASDEL, Niger"
 			},
 			{
 				"name": "Amadou Issoufou",
+				"personId": "amadou-issoufou",
 				"role": "Speaker",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Muhammad Yakasai",
+				"personId": "muhammad-yakasai",
 				"role": "Speaker",
 				"affiliation": "Humboldt University, Germany"
 			},
 			{
 				"name": "Nadir A. Nasidi",
+				"personId": "nadir-abdulhadi-nasidi",
 				"role": "Speaker",
 				"affiliation": "Ahmadu Bello University, Nigeria"
 			},
 			{
 				"name": "Oumarou Moussa",
+				"personId": "oumarou-moussa",
 				"role": "Speaker",
 				"affiliation": "Université Abdou Moumouni, Niger"
 			},
 			{
 				"name": "Sekou Sala Timbely",
+				"personId": "sekou-sala-timbely",
 				"role": "Speaker",
 				"affiliation": "Université de Ségou, Mali"
 			},
 			{
 				"name": "Katrin Bromber",
+				"personId": "katrin-bromber",
 				"role": "Speaker",
 				"affiliation": "Leibniz-Zentrum Moderner Orient"
 			}
@@ -1006,6 +1184,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Ashley E. Leinweber",
+						"personId": "ashley-e-leinweber",
 						"affiliation": "Missouri State University"
 					}
 				],
@@ -1016,6 +1195,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Dorothea E. Schulz",
+						"personId": "dorothea-schulz",
 						"affiliation": "University of Münster"
 					}
 				],
@@ -1026,6 +1206,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Katrin Langewiesche",
+						"personId": "katrin-langewiesche",
 						"affiliation": "Johannes Gutenberg University of Mainz"
 					}
 				],
@@ -1045,6 +1226,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"participants": [
 			{
 				"name": "John H. Hanson",
+				"personId": "john-h-hanson",
 				"role": "Discussant",
 				"affiliation": "Indiana University-Bloomington"
 			}
@@ -1091,26 +1273,31 @@ export const communicationSummaries: CommunicationSummary[] = [
 			},
 			{
 				"name": "Ebenezer Obadare",
+				"personId": "ebenezer-obadare",
 				"role": "Critic",
 				"affiliation": "Council on Foreign Relations"
 			},
 			{
 				"name": "Marius Kothor",
+				"personId": "marius-kothor",
 				"role": "Critic",
 				"affiliation": "Harvard University"
 			},
 			{
 				"name": "Benjamin N. Lawrance",
+				"personId": "benjamin-n-lawrance",
 				"role": "Critic",
 				"affiliation": "University of Arizona"
 			},
 			{
 				"name": "Leonardo A. Villalón",
+				"personId": "leonardo-a-villalon",
 				"role": "Critic",
 				"affiliation": "University of Florida"
 			},
 			{
 				"name": "K. D. Thompson",
+				"personId": "k-d-thompson",
 				"role": "Chair",
 				"affiliation": "University of Wisconsin-Madison"
 			}
@@ -1123,7 +1310,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"title": "Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives",
 		"authors": [
 			"Frédérick Madore",
-			"Vincent Hiribarren"
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			}
 		],
 		"date": "26 June 2025",
 		"dateISO": "2025-06-26",
@@ -1157,6 +1347,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Ashleigh Harris",
+						"personId": "ashleigh-harris",
 						"affiliation": "Uppsala University"
 					}
 				],
@@ -1167,10 +1358,12 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Britta Frede",
+						"personId": "britta-frede",
 						"affiliation": "University of Bayreuth"
 					},
 					{
 						"name": "Rüdiger Seesemann",
+						"personId": "rudiger-seesemann",
 						"affiliation": "University of Bayreuth"
 					}
 				],
@@ -1181,10 +1374,12 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Jessica R. Holland",
+						"personId": "jessica-r-holland",
 						"affiliation": "British School at Athens"
 					},
 					{
 						"name": "David Maina",
+						"personId": "david-maina",
 						"affiliation": "British Institute of Eastern Africa"
 					}
 				],
@@ -1195,10 +1390,12 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Menno van Zaanen",
+						"personId": "menno-van-zaanen",
 						"affiliation": "South African Centre for Digital Language Resources"
 					},
 					{
 						"name": "Jessica Mabaso",
+						"personId": "jessica-mabaso",
 						"affiliation": "South African Centre for Digital Language Resources"
 					}
 				],
@@ -1209,6 +1406,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Albrecht Hofheinz",
+						"personId": "albrecht-hofheinz",
 						"affiliation": "University of Oslo"
 					}
 				],
@@ -1219,6 +1417,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Susan Elizabeth Gagliardi",
+						"personId": "susan-elizabeth-gagliardi",
 						"affiliation": "Emory University"
 					}
 				],
@@ -1229,6 +1428,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Vincent Hiribarren",
+						"personId": "vincent-hiribarren",
 						"affiliation": "King's College London"
 					},
 					{
@@ -1246,7 +1446,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "humanites-numeriques-dh-ia-etudes-africaines-reaf-2026",
 		"title": "Humanités numériques (DH) et IA dans les études africaines",
 		"authors": [
-			"Vincent Hiribarren",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
 			"Frédérick Madore"
 		],
 		"date": "30 juin 2026",
@@ -1280,6 +1483,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Mbaye Diouf",
+						"personId": "mbaye-diouf",
 						"affiliation": "Université Cheikh Anta Diop de Dakar"
 					}
 				],
@@ -1290,6 +1494,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Promise Dodzi Kpoglu",
+						"personId": "promise-dodzi-kpoglu",
 						"affiliation": "LLACAN, Centre national de la recherche scientifique"
 					}
 				],
@@ -1300,6 +1505,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Racine Oumar N'Diaye",
+						"personId": "racine-oumar-n-diaye",
 						"affiliation": "Université de Nouadhibou"
 					}
 				],
@@ -1310,10 +1516,12 @@ export const communicationSummaries: CommunicationSummary[] = [
 				"authors": [
 					{
 						"name": "Naomi Bell",
+						"personId": "naomi-bell",
 						"affiliation": "Institut des Mondes Africains (IMAF)"
 					},
 					{
 						"name": "Stéphane Lamassé",
+						"personId": "stephane-lamasse",
 						"affiliation": "LAMOP, PIREH, Université Paris 1 Panthéon-Sorbonne"
 					}
 				],
@@ -1328,6 +1536,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 					},
 					{
 						"name": "Vincent Hiribarren",
+						"personId": "vincent-hiribarren",
 						"affiliation": "King's College London"
 					}
 				],
@@ -1452,12 +1661,27 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "beyond-keywords-entity-linking-cikm-2026",
 		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
 		"authors": [
-			"Jiayu Yang",
-			"Durgesh Nandini",
-			"Mirco Schönfeld",
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			},
 			"Frédérick Madore",
-			"Neeraj Thandayan Viswajith",
-			"Oliver Baumann"
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			}
 		],
 		"date": "9 November 2026",
 		"dateISO": "2026-11-09",
@@ -1672,7 +1896,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "historian-vs-ai-ecas-2025",
 		"title": "Historian vs AI: who reads and analyses archives best?",
 		"authors": [
-			"Vincent Hiribarren",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
 			"Frédérick Madore"
 		],
 		"date": "26 June 2025",
@@ -1859,7 +2086,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"title": "Islam's \"Peripheries\": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 		"authors": [
 			"Frédérick Madore",
-			"Aksana Ismailbekova"
+			{
+				"name": "Aksana Ismailbekova",
+				"personId": "aksana-ismailbekova"
+			}
 		],
 		"date": "4 March 2026",
 		"dateISO": "2026-03-04",
@@ -1897,7 +2127,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "islam-university-campuses-cote-divoire-2019",
 		"title": "Islam on University Campuses in Côte d'Ivoire since the 1970s: 'Muslim Intellectuals' and Francophone Salafism",
 		"authors": [
-			"Issouf Binaté",
+			{
+				"name": "Issouf Binaté",
+				"personId": "issouf-binate"
+			},
 			"Frédérick Madore"
 		],
 		"date": "12 June 2019",
@@ -2040,7 +2273,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "precheurs-precheuses-burkina-faso-2013",
 		"title": "Prêcheurs et prêcheuses au Burkina Faso: regards croisés sur leurs stratégies de communication religieuse depuis 1990",
 		"authors": [
-			"Muriel Gomez-Perez",
+			{
+				"name": "Muriel Gomez-Perez",
+				"personId": "muriel-gomez-perez"
+			},
 			"Frédérick Madore"
 		],
 		"date": "7 May 2013",
@@ -2074,7 +2310,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"title": "Publishing the Islam Burkina Faso Collection: Collaboration for Digital Scholarship",
 		"authors": [
 			"Frédérick Madore",
-			"Perry Collins"
+			{
+				"name": "Perry Collins",
+				"personId": "perry-collins"
+			}
 		],
 		"date": "15 September 2022",
 		"dateISO": "2022-09-15",
@@ -2150,7 +2389,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "retour-note-synthese-dh-ia-reaf-2026",
 		"title": "Retour sur une note de synthèse analysant la relation entre Humanités Numériques, l’IA et les Études Africaines (Hanovre, février 2026)",
 		"authors": [
-			"Vincent Hiribarren",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
 			"Frédérick Madore"
 		],
 		"date": "30 June 2026",
@@ -2186,9 +2428,15 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "rue-islam-associatif-enjeux-citoyens-2014",
 		"title": "Rue, islam associatif et enjeux citoyens: retour sur des orientations récentes au Sénégal, au Burkina Faso et en Côte d'Ivoire",
 		"authors": [
-			"Muriel Gomez-Perez",
+			{
+				"name": "Muriel Gomez-Perez",
+				"personId": "muriel-gomez-perez"
+			},
 			"Frédérick Madore",
-			"Mathias Boukary Savadogo"
+			{
+				"name": "Mathias Boukary Savadogo",
+				"personId": "mathias-boukary-savadogo"
+			}
 		],
 		"date": "29 October 2014",
 		"dateISO": "2014-10-29",
@@ -2298,7 +2546,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "zmo-kitchen-talks-ai-islamic-african-studies",
 		"title": "Artificial Intelligence (AI) in African and Islamic Studies",
 		"authors": [
-			"Elisa Nobel-Dilaty",
+			{
+				"name": "Elisa Nobel-Dilaty",
+				"personId": "elisa-nobel-dilaty"
+			},
 			"Frédérick Madore"
 		],
 		"date": "11 December 2025",
@@ -2361,11 +2612,26 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"title": "Responsible AI Access to Research Repositories: An MCP Server for African Studies Data",
 		"authors": [
 			"Frédérick Madore",
-			"Oliver Baumann",
-			"Durgesh Nandini",
-			"Neeraj Thandayan Viswajith",
-			"Jiayu Yang",
-			"Mirco Schönfeld"
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
 		],
 		"date": "25 September 2026",
 		"dateISO": "2026-09-25",
@@ -2438,6 +2704,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"participants": [
 			{
 				"name": "Rahina Muazu",
+				"personId": "rahina-muazu",
 				"role": "Moderator, Panel I: African History"
 			},
 			{
@@ -2447,30 +2714,36 @@ export const communicationSummaries: CommunicationSummary[] = [
 			},
 			{
 				"name": "Karen Ijumba",
+				"personId": "karen-byera-ijumba",
 				"role": "Panellist, Panel I: African History",
 				"affiliation": "Open Restitution"
 			},
 			{
 				"name": "Fu’ad Lawal",
+				"personId": "fuad-lawal",
 				"role": "Panellist, Panel I: African History",
 				"affiliation": "Founder, Archivi.ng"
 			},
 			{
 				"name": "Martha Ndakalako",
+				"personId": "martha-ndakalako",
 				"role": "Moderator, Panel II: African Writers Discuss AI"
 			},
 			{
 				"name": "Mubanga Kalimamukwento",
+				"personId": "mubanga-kalimamukwento",
 				"role": "Panellist, Panel II: African Writers Discuss AI",
 				"affiliation": "Author of The Shipikisha Club"
 			},
 			{
 				"name": "Ukamaka Olisakwe",
+				"personId": "ukamaka-olisakwe",
 				"role": "Panellist, Panel II: African Writers Discuss AI",
 				"affiliation": "Author of Don’t Answer When They Call Your Name"
 			},
 			{
 				"name": "Munyao Kilolo",
+				"personId": "munyao-kilolo",
 				"role": "Panellist, Panel II: African Writers Discuss AI",
 				"affiliation": "Translator and Editor at Ituĩka"
 			}
@@ -3105,7 +3378,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "islam-peripheries-dh-ai-west-africa-central-asia-2026",
 		"title": "Islam's \"Peripheries\": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 		"authors": [
-			"Aksana Ismailbekova",
+			{
+				"name": "Aksana Ismailbekova",
+				"personId": "aksana-ismailbekova"
+			},
 			"Frédérick Madore"
 		],
 		"date": "29 June 2026",
@@ -3515,7 +3791,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"title": "Repenser la catégorisation religieuse à partir du Bénin, terre du vodun",
 		"authors": [
 			"Frédérick Madore",
-			"Fiacre Anato"
+			{
+				"name": "Fiacre Anato",
+				"personId": "codjo-fiacre-anato"
+			}
 		],
 		"date": "5 December 2024",
 		"dateISO": "2024-12-05",

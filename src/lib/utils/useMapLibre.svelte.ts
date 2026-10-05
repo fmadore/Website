@@ -30,6 +30,8 @@
  * - `onDataChange` runs untracked whenever `watchData()`'s value changes, so
  *   theme-only changes (e.g. resolved colors read inside the callback) do NOT
  *   retrigger it — recoloring happens via the `onStyleReady` path instead.
+ *   A change made while the map is still loading tiles runs at the next
+ *   `idle`; only the latest pending change runs.
  */
 
 import { untrack } from 'svelte';
@@ -228,12 +230,27 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 
 	// Data effect: tracks only watchData()'s value; the callback runs untracked
 	// so colors/theme reads inside it don't create extra dependencies.
+	//
+	// `isStyleLoaded()` is false while tiles stream in or a just-removed source
+	// settles: after every fitBounds, and on the frame after a choropleth is
+	// cleared. A change that lands then is deferred to the next `idle`, never
+	// dropped. Dropping it left the previous selection's markers on the map
+	// while the table beside it showed the new one. A newer change replaces the
+	// pending one, and the callback reads the data current when it runs.
 	$effect(() => {
 		watchData?.();
 		const m = map;
 		const gl = maplibregl;
-		if (!m || !gl || !isMapLoaded || !m.isStyleLoaded()) return;
-		untrack(() => onDataChange?.(m, gl));
+		if (!m || !gl || !isMapLoaded) return;
+		const apply = () => untrack(() => onDataChange?.(m, gl));
+		if (m.isStyleLoaded()) {
+			apply();
+			return;
+		}
+		m.once('idle', apply);
+		return () => {
+			m.off('idle', apply);
+		};
 	});
 
 	return {

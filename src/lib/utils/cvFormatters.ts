@@ -1,4 +1,6 @@
 import type { Publication } from '$lib/types';
+import type { Contributor } from '$lib/types/contributor';
+import { getContributorNames } from '$lib/utils/contributor';
 import type { AffiliationPeriod } from '$lib/types/affiliation';
 import { author as siteAuthor } from '$lib/data/siteConfig';
 import { formatAuthorsWithEtAl, joinNames, splitNames } from '$lib/utils/nameUtils';
@@ -25,14 +27,15 @@ export function getCVDisplayYear(pub: Pick<Publication, 'date' | 'year'>): strin
  * "A, B, C et al." rather than running a full page of names down the ledger;
  * the site owner is always held in view, however late they sign.
  */
-export function formatCVAuthorList(authorsInput: string[] | string | undefined): string {
+export function formatCVAuthorList(
+	authorsInput: readonly Contributor[] | string | undefined
+): string {
 	if (!authorsInput) return '';
 
-	const authorsArray = Array.isArray(authorsInput)
-		? authorsInput
-		: typeof authorsInput === 'string'
+	const authorsArray =
+		typeof authorsInput === 'string'
 			? authorsInput.split(' and ')
-			: [];
+			: getContributorNames(authorsInput);
 
 	const numAuthors = authorsArray.length;
 	if (numAuthors === 0) return '';

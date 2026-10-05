@@ -7,7 +7,10 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "evolutions-nouvelles-formes-islam-afrique-ouest",
 		"title": "Évolutions et nouvelles formes de l'islam en Afrique de l'Ouest: vers une radicalisation?",
 		"authors": [
-			"CIRAM"
+			{
+				"name": "CIRAM",
+				"kind": "organisation"
+			}
 		],
 		"date": "24 March 2016",
 		"dateISO": "2016-03-24",
@@ -34,9 +37,18 @@ export const cvCommunications: CvCommunication[] = [
 		"title": "Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices",
 		"authors": [
 			"Frédérick Madore",
-			"Vincent Hiribarren",
-			"Emmanuel Ngue Um",
-			"Menno van Zaanen"
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
+			{
+				"name": "Emmanuel Ngue Um",
+				"personId": "emmanuel-ngue-um"
+			},
+			{
+				"name": "Menno van Zaanen",
+				"personId": "menno-van-zaanen"
+			}
 		],
 		"date": "21-24 September 2026",
 		"dateISO": "2026-09-21",
@@ -49,7 +61,10 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "university-campuses-africa-beyond",
 		"title": "University Campuses in Africa and Beyond: Training Grounds, Moral Spaces and Political Arenas",
 		"authors": [
-			"Abdoulaye Sounaye",
+			{
+				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye"
+			},
 			"Frédérick Madore"
 		],
 		"date": "6-8 September 2023",
@@ -64,7 +79,10 @@ export const cvCommunications: CvCommunication[] = [
 		"title": "Charting New Territory: Digital Humanities and AI in African Studies",
 		"authors": [
 			"Frédérick Madore",
-			"Vincent Hiribarren"
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			}
 		],
 		"date": "18-20 February 2026",
 		"dateISO": "2026-02-18",
@@ -77,11 +95,23 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "workshop-religion-in-higher-educational-institutions-2021",
 		"title": "Workshop “Religion in Higher Educational Institutions in Africa and Beyond: (Re)Conversion, Power, and Authority from a Comparative Perspective”",
 		"authors": [
-			"Abdoulaye Sounaye",
+			{
+				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye"
+			},
 			"Frédérick Madore",
-			"Vincent Favier",
-			"Mahamadou Bello Adamou",
-			"Adéjoké Rafiat Adétòrò"
+			{
+				"name": "Vincent Favier",
+				"personId": "vincent-favier"
+			},
+			{
+				"name": "Mahamadou Bello Adamou",
+				"personId": "mahamadou-bello-adamou"
+			},
+			{
+				"name": "Adéjoké Rafiat Adétòrò",
+				"personId": "adejoke-rafiat-adetoro"
+			}
 		],
 		"date": "16-17 November 2021",
 		"dateISO": "2021-11-16",
@@ -94,11 +124,23 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "workshop-religions-on-campus-2022",
 		"title": "Workshop “Religions on Campus: Coexisting Traditions, Reformulating the Secular and Life Projects”",
 		"authors": [
-			"Abdoulaye Sounaye",
+			{
+				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye"
+			},
 			"Frédérick Madore",
-			"Vincent Favier",
-			"Mahamadou Bello Adamou",
-			"Rakiya El Matine"
+			{
+				"name": "Vincent Favier",
+				"personId": "vincent-favier"
+			},
+			{
+				"name": "Mahamadou Bello Adamou",
+				"personId": "mahamadou-bello-adamou"
+			},
+			{
+				"name": "Rakiya El Matine",
+				"personId": "rakiya-el-matine"
+			}
 		],
 		"date": "31 October - 4 November 2022",
 		"dateISO": "2022-10-31",
@@ -136,7 +178,10 @@ export const cvCommunications: CvCommunication[] = [
 		"title": "Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives",
 		"authors": [
 			"Frédérick Madore",
-			"Vincent Hiribarren"
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			}
 		],
 		"date": "26 June 2025",
 		"dateISO": "2025-06-26",
@@ -148,7 +193,10 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "humanites-numeriques-dh-ia-etudes-africaines-reaf-2026",
 		"title": "Humanités numériques (DH) et IA dans les études africaines",
 		"authors": [
-			"Vincent Hiribarren",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
 			"Frédérick Madore"
 		],
 		"date": "30 juin 2026",
@@ -201,12 +249,27 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "beyond-keywords-entity-linking-cikm-2026",
 		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
 		"authors": [
-			"Jiayu Yang",
-			"Durgesh Nandini",
-			"Mirco Schönfeld",
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			},
 			"Frédérick Madore",
-			"Neeraj Thandayan Viswajith",
-			"Oliver Baumann"
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			}
 		],
 		"date": "9 November 2026",
 		"dateISO": "2026-11-09",
@@ -284,7 +347,10 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "historian-vs-ai-ecas-2025",
 		"title": "Historian vs AI: who reads and analyses archives best?",
 		"authors": [
-			"Vincent Hiribarren",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
 			"Frédérick Madore"
 		],
 		"date": "26 June 2025",
@@ -351,7 +417,10 @@ export const cvCommunications: CvCommunication[] = [
 		"title": "Islam's \"Peripheries\": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 		"authors": [
 			"Frédérick Madore",
-			"Aksana Ismailbekova"
+			{
+				"name": "Aksana Ismailbekova",
+				"personId": "aksana-ismailbekova"
+			}
 		],
 		"date": "4 March 2026",
 		"dateISO": "2026-03-04",
@@ -364,7 +433,10 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "islam-university-campuses-cote-divoire-2019",
 		"title": "Islam on University Campuses in Côte d'Ivoire since the 1970s: 'Muslim Intellectuals' and Francophone Salafism",
 		"authors": [
-			"Issouf Binaté",
+			{
+				"name": "Issouf Binaté",
+				"personId": "issouf-binate"
+			},
 			"Frédérick Madore"
 		],
 		"date": "12 June 2019",
@@ -413,7 +485,10 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "precheurs-precheuses-burkina-faso-2013",
 		"title": "Prêcheurs et prêcheuses au Burkina Faso: regards croisés sur leurs stratégies de communication religieuse depuis 1990",
 		"authors": [
-			"Muriel Gomez-Perez",
+			{
+				"name": "Muriel Gomez-Perez",
+				"personId": "muriel-gomez-perez"
+			},
 			"Frédérick Madore"
 		],
 		"date": "7 May 2013",
@@ -427,7 +502,10 @@ export const cvCommunications: CvCommunication[] = [
 		"title": "Publishing the Islam Burkina Faso Collection: Collaboration for Digital Scholarship",
 		"authors": [
 			"Frédérick Madore",
-			"Perry Collins"
+			{
+				"name": "Perry Collins",
+				"personId": "perry-collins"
+			}
 		],
 		"date": "15 September 2022",
 		"dateISO": "2022-09-15",
@@ -452,7 +530,10 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "retour-note-synthese-dh-ia-reaf-2026",
 		"title": "Retour sur une note de synthèse analysant la relation entre Humanités Numériques, l’IA et les Études Africaines (Hanovre, février 2026)",
 		"authors": [
-			"Vincent Hiribarren",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
 			"Frédérick Madore"
 		],
 		"date": "30 June 2026",
@@ -466,9 +547,15 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "rue-islam-associatif-enjeux-citoyens-2014",
 		"title": "Rue, islam associatif et enjeux citoyens: retour sur des orientations récentes au Sénégal, au Burkina Faso et en Côte d'Ivoire",
 		"authors": [
-			"Muriel Gomez-Perez",
+			{
+				"name": "Muriel Gomez-Perez",
+				"personId": "muriel-gomez-perez"
+			},
 			"Frédérick Madore",
-			"Mathias Boukary Savadogo"
+			{
+				"name": "Mathias Boukary Savadogo",
+				"personId": "mathias-boukary-savadogo"
+			}
 		],
 		"date": "29 October 2014",
 		"dateISO": "2014-10-29",
@@ -505,7 +592,10 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "zmo-kitchen-talks-ai-islamic-african-studies",
 		"title": "Artificial Intelligence (AI) in African and Islamic Studies",
 		"authors": [
-			"Elisa Nobel-Dilaty",
+			{
+				"name": "Elisa Nobel-Dilaty",
+				"personId": "elisa-nobel-dilaty"
+			},
 			"Frédérick Madore"
 		],
 		"date": "11 December 2025",
@@ -521,11 +611,26 @@ export const cvCommunications: CvCommunication[] = [
 		"title": "Responsible AI Access to Research Repositories: An MCP Server for African Studies Data",
 		"authors": [
 			"Frédérick Madore",
-			"Oliver Baumann",
-			"Durgesh Nandini",
-			"Neeraj Thandayan Viswajith",
-			"Jiayu Yang",
-			"Mirco Schönfeld"
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
 		],
 		"date": "25 September 2026",
 		"dateISO": "2026-09-25",
@@ -774,7 +879,10 @@ export const cvCommunications: CvCommunication[] = [
 		"id": "islam-peripheries-dh-ai-west-africa-central-asia-2026",
 		"title": "Islam's \"Peripheries\": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 		"authors": [
-			"Aksana Ismailbekova",
+			{
+				"name": "Aksana Ismailbekova",
+				"personId": "aksana-ismailbekova"
+			},
 			"Frédérick Madore"
 		],
 		"date": "29 June 2026",
@@ -925,7 +1033,10 @@ export const cvCommunications: CvCommunication[] = [
 		"title": "Repenser la catégorisation religieuse à partir du Bénin, terre du vodun",
 		"authors": [
 			"Frédérick Madore",
-			"Fiacre Anato"
+			{
+				"name": "Fiacre Anato",
+				"personId": "codjo-fiacre-anato"
+			}
 		],
 		"date": "5 December 2024",
 		"dateISO": "2024-12-05",

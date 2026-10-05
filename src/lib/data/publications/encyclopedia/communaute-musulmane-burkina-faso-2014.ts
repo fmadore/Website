@@ -4,7 +4,7 @@ export const communauteMusulmaneBurkinaFaso: Publication = {
 	id: 'communaute-musulmane-burkina-faso-2014',
 	type: 'encyclopedia',
 	title: 'Communauté Musulmane du Burkina Faso',
-	authors: ['Frédérick Madore', 'Muriel Gomez-Perez'],
+	authors: ['Frédérick Madore', { name: 'Muriel Gomez-Perez', personId: 'muriel-gomez-perez' }],
 	date: '2014',
 	dateISO: '2014-09-01',
 	year: 2014,

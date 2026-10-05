@@ -182,6 +182,39 @@ describe('buildPublicationCollaborationNetwork', () => {
 		expect(network.nodes.filter((n) => n.id === CENTER)).toHaveLength(1);
 	});
 
+	it('preserves the network when authors acquire person links across records', () => {
+		const legacy = [
+			pub({ title: 'First', authors: [CENTER, 'Ann Ba', 'Bob Di'] }),
+			pub({ title: 'Second', authors: [CENTER, 'Ann Ba'] })
+		];
+		const linked = [
+			pub({
+				title: 'First',
+				authors: [
+					{ name: CENTER, personId: 'frederick-madore' },
+					'Ann Ba',
+					{ name: 'Bob Di', personId: 'bob-di' }
+				]
+			}),
+			pub({ title: 'Second', authors: [CENTER, { name: 'Ann Ba', personId: 'ann-ba' }] })
+		];
+		expect(buildPublicationCollaborationNetwork(linked, CENTER)).toEqual(
+			buildPublicationCollaborationNetwork(legacy, CENTER)
+		);
+	});
+
+	it('excludes corporate credits from the network of people', () => {
+		const network = buildPublicationCollaborationNetwork(
+			[
+				pub({
+					authors: [CENTER, { name: 'CIRAM', kind: 'organisation' }, 'Ann Ba']
+				})
+			],
+			CENTER
+		);
+		expect(network.nodes.map((n) => n.id)).toEqual([CENTER, 'Ann Ba']);
+	});
+
 	it('treats editors of non-chapter works and preface authors as direct', () => {
 		const network = buildPublicationCollaborationNetwork(
 			[pub({ type: 'book', editors: 'Ed One and Ed Two', prefacedBy: 'Pref Author' })],
@@ -263,6 +296,34 @@ describe('buildCommunicationCoPresenterNetwork', () => {
 		expect(node(network, 'Ann Ba')?.weight).toBe(1);
 		// Everyone on the same communication is peer-linked.
 		expect(edge(network, 'Carl Di', 'Dana Ek', 'peer')).toBeDefined();
+	});
+
+	it('deduplicates linked co-presenters also credited as paper authors and participants', () => {
+		const network = buildCommunicationCoPresenterNetwork(
+			[
+				comm({
+					authors: [
+						{ name: CENTER, personId: 'frederick-madore' },
+						'Ann Ba',
+						{ name: 'Carl Di', personId: 'carl-di' }
+					],
+					participants: [{ name: 'Ann Ba', personId: 'ann-ba' }],
+					papers: [{ title: 'Paper', authors: [{ name: 'Carl Di', personId: 'carl-di' }] }]
+				})
+			],
+			CENTER
+		);
+		expect(network.nodes.map((n) => n.id)).toEqual([CENTER, 'Ann Ba', 'Carl Di']);
+		expect(node(network, 'Carl Di')?.weight).toBe(1);
+		expect(edge(network, 'Ann Ba', 'Carl Di', 'peer')?.weight).toBe(1);
+	});
+
+	it('excludes corporate bylines from the co-presenter network', () => {
+		const network = buildCommunicationCoPresenterNetwork(
+			[comm({ authors: [CENTER, { name: 'CIRAM', kind: 'organisation' }, 'Ann Ba'] })],
+			CENTER
+		);
+		expect(network.nodes.map((n) => n.id)).toEqual([CENTER, 'Ann Ba']);
 	});
 });
 

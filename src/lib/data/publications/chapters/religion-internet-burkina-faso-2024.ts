@@ -5,7 +5,7 @@ export const religionInternetBurkinaFaso: Publication = {
 	type: 'chapter',
 	title:
 		'Religion on the Internet and New Information and Communication Technologies in Burkina Faso',
-	authors: ['Frédérick Madore', 'Louis Audet Gosselin'],
+	authors: ['Frédérick Madore', { name: 'Louis Audet Gosselin', personId: 'louis-audet-gosselin' }],
 	date: '2024',
 	dateISO: '2024',
 	year: 2024,

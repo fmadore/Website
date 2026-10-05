@@ -21,6 +21,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { getContributorNames } from '../src/lib/utils/contributor.ts';
 import {
 	BEGIN,
 	END,
@@ -146,7 +147,7 @@ function render(p, matches) {
 	const where = venue(p);
 	if (where) info.push(`> ${where}`);
 	if (p.publisher && !where.includes(p.publisher)) info.push(`> ${p.publisher}`);
-	if (p.authors?.length) info.push(`> By: ${p.authors.join(', ')}`);
+	if (p.authors?.length) info.push(`> By: ${getContributorNames(p.authors).join(', ')}`);
 	if (p.language) info.push(`> Language: ${p.language}`);
 	if (matches.project) info.push(`> Project: ${matches.project}`);
 	if (matches.zotero) info.push(`> Zotero: [[${matches.zotero}]]`);
@@ -211,7 +212,7 @@ function seedFrontmatter(p, matches) {
 	lines.push(`title: ${yamlStr(p.title)}`);
 	if (p.authors?.length) {
 		lines.push('authors:');
-		for (const a of p.authors) lines.push(`  - ${yamlStr(a)}`);
+		for (const a of getContributorNames(p.authors)) lines.push(`  - ${yamlStr(a)}`);
 	}
 	lines.push(`year: ${p.year}`);
 	if (p.dateISO) lines.push(`date: ${p.dateISO}`);

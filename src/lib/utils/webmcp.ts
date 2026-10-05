@@ -14,6 +14,7 @@
  */
 
 import { author, website } from '$lib/data/siteConfig';
+import { getContributorNames } from '$lib/utils/contributor';
 import { matchesSearchTerms } from '$lib/utils/searchText';
 
 // ---------------------------------------------------------------------------
@@ -117,7 +118,7 @@ function buildTools(): ToolDescriptor[] {
 						if (query) {
 							const fields = [
 								pub.title,
-								pub.authors?.join(' ') ?? '',
+								getContributorNames(pub.authors).join(' '),
 								pub.abstract ?? '',
 								pub.tags?.join(' ') ?? ''
 							];
@@ -131,7 +132,7 @@ function buildTools(): ToolDescriptor[] {
 						title: pub.title,
 						type: pub.type,
 						year: pub.year,
-						authors: pub.authors,
+						authors: getContributorNames(pub.authors),
 						url: `${SITE}/publications/${pub.id}`,
 						doi: pub.doi
 					}));
@@ -165,7 +166,7 @@ function buildTools(): ToolDescriptor[] {
 					id: pub.id,
 					title: pub.title,
 					type: pub.type,
-					authors: pub.authors,
+					authors: getContributorNames(pub.authors),
 					year: pub.year,
 					date: pub.date,
 					language: pub.language,
@@ -286,7 +287,7 @@ function buildTools(): ToolDescriptor[] {
 					id: comm.id,
 					title: comm.title,
 					type: comm.type,
-					authors: comm.authors,
+					authors: getContributorNames(comm.authors),
 					year: comm.year,
 					date: comm.date,
 					conference: comm.conference,

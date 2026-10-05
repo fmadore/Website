@@ -20,13 +20,14 @@
  */
 import { joinNames } from './nameUtils';
 import { typesetQuotes } from './typesetQuotes';
+import type { Contributor } from '$lib/types/contributor';
 
 /**
  * Formats a name or list of names as a display byline: "A", "A and B",
  * "A, B and C". Returns an empty string for empty input, so a caller can
  * gate on the result directly.
  */
-export function formatByline(names: string | string[] | undefined | null): string {
+export function formatByline(names: string | readonly Contributor[] | undefined | null): string {
 	if (!names) return '';
 	if (typeof names === 'string') return typesetQuotes(names);
 	if (names.length === 0) return '';

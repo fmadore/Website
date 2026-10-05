@@ -1,4 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
+import { getContributorNames } from '$lib/utils/contributor';
 import { publicationsByDate } from '$lib/data/publications/index';
 import type { Publication, TableOfContentsEntry } from '$lib/types/publication';
 import {
@@ -22,7 +23,7 @@ const serialise = (pub: Publication) =>
 		url: absoluteUrl(`/publications/${pub.id}`),
 		type: pub.type,
 		title: pub.title,
-		authors: pub.authors,
+		authors: getContributorNames(pub.authors),
 		date: pub.date,
 		dateISO: pub.dateISO,
 		year: pub.year,

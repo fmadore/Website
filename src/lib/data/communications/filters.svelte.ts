@@ -15,10 +15,13 @@ import {
 } from './summaries';
 import { author as siteAuthor } from '$lib/data/siteConfig';
 import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
+import { getContributorNames } from '$lib/utils/contributor';
 
 // --- Computed unique values ---
 
-const allCoAuthors = Array.from(new Set(allCommunications.flatMap((comm) => comm.authors || [])))
+const allCoAuthors = Array.from(
+	new Set(allCommunications.flatMap((comm) => getContributorNames(comm.authors)))
+)
 	.filter((author) => author !== siteAuthor.name)
 	.sort();
 
@@ -44,7 +47,9 @@ const allProjects = Array.from(
 
 const tagFrequency = countOccurrences(allCommunications.map((comm) => comm.tags ?? []));
 const coAuthorFrequency = countOccurrences(
-	allCommunications.map((comm) => (comm.authors ?? []).filter((a) => a !== siteAuthor.name))
+	allCommunications.map((comm) =>
+		getContributorNames(comm.authors).filter((a) => a !== siteAuthor.name)
+	)
 );
 
 // --- Filter System ---
@@ -82,11 +87,11 @@ export const communicationFilters = new EntityFilterSystem<CommunicationSummary>
 		},
 		authors: {
 			match: (comm: CommunicationSummary, values: string[]) => {
-				const authors = comm.authors || [];
+				const authors = getContributorNames(comm.authors);
 				return authors.some((a) => a !== siteAuthor.name && values.includes(a));
 			},
 			countExtractor: (comm: CommunicationSummary) =>
-				comm.authors?.filter((a) => a !== siteAuthor.name)
+				getContributorNames(comm.authors).filter((a) => a !== siteAuthor.name)
 		},
 		countries: {
 			match: (comm: CommunicationSummary, values: string[]) =>

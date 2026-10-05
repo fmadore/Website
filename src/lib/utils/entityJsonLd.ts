@@ -7,11 +7,13 @@
  */
 import type { Activity } from '$lib/types/activity';
 import type { Publication } from '$lib/types/publication';
+import type { Contributor } from '$lib/types/contributor';
 import type { Communication } from '$lib/types/communication';
 import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 import type { ReviewWork } from '$lib/types';
 import type {
 	PublicationJsonLd,
+	JsonLdAgent,
 	JsonLdPerson,
 	BookJsonLd,
 	ArticleJsonLd,
@@ -49,12 +51,14 @@ function siteAuthorIdentity(): JsonLdPerson {
 }
 
 /** Link only the site owner; preserve every other person and the original order. */
-function withSiteAuthorIdentity(persons: JsonLdPerson[]): JsonLdPerson[] {
-	return persons.map((person) => (person.name === author.name ? siteAuthorIdentity() : person));
+function withSiteAuthorIdentity<T extends JsonLdAgent>(agents: T[]): (T | JsonLdPerson)[] {
+	return agents.map((agent) =>
+		agent['@type'] === 'Person' && agent.name === author.name ? siteAuthorIdentity() : agent
+	);
 }
 
 /** Format a complete contributor list without collapsing co-authors or co-editors. */
-function formatPeopleWithSiteIdentity(names: string[]): JsonLdPerson[] {
+function formatPeopleWithSiteIdentity(names: readonly Contributor[]): JsonLdAgent[] {
 	return withSiteAuthorIdentity(formatAuthors(names));
 }
 
@@ -63,7 +67,7 @@ function formatPeopleWithSiteIdentity(names: string[]): JsonLdPerson[] {
  * documented comma/"and" separators to individual Person nodes before adding
  * identity data, so a co-edited book never becomes one composite person.
  */
-function formatEditorString(editors: string): JsonLdPerson[] {
+function formatEditorString(editors: string): JsonLdAgent[] {
 	return formatPeopleWithSiteIdentity(splitNames(editors));
 }
 

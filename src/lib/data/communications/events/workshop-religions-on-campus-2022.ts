@@ -6,11 +6,11 @@ export const workshopReligionsOnCampus2022: Communication = {
 	title:
 		'Workshop “Religions on Campus: Coexisting Traditions, Reformulating the Secular and Life Projects”',
 	authors: [
-		'Abdoulaye Sounaye',
+		{ name: 'Abdoulaye Sounaye', personId: 'abdoulaye-sounaye' },
 		'Frédérick Madore',
-		'Vincent Favier',
-		'Mahamadou Bello Adamou',
-		'Rakiya El Matine'
+		{ name: 'Vincent Favier', personId: 'vincent-favier' },
+		{ name: 'Mahamadou Bello Adamou', personId: 'mahamadou-bello-adamou' },
+		{ name: 'Rakiya El Matine', personId: 'rakiya-el-matine' }
 	],
 	date: '31 October - 4 November 2022',
 	dateISO: '2022-10-31',
@@ -39,6 +39,7 @@ export const workshopReligionsOnCampus2022: Communication = {
 	participants: [
 		{
 			name: 'Abdoulaye Sounaye',
+			personId: 'abdoulaye-sounaye',
 			role: 'Convenor and Speaker',
 			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		},
@@ -49,25 +50,82 @@ export const workshopReligionsOnCampus2022: Communication = {
 		},
 		{
 			name: 'Vincent Favier',
+			personId: 'vincent-favier',
 			role: 'Convenor and Speaker',
 			affiliation: 'Leibniz-Zentrum Moderner Orient'
 		},
 		{
 			name: 'Mahamadou Bello Adamou',
+			personId: 'mahamadou-bello-adamou',
 			role: 'Convenor and Speaker',
 			affiliation: 'Université Abdou Moumouni, Niger'
 		},
-		{ name: 'Thomas Veret', role: 'Speaker', affiliation: 'Université Paris 3 Sorbonne Nouvelle' },
-		{ name: 'Agnès Badou', role: 'Discussant', affiliation: 'LASDEL Parakou, Benin' },
-		{ name: 'Mounkaila Abdou', role: 'Speaker', affiliation: 'Université Abdou Moumouni, Niger' },
-		{ name: 'Abdoulbaki Djibo', role: 'Speaker', affiliation: 'Université Abdou Moumouni, Niger' },
-		{ name: 'Jean Pierre Olivier de Sardan', role: 'Speaker', affiliation: 'LASDEL, Niger' },
-		{ name: 'Amadou Issoufou', role: 'Speaker', affiliation: 'Université Abdou Moumouni, Niger' },
-		{ name: 'Muhammad Yakasai', role: 'Speaker', affiliation: 'Humboldt University, Germany' },
-		{ name: 'Nadir A. Nasidi', role: 'Speaker', affiliation: 'Ahmadu Bello University, Nigeria' },
-		{ name: 'Oumarou Moussa', role: 'Speaker', affiliation: 'Université Abdou Moumouni, Niger' },
-		{ name: 'Sekou Sala Timbely', role: 'Speaker', affiliation: 'Université de Ségou, Mali' },
-		{ name: 'Katrin Bromber', role: 'Speaker', affiliation: 'Leibniz-Zentrum Moderner Orient' }
+		{
+			name: 'Thomas Veret',
+			personId: 'thomas-veret',
+			role: 'Speaker',
+			affiliation: 'Université Paris 3 Sorbonne Nouvelle'
+		},
+		{
+			name: 'Agnès Badou',
+			personId: 'agnes-badou',
+			role: 'Discussant',
+			affiliation: 'LASDEL Parakou, Benin'
+		},
+		{
+			name: 'Mounkaila Abdou',
+			personId: 'mounkaila-abdou',
+			role: 'Speaker',
+			affiliation: 'Université Abdou Moumouni, Niger'
+		},
+		{
+			name: 'Abdoulbaki Djibo',
+			personId: 'abdoulbaki-djibo',
+			role: 'Speaker',
+			affiliation: 'Université Abdou Moumouni, Niger'
+		},
+		{
+			name: 'Jean Pierre Olivier de Sardan',
+			personId: 'jean-pierre-olivier-de-sardan',
+			role: 'Speaker',
+			affiliation: 'LASDEL, Niger'
+		},
+		{
+			name: 'Amadou Issoufou',
+			personId: 'amadou-issoufou',
+			role: 'Speaker',
+			affiliation: 'Université Abdou Moumouni, Niger'
+		},
+		{
+			name: 'Muhammad Yakasai',
+			personId: 'muhammad-yakasai',
+			role: 'Speaker',
+			affiliation: 'Humboldt University, Germany'
+		},
+		{
+			name: 'Nadir A. Nasidi',
+			personId: 'nadir-abdulhadi-nasidi',
+			role: 'Speaker',
+			affiliation: 'Ahmadu Bello University, Nigeria'
+		},
+		{
+			name: 'Oumarou Moussa',
+			personId: 'oumarou-moussa',
+			role: 'Speaker',
+			affiliation: 'Université Abdou Moumouni, Niger'
+		},
+		{
+			name: 'Sekou Sala Timbely',
+			personId: 'sekou-sala-timbely',
+			role: 'Speaker',
+			affiliation: 'Université de Ségou, Mali'
+		},
+		{
+			name: 'Katrin Bromber',
+			personId: 'katrin-bromber',
+			role: 'Speaker',
+			affiliation: 'Leibniz-Zentrum Moderner Orient'
+		}
 	],
 	project: 'Religious Activism on Campuses in Togo and Benin'
 };
