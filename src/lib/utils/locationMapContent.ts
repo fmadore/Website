@@ -40,15 +40,6 @@ export function locationItemHref(item: LocationMapItem, base: string, basePath: 
 		: `${base}${basePath}/${encodeURIComponent(item.id)}`;
 }
 
-export function locationSourceHref(value: string): string | undefined {
-	try {
-		const url = new URL(value);
-		return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : undefined;
-	} catch {
-		return undefined;
-	}
-}
-
 /** Popup content uses the same people and linked records as the table below the map. */
 export function collaboratorPopupContent(
 	datum: LocationDatum,
@@ -65,22 +56,10 @@ export function collaboratorPopupContent(
 						`<li><a class="item-link" href="${escapeMapText(locationItemHref(item, base, basePath))}">${escapeMapText(item.title)}</a></li>`
 				)
 				.join('');
-			const sources = (person.sources ?? [])
-				.flatMap((source) => {
-					const href = locationSourceHref(source.url);
-					return href
-						? [
-								`<a href="${escapeMapText(href)}" target="_blank" rel="noopener noreferrer">Open ${escapeMapText(source.label)}<span class="sr-only"> (opens in new tab)</span></a>`
-							]
-						: [];
-				})
-				.join(' · ');
 			return `<li>
 				<span class="collaborator-name">${escapeMapText(person.name)}</span>
-				<span class="affiliation-confidence${person.confidence === 'uncertain' ? ' affiliation-confidence--uncertain' : ''}">${person.confidence === 'uncertain' ? 'Uncertain affiliation' : 'Verified affiliation'}</span>
-				${person.note ? `<p class="affiliation-note">${escapeMapText(person.note)}</p>` : ''}
+				${person.confidence === 'uncertain' ? '<span class="affiliation-uncertain">Uncertain affiliation</span>' : ''}
 				<ul class="item-sublist">${items}</ul>
-				${sources ? `<p class="affiliation-sources">${sources}</p>` : ''}
 			</li>`;
 		})
 		.join('');
@@ -88,7 +67,6 @@ export function collaboratorPopupContent(
 	return `<div class="location-popup">
 		<strong>${escapeMapText(datum.label ?? datum.country)}</strong>
 		<div class="item-count">${countLabel} · ${escapeMapText(datum.country)}</div>
-		${datum.coordinateNote ? `<p class="affiliation-note">Location note: ${escapeMapText(datum.coordinateNote)}</p>` : ''}
 		<ul class="item-list">${people}</ul>
 	</div>`;
 }

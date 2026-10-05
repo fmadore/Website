@@ -18,9 +18,7 @@ const location: LocationDatum = {
 			id: 'a-collaborator',
 			name: 'A. Collaborator',
 			confidence: 'uncertain',
-			note: 'The source gives no affiliation date.',
-			items: [{ id: 'a-work', title: 'A shared work', href: '/publications/a-work' }],
-			sources: [{ label: 'Publisher record', url: 'https://example.org/article' }]
+			items: [{ id: 'a-work', title: 'A shared work', href: '/publications/a-work' }]
 		}
 	]
 };
@@ -48,28 +46,30 @@ describe('locationCoordinates', () => {
 });
 
 describe('collaboratorPopupContent', () => {
-	it('lists names, linked works, sources and an explicit uncertainty label', () => {
+	it('lists names, linked works and an explicit uncertainty label', () => {
 		const content = collaboratorPopupContent(location, '/site', '/publications');
 		expect(content).toContain('Example University');
 		expect(content).toContain('1 collaborator');
 		expect(content).toContain('A. Collaborator');
 		expect(content).toContain('Uncertain affiliation');
-		expect(content).toContain('The source gives no affiliation date.');
 		expect(content).toContain('href="/site/publications/a-work"');
-		expect(content).toContain('Open Publisher record');
-		expect(content).toContain(' (opens in new tab)');
 	});
 
-	it('qualifies institution coordinate uncertainty independently of the affiliation', () => {
-		const content = collaboratorPopupContent(
-			{ ...location, coordinateNote: 'Approximate campus location' },
+	it('names no affiliation source and flags only uncertain affiliations', () => {
+		const verified = collaboratorPopupContent(
+			{
+				...location,
+				collaborators: [{ ...location.collaborators![0]!, confidence: 'verified' }]
+			},
 			'',
 			'/publications'
 		);
-		expect(content).toContain('Location note: Approximate campus location');
+		expect(verified).not.toContain('Verified affiliation');
+		expect(verified).not.toContain('Uncertain affiliation');
+		expect(verified).not.toContain('target="_blank"');
 	});
 
-	it('escapes registry text and rejects executable source and item URLs', () => {
+	it('escapes registry text and rejects executable item URLs', () => {
 		const content = collaboratorPopupContent(
 			{
 				...location,
@@ -79,8 +79,7 @@ describe('collaboratorPopupContent', () => {
 						id: 'person',
 						name: 'A & B',
 						confidence: 'verified',
-						items: [{ id: 'safe', title: '<img src=x>', href: 'javascript:alert(1)' }],
-						sources: [{ label: 'Unsafe', url: 'javascript:alert(1)' }]
+						items: [{ id: 'safe', title: '<img src=x>', href: 'javascript:alert(1)' }]
 					}
 				]
 			},

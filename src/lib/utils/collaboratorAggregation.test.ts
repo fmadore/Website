@@ -142,7 +142,8 @@ describe('publication collaborators', () => {
 		const alice = result.locations[0]?.collaborators?.find((entry) => entry.id === 'alice');
 		expect(alice?.name).toBe('Alice Roë');
 		expect(alice?.items).toHaveLength(2);
-		expect(alice?.sources).toEqual([SOURCE]);
+		// The map shows affiliations, not where they were sourced from.
+		expect(alice).not.toHaveProperty('sources');
 		expect(result.unresolved).toEqual([]);
 	});
 
@@ -226,7 +227,7 @@ describe('publication collaborators', () => {
 		expect(included.mappedPeople).toBe(1);
 	});
 
-	it('preserves the caveats from each historical observation in an all-years view', () => {
+	it('keeps the caveats on each historical observation off the map', () => {
 		const olderNote = 'The 2018 publisher lists a visiting appointment only.';
 		const laterNote = 'The 2024 affiliation remains disputed by another source.';
 		const people = [
@@ -241,9 +242,10 @@ describe('publication collaborators', () => {
 		];
 		for (const records of [publications, [...publications].reverse()]) {
 			const result = buildPublicationCollaborators(records, people, campuses, undefined, true);
-			const collaborator = result.locations[0]?.collaborators?.[0];
-			expect(collaborator?.note).toContain(olderNote);
-			expect(collaborator?.note).toContain(laterNote);
+			expect(result.locations[0]?.collaborators?.[0]?.confidence).toBe('uncertain');
+			const shown = JSON.stringify(result);
+			expect(shown).not.toContain(olderNote);
+			expect(shown).not.toContain(laterNote);
 		}
 	});
 
@@ -304,10 +306,10 @@ describe('publication collaborators', () => {
 			campuses
 		);
 		expect(result.locations).toEqual([]);
-		expect(result.unresolved[0]?.reason).toContain('The campus could not be established');
+		expect(result.unresolved[0]?.reason).toBe('Alpha University: no campus location recorded yet.');
 	});
 
-	it('shows reader notes and never the curator review notes', () => {
+	it('shows neither affiliation notes nor curator review notes', () => {
 		const people = [
 			{
 				...person('alice', [
@@ -335,9 +337,10 @@ describe('publication collaborators', () => {
 		);
 		const shown = JSON.stringify(result);
 		expect(shown).not.toContain('Curator trail');
+		expect(shown).not.toContain('unaffiliated scholar');
 		expect(result.unresolved.map((entry) => entry.reason)).toEqual([
 			'Gamma Institute: no campus location recorded yet.',
-			'No sourced affiliation for 2024. Listed as an unaffiliated scholar.'
+			'No affiliation recorded for 2024.'
 		]);
 	});
 

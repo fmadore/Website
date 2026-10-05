@@ -37,7 +37,7 @@ for (const view of [
 		theme: 'dark'
 	}
 ] as const) {
-	test(`${view.locations} and collaborators share one map with dated, explicit evidence`, async ({
+	test(`${view.locations} and collaborators share one map with dated affiliations`, async ({
 		page,
 		request
 	}, info) => {
@@ -76,12 +76,10 @@ for (const view of [
 		const tableToggle = section.locator('summary').filter({ hasText: /^Data table$/ });
 		await tableToggle.click();
 		const table = section.getByRole('table');
-		await expect(table.getByText('Verified affiliation', { exact: true }).first()).toBeVisible();
+		await expect(table.getByRole('row').nth(1)).toBeVisible();
 		await expect(table.getByText('Uncertain affiliation', { exact: true })).toHaveCount(0);
-		await expect(table.getByRole('link', { name: /^Open / }).first()).toHaveAttribute(
-			'href',
-			/^https?:\/\//
-		);
+		// Affiliations are stated, not sourced: no provenance links in the table.
+		await expect(table.locator('a[target="_blank"]')).toHaveCount(0);
 		const unresolved = section.locator('.unresolved-affiliations');
 		await unresolved.locator('summary').click();
 		await expect(unresolved.locator('.unresolved-list > li').first()).toBeVisible();

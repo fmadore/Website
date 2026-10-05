@@ -136,7 +136,7 @@ function aggregateCollaborators(
 				reasons.add(
 					explicitId && !person
 						? 'Person reference could not be resolved.'
-						: `No sourced affiliation for ${record.year}.${person?.note ? ` ${person.note}` : ''}`
+						: `No affiliation recorded for ${record.year}.`
 				);
 			for (const affiliation of affiliations) {
 				if (affiliation.confidence === 'uncertain') {
@@ -160,9 +160,7 @@ function aggregateCollaborators(
 					Math.abs(coordinates.latitude) > 90 ||
 					Math.abs(coordinates.longitude) > 180
 				) {
-					reasons.add(
-						`${affiliation.institution}: no campus location recorded yet.${affiliation.note ? ` ${affiliation.note}` : ''}`
-					);
+					reasons.add(`${affiliation.institution}: no campus location recorded yet.`);
 					continue;
 				}
 				let group = groups.get(institution.id);
@@ -176,22 +174,14 @@ function aggregateCollaborators(
 						id,
 						name: person?.name ?? name,
 						confidence: affiliation.confidence,
-						items: [],
-						sources: [],
-						note: affiliation.note
+						items: []
 					};
 					group.people.set(id, collaborator);
 				}
 				// All-years views must not hide an uncertain historical attribution behind a later verification.
 				if (affiliation.confidence === 'uncertain') collaborator.confidence = 'uncertain';
-				if (affiliation.note && !collaborator.note?.includes(affiliation.note))
-					collaborator.note = [collaborator.note, affiliation.note].filter(Boolean).join(' ');
 				if (!collaborator.items.some((item) => item.href === record.item.href))
 					collaborator.items.push(record.item);
-				for (const source of affiliation.sources) {
-					if (!collaborator.sources!.some((existing) => existing.url === source.url))
-						collaborator.sources!.push({ label: source.label, url: source.url });
-				}
 				mappedIds.add(id);
 			}
 			if (reasons.size) {
@@ -229,8 +219,7 @@ function aggregateCollaborators(
 					lng: institution.coordinates.longitude
 				},
 				items,
-				collaborators,
-				coordinateNote: institution.coordinateNote
+				collaborators
 			};
 		})
 		.sort((a, b) => b.count - a.count || a.label!.localeCompare(b.label!));

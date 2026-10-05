@@ -3,7 +3,7 @@
 	import { base } from '$app/paths';
 	import type { LocationDatum } from '$lib/data/geo';
 	import type { buildPublicationCollaborators } from '$lib/utils/collaboratorAggregation';
-	import { locationItemHref, locationSourceHref } from '$lib/utils/locationMapContent';
+	import { locationItemHref } from '$lib/utils/locationMapContent';
 	import VizChartCard from './VizChartCard.svelte';
 	import VizDataTable from './VizDataTable.svelte';
 
@@ -76,10 +76,10 @@
 {#if dataset === 'collaborators'}
 	<div class="affiliation-summary" role="status">
 		{#if status === 'idle' || status === 'loading'}
-			<p>Loading affiliation evidence…</p>
+			<p>Loading affiliations…</p>
 		{:else if status === 'error'}
 			<p>
-				Affiliation evidence could not be loaded. The {locationLabel.toLowerCase()} map remains available.
+				Affiliations could not be loaded. The {locationLabel.toLowerCase()} map remains available.
 			</p>
 			<button type="button" class="retry-affiliations" onclick={retry}>Try again</button>
 		{:else}
@@ -89,13 +89,14 @@
 				{collaborators.locations.length === 1 ? 'institution' : 'institutions'}.
 				{#if collaborators.uncertainPeople > 0}
 					{collaborators.uncertainPeople}
-					{collaborators.uncertainPeople === 1 ? 'collaborator has' : 'collaborators have'} uncertain
-					affiliation evidence.
+					{collaborators.uncertainPeople === 1
+						? 'collaborator has an uncertain affiliation.'
+						: 'collaborators have uncertain affiliations.'}
 				{/if}
 			</p>
 		{/if}
 		<p>
-			Affiliations use the dates supported by the evidence for each shared work. Each marker is an
+			Each affiliation is the one held in the year of the shared work. Each marker is an
 			institution’s campus, never a person’s location; its size counts distinct collaborators there.
 			Dashed markers include uncertain affiliations.
 		</p>
@@ -117,12 +118,11 @@
 		{:else if status === 'ready'}
 			<div class="chart-table-scroll">
 				<table>
-					<caption class="sr-only">Collaborator affiliations, evidence and shared works.</caption>
+					<caption class="sr-only">Collaborator affiliations and shared works.</caption>
 					<thead>
 						<tr>
 							<th scope="col">Institution</th>
 							<th scope="col">Collaborator</th>
-							<th scope="col">Affiliation evidence</th>
 							<th scope="col">Shared works</th>
 						</tr>
 					</thead>
@@ -132,32 +132,13 @@
 								<tr>
 									<td>
 										{location.label}<span class="record-detail">{location.country}</span>
-										{#if location.coordinateNote}
-											<span class="record-detail">Location note: {location.coordinateNote}</span>
+									</td>
+									<th scope="row">
+										{person.name}
+										{#if person.confidence === 'uncertain'}
+											<span class="uncertain">Uncertain affiliation</span>
 										{/if}
-									</td>
-									<th scope="row">{person.name}</th>
-									<td>
-										<span class="confidence" class:uncertain={person.confidence === 'uncertain'}>
-											{person.confidence === 'uncertain'
-												? 'Uncertain affiliation'
-												: 'Verified affiliation'}
-										</span>
-										{#if person.note}<p>{person.note}</p>{/if}
-										{#each person.sources ?? [] as source (source.url)}
-											{#if locationSourceHref(source.url)}
-												<!-- eslint-disable svelte/no-navigation-without-resolve -- validated HTTP(S) evidence URL -->
-												<a
-													class="record-detail"
-													href={locationSourceHref(source.url)}
-													target="_blank"
-													rel="noopener noreferrer"
-													>Open {source.label}<span class="sr-only"> (opens in new tab)</span></a
-												>
-												<!-- eslint-enable svelte/no-navigation-without-resolve -->
-											{/if}
-										{/each}
-									</td>
+									</th>
 									<td>
 										<ul class="work-list">
 											{#each person.items as item (item.id)}
@@ -177,9 +158,7 @@
 			</div>
 		{:else}
 			<p>
-				{status === 'error'
-					? 'Affiliation evidence could not be loaded.'
-					: 'Loading affiliation evidence…'}
+				{status === 'error' ? 'Affiliations could not be loaded.' : 'Loading affiliations…'}
 			</p>
 		{/if}
 	{/snippet}
@@ -188,7 +167,10 @@
 {#if dataset === 'collaborators' && status === 'ready' && collaborators.unresolved.length > 0}
 	<details class="chart-table unresolved-affiliations">
 		<summary class="dateline">Affiliations not shown ({collaborators.unresolved.length})</summary>
-		<p>These records need further evidence or are excluded by the uncertainty filter.</p>
+		<p>
+			These collaborators have no mapped affiliation for the shared work, or are hidden by the
+			uncertainty filter.
+		</p>
 		<ul class="unresolved-list">
 			{#each collaborators.unresolved as person (`${person.id}:${person.reason}`)}
 				<li>
@@ -272,13 +254,12 @@
 	}
 
 	.affiliation-summary p,
-	.unresolved-affiliations p,
-	td p {
+	.unresolved-affiliations p {
 		margin: var(--space-xs) 0;
 	}
 
 	.affiliation-summary p:first-child,
-	.confidence {
+	.uncertain {
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-xs);
 	}
@@ -295,6 +276,8 @@
 	}
 
 	.uncertain {
+		display: block;
+		margin-top: var(--space-2xs);
 		font-weight: var(--font-weight-bold);
 	}
 

@@ -449,7 +449,7 @@
 	let publisherMapFailed = $state(false);
 	const locationDescription = $derived(
 		locationDataset === 'collaborators'
-			? 'Institutional affiliations of co-authors and co-editors, with the evidence and shared works recorded for each person. Chapter contributors to the edited volumes appear in the collaboration network, not on this map.'
+			? 'Institutional affiliations of co-authors and co-editors, with the shared works recorded for each person. Chapter contributors to the edited volumes appear in the collaboration network, not on this map.'
 			: publisherMapFailed || mapChunkFailed
 				? 'The countries of the publishers and journals, taken from the place of publication recorded on each work.'
 				: 'The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications.'

@@ -3,7 +3,7 @@ import type { Institution } from '$lib/types/person';
 /**
  * Public institutional sites. Every point keeps its source; how it was located is in the
  * structured fields (`coordinateQueriedOn`, `coordinateSourceKind`, `osmFeature`), and
- * `coordinateNote` is reserved for a qualification a reader needs.
+ * `coordinateNote` records any qualification of the point for curators; it is never rendered.
  */
 export const institutions: Institution[] = [
 	{

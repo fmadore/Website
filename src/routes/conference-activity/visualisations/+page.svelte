@@ -345,7 +345,7 @@
 	let venueMapFailed = $state(false);
 	const locationDescription = $derived(
 		locationDataset === 'collaborators'
-			? 'Institutional affiliations of co-presenters and event participants, with the evidence and shared talks recorded for each person.'
+			? 'Institutional affiliations of co-presenters and event participants, with the shared talks recorded for each person.'
 			: venueMapFailed || mapChunkFailed
 				? 'The countries of the venues, taken from the location recorded on each talk.'
 				: 'The countries of the venues, taken from the location recorded on each talk. Switch between proportional markers and country shading; select a country to list its titles and cities.'

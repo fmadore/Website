@@ -326,7 +326,7 @@ shown as markers while preserving the reader's country-shading preference.
 			el.setAttribute('role', 'button');
 			el.setAttribute(
 				'aria-label',
-				`${datum.label ?? datum.country}: ${precisePoints ? `${datum.count} ${datum.count === 1 ? 'collaborator' : 'collaborators'}` : pluralLabel(datum.count)}${hasUncertainty ? '. Includes uncertain affiliation evidence' : ''}`
+				`${datum.label ?? datum.country}: ${precisePoints ? `${datum.count} ${datum.count === 1 ? 'collaborator' : 'collaborators'}` : pluralLabel(datum.count)}${hasUncertainty ? '. Includes uncertain affiliations' : ''}`
 			);
 			el.style.width = `${size}px`;
 			el.style.height = `${size}px`;
@@ -597,7 +597,7 @@ shown as markers while preserving the reader's country-shading preference.
 		{:else if precisePoints && mappableData.length === 0}
 			<div class="state-note map-empty-note" role="status">
 				{#if loadingPoints}
-					<span class="dateline">Loading affiliation evidence…</span>
+					<span class="dateline">Loading affiliations…</span>
 				{:else}
 					<span class="dateline">No mapped affiliations</span>
 					<p>
@@ -940,22 +940,12 @@ shown as markers while preserving the reader's country-shading preference.
 		font-weight: var(--font-weight-semibold);
 	}
 
-	:global(.location-popup .affiliation-confidence) {
+	:global(.location-popup .affiliation-uncertain) {
 		display: block;
 		font-family: var(--font-family-mono);
 		font-size: var(--font-size-2xs);
-		color: var(--color-text-muted);
-	}
-
-	:global(.location-popup .affiliation-confidence--uncertain) {
 		font-weight: var(--font-weight-bold);
 		color: var(--color-text);
-	}
-
-	:global(.location-popup .affiliation-note),
-	:global(.location-popup .affiliation-sources) {
-		margin: var(--space-xs) 0;
-		font-size: var(--font-size-xs);
 	}
 
 	:global(.location-popup .subtitle-group) {

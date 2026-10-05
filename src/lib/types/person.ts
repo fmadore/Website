@@ -13,7 +13,7 @@ export type Institution = {
 	country: string;
 	/** Institutional campus or office, never a person's home or a country centroid. */
 	coordinates: { latitude: number; longitude: number };
-	/** Shown to readers: only a qualification they should not take at face value. */
+	/** Curator qualification of the location (e.g. a campus standing in for an institution). Never rendered. */
 	coordinateNote?: string;
 	/** Date and method of the institutional location review, separate from affiliation dates. */
 	coordinateQueriedOn?: string;
@@ -39,7 +39,7 @@ export type PersonAffiliation = {
 	endYear?: number;
 	confidence: 'verified' | 'uncertain';
 	sources: AffiliationSource[];
-	/** Shown to readers beside the affiliation: a short caveat, such as conflicting sources. */
+	/** Curator caveat, such as conflicting sources. Never rendered: the map states affiliations, not their provenance. */
 	note?: string;
 	/** Curator provenance (how the evidence was found and checked). Never rendered. */
 	reviewNote?: string;
@@ -52,7 +52,7 @@ export type Person = {
 	affiliations: PersonAffiliation[];
 	orcid?: string;
 	url?: string;
-	/** Shown to readers when no affiliation applies, e.g. an unaffiliated scholar. */
+	/** Curator note when no affiliation applies, e.g. an unaffiliated scholar. Never rendered. */
 	note?: string;
 	/** Curator provenance: unresolved identities and research trail. Never rendered. */
 	reviewNote?: string;

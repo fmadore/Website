@@ -62,8 +62,6 @@ export type LocationCollaborator = {
 	name: string;
 	confidence: 'verified' | 'uncertain';
 	items: LocationMapItem[];
-	sources?: { label: string; url: string }[];
-	note?: string;
 };
 
 export type LocationDatum = {
@@ -77,6 +75,4 @@ export type LocationDatum = {
 	/** Institution coordinates never fall back to the country's centre. */
 	coordinates?: { lat: number; lng: number };
 	collaborators?: LocationCollaborator[];
-	/** Visible qualification of the institution's location, if needed. */
-	coordinateNote?: string;
 };
