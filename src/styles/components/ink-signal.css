@@ -1231,9 +1231,13 @@
    terms each time. Padding the hit area symmetrically takes the smallest
    term to 27.6px and settles it on size instead, leaving the frequency
    scale — the thing the cloud exists to encode — untouched. Baselines stay
-   aligned because the padding is equal above and below. */
+   aligned because the padding is equal above and below. Width needs the same
+   guarantee: a three-letter term at 13px ("ICT") sets 23px wide, so the box
+   is floored at 24px and the word centred in it. */
 .key-terms a {
 	padding-block: var(--space-1-5);
+	min-inline-size: var(--space-6);
+	text-align: center;
 }
 
 /* ===========================================================================
