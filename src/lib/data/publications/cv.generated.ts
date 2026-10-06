@@ -25,6 +25,19 @@ export const cvPublications: CvPublication[] = [
 		"doi": "10.14428/emulations.024"
 	},
 	{
+		"id": "ai-meets-archive-iwac-llm-2026",
+		"type": "article",
+		"title": "When AI Meets the Archive: Transforming the Islam West Africa Collection with Large Language Models",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"date": "Forthcoming",
+		"dateISO": "2026",
+		"year": 2026,
+		"journal": "African Studies Review",
+		"publisher": "Cambridge University Press"
+	},
+	{
 		"id": "ambition-federatrice-faitieres-islamiques-2026",
 		"type": "chapter",
 		"title": "L'ambition fédératrice à l'épreuve de la diversité : étude comparative des faîtières islamiques au Burkina Faso, Togo, Bénin et Côte d'Ivoire",

@@ -61,6 +61,20 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "Cheikh Anta Diop University",
 		"country": "Senegal"
 	},
+	"ai-meets-archive-iwac-llm-2026": {
+		"id": "ai-meets-archive-iwac-llm-2026",
+		"itemType": "publication",
+		"title": "When AI Meets the Archive: Transforming the Islam West Africa Collection with Large Language Models",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "article",
+		"date": "Forthcoming",
+		"dateISO": "2026",
+		"year": 2026,
+		"journal": "African Studies Review",
+		"publisher": "Cambridge University Press"
+	},
 	"ambition-federatrice-faitieres-islamiques-2026": {
 		"id": "ambition-federatrice-faitieres-islamiques-2026",
 		"itemType": "publication",

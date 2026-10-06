@@ -54,6 +54,37 @@ export const publicationSummaries: PublicationSummary[] = [
 		"sourceDirType": "specialIssues"
 	},
 	{
+		"id": "ai-meets-archive-iwac-llm-2026",
+		"type": "article",
+		"title": "When AI Meets the Archive: Transforming the Islam West Africa Collection with Large Language Models",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"date": "Forthcoming",
+		"dateISO": "2026",
+		"year": 2026,
+		"journal": "African Studies Review",
+		"publisher": "Cambridge University Press",
+		"publisherLocation": "United Kingdom",
+		"language": "English",
+		"tags": [
+			"Islam in West Africa",
+			"African Studies",
+			"Digital Archives",
+			"Large Language Models",
+			"Digital Humanities",
+			"Optical Character Recognition",
+			"Named-Entity Recognition",
+			"Sentiment Analysis",
+			"Historical Source Criticism"
+		],
+		"project": "Digital Humanities and AI in African Studies",
+		"abstractExcerpt": "The Islam West Africa Collection (IWAC) illustrates how large language models can automate labor-intensive archival workflows involving optical character recognition and named-entity recognition. Drawing on predominantly ",
+		"citedByCount": 0,
+		"tocAuthors": [],
+		"sourceDirType": "articles"
+	},
+	{
 		"id": "ambition-federatrice-faitieres-islamiques-2026",
 		"type": "chapter",
 		"title": "L'ambition fédératrice à l'épreuve de la diversité : étude comparative des faîtières islamiques au Burkina Faso, Togo, Bénin et Côte d'Ivoire",
