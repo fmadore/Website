@@ -98,7 +98,8 @@
 		"fast-uri": "^3.1.5",
 		"cookie": "^1.1.1",
 		"hono": "^4.12.34",
-		"protocol-buffers-schema": "^3.6.1"
+		"protocol-buffers-schema": "^3.6.1",
+		"compression": "^1.8.2"
 	},
 	"dependencies": {
 		"@iconify-icons/academicons": "^1.2.10",
