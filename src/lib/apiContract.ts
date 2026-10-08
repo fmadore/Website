@@ -3,6 +3,22 @@ export const API_VERSION = 1;
 export type DatasetName =
 	'research' | 'publications' | 'communications' | 'activities' | 'digital-humanities';
 export type ApiDocumentName = DatasetName | 'cv' | 'index';
+/** The sections of `/api/cv.json`, in the order the document publishes them. */
+export const CV_SECTIONS = [
+	'appointments',
+	'education',
+	'researchRoles',
+	'grants',
+	'awards',
+	'teaching',
+	'editorialMemberships',
+	'peerReviews',
+	'affiliations',
+	'fieldworks',
+	'mediaAppearances',
+	'languages'
+] as const;
+export type CvSection = (typeof CV_SECTIONS)[number];
 export interface ApiItem {
 	id: string;
 	url?: string;

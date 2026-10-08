@@ -1,10 +1,10 @@
 import { expect, it } from 'vitest';
 import { matchesSearchTerms, normalizeSearchText, searchTerms } from './searchText';
 import { foldFacetText } from '$lib/components/entity-index/facetSearch';
-import { normalise } from '../../../mcp/src/search';
+import { normalise } from './apiSearch';
 
 it.each(['Côte d’Ivoire', "CÔTE D'IVOIRE", 'Côte dʼIvoire'])(
-	'shares the same accent/apostrophe policy for %s across the site and MCP',
+	'shares the same accent/apostrophe policy for %s across the site and the agent tools',
 	(value) => {
 		expect(normalizeSearchText(value)).toBe("cote d'ivoire");
 		expect(foldFacetText(value)).toBe(normalise(value));

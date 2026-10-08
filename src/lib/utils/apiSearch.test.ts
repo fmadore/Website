@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { normalise, search } from './search.js';
-import type { Item } from './datasets.js';
+import { findRecord, normalise, search, summariseStructured } from './apiSearch';
+import type { ApiItem as Item } from '$lib/apiContract';
 
 const items: Item[] = [
 	{
@@ -93,6 +93,20 @@ describe('search', () => {
 		]);
 	});
 
+	it('matches an exact filter by whole value, never by containment', () => {
+		const vocab: Item[] = [
+			{ id: 'journal', type: 'article', country: ['Niger'] },
+			{ id: 'bulletin', type: 'bulletin-article', country: ['Nigeria'] },
+			{ id: 'abidjan', type: 'article', country: "Côte d'Ivoire" }
+		];
+		const ids = (exact: Record<string, string>) =>
+			search(vocab, { fields, exact }).hits.map((item) => item.id);
+		expect(ids({ type: 'article' })).toEqual(['journal', 'abidjan']);
+		expect(ids({ country: 'Niger' })).toEqual(['journal']);
+		expect(ids({ country: 'COTE D’IVOIRE' })).toEqual(['abidjan']);
+		expect(ids({ type: '' })).toHaveLength(3);
+	});
+
 	it('ignores blank filter values rather than matching nothing', () => {
 		expect(run({ filters: { type: undefined, country: '' } }).total).toBe(3);
 	});
@@ -117,5 +131,48 @@ describe('search', () => {
 		expect(run({ limit: 1, offset: 1 }).hits.map((item) => item.id)).toEqual([
 			'cote-divoire-article'
 		]);
+	});
+});
+
+describe('summariseStructured', () => {
+	it('keeps one compact row per hit and reports the next page', () => {
+		const page = summariseStructured(
+			[{ id: 'a', title: 'A', type: 'article', year: 2020, journal: 'J', url: 'https://x/a' }],
+			3,
+			1
+		);
+		expect(page).toEqual({
+			total: 3,
+			count: 1,
+			offset: 1,
+			items: [{ id: 'a', title: 'A', type: 'article', year: 2020, venue: 'J', url: 'https://x/a' }],
+			has_more: true,
+			next_offset: 2
+		});
+	});
+
+	it('falls back to the id for an untitled record and omits absent fields', () => {
+		const page = summariseStructured([{ id: 'untitled' }], 1);
+		expect(page.items).toEqual([{ id: 'untitled', title: 'untitled' }]);
+		expect(page).toMatchObject({ has_more: false });
+		expect(page).not.toHaveProperty('next_offset');
+	});
+});
+
+describe('findRecord', () => {
+	it('returns the record with the id', () => {
+		expect(findRecord(items, 'publications', 'campus-book').title).toContain('Campuses');
+	});
+
+	it('suggests ids that overlap the one asked for', () => {
+		expect(() => findRecord(items, 'publications', 'campus')).toThrow(
+			'No publications record with id "campus". Did you mean: campus-book?'
+		);
+	});
+
+	it('points at the search tools when nothing is close', () => {
+		expect(() => findRecord(items, 'research', 'nothing-like-it')).toThrow(
+			'Use the matching search or list tool'
+		);
 	});
 });

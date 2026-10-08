@@ -1,15 +1,17 @@
 import type { Publication } from '$lib/types/publication';
+import type { ApiItem as Item } from '$lib/apiContract';
 import { generateBibtex } from '$lib/utils/bibtexGenerator';
 import { formatReferenceText } from '$lib/utils/citationFormatter';
-import type { Item } from './datasets.js';
 
 /**
- * Citation output, borrowed wholesale from the site.
+ * Citation output for a publication read from the static JSON API, for the two
+ * agent surfaces that read it: the MCP server in `mcp/` and the WebMCP tools.
  *
- * `bibtexGenerator` and `citationFormatter` are pure modules whose only imports
- * are types and two other pure helpers, so the build aliases `$lib` and bundles
- * them straight in. Reimplementing them here would guarantee the server and the
- * site's own download button eventually disagree.
+ * Borrowed wholesale from the site: `bibtexGenerator` and `citationFormatter`
+ * are pure modules whose only imports are types and other pure helpers, so the
+ * MCP build aliases `$lib` and bundles them straight in. Reimplementing them
+ * would guarantee an agent and the site's own download button eventually
+ * disagree.
  *
  * The plain-text assembly this file used to own moved into `citationFormatter`
  * as `formatReferenceText` when the site grew a "Copy reference" control of its
@@ -18,7 +20,8 @@ import type { Item } from './datasets.js';
  * APA/MLA/Chicago generator, and adding one remains a change to `src/lib/utils`.
  */
 
-export type CitationStyle = 'bibtex' | 'reference';
+export const CITATION_STYLES = ['bibtex', 'reference'] as const;
+export type CitationStyle = (typeof CITATION_STYLES)[number];
 
 /**
  * Rebuild a `Publication` from an API item.
