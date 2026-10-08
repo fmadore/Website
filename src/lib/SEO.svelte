@@ -10,6 +10,7 @@
 	import { page } from '$app/state';
 	import { getDefaultDescription, author, website } from '$lib/utils/siteHelpers';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
+	import { markdownTwinPath } from '$lib/utils/markdownTwin';
 
 	interface Props {
 		// SEO props
@@ -90,6 +91,18 @@
 	 */
 	const ogImageUrl = $derived(new URL(ogImage, canonicalUrl).href);
 
+	/**
+	 * The page's Markdown twin, for agents (llms.txt v2): `/publications/x` →
+	 * `/publications/x.md`, the home page → `/index.md`. Absolute on the
+	 * production origin like the canonical and the feeds — `paths.relative`
+	 * would otherwise render a depth-dependent `../` prefix. Pages with no twin
+	 * (the visualisations, the slides gallery, an error) announce none.
+	 */
+	const markdownTwinUrl = $derived.by(() => {
+		const path = markdownTwinPath(page.route.id, page.url.pathname);
+		return path ? `${website.url}${path}` : undefined;
+	});
+
 	// Generate JSON-LD for breadcrumbs and page schema
 	const jsonLdString = $derived.by(() => {
 		const schemas: object[] = [...additionalSchemas];
@@ -152,6 +165,13 @@
 			href="{website.url}/publications/rss.xml"
 		/>
 	{/if}
+
+	<!-- Machine-readable versions (https://llmstxt.org/): this page as Markdown,
+	     and the llms.txt that maps the site it belongs to. -->
+	{#if markdownTwinUrl}
+		<link rel="alternate" type="text/markdown" href={markdownTwinUrl} />
+	{/if}
+	<link rel="describedby" type="text/plain" href="{website.url}/llms.txt" />
 
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content={type} />

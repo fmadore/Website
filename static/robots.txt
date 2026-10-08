@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
+# Content Signals (https://contentsignals.org/): every use is welcome — search
+# indexing, use as input to AI answers, and AI training. The author wants this
+# record read, cited and remembered. Kept inside the `*` group on purpose: a
+# group naming one bot would replace this group for that bot, not add to it.
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 Sitemap: https://www.frederickmadore.com/sitemap.xml
 
@@ -11,6 +16,15 @@ Sitemap: https://www.frederickmadore.com/sitemap.xml
 # LLM/AI agent guidance: https://www.frederickmadore.com/llms.txt
 # (Curated, machine-readable site map following the llms.txt convention)
 
+# Markdown: every content page has a Markdown version at its own address with
+# `.md` added (https://www.frederickmadore.com/index.md for the home page,
+# https://www.frederickmadore.com/publications.md for the complete publication
+# list), announced by <link rel="alternate" type="text/markdown"> in its HTML.
+
 # Structured data: https://www.frederickmadore.com/api/index.json
 # (Discovery manifest for the static JSON API — publications, talks, activities,
 #  digital humanities projects, and CV, as the same records that render the site)
+
+# MCP server over the same records: https://github.com/fmadore/Website/tree/main/mcp
+# (one-click Claude Desktop bundle on GitHub Releases:
+#  https://github.com/fmadore/Website/releases?q=mcp-v)

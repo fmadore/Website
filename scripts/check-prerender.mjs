@@ -13,13 +13,20 @@
  * imports that plain Node cannot resolve) and automatically covers every route
  * type, including any added later.
  *
+ * It also holds the Markdown twins (`/…/*.md`, llms.txt v2) to the same
+ * standard: a page that announces a twin with `<link rel="alternate"
+ * type="text/markdown">` must ship it, a twin shipped beside a page must be
+ * announced by that page, the sitemap must not list twins (it advertises web
+ * pages), and every link `/llms.txt` makes into the site must resolve.
+ *
  * Usage:
  *   node scripts/check-prerender.mjs
  *
  * Exit code 1 when any advertised URL has no corresponding page.
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { exit } from 'node:process';
+import { brokenLlmsLinks, checkMarkdownTwins } from './lib/markdown-twins.mjs';
 
 const BUILD_DIR = 'build';
 const SITEMAP = `${BUILD_DIR}/sitemap.xml`;
@@ -91,3 +98,44 @@ if (missing.length) {
 }
 
 console.log(`[prerender] OK — every advertised URL resolves to a page.`);
+
+// ── Markdown twins ─────────────────────────────────────────────────────────────
+
+const origin = new URL(locs[0]).origin;
+const files = readdirSync(BUILD_DIR, { recursive: true, withFileTypes: true })
+	.filter((entry) => entry.isFile())
+	.map((entry) => `${entry.parentPath}/${entry.name}`.replace(/\\/g, '/'))
+	.map((path) => path.slice(BUILD_DIR.length + 1));
+const twins = checkMarkdownTwins({
+	files,
+	read: (file) => readFileSync(`${BUILD_DIR}/${file}`, 'utf8'),
+	origin
+});
+const twinsInSitemap = locs.filter((url) => url.endsWith('.md'));
+const llmsBroken = existsSync(`${BUILD_DIR}/llms.txt`)
+	? brokenLlmsLinks({ text: readFileSync(`${BUILD_DIR}/llms.txt`, 'utf8'), files, origin })
+	: [`${BUILD_DIR}/llms.txt is missing`];
+
+console.log(`[prerender] ${twins.announced} pages announce a Markdown twin`);
+
+const problems = [
+	...twins.missing.map(
+		({ page, href }) => `${page} announces ${href}, which the build did not ship`
+	),
+	...twins.foreign.map(({ page, href }) => `${page} announces a twin off the site: ${href}`),
+	...twins.unannounced.map((twin) => `${twin} ships, but its page does not announce it`),
+	...twinsInSitemap.map((url) => `sitemap.xml lists a Markdown twin: ${url}`),
+	...llmsBroken.map((href) => `llms.txt links to ${href}, which the build did not ship`)
+];
+
+if (problems.length) {
+	console.error('\n[prerender] FAIL — the Markdown twins and the pages disagree.\n');
+	for (const problem of problems) console.error(`  ${problem}`);
+	console.error(
+		'\nTwins are the `*.md` server routes; pages announce them from SEO.svelte by route id' +
+			'\n(`$lib/utils/markdownTwin.ts`). A new record route needs both, or neither.\n'
+	);
+	exit(1);
+}
+
+console.log('[prerender] OK — every twin is announced and shipped, and llms.txt resolves.');
