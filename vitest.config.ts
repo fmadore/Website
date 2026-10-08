@@ -9,6 +9,21 @@ import { fileURLToPath } from 'node:url';
  * runtime dependency, so we only need the `$lib` path alias resolved.
  */
 export default defineConfig({
+	plugins: [
+		{
+			// `import.meta.glob` compiles to one import per matching file, so its
+			// output depends on the directory listing, which the fsModuleCache key
+			// (file content, id, config) does not see: a new data file stayed
+			// invisible to its index until the cache was cleared. Leave those
+			// modules uncached; the files they import still are.
+			name: 'uncached-import-meta-glob',
+			configureVitest({ defineCacheKeyGenerator }) {
+				defineCacheKeyGenerator(({ sourceCode }) =>
+					sourceCode.includes('import.meta.glob') ? false : undefined
+				);
+			}
+		}
+	],
 	resolve: {
 		alias: {
 			// Stub SvelteKit's `$app/environment` virtual module (no SvelteKit
@@ -44,8 +59,8 @@ export default defineConfig({
 		// and separate processes reuse them; transforming is ~70% of a run
 		// here, and a warm run lands around 2.4s against 3.5-4.5s cold.
 		// The cache keys on file content, id, Vite config and coverage status,
-		// which is sound because this config loads no plugins that read state
-		// from outside those inputs.
+		// which is sound for every module except an `import.meta.glob`, which
+		// reads the file system; the plugin above leaves those uncached.
 		fsModuleCache: true,
 		coverage: {
 			provider: 'v8',
