@@ -8,6 +8,9 @@ import { test, expect } from './fixtures';
  */
 
 const markdownAlternate = 'link[rel="alternate"][type="text/markdown"]';
+// A publication page carries two `describedby` links: this one (llms.txt v2)
+// and FAIR Signposting's metadata record (the `.bib`), told apart by type.
+const llmsTxtDescribedBy = 'link[rel="describedby"][type="text/plain"]';
 
 test('a record page announces its Markdown twin, which carries the record', async ({
 	page,
@@ -19,9 +22,15 @@ test('a record page announces its Markdown twin, which carries the record', asyn
 	await expect(alternate).toHaveCount(1);
 	const href = await alternate.getAttribute('href');
 	expect(href).toBe('https://www.frederickmadore.com/publications/religious-activism-campuses.md');
-	await expect(page.locator('link[rel="describedby"]')).toHaveAttribute(
+	await expect(page.locator(llmsTxtDescribedBy)).toHaveAttribute(
 		'href',
 		'https://www.frederickmadore.com/llms.txt'
+	);
+	await expect(
+		page.locator('link[rel="describedby"][type="application/x-bibtex"]')
+	).toHaveAttribute(
+		'href',
+		'https://www.frederickmadore.com/publications/religious-activism-campuses.bib'
 	);
 
 	const response = await request.get(new URL(href!).pathname);
@@ -59,6 +68,7 @@ test('index pages announce complete twins; pages without one announce none', asy
 	await page.goto('/publications/visualisations');
 	await expect(page.locator(markdownAlternate)).toHaveCount(0);
 	await expect(page.locator('link[rel="describedby"]')).toHaveCount(1);
+	await expect(page.locator(llmsTxtDescribedBy)).toHaveCount(1);
 });
 
 test('llms.txt links the Markdown twins, and every one resolves', async ({ request }) => {
