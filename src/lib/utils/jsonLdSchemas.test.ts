@@ -4,7 +4,12 @@ import {
 	buildCommunicationJsonLd,
 	buildDhProjectJsonLd
 } from './entityJsonLd';
-import { createWebPageSchema } from './jsonLdSchemas';
+import {
+	createPersonSchema,
+	createSectionBreadcrumbs,
+	createWebPageSchema,
+	recordEntityId
+} from './jsonLdSchemas';
 import { website, author, profile } from '$lib/data/siteConfig';
 import { maHistUlaval } from '$lib/data/education/ma-hist-ulaval';
 import type { Publication } from '$lib/types/publication';
@@ -23,11 +28,11 @@ const pub = (over: Partial<PubInput>): PubInput =>
 	}) as unknown as PubInput;
 
 describe('buildPublicationJsonLd', () => {
-	it('resolves @type from sourceDirType and prefixes urls with base', () => {
-		const result = buildPublicationJsonLd(pub({ sourceDirType: 'books' }), '/base');
+	it('resolves @type from sourceDirType and builds an absolute url', () => {
+		const result = buildPublicationJsonLd(pub({ sourceDirType: 'books' }));
 		expect(result['@type']).toBe('Book');
 		expect(result['@context']).toBe('https://schema.org');
-		expect(result.url).toBe('/base/publications/sample');
+		expect(result.url).toBe(`${website.url}/publications/sample`);
 	});
 
 	it('treats bulletin-articles as Article but other articles as ScholarlyArticle', () => {
@@ -120,10 +125,10 @@ describe('buildCommunicationJsonLd', () => {
 	const comm = (over: Partial<Communication>): Communication =>
 		({ id: 'talk', title: 'A Talk', year: 2024, ...over }) as unknown as Communication;
 
-	it('models a talk as an Event with base-prefixed url', () => {
-		const result = buildCommunicationJsonLd(comm({}), '/b');
+	it('models a talk as an Event with an absolute url', () => {
+		const result = buildCommunicationJsonLd(comm({}));
 		expect(result['@type']).toBe('Event');
-		expect(result.url).toBe('/b/communications/talk');
+		expect(result.url).toBe(`${website.url}/communications/talk`);
 	});
 
 	it('builds a Place and links the presenter to the canonical Person node', () => {
@@ -160,10 +165,48 @@ describe('buildDhProjectJsonLd', () => {
 	});
 
 	it('falls back to CreativeWork + internal url and skills as keywords', () => {
-		const result = buildDhProjectJsonLd(project({ skills: ['Python', 'NLP'] }), '/b');
+		const result = buildDhProjectJsonLd(project({ skills: ['Python', 'NLP'] }));
 		expect(result['@type']).toBe('CreativeWork');
-		expect(result.url).toBe('/b/digital-humanities/iwac');
+		expect(result.url).toBe(`${website.url}/digital-humanities/iwac`);
 		expect(result.keywords).toBe('Python, NLP');
+	});
+});
+
+describe('createPersonSchema', () => {
+	it('identifies the employer by ROR beside its Wikidata @id', () => {
+		const { worksFor } = createPersonSchema();
+		expect(worksFor?.['@id']).toBe('https://www.wikidata.org/entity/Q702482');
+		expect(worksFor?.identifier).toEqual({
+			'@type': 'PropertyValue',
+			propertyID: 'ROR',
+			value: 'https://ror.org/0234wmv40'
+		});
+		expect(worksFor?.sameAs).toContain('https://ror.org/0234wmv40');
+	});
+});
+
+describe('createWebPageSchema', () => {
+	it("names a record page's record as its mainEntity", () => {
+		const page = createWebPageSchema({
+			name: 'A Book',
+			path: '/publications/sample',
+			mainEntity: recordEntityId('/publications/sample')
+		});
+		expect(page['@id']).toBe(`${website.url}/publications/sample#webpage`);
+		expect(page.mainEntity).toEqual({ '@id': `${website.url}/publications/sample#record` });
+	});
+
+	it('names no mainEntity on an ordinary page', () => {
+		expect(createWebPageSchema({ name: 'Research', path: '/research' }).mainEntity).toBeUndefined();
+	});
+});
+
+describe('createSectionBreadcrumbs', () => {
+	it('starts at the home page, slash and all, on the production origin', () => {
+		expect(createSectionBreadcrumbs('Research', '/research')).toEqual([
+			{ name: 'Home', url: `${website.url}/` },
+			{ name: 'Research', url: `${website.url}/research` }
+		]);
 	});
 });
 

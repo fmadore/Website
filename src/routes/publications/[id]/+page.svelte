@@ -20,6 +20,7 @@
 	import {
 		createPublicationSEODescription,
 		createPublicationSEOKeywords,
+		recordEntityId,
 		truncateTitle
 	} from '$lib/utils/seoUtils';
 	import { getPublicationTypeBadge } from '$lib/utils/publicationTypeLabels';
@@ -46,8 +47,8 @@
 	// it takes the record's whole title. Only the <title> element below stays
 	// truncated: that one is rendered in a tab.
 	let breadcrumbItems = $derived([
-		{ label: 'Publications', href: `${base}/publications` },
-		{ label: displayTitle, href: `${base}/publications/${publication.id}` }
+		{ label: 'Publications', path: '/publications' },
+		{ label: displayTitle, path: `/publications/${publication.id}` }
 	]);
 
 	// "Master's Thesis" carries an apostrophe, and this label prints in the
@@ -111,10 +112,10 @@
 	description={seoDescription}
 	keywords={seoKeywords}
 	ogImage={publication.image ? `${base}/${publication.image}` : undefined}
-	includeCitationAuthor={false}
+	mainEntity={recordEntityId(`/publications/${publication.id}`)}
 />
 
-<MetaTags {publication} />
+<MetaTags {publication} schemaType={data.schemaType} />
 
 <!-- The document column, both rail blocks and the sibling-work block are grid
      children with their own gap, so each is passed only when it prints

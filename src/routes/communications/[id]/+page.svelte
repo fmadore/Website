@@ -12,6 +12,7 @@
 	import {
 		createCommunicationSEODescription,
 		createCommunicationSEOKeywords,
+		recordEntityId,
 		truncateTitle
 	} from '$lib/utils/seoUtils';
 	import { getCommunicationTypeBadge } from '$lib/utils/typeUtils';
@@ -39,11 +40,8 @@
 	// it takes the record's whole title. Only the <title> element below stays
 	// truncated: that one is rendered in a tab.
 	const breadcrumbItems = $derived([
-		{ label: 'Talks & Events', href: `${base}/conference-activity` },
-		{
-			label: displayTitle,
-			href: `${base}/communications/${communication.id}`
-		}
+		{ label: 'Talks & Events', path: '/conference-activity' },
+		{ label: displayTitle, path: `/communications/${communication.id}` }
 	]);
 
 	// The type badge prints in the breadcrumb, the masthead eyebrow and the rail
@@ -181,6 +179,7 @@
 	description={seoDescription}
 	keywords={seoKeywords}
 	ogImage="{base}/{communication.image}"
+	mainEntity={recordEntityId(`/communications/${communication.id}`)}
 />
 
 <MetaTags {communication} />

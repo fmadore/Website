@@ -130,10 +130,9 @@ describe('buildCoins', () => {
 		);
 	});
 
-	it('overwrites repeated keys in place (set semantics: first position, last value)', () => {
+	it('keeps every value of a repeated key, in order', () => {
 		// The publications component pushes rft.au once per author; the
-		// historical URLSearchParams.set behaviour keeps the first insertion
-		// position with the last author's value. Preserved deliberately.
+		// URLSearchParams.set it once used kept only the last of them.
 		const coins = buildCoins([
 			['rft.au', 'Madore, Frédérick'],
 			['rft.date', '2020'],
@@ -141,7 +140,7 @@ describe('buildCoins', () => {
 		]);
 		expect(coins).toBe(
 			'url_ver=Z39.88-2004&ctx_ver=Z39.88-2004&rfr_id=info%3Asid%2Ffrederickmadore.com' +
-				'&rft.au=Doe%2C+Jane&rft.date=2020'
+				'&rft.au=Madore%2C+Fr%C3%A9d%C3%A9rick&rft.date=2020&rft.au=Doe%2C+Jane'
 		);
 	});
 
@@ -165,7 +164,8 @@ describe('buildCoins', () => {
 			'url_ver=Z39.88-2004&ctx_ver=Z39.88-2004&rfr_id=info%3Asid%2Fpersonal-website' +
 				'&rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&rft.genre=article&rft.jtitle=Islamic+Africa' +
 				'&rft.title=Salafi+Media&rft.aufirst=Fr%C3%A9d%C3%A9rick&rft.aulast=Madore' +
-				'&rft.au=Doe%2C+Jane&rft.date=2020-01-15&rft_id=info%3Adoi%2F10.1000%2Fx'
+				'&rft.au=Madore%2C+Fr%C3%A9d%C3%A9rick&rft.au=Doe%2C+Jane&rft.date=2020-01-15' +
+				'&rft_id=info%3Adoi%2F10.1000%2Fx'
 		);
 	});
 });

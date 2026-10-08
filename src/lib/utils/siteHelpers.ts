@@ -40,6 +40,23 @@ export function pageTitle(...segments: string[]): string {
 }
 
 /**
+ * A site path or static file as an absolute URL on the production origin —
+ * `siteUrl('/publications/x')` → "https://www.frederickmadore.com/publications/x".
+ *
+ * For anything read out of context (JSON-LD, head metadata): a harvester, a
+ * knowledge graph or an agent has no page to resolve a relative path against.
+ * Never build these from Kit's `base`: with `paths.relative` on it renders as
+ * `.` or `..`, and gluing it to the origin produced
+ * `https://www.frederickmadore.com../publications` on every record page. The
+ * leading slash is optional, since data files store image paths both ways, and
+ * an already-absolute URL passes through untouched.
+ */
+export function siteUrl(path: string): string {
+	if (/^https?:\/\//.test(path)) return path;
+	return `${website.url}/${path.replace(/^\/+/, '')}`;
+}
+
+/**
  * Get default SEO description
  */
 export function getDefaultDescription(): string {

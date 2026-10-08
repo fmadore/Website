@@ -12,7 +12,7 @@ export const thyssen2023: Grant = {
 	endYear: 2023,
 	dateRangeString: '2023',
 	dateISOStart: '2023-09-01',
-	dateISOEnd: '2023-09-31',
+	dateISOEnd: '2023-09-30',
 	amount: 20000,
 	currency: 'EUR',
 	status: 'Awarded',

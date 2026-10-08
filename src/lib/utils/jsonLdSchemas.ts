@@ -14,7 +14,7 @@
 import type { Grant } from '$lib/types/grant';
 import type { JsonLdOrganization, JsonLdOccupation } from '$lib/types/jsonld';
 import { author, website, socialLinks, linkedData } from '$lib/data/siteConfig';
-import { getDefaultDescription } from '$lib/utils/siteHelpers';
+import { getDefaultDescription, siteUrl } from '$lib/utils/siteHelpers';
 
 // ============================================================================
 // JSON-LD SCHEMA TYPES
@@ -143,6 +143,22 @@ const SITE_NAME = author.name;
 const SITE_DESCRIPTION = getDefaultDescription();
 export const wikidataEntityUrl = (id: string): string => `https://www.wikidata.org/entity/${id}`;
 const wikidataPageUrl = (id: string): string => `https://www.wikidata.org/wiki/${id}`;
+const rorUrl = (id: string): string => `https://ror.org/${id}`;
+
+/** `@id` of a page's WebPage node, for the page at this route path. */
+export function webPageId(path: string): string {
+	return `${siteUrl(path)}#webpage`;
+}
+
+/**
+ * `@id` of the thing a record page describes — the publication, talk, post or
+ * project — as distinct from the page about it (`#webpage`). The record names
+ * its page with `mainEntityOfPage` and the page names the record with
+ * `mainEntity`, so a consumer can tell the article from the page that lists it.
+ */
+export function recordEntityId(path: string): string {
+	return `${siteUrl(path)}#record`;
+}
 
 /**
  * Creates a WebSite schema - add to root layout for sitelinks eligibility
@@ -188,7 +204,15 @@ export function createPersonSchema(): PersonSchema {
 			'@type': 'EducationalOrganization',
 			'@id': wikidataEntityUrl(linkedData.employer.wikidataId),
 			name: linkedData.employer.name,
-			url: linkedData.employer.url
+			url: linkedData.employer.url,
+			// ROR is the identifier scholarly infrastructure (Crossref, ORCID,
+			// DataCite, OpenAlex) keys an institution on; Wikidata stays the @id.
+			identifier: {
+				'@type': 'PropertyValue',
+				propertyID: 'ROR',
+				value: rorUrl(linkedData.employer.rorId)
+			},
+			sameAs: [rorUrl(linkedData.employer.rorId)]
 		},
 		sameAs: [
 			socialLinks.linkedIn.url,
@@ -248,7 +272,8 @@ function toSchemaDateTime(value: string): string {
 /**
  * Creates a WebPage schema for individual pages
  * Links to the website and breadcrumb for complete semantic structure
- * For ProfilePage types, automatically includes mainEntity reference to Person
+ * For ProfilePage types, automatically includes mainEntity reference to Person;
+ * a record page passes its record's `@id` (`recordEntityId`) as `mainEntity`.
  */
 export function createWebPageSchema(options: {
 	name: string;
@@ -257,14 +282,24 @@ export function createWebPageSchema(options: {
 	type?: 'WebPage' | 'CollectionPage' | 'AboutPage' | 'ProfilePage';
 	datePublished?: string;
 	dateModified?: string;
+	/** `@id` of the thing this page describes. */
+	mainEntity?: string;
 }): WebPageSchema {
-	const { name, description, path, type = 'WebPage', datePublished, dateModified } = options;
-	const url = `${SITE_URL}${path}`;
+	const {
+		name,
+		description,
+		path,
+		type = 'WebPage',
+		datePublished,
+		dateModified,
+		mainEntity
+	} = options;
+	const url = siteUrl(path);
 
 	const schema: WebPageSchema = {
 		'@context': 'https://schema.org',
 		'@type': type,
-		'@id': `${url}#webpage`,
+		'@id': webPageId(path),
 		name,
 		description,
 		url,
@@ -276,8 +311,11 @@ export function createWebPageSchema(options: {
 		...(dateModified && { dateModified: toSchemaDateTime(dateModified) })
 	};
 
-	// ProfilePage requires mainEntity to reference the Person being profiled
-	if (type === 'ProfilePage') {
+	// A record page names its record; a ProfilePage requires mainEntity to
+	// reference the Person being profiled.
+	if (mainEntity) {
+		schema.mainEntity = { '@id': mainEntity };
+	} else if (type === 'ProfilePage') {
 		schema.mainEntity = {
 			'@id': `${SITE_URL}/#person`
 		};
@@ -378,14 +416,15 @@ export function createSectionBreadcrumbs(
 	subPage?: { name: string; path: string }
 ): BreadcrumbItem[] {
 	const breadcrumbs: BreadcrumbItem[] = [
-		{ name: 'Home', url: SITE_URL },
-		{ name: sectionName, url: `${SITE_URL}${sectionPath}` }
+		// The home page's canonical address carries its slash.
+		{ name: 'Home', url: siteUrl('/') },
+		{ name: sectionName, url: siteUrl(sectionPath) }
 	];
 
 	if (subPage) {
 		breadcrumbs.push({
 			name: subPage.name,
-			url: `${SITE_URL}${subPage.path}`
+			url: siteUrl(subPage.path)
 		});
 	}
 
