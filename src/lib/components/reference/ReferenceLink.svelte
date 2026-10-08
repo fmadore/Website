@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { inlineCitation } from '$lib/utils/inlineCitation';
 	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
 
 	let {
@@ -40,45 +41,8 @@
 		onpointerleave?: (event: PointerEvent) => void;
 	} = $props();
 
-	// Helper to get year consistently. An undated record prints the scholarly
-	// abbreviation a reader already knows from any bibliography, not a form-field
-	// placeholder: "(Madore, n.d.)", never "(Madore, N/D)".
-	function getYear(item: ReferenceIndexEntry): string {
-		if ('dateISO' in item && item.dateISO) return item.dateISO.substring(0, 4);
-		if ('date' in item && item.date) return item.date.substring(0, 4);
-		if ('year' in item && item.year) return item.year.toString();
-		return 'n.d.';
-	}
-
-	// Helper to get author citation text. A record with no attributable author
-	// yields an empty string and the citation drops the clause entirely — "N/A"
-	// announced a database gap in the middle of a typeset sentence.
-	function getAuthorCitation(item: ReferenceIndexEntry): string {
-		const authors = item.authors;
-		if (!authors || authors.length === 0) return '';
-
-		// Get last names
-		const lastNames = authors
-			.map((author) => (typeof author === 'string' ? (author.split(' ').pop() ?? '') : ''))
-			.filter(Boolean);
-
-		if (lastNames.length === 0) {
-			return '';
-		} else if (lastNames.length === 1) {
-			return lastNames[0] ?? '';
-		} else if (lastNames.length === 2) {
-			return `${lastNames[0]} and ${lastNames[1]}`;
-		} else {
-			return `${lastNames[0]} et al.`;
-		}
-	}
-
-	/** "(Author, 2024)", "(2024)" with no author, "(n.d.)" with neither. */
-	function inlineCitation(item: ReferenceIndexEntry): string {
-		const authorClause = getAuthorCitation(item);
-		const year = getYear(item);
-		return authorClause ? `(${authorClause}, ${year})` : `(${year})`;
-	}
+	// The author–date citation itself is shared with the Markdown twins
+	// (`$lib/utils/inlineCitation`), so a page and its `.md` cite alike.
 
 	// The inline citation sits in running prose, so it takes the same register as
 	// the sentence around it — "(N'Dri, 2024)" would otherwise be the one

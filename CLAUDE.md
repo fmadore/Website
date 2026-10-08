@@ -31,7 +31,8 @@ npm run check:build     # bundle budget + prerender coverage + structured data (
 npm run check:bundle    # heavy libs stay dynamically imported; entry/route size budgets;
                         # no dataset in the app shell (entry + root layout); no route
                         # downloads a site module it never imports
-npm run check:prerender # every URL in sitemap.xml resolves to a page that shipped
+npm run check:prerender # every URL in sitemap.xml resolves to a page that shipped;
+                        # every Markdown twin is announced and shipped; llms.txt resolves
 npm run check:structured-data # every JSON-LD block parses; every URL in it is absolute
                         # on https://www.frederickmadore.com/ (or external); every
                         # date is valid ISO 8601
@@ -424,6 +425,25 @@ There is no APA/MLA/Chicago generator. Adding one belongs here, where the site a
   named by the page's WebPage `mainEntity`. `npm run check:structured-data`
   enforces both rules on the build
 - RSS at `/rss.xml`, sitemap at `/sitemap.xml`
+
+### Markdown twins and llms.txt
+
+Every content page has a prerendered Markdown version at its own address with
+`.md` added (`/index.md` for the home page), per llms.txt v2: the `*.md`
+server routes under `src/routes/` (`publications.md/`, `publications/[id].md/`,
+`cv.md/`, …), built by `$lib/server/markdown/` from the same data modules as the
+HTML — never by scraping it. Index twins list the whole dataset the HTML index
+pages through. Prose authored in route markup (the home page, each research
+project) is read from the `.svelte` source by `svelteProse.ts`, which throws on
+any Svelte it cannot read; HTML bodies go through `htmlToMarkdown.ts`. Links
+inside a twin point at other twins (`resolveLink`).
+
+`SEO.svelte` announces the twin with `<link rel="alternate" type="text/markdown">`
+for the route ids in `$lib/utils/markdownTwin.ts`, plus `<link rel="describedby">`
+to `/llms.txt` (built in `$lib/server/llmsTxt.ts`). A new content route needs a
+twin route and an entry there, or neither: `npm run check:prerender` fails on an
+announced twin that did not ship, a shipped twin its page does not announce, a
+twin in the sitemap, or an llms.txt link into the site that resolves to nothing.
 
 ### Network Visualisations
 
