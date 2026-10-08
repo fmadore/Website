@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { cvCommunicationsByDate } from '$lib/data/communications/cv';
+import { computerSkills } from '$lib/data/computerSkills';
+import { consulting } from '$lib/data/consulting';
 import { allDhProjectSummaries } from '$lib/data/digital-humanities/summaries';
 import { grantsByDate } from '$lib/data/grants';
 import { cvPublicationsByDate } from '$lib/data/publications/cv';
@@ -179,22 +181,18 @@ describe('cvMarkdown', () => {
 		}
 	});
 
-	it('carries the lists the components hold as literals unchanged', () => {
-		const skillsSource = componentSource('CVComputerSkills');
+	it('prints the consulting and computer-skills records the page prints', () => {
 		const skills = rows(sectionBody('Computer skills'));
-		expect(skills).toHaveLength([...skillsSource.matchAll(/category: '/g)].length);
-		for (const row of skills) {
-			const [, category, list] = /^- \*\*(.+?)\*\* (.+)$/.exec(row)!;
-			expect(skillsSource).toContain(`category: '${category}'`);
-			expect(skillsSource).toContain(list!);
-		}
+		expect(skills).toEqual(
+			computerSkills.map((group) => `- **${group.category}** ${group.skills}`)
+		);
 
-		const consultingSource = componentSource('CVConsulting');
-		const consulting = sectionBody('Consulting and legal expertise');
-		expect(rows(consulting)).toHaveLength([...consultingSource.matchAll(/role: '/g)].length);
-		const notes = consulting.split('\n').filter((line) => line.startsWith('  - '));
-		expect(notes.length).toBeGreaterThan(0);
-		for (const note of notes) expect(consultingSource).toContain(`'${note.slice(4)}'`);
+		const consultingBody = sectionBody('Consulting and legal expertise');
+		expect(rows(consultingBody)).toHaveLength(consulting.length);
+		const notes = consultingBody.split(/\n/).filter((line) => line.startsWith('  - '));
+		expect(notes.map((note) => note.slice(4))).toEqual(
+			consulting.flatMap((engagement) => engagement.descriptions)
+		);
 	});
 
 	it('emits no raw HTML', () => {

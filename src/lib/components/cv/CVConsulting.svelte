@@ -1,18 +1,6 @@
 <script lang="ts">
+	import { consulting } from '$lib/data/consulting';
 	import CVSection from './CVSection.svelte';
-
-	// Future: This could be moved to a data file if more consulting entries are added
-	const consulting = [
-		{
-			year: '2025–',
-			role: 'Consultant',
-			organization: 'Communitology',
-			descriptions: [
-				'Provide research-driven analysis and expert testimony in asylum and immigration proceedings.',
-				'Prepare Country of Origin Information (COI) reports for cases on Benin, Côte d’Ivoire, and Togo.'
-			]
-		}
-	];
 </script>
 
 <CVSection

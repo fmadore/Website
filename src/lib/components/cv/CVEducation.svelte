@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { educationByDate } from '$lib/data/education';
+	import { splitEducation } from '$lib/utils/cvSections';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
-	// Filter education items by type
-	const degrees = educationByDate.filter((edu) => edu.type === 'Degree');
-	const trainings = educationByDate.filter((edu) => edu.type === 'Training');
-	const certificates = educationByDate.filter((edu) => edu.type === 'Certificate');
-	const otherEducation = educationByDate.filter(
-		(edu) => !['Degree', 'Training', 'Certificate'].includes(edu.type || '')
-	);
+	const {
+		degrees,
+		trainings,
+		certificates,
+		other: otherEducation
+	} = splitEducation(educationByDate);
 </script>
 
 <section>

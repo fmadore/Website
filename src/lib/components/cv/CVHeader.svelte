@@ -2,15 +2,11 @@
 	import Icon from '@iconify/svelte';
 	import { address, contact, website, socialLinks, author } from '$lib/data/siteConfig';
 	import { BUILT_AT } from '$lib/utils/buildDate';
+	import { formatCvEditionDate } from '$lib/utils/cvSections';
 
 	// "As of" the build: the CV prints the records as they stood when the site
 	// was built, and the prerendered page and its hydration agree on the date.
-	const today = BUILT_AT.toLocaleDateString('en-GB', {
-		timeZone: 'UTC',
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric'
-	});
+	const today = formatCvEditionDate(BUILT_AT);
 
 	// CV contact links configuration
 	const cvLinks = [

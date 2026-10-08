@@ -2,24 +2,18 @@
 	import teaching from '$lib/data/teaching';
 	import guestLectures from '$lib/data/teaching/guest-lectures';
 	import { formatCVYearRange } from '$lib/utils/cvFormatters';
+	import {
+		sortCoursesByYear,
+		sortGuestLecturesByYear,
+		teachingLevelLabel
+	} from '$lib/utils/cvSections';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
-	// Sort teaching by year (most recent first). Copied first: `sort` mutates,
-	// and the imported array is the shared dataset every other page reads.
-	const sortedTeaching = [...teaching].sort((a, b) => {
-		const yearA = parseInt(a.year.split('-')[0] ?? a.year);
-		const yearB = parseInt(b.year.split('-')[0] ?? b.year);
-		return yearB - yearA;
-	});
-
-	// Sort guest lectures by year (most recent first), on a copy for the same
-	// reason.
-	const sortedGuestLectures = [...guestLectures].sort((a, b) => {
-		const yearA = parseInt(a.year);
-		const yearB = parseInt(b.year);
-		return yearB - yearA;
-	});
+	// Newest first, on copies: the imported arrays are the shared datasets every
+	// other page reads. The CV's Markdown twin orders them the same way.
+	const sortedTeaching = sortCoursesByYear(teaching);
+	const sortedGuestLectures = sortGuestLecturesByYear(guestLectures);
 </script>
 
 <section>
@@ -29,10 +23,9 @@
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each sortedTeaching as course (course.title + course.year)}
 				<CVEntry year={formatCVYearRange(course.year)}>
-					<strong>{typesetQuotes(course.title)}</strong>, {typesetQuotes(course.institution)}, {course.level ===
-					'undergraduate'
-						? 'Undergraduate'
-						: 'Graduate'}
+					<strong>{typesetQuotes(course.title)}</strong>, {typesetQuotes(course.institution)}, {teachingLevelLabel(
+						course.level
+					)}
 					{#if course.sections}
 						({course.sections})
 					{/if}
@@ -48,9 +41,7 @@
 			{#each sortedGuestLectures as lecture (lecture.title + lecture.year)}
 				<CVEntry year={lecture.year}>
 					<strong>{typesetQuotes(lecture.title)}</strong>, <em>{typesetQuotes(lecture.course)}</em>,
-					{typesetQuotes(lecture.institution)}, {lecture.level === 'undergraduate'
-						? 'Undergraduate'
-						: 'Graduate'}.
+					{typesetQuotes(lecture.institution)}, {teachingLevelLabel(lecture.level)}.
 				</CVEntry>
 			{/each}
 		</div>

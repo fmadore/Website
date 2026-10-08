@@ -2,26 +2,23 @@
 	import Icon from '@iconify/svelte';
 	import { peerReviewsByDate } from '$lib/data/peer-reviews';
 	import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
+	import { realEditorialMemberships, realPeerReviews } from '$lib/utils/cvSections';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
-	// Filter out template/placeholder data
-	const realPeerReviews = peerReviewsByDate.filter(
-		(review) => !review.id.includes('template') && review.journal !== 'Journal Name'
-	);
-	const realEditorialMemberships = editorialMembershipsByDate.filter(
-		(member) => !member.id.includes('template')
-	);
+	// The datasets minus their template records.
+	const peerReviews = realPeerReviews(peerReviewsByDate);
+	const editorialMemberships = realEditorialMemberships(editorialMembershipsByDate);
 </script>
 
 <section>
 	<h3>Service to Profession</h3>
 
 	<!-- Editorial Board Memberships Section -->
-	{#if realEditorialMemberships.length > 0}
+	{#if editorialMemberships.length > 0}
 		<h4>Editorial Board Memberships</h4>
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
-			{#each realEditorialMemberships as member (member.id)}
+			{#each editorialMemberships as member (member.id)}
 				<CVEntry year={member.dateRangeString}>
 					{member.role}, <em>{typesetQuotes(member.journal)}</em>.
 					{#if member.details}
@@ -33,10 +30,10 @@
 	{/if}
 
 	<!-- Peer Review Section -->
-	{#if realPeerReviews.length > 0}
+	{#if peerReviews.length > 0}
 		<h4>Peer Review Activities</h4>
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
-			{#each realPeerReviews as review (review.id)}
+			{#each peerReviews as review (review.id)}
 				<CVEntry year={review.year}>
 					{#if review.count && review.count > 1}{review.count}&nbsp;{review.type}s{:else}{review.type}{/if}{#if review.journal}&nbsp;–&nbsp;<em
 							>{typesetQuotes(review.journal)}</em
@@ -65,7 +62,7 @@
 	{/if}
 
 	<!-- Optional: Message if no service activities -->
-	{#if realPeerReviews.length === 0 && realEditorialMemberships.length === 0}
+	{#if peerReviews.length === 0 && editorialMemberships.length === 0}
 		<p class="cv-empty">No service activities listed.</p>
 	{/if}
 </section>

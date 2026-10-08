@@ -8,6 +8,7 @@
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import teaching from '$lib/data/teaching';
 	import guestLectures from '$lib/data/teaching/guest-lectures';
+	import { sortCoursesByYear } from '$lib/utils/cvSections';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Teaching', '/teaching');
@@ -19,14 +20,10 @@
 	 * entries against the dataset's nine, named the host institutions without
 	 * their countries, and lower-cased the terms. One record, one place.
 	 *
-	 * Sorted newest-first on the same key `CVTeaching` uses, over a copy —
+	 * Sorted newest-first by the function `CVTeaching` uses, which sorts a copy —
 	 * the exported array is shared module state.
 	 */
-	const courses = [...teaching].sort((a, b) => {
-		const yearA = parseInt(a.year.split('-')[0] ?? a.year, 10);
-		const yearB = parseInt(b.year.split('-')[0] ?? b.year, 10);
-		return yearB - yearA;
-	});
+	const courses = sortCoursesByYear(teaching);
 
 	/**
 	 * The one fact the ledger keys make you scan for. A count of institutions
