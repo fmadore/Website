@@ -11,6 +11,7 @@
 export type ImageVariantManifestEntry = readonly [width: number, height: number];
 
 export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestEntry>> = {
+	'activities/ahr-review-hero.webp': [1280, 809],
 	'activities/amira-launch-2026-hero.webp': [1280, 703],
 	'activities/amira-launch-2026.webp': [800, 439],
 	'activities/asa-panel-discussion.webp': [1237, 732],

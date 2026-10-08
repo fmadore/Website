@@ -608,6 +608,30 @@ export const activitySummaries: ActivitySummary[] = [
 		"url": "https://researchafrica.duke.edu/sites/default/files/-5-7-Religious-Activism-on-Campuses-in-Togo-and-Benin-Issue3-2025.pdf"
 	},
 	{
+		"id": "religious-activism-campuses-review-swagler-2026",
+		"title": "Matthew Swagler's review of 'Religious Activism on Campuses in Togo and Benin'",
+		"dateISO": "2026-10-08",
+		"date": "8 October 2026",
+		"year": 2026,
+		"description": "Matthew Swagler reviewed my book Religious Activism on Campuses in Togo and Benin in The American Historical Review, and raises a question worth pursuing: what did the 'good life' mean to the students themselves?",
+		"tags": [
+			"Book Review",
+			"Religious Activism",
+			"Togo",
+			"Benin",
+			"Publication",
+			"Islam",
+			"West Africa"
+		],
+		"panelType": "publication",
+		"heroImage": {
+			"src": "images/activities/ahr-review-hero.webp",
+			"alt": "Screenshot of The American Historical Review website showing Matthew Swagler's review of Religious Activism on Campuses in Togo and Benin in Volume 131, Issue 3, September 2026"
+		},
+		"type": "publication",
+		"url": "https://doi.org/10.1093/ahr/rhag129"
+	},
+	{
 		"id": "religious-activism-campuses-review-thompson-2026",
 		"title": "K.D. Thompson's review of 'Religious Activism on Campuses in Togo and Benin'",
 		"dateISO": "2026-01-28",
