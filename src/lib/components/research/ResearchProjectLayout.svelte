@@ -78,8 +78,8 @@ co-director, programme or grant simply drop those rows.
 	// Breadcrumb trail — the shell prints an editorial back-link from `section`;
 	// this array is what feeds the breadcrumb JSON-LD, unchanged.
 	const breadcrumbItems = $derived([
-		{ label: 'Research', href: `${base}/research` },
-		{ label: shortTitle, href: `${base}/research/${id}` }
+		{ label: 'Research', path: '/research' },
+		{ label: shortTitle, path: `/research/${id}` }
 	]);
 
 	const grantsJsonLd = $derived(buildGrantsJsonLd(projectName, `${website.url}/research/${id}`));

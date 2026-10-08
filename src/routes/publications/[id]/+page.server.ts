@@ -1,7 +1,7 @@
 import { relatedItems } from '$lib/server/relatedItems';
 import { researchProjectPath } from '$lib/data/research';
 import { allPublications } from '$lib/data/publications/index';
-import { buildPublicationJsonLd } from '$lib/utils/entityJsonLd';
+import { buildPublicationJsonLd, resolvePublicationJsonLdType } from '$lib/utils/entityJsonLd';
 import { loadEntityDetail } from '$lib/utils/entityPageLoader';
 import type { PageServerLoad } from './$types';
 
@@ -27,6 +27,8 @@ export const load: PageServerLoad = ({ params }) => {
 	return {
 		publication,
 		jsonLdString,
+		// The JSON-LD @type, which the FAIR Signposting `type` link repeats.
+		schemaType: resolvePublicationJsonLdType(publication),
 		relatedInProject: relatedItems(allPublications, publication),
 		projectPath: researchProjectPath(publication.project)
 	};

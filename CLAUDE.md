@@ -27,11 +27,14 @@ npm run test:e2e:ui  # Playwright tests with UI
 Checks that read the **build output** (run `npm run build` first):
 
 ```bash
-npm run check:build     # bundle budget + prerender coverage (both run in CI)
+npm run check:build     # bundle budget + prerender coverage + structured data (all run in CI)
 npm run check:bundle    # heavy libs stay dynamically imported; entry/route size budgets;
                         # no dataset in the app shell (entry + root layout); no route
                         # downloads a site module it never imports
 npm run check:prerender # every URL in sitemap.xml resolves to a page that shipped
+npm run check:structured-data # every JSON-LD block parses; every URL in it is absolute
+                        # on https://www.frederickmadore.com/ (or external); every
+                        # date is valid ISO 8601
 npm run check:lighthouse # Lighthouse (mobile, the PageSpeed Insights lab profile) on five
                         # representative pages, asserted against lighthouserc.yml — score
                         # floors, Core Web Vitals and resource budgets. Serves `build/` with
@@ -375,9 +378,18 @@ There is no APA/MLA/Chicago generator. Adding one belongs here, where the site a
 
 ### SEO
 
-- `SEO.svelte` component for page metadata
-- `seoUtils.ts` generates JSON-LD structured data
-- `useJsonLdScript()` from `jsonLd.svelte.ts` for injecting JSON-LD scripts (used by layout and all detail pages)
+- `SEO.svelte` component for page metadata, and the page's WebPage schema
+- `seoUtils.ts` generates SEO descriptions and keywords, and re-exports `jsonLdSchemas.ts`
+- JSON-LD: `jsonLdSchemas.ts` (site and page factories: WebSite, Person, WebPage,
+  grants), `entityJsonLd.ts` (one builder per record type, run in each `[id]`
+  route's server load), `breadcrumbJsonLd.ts` (BreadcrumbList, from route paths,
+  starting at Home), all rendered into `<svelte:head>` by `JsonLd.svelte`
+- JSON-LD addresses are absolute: build them with `siteUrl()` from
+  `siteHelpers.ts`, never from Kit's `base`, which `paths.relative` renders as
+  `.` or `..`. Record dates go through `formatJsonLdDate()` at the precision the
+  data has. A record node's `@id` is its page URL + `#record` (`recordEntityId`),
+  named by the page's WebPage `mainEntity`. `npm run check:structured-data`
+  enforces both rules on the build
 - RSS at `/rss.xml`, sitemap at `/sitemap.xml`
 
 ### Network Visualisations

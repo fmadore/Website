@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SEO from '$lib/SEO.svelte';
 	import { pageTitle } from '$lib/utils/siteHelpers';
+	import { recordEntityId } from '$lib/utils/jsonLdSchemas';
 	import MetaTags from '$lib/components/digital-humanities/MetaTags.svelte';
 	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
 	import DhProjectRail from '$lib/components/digital-humanities/DhProjectRail.svelte';
@@ -21,8 +22,8 @@
 	// Breadcrumb trail — the shell prints an editorial back-link from `section`;
 	// this array is what feeds the breadcrumb JSON-LD, unchanged.
 	const breadcrumbItems = $derived([
-		{ label: 'Digital Humanities', href: `${base}/digital-humanities` },
-		{ label: project.title, href: `${base}/digital-humanities/${project.id}` }
+		{ label: 'Digital Humanities', path: '/digital-humanities' },
+		{ label: project.title, path: `/digital-humanities/${project.id}` }
 	]);
 
 	/**
@@ -61,6 +62,7 @@
 	keywords={project.seoKeywords?.join(', ') ||
 		[project.title, 'Digital Humanities', 'Frédérick Madore', ...(project.skills || [])].join(', ')}
 	ogImage={project.heroImageUrl ? `${base}${project.heroImageUrl}` : `${base}${project.imageUrl}`}
+	mainEntity={recordEntityId(`/digital-humanities/${project.id}`)}
 />
 
 <!-- Zotero/COinS metadata — mirrors the other detail routes' MetaTags. -->

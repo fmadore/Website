@@ -29,6 +29,7 @@
 	import {
 		createActivitySEODescription,
 		createActivitySEOKeywords,
+		recordEntityId,
 		truncateTitle
 	} from '$lib/utils/seoUtils';
 	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
@@ -53,8 +54,8 @@
 	// it takes the record's whole title. Only the <title> element below stays
 	// truncated: that one is rendered in a tab.
 	const breadcrumbItems = $derived([
-		{ label: 'Activities', href: `${base}/activities` },
-		{ label: displayTitle, href: `${base}/activities/${activity.id}` }
+		{ label: 'Activities', path: '/activities' },
+		{ label: displayTitle, path: `/activities/${activity.id}` }
 	]);
 
 	// Breadcrumb + activity JSON-LD injection is handled by RecordLayout, under
@@ -173,6 +174,7 @@
 	ogImage={activity.heroImage?.src
 		? `${base}/${activity.heroImage.src}`
 		: `${base}/images/Profile-picture.webp`}
+	mainEntity={recordEntityId(`/activities/${activity.id}`)}
 />
 
 <!-- MetaTags Component for Zotero blog post detection -->

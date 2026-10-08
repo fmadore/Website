@@ -71,10 +71,11 @@ its share — so the step is a convenience, not the only route.
 
 	// Define breadcrumb items - reactive to year changes
 	let breadcrumbItems = $derived([
-		{ label: 'Activities', href: resolve('/activities') },
+		{ label: 'Activities', href: resolve('/activities'), path: '/activities' },
 		{
 			label: String(year),
-			href: resolve('/activities/year/[year]', { year: String(year) })
+			href: resolve('/activities/year/[year]', { year: String(year) }),
+			path: `/activities/year/${year}`
 		}
 	]);
 

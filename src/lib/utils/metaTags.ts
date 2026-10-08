@@ -128,15 +128,14 @@ export type CoinsField = readonly [key: string, value: string | undefined];
  * Serializes an ordered COinS field list into an OpenURL context string,
  * seeded with the scaffold params from {@link createCoinsParams}.
  *
- * Uses `URLSearchParams.set` (not `append`), preserving the historical
- * behaviour that a repeated key (e.g. `rft.au` pushed once per author by the
- * publications component) keeps its first insertion position but the last
- * value wins.
+ * Appends, so a repeatable key keeps every value in order: OpenURL repeats
+ * `rft.au` once per author. It used `URLSearchParams.set`, which kept only the
+ * last author of every co-authored work.
  */
 export function buildCoins(fields: ReadonlyArray<CoinsField>, rfrId?: string): string {
 	const params = createCoinsParams(rfrId);
 	for (const [key, value] of fields) {
-		if (value) params.set(key, value);
+		if (value) params.append(key, value);
 	}
 	return params.toString();
 }

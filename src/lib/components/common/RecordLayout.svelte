@@ -59,7 +59,7 @@ Usage:
 	import {
 		buildBreadcrumbJsonLd,
 		BREADCRUMB_SCRIPT_ID,
-		type BreadcrumbNavItem
+		type BreadcrumbTrailItem
 	} from '$lib/utils/breadcrumbJsonLd';
 
 	interface Props {
@@ -80,8 +80,8 @@ Usage:
 		deck?: Snippet;
 		/** Trailing byline clause, printed after a full stop (e.g. "Preface by X"). */
 		bylineSuffix?: string;
-		/** Breadcrumb trail feeding the breadcrumb JSON-LD. */
-		breadcrumbItems: BreadcrumbNavItem[];
+		/** Breadcrumb trail, as route paths, feeding the breadcrumb JSON-LD. */
+		breadcrumbItems: BreadcrumbTrailItem[];
 		/** Script id for the entity JSON-LD (e.g. 'communication-json-ld'). */
 		jsonLdScriptId: string;
 		/** Precomputed JSON-LD string from the route's load function. */

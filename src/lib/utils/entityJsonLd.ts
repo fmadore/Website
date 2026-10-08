@@ -26,8 +26,25 @@ import type {
 } from '$lib/types/jsonld';
 import { formatAuthor, formatAuthors, formatPlaces, formatJsonLdDate } from '$lib/types/jsonld';
 import { author, address, website } from '$lib/data/siteConfig';
+import { siteUrl } from '$lib/utils/siteHelpers';
+import { recordEntityId, webPageId } from '$lib/utils/jsonLdSchemas';
 import { stripHtml } from '$lib/utils/textUtils';
 import { splitNames } from '$lib/utils/nameUtils';
+
+/**
+ * The identity every record node carries: its own `@id`, its page as `url`,
+ * and that page's WebPage node as `mainEntityOfPage` — the other half of the
+ * `mainEntity` link the page's own schema makes back to the record. All
+ * absolute on the production origin: structured data is read out of context,
+ * and Kit's `base` (`.` or `..` under `paths.relative`) means nothing there.
+ */
+function recordIdentity(path: string) {
+	return {
+		'@id': recordEntityId(path),
+		url: siteUrl(path),
+		mainEntityOfPage: { '@id': webPageId(path) }
+	};
+}
 
 /**
  * Abstracts may carry inline markup (`<i>` around transliterated terms).
@@ -74,8 +91,11 @@ function formatEditorString(editors: string): JsonLdAgent[] {
 /** Publication as enriched by the data loader (adds the source directory). */
 type PublicationWithSource = Publication & { sourceDirType: string };
 
-/** Map a publication's source directory / type to its schema.org @type. */
-function resolvePublicationJsonLdType(
+/**
+ * Map a publication's source directory / type to its schema.org @type. Also
+ * the record page's FAIR Signposting `type` link, so the two never disagree.
+ */
+export function resolvePublicationJsonLdType(
 	publication: PublicationWithSource
 ): PublicationJsonLd['@type'] {
 	switch (publication.sourceDirType) {
@@ -106,22 +126,17 @@ function resolvePublicationJsonLdType(
  *
  * Extracted verbatim from `publications/[id]/+page.ts` so the loader stays a
  * thin lookup and the (pure) schema-construction logic can be unit-tested.
- * `base` is the SvelteKit base path, passed in to keep this util free of
- * framework runtime imports.
  */
-export function buildPublicationJsonLd(
-	publication: PublicationWithSource,
-	base = ''
-): PublicationJsonLd {
+export function buildPublicationJsonLd(publication: PublicationWithSource): PublicationJsonLd {
 	const resolvedType = resolvePublicationJsonLdType(publication);
 
 	const jsonLdObject: Partial<PublicationJsonLd> = {
 		'@context': 'https://schema.org',
 		'@type': resolvedType,
+		...recordIdentity(`/publications/${publication.id}`),
 		name: publication.title,
 		headline: publication.title,
 		description: plainAbstract(publication.abstract),
-		url: `${base}/publications/${publication.id}`,
 		copyrightYear: publication.year,
 		inLanguage: publication.language,
 		// Only asserted, never denied: a record without the flag is one whose
@@ -138,9 +153,7 @@ export function buildPublicationJsonLd(
 		? formatPeopleWithSiteIdentity(publication.authors)
 		: undefined;
 
-	const formattedDatePublished = publication.dateISO
-		? `${publication.dateISO}T00:00:00+01:00`
-		: undefined;
+	const formattedDatePublished = formatJsonLdDate(publication.dateISO);
 	const publisherOrg = publication.publisher
 		? { '@type': 'Organization' as const, name: publication.publisher }
 		: undefined;
@@ -248,7 +261,7 @@ export function buildPublicationJsonLd(
 	}
 
 	if (publication.image) {
-		jsonLdObject.image = `${base}/${publication.image}`;
+		jsonLdObject.image = siteUrl(publication.image);
 	}
 	if (publication.tags) {
 		jsonLdObject.keywords = publication.tags.join(', ');
@@ -270,18 +283,15 @@ export function buildPublicationJsonLd(
  * Academic presentations/talks are modelled as Events with the presenter(s)
  * as performers. Extracted verbatim from `communications/[id]/+page.ts`.
  */
-export function buildCommunicationJsonLd(communication: Communication, base = ''): EventJsonLd {
+export function buildCommunicationJsonLd(communication: Communication): EventJsonLd {
 	const jsonLdObject: Partial<EventJsonLd> = {
 		'@context': 'https://schema.org',
 		'@type': 'Event',
+		...recordIdentity(`/communications/${communication.id}`),
 		name: communication.title,
 		description: plainAbstract(communication.abstract),
-		url: `${base}/communications/${communication.id}`
+		startDate: formatJsonLdDate(communication.dateISO)
 	};
-
-	if (communication.dateISO) {
-		jsonLdObject.startDate = formatJsonLdDate(communication.dateISO);
-	}
 
 	if (communication.location || communication.country) {
 		const locationParts = [communication.location, communication.country]
@@ -304,10 +314,9 @@ export function buildCommunicationJsonLd(communication: Communication, base = ''
 		jsonLdObject.performer = formatPeopleWithSiteIdentity(communication.authors);
 	}
 
-	if (communication.heroImage?.src) {
-		jsonLdObject.image = `${base}/${communication.heroImage.src}`;
-	} else if (communication.image) {
-		jsonLdObject.image = `${base}/${communication.image}`;
+	const image = communication.heroImage?.src || communication.image;
+	if (image) {
+		jsonLdObject.image = siteUrl(image);
 	}
 
 	if (communication.tags) {
@@ -326,8 +335,8 @@ export function buildCommunicationJsonLd(communication: Communication, base = ''
 			name: communication.title,
 			genre: 'Poster',
 			encodingFormat: 'application/pdf',
-			url: `${base}/${communication.poster.pdf}`,
-			thumbnailUrl: `${base}/${communication.poster.image}`
+			url: siteUrl(communication.poster.pdf),
+			thumbnailUrl: siteUrl(communication.poster.image)
 		};
 	}
 
@@ -340,22 +349,23 @@ export function buildCommunicationJsonLd(communication: Communication, base = ''
  * Projects with an external link are modelled as WebSite, otherwise as
  * CreativeWork. Extracted verbatim from `digital-humanities/[id]/+page.ts`.
  */
-export function buildDhProjectJsonLd(
-	project: DigitalHumanitiesProject,
-	base = ''
-): CreativeWorkJsonLd {
+export function buildDhProjectJsonLd(project: DigitalHumanitiesProject): CreativeWorkJsonLd {
+	const identity = recordIdentity(`/digital-humanities/${project.id}`);
 	const jsonLdObject: Partial<CreativeWorkJsonLd> = {
 		'@context': 'https://schema.org',
 		'@type': project.linkUrl ? 'WebSite' : 'CreativeWork',
+		...identity,
 		name: project.title,
 		description: project.seoDescription || project.shortDescription,
-		url: project.linkUrl || `${base}/digital-humanities/${project.id}`
+		// A project with its own site is that site; the page here describes it.
+		url: project.linkUrl || identity.url
 	};
 
 	jsonLdObject.author = [siteAuthorIdentity()];
 
-	if (project.heroImageUrl || project.imageUrl) {
-		jsonLdObject.image = `${base}/${project.heroImageUrl || project.imageUrl}`;
+	const image = project.heroImageUrl || project.imageUrl;
+	if (image) {
+		jsonLdObject.image = siteUrl(image);
 	}
 
 	if (project.seoKeywords && project.seoKeywords.length > 0) {
@@ -371,18 +381,15 @@ export function buildDhProjectJsonLd(
  * Build the schema.org BlogPosting JSON-LD object for an activity page.
  * Extracted verbatim from `activities/[id]/+page.ts`.
  */
-export function buildActivityJsonLd(activity: Activity, base = ''): BlogPostingJsonLd {
-	// Format date with time and timezone (Berlin CET = UTC+1)
-	// Note: This assumes CET. If activity dates span DST changes, logic might need adjustment.
-	const formattedDatePublished = `${activity.dateISO}T00:00:00+01:00`;
-
+export function buildActivityJsonLd(activity: Activity): BlogPostingJsonLd {
 	const jsonLdObject: Partial<BlogPostingJsonLd> = {
 		'@context': 'https://schema.org',
 		'@type': 'BlogPosting',
+		...recordIdentity(`/activities/${activity.id}`),
 		name: activity.title,
 		headline: activity.title,
 		description: activity.description,
-		datePublished: formattedDatePublished
+		datePublished: formatJsonLdDate(activity.dateISO)
 	};
 
 	// Site owner as author, with position + affiliation for the blog register
@@ -396,7 +403,7 @@ export function buildActivityJsonLd(activity: Activity, base = ''): BlogPostingJ
 	};
 
 	if (activity.heroImage?.src) {
-		jsonLdObject.image = `${base}/${activity.heroImage.src}`;
+		jsonLdObject.image = siteUrl(activity.heroImage.src);
 	}
 	if (activity.tags) {
 		jsonLdObject.keywords = activity.tags.join(', ');
