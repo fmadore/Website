@@ -385,8 +385,9 @@ proposed on 2026-09-29). The token goes in the `<head>` of `src/app.html` as
 so the CSP does not apply to it. It is registered for
 `https://www.frederickmadore.com` at
 <https://developer.chrome.com/origintrials/#/register_trial/4163014905550602241>
-(Google sign-in). **Not added yet (2026-10-08): no token has been issued.** Chrome
-ignores an expired token silently. Before expiry Google emails a renewal link, and
+(Google sign-in). The token was added on 2026-10-08 and **expires 2027-03-30**
+(its `expiry`, decoded from the base64 payload). Chrome ignores an expired token
+silently. Before expiry Google emails a renewal link, and
 renewing asks for feedback again. When the trial ends, remove the tag. CI passes
 the experimental-features flag, so `check:agentic` proves the tools whether or
 not the token is current. PageSpeed Insights shows whether it is: with a live

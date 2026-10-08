@@ -27,6 +27,16 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
+		<!-- WebMCP origin trial (Chrome 149–156): exposes `document.modelContext`, and
+		     with it the tools in src/lib/utils/webmcp.ts, to agents in stock Chrome.
+		     Registered for https://www.frederickmadore.com; expires 2027-03-30. A
+		     meta tag, not a script, so the CSP does not apply. Renewal and removal:
+		     CLAUDE.md § WebMCP. -->
+		<meta
+			http-equiv="origin-trial"
+			content="AoOLx8tcW2PvfonuEhvZr3UKZ7jZGCxm6lwHw8B0y0W7Ia3Cqa5UaWSQc/bgMG14r3DOP6OEmueXf4z4bFVYNAsAAABXeyJvcmlnaW4iOiJodHRwczovL3d3dy5mcmVkZXJpY2ttYWRvcmUuY29tOjQ0MyIsImZlYXR1cmUiOiJXZWJNQ1AiLCJleHBpcnkiOjE4MDYzNjQ4MDB9"
+		/>
+
 		<!-- Security: the Content Security Policy is `kit.csp` in svelte.config.js;
 		     Kit writes it here as a <meta>, with the hashes of the inline scripts.
 		     Editing the theme script below is safe: its hash is read from this file. -->
