@@ -40,6 +40,12 @@ npm run check:lighthouse # Lighthouse (mobile, the PageSpeed Insights lab profil
                         # floors, Core Web Vitals and resource budgets. Serves `build/` with
                         # `serve` like the E2E suite; ci.yml runs it on every PR
                         # and on main, alongside the deploy
+npm run check:agentic   # Lighthouse 13's Agentic Browsing category (LHCI's Lighthouse 12
+                        # predates it) on three pages, Chrome's experimental web platform
+                        # features on: category 1, and exactly the WebMCP tools in
+                        # utils/webmcpToolNames.ts listed. Same `serve`, same `lighthouse`
+                        # job in ci.yml. Locally CHROME_PATH must name a Chrome ≥ 149
+                        # (WebMCP); on Windows the CLI's exit 1 after the report is ignored
 npm run check:links     # external links: DOIs via the Handle System, rest over HTTP
 npm run check:citations # OpenAlex sweep for new citations + works missing from the site,
                         # then a full-text sweep of Google Books, HAL and Wikipedia
@@ -358,6 +364,33 @@ handler. A new inline script or handler anywhere is therefore blocked, and the
 E2E fixture fails any test whose page reports a CSP violation. A new external
 origin (an embed, an API) needs its host added to the matching directive.
 
+### WebMCP
+
+`$lib/utils/webmcp.ts` registers the site's agent tools with `document.modelContext`;
+the root layout imports it only where that exists. The tools are the MCP server's
+twelve (same names, arguments and records: both read `/api/*.json` through the
+shared `utils/apiDocumentLoader.ts`, `apiSearch.ts` and `apiCitation.ts`) plus
+`show_publications`, which opens the publications index on a filtered view through
+`goto`. The list itself is `utils/webmcpToolNames.ts`, which is also what
+`check:agentic` expects Lighthouse to see. Two runtime rules: `execute` returns
+plain JSON-serialisable values, which the browser serialises; and a failure is
+_returned_ as `{ error }`, phrased as the way to recover, because a rejection
+reaches the agent only as a bare `UnknownError`.
+
+**Origin trial.** Stock Chrome exposes `document.modelContext` only to pages that
+carry the WebMCP origin-trial token (Chrome 149–156; an extension to 162 was
+proposed on 2026-09-29). The token goes in the `<head>` of `src/app.html` as
+`<meta http-equiv="origin-trial" content="…">`, a meta tag rather than a script,
+so the CSP does not apply to it. It is registered for
+`https://www.frederickmadore.com` at
+<https://developer.chrome.com/origintrials/#/register_trial/4163014905550602241>
+(Google sign-in). **Not added yet (2026-10-08): no token has been issued.** Chrome
+ignores an expired token silently. Before expiry Google emails a renewal link, and
+renewing asks for feedback again. When the trial ends, remove the tag. CI passes
+the experimental-features flag, so `check:agentic` proves the tools whether or
+not the token is current. PageSpeed Insights shows whether it is: with a live
+token its three WebMCP audits turn from not applicable to scored.
+
 ### Filter Implementation
 
 Entity-index pages instantiate `new EntityFilterSystem(config)` from `$lib/utils/entityFilterSystem.svelte.ts` and read/mutate it directly (no store `$` prefix):
@@ -372,7 +405,7 @@ Entity-index pages instantiate `new EntityFilterSystem(config)` from `$lib/utils
 Two modules, both pure (their only imports are types plus `nameUtils`, `date-formatter` and `publicationTypeLabels`), so `mcp/` bundles them rather than reimplementing them:
 
 - `bibtexGenerator.ts` — `generateBibtex()`, the only export format the site produces
-- `citationFormatter.ts` — `formatCitation()`, which builds the **display** reference as HTML, not an export format; `formatReferenceHtml()`, the whole reference as one HTML string (host italic from `formatCitation`, title italic only for a book — the same rule the CV sets by), which the record rail prints; and `formatReferenceText()`, that HTML stripped to plain text — what the index row's `Cite` button and the record rail's "Copy reference" put on the clipboard (via `utils/clipboard.svelte.ts`, whose `createCopyFeedback` owns the three-state control), and what `mcp/src/citations.ts` hands to assistants. One formatter, three products: page, clipboard and server can never disagree about the same work.
+- `citationFormatter.ts` — `formatCitation()`, which builds the **display** reference as HTML, not an export format; `formatReferenceHtml()`, the whole reference as one HTML string (host italic from `formatCitation`, title italic only for a book — the same rule the CV sets by), which the record rail prints; and `formatReferenceText()`, that HTML stripped to plain text — what the index row's `Cite` button and the record rail's "Copy reference" put on the clipboard (via `utils/clipboard.svelte.ts`, whose `createCopyFeedback` owns the three-state control), and what `utils/apiCitation.ts` hands to assistants (the MCP server and the WebMCP tools). One formatter, three products: page, clipboard and agent can never disagree about the same work.
 
 There is no APA/MLA/Chicago generator. Adding one belongs here, where the site and the MCP server both pick it up.
 

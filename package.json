@@ -32,6 +32,7 @@
 		"check:structured-data": "node scripts/check-structured-data.mjs",
 		"check:build": "npm run check:images && npm run check:bundle && npm run check:prerender && npm run check:structured-data",
 		"check:lighthouse": "npx --yes @lhci/cli@0.15.1 autorun --config=lighthouserc.yml",
+		"check:agentic": "node scripts/check-agentic.mjs",
 		"mcp:build": "npm run build -w mcp",
 		"mcp:check": "npm run check -w mcp",
 		"mcp:pack": "npm run pack -w mcp",

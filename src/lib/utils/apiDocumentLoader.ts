@@ -1,4 +1,4 @@
-import { validateApiDocument, type ApiDocumentName } from '../../src/lib/apiContract';
+import { validateApiDocument, type ApiDocumentName } from '$lib/apiContract';
 
 interface LoaderOptions {
 	base: string;

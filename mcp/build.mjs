@@ -4,10 +4,11 @@ import { fileURLToPath } from 'node:url';
 /**
  * Bundles the server into a single executable file.
  *
- * A bundler rather than plain `tsc` because the server shares the site's own
- * `citationFormatter` (see src/citations.ts), which imports through the `$lib`
- * alias. Resolving that alias keeps citation formatting and search normalization
- * shared with the site.
+ * A bundler rather than plain `tsc` because the server is built from the site's
+ * own modules, imported through the `$lib` alias: the document loader, search
+ * and citation code in `src/lib/utils/api*.ts`, which the site's WebMCP tools
+ * run too. Resolving that alias is what keeps the two agent surfaces, and the
+ * site's own citation buttons, giving the same answers.
  */
 const entries = ['index', 'http', 'server'];
 

@@ -2,7 +2,8 @@
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { fade } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
 	import { motionDuration } from '$lib/utils/motion';
@@ -56,7 +57,8 @@
 	});
 
 	// WebMCP is experimental and uncommon. Keep its implementation out of the
-	// shared entry chunk and load it only in browsers that expose the API.
+	// shared entry chunk and load it only in browsers that expose the API
+	// (Chrome under the WebMCP origin trial, or with the experimental flag).
 	$effect(() => {
 		if (!browser || !('modelContext' in document)) return;
 
@@ -65,7 +67,11 @@
 		void import('$lib/utils/webmcp')
 			.then(({ registerWebMcp }) => {
 				if (disposed) return;
-				unregister = registerWebMcp();
+				unregister = registerWebMcp({
+					// show_publications hands over a site path it built (`/publications?…`).
+					// eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed site path
+					navigate: (path) => goto(`${base}${path}`)
+				});
 			})
 			.catch((error) => {
 				if (import.meta.env.DEV) console.warn('WebMCP unavailable:', error);
