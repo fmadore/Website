@@ -194,6 +194,19 @@ describe('existing helpers still behave (regression)', () => {
 		expect(getFullUrl('https://example.org', '', undefined)).toBeUndefined();
 	});
 
+	it('getFullUrl joins an absolute base path but never a page-relative one', () => {
+		// Kit hands prerendered pages a relative `base` ('.', '..').
+		expect(getFullUrl('https://example.org', '..', 'files/a.pdf')).toBe(
+			'https://example.org/files/a.pdf'
+		);
+		expect(getFullUrl('https://example.org', '.', '/files/a.pdf')).toBe(
+			'https://example.org/files/a.pdf'
+		);
+		expect(getFullUrl('https://example.org', '/site', 'files/a.pdf')).toBe(
+			'https://example.org/site/files/a.pdf'
+		);
+	});
+
 	it('deduplicateAndFilterTags removes duplicates and empty content', () => {
 		expect(
 			deduplicateAndFilterTags([

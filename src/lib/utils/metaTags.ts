@@ -43,6 +43,11 @@ export function createAuthorTags(
 
 /**
  * Generates a full URL from a relative path, using the site origin and base path.
+ *
+ * Kit's `base` is page-relative during prerender ('.', '..'), since
+ * `paths.relative` is on by default, and a relative prefix cannot follow an
+ * origin: it baked `https://www.frederickmadore.com../images/…` into the head
+ * of every talk and activity page. Only an absolute base path is joined.
  */
 export function getFullUrl(
 	origin: string,
@@ -51,7 +56,8 @@ export function getFullUrl(
 ): string | undefined {
 	if (!path) return undefined;
 	if (path.startsWith('http://') || path.startsWith('https://')) return path;
-	return `${origin}${basePath}${path.startsWith('/') ? '' : '/'}${path}`;
+	const prefix = basePath.startsWith('/') ? basePath : '';
+	return `${origin}${prefix}${path.startsWith('/') ? '' : '/'}${path}`;
 }
 
 /**
