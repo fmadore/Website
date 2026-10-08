@@ -35,7 +35,8 @@ npm run check:prerender # every URL in sitemap.xml resolves to a page that shipp
                         # every Markdown twin is announced and shipped; llms.txt resolves
 npm run check:structured-data # every JSON-LD block parses; every URL in it is absolute
                         # on https://www.frederickmadore.com/ (or external); every
-                        # date is valid ISO 8601
+                        # date is valid ISO 8601; every Signposting describedby is
+                        # typed and ships, and every publication .bib is linked
 npm run check:lighthouse # Lighthouse (mobile, the PageSpeed Insights lab profile) on five
                         # representative pages, asserted against lighthouserc.yml — score
                         # floors, Core Web Vitals and resource budgets. Serves `build/` with
@@ -406,7 +407,7 @@ Entity-index pages instantiate `new EntityFilterSystem(config)` from `$lib/utils
 
 Two modules, both pure (their only imports are types plus `nameUtils`, `date-formatter` and `publicationTypeLabels`), so `mcp/` bundles them rather than reimplementing them:
 
-- `bibtexGenerator.ts` — `generateBibtex()`, the only export format the site produces
+- `bibtexGenerator.ts` — `generateBibtex()`, the only export format the site produces; also prerendered per record as `/publications/<id>.bib` (`routes/publications/[id].bib`)
 - `citationFormatter.ts` — `formatCitation()`, which builds the **display** reference as HTML, not an export format; `formatReferenceHtml()`, the whole reference as one HTML string (host italic from `formatCitation`, title italic only for a book — the same rule the CV sets by), which the record rail prints; and `formatReferenceText()`, that HTML stripped to plain text — what the index row's `Cite` button and the record rail's "Copy reference" put on the clipboard (via `utils/clipboard.svelte.ts`, whose `createCopyFeedback` owns the three-state control), and what `utils/apiCitation.ts` hands to assistants (the MCP server and the WebMCP tools). One formatter, three products: page, clipboard and agent can never disagree about the same work.
 
 There is no APA/MLA/Chicago generator. Adding one belongs here, where the site and the MCP server both pick it up.
@@ -425,6 +426,11 @@ There is no APA/MLA/Chicago generator. Adding one belongs here, where the site a
   data has. A record node's `@id` is its page URL + `#record` (`recordEntityId`),
   named by the page's WebPage `mainEntity`. `npm run check:structured-data`
   enforces both rules on the build
+- FAIR Signposting on publication pages (`signposting.ts`, rendered by
+  `publications/MetaTags.svelte`): `type` (schema.org type + `AboutPage`),
+  `describedby` the record's `.bib`, `author` the ORCID, and the DOI as
+  `related`, never `cite-as`, which must resolve to the page itself and a DOI
+  resolves to the publisher
 - RSS at `/rss.xml`, sitemap at `/sitemap.xml`
 
 ### Markdown twins and llms.txt

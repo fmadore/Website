@@ -5,6 +5,10 @@
  *
  * - `type`: the work's schema.org type, then `AboutPage`, because the record
  *   page describes the work rather than being it.
+ * - `describedby`: the record's BibTeX, shipped beside the page by
+ *   `routes/publications/[id].bib`. The spec requires the media type on the
+ *   link. Its recommended back-link (`describes`, from the metadata to the
+ *   page) can only travel in an HTTP header, which GitHub Pages cannot set.
  * - `author`: the site owner's ORCID, when he is credited. The spec asks for
  *   author identifiers only where they exist; co-authors' are not recorded.
  * - `related`: the DOI. Not `cite-as`: the spec forbids a `cite-as` link to "a
@@ -12,25 +16,37 @@
  *   DOI resolves to the publisher's landing page, not to this one. Identifiers
  *   associated with the work that resolve elsewhere take `related` instead.
  *
- * `license` is left out because no record carries a licence, and `describedby`
- * because there is no per-record metadata document for it to point at.
+ * `license` is left out because no record carries a licence.
  */
 import type { Publication } from '$lib/types';
 import { author, socialLinks } from '$lib/data/siteConfig';
 import { getContributorName } from '$lib/utils/contributor';
+import { siteUrl } from '$lib/utils/siteHelpers';
 
 export interface Signpost {
-	rel: 'type' | 'author' | 'related';
+	rel: 'type' | 'describedby' | 'author' | 'related';
 	href: string;
+	/** Media type of the target; the spec requires it on `describedby`. */
+	type?: string;
+}
+
+/** Where a publication's BibTeX record ships: beside its page. */
+export function publicationBibtexPath(id: string): string {
+	return `/publications/${id}.bib`;
 }
 
 export function publicationSignposts(
-	publication: Pick<Publication, 'authors' | 'doi'>,
+	publication: Pick<Publication, 'id' | 'authors' | 'doi'>,
 	schemaType: string
 ): Signpost[] {
 	const links: Signpost[] = [
 		{ rel: 'type', href: `https://schema.org/${schemaType}` },
-		{ rel: 'type', href: 'https://schema.org/AboutPage' }
+		{ rel: 'type', href: 'https://schema.org/AboutPage' },
+		{
+			rel: 'describedby',
+			href: siteUrl(publicationBibtexPath(publication.id)),
+			type: 'application/x-bibtex'
+		}
 	];
 	if (publication.authors?.some((contributor) => getContributorName(contributor) === author.name)) {
 		links.push({ rel: 'author', href: socialLinks.orcid.url });
