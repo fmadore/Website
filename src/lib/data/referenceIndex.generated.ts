@@ -204,6 +204,30 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "Auditorium Parco della Musica, Rome",
 		"country": "Italy"
 	},
+	"beyond-keywords-entity-linking-jcdl-2026": {
+		"id": "beyond-keywords-entity-linking-jcdl-2026",
+		"itemType": "communication",
+		"title": "Beyond Keywords: Training-Free Entity Linking for Research Metadata via Cross-Lingual Retrieval Consensus",
+		"authors": [
+			"Jiayu Yang",
+			"Durgesh Nandini",
+			"Frédérick Madore",
+			"Oliver Baumann",
+			"Neeraj Thandayan Viswajith",
+			"Mirco Schönfeld"
+		],
+		"type": "conference",
+		"date": "15 October 2026",
+		"dateISO": "2026-10-15",
+		"year": 2026,
+		"image": "images/communications/jcdl-2026.webp",
+		"heroImage": {
+			"src": "images/communications/jcdl-2026.webp"
+		},
+		"conference": "ACM/IEEE Joint Conference on Digital Libraries (JCDL 2026)",
+		"location": "Embassy Suites by Hilton Dallas Frisco Hotel & Convention Center, Frisco, Texas",
+		"country": "United States"
+	},
 	"charting-new-territory-digital-humanities-ki-african-studies-2026": {
 		"id": "charting-new-territory-digital-humanities-ki-african-studies-2026",
 		"itemType": "publication",

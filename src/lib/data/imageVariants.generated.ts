@@ -95,6 +95,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'communications/islam-peripheries-open-up-2026.webp': [781, 591],
 	'communications/islam-university-campuses-cote-divoire-2019-hero.webp': [900, 1258],
 	'communications/islam-university-campuses-cote-divoire-2019.webp': [600, 839],
+	'communications/jcdl-2026.webp': [150, 150],
 	'communications/lasdel-logo-hero.webp': [900, 900],
 	'communications/lasdel-logo.webp': [600, 600],
 	'communications/MANSA-logo-hero.webp': [900, 989],
