@@ -156,6 +156,15 @@ export interface EventJsonLd extends BaseJsonLd {
 	organizer?: JsonLdOrganization;
 	performer?: JsonLdAgent[];
 	eventAttendanceMode?: string;
+	/** A work exhibited at the event: a poster session's poster. */
+	workFeatured?: {
+		'@type': 'DigitalDocument';
+		name: string;
+		genre: 'Poster';
+		encodingFormat: 'application/pdf';
+		url: string;
+		thumbnailUrl?: string;
+	};
 }
 
 export interface PresentationDigitalDocumentJsonLd extends BaseJsonLd {

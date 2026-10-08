@@ -17,7 +17,14 @@ export const posterTemplate: Communication = {
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://example.com/event', // URL to the event page, poster PDF, or related resources
 	urlLabel: 'Event Website', // Optional: custom label for the primary URL button
-	image: 'images/communications/poster-image.webp', // Path to poster image
+	poster: {
+		// Optional: the poster itself, printed as a plate on the detail page and linked to the PDF
+		pdf: 'files/poster-template-id-poster.pdf', // Export from PowerPoint with the title and authors set in File › Info
+		image: 'images/communications/poster-template-id-poster.webp', // The PDF rendered 1600px wide (pdftoppm + vips)
+		alt: 'What the sheet shows: layout, sections, figures. Not a transcript; the PDF carries the text.',
+		caption: 'Poster as presented, A0 portrait (841 × 1189 mm)' // Optional, without the figure number
+	},
+	image: 'images/communications/poster-image.webp', // Path to the list image (event or venue logo)
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/communications/poster-hero.webp',

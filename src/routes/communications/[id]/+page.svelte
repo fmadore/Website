@@ -19,6 +19,8 @@
 	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
 	import MetaTags from '$lib/components/communications/MetaTags.svelte';
 	import { inView } from '$lib/actions/inView';
+	import { plateFallback } from '$lib/actions/plateFallback';
+	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
 
 	// Get communication from the page data
 	let { data } = $props();
@@ -79,14 +81,34 @@
 	const participants = $derived(communication.participants ?? []);
 	const tags = $derived(communication.tags?.filter(Boolean) ?? []);
 
-	// Does this record have a document at all? A talk with no abstract, no deck
-	// and no programme prints only its masthead and rail; the reading column is
-	// withheld rather than opening an empty grid interval. The four clauses
-	// mirror the column's four sections — the venue map is not among them any
-	// more, which is what makes those 11 talks a masthead and a rail rather
-	// than a screen of map.
+	// The poster, set as a plate at the reading column's width: the whole
+	// column below --lg, about 580px beside the rail above it. The preview is
+	// the sheet rendered 1600px wide; the PDF behind the link is the copy a
+	// reader zooms into.
+	const POSTER_SIZES = '(max-width: 1024px) 100vw, 580px';
+	const poster = $derived(communication.poster);
+	const posterSrc = $derived(resolveImagePath(poster?.image, base));
+	const posterSrcset = $derived(buildSrcset(posterSrc));
+	const posterSize = $derived(imageDimensions(posterSrc));
+	// The rail's venue plate is Fig. 1 whenever the record has one, and below
+	// --lg it also comes first in reading order, so the poster numbers after it.
+	const posterFigure = $derived(
+		communication.heroImage?.src || communication.image ? 'Fig. 2.' : 'Fig. 1.'
+	);
+	const posterCaption = $derived.by(() => {
+		const caption = typesetQuotes((poster?.caption ?? 'Poster as presented').trim());
+		return `${posterFigure} ${caption}${/[.!?…]$/.test(caption) ? '' : '.'}`;
+	});
+
+	// Does this record have a document at all? A talk with no abstract, no
+	// poster, no deck and no programme prints only its masthead and rail; the
+	// reading column is withheld rather than opening an empty grid interval.
+	// The clauses mirror the column's five sections — the venue map is not
+	// among them any more, which is what makes those 11 talks a masthead and a
+	// rail rather than a screen of map.
 	const hasDocument = $derived(
 		abstractParagraphs.length > 0 ||
+			Boolean(poster) ||
 			Boolean(communication.slidesUrl) ||
 			papers.length > 0 ||
 			participants.length > 0
@@ -227,6 +249,34 @@
 		</section>
 	{/if}
 
+	<!-- Poster — the sheet itself, as a plate. The plate opens the PDF, which is
+	     the copy a reader zooms into; the rail carries the download. -->
+	{#if poster && posterSrc}
+		<section class="section comm-section" id="poster" aria-labelledby="comm-poster-head">
+			<div class="section-head">
+				<h2 id="comm-poster-head" class="section-title">Poster</h2>
+			</div>
+			<figure class="comm-poster">
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static file, not a route -->
+				<a href="{base}/{poster.pdf}" target="_blank" rel="noopener" class="comm-poster-link">
+					<img
+						class="plate"
+						src={posterSrc}
+						srcset={posterSrcset}
+						sizes={posterSrcset ? POSTER_SIZES : undefined}
+						width={posterSize?.width}
+						height={posterSize?.height}
+						alt={typesetQuotes(poster.alt)}
+						loading="lazy"
+						decoding="async"
+						use:plateFallback
+					/><span class="sr-only"> (PDF, opens in new tab)</span></a
+				>
+				<figcaption class="plate-caption">{posterCaption}</figcaption>
+			</figure>
+		</section>
+	{/if}
+
 	<!-- Slides — embedded inline when an embeddable deck URL is set. -->
 	{#if communication.slidesUrl}
 		<section class="section comm-section" id="slides" aria-labelledby="comm-slides-head">
@@ -349,6 +399,22 @@
 
 	.comm-abstract-p + .comm-abstract-p {
 		margin-top: var(--space-md);
+	}
+
+	/* ── Poster ────────────────────────────────────────────────────────────── */
+	/* The plate keeps the sheet's own proportions: `.plate` crops to its box
+	   (object-fit: cover), and a poster cropped is a poster misquoted. */
+	.comm-poster {
+		margin: 0;
+	}
+
+	.comm-poster .plate {
+		height: auto;
+		object-fit: contain;
+	}
+
+	.comm-poster-link {
+		display: block;
 	}
 
 	/* ── Papers & participants ─────────────────────────────────────────────── */

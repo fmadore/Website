@@ -18,6 +18,19 @@ test('BibTeX export contains the selected record', async ({ page }) => {
 	expect(text).toMatch(/imam/i);
 });
 
+test('a poster talk prints its poster and downloads the PDF', async ({ page }) => {
+	await page.goto('/communications/responsible-ai-access-mcp-server-2026');
+	await ready(page);
+	await expect(page.getByRole('heading', { name: 'Poster', exact: true })).toBeVisible();
+	await expect(page.locator('#poster img.plate')).toBeVisible();
+	const downloaded = page.waitForEvent('download');
+	await page.getByRole('link', { name: 'Download PDF', exact: true }).click();
+	const file = await downloaded;
+	expect(file.suggestedFilename()).toBe('responsible-ai-access-mcp-server-2026-poster.pdf');
+	const bytes = await readFile((await file.path())!);
+	expect(bytes.subarray(0, 5).toString()).toBe('%PDF-');
+});
+
 for (const fontMode of ['loaded', 'failed', 'stalled'] as const) {
 	test(`CV PDF preserves content with ${fontMode} fonts`, async ({ page }) => {
 		test.setTimeout(60000);

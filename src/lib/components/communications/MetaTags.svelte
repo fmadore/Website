@@ -103,7 +103,12 @@
 			{ name: 'citation_public_url', content: currentUrl },
 			{ name: 'citation_abstract_html_url', content: currentUrl },
 			{ name: 'citation_fulltext_html_url', content: currentUrl },
-			{ name: 'citation_pdf_url', content: resolveUrl(communication.url) },
+			// A poster is the one talk that ships its own PDF; any other talk keeps
+			// its long-standing primary URL here.
+			{
+				name: 'citation_pdf_url',
+				content: resolveUrl(communication.poster?.pdf ?? communication.url)
+			},
 			// Additional presentation-specific URL — raw (unresolved) by
 			// long-standing behaviour, unlike citation_pdf_url above.
 			{ name: 'citation_presentation_url', content: communication.url },

@@ -110,6 +110,30 @@ describe('buildCommunicationJsonLd', () => {
 		expect(ld.performer?.[0]).toEqual({ '@type': 'Organization', name: 'CIRAM' });
 		expect(ld.performer?.[1]).toMatchObject({ '@type': 'Person', '@id': `${website.url}/#person` });
 	});
+
+	it('features a poster as the PDF it ships, and only when there is one', () => {
+		expect(buildCommunicationJsonLd(comm({}), BASE).workFeatured).toBeUndefined();
+
+		const ld = buildCommunicationJsonLd(
+			comm({
+				type: 'poster',
+				poster: {
+					pdf: 'files/comm-1-poster.pdf',
+					image: 'images/communications/comm-1-poster.webp',
+					alt: 'The poster.'
+				}
+			}),
+			BASE
+		);
+		expect(ld.workFeatured).toEqual({
+			'@type': 'DigitalDocument',
+			name: 'A Talk',
+			genre: 'Poster',
+			encodingFormat: 'application/pdf',
+			url: `${BASE}/files/comm-1-poster.pdf`,
+			thumbnailUrl: `${BASE}/images/communications/comm-1-poster.webp`
+		});
+	});
 });
 
 describe('buildActivityJsonLd', () => {

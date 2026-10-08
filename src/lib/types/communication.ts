@@ -16,6 +16,14 @@ export type Communication = {
 	urlLabel?: string; // Optional: Custom label for the primary URL button (default: "Access Presentation")
 	additionalUrls?: Array<{ label: string; url: string }>; // Additional URLs with labels
 	slidesUrl?: string; // Optional: URL to an embeddable HTML slide deck (e.g. https://slides.frederickmadore.com/talks/<slug>/). When set, the deck is embedded on this talk's detail page and the talk appears in the Slides gallery.
+	poster?: {
+		// Optional: the poster itself, for a poster presentation. When set, the
+		// detail page prints it as a plate in a "Poster" section, linked to the PDF.
+		pdf: string; // Path to the PDF under static/ (e.g. 'files/<id>-poster.pdf')
+		image: string; // Path to a rendered preview under static/images, 1600px wide (e.g. 'images/communications/<id>-poster.webp')
+		alt: string; // What the sheet shows, not a transcript: the PDF carries the text
+		caption?: string; // Optional caption, without the figure number (default: "Poster as presented")
+	};
 	tags?: string[]; // Optional tags for categorization
 	image?: string; // Optional image path (e.g. presentation slide)
 	heroImage?: {

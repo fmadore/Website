@@ -130,6 +130,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'communications/REMOBOKO-final-conference.webp': [1024, 679],
 	'communications/representations-islam-muslims-togo-hero.webp': [900, 450],
 	'communications/representations-islam-muslims-togo.webp': [600, 300],
+	'communications/responsible-ai-access-mcp-server-2026-poster.webp': [1600, 2262],
 	'communications/SADILAR-hero.webp': [940, 470],
 	'communications/SADILAR.webp': [940, 470],
 	'communications/salafisme-pentecotisme-campus-benin-togo-hero.webp': [900, 1482],

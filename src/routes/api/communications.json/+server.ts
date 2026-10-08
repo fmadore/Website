@@ -50,9 +50,18 @@ const serialise = (comm: Communication) =>
 					caption: comm.heroImage.caption
 				})
 			: undefined,
+		poster: comm.poster
+			? compact({
+					pdf: absoluteUrl(comm.poster.pdf),
+					image: absoluteUrl(comm.poster.image),
+					alt: comm.poster.alt,
+					caption: comm.poster.caption
+				})
+			: undefined,
 		links: buildLinks(
 			[
 				{ label: comm.urlLabel ?? 'Presentation', url: comm.url },
+				{ label: 'Poster', url: comm.poster?.pdf },
 				{ label: 'Slides', url: comm.slidesUrl },
 				{ label: 'DOI', url: comm.doi ? `https://doi.org/${comm.doi}` : undefined }
 			],

@@ -105,6 +105,8 @@ to emit, and widening it for one button would be the wrong place to decide that.
 		communication.additionalUrls?.filter((link) => link.url && link.label) ?? []
 	);
 
+	const posterPdf = $derived(communication.poster?.pdf);
+
 	// Plate caption — "Fig. 1." is the figure's number, so the stop belongs to it
 	// and the caption follows as its own sentence. Authored captions that already
 	// end in punctuation keep theirs rather than collecting a second full stop.
@@ -176,10 +178,10 @@ to emit, and widening it for one button would be the wrong place to decide that.
 
 <RecordLedger rows={metadataRows} />
 
-<!-- CTAs — the one pine fill is the record's own destination; the deck jump and
-     every mirror below it are outlines. -->
-{#if communication.url || additionalUrls.length > 0 || hasSlides}
-	<!-- eslint-disable svelte/no-navigation-without-resolve -- external talk links, plus an in-page anchor -->
+<!-- CTAs — the one pine fill is the record's own destination; the poster and
+     deck jumps, the poster's PDF and every mirror below them are outlines. -->
+{#if communication.url || additionalUrls.length > 0 || hasSlides || posterPdf}
+	<!-- eslint-disable svelte/no-navigation-without-resolve -- external talk links, a static file, in-page anchors -->
 	<div class="rail-cta">
 		{#if communication.url}
 			<a
@@ -194,6 +196,14 @@ to emit, and widening it for one button would be the wrong place to decide that.
 					(opens in new tab)</span
 				>
 			</a>
+		{/if}
+		{#if posterPdf}
+			<a href="#poster" class="btn btn-outline-primary btn-block"
+				>View poster<span aria-hidden="true">&nbsp;↓</span></a
+			>
+			<a href="{base}/{posterPdf}" download class="btn btn-outline-primary btn-block"
+				>Download PDF</a
+			>
 		{/if}
 		{#if hasSlides}
 			<a href="#slides" class="btn btn-outline-primary btn-block"

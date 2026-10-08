@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { CommunicationSummary } from '$lib/types/communication';
-	import { resolve } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import { truncateAbstract } from '$lib/utils/textUtils';
 	import { formatCommunicationCitation } from '$lib/utils/citationFormatter';
 	import { titleLangAttr } from '$lib/utils/languageUtils';
@@ -60,13 +60,20 @@
 	const bibStandfirst = $derived(
 		communication.abstractExcerpt ? truncateAbstract(communication.abstractExcerpt, 180) : ''
 	);
-	// Right-aligned action column: primary material (slides/other), an optional
-	// DOI; BibliographyRow appends the internal "Details" link.
+	// Right-aligned action column: primary material (slides, a poster's PDF, or
+	// failing both the talk's own address), an optional DOI; BibliographyRow
+	// appends the internal "Details" link.
 	const bibActions = $derived.by(() => {
 		const list: BibliographyAction[] = [];
 		if (communication.slidesUrl)
 			list.push({ href: communication.slidesUrl, label: 'Slides', primary: true });
-		else if (communication.url)
+		if (communication.poster)
+			list.push({
+				href: `${base}/${communication.poster.pdf}`,
+				label: 'Poster',
+				primary: list.length === 0
+			});
+		if (list.length === 0 && communication.url)
 			list.push({ href: communication.url, label: 'Materials', primary: true });
 		if (communication.doi)
 			list.push({

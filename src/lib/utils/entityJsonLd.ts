@@ -320,6 +320,17 @@ export function buildCommunicationJsonLd(communication: Communication, base = ''
 			: communication.language;
 	}
 
+	if (communication.poster) {
+		jsonLdObject.workFeatured = {
+			'@type': 'DigitalDocument',
+			name: communication.title,
+			genre: 'Poster',
+			encodingFormat: 'application/pdf',
+			url: `${base}/${communication.poster.pdf}`,
+			thumbnailUrl: `${base}/${communication.poster.image}`
+		};
+	}
+
 	return jsonLdObject as EventJsonLd;
 }
 

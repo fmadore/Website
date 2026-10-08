@@ -303,7 +303,8 @@ function buildTools(): ToolDescriptor[] {
 					doi: comm.doi,
 					url: `${SITE}/communications/${comm.id}`,
 					externalUrl: comm.url,
-					slidesUrl: comm.slidesUrl
+					slidesUrl: comm.slidesUrl,
+					posterUrl: comm.poster ? `${SITE}/${comm.poster.pdf}` : undefined
 				});
 			}
 		},
