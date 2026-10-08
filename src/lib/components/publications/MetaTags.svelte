@@ -247,7 +247,7 @@
 
 <svelte:head>
 	{#each signposts as link (link.rel + link.href)}
-		<link rel={link.rel} href={link.href} />
+		<link rel={link.rel} href={link.href} type={link.type} />
 	{/each}
 </svelte:head>
 
