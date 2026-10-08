@@ -73,7 +73,9 @@ function citation(attributes: string): string {
 	const id = /\bid="([^"]+)"/.exec(attributes)?.[1];
 	const label = /\blabel="([^"]*)"/.exec(attributes)?.[1];
 	const entry = id ? referenceIndex[id] : undefined;
-	if (!entry) throw new Error(`<ItemReference id="${id}"> cites nothing in the reference index`);
+	// Worded so gen:refs, which reads every literal ItemReference tag with an id
+	// attribute in src/lib as a citation, does not mistake this message for one.
+	if (!entry) throw new Error(`An <ItemReference> cites "${id}", which the reference index lacks`);
 	const section = entry.itemType === 'publication' ? 'publications' : 'communications';
 	return `<a href="/${section}/${entry.id}">${typesetQuotes(label ?? inlineCitation(entry))}</a>`;
 }

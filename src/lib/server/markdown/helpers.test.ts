@@ -138,7 +138,7 @@ describe('Svelte prose', () => {
 		expect(() => svelteMarkupToHtml('<p>{count}</p>')).toThrow(/expression/);
 		expect(() => svelteMarkupToHtml('<a href={url}>x</a>')).toThrow(/address/);
 		expect(() => svelteMarkupToHtml('<ItemReference id="no-such-record" />')).toThrow(
-			/cites nothing/
+			/cites "no-such-record", which the reference index lacks/
 		);
 	});
 
