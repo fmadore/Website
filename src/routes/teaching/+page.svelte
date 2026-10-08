@@ -9,6 +9,12 @@
 	import teaching from '$lib/data/teaching';
 	import guestLectures from '$lib/data/teaching/guest-lectures';
 	import { sortCoursesByYear } from '$lib/utils/cvSections';
+	import {
+		courseSpan as spanOfCourses,
+		hostPeriod,
+		lectureHosts,
+		lectureSpan as spanOfLectures
+	} from '$lib/utils/teachingIndex';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Teaching', '/teaching');
@@ -31,40 +37,17 @@
 	 * record does not survive a glance, so that is what the dateline carries —
 	 * and it makes the two section datelines parallel, count then span.
 	 */
-	const courseYears = courses.flatMap((course) => course.year.split('-')).sort();
-	// An empty dataset has no first and no last year, and printing the span
-	// anyway is how a page ends up advertising “undefined–undefined”.
-	const courseSpan =
-		courseYears.length > 0 ? `${courseYears[0]}–${courseYears[courseYears.length - 1]}` : '';
+	const courseSpan = spanOfCourses(courses);
 
 	/**
 	 * Guest lectures are indexed here by host institution rather than listed:
 	 * the full list is its own page, and what this page owes the reader is the
 	 * shape of it — who hosted, over which years, how many times. Every figure
-	 * is counted off the dataset, so the index cannot drift from the list.
+	 * is counted off the dataset (`$lib/utils/teachingIndex`, which the page's
+	 * Markdown twin counts off too), so the index cannot drift from the list.
 	 */
-	const hosts = guestLectures.reduce<
-		{ institution: string; count: number; from: string; to: string }[]
-	>((acc, lecture) => {
-		const host = acc.find((h) => h.institution === lecture.institution);
-		if (host) {
-			host.count += 1;
-			host.from = lecture.year < host.from ? lecture.year : host.from;
-			host.to = lecture.year > host.to ? lecture.year : host.to;
-		} else {
-			acc.push({
-				institution: lecture.institution,
-				count: 1,
-				from: lecture.year,
-				to: lecture.year
-			});
-		}
-		return acc;
-	}, []);
-
-	const lectureYears = guestLectures.map((lecture) => lecture.year).sort();
-	const lectureSpan =
-		lectureYears.length > 0 ? `${lectureYears[0]}–${lectureYears[lectureYears.length - 1]}` : '';
+	const hosts = lectureHosts(guestLectures);
+	const lectureSpan = spanOfLectures(guestLectures);
 
 	const guestLecturesHref = resolve('/teaching/guest-lectures');
 </script>
@@ -188,7 +171,7 @@
 					{#each hosts as host (host.institution)}
 						<div class="ledger-row ledger-row--meta">
 							<span class="ledger-key">
-								{host.from === host.to ? host.from : `${host.from}–${host.to}`}
+								{hostPeriod(host)}
 							</span>
 							<span class="ledger-content">
 								<span class="ledger-title">{host.institution}</span>

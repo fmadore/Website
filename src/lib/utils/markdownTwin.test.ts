@@ -19,6 +19,10 @@ describe('markdownTwinPath', () => {
 			'/communications/t.md'
 		);
 		expect(markdownTwinPath('/cv', '/cv')).toBe('/cv.md');
+		expect(markdownTwinPath('/teaching', '/teaching')).toBe('/teaching.md');
+		expect(markdownTwinPath('/teaching/guest-lectures', '/teaching/guest-lectures')).toBe(
+			'/teaching/guest-lectures.md'
+		);
 		expect(
 			markdownTwinPath('/research/dh-ai-african-studies', '/research/dh-ai-african-studies')
 		).toBe('/research/dh-ai-african-studies.md');
@@ -32,7 +36,8 @@ describe('markdownTwinPath', () => {
 		expect(
 			markdownTwinPath('/conference-activity/slides', '/conference-activity/slides')
 		).toBeNull();
-		expect(markdownTwinPath('/teaching', '/teaching')).toBeNull();
+		expect(markdownTwinPath('/cv/timeline', '/cv/timeline')).toBeNull();
+		expect(markdownTwinPath('/style-guide', '/style-guide')).toBeNull();
 		expect(markdownTwinPath(null, '/missing')).toBeNull();
 	});
 });

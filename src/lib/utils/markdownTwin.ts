@@ -28,7 +28,9 @@ export const MARKDOWN_TWIN_ROUTE_IDS: ReadonlySet<string> = new Set([
 	'/research',
 	'/digital-humanities',
 	'/digital-humanities/[id]',
-	'/cv'
+	'/cv',
+	'/teaching',
+	'/teaching/guest-lectures'
 ]);
 
 /**

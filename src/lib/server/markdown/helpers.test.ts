@@ -77,13 +77,15 @@ describe('site addresses', () => {
 		expect(TWIN_PAGE_PATHS.has('/cv')).toBe(true);
 		expect(TWIN_PAGE_PATHS.has('/publications/religious-activism-campuses')).toBe(true);
 		expect(TWIN_PAGE_PATHS.has('/publications/visualisations')).toBe(false);
-		expect(TWIN_PAGE_PATHS.has('/teaching')).toBe(false);
+		expect(TWIN_PAGE_PATHS.has('/teaching/guest-lectures')).toBe(true);
+		expect(TWIN_PAGE_PATHS.has('/cv/timeline')).toBe(false);
 	});
 
 	it('names a twin, and refuses to invent one', () => {
 		expect(markdownUrl('/')).toBe(`${SITE}/index.md`);
 		expect(markdownUrl('/research')).toBe(`${SITE}/research.md`);
-		expect(() => markdownUrl('/teaching')).toThrow(/No Markdown twin/);
+		expect(markdownUrl('/teaching')).toBe(`${SITE}/teaching.md`);
+		expect(() => markdownUrl('/cv/timeline')).toThrow(/No Markdown twin/);
 		expect(pageUrl('/')).toBe(`${SITE}/`);
 	});
 
@@ -92,7 +94,7 @@ describe('site addresses', () => {
 			`${SITE}/publications/religious-activism-campuses.md`
 		);
 		expect(resolveLink(`${SITE}/research/`)).toBe(`${SITE}/research.md`);
-		expect(resolveLink('/teaching')).toBe(`${SITE}/teaching`);
+		expect(resolveLink('/cv/timeline')).toBe(`${SITE}/cv/timeline`);
 		expect(resolveLink('images/a.webp')).toBe(`${SITE}/images/a.webp`);
 		expect(resolveLink('/publications?type=book')).toBe(`${SITE}/publications?type=book`);
 		expect(resolveLink('https://doi.org/10.1/x')).toBe('https://doi.org/10.1/x');

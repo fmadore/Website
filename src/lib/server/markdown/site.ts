@@ -28,7 +28,9 @@ export const SECTION_TWIN_PATHS = [
 	'/activities',
 	'/research',
 	'/digital-humanities',
-	'/cv'
+	'/cv',
+	'/teaching',
+	'/teaching/guest-lectures'
 ] as const;
 
 /** Every page with a twin, by pathname: exactly what the `*.md` routes prerender. */
