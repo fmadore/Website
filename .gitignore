@@ -56,6 +56,8 @@ scripts/__pycache__/convert-image.cpython-312.pyc
 
 # Lighthouse CI output (npm run check:lighthouse / the ci.yml lighthouse job)
 /.lighthouseci/
+# Agentic Browsing reports, kept only by `npm run check:agentic -- --keep`
+/.lighthouse-agentic/
 
 # MCP server build output (mcp/)
 /mcp/dist/

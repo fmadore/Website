@@ -68,6 +68,10 @@ It ships two ways. `npm run mcp:pack` produces `frederickmadore-website.mcpb` â€
 
 Citation output is not reimplemented there â€” the build aliases `$lib` and bundles the site's own `bibtexGenerator`, so what the server returns is byte-identical to the site's download button.
 
+### WebMCP
+
+The same twelve tools are registered in the page itself for agents browsing the site, through [WebMCP](https://webmachinelearning.github.io/webmcp/) (`document.modelContext`), with one more, `show_publications`, that opens the publications index on a filtered view. They read the same API documents through the same search and citation code (`src/lib/utils/api*.ts`), so an agent gets the same answer either way. Chrome exposes WebMCP to pages under its origin trial or with `--enable-experimental-web-platform-features`; `npm run check:agentic` asserts Lighthouse 13's Agentic Browsing category on the build, with the tools listed.
+
 ## Offline browsing
 
 Visited pages are cached after both direct and in-app navigation, including pages

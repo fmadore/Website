@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { address, author, contact } from '$lib/data/siteConfig';
+import { address, author, contact, website } from '$lib/data/siteConfig';
 import {
 	getAddressLines,
 	getCvDescription,
 	getDefaultDescription,
 	getEmailWithName,
 	getRssDescription,
-	pageTitle
+	pageTitle,
+	siteUrl
 } from './siteHelpers';
 
 describe('pageTitle', () => {
@@ -22,6 +23,27 @@ describe('pageTitle', () => {
 
 	it('is the bare site name with no segments', () => {
 		expect(pageTitle()).toBe(author.name);
+	});
+});
+
+describe('siteUrl', () => {
+	it('builds an absolute URL on the production origin, slash or not', () => {
+		expect(siteUrl('/publications/x')).toBe(`${website.url}/publications/x`);
+		expect(siteUrl('images/a.webp')).toBe(`${website.url}/images/a.webp`);
+	});
+
+	it('never doubles the slash after the origin', () => {
+		// A data path stored with its leading slash once shipped as `//images/…`,
+		// which a parser reads as a URL on a host named "images".
+		expect(siteUrl('//images/a.webp')).toBe(`${website.url}/images/a.webp`);
+	});
+
+	it('is the site root, with its slash, for the root path', () => {
+		expect(siteUrl('/')).toBe(`${website.url}/`);
+	});
+
+	it('passes an absolute URL through untouched', () => {
+		expect(siteUrl('https://doi.org/10.1/x')).toBe('https://doi.org/10.1/x');
 	});
 });
 

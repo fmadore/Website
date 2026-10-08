@@ -20,14 +20,15 @@ const DEFAULT_BASE = 'https://www.frederickmadore.com';
  */
 const apiBase = (process.env.WEBSITE_API_BASE?.trim() || DEFAULT_BASE).replace(/\/+$/, '');
 
-import { createDocumentLoader } from './documentLoader.js';
+import { createDocumentLoader } from '$lib/utils/apiDocumentLoader';
+import { findRecord } from '$lib/utils/apiSearch';
 import type {
 	DatasetName,
 	ApiDocumentName,
 	ApiItem as Item,
 	DatasetPayload,
 	CvPayload
-} from '../../src/lib/apiContract';
+} from '$lib/apiContract';
 export type { DatasetName, ApiDocumentName, Item, CvPayload };
 
 const fetchDocument = createDocumentLoader({
@@ -53,19 +54,5 @@ export async function loadCv(): Promise<CvPayload> {
 
 /** Look up one record, with a message that helps the caller recover. */
 export async function findItem(name: DatasetName, id: string): Promise<Item> {
-	const items = await loadDataset(name);
-	const item = items.find((candidate) => candidate.id === id);
-	if (item) return item;
-
-	const suggestions = items
-		.filter((candidate) => candidate.id.includes(id) || id.includes(candidate.id))
-		.slice(0, 5)
-		.map((candidate) => candidate.id);
-
-	throw new Error(
-		`No ${name} record with id "${id}".` +
-			(suggestions.length > 0
-				? ` Did you mean: ${suggestions.join(', ')}?`
-				: ` Use the matching search tool to find valid ids.`)
-	);
+	return findRecord(await loadDataset(name), name, id);
 }

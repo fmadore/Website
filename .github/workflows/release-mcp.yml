@@ -62,12 +62,23 @@ jobs:
       - name: Build and verify the bundle
         run: npm run mcp:smoke
 
+      # The MCP Registry entry for this release: version, download URL, and the
+      # SHA-256 of the exact bundle uploaded below, which MCP clients check
+      # before installing. It has to be this file's hash: the bundle is a zip
+      # with build timestamps, so a rebuild hashes differently. The stamped
+      # server.json is attached to the release; publishing it to the registry
+      # is a manual step (mcp/README.md, "Publishing to the MCP Registry").
+      - name: Stamp the MCP Registry entry
+        run: node scripts/stamp-mcp-registry.mjs mcp/dist/frederickmadore-website.mcpb
+
       - name: Publish release
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
         with:
           tag_name: ${{ steps.meta.outputs.tag }}
           name: MCP server ${{ steps.meta.outputs.version }}
-          files: mcp/dist/frederickmadore-website.mcpb
+          files: |
+            mcp/dist/frederickmadore-website.mcpb
+            mcp/server.json
           fail_on_unmatched_files: true
           body: |
             MCP server over the academic record published at
@@ -85,5 +96,8 @@ jobs:
             which this project does not use.
 
             For other MCP clients, see [`mcp/README.md`](https://github.com/fmadore/Website/blob/main/mcp/README.md).
+
+            `server.json` is this release's entry for the MCP Registry, carrying the
+            bundle's SHA-256.
 
             Every tool in this bundle was exercised against real data before publishing.

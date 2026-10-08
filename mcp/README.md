@@ -78,9 +78,15 @@ claude mcp add frederickmadore -- node /absolute/path/to/Website/mcp/dist/index.
 | `get_cv`                 | The career record. Optionally one section (`grants`, `teaching`, `awards`, …).                                  |
 | `get_citation`           | BibTeX, or a plain-text reference.                                                                              |
 
-Search matches accent-insensitively, so `cote d'ivoire` reaches `Côte d'Ivoire`.
+Search matches accent-insensitively, so `cote d'ivoire` reaches `Côte d'Ivoire`. `type` and
+`country` match a whole value (`Niger` does not reach `Nigeria`, nor `article` a
+`bulletin-article`); `tag`, `project` and `language` match any part of one.
 Search results are paginated with `limit` and `offset`, and every tool returns both a
 readable text block and schema-validated structured content.
+
+The site registers the same twelve tools in the browser for agents visiting it, through
+WebMCP (`src/lib/utils/webmcp.ts`). Both read the same API documents through the same
+loader, search and citation code in `src/lib/utils/api*.ts`, so the two cannot drift.
 
 Search returns headlines; the `get_*` tools return whole records. Every dataset carries its
 full text — publication and talk abstracts, activity bodies, project descriptions, and the
@@ -178,6 +184,55 @@ git tag mcp-v0.2.0 && git push origin mcp-v0.2.0
 The workflow type-checks, builds the site, builds and smoke-tests the bundle against real
 API documents, and only then publishes it as a release asset. Nothing ships that has not
 booted.
+
+### Publishing to the MCP Registry
+
+[`server.json`](server.json) is the server's entry for the official
+[MCP Registry](https://modelcontextprotocol.io/registry/about) (in preview), as
+`io.github.fmadore/frederickmadore-website`. The registry stores metadata only: the entry
+points at the release's `.mcpb` and records its SHA-256, which clients check before
+installing. The committed file describes the latest release, `0.2.0`.
+
+The hash must be the hash of the uploaded file. The bundle is a zip with build timestamps,
+so a local rebuild of the same commit hashes differently. The release workflow therefore
+stamps `server.json` for the bundle it publishes (`scripts/stamp-mcp-registry.mjs`) and
+attaches it to the same release. Publishing stays manual, and needs a GitHub sign-in as
+`fmadore`:
+
+1. Release as above, then fetch that release's entry (here `0.3.0`):
+
+   ```bash
+   gh release download mcp-v0.3.0 --repo fmadore/Website --pattern server.json --dir mcp --clobber
+   ```
+
+   To publish `0.2.0`, skip this step: the committed file is already its entry.
+
+2. Install `mcp-publisher` from the
+   [registry's releases](https://github.com/modelcontextprotocol/registry/releases) (the
+   [quickstart](https://modelcontextprotocol.io/registry/quickstart) has one-line installs
+   for each platform, including Windows on ARM).
+
+3. From `mcp/`, check the entry, sign in, and publish:
+
+   ```bash
+   mcp-publisher validate
+   mcp-publisher login github
+   mcp-publisher publish
+   ```
+
+   `validate` sends the file to the registry's validation endpoint; `login github` opens
+   GitHub's device flow; `publish` reads `./server.json`.
+
+4. Confirm the listing, then commit the fetched `server.json`, so the repo records what was
+   published:
+
+   ```bash
+   curl "https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.fmadore/frederickmadore-website"
+   ```
+
+`npm test` checks the committed entry against the registry's limits (`scripts/mcp-registry.test.mjs`).
+The step could later run in `release-mcp.yml` through `mcp-publisher login github-oidc`, which
+needs `id-token: write` and no stored secret.
 
 ### Why the bundle is unsigned
 

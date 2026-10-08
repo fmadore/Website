@@ -132,11 +132,11 @@ jobs:
         run: npm run build
 
       # Assertions about the build OUTPUT, so they have to follow the build:
-      # that no heavy library has drifted into the static import graph, and that
-      # every URL the sitemap advertises actually ships as a page. Kept before
-      # the upload so a build that would ship a sitemap full of 404s never
-      # reaches Pages.
-      - name: Build output checks (bundle budget, prerender coverage)
+      # that no heavy library has drifted into the static import graph, that
+      # every URL the sitemap advertises actually ships as a page, and that the
+      # JSON-LD carries absolute URLs and ISO 8601 dates. Kept before the upload
+      # so a build that would ship a sitemap full of 404s never reaches Pages.
+      - name: Build output checks (bundle budget, prerender coverage, structured data)
         run: npm run check:build
 
       # Builds both the developer bundle and the installable .mcpb, then drives
@@ -286,6 +286,17 @@ jobs:
           configPath: ./lighthouserc.yml
           uploadArtifacts: true
           artifactName: lighthouse-results
+
+      # The Agentic Browsing category PageSpeed Insights now reports, which the
+      # Lighthouse 12 bundled in LHCI predates: Lighthouse 13 (pinned in the
+      # script) on three pages, with Chrome's experimental web platform features
+      # on, so the WebMCP audits apply whether or not the origin-trial token is
+      # current. Fails unless the category scores 1 and Lighthouse lists exactly
+      # the tools in src/lib/utils/webmcpToolNames.ts. Runs even when the budgets
+      # above fail, so one PR shows both results.
+      - name: Agentic Browsing (Lighthouse 13, WebMCP)
+        if: ${{ !cancelled() }}
+        run: npm run check:agentic
 
   deploy:
     name: Deploy to GitHub Pages

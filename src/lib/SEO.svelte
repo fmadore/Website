@@ -20,9 +20,6 @@
 		canonical?: string;
 		ogImage?: string;
 		type?: string;
-		// Control whether to include citation_author (default: true)
-		// Set to false for publication pages that use MetaTags.svelte
-		includeCitationAuthor?: boolean;
 		// Breadcrumb navigation for rich snippets
 		breadcrumbs?: BreadcrumbItem[];
 		// Page type for WebPage schema
@@ -47,6 +44,11 @@
 		 * name, but structured data wants the untruncated, unsuffixed title.
 		 */
 		schemaName?: string;
+		/**
+		 * `@id` of the thing this page describes (`recordEntityId` on a record
+		 * page), which the WebPage schema names as its `mainEntity`.
+		 */
+		mainEntity?: string;
 	}
 
 	let {
@@ -56,7 +58,6 @@
 		canonical = '',
 		ogImage = `${base}/images/Profile-picture.webp`,
 		type = 'website',
-		includeCitationAuthor = true,
 		breadcrumbs = [],
 		pageType = 'WebPage',
 		datePublished,
@@ -64,7 +65,8 @@
 		additionalSchemas = [],
 		includeRSSLink = true,
 		noindex = false,
-		schemaName
+		schemaName,
+		mainEntity
 	}: Props = $props();
 
 	/**
@@ -125,7 +127,8 @@
 				path: new URL(canonicalUrl).pathname,
 				type: pageType,
 				datePublished,
-				dateModified
+				dateModified,
+				mainEntity
 			})
 		);
 
@@ -189,10 +192,9 @@
 	<meta property="twitter:description" content={description} />
 	<meta property="twitter:image" content={ogImageUrl} />
 
-	<!-- Scholar / Academic -->
-	{#if includeCitationAuthor}
-		<meta name="citation_author" content={author.name} />
-	{/if}
+	<!-- No site-wide citation_author: Google Scholar reads it as the authors of
+	     the paper on the page, and says not to use it for the website's author.
+	     Record pages emit their own Highwire tags through their MetaTags. -->
 	<meta name="author" content={author.name} />
 	<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
 	<meta

@@ -17,8 +17,12 @@
 	import { website } from '$lib/data/siteConfig';
 	import { getCitationGenre, getDcType } from '$lib/utils/publicationTypeLabels';
 	import { stripHtml } from '$lib/utils/textUtils';
+	import { publicationSignposts } from '$lib/utils/signposting';
 
-	let { publication }: { publication: Publication } = $props();
+	let { publication, schemaType }: { publication: Publication; schemaType: string } = $props();
+
+	// FAIR Signposting typed links — see signposting.ts for what each one says.
+	const signposts = $derived(publicationSignposts(publication, schemaType));
 
 	// Abstracts may carry inline markup (`<i>` around transliterated terms);
 	// the head tags Zotero and crawlers consume are plain text.
@@ -123,9 +127,9 @@
 		// Common fields
 		fields.push(['rft.title', publication.title]);
 		if (publication.authors?.length) {
-			// First author split into aufirst/aulast; every author repeated as
-			// rft.au (URLSearchParams.set semantics: last value wins, kept for
-			// output stability).
+			// First author split into aufirst/aulast, then every author as a
+			// repeated rft.au, in order. Zotero folds the first rft.au into the
+			// aufirst/aulast pair rather than adding the author twice.
 			const { first, last } = parseAuthorName(publication.authors[0]!);
 			fields.push(['rft.aufirst', first], ['rft.aulast', last]);
 			for (const author of publication.authors) {
@@ -240,5 +244,11 @@
 		]);
 	});
 </script>
+
+<svelte:head>
+	{#each signposts as link (link.rel + link.href)}
+		<link rel={link.rel} href={link.href} type={link.type} />
+	{/each}
+</svelte:head>
 
 <BaseMetaTags tags={metaTags} coins={buildCoins(coinsFields(), 'info:sid/personal-website')} />

@@ -19,6 +19,15 @@ export interface JsonLdOrganization {
 	'@id'?: string;
 	name: string;
 	url?: string;
+	identifier?: JsonLdPropertyValue;
+	sameAs?: string[];
+}
+
+/** A typed identifier — a DOI, a ROR id — named by the scheme that issued it. */
+export interface JsonLdPropertyValue {
+	'@type': 'PropertyValue';
+	propertyID: string;
+	value: string;
 }
 
 export interface JsonLdPerson {
@@ -57,16 +66,17 @@ export interface JsonLdEducationalCredential {
 export interface BaseJsonLd {
 	'@context': 'https://schema.org';
 	'@type': string;
+	/** The record's node id: its page URL plus `#record` (see `recordEntityId`). */
+	'@id'?: string;
 	name: string;
 	headline?: string;
 	description?: string;
 	image?: string;
 	keywords?: string;
 	url?: string;
-	identifier?:
-		| string
-		| { '@type': 'PropertyValue'; propertyID: string; value: string }
-		| (string | { '@type': 'PropertyValue'; propertyID: string; value: string })[];
+	/** The page this record is the main entity of — its `#webpage` node. */
+	mainEntityOfPage?: { '@id': string };
+	identifier?: string | JsonLdPropertyValue | (string | JsonLdPropertyValue)[];
 	copyrightYear?: number;
 	inLanguage?: string;
 	spatialCoverage?: JsonLdPlace[];
@@ -244,9 +254,14 @@ export function formatPlaces(countries: string[]): JsonLdPlace[] {
 }
 
 /**
- * Format an ISO date string with CET timezone for JSON-LD.
- * Uses +01:00 (Berlin CET) as default timezone.
+ * A record date for JSON-LD, at the precision the data has: `2017`, `2017-05`
+ * or `2017-05-12`, each a valid ISO 8601 date.
+ *
+ * Records dated only by year or month used to be padded with a time, which
+ * shipped `2017T00:00:00+01:00` — not a date in any format — and invented a
+ * midnight in Berlin for every record that has a day. Anything that is not one
+ * of the three shapes is dropped rather than published malformed.
  */
-export function formatJsonLdDate(dateISO: string): string {
-	return `${dateISO}T00:00:00+01:00`;
+export function formatJsonLdDate(dateISO: string | undefined): string | undefined {
+	return dateISO && /^\d{4}(-\d{2}(-\d{2})?)?$/.test(dateISO) ? dateISO : undefined;
 }

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createDocumentLoader } from './documentLoader';
+import { createDocumentLoader } from './apiDocumentLoader';
 
 const payload = {
 	version: 1,

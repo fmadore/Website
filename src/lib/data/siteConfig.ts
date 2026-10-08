@@ -92,7 +92,9 @@ export const linkedData = {
 	employer: {
 		name: address.institution,
 		url: 'https://www.uni-bayreuth.de/en/',
-		wikidataId: 'Q702482'
+		wikidataId: 'Q702482',
+		// Research Organization Registry; its own record cross-references Q702482.
+		rorId: '0234wmv40'
 	},
 	nationality: {
 		name: author.nationality,

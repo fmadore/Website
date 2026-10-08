@@ -1,9 +1,10 @@
 import { McpServer } from '@modelcontextprotocol/server';
 import * as z from 'zod/v4';
 import { findItem, loadApiDocument, loadCv, loadDataset } from './datasets.js';
-import { search } from './search.js';
-import { detail, summariseAll, summariseStructured } from './format.js';
-import { citationFor } from './citations.js';
+import { SEARCH_FIELDS, WEIGHTED_FIELDS, search, summariseStructured } from '$lib/utils/apiSearch';
+import { CITATION_STYLES, citationFor } from '$lib/utils/apiCitation';
+import { CV_SECTIONS } from '$lib/apiContract';
+import { detail, summariseAll } from './format.js';
 
 /**
  * MCP server over the academic record published at frederickmadore.com.
@@ -146,15 +147,10 @@ export function createWebsiteServer(): McpServer {
 			const items = await loadDataset('publications');
 			const { hits, total } = search(items, {
 				query: args.query,
-				fields: ['title', 'abstract', 'authors', 'tags', 'journal', 'book', 'publisher', 'editors'],
-				weighted: ['title'],
-				filters: {
-					type: args.type,
-					tags: args.tag,
-					country: args.country,
-					project: args.project,
-					language: args.language
-				},
+				fields: SEARCH_FIELDS.publications,
+				weighted: WEIGHTED_FIELDS,
+				filters: { tags: args.tag, project: args.project, language: args.language },
+				exact: { type: args.type, country: args.country },
 				yearFrom: args.year_from,
 				yearTo: args.year_to,
 				limit: args.limit,
@@ -221,14 +217,10 @@ export function createWebsiteServer(): McpServer {
 			const items = await loadDataset('communications');
 			const { hits, total } = search(items, {
 				query: args.query,
-				fields: ['title', 'abstract', 'authors', 'conference', 'panelTitle', 'location', 'tags'],
-				weighted: ['title'],
-				filters: {
-					type: args.type,
-					country: args.country,
-					project: args.project,
-					tags: args.tag
-				},
+				fields: SEARCH_FIELDS.communications,
+				weighted: WEIGHTED_FIELDS,
+				filters: { project: args.project, tags: args.tag },
+				exact: { type: args.type, country: args.country },
 				yearFrom: args.year_from,
 				yearTo: args.year_to,
 				limit: args.limit,
@@ -280,9 +272,10 @@ export function createWebsiteServer(): McpServer {
 			const items = await loadDataset('activities');
 			const { hits, total } = search(items, {
 				query: args.query,
-				fields: ['title', 'description', 'content', 'tags'],
-				weighted: ['title'],
-				filters: { type: args.type, tags: args.tag },
+				fields: SEARCH_FIELDS.activities,
+				weighted: WEIGHTED_FIELDS,
+				filters: { tags: args.tag },
+				exact: { type: args.type },
 				yearFrom: args.year_from,
 				yearTo: args.year_to,
 				limit: args.limit,
@@ -380,21 +373,6 @@ export function createWebsiteServer(): McpServer {
 
 	// -------------------------------------------------------------------------- cv
 
-	const CV_SECTIONS = [
-		'appointments',
-		'education',
-		'researchRoles',
-		'grants',
-		'awards',
-		'teaching',
-		'editorialMemberships',
-		'peerReviews',
-		'affiliations',
-		'fieldworks',
-		'mediaAppearances',
-		'languages'
-	] as const;
-
 	server.registerTool(
 		'get_cv',
 		{
@@ -428,7 +406,7 @@ export function createWebsiteServer(): McpServer {
 			inputSchema: z
 				.object({
 					id: z.string().min(1).max(300).describe('Publication id.'),
-					style: z.enum(['bibtex', 'reference']).default('bibtex')
+					style: z.enum(CITATION_STYLES).default('bibtex')
 				})
 				.strict(),
 			outputSchema: z.string(),
