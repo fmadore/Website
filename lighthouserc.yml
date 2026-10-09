@@ -31,6 +31,15 @@ ci:
       # Chrome refuses to start as root (containers) without --no-sandbox; a
       # no-op on GitHub's runners.
       chromeFlags: --no-sandbox
+      # robots.txt carries `Content-Signal:` (Cloudflare's Content Signals
+      # Policy). Lighthouse 13, which PageSpeed Insights runs, safelists that
+      # directive; the Lighthouse 12.6.1 bundled with @lhci/cli 0.15.1 predates
+      # the safelist and fails `robots-txt` on it as an unknown directive,
+      # which alone cost 8 SEO points on every page. Skipping the audit removes
+      # it from the SEO score, so the floor below still holds every other SEO
+      # audit. Drop this when LHCI ships Lighthouse 13 (lhci issue #1136).
+      skipAudits:
+        - robots-txt
   assert:
     # A matrix rather than one assertion set: every entry whose pattern matches
     # a URL applies to it, so the one metric with a page-specific budget (LCP
