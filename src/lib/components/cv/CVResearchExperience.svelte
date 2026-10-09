@@ -2,44 +2,13 @@
 	import { fieldworksByDate } from '$lib/data/fieldworks';
 	import { researchRolesByDate } from '$lib/data/research-roles';
 	import { formatCVYearRange } from '$lib/utils/cvFormatters';
+	import { groupFieldworkByPlace } from '$lib/utils/cvSections';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
-	// Group fieldworks by location. Extract every year mentioned in the
-	// human-readable `date` string so cross-year trips (e.g. "November 2014
-	// - April 2015") show both years, not just the canonical `fw.year`.
-	const groupedFieldworks = $derived(
-		fieldworksByDate.reduce(
-			(acc, fw) => {
-				const location = `${fw.city}, ${fw.country}`;
-				if (!acc[location]) {
-					acc[location] = new Set<number>();
-				}
-				const yearsInDate = fw.date.match(/\b(19|20)\d{2}\b/g);
-				if (yearsInDate && yearsInDate.length > 0) {
-					for (const y of yearsInDate) acc[location].add(Number(y));
-				} else {
-					acc[location].add(fw.year);
-				}
-				return acc;
-			},
-			{} as Record<string, Set<number>>
-		)
-	);
-
-	const displayFieldworks = $derived(
-		Object.entries(groupedFieldworks)
-			.map(([location, yearSet]) => {
-				return {
-					location,
-					years: Array.from(yearSet).sort((a, b) => b - a) // Sort years descending for each location
-				};
-			})
-			.sort((a, b) => {
-				// Sort locations alphabetically
-				return a.location.localeCompare(b.location);
-			})
-	);
+	// Every place visited, keyed by every year on site — the grouping the CV's
+	// Markdown twin prints too.
+	const displayFieldworks = groupFieldworkByPlace(fieldworksByDate);
 </script>
 
 <section>

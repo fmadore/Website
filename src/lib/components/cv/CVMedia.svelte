@@ -2,12 +2,12 @@
 	import Icon from '@iconify/svelte';
 	import { mediaAppearancesByDate } from '$lib/data/media-appearances';
 	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
+	import { splitCvTalks } from '$lib/utils/cvSections';
 	import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
-	// Filter podcasts from communications
-	const podcasts = communicationsByDate.filter((comm) => comm.type === 'podcast');
+	const { podcasts } = splitCvTalks(communicationsByDate);
 </script>
 
 <section>

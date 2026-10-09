@@ -17,16 +17,18 @@
  * and the icon glyphs and "(opens in new tab)" hints, which are interface,
  * are dropped.
  *
- * The orderings and filters written inline in the components (the project
- * recency sort, the fieldwork grouping, the talk-type split, the teaching
- * sort) are repeated here, as are the two lists the components hold as
- * literals (consulting, computer skills); `cv.test.ts` binds those literals
- * to the component sources.
+ * Which records a section holds and in what order is decided once, in
+ * `$lib/utils/cvSections.ts`, which the components read too; the consulting
+ * and computer-skills entries are data (`$lib/data/consulting.ts`,
+ * `$lib/data/computerSkills.ts`). Only the setting of an entry is this
+ * module's own.
  */
 import { affiliationsByStartDate } from '$lib/data/affiliations';
 import { appointmentsByDate } from '$lib/data/appointments';
 import { awardsByDate } from '$lib/data/awards';
 import { cvCommunicationsByDate } from '$lib/data/communications/cv';
+import { computerSkills as skillGroups } from '$lib/data/computerSkills';
+import { consulting as consultingEngagements } from '$lib/data/consulting';
 import { allDhProjectSummaries } from '$lib/data/digital-humanities/summaries';
 import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
 import { educationByDate } from '$lib/data/education';
@@ -56,6 +58,22 @@ import {
 	terminalPeriod,
 	trimTerminalPeriod
 } from '$lib/utils/cvFormatters';
+import {
+	cvEventDate,
+	formatCvEditionDate,
+	groupFieldworkByPlace,
+	invitedTalkVenue,
+	isCvPublication,
+	organisedPanelTitle,
+	realEditorialMemberships,
+	realPeerReviews,
+	sortCoursesByYear,
+	sortDhProjectsByRecency,
+	sortGuestLecturesByYear,
+	splitCvTalks,
+	splitEducation,
+	teachingLevelLabel
+} from '$lib/utils/cvSections';
 import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
 import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
 import { getPublicationTypeDisplayName } from '$lib/utils/publicationTypeLabels';
@@ -139,12 +157,7 @@ const ledgerOr = (rows: string[], emptyMessage: string): string =>
 // ---------------------------------------------------------------------------
 
 function header(): string {
-	const asOf = BUILT_AT.toLocaleDateString('en-GB', {
-		timeZone: 'UTC',
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric'
-	});
+	const asOf = formatCvEditionDate(BUILT_AT);
 	const street = address.street
 		? `${address.street}, ${address.postalCode} ${address.city}`
 		: `${address.postalCode} ${address.city}`;
@@ -190,12 +203,7 @@ function appointments(): string {
 // ---------------------------------------------------------------------------
 
 function education(): string {
-	const degrees = educationByDate.filter((edu) => edu.type === 'Degree');
-	const trainings = educationByDate.filter((edu) => edu.type === 'Training');
-	const certificates = educationByDate.filter((edu) => edu.type === 'Certificate');
-	const other = educationByDate.filter(
-		(edu) => !['Degree', 'Training', 'Certificate'].includes(edu.type || '')
-	);
+	const { degrees, trainings, certificates, other } = splitEducation(educationByDate);
 	const location = (value?: string) => (value ? `, ${text(value)}` : '');
 	const details = (value?: string) => (value ? `, ${text(value)}` : '');
 
@@ -364,9 +372,7 @@ function otherPublicationEntry(pub: CvPublication): string {
 function publications(): string {
 	const { publicationsByType, presentPublicationTypes, otherPublicationTypes } =
 		groupPublicationsByType(cvPublicationsByDate);
-	const printed = cvPublicationsByDate.filter(
-		(pub) => pub.type !== 'phd-dissertation' && pub.type !== 'masters-thesis'
-	);
+	const printed = cvPublicationsByDate.filter(isCvPublication);
 	if (printed.length === 0) return section('Publications', 'No publications listed.');
 
 	return section(
@@ -429,24 +435,6 @@ function awards(): string {
 // Digital humanities projects (CVDigitalHumanities)
 // ---------------------------------------------------------------------------
 
-/** "2018-2023" → its start and end; an open range ("2023-") ends at Infinity. */
-function parseYears(years: string): { start: number; end: number } {
-	const [startStr = '', endStr] = years.split('-');
-	const start = parseInt(startStr, 10);
-	const ongoing = years.endsWith('-');
-	const end = ongoing ? Infinity : endStr ? parseInt(endStr, 10) : start;
-	return { start, end };
-}
-
-/** Most recent first by start year; an ongoing project before a closed one; then by title. */
-function byRecency(a: DigitalHumanitiesSummary, b: DigitalHumanitiesSummary): number {
-	const ay = parseYears(a.years);
-	const by = parseYears(b.years);
-	if (ay.start !== by.start) return by.start - ay.start;
-	if (ay.end !== by.end) return by.end - ay.end;
-	return a.title.localeCompare(b.title);
-}
-
 function projectReviews(project: DigitalHumanitiesSummary): string | undefined {
 	const reviews = project.reviews ?? [];
 	if (reviews.length === 0) return undefined;
@@ -461,24 +449,22 @@ function projectReviews(project: DigitalHumanitiesSummary): string | undefined {
 }
 
 function digitalHumanities(): string {
-	const rows = [...allDhProjectSummaries]
-		.sort(byRecency)
-		.map((project) =>
-			entry(
-				formatCVYearRange(project.years),
-				link(typesetQuotes(project.title), markdownUrl(`/digital-humanities/${project.id}`)),
-				[
-					project.shortDescription && text(project.shortDescription),
-					...groupProjectLinks(project).map(
-						(group) =>
-							`${inline(group.key)}: ${group.links
-								.map((projectLink) => outLink(projectLinkText(projectLink), projectLink.url))
-								.join(' · ')}`
-					),
-					projectReviews(project)
-				]
-			)
-		);
+	const rows = sortDhProjectsByRecency(allDhProjectSummaries).map((project) =>
+		entry(
+			formatCVYearRange(project.years),
+			link(typesetQuotes(project.title), markdownUrl(`/digital-humanities/${project.id}`)),
+			[
+				project.shortDescription && text(project.shortDescription),
+				...groupProjectLinks(project).map(
+					(group) =>
+						`${inline(group.key)}: ${group.links
+							.map((projectLink) => outLink(projectLinkText(projectLink), projectLink.url))
+							.join(' · ')}`
+				),
+				projectReviews(project)
+			]
+		)
+	);
 	return section(
 		'Digital humanities projects',
 		ledgerOr(rows, 'No digital humanities projects listed.')
@@ -491,6 +477,9 @@ function digitalHumanities(): string {
 
 const talkKey = (comm: CvCommunication) => getYearFromISODate(comm.dateISO);
 
+/** The talks of each CV section, split by type as the page splits them. */
+const talks = splitCvTalks(cvCommunicationsByDate);
+
 /** A talk's title in quotation marks, linked to its Markdown record. */
 const talkTitle = (comm: CvCommunication, title = comm.title) =>
 	link(quoteTitle(title), markdownUrl(`/communications/${comm.id}`));
@@ -502,49 +491,41 @@ function talkRecord(comm: CvCommunication, title: string, venue: string): string
 }
 
 function invitedTalks(): string {
-	const talks = cvCommunicationsByDate.filter(
-		(comm) => comm.type === 'lecture' || comm.type === 'seminar' || comm.type === 'workshop'
-	);
-	// A panel appearance carries the event as its title; the conference is
-	// printed only when it says something the title has not.
-	const venue = (comm: CvCommunication) =>
-		comm.conference && !comm.title.includes(comm.conference) ? comm.conference : '';
 	return section(
 		'Invited talks',
-		bullets(talks.map((comm) => entry(talkKey(comm), talkRecord(comm, comm.title, venue(comm)))))
+		bullets(
+			talks.invited.map((comm) =>
+				entry(talkKey(comm), talkRecord(comm, comm.title, invitedTalkVenue(comm)))
+			)
+		)
 	);
 }
 
 function conferences(): string {
-	const ofType = (type: CvCommunication['type']) =>
-		cvCommunicationsByDate.filter((comm) => comm.type === type);
-	const rows = (talks: CvCommunication[], panel = false) =>
+	const rows = (list: CvCommunication[], panel = false) =>
 		bullets(
-			talks.map((comm) =>
+			list.map((comm) =>
 				entry(
 					talkKey(comm),
-					talkRecord(comm, panel ? comm.panelTitle || comm.title : comm.title, comm.conference)
+					talkRecord(comm, panel ? organisedPanelTitle(comm) : comm.title, comm.conference)
 				)
 			)
 		);
 	return section(
 		'Conference participation',
-		subsection('Panels organised', rows(ofType('panel'), true)),
-		subsection('Papers presented', rows(ofType('conference'))),
-		subsection('Posters presented', rows(ofType('poster')))
+		subsection('Panels organised', rows(talks.panels, true)),
+		subsection('Papers presented', rows(talks.papers)),
+		subsection('Posters presented', rows(talks.posters))
 	);
 }
 
 function events(): string {
-	const organised = cvCommunicationsByDate.filter((comm) => comm.type === 'event');
 	return section(
 		'Organisation of academic events',
 		bullets(
-			organised.map((comm) => {
+			talks.events.map((comm) => {
 				const lead = byline(comm.authors);
-				const date = comm.date.includes('-')
-					? comm.date.replace(/\s+\d{4}$/, '')
-					: formatDayMonth(comm.dateISO);
+				const date = cvEventDate(comm);
 				return entry(
 					talkKey(comm),
 					`${lead ? `${lead} ` : ''}${talkTitle(comm)}${comm.location ? `, ${text(comm.location)}` : ''}, ${inline(date)}.`
@@ -558,14 +539,9 @@ function events(): string {
 // Teaching experience (CVTeaching)
 // ---------------------------------------------------------------------------
 
-const levelLabel = (level: 'undergraduate' | 'graduate') =>
-	level === 'undergraduate' ? 'Undergraduate' : 'Graduate';
-
 function teachingExperience(): string {
-	const courses = [...teaching].sort(
-		(a, b) => parseInt(b.year.split('-')[0] ?? b.year) - parseInt(a.year.split('-')[0] ?? a.year)
-	);
-	const lectures = [...guestLectures].sort((a, b) => parseInt(b.year) - parseInt(a.year));
+	const courses = sortCoursesByYear(teaching);
+	const lectures = sortGuestLecturesByYear(guestLectures);
 	if (courses.length === 0) return section('Teaching experience', 'No teaching experience listed.');
 
 	return section(
@@ -576,7 +552,7 @@ function teachingExperience(): string {
 				courses.map((course) =>
 					entry(
 						formatCVYearRange(course.year),
-						`${strong(course.title)}, ${text(course.institution)}, ${levelLabel(course.level)}${course.sections ? ` (${inline(course.sections)})` : ''}${course.period ? ` (${inline(course.period)})` : ''}.`
+						`${strong(course.title)}, ${text(course.institution)}, ${teachingLevelLabel(course.level)}${course.sections ? ` (${inline(course.sections)})` : ''}${course.period ? ` (${inline(course.period)})` : ''}.`
 					)
 				)
 			)
@@ -587,7 +563,7 @@ function teachingExperience(): string {
 				lectures.map((lecture) =>
 					entry(
 						lecture.year,
-						`${strong(lecture.title)}, ${em(lecture.course)}, ${text(lecture.institution)}, ${levelLabel(lecture.level)}.`
+						`${strong(lecture.title)}, ${em(lecture.course)}, ${text(lecture.institution)}, ${teachingLevelLabel(lecture.level)}.`
 					)
 				)
 			)
@@ -599,28 +575,8 @@ function teachingExperience(): string {
 // Research experience (CVResearchExperience)
 // ---------------------------------------------------------------------------
 
-/**
- * Fieldwork grouped by place, keyed by every year the place was visited:
- * the years are read from the trip's own date ("November 2014 - April 2015"
- * counts both), newest first; places run alphabetically.
- */
-function fieldworkByPlace(): Array<{ location: string; years: number[] }> {
-	const byPlace = new Map<string, Set<number>>();
-	for (const fw of fieldworksByDate) {
-		const location = `${fw.city}, ${fw.country}`;
-		const years = byPlace.get(location) ?? new Set<number>();
-		byPlace.set(location, years);
-		const inDate = fw.date.match(/\b(19|20)\d{2}\b/g);
-		if (inDate && inDate.length > 0) for (const year of inDate) years.add(Number(year));
-		else years.add(fw.year);
-	}
-	return [...byPlace]
-		.map(([location, years]) => ({ location, years: [...years].sort((a, b) => b - a) }))
-		.sort((a, b) => a.location.localeCompare(b.location));
-}
-
 function researchExperience(): string {
-	const fieldwork = fieldworkByPlace().map((item) =>
+	const fieldwork = groupFieldworkByPlace(fieldworksByDate).map((item) =>
 		entry(item.years.join(', '), text(item.location))
 	);
 	const roles = researchRolesByDate.map((role) =>
@@ -642,12 +598,8 @@ function researchExperience(): string {
 // ---------------------------------------------------------------------------
 
 function service(): string {
-	const reviews = peerReviewsByDate.filter(
-		(review) => !review.id.includes('template') && review.journal !== 'Journal Name'
-	);
-	const memberships = editorialMembershipsByDate.filter(
-		(member) => !member.id.includes('template')
-	);
+	const reviews = realPeerReviews(peerReviewsByDate);
+	const memberships = realEditorialMemberships(editorialMembershipsByDate);
 
 	return section(
 		'Service to profession',
@@ -687,24 +639,11 @@ function service(): string {
 // Consulting and legal expertise (CVConsulting)
 // ---------------------------------------------------------------------------
 
-/** Held as a literal in `CVConsulting.svelte`; `cv.test.ts` keeps this copy in step with it. */
-const CONSULTING = [
-	{
-		year: '2025–',
-		role: 'Consultant',
-		organization: 'Communitology',
-		descriptions: [
-			'Provide research-driven analysis and expert testimony in asylum and immigration proceedings.',
-			'Prepare Country of Origin Information (COI) reports for cases on Benin, Côte d’Ivoire, and Togo.'
-		]
-	}
-];
-
 function consulting(): string {
 	return section(
 		'Consulting and legal expertise',
 		bullets(
-			CONSULTING.map((item) =>
+			consultingEngagements.map((item) =>
 				entry(
 					item.year,
 					`${inline(item.role)}, ${inline(item.organization)}.`,
@@ -720,7 +659,7 @@ function consulting(): string {
 // ---------------------------------------------------------------------------
 
 function media(): string {
-	const podcasts = cvCommunicationsByDate.filter((comm) => comm.type === 'podcast');
+	const { podcasts } = talks;
 
 	return section(
 		'Media appearances',
@@ -784,32 +723,10 @@ function affiliations(): string {
 	);
 }
 
-/** Held as a literal in `CVComputerSkills.svelte`; `cv.test.ts` keeps this copy in step with it. */
-const COMPUTER_SKILLS = [
-	{
-		category: 'Data analysis & visualisation',
-		skills:
-			'Python, OpenRefine, ECharts, MapLibre, data wrangling, topic modelling, network analysis, sentiment analysis, semantic search/embeddings'
-	},
-	{
-		category: 'Digital humanities tools',
-		skills:
-			'Omeka S, IIIF, Wikidata, linked data (RDF, SPARQL), Tesseract OCR, web scraping, WordPress'
-	},
-	{
-		category: 'Development & infrastructure',
-		skills: 'Svelte, Git/GitHub, Docker, MongoDB, Claude Code, AI-assisted development'
-	},
-	{
-		category: 'Research & documentation',
-		skills: 'Zotero, Microsoft Office'
-	}
-];
-
 function computerSkills(): string {
 	return section(
 		'Computer skills',
-		bullets(COMPUTER_SKILLS.map((skill) => entry(skill.category, inline(skill.skills))))
+		bullets(skillGroups.map((skill) => entry(skill.category, inline(skill.skills))))
 	);
 }
 

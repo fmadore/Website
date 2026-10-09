@@ -11,6 +11,7 @@
 		formatBlogDate,
 		getCVDisplayYear
 	} from '$lib/utils/cvFormatters';
+	import { isCvPublication } from '$lib/utils/cvSections';
 	import { getPublicationTypeDisplayName } from '$lib/utils/publicationTypeLabels';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
@@ -18,9 +19,7 @@
 	// Group publications using the utility function
 	const { publicationsByType, presentPublicationTypes, otherPublicationTypes } =
 		groupPublicationsByType(publicationsByDate);
-	const filteredPublicationsByDate = publicationsByDate.filter(
-		(pub) => pub.type !== 'phd-dissertation' && pub.type !== 'masters-thesis'
-	);
+	const filteredPublicationsByDate = publicationsByDate.filter(isCvPublication);
 </script>
 
 <section>

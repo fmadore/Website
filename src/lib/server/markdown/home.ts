@@ -8,7 +8,7 @@ import { activitiesByDate } from '$lib/data/activities';
 import { allPublications } from '$lib/data/publications/index';
 import { allCommunications } from '$lib/data/communications/index';
 import { bullets, document, entries, fields, inline, link, section } from './markdown';
-import { markdownUrl, pageUrl, SITE } from './site';
+import { markdownUrl, SITE } from './site';
 import { pageProseMarkdown } from './svelteProse';
 
 /** How many log entries the home page's rail prints. */
@@ -40,7 +40,7 @@ export function homeMarkdown(): string {
 				`${link('Research', markdownUrl('/research'))}: research projects and their narratives.`,
 				`${link('Digital humanities', markdownUrl('/digital-humanities'))}: archives, datasets, tools and AI workflows.`,
 				`${link('CV', markdownUrl('/cv'))}: the full curriculum vitae.`,
-				`${link('Teaching', pageUrl('/teaching'))}: courses and guest lectures (web page).`,
+				`${link('Teaching', markdownUrl('/teaching'))}: courses taught and guest lectures.`,
 				`${link('llms.txt', `${SITE}/llms.txt`)}: a map of the site for language models, with the JSON API and the MCP server.`
 			])
 		),

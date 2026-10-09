@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
 	import { formatCVAuthorList, terminalPeriod } from '$lib/utils/cvFormatters';
+	import { organisedPanelTitle, splitCvTalks } from '$lib/utils/cvSections';
 	import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
 	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
 	import CVEntry from './CVEntry.svelte';
 
-	// Filter communications by type
-	const organizedPanels = communicationsByDate.filter((comm) => comm.type === 'panel');
-	const presentedPapers = communicationsByDate.filter((comm) => comm.type === 'conference');
-	const presentedPosters = communicationsByDate.filter((comm) => comm.type === 'poster');
+	const {
+		panels: organizedPanels,
+		papers: presentedPapers,
+		posters: presentedPosters
+	} = splitCvTalks(communicationsByDate);
 </script>
 
 {#if organizedPanels.length > 0 || presentedPapers.length > 0 || presentedPosters.length > 0}
@@ -25,7 +27,7 @@
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}
-						{quoteTitle(comm.panelTitle || comm.title)}{#if comm.conference}, <em
+						{quoteTitle(organisedPanelTitle(comm))}{#if comm.conference}, <em
 								>{typesetQuotes(comm.conference)}</em
 							>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {formatDayMonth(
 							comm.dateISO

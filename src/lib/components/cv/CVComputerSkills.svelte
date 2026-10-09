@@ -1,26 +1,6 @@
 <script lang="ts">
+	import { computerSkills } from '$lib/data/computerSkills';
 	import CVEntry from './CVEntry.svelte';
-
-	const computerSkills = [
-		{
-			category: 'Data analysis & visualisation',
-			skills:
-				'Python, OpenRefine, ECharts, MapLibre, data wrangling, topic modelling, network analysis, sentiment analysis, semantic search/embeddings'
-		},
-		{
-			category: 'Digital humanities tools',
-			skills:
-				'Omeka S, IIIF, Wikidata, linked data (RDF, SPARQL), Tesseract OCR, web scraping, WordPress'
-		},
-		{
-			category: 'Development & infrastructure',
-			skills: 'Svelte, Git/GitHub, Docker, MongoDB, Claude Code, AI-assisted development'
-		},
-		{
-			category: 'Research & documentation',
-			skills: 'Zotero, Microsoft Office'
-		}
-	];
 </script>
 
 <!--

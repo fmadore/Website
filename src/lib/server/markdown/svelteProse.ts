@@ -25,7 +25,9 @@ const PAGE_SOURCES = import.meta.glob<string>(
 	[
 		'/src/routes/+page.svelte',
 		'/src/routes/research/+page.svelte',
-		'/src/routes/research/*/+page.svelte'
+		'/src/routes/research/*/+page.svelte',
+		'/src/routes/teaching/+page.svelte',
+		'/src/routes/teaching/guest-lectures/+page.svelte'
 	],
 	{ query: '?raw', import: 'default', eager: true }
 );

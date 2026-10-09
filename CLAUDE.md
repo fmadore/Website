@@ -443,7 +443,12 @@ HTML — never by scraping it. Index twins list the whole dataset the HTML index
 pages through. Prose authored in route markup (the home page, each research
 project) is read from the `.svelte` source by `svelteProse.ts`, which throws on
 any Svelte it cannot read; HTML bodies go through `htmlToMarkdown.ts`. Links
-inside a twin point at other twins (`resolveLink`).
+inside a twin point at other twins (`resolveLink`). The CV is printed twice, by
+the section components and by `cv.ts`: which records each section holds and in
+what order is decided once, in `$lib/utils/cvSections.ts`, and the consulting
+and computer-skills entries are data (`$lib/data/consulting.ts`,
+`$lib/data/computerSkills.ts`). Change a section's selection there, never in a
+component.
 
 `SEO.svelte` announces the twin with `<link rel="alternate" type="text/markdown">`
 for the route ids in `$lib/utils/markdownTwin.ts`, plus `<link rel="describedby">`

@@ -105,7 +105,11 @@ export function buildLlmsTxt(): string {
 		markdownUrl('/cv'),
 		'Full curriculum vitae: appointments, education, publications, grants, awards, talks, teaching, service and languages.'
 	);
-	item('Teaching', pageUrl('/teaching'), 'Courses and guest lectures (web page).');
+	item(
+		'Teaching',
+		markdownUrl('/teaching'),
+		'Courses taught, with their syllabi, and guest lectures by host institution.'
+	);
 
 	heading('Research projects');
 	for (const project of allResearchProjects) {

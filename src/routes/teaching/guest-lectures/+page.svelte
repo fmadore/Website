@@ -8,7 +8,7 @@
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
 	import guestLectures from '$lib/data/teaching/guest-lectures';
-	import type { GuestLecture } from '$lib/types';
+	import { groupLecturesByInstitution, lectureSpan } from '$lib/utils/teachingIndex';
 	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
 
 	// Define breadcrumb items
@@ -29,22 +29,13 @@
 	 * dataset's nine (the January 2017 and February 2016 deliveries of one
 	 * lecture were merged into a single date string) and dropped the country
 	 * from every host institution, while the courses ledger one click away kept
-	 * it. Grouping is derived, so a new record needs no edit here.
+	 * it. Grouping is derived (`$lib/utils/teachingIndex`, shared with the
+	 * page's Markdown twin), so a new record needs no edit here.
 	 */
-	const byInstitution = guestLectures.reduce<{ institution: string; lectures: GuestLecture[] }[]>(
-		(acc, lecture) => {
-			const group = acc.find((g) => g.institution === lecture.institution);
-			if (group) group.lectures.push(lecture);
-			else acc.push({ institution: lecture.institution, lectures: [lecture] });
-			return acc;
-		},
-		[]
-	);
+	const byInstitution = groupLecturesByInstitution(guestLectures);
 
-	const years = guestLectures.map((lecture) => lecture.year).sort();
-	// An empty dataset has no first and no last year, and printing the span
-	// anyway is how a page ends up advertising “undefined–undefined”.
-	const span = years.length > 0 ? `${years[0]}–${years[years.length - 1]}` : '';
+	// Empty when there is nothing on record, rather than "undefined–undefined".
+	const span = lectureSpan(guestLectures);
 </script>
 
 <SEO
