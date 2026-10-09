@@ -178,7 +178,7 @@ there.
 Push a tag, or use Actions → **Release MCP bundle** → Run workflow:
 
 ```bash
-git tag mcp-v0.2.0 && git push origin mcp-v0.2.0
+git tag mcp-v0.3.0 && git push origin mcp-v0.3.0
 ```
 
 The workflow type-checks, builds the site, builds and smoke-tests the bundle against real

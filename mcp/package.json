@@ -1,6 +1,6 @@
 {
 	"name": "@fmadore/website-mcp",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"description": "MCP server over the static JSON API of frederickmadore.com — publications, talks, research projects, activities, and CV.",
 	"license": "MIT",
 	"author": "Frédérick Madore",

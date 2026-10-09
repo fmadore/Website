@@ -95,7 +95,7 @@ export function createWebsiteServer(): McpServer {
 	const server = new McpServer(
 		{
 			name: 'frederickmadore-website',
-			version: '0.2.0',
+			version: '0.3.0',
 			description:
 				"Read-only access to Frédérick Madore's publications, talks, research projects, digital humanities work, activities, and CV."
 		},
