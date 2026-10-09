@@ -82,7 +82,7 @@ export function tallyBy<T>(
 /**
  * Group items into a record keyed by a string accessor. Items whose key is
  * nullish or whitespace-only are skipped. Used to bucket publications by
- * `project` before feeding the treemap / timeline builders below.
+ * `project` before feeding the timeline builder below.
  */
 export function groupByKey<T>(
 	items: T[],
@@ -97,53 +97,66 @@ export function groupByKey<T>(
 	return groups;
 }
 
-// Property name is `publications` to match the ECharts treemap / timeline
-// component props; it holds the list of item titles shown in tooltips.
-export interface TreemapChild {
-	name: string;
-	value: number;
-	publications: string[];
+export interface CrossTabRow {
+	key: string;
+	total: number;
+	/** One count per column, in `columns` order; 0 where nothing falls. */
+	cells: number[];
 }
 
-export interface TreemapNode {
-	name: string;
-	children: TreemapChild[];
+export interface CrossTab {
+	rows: CrossTabRow[];
+	columns: { key: string; total: number }[];
+	/** The largest single cell: the top of the ink ramp. */
+	maxCell: number;
+	/** The largest row total: the full length of a row's total bar. */
+	maxRowTotal: number;
+	total: number;
 }
 
 /**
- * Build a two-level treemap from pre-grouped items: each group becomes an outer
- * node, its items are bucketed by `getChildName`, and each bucket's value is the
- * item count (with item titles collected for the tooltip). Empty groups are
- * dropped; outer nodes and their children are sorted by descending value.
+ * Tally items into a two-way table keyed by `getRow` and `getColumn`.
+ *
+ * Rows and columns are each ordered by their total, largest first, ties broken
+ * on the key, so a rebuild never reshuffles the table. Items whose row or
+ * column key is nullish or blank are not counted. Only keys that occur are
+ * kept, so the table never carries an empty row or column.
  */
-export function buildGroupedTreemap<T>(
-	groups: Record<string, T[]>,
-	getChildName: (item: T) => string,
-	getTitle: (item: T) => string
-): TreemapNode[] {
-	return Object.entries(groups)
-		.map(([name, items]) => {
-			const buckets: Record<string, { count: number; titles: string[] }> = {};
-			for (const item of items) {
-				const child = getChildName(item);
-				(buckets[child] ??= { count: 0, titles: [] }).count++;
-				buckets[child].titles.push(getTitle(item));
-			}
-			const children = Object.entries(buckets)
-				.map(([childName, data]) => ({
-					name: childName,
-					value: data.count,
-					publications: data.titles
-				}))
-				.sort((a, b) => b.value - a.value);
-			return { name, children };
-		})
-		.filter((node) => node.children.length > 0)
-		.sort(
-			(a, b) =>
-				b.children.reduce((sum, child) => sum + child.value, 0) -
-				a.children.reduce((sum, child) => sum + child.value, 0)
-		);
+export function buildCrossTab<T>(
+	items: readonly T[],
+	getRow: (item: T) => string | null | undefined,
+	getColumn: (item: T) => string | null | undefined
+): CrossTab {
+	const counts = new Map<string, Map<string, number>>();
+	const columnTotals = new Map<string, number>();
+	for (const item of items) {
+		const row = getRow(item)?.trim();
+		const column = getColumn(item)?.trim();
+		if (!row || !column) continue;
+		const cells = counts.get(row) ?? new Map<string, number>();
+		cells.set(column, (cells.get(column) ?? 0) + 1);
+		counts.set(row, cells);
+		columnTotals.set(column, (columnTotals.get(column) ?? 0) + 1);
+	}
+
+	const byTotal = (a: { key: string; total: number }, b: { key: string; total: number }) =>
+		b.total - a.total || a.key.localeCompare(b.key);
+	const columns = [...columnTotals].map(([key, total]) => ({ key, total })).sort(byTotal);
+	const rows = [...counts]
+		.map(([key, cells]) => ({
+			key,
+			total: [...cells.values()].reduce((sum, n) => sum + n, 0),
+			cells: columns.map((column) => cells.get(column.key) ?? 0)
+		}))
+		.sort(byTotal);
+
+	return {
+		rows,
+		columns,
+		maxCell: Math.max(0, ...rows.flatMap((row) => row.cells)),
+		maxRowTotal: Math.max(0, ...rows.map((row) => row.total)),
+		total: rows.reduce((sum, row) => sum + row.total, 0)
+	};
 }
 
 export interface ProjectTimelineItem {

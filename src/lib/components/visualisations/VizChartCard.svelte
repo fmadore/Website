@@ -16,8 +16,7 @@
 	 * ahead of the viewport, so a plate costs its library only when it is about
 	 * to be read. The box height never changes, so nothing below it moves.
 	 */
-	type Variant =
-		'stacked' | 'network' | 'arc' | 'matrix' | 'bubble' | 'treemap' | 'gantt' | 'map' | 'bigrams';
+	type Variant = 'stacked' | 'network' | 'arc' | 'matrix' | 'bubble' | 'gantt' | 'map' | 'bigrams';
 
 	/**
 	 * The three network plates draw themselves: declarative SVG from pure layout
@@ -153,11 +152,6 @@
 		overflow: visible;
 	}
 
-	.treemap-chart {
-		height: 500px;
-		contain: strict;
-	}
-
 	.gantt-chart {
 		height: 450px;
 		contain: strict;
@@ -196,10 +190,6 @@
 
 		.bubble-chart {
 			height: 550px;
-		}
-
-		.treemap-chart {
-			height: 450px;
 		}
 
 		.gantt-chart {
@@ -256,10 +246,6 @@
 
 		.bubble-chart {
 			height: 450px;
-		}
-
-		.treemap-chart {
-			height: 380px;
 		}
 
 		.gantt-chart {

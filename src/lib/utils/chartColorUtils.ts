@@ -135,7 +135,7 @@ export interface ChartMotionConfig {
  * - `none`   — purely analytical charts; no entrance animation.
  * - `quick`  — 240 ms; the default for simple charts and all data updates.
  * - `settle` — 420 ms; a single calm settle for the first paint of a complex
- *   chart (network graph, treemap, doughnut).
+ *   chart (a Gantt, a stacked bar).
  *
  * Collapses to no animation under `prefers-reduced-motion`. Spread at the **top
  * level** of the chart option (not inside `series`) so `animation: false` and
@@ -179,7 +179,7 @@ export interface ContrastLabelStyle {
 
 /**
  * Choose a readable label colour for text drawn on top of an arbitrary chart
- * `fill` (treemap tiles, pie slices, …). Picks warm ink or warm paper by WCAG
+ * `fill` (the career timeline's category colours). Picks warm ink or warm paper by WCAG
  * contrast, and only adds a minimal hairline stroke of the opposite tone when
  * neither pure colour clears the contrast `target` — so labels read as the data
  * voice rather than glowing/stroked overlay text.

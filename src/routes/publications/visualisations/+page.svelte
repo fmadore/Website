@@ -13,7 +13,7 @@
 	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
 	import NetworkMatrix from '$lib/components/visualisations/NetworkMatrix.svelte';
 	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
-	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
+	import VenueLedger from '$lib/components/visualisations/VenueLedger.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
@@ -41,7 +41,7 @@
 	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
 	import { PUBLICATION_TYPE_CHART_LABELS } from '$lib/utils/publicationTypeLabels';
 	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
-	import type { TreemapNode } from '$lib/utils/vizAggregation';
+	import { buildVenueLedger } from '$lib/utils/venueLedger';
 	import { author } from '$lib/data/siteConfig';
 	import type { LocationDatum } from '$lib/data/geo';
 	import { scaleKeyTerms } from '$lib/utils/keyTerms';
@@ -223,94 +223,9 @@
 	let keywordTopN = $state(25);
 	let keywordSearch = $state('');
 
-	// Calculate publication venue treemap data
-	const venueTreemapData = $derived(
-		(() => {
-			// Group publications by venue type and venue name
-			type VenueBucket = { count: number; publications: string[] };
-			const journals: Record<string, VenueBucket> = {};
-			const publishers: Record<string, VenueBucket> = {};
-			// Get-or-create the venue bucket, returning a reference NUIA can trust.
-			const bucket = (map: Record<string, VenueBucket>, key: string): VenueBucket =>
-				(map[key] ??= { count: 0, publications: [] });
-
-			allPublications.forEach((pub) => {
-				// Journal articles, special issues, and reports (bulletin-like venues)
-				if (
-					pub.journal &&
-					(pub.type === 'article' ||
-						pub.type === 'special-issue' ||
-						pub.type === 'bulletin-article')
-				) {
-					const b = bucket(journals, pub.journal);
-					b.count++;
-					b.publications.push(pub.title);
-				}
-
-				// Reports - use publisher as journal-like venue
-				if (pub.publisher && pub.type === 'report') {
-					const b = bucket(journals, pub.publisher);
-					b.count++;
-					b.publications.push(pub.title);
-				}
-
-				// Working papers - the numbered series is the venue
-				if (pub.type === 'working-paper' && (pub.series || pub.journal || pub.publisher)) {
-					const b = bucket(journals, (pub.series || pub.journal || pub.publisher)!);
-					b.count++;
-					b.publications.push(pub.title);
-				}
-
-				// Books, chapters, and encyclopedias - group by publisher
-				if (
-					pub.publisher &&
-					(pub.type === 'book' || pub.type === 'chapter' || pub.type === 'encyclopedia')
-				) {
-					const b = bucket(publishers, pub.publisher);
-					b.count++;
-					b.publications.push(pub.title);
-				}
-			});
-
-			// Build treemap structure
-			const treemapData: TreemapNode[] = [];
-
-			// Add journals category
-			if (Object.keys(journals).length > 0) {
-				treemapData.push({
-					name: 'Journals',
-					children: Object.entries(journals)
-						.map(([name, data]) => ({
-							name,
-							value: data.count,
-							publications: data.publications
-						}))
-						.sort((a, b) => b.value - a.value)
-				});
-			}
-
-			// Add publishers category (for books and chapters)
-			if (Object.keys(publishers).length > 0) {
-				treemapData.push({
-					name: 'Book Publishers',
-					children: Object.entries(publishers)
-						.map(([name, data]) => ({
-							name,
-							value: data.count,
-							publications: data.publications
-						}))
-						.sort((a, b) => b.value - a.value)
-				});
-			}
-
-			return treemapData;
-		})()
-	);
-
-	// Calculate total venues for display
-	const totalVenues = $derived(
-		venueTreemapData.reduce((sum, category) => sum + category.children.length, 0)
-	);
+	// Where the work appeared: journals and series, then book publishers, each
+	// venue ranked by the works it carries (see utils/venueLedger.ts).
+	const venueLedger = $derived(buildVenueLedger(allPublications));
 
 	// Calculate research projects timeline data (group by project, then build spans)
 	const projectTimelineData = $derived(
@@ -403,11 +318,6 @@
 	);
 	const pagesTableRows = $derived(
 		pagesPerYearData.map((d) => ({ label: String(d.year), value: d.pages }))
-	);
-	const venueTableRows = $derived(
-		venueTreemapData.flatMap((category) =>
-			category.children.map((child) => ({ label: child.name, value: child.value }))
-		)
 	);
 	const projectTableRows = $derived(
 		projectTimelineData.map((entry) => ({ label: entry.name, value: entry.publications.length }))
@@ -565,7 +475,7 @@
 			id: 'venues',
 			no: '§ 9',
 			title: 'Publication venues',
-			count: countOf(totalVenues, 'venue')
+			count: countOf(venueLedger.venueCount, 'venue')
 		},
 		projects: {
 			id: 'project-timeline',
@@ -905,21 +815,16 @@
 
 	<VizSection
 		{...sections.venues}
-		description="Where the work appears: journals and report series in one block, book publishers in the other, each venue sized by the number of works it carries. Select a block to zoom into it."
-		variant="treemap"
-		placeholderHeight="500px"
-		hasData={venueTreemapData.length > 0}
-		empty="No venues recorded."
+		description="Where the work appears: journals and report series in one ledger, book publishers in the other. Each venue carrying more than one work has a row, with a square per work; the venues carrying one are listed together beneath. Select a year or a venue to open the work."
 	>
-		<EChartsTreemap data={venueTreemapData} title="Publication venues" />
-		{#snippet table()}
-			<VizDataTable
-				rows={venueTableRows}
-				keyLabel="Venue"
-				valueLabel="Publications"
-				caption="Every journal, report series and book publisher in the record, with the number of works it carries."
-			/>
-		{/snippet}
+		{#if venueLedger.groups.length > 0}
+			<VenueLedger ledger={venueLedger} />
+		{:else}
+			<div class="viz-empty">
+				<span class="dateline">No data</span>
+				<p>No venues recorded.</p>
+			</div>
+		{/if}
 	</VizSection>
 
 	<VizSection

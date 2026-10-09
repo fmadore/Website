@@ -3,7 +3,6 @@ import {
 	describeSeries,
 	describeStack,
 	describeRanked,
-	describeTreemap,
 	type LabelledValue
 } from './chartDescriptions';
 
@@ -113,38 +112,5 @@ describe('describeRanked', () => {
 				'Most citations'
 			)
 		).toBe('Citations per author, 1 author. Most citations: A. Author, 5.');
-	});
-});
-
-describe('describeTreemap', () => {
-	it('counts leaves and groups and names the largest leaf', () => {
-		expect(
-			describeTreemap(
-				'Publication venues',
-				[
-					{
-						label: 'Journals',
-						children: [
-							{ label: 'Islamic Africa', value: 4 },
-							{ label: 'Africa Today', value: 2 }
-						]
-					},
-					{ label: 'Publishers', children: [{ label: 'Brill', value: 3 }] }
-				],
-				{ singular: 'venue', plural: 'venues' },
-				{ singular: 'publication', plural: 'publications' }
-			)
-		).toBe('Publication venues: 3 venues in 2 groups. Largest: Islamic Africa, 4 publications.');
-	});
-
-	it('says so when every group is empty', () => {
-		expect(
-			describeTreemap(
-				'Talks by research project',
-				[{ label: 'Project', children: [] }],
-				{ singular: 'type', plural: 'types' },
-				{ singular: 'talk', plural: 'talks' }
-			)
-		).toBe('Talks by research project: no data recorded.');
 	});
 });

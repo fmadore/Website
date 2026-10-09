@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
 	tallyBy,
 	groupByKey,
-	buildGroupedTreemap,
+	buildCrossTab,
 	buildProjectTimeline,
 	buildLocationData,
 	buildStackedByYear
@@ -59,44 +59,58 @@ describe('groupByKey', () => {
 	});
 });
 
-describe('buildGroupedTreemap', () => {
-	it('buckets items by child name, collects titles, and sorts by value', () => {
-		const groups = {
-			'Project X': [
-				{ type: 'article', title: 'A1' },
-				{ type: 'book', title: 'B1' },
-				{ type: 'article', title: 'A2' }
-			],
-			Empty: [] as { type: string; title: string }[]
-		};
-		const result = buildGroupedTreemap(
-			groups,
-			(i) => i.type,
-			(i) => i.title
-		);
-		// Empty group is dropped.
-		expect(result).toHaveLength(1);
-		expect(result[0]!.name).toBe('Project X');
-		expect(result[0]!.children).toEqual([
-			{ name: 'article', value: 2, publications: ['A1', 'A2'] },
-			{ name: 'book', value: 1, publications: ['B1'] }
+describe('buildCrossTab', () => {
+	const items = [
+		{ p: 'Alpha', t: 'lecture' },
+		{ p: 'Alpha', t: 'conference' },
+		{ p: 'Alpha', t: 'conference' },
+		{ p: 'Beta', t: 'workshop' },
+		{ p: 'Beta', t: 'conference' },
+		{ p: 'Beta', t: 'conference' },
+		{ p: 'Beta', t: 'conference' },
+		{ p: ' ', t: 'conference' },
+		{ p: 'Gamma', t: undefined }
+	];
+	const tab = buildCrossTab(
+		items,
+		(i) => i.p,
+		(i) => i.t
+	);
+
+	it('orders rows and columns by total, largest first', () => {
+		expect(tab.rows.map((r) => r.key)).toEqual(['Beta', 'Alpha']);
+		expect(tab.columns).toEqual([
+			{ key: 'conference', total: 5 },
+			{ key: 'lecture', total: 1 },
+			{ key: 'workshop', total: 1 }
 		]);
 	});
 
-	it('sorts outer nodes by total descending', () => {
-		const groups = {
-			Small: [{ type: 't', title: 'a' }],
-			Big: [
-				{ type: 't', title: 'b' },
-				{ type: 'u', title: 'c' }
-			]
-		};
-		const result = buildGroupedTreemap(
-			groups,
-			(i) => i.type,
-			(i) => i.title
-		);
-		expect(result.map((n) => n.name)).toEqual(['Big', 'Small']);
+	it('lays each row out in column order, zero where nothing falls', () => {
+		expect(tab.rows).toEqual([
+			{ key: 'Beta', total: 4, cells: [3, 0, 1] },
+			{ key: 'Alpha', total: 3, cells: [2, 1, 0] }
+		]);
+	});
+
+	it('skips items with a blank row or column key', () => {
+		expect(tab.total).toBe(7);
+		expect(tab.rows.some((r) => r.key === 'Gamma')).toBe(false);
+	});
+
+	it('reports the extremes the marks are scaled to', () => {
+		expect(tab.maxCell).toBe(3);
+		expect(tab.maxRowTotal).toBe(4);
+	});
+
+	it('returns an empty table for no items', () => {
+		expect(
+			buildCrossTab(
+				[] as { p: string }[],
+				(i) => i.p,
+				(i) => i.p
+			)
+		).toEqual({ rows: [], columns: [], maxCell: 0, maxRowTotal: 0, total: 0 });
 	});
 });
 

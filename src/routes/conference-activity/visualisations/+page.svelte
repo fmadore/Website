@@ -4,7 +4,7 @@
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	// The charts and networks tally fields, never prose: the committed
 	// projection (no abstracts) carries everything they read, `papers`
 	// included — the co-presenter and institution networks are built from it.
@@ -20,7 +20,7 @@
 	import InstitutionNetworkSection from '$lib/components/visualisations/InstitutionNetworkSection.svelte';
 	import NetworkMatrix from '$lib/components/visualisations/NetworkMatrix.svelte';
 	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
-	import EChartsTreemap from '$lib/components/visualisations/EChartsTreemap.svelte';
+	import CrossTabTable from '$lib/components/visualisations/CrossTabTable.svelte';
 	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
 	import VizSection from '$lib/components/visualisations/VizSection.svelte';
 	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
@@ -32,7 +32,7 @@
 	import {
 		buildLocationData,
 		tallyBy,
-		buildGroupedTreemap,
+		buildCrossTab,
 		buildProjectTimeline,
 		buildStackedByYear
 	} from '$lib/utils/vizAggregation';
@@ -210,16 +210,20 @@
 	let tagTopN = $state(25);
 	let tagSearch = $state('');
 
-	// 8. Projects treemap — outer cells are research projects, inner cells are
-	// communication types, sized by the number of communications.
-	const projectTreemapData = $derived(
-		buildGroupedTreemap(
-			communicationsByProject,
-			(comm) => formatTypeLabel(comm.type ?? 'other'),
-			(comm) => comm.title
+	// 8. Talks by project and kind — a cross-tabulation, one row per research
+	// project and one column per kind of talk, each ordered by its total.
+	const projectTypeTable = $derived(
+		buildCrossTab(
+			allCommunications,
+			(comm) => comm.project,
+			(comm) => comm.type ?? 'other'
 		)
 	);
-	const totalProjects = $derived(projectTreemapData.length);
+	const talksIndex = resolve('/conference-activity');
+	const projectHref = (project: string) => `${talksIndex}?${new URLSearchParams({ project })}`;
+	const projectTypeHref = (project: string, type: string) =>
+		`${talksIndex}?${new URLSearchParams({ project, type })}`;
+	const totalProjects = $derived(projectTypeTable.rows.length);
 
 	// 9. Locations map — aggregate communications by country and list the
 	// individual titles (with their city as the subtitle) in the popup.
@@ -305,12 +309,6 @@
 	);
 	const typeTableRows = $derived(typeDistribution.map((d) => ({ label: d.type, value: d.count })));
 	const countryTableRows = $derived(countryData.map((d) => ({ label: d.country, value: d.count })));
-	const projectTreemapTableRows = $derived(
-		projectTreemapData.map((node) => ({
-			label: node.name,
-			value: node.children.reduce((sum, child) => sum + child.value, 0)
-		}))
-	);
 	const projectTimelineTableRows = $derived(
 		projectTimelineData.map((entry) => ({ label: entry.name, value: entry.publications.length }))
 	);
@@ -715,28 +713,26 @@
 
 	<VizSection
 		{...sections.projects}
-		description="Each outer block is a research project; the inner cells are the kinds of talk it produced, sized by count. Select a block to zoom into it."
-		variant="treemap"
-		placeholderHeight="500px"
-		hasData={projectTreemapData.length > 0}
-		empty="No project data recorded."
+		description="Each row is a research project and each column a kind of talk; the darker the cell, the more talks it holds. Select a project or a figure to open the talks it counts."
 	>
-		<EChartsTreemap
-			data={projectTreemapData}
-			title="Talks by research project"
-			itemSingular="talk"
-			itemPlural="talks"
-			entrySingular="type"
-			entryPlural="types"
-		/>
-		{#snippet table()}
-			<VizDataTable
-				rows={projectTreemapTableRows}
-				keyLabel="Project"
-				valueLabel="Talks"
-				caption="Talks delivered within each research project."
+		{#if projectTypeTable.rows.length > 0}
+			<CrossTabTable
+				table={projectTypeTable}
+				caption="Talks by research project and kind of talk, with each project's total."
+				rowHeading="Project"
+				totalLabel="All projects"
+				columnLabel={formatTypeLabel}
+				rowHref={projectHref}
+				cellHref={projectTypeHref}
+				itemSingular="talk"
+				itemPlural="talks"
 			/>
-		{/snippet}
+		{:else}
+			<div class="viz-empty">
+				<span class="dateline">No data</span>
+				<p>No project data recorded.</p>
+			</div>
+		{/if}
 	</VizSection>
 
 	<VizSection {...sections.locations} description={locationDescription}>

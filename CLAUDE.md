@@ -469,7 +469,7 @@ All three render inline SVG (never canvas), so marks are focusable and CSS-theme
 
 ### Heavy Libraries (Code Split)
 
-ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions.output.codeSplitting` in Vite config. Use dynamic imports for visualization components. ECharts is tree-shaken via `echartsCore.ts`; `GraphChart` is deliberately absent (networks are SVG, see above).
+ECharts, D3, MapLibre, and jsPDF are split into separate chunks via `build.rolldownOptions.output.codeSplitting` in Vite config. Use dynamic imports for visualization components. ECharts is tree-shaken via `echartsCore.ts`; `GraphChart` is deliberately absent (networks are SVG, see above), and so is `TreemapChart`: publication venues are `VenueLedger` (most venues carry one work, so treemap tiles were near-equal and too small to name) and talks by project are `CrossTabTable`, a native table shaded by count.
 
 The same `codeSplitting` block also consolidates what every page loads: a `framework` group (Svelte, Kit, and the bundler helpers) and an entries-aware `shared` group for small utilities and components reused across routes, one chunk per exact set of routes that shares them. Its `entriesAwareMergeThreshold` stays **0**: a merge folds small subgroups into a neighbour, which makes _passengers_ — code a route downloads but never imports (the visualisation pages' chart utilities once rode on `/teaching`). `npm run check:bundle` guards both boundaries: a group captures its modules' dependencies too, so the `shared` allow/deny lists in `vite.config.ts` must never admit a module that reaches a dataset or a heavy library; and every route's chunks are compared with its source imports (`scripts/lib/source-graph.mjs`), failing on any passenger.
 

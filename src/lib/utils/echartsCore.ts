@@ -15,7 +15,7 @@
  */
 
 import * as echarts from 'echarts/core';
-import { BarChart, ScatterChart, CustomChart, TreemapChart } from 'echarts/charts';
+import { BarChart, ScatterChart, CustomChart } from 'echarts/charts';
 import {
 	GridComponent,
 	TooltipComponent,
@@ -30,7 +30,6 @@ echarts.use([
 	BarChart, // bar / horizontal bar / stacked bar
 	ScatterChart, // gantt milestone points
 	CustomChart, // gantt range bars
-	TreemapChart,
 	// NOTE: GraphChart (force-directed networks) is deliberately absent — the
 	// networks are drawn as declarative SVG by NetworkGraph.svelte, which gives
 	// keyboard-navigable nodes, label-collision handling and a settled layout
@@ -38,6 +37,9 @@ echarts.use([
 	// NOTE: PieChart and the LabelLayout feature are gone with the doughnuts.
 	// A two-value split is now the `.hbar` proportion ledger and a seven-value
 	// one a ranked horizontal bar, both of which read the near-ties a pie hid.
+	// NOTE: TreemapChart is gone too. Venues are the `VenueLedger` (most carry
+	// one work, so the tiles were near-equal and too small to name) and talks
+	// by project the `CrossTabTable`, where each kind of talk keeps a column.
 	// Components
 	GridComponent,
 	TooltipComponent,

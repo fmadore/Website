@@ -15,7 +15,7 @@
  * publications, the talks page counts talks, and neither word is hard-coded.
  */
 
-/** A single category and its value: one bar, one tile, one stacked column. */
+/** A single category and its value: one bar, one stacked column. */
 export interface LabelledValue {
 	label: string;
 	value: number;
@@ -101,31 +101,4 @@ export function describeRanked(
 	if (data.length === 0) return `${measure}: no data recorded.`;
 	const { highest } = extremes(data);
 	return `${measure}, ${countOf(data.length, noun)}. ${lead}: ${highest.label}, ${highest.value}.`;
-}
-
-/** One group of a treemap: a parent tile and the leaves inside it. */
-export interface TreemapGroup {
-	label: string;
-	children: LabelledValue[];
-}
-
-/**
- * A two-level treemap: how many leaves, in how many groups, and the largest leaf.
- *
- * `Publication venues: 26 venues in 2 groups. Largest: Islamic Africa, 4 publications.`
- */
-export function describeTreemap(
-	title: string,
-	groups: TreemapGroup[],
-	entryNoun: Noun,
-	itemNoun: Noun
-): string {
-	const leaves = groups.flatMap((group) => group.children);
-	if (leaves.length === 0) return `${title}: no data recorded.`;
-	const { highest } = extremes(leaves);
-	const groupNoun: Noun = { singular: 'group', plural: 'groups' };
-	return (
-		`${title}: ${countOf(leaves.length, entryNoun)} in ${countOf(groups.length, groupNoun)}.` +
-		` Largest: ${highest.label}, ${countOf(highest.value, itemNoun)}.`
-	);
 }

@@ -36,8 +36,7 @@ carry a unique one.
 	import type { Snippet } from 'svelte';
 	import VizChartCard from './VizChartCard.svelte';
 
-	type Variant =
-		'stacked' | 'network' | 'arc' | 'matrix' | 'bubble' | 'treemap' | 'gantt' | 'map' | 'bigrams';
+	type Variant = 'stacked' | 'network' | 'arc' | 'matrix' | 'bubble' | 'gantt' | 'map' | 'bigrams';
 
 	let {
 		no,
