@@ -191,7 +191,7 @@ booted.
 [MCP Registry](https://modelcontextprotocol.io/registry/about) (in preview), as
 `io.github.fmadore/frederickmadore-website`. The registry stores metadata only: the entry
 points at the release's `.mcpb` and records its SHA-256, which clients check before
-installing. The committed file describes the latest release, `0.2.0`.
+installing. The committed file describes the latest release, `0.3.0`.
 
 The hash must be the hash of the uploaded file. The bundle is a zip with build timestamps,
 so a local rebuild of the same commit hashes differently. The release workflow therefore
@@ -205,7 +205,7 @@ attaches it to the same release. Publishing stays manual, and needs a GitHub sig
    gh release download mcp-v0.3.0 --repo fmadore/Website --pattern server.json --dir mcp --clobber
    ```
 
-   To publish `0.2.0`, skip this step: the committed file is already its entry.
+   To republish `0.3.0`, skip this step: the committed file is already its entry.
 
 2. Install `mcp-publisher` from the
    [registry's releases](https://github.com/modelcontextprotocol/registry/releases) (the
@@ -221,7 +221,9 @@ attaches it to the same release. Publishing stays manual, and needs a GitHub sig
    ```
 
    `validate` sends the file to the registry's validation endpoint; `login github` opens
-   GitHub's device flow; `publish` reads `./server.json`.
+   GitHub's device flow; `publish` reads `./server.json`. The registry token that
+   `login` stores expires within minutes, so run `publish` straight after it; a
+   `401 … token is expired` means log in again.
 
 4. Confirm the listing, then commit the fetched `server.json`, so the repo records what was
    published:

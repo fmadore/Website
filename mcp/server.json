@@ -17,12 +17,12 @@
 			"sizes": ["512x512"]
 		}
 	],
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"packages": [
 		{
 			"registryType": "mcpb",
-			"identifier": "https://github.com/fmadore/Website/releases/download/mcp-v0.2.0/frederickmadore-website.mcpb",
-			"fileSha256": "927912861e8105ed95b23414dcb9ddb24f12b437912c02cc40d1f212c9ff5f96",
+			"identifier": "https://github.com/fmadore/Website/releases/download/mcp-v0.3.0/frederickmadore-website.mcpb",
+			"fileSha256": "69a7b8454ff41202745fc354589ab547dcc0881c7236eca8fcd9ca8431150c2a",
 			"transport": { "type": "stdio" }
 		}
 	]
