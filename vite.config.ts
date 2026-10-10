@@ -65,6 +65,9 @@ const APP_SHARED =
 const APP_SHARED_DENY =
 	/(choropleth|echartsCore|mapPopups|maplibre|networkLayout|pdfRichText|pdfCvGenerator|pdfCvLayout|pdfDesignTokens|useECharts|useMapLibre|grantsJsonLd|imageVariants|jsonLdSchemas|slidePoster|timelineData|vizAggregation|Header\.svelte)/;
 
+/** The tree-shaking wrapper that rides in the `echarts` chunk with the library. */
+const ECHARTS_GLUE = /[\\/]src[\\/]lib[\\/]utils[\\/]echartsCore\.ts$/;
+
 export default defineConfig({
 	plugins: [sveltekit()],
 	// When the build ran, baked into the server and client bundles alike, so a
@@ -100,8 +103,15 @@ export default defineConfig({
 						// Heavy charting library — dynamically imported, its own chunk.
 						// The test deliberately matches the tree-shaking wrapper
 						// (echartsCore.ts) too, so the glue rides with the library
-						// rather than with the pages.
-						{ name: 'echarts', test: (id) => id.includes('echarts'), priority: 30 },
+						// rather than with the pages. That file and no other: a bare
+						// `includes('echarts')` also swept in echartsTooltip.ts, which
+						// useECharts imports statically, and so put the whole library
+						// on every chart page's static path.
+						{
+							name: 'echarts',
+							test: (id) => id.includes('node_modules/echarts/') || ECHARTS_GLUE.test(id),
+							priority: 30
+						},
 
 						// D3 — split the DOM/interaction modules (reached only by the
 						// lazily-loaded NetworkGraph: d3-force via networkLayout.ts,
