@@ -7,11 +7,11 @@ formatters built markup by concatenation, which meant every corpus title went
 through `innerHTML`. Here the title, the meta line and the item list are just
 text nodes.
 
-Positioning is the caller's job (it knows where its own marks are); this only
-renders and clamps nothing.
+Callers provide the mark position; the shared action contains the measured box.
 -->
 <script lang="ts">
 	import '$styles/components/network-viz.css';
+	import { viewportTooltip } from '$lib/actions/viewportTooltip';
 
 	export interface TooltipContent {
 		title: string;
@@ -33,7 +33,7 @@ renders and clamps nothing.
 	} = $props();
 </script>
 
-<div class="viz-tooltip" role="tooltip" style:left="{x}px" style:top="{y}px">
+<div class="viz-tooltip" role="tooltip" use:viewportTooltip={{ x, y, maxWidth: 280 }}>
 	<strong>{content.title}</strong>
 	{#if content.meta}
 		<em>{content.meta}</em>

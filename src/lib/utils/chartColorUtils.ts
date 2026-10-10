@@ -381,8 +381,10 @@ export function getEChartsTooltipStyle(colors: ResolvedChartColors) {
 		borderColor: colors.border,
 		borderWidth: 1,
 		padding: [8, 12],
-		transitionDuration: 0.12,
-		extraCssText: 'box-shadow: none;'
+		transitionDuration: 0,
+		enterable: true,
+		extraCssText:
+			'box-shadow: none; box-sizing: border-box; white-space: normal; overflow-wrap: anywhere; overflow: auto; overscroll-behavior: contain;'
 	};
 }
 

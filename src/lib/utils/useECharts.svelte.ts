@@ -47,6 +47,7 @@
  */
 
 import { untrack } from 'svelte';
+import { echartsTooltipPlacement } from './echartsTooltip';
 import type * as echarts from '$lib/utils/echartsCore';
 
 /** Options accepted by ECharts' `setOption`, in object form. */
@@ -134,6 +135,15 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 		errorMessage = null;
 		let mounted = true;
 		let resizeObserver: ResizeObserver | undefined;
+		// A chart's coordinates become stale when the page scrolls or resizes.
+		// Dismiss until the next hover; ignore scrolling inside a long tooltip.
+		const hideTooltip = (event: Event) => {
+			if (event.target instanceof Element && event.target.closest('[role="tooltip"]')) return;
+			if (chart && !chart.isDisposed()) chart.dispatchAction({ type: 'hideTip' });
+		};
+		window.addEventListener('scroll', hideTooltip, true);
+		window.addEventListener('resize', hideTooltip);
+		window.visualViewport?.addEventListener('resize', hideTooltip);
 
 		// Attempt to initialize the chart. No-ops until the library is loaded, the
 		// container exists, and (when required) it has non-zero dimensions.
@@ -196,6 +206,9 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 		});
 
 		return () => {
+			window.removeEventListener('scroll', hideTooltip, true);
+			window.removeEventListener('resize', hideTooltip);
+			window.visualViewport?.removeEventListener('resize', hideTooltip);
 			mounted = false;
 			isReady = false;
 			resizeObserver?.disconnect();
@@ -211,8 +224,16 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 		if (isReady && chart && !chart.isDisposed()) {
 			try {
 				// Object-form setOption for clarity; default fully replaces the option.
-				if (hasData()) chart.setOption(getOption(), setOptionOpts ?? { notMerge: true });
-				else chart.clear();
+				if (hasData()) {
+					const option = getOption();
+					chart.setOption(
+						{
+							...option,
+							tooltip: { ...(option.tooltip as object), ...echartsTooltipPlacement(getContainer) }
+						},
+						setOptionOpts ?? { notMerge: true }
+					);
+				} else chart.clear();
 				errorMessage = null;
 			} catch (error) {
 				errorMessage = error instanceof Error ? error.message : 'Chart unavailable';

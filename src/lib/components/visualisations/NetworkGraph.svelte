@@ -393,14 +393,14 @@ no two channels carry the same value.
 		};
 	}
 
-	/** Place the tooltip near a point, clamped inside the plot box. */
+	/** Pass content coordinates to the shared, measured tooltip placement. */
 	function positionTooltip(clientX: number, clientY: number, content: TooltipContent) {
 		if (!plotContainer) return;
 		const rect = plotContainer.getBoundingClientRect();
 		tooltip = {
 			content,
-			x: Math.max(0, Math.min(clientX - rect.left + 14, rect.width - 8)),
-			y: Math.max(0, Math.min(clientY - rect.top + 14, rect.height - 8))
+			x: clientX - rect.left + plotContainer.scrollLeft,
+			y: clientY - rect.top + plotContainer.scrollTop
 		};
 	}
 
@@ -408,11 +408,10 @@ no two channels carry the same value.
 	function positionTooltipAtNode(id: string, content: TooltipContent) {
 		const node = nodeById.get(id);
 		if (!node || !plotContainer) return;
-		const rect = plotContainer.getBoundingClientRect();
 		tooltip = {
 			content,
-			x: Math.max(0, Math.min(node.x * transform.k + transform.x + 14, rect.width - 8)),
-			y: Math.max(0, Math.min(node.y * transform.k + transform.y + 14, rect.height - 8))
+			x: node.x * transform.k + transform.x,
+			y: node.y * transform.k + transform.y
 		};
 	}
 

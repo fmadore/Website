@@ -238,8 +238,8 @@ background texture is now the whole subject of the chart.
 					})();
 		tooltip = {
 			content,
-			x: Math.max(0, Math.min(point.x - rect.left + 14, rect.width - 8)),
-			y: Math.max(0, Math.min(point.y - rect.top + 14, rect.height - 8))
+			x: point.x - rect.left + plotArea.scrollLeft,
+			y: point.y - rect.top + plotArea.scrollTop
 		};
 	}
 

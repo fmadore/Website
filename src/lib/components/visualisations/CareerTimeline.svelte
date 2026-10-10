@@ -171,7 +171,6 @@
 	let tooltipOpen = $state(false);
 	let tooltipX = $state(0);
 	let tooltipY = $state(0);
-	let tooltipPlacement = $state<'above' | 'below'>('above');
 	let tooltipItem = $state<TimelineItem | null>(null);
 	/**
 	 * The selection is an index into `marks`, not into `items`.
@@ -198,9 +197,6 @@
 	function placeTooltip(x: number, y: number) {
 		tooltipX = x;
 		tooltipY = y;
-		// Near the top of the plate there is no room above the mark, and the
-		// route's scroller clips vertical overflow — flip below instead.
-		tooltipPlacement = y > 150 ? 'above' : 'below';
 	}
 
 	function showTooltip(e: PointerEvent, item: TimelineItem) {
@@ -208,16 +204,13 @@
 		const rect = containerEl.getBoundingClientRect();
 		tooltipOpen = true;
 		tooltipItem = item;
-		placeTooltip(e.clientX - rect.left, e.clientY - rect.top - 10);
+		placeTooltip(e.clientX - rect.left, e.clientY - rect.top);
 	}
 
 	function showTooltipForMark(mark: Mark) {
 		tooltipOpen = true;
 		tooltipItem = mark.item;
-		placeTooltip(
-			margin.left + mark.x + (mark.duration ? mark.width / 2 : 0),
-			margin.top + mark.y - 14
-		);
+		placeTooltip(margin.left + mark.x + (mark.duration ? mark.width / 2 : 0), margin.top + mark.y);
 	}
 
 	function hideTooltip() {
@@ -324,7 +317,7 @@
 >
 	<!-- Hover Tooltip -->
 	{#if tooltipOpen && tooltipItem}
-		<TimelineTooltip item={tooltipItem} x={tooltipX} y={tooltipY} placement={tooltipPlacement} />
+		<TimelineTooltip item={tooltipItem} x={tooltipX} y={tooltipY} />
 	{/if}
 
 	{#if items.length > 0}

@@ -1,17 +1,16 @@
 <script lang="ts">
 	// Hover tooltip of the CareerTimeline — split out of CareerTimeline.svelte.
 	import { fade } from 'svelte/transition';
+	import { viewportTooltip } from '$lib/actions/viewportTooltip';
 	import { type TimelineItem, getCategoryColor, getCategoryLabel } from '$lib/types/timeline';
 
 	interface Props {
 		item: TimelineItem;
 		x: number;
 		y: number;
-		/** Flips below the mark when there is no room above it. */
-		placement?: 'above' | 'below';
 	}
 
-	let { item, x, y, placement = 'above' }: Props = $props();
+	let { item, x, y }: Props = $props();
 
 	/**
 	 * Built in one expression so the en dash stays closed up: split across
@@ -28,8 +27,8 @@
 
 <div
 	class="tooltip-card"
-	class:below={placement === 'below'}
-	style="transform: translate({x}px, {y}px);"
+	role="tooltip"
+	use:viewportTooltip={{ x, y, placement: 'above' }}
 	transition:fade={{ duration: 150 }}
 >
 	<div class="tooltip-header">
@@ -48,23 +47,11 @@
 
 <style>
 	.tooltip-card {
-		position: absolute;
-		top: 0;
-		left: 0;
 		z-index: var(--z-tooltip);
 		pointer-events: none;
 		background: var(--color-surface-elevated);
 		border: var(--border-width-thin) solid var(--color-border);
 		padding: var(--space-3);
-		min-width: 200px;
-		max-width: 300px;
-		transform: translate(-50%, -100%);
-		margin-top: calc(-1 * var(--space-3));
-	}
-
-	.tooltip-card.below {
-		transform: translate(-50%, 0);
-		margin-top: var(--space-5);
 	}
 
 	.tooltip-header {
