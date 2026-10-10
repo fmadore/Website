@@ -17,6 +17,7 @@ export const introductionReligiosityUniversityCampuses: Publication = {
 	pageCount: 19,
 	language: 'English',
 	doi: '10.58144/20241107-000',
+	openAlexId: 'W7038765564',
 	tags: [
 		'Africa',
 		'University Campuses',

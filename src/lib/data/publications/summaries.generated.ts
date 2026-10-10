@@ -266,6 +266,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pageCount": 33,
 		"language": "French",
 		"doi": "10.58144/20241107-000",
+		"openAlexId": "W6962870406",
 		"tags": [
 			"Togo",
 			"Lomé",
@@ -611,6 +612,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pages": "183-213",
 		"pageCount": 30,
 		"language": "English",
+		"openAlexId": "W2794458276",
 		"tags": [
 			"Burkina Faso",
 			"Ouagadougou",
@@ -657,6 +659,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pageCount": 19,
 		"language": "English",
 		"doi": "10.58144/20241107-000",
+		"openAlexId": "W7038765564",
 		"tags": [
 			"Africa",
 			"University Campuses",
@@ -813,6 +816,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pageCount": 35,
 		"language": "English",
 		"doi": "10.58144/20241107-000",
+		"openAlexId": "W3118425159",
 		"tags": [
 			"Côte d'Ivoire",
 			"Islam",
@@ -1104,6 +1108,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"placeOfPublication": "Quebec City",
 		"pageCount": 248,
 		"language": "French",
+		"openAlexId": "W2461779742",
 		"tags": [
 			"Islam",
 			"Politics",
@@ -1191,6 +1196,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"volume": "12",
 		"issue": "2",
 		"language": "English",
+		"openAlexId": "W4316591528",
 		"tags": [
 			"Islam",
 			"Africa",
@@ -1236,6 +1242,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"volume": "13",
 		"issue": "1",
 		"language": "English",
+		"openAlexId": "W7209086693",
 		"tags": [
 			"Islam",
 			"Africa",
@@ -1322,6 +1329,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"publisher": "Éditions science et bien commun",
 		"publisherLocation": "Canada",
 		"language": "French",
+		"openAlexId": "W6990632226",
 		"tags": [
 			"Research Methodology",
 			"Academic Writing",
@@ -1405,6 +1413,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pages": "269-296",
 		"pageCount": 28,
 		"language": "French",
+		"openAlexId": "W2966130854",
 		"tags": [
 			"Burkina Faso",
 			"Religion",
@@ -1527,6 +1536,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"isbn": "978-3-643-91429-3",
 		"series": "Afrikanische Studien/African Studies 64",
 		"doi": "10.58144/20241107-000",
+		"openAlexId": "W6986869357",
 		"url": "https://doi.org/10.58144/20241107-000",
 		"openAccess": true,
 		"tags": [
@@ -1833,6 +1843,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"conferenceName": "Dixième Congrès International de l'Association des Études Mandé",
 		"pageCount": 12,
 		"language": "French",
+		"openAlexId": "W2794525784",
 		"tags": [
 			"Salafism",
 			"Côte d'Ivoire",

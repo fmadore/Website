@@ -13,6 +13,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 	placeOfPublication: 'Quebec City',
 	pageCount: 248,
 	language: 'French',
+	openAlexId: 'W2461779742',
 	abstract:
 		"L'étude de la participation de trois cohortes d'imams et de prêcheurs de Ouagadougou dans les débats sociopolitiques entre 1960 et 2012 souligne l'importance de l'analyse des interactions intergénérationnelles pour saisir les profondes mutations qu'a subies l'islam burkinabé depuis l'indépendance : ses rapports complexes avec l'État, les relations internes souvent tendues entre ses différentes tendances ainsi que sa visibilité accrue et le nouveau rôle joué par les imams et les prêcheurs, dont plusieurs sont des jeunes, dans l'émergence d'une sphère publique musulmane depuis la transition démocratique amorcée en 1991. Les discours des imams et prêcheurs, longtemps marqués par les querelles dogmatiques et l'apolitisme, sont davantage orientés vers la remoralisation de la sphère publique depuis les années 1990. Parallèlement, les rapports intergénérationnels entre les aînés, qui détiennent l'« autorité traditionnelle » fondée sur l'âge, et les jeunes imams et prêcheurs sont marqués par une dynamique de rapprochements malgré certaines tensions persistantes.",
 	tags: [

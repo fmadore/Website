@@ -15,6 +15,7 @@ export const muslimMinoritiesAfrica1: Publication = {
 	volume: '12',
 	issue: '2',
 	language: 'English',
+	openAlexId: 'W4316591528',
 	tags: [
 		'Islam',
 		'Africa',

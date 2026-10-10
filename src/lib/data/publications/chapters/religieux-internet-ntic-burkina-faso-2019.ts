@@ -16,6 +16,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 	pages: '269-296',
 	pageCount: 28,
 	language: 'French',
+	openAlexId: 'W2966130854',
 	tags: [
 		'Burkina Faso',
 		'Religion',

@@ -17,6 +17,7 @@ export const imamsIslamicPreachersOuagadougou: Publication = {
 	pages: '183-213',
 	pageCount: 30,
 	language: 'English',
+	openAlexId: 'W2794458276',
 	tags: [
 		'Burkina Faso',
 		'Ouagadougou',
