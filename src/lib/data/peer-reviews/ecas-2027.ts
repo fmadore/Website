@@ -7,7 +7,8 @@ export const ecas2027: PeerReview = {
 	type: 'Panel Proposals',
 	year: 2026,
 	dateISO: '2026-10-01',
-	details: 'Scientific Committee reviewer for the Digital trends and technology stream.'
+	details:
+		'Scientific Committee reviewer for the Digital trends and technology stream (13 panel proposals).'
 };
 
 export default ecas2027;
