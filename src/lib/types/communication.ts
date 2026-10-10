@@ -57,6 +57,24 @@ export type Communication = {
 	episode?: string | number; // Optional: Episode number for podcasts
 	doi?: string; // Optional: DOI for the communication
 	project?: string; // Project association: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", etc.
+	/**
+	 * Set on a talk that was teaching: a lecture in a seminar series or a
+	 * course, a master class, a training workshop. The talk keeps its place on
+	 * /conference-activity and its own page; the CV prints it under Teaching
+	 * rather than Invited Talks, and /teaching lists it with the guest lectures
+	 * (`teachingLectures` in $lib/utils/cvSections).
+	 */
+	teaching?: TalkTeaching;
+};
+
+/** How a talk given as teaching reads in the guest-lecture lists. */
+export type TalkTeaching = {
+	/** Host institution and country, as the guest lectures name theirs: "Université Laval (Canada)". */
+	institution: string;
+	/** The course, seminar or programme it was part of; `conference` when absent. */
+	course?: string;
+	/** Absent when the audience was mixed or is not on record, as at a training workshop. */
+	level?: 'undergraduate' | 'graduate';
 };
 
 /**
@@ -111,7 +129,9 @@ export type CvCommunicationField =
 	// Podcasts (CVMedia) print their episode and link out by DOI or URL.
 	| 'episode'
 	| 'doi'
-	| 'url';
+	| 'url'
+	// Talks given as teaching print under Teaching instead (CVTeaching).
+	| 'teaching';
 
 /** A talk as the CV reads it. */
 export type CvCommunication = Pick<CommunicationSummary, CvCommunicationField>;

@@ -12,6 +12,10 @@ export const formationRechercheEnLigneNiamey: Communication = {
 		"Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
 	country: 'Niger',
 	type: 'lecture',
+	teaching: {
+		institution:
+			"Laboratoire d'Études et de Recherches sur les Dynamiques Sociales et le Développement Local (Niger)"
+	},
 	language: 'French',
 	tags: ['Research Methods', 'Online Research', 'Training', 'Niger'],
 	image: 'images/communications/lasdel-logo.webp',

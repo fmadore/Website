@@ -5,15 +5,17 @@ import {
 	groupFieldworkByPlace,
 	invitedTalkVenue,
 	isCvPublication,
+	lectureHostAndLevel,
 	organisedPanelTitle,
 	parseProjectYears,
 	realEditorialMemberships,
 	realPeerReviews,
 	sortCoursesByYear,
 	sortDhProjectsByRecency,
-	sortGuestLecturesByYear,
 	splitCvTalks,
 	splitEducation,
+	talkAsLecture,
+	teachingLectures,
 	teachingLevelLabel
 } from './cvSections';
 import type { CvCommunication } from '$lib/types/communication';
@@ -96,8 +98,20 @@ describe('talks', () => {
 			papers: ['c1', 'c2'],
 			posters: ['po'],
 			events: ['e'],
-			podcasts: ['pod']
+			podcasts: ['pod'],
+			teaching: []
 		});
+	});
+
+	it('hold a talk given as teaching back from every talk section, for Teaching alone', () => {
+		const taught = { institution: 'EHESS (France)' };
+		const sections = splitCvTalks([
+			{ id: 'l', type: 'lecture' as const },
+			{ id: 'taught', type: 'lecture' as const, teaching: taught },
+			{ id: 'w', type: 'workshop' as const, teaching: taught }
+		]);
+		expect(sections.invited.map((item) => item.id)).toEqual(['l']);
+		expect(sections.teaching.map((item) => item.id)).toEqual(['taught', 'w']);
 	});
 
 	it('print an invited talk’s venue only when the title does not already name it', () => {
@@ -135,17 +149,66 @@ describe('teaching', () => {
 		expect(courses[0]!.year).toBe('2016');
 	});
 
-	it('sorts guest lectures newest first, keeping ties in order', () => {
-		const lectures = [
-			{ year: '2020', title: 'a' },
-			{ year: '2022', title: 'b' },
-			{ year: '2020', title: 'c' }
-		];
-		expect(sortGuestLecturesByYear(lectures).map((lecture) => lecture.title)).toEqual([
-			'b',
-			'a',
-			'c'
+	const lecture = (title: string, dateISO: string) => ({
+		year: dateISO.slice(0, 4),
+		title,
+		course: 'Course',
+		institution: 'Université Laval (Canada)',
+		level: 'graduate' as const,
+		date: dateISO,
+		dateISO
+	});
+	const talk = (
+		id: string,
+		dateISO: string,
+		teaching?: { institution: string; course?: string }
+	) => ({
+		id,
+		title: `Talk ${id}`,
+		conference: 'Atelier',
+		date: '19 July 2023',
+		dateISO,
+		teaching
+	});
+
+	it('read a talk given as teaching as a lecture, its course defaulting to the venue', () => {
+		expect(talkAsLecture(talk('t', '2023-07-19', { institution: 'UJKZ (Burkina Faso)' }))).toEqual({
+			year: '2023',
+			title: 'Talk t',
+			course: 'Atelier',
+			institution: 'UJKZ (Burkina Faso)',
+			level: undefined,
+			date: '19 July 2023',
+			dateISO: '2023-07-19',
+			talkId: 't'
+		});
+		expect(
+			talkAsLecture(talk('z', '2019-06-07', { institution: 'UAO', course: 'Formation' })).course
+		).toBe('Formation');
+	});
+
+	it('merge guest lectures with the talks given as teaching, newest first by date', () => {
+		const merged = teachingLectures(
+			[lecture('2019 lecture', '2019-09-05'), lecture('2017 lecture', '2017-02-28')],
+			[
+				talk('given', '2025-05-20'),
+				talk('june', '2019-06-07', { institution: 'UAO' }),
+				talk('may', '2025-05-12', { institution: 'EHESS (France)' })
+			]
+		);
+		expect(merged.map((row) => row.title)).toEqual([
+			'Talk may',
+			'2019 lecture',
+			'Talk june',
+			'2017 lecture'
 		]);
+	});
+
+	it('print the host, and the level only when it is on record', () => {
+		expect(lectureHostAndLevel({ institution: 'Laval', level: 'graduate' })).toBe(
+			'Laval, Graduate'
+		);
+		expect(lectureHostAndLevel({ institution: 'LASDEL (Niger)' })).toBe('LASDEL (Niger)');
 	});
 
 	it('labels the level', () => {

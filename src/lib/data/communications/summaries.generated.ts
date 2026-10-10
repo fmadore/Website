@@ -2966,6 +2966,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"location": "Leibniz Centre for Contemporary History Potsdam (ZZF)",
 		"country": "Germany",
 		"type": "lecture",
+		"teaching": {
+			"institution": "Leibniz Centre for Contemporary History Potsdam (Germany)",
+			"level": "graduate"
+		},
 		"language": "English",
 		"tags": [
 			"Digital History",
@@ -3218,6 +3222,9 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
 		"country": "Niger",
 		"type": "lecture",
+		"teaching": {
+			"institution": "Laboratoire d'Études et de Recherches sur les Dynamiques Sociales et le Développement Local (Niger)"
+		},
 		"language": "French",
 		"tags": [
 			"Research Methods",
@@ -3248,6 +3255,9 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"location": "Université Joseph Ki-Zerbo",
 		"country": "Burkina Faso",
 		"type": "lecture",
+		"teaching": {
+			"institution": "Université Joseph Ki-Zerbo (Burkina Faso)"
+		},
 		"language": "French",
 		"tags": [
 			"Research Methods",
@@ -3278,6 +3288,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"location": "École des hautes études en sciences sociales (EHESS)",
 		"country": "France",
 		"type": "lecture",
+		"teaching": {
+			"institution": "École des hautes études en sciences sociales (France)",
+			"level": "graduate"
+		},
 		"language": "French",
 		"tags": [
 			"Islam",
@@ -3560,6 +3574,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"location": "Humathèque Condorcet",
 		"country": "France",
 		"type": "lecture",
+		"teaching": {
+			"institution": "École des hautes études en sciences sociales (France)",
+			"level": "graduate"
+		},
 		"language": "French",
 		"tags": [
 			"Religious Activism",
@@ -3761,6 +3779,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"location": "École des hautes études en sciences sociales (EHESS)",
 		"country": "France",
 		"type": "lecture",
+		"teaching": {
+			"institution": "École des hautes études en sciences sociales (France)",
+			"level": "graduate"
+		},
 		"language": "French",
 		"tags": [
 			"Islam",
@@ -3795,6 +3817,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"location": "Université Alassane Ouattara",
 		"country": "Côte d'Ivoire",
 		"type": "lecture",
+		"teaching": {
+			"institution": "Université Alassane Ouattara (Côte d'Ivoire)",
+			"course": "Séance de formation"
+		},
 		"language": "French",
 		"tags": [
 			"Open Access",
@@ -3827,6 +3853,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"location": "Humathèque Condorcet",
 		"country": "France",
 		"type": "lecture",
+		"teaching": {
+			"institution": "École des hautes études en sciences sociales (France)",
+			"level": "graduate"
+		},
 		"language": "French",
 		"tags": [
 			"Christianity",

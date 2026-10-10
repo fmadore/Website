@@ -135,7 +135,8 @@ describe('cvMarkdown', () => {
 	});
 
 	it('splits the talks by type as the HTML CV does, each linked to its record', () => {
-		const invited = ofTypes('lecture', 'seminar', 'workshop');
+		// A talk given as teaching is printed under Teaching instead (next test).
+		const invited = ofTypes('lecture', 'seminar', 'workshop').filter((comm) => !comm.teaching);
 		const conference = ofTypes('panel', 'conference', 'poster');
 		const events = ofTypes('event');
 		const podcasts = ofTypes('podcast');
@@ -157,6 +158,19 @@ describe('cvMarkdown', () => {
 		);
 		for (const comm of [...invited, ...conference, ...events, ...podcasts]) {
 			expect(markdown).toContain(`(${markdownUrl(`/communications/${comm.id}`)})`);
+		}
+	});
+
+	it('prints each talk given as teaching once, under Teaching, linked to its record', () => {
+		const taught = cvCommunicationsByDate.filter((comm) => comm.teaching);
+		expect(taught.length).toBeGreaterThan(0);
+		const lectures = subsectionBody(
+			sectionBody('Teaching experience'),
+			'Guest lectures and workshops'
+		);
+		for (const comm of taught) {
+			expect(lectures).toContain(`(${markdownUrl(`/communications/${comm.id}`)})`);
+			expect(sectionBody('Invited talks')).not.toContain(`/communications/${comm.id}`);
 		}
 	});
 

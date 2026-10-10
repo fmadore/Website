@@ -5,7 +5,7 @@ import { activitiesByDate } from '$lib/data/activities';
 import { allDhProjects } from '$lib/data/digital-humanities';
 import { allResearchProjects } from '$lib/data/research';
 import teaching from '$lib/data/teaching';
-import guestLectures from '$lib/data/teaching/guest-lectures';
+import { allLectures } from '$lib/server/teachingLectures';
 import { generateBibtex } from '$lib/utils/bibtexGenerator';
 import { formatReferenceText } from '$lib/utils/citationFormatter';
 import { activityMarkdown, activitiesIndexMarkdown } from './activities';
@@ -32,8 +32,8 @@ const documents: Array<[path: string, markdown: string]> = [
 	['/activities.md', activitiesIndexMarkdown(activitiesByDate)],
 	['/research.md', researchIndexMarkdown(allResearchProjects)],
 	['/digital-humanities.md', dhIndexMarkdown(allDhProjects)],
-	['/teaching.md', teachingMarkdown(teaching, guestLectures)],
-	['/teaching/guest-lectures.md', guestLecturesMarkdown(guestLectures)],
+	['/teaching.md', teachingMarkdown(teaching, allLectures)],
+	['/teaching/guest-lectures.md', guestLecturesMarkdown(allLectures)],
 	...allPublications.map((p): [string, string] => [
 		`/publications/${p.id}.md`,
 		publicationMarkdown(p)
@@ -190,8 +190,8 @@ describe('talk, activity and project twins', () => {
 });
 
 describe('teaching twins', () => {
-	const markdown = teachingMarkdown(teaching, guestLectures);
-	const lectures = guestLecturesMarkdown(guestLectures);
+	const markdown = teachingMarkdown(teaching, allLectures);
+	const lectures = guestLecturesMarkdown(allLectures);
 
 	it('list every course, newest first, with its syllabus', () => {
 		const titles = [...markdown.matchAll(/^- \*\*[^*]+\*\* (.+?), /gm)].map(([, title]) => title);
@@ -208,20 +208,28 @@ describe('teaching twins', () => {
 	it('index the guest lectures by host, and link the full list', () => {
 		expect(markdown).toContain('## Guest lectures');
 		expect(markdown).toContain(`](${markdownUrl('/teaching/guest-lectures')})`);
-		const hosts = new Set(guestLectures.map((lecture) => lecture.institution));
+		const hosts = new Set(allLectures.map((lecture) => lecture.institution));
 		for (const host of hosts) expect(markdown).toContain(escapeMarkdownText(host));
 	});
 
 	it('give every guest lecture its own row, under its host', () => {
 		const rows = lectures.split(/\n/).filter((line) => line.startsWith('- **'));
-		expect(rows).toHaveLength(guestLectures.length);
-		for (const lecture of guestLectures) {
+		expect(rows).toHaveLength(allLectures.length);
+		for (const lecture of allLectures) {
 			expect(lectures).toContain(
 				`**${escapeMarkdownText(lecture.date)}** ${escapeMarkdownText(lecture.title)}`
 			);
 		}
 		expect(lectures.match(/^## /gm)).toHaveLength(
-			new Set(guestLectures.map((lecture) => lecture.institution)).size
+			new Set(allLectures.map((lecture) => lecture.institution)).size
 		);
+	});
+
+	it('link each talk given as teaching to its record', () => {
+		const talks = allLectures.filter((lecture) => lecture.talkId);
+		expect(talks.length).toBeGreaterThan(0);
+		for (const talk of talks) {
+			expect(lectures).toContain(`(${markdownUrl(`/communications/${talk.talkId}`)})`);
+		}
 	});
 });

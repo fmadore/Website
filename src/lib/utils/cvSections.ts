@@ -19,7 +19,11 @@ import type { EditorialMembership } from '$lib/types/editorial-membership';
 import type { Fieldwork } from '$lib/types/fieldwork';
 import type { PeerReview } from '$lib/types/peer-review';
 import type { CvPublication } from '$lib/types/publication';
-import type { GuestLecture, TeachingExperience } from '$lib/types/teachingExperience';
+import type {
+	GuestLecture,
+	TeachingExperience,
+	TeachingLecture
+} from '$lib/types/teachingExperience';
 import { formatDayMonth } from './date-formatter';
 
 // ── Header ───────────────────────────────────────────────────────────────────
@@ -90,18 +94,23 @@ export function sortDhProjectsByRecency<T extends { years: string; title: string
  * The talks each CV section lists, by type, keeping the dataset's order:
  * invited talks (lectures, seminars, workshops), the three kinds of
  * conference participation, the events organised, and the podcasts printed
- * under Media.
+ * under Media. A talk given as teaching is held back from all of them for
+ * the Teaching section (`teaching`), so the CV prints it once.
  */
-export function splitCvTalks<T extends Pick<CvCommunication, 'type'>>(talks: readonly T[]) {
+export function splitCvTalks<T extends Pick<CvCommunication, 'type' | 'teaching'>>(
+	talks: readonly T[]
+) {
+	const given = talks.filter((talk) => !talk.teaching);
 	const ofType = (...types: Array<CvCommunication['type']>) =>
-		talks.filter((talk) => types.includes(talk.type));
+		given.filter((talk) => types.includes(talk.type));
 	return {
 		invited: ofType('lecture', 'seminar', 'workshop'),
 		panels: ofType('panel'),
 		papers: ofType('conference'),
 		posters: ofType('poster'),
 		events: ofType('event'),
-		podcasts: ofType('podcast')
+		podcasts: ofType('podcast'),
+		teaching: talks.filter((talk) => talk.teaching)
 	};
 }
 
@@ -141,16 +150,54 @@ export function sortCoursesByYear<T extends Pick<TeachingExperience, 'year'>>(
 	return [...courses].sort((a, b) => firstYear(b) - firstYear(a));
 }
 
-/** Guest lectures, newest first. Sorts a copy. */
-export function sortGuestLecturesByYear<T extends Pick<GuestLecture, 'year'>>(
-	lectures: readonly T[]
-): T[] {
-	return [...lectures].sort((a, b) => parseInt(b.year, 10) - parseInt(a.year, 10));
+/** The fields a talk given as teaching needs to stand as a lecture row. */
+export type TeachingTalk = Pick<
+	CvCommunication,
+	'id' | 'title' | 'conference' | 'date' | 'dateISO' | 'teaching'
+>;
+
+/** A talk given as teaching, as a guest-lecture row: its course defaults to the talk's venue. */
+export function talkAsLecture(talk: TeachingTalk): TeachingLecture {
+	const teaching = talk.teaching;
+	return {
+		year: talk.dateISO.slice(0, 4),
+		title: talk.title,
+		course: teaching?.course ?? talk.conference,
+		institution: teaching?.institution ?? talk.conference,
+		level: teaching?.level,
+		date: talk.date,
+		dateISO: talk.dateISO,
+		talkId: talk.id
+	};
+}
+
+/**
+ * Every lecture the teaching record lists: the guest lectures and the talks
+ * given as teaching (talks without `teaching` are skipped), newest first by
+ * date. One list for the CV's Teaching section, `/teaching`,
+ * `/teaching/guest-lectures`, their twins and `/api/cv.json`.
+ */
+export function teachingLectures(
+	lectures: readonly GuestLecture[],
+	talks: readonly TeachingTalk[]
+): TeachingLecture[] {
+	return [...lectures, ...talks.filter((talk) => talk.teaching).map(talkAsLecture)].sort((a, b) =>
+		b.dateISO.localeCompare(a.dateISO)
+	);
 }
 
 /** "Undergraduate" or "Graduate". */
 export function teachingLevelLabel(level: TeachingExperience['level']): string {
 	return level === 'undergraduate' ? 'Undergraduate' : 'Graduate';
+}
+
+/** A lecture's host and level as the CV prints them: "Université Laval (Canada), Graduate". */
+export function lectureHostAndLevel(
+	lecture: Pick<TeachingLecture, 'institution' | 'level'>
+): string {
+	return lecture.level
+		? `${lecture.institution}, ${teachingLevelLabel(lecture.level)}`
+		: lecture.institution;
 }
 
 // ── Research experience ──────────────────────────────────────────────────────

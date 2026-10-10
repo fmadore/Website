@@ -64,14 +64,15 @@ import {
 	groupFieldworkByPlace,
 	invitedTalkVenue,
 	isCvPublication,
+	lectureHostAndLevel,
 	organisedPanelTitle,
 	realEditorialMemberships,
 	realPeerReviews,
 	sortCoursesByYear,
 	sortDhProjectsByRecency,
-	sortGuestLecturesByYear,
 	splitCvTalks,
 	splitEducation,
+	teachingLectures,
 	teachingLevelLabel
 } from '$lib/utils/cvSections';
 import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
@@ -541,7 +542,7 @@ function events(): string {
 
 function teachingExperience(): string {
 	const courses = sortCoursesByYear(teaching);
-	const lectures = sortGuestLecturesByYear(guestLectures);
+	const lectures = teachingLectures(guestLectures, talks.teaching);
 	if (courses.length === 0) return section('Teaching experience', 'No teaching experience listed.');
 
 	return section(
@@ -558,12 +559,13 @@ function teachingExperience(): string {
 			)
 		),
 		subsection(
-			'Guest lecturer',
+			'Guest lectures and workshops',
 			bullets(
 				lectures.map((lecture) =>
 					entry(
 						lecture.year,
-						`${strong(lecture.title)}, ${em(lecture.course)}, ${text(lecture.institution)}, ${teachingLevelLabel(lecture.level)}.`
+						// A talk given as teaching links to its record, as the other talks do.
+						`${lecture.talkId ? `**${link(typesetQuotes(lecture.title), markdownUrl(`/communications/${lecture.talkId}`))}**` : strong(lecture.title)}, ${em(lecture.course)}, ${text(lectureHostAndLevel(lecture))}.`
 					)
 				)
 			)

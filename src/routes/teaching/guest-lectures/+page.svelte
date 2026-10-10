@@ -2,29 +2,32 @@
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import SEO from '$lib/SEO.svelte';
 	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { base } from '$app/paths';
+	import { base, resolve } from '$app/paths';
 	import PageHeader from '$lib/components/common/PageHeader.svelte';
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
 	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import guestLectures from '$lib/data/teaching/guest-lectures';
 	import { groupLecturesByInstitution, lectureSpan } from '$lib/utils/teachingIndex';
 	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
 
 	// Define breadcrumb items
 	const breadcrumbItems = createSubsectionBreadcrumbs(
 		base,
 		'Teaching',
 		'/teaching',
-		'Guest Lectures',
+		'Guest Lectures and Workshops',
 		'/teaching/guest-lectures'
 	);
 
 	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 
 	/**
-	 * The lectures come from `$lib/data/teaching/guest-lectures`, the same
-	 * record `/cv`, `/api/cv.json` and `/teaching` read. This page used to hold
+	 * The lectures come from the load: `$lib/data/teaching/guest-lectures` and
+	 * the talks given as teaching, merged by `teachingLectures` — the same list
+	 * `/cv`, `/api/cv.json` and `/teaching` read. This page used to hold
 	 * its own copy, and the copy had drifted: it printed eight rows against the
 	 * dataset's nine (the January 2017 and February 2016 deliveries of one
 	 * lecture were merged into a single date string) and dropped the country
@@ -32,16 +35,16 @@
 	 * it. Grouping is derived (`$lib/utils/teachingIndex`, shared with the
 	 * page's Markdown twin), so a new record needs no edit here.
 	 */
-	const byInstitution = groupLecturesByInstitution(guestLectures);
+	const byInstitution = $derived(groupLecturesByInstitution(data.lectures));
 
 	// Empty when there is nothing on record, rather than "undefined–undefined".
-	const span = lectureSpan(guestLectures);
+	const span = $derived(lectureSpan(data.lectures));
 </script>
 
 <SEO
-	title={pageTitle('Guest lectures')}
-	description="Guest lectures and invited talks on Islam, West Africa and historical research methods, delivered by Frédérick Madore in colleagues' undergraduate and graduate courses."
-	keywords="guest lectures, invited talks, teaching, African history, Islam, West Africa, Frédérick Madore"
+	title={pageTitle('Guest lectures and workshops')}
+	description="Guest lectures, seminar lectures and training workshops on Islam, West Africa and research methods, given by Frédérick Madore in colleagues' courses, seminars and training programmes."
+	keywords="guest lectures, seminars, workshops, teaching, African history, Islam, West Africa, Frédérick Madore"
 	pageType="CollectionPage"
 />
 
@@ -49,23 +52,23 @@
 
 <div class="container py-8">
 	<Breadcrumb items={breadcrumbItems} />
-	<PageHeader title="Guest lectures" />
+	<PageHeader title="Guest lectures and workshops" />
 
 	<PageIntro>
-		Invited talks and lectures delivered in colleagues’ courses, listed by host institution and
-		newest first.
+		Lectures and workshops given in colleagues’ courses, seminars and training programmes, listed by
+		host institution and newest first.
 	</PageIntro>
 
 	<!-- The whole list, counted: the same figures /teaching prints in its index
-	     of this page, read off the same dataset rather than restated. With
+	     of this page, read off the same rows rather than restated. With
 	     nothing on record there is no tally to print, so the page states that
 	     instead. -->
-	{#if guestLectures.length === 0}
-		<p class="dateline lecture-tally">No guest lectures on record.</p>
+	{#if data.lectures.length === 0}
+		<p class="dateline lecture-tally">No lectures or workshops on record.</p>
 	{:else}
 		<p class="dateline lecture-tally">
-			{guestLectures.length}
-			{guestLectures.length === 1 ? 'lecture' : 'lectures'} · {byInstitution.length}
+			{data.lectures.length}
+			{data.lectures.length === 1 ? 'entry' : 'entries'} · {byInstitution.length}
 			{byInstitution.length === 1 ? 'institution' : 'institutions'} · {span}
 		</p>
 	{/if}
@@ -76,27 +79,40 @@
 				<h2 class="section-title">{group.institution}</h2>
 				<span class="dateline">
 					{group.lectures.length}
-					{group.lectures.length === 1 ? 'lecture' : 'lectures'}
+					{group.lectures.length === 1 ? 'entry' : 'entries'}
 				</span>
 			</div>
 
 			<!-- Lectures as a ledger: date key + level status left, serif title +
-			     host course right. The "In course" label is a field name — the
-			     plainest database column on the page — so it takes the data voice
-			     and leaves the course title itself in the document voice. -->
+			     host course, seminar or programme right. The "In" label is a field
+			     name — the plainest database column on the page — so it takes the
+			     data voice and leaves the course title itself in the document
+			     voice. A talk given as teaching has its own page; the row links
+			     to it, named for the lecture since several rows carry the stamp. -->
 			<div class="ledger ledger--ruled" style="--ledger-key-w: 11rem">
 				{#each group.lectures as lecture (lecture.title + lecture.date)}
 					<div class="ledger-row">
 						<span class="ledger-key">
 							{lecture.date}
-							<span class="ledger-status">{lecture.level}</span>
+							{#if lecture.level}
+								<span class="ledger-status">{lecture.level}</span>
+							{/if}
 						</span>
 						<span class="ledger-content">
 							<span class="ledger-title">{typesetQuotes(lecture.title)}</span>
 							<span class="lecture-course">
-								<span class="dateline">In course</span>
+								<span class="dateline">In</span>
 								<em>{typesetQuotes(lecture.course)}</em>
 							</span>
+							{#if lecture.talkId}
+								<a
+									class="ledger-action lecture-talk"
+									href={resolve('/communications/[id]', { id: lecture.talkId })}
+									aria-label={`View talk: ${lecture.title}`}
+								>
+									View talk <span aria-hidden="true">→</span>
+								</a>
+							{/if}
 						</span>
 					</div>
 				{/each}
@@ -125,6 +141,12 @@
 	.lecture-course em {
 		font-style: italic;
 		color: var(--color-text-emphasis);
+	}
+
+	/* The stamp keeps its own width in the content column, which stretches its
+	 * children by default. */
+	.lecture-talk {
+		align-self: flex-start;
 	}
 
 	/* No local narrow-measure collapse. `.lecture-row` used to redeclare it at

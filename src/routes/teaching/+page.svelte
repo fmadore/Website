@@ -7,7 +7,6 @@
 	import PageIntro from '$lib/components/common/PageIntro.svelte';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
 	import teaching from '$lib/data/teaching';
-	import guestLectures from '$lib/data/teaching/guest-lectures';
 	import { sortCoursesByYear } from '$lib/utils/cvSections';
 	import {
 		courseSpan as spanOfCourses,
@@ -15,6 +14,9 @@
 		lectureHosts,
 		lectureSpan as spanOfLectures
 	} from '$lib/utils/teachingIndex';
+	import type { PageData } from './$types';
+
+	let { data }: { data: PageData } = $props();
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Teaching', '/teaching');
@@ -43,11 +45,13 @@
 	 * Guest lectures are indexed here by host institution rather than listed:
 	 * the full list is its own page, and what this page owes the reader is the
 	 * shape of it — who hosted, over which years, how many times. Every figure
-	 * is counted off the dataset (`$lib/utils/teachingIndex`, which the page's
-	 * Markdown twin counts off too), so the index cannot drift from the list.
+	 * is counted off the rows the load supplies — the guest lectures and the
+	 * talks given as teaching (`$lib/server/teachingLectures`) — with
+	 * `$lib/utils/teachingIndex`, which the page's Markdown twin counts off
+	 * too, so the index cannot drift from the list.
 	 */
-	const hosts = lectureHosts(guestLectures);
-	const lectureSpan = spanOfLectures(guestLectures);
+	const hosts = $derived(lectureHosts(data.lectures));
+	const lectureSpan = $derived(spanOfLectures(data.lectures));
 
 	const guestLecturesHref = resolve('/teaching/guest-lectures');
 </script>
@@ -151,17 +155,18 @@
 		     the dataset the full list renders, so the two cannot disagree. -->
 		<section class="section">
 			<div class="section-head">
-				<h2 class="section-title">Guest lectures</h2>
-				{#if guestLectures.length > 0}
+				<h2 class="section-title">Guest lectures and workshops</h2>
+				{#if data.lectures.length > 0}
 					<span class="dateline"
-						>{guestLectures.length}
-						{guestLectures.length === 1 ? 'lecture' : 'lectures'} · {lectureSpan}</span
+						>{data.lectures.length}
+						{data.lectures.length === 1 ? 'entry' : 'entries'} · {lectureSpan}</span
 					>
 				{/if}
 			</div>
 
 			<p class="section-note">
-				Invited talks in colleagues’ courses, indexed here by host institution.
+				Lectures and workshops given in colleagues’ courses, seminars and training programmes,
+				indexed here by host institution.
 			</p>
 
 			{#if hosts.length === 0}
@@ -178,7 +183,7 @@
 							</span>
 							<span class="ledger-meta">
 								{host.count}
-								{host.count === 1 ? 'lecture' : 'lectures'}
+								{host.count === 1 ? 'entry' : 'entries'}
 							</span>
 						</div>
 					{/each}
@@ -186,7 +191,7 @@
 
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved URL -->
 				<a class="ledger-action ledger-action--standalone" href={guestLecturesHref}>
-					All {guestLectures.length} guest lectures <span aria-hidden="true">→</span>
+					All {data.lectures.length} lectures and workshops <span aria-hidden="true">→</span>
 				</a>
 			{/if}
 		</section>

@@ -1,10 +1,13 @@
 <script lang="ts">
 	import teaching from '$lib/data/teaching';
 	import guestLectures from '$lib/data/teaching/guest-lectures';
+	import { cvCommunicationsByDate } from '$lib/data/communications/cv';
 	import { formatCVYearRange } from '$lib/utils/cvFormatters';
 	import {
+		lectureHostAndLevel,
 		sortCoursesByYear,
-		sortGuestLecturesByYear,
+		splitCvTalks,
+		teachingLectures,
 		teachingLevelLabel
 	} from '$lib/utils/cvSections';
 	import { typesetQuotes } from '$lib/utils/typesetQuotes';
@@ -13,7 +16,9 @@
 	// Newest first, on copies: the imported arrays are the shared datasets every
 	// other page reads. The CV's Markdown twin orders them the same way.
 	const sortedTeaching = sortCoursesByYear(teaching);
-	const sortedGuestLectures = sortGuestLecturesByYear(guestLectures);
+	// The guest lectures and the talks given as teaching, which Invited Talks
+	// leaves out so that each is printed once.
+	const lectures = teachingLectures(guestLectures, splitCvTalks(cvCommunicationsByDate).teaching);
 </script>
 
 <section>
@@ -36,12 +41,12 @@
 			{/each}
 		</div>
 
-		<h4>Guest Lecturer</h4>
+		<h4>Guest Lectures and Workshops</h4>
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
-			{#each sortedGuestLectures as lecture (lecture.title + lecture.year)}
+			{#each lectures as lecture (lecture.title + lecture.dateISO)}
 				<CVEntry year={lecture.year}>
 					<strong>{typesetQuotes(lecture.title)}</strong>, <em>{typesetQuotes(lecture.course)}</em>,
-					{typesetQuotes(lecture.institution)}, {teachingLevelLabel(lecture.level)}.
+					{typesetQuotes(lectureHostAndLevel(lecture))}.
 				</CVEntry>
 			{/each}
 		</div>

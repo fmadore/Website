@@ -13,6 +13,10 @@ export const talkMilitantismeReligieuxCampusBeninTogo2025: Communication = {
 	location: 'Humathèque Condorcet',
 	country: 'France',
 	type: 'lecture',
+	teaching: {
+		institution: 'École des hautes études en sciences sociales (France)',
+		level: 'graduate'
+	},
 	language: 'French',
 	abstract:
 		"Cette conférence examine l'évolution des associations religieuses étudiantes dans les universités d'Abomey-Calavi et de Lomé depuis 1970. Malgré un contexte initialement marqué par l'autoritarisme et dominé par des idéologies laïques et marxistes, ces organisations chrétiennes et musulmanes ont transformé la vie universitaire en proposant aux étudiants un 'curriculum social' alliant guidance spirituelle et soutien pratique.",

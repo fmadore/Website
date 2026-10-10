@@ -14,6 +14,10 @@ export const talkRencontreChretiensMusulmans2025: Communication = {
 	location: 'Humathèque Condorcet',
 	country: 'France',
 	type: 'lecture',
+	teaching: {
+		institution: 'École des hautes études en sciences sociales (France)',
+		level: 'graduate'
+	},
 	language: 'French',
 	abstract:
 		"Les paysages religieux pluralistes du Togo, Bénin, Côte d'Ivoire et Burkina Faso offrent une perspective intéressante sur la coexistence religieuse, dépassant la simple dichotomie entre conflit et harmonie. La longue histoire de coexistence et de compétition entre chrétiens et musulmans a façonné des pratiques religieuses qui se reflètent mutuellement, créant des modèles alternatifs de cohabitation où intimité et rivalité s'entrelacent.",

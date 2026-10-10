@@ -747,6 +747,10 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Master Class",
 		"location": "Leibniz Centre for Contemporary History Potsdam (ZZF)",
 		"type": "lecture",
+		"teaching": {
+			"institution": "Leibniz Centre for Contemporary History Potsdam (Germany)",
+			"level": "graduate"
+		},
 		"url": "https://web.archive.org/web/20250411145918/https://zzf-potsdam.de/forschung/doktorand_innen/master-class"
 	},
 	{
@@ -834,7 +838,10 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2024-03-23",
 		"conference": "Atelier",
 		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
-		"type": "lecture"
+		"type": "lecture",
+		"teaching": {
+			"institution": "Laboratoire d'Études et de Recherches sur les Dynamiques Sociales et le Développement Local (Niger)"
+		}
 	},
 	{
 		"id": "formation-recherches-en-ligne-ouagadougou",
@@ -846,7 +853,10 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2023-07-19",
 		"conference": "Atelier",
 		"location": "Université Joseph Ki-Zerbo",
-		"type": "lecture"
+		"type": "lecture",
+		"teaching": {
+			"institution": "Université Joseph Ki-Zerbo (Burkina Faso)"
+		}
 	},
 	{
 		"id": "histoire-communautes-musulmanes-ouest-africaines-2025",
@@ -859,6 +869,10 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Séminaire 'Actualité de la recherche en anthropologie sociale en Afrique' animé par Sophie Bava, Alice Degorce et Marie Miran",
 		"location": "École des hautes études en sciences sociales (EHESS)",
 		"type": "lecture",
+		"teaching": {
+			"institution": "École des hautes études en sciences sociales (France)",
+			"level": "graduate"
+		},
 		"url": "https://doi.org/10.58079/13pmz"
 	},
 	{
@@ -961,6 +975,10 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Séminaire 'Histoire et anthropologie comparées du fait religieux en Afrique' animé par Marie Miran",
 		"location": "Humathèque Condorcet",
 		"type": "lecture",
+		"teaching": {
+			"institution": "École des hautes études en sciences sociales (France)",
+			"level": "graduate"
+		},
 		"url": "https://doi.org/10.58079/13pmz"
 	},
 	{
@@ -1035,6 +1053,10 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Séminaire de formation à la recherche en Afrique (SéFRA) animé par Fabienne Samson",
 		"location": "École des hautes études en sciences sociales (EHESS)",
 		"type": "lecture",
+		"teaching": {
+			"institution": "École des hautes études en sciences sociales (France)",
+			"level": "graduate"
+		},
 		"url": "https://doi.org/10.58079/13pmz"
 	},
 	{
@@ -1047,7 +1069,11 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2019-06-07",
 		"conference": "Université Alassane Ouattara",
 		"location": "Université Alassane Ouattara",
-		"type": "lecture"
+		"type": "lecture",
+		"teaching": {
+			"institution": "Université Alassane Ouattara (Côte d'Ivoire)",
+			"course": "Séance de formation"
+		}
 	},
 	{
 		"id": "rencontre-chretiens-musulmans-2025",
@@ -1060,6 +1086,10 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Séminaire 'Histoire et anthropologie comparées du fait religieux en Afrique' animé par Marie Miran",
 		"location": "Humathèque Condorcet",
 		"type": "lecture",
+		"teaching": {
+			"institution": "École des hautes études en sciences sociales (France)",
+			"level": "graduate"
+		},
 		"url": "https://doi.org/10.58079/13pmz"
 	},
 	{

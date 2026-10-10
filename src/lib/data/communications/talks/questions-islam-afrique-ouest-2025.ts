@@ -13,6 +13,10 @@ export const talkQuestionsIslamAfriqueOuest2025: Communication = {
 	location: 'École des hautes études en sciences sociales (EHESS)',
 	country: 'France',
 	type: 'lecture',
+	teaching: {
+		institution: 'École des hautes études en sciences sociales (France)',
+		level: 'graduate'
+	},
 	language: 'French',
 	abstract:
 		"Cette conférence explore les enjeux méthodologiques de la recherche sur l'islam en Afrique de l'Ouest face à la fragmentation des archives postcoloniales. J'analyserai les défis et opportunités que représente l'exploitation d'un corpus d'articles de presse et de publications islamiques pour documenter l'histoire des communautés musulmanes depuis les indépendances, tout en montrant l'apport potentiel des sources nativement numériques.",

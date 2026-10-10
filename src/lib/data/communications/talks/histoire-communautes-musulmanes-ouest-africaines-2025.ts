@@ -14,6 +14,10 @@ export const talkHistoireCommunautesMusulmanesOuestAfricaines2025: Communication
 	location: 'École des hautes études en sciences sociales (EHESS)',
 	country: 'France',
 	type: 'lecture',
+	teaching: {
+		institution: 'École des hautes études en sciences sociales (France)',
+		level: 'graduate'
+	},
 	language: 'French',
 	abstract:
 		"À travers la Collection Islam Afrique de l'Ouest, nous explorons comment les approches des humanités numériques telles que le distant reading peuvent révéler des tendances intéressantes dans la couverture médiatique de l’islam depuis 65 ans, tandis que diverses visualisations (réseaux, cartes, chronologies) mettent en lumière les interconnexions transnationales entre acteurs islamiques.",

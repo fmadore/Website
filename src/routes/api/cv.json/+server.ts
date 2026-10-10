@@ -19,7 +19,7 @@ import { languagesByProficiency } from '$lib/data/languages';
 import { fieldworksByDate } from '$lib/data/fieldworks';
 import { mediaAppearancesByDate } from '$lib/data/media-appearances';
 import teaching from '$lib/data/teaching';
-import guestLectures from '$lib/data/teaching/guest-lectures';
+import { allLectures } from '$lib/server/teachingLectures';
 import { absoluteUrl, API_VERSION, buildLinks, compact, jsonResponse } from '$lib/utils/apiPayload';
 
 // Prerendered to build/api/cv.json alongside the rest of the site.
@@ -80,7 +80,14 @@ export const GET: RequestHandler = async () => {
 						syllabusUrl: course.syllabusUrl ? absoluteUrl(course.syllabusUrl) : undefined
 					})
 				),
-				guestLectures: guestLectures.map((lecture) => compact({ ...lecture }))
+				// The guest lectures and the talks given as teaching, as the CV
+				// prints them; a talk's row links to its record.
+				guestLectures: allLectures.map(({ talkId, ...lecture }) =>
+					compact({
+						...lecture,
+						url: talkId ? absoluteUrl(`/communications/${talkId}`) : undefined
+					})
+				)
 			},
 			editorialMemberships: editorialMembershipsByDate.map((item) => compact({ ...item })),
 			peerReviews: peerReviewsByDate.map((item) => compact({ ...item })),

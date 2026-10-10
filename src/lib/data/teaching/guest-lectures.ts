@@ -7,7 +7,8 @@ const guestLectures: GuestLecture[] = [
 		course: 'Religion in/from Africa',
 		institution: 'Universität Bayreuth (Germany)',
 		level: 'graduate',
-		date: '31 May 2022'
+		date: '31 May 2022',
+		dateISO: '2022-05-31'
 	},
 	{
 		year: '2020',
@@ -15,7 +16,8 @@ const guestLectures: GuestLecture[] = [
 		course: 'Politics, Identity and Violence in Africa',
 		institution: 'University of Florida (United States)',
 		level: 'undergraduate',
-		date: '11 September 2020'
+		date: '11 September 2020',
+		dateISO: '2020-09-11'
 	},
 	{
 		year: '2019',
@@ -23,7 +25,8 @@ const guestLectures: GuestLecture[] = [
 		course: 'Religions of Africa',
 		institution: 'University of Florida (United States)',
 		level: 'undergraduate',
-		date: '5 September 2019'
+		date: '5 September 2019',
+		dateISO: '2019-09-05'
 	},
 	{
 		year: '2018',
@@ -31,7 +34,8 @@ const guestLectures: GuestLecture[] = [
 		course: 'Recherche et rédaction [Research and Writing]',
 		institution: 'Université Laval (Canada)',
 		level: 'undergraduate',
-		date: '16 February 2018'
+		date: '16 February 2018',
+		dateISO: '2018-02-16'
 	},
 	{
 		year: '2018',
@@ -39,7 +43,8 @@ const guestLectures: GuestLecture[] = [
 		course: "Les sciences historiques aujourd'hui [Historical Sciences Today]",
 		institution: 'Université Laval (Canada)',
 		level: 'undergraduate',
-		date: '5 February 2018'
+		date: '5 February 2018',
+		dateISO: '2018-02-05'
 	},
 	{
 		year: '2017',
@@ -48,7 +53,8 @@ const guestLectures: GuestLecture[] = [
 			'Afrique subsaharienne: diversité culturelle et mondialisation [Sub-Saharan Africa: Cultural Diversity and Globalisation]',
 		institution: 'Université Laval (Canada)',
 		level: 'undergraduate',
-		date: '3 April 2017'
+		date: '3 April 2017',
+		dateISO: '2017-04-03'
 	},
 	{
 		year: '2017',
@@ -56,7 +62,8 @@ const guestLectures: GuestLecture[] = [
 		course: 'Politique et société en Afrique [Politics and Society in Africa]',
 		institution: 'Université Laval (Canada)',
 		level: 'graduate',
-		date: '28 February 2017'
+		date: '28 February 2017',
+		dateISO: '2017-02-28'
 	},
 	{
 		year: '2017',
@@ -64,7 +71,8 @@ const guestLectures: GuestLecture[] = [
 		course: 'Projet de thèse [Dissertation Project]',
 		institution: 'Université Laval (Canada)',
 		level: 'graduate',
-		date: '13 January 2017'
+		date: '13 January 2017',
+		dateISO: '2017-01-13'
 	},
 	{
 		year: '2016',
@@ -72,7 +80,8 @@ const guestLectures: GuestLecture[] = [
 		course: 'Projet de thèse [Dissertation Project]',
 		institution: 'Université Laval (Canada)',
 		level: 'graduate',
-		date: '1 February 2016'
+		date: '1 February 2016',
+		dateISO: '2016-02-01'
 	}
 ];
 

@@ -30,7 +30,8 @@ export const CV_COMMUNICATION_FIELDS = [
 	'panelTitle',
 	'episode',
 	'doi',
-	'url'
+	'url',
+	'teaching'
 ] as const satisfies readonly CvCommunicationField[];
 
 // Fails to compile if the list above omits a member of the union.

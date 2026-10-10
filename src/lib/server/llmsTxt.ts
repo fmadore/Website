@@ -108,7 +108,7 @@ export function buildLlmsTxt(): string {
 	item(
 		'Teaching',
 		markdownUrl('/teaching'),
-		'Courses taught, with their syllabi, and guest lectures by host institution.'
+		'Courses taught, with their syllabi, and guest lectures and workshops by host institution.'
 	);
 
 	heading('Research projects');

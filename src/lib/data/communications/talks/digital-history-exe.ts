@@ -11,6 +11,10 @@ export const digitalHistoryExe: Communication = {
 	location: 'Leibniz Centre for Contemporary History Potsdam (ZZF)',
 	country: 'Germany',
 	type: 'lecture',
+	teaching: {
+		institution: 'Leibniz Centre for Contemporary History Potsdam (Germany)',
+		level: 'graduate'
+	},
 	language: 'English',
 	abstract:
 		'This masterclass will explore how computational approaches - from text mining and digital mapping to AI - are reshaping historical research. Through analysis of existing projects and collaborative hands-on exercises, we will examine key digital methodologies and critically assess both the potential and limitations of these tools. The Master Class will go beyond a focus on Western contexts to include the application of digital approaches to African history, where unique challenges and opportunities exist.',

@@ -11,6 +11,9 @@ export const formationRecherchesEnLigneOuagadougou: Communication = {
 	location: 'Université Joseph Ki-Zerbo',
 	country: 'Burkina Faso',
 	type: 'lecture',
+	teaching: {
+		institution: 'Université Joseph Ki-Zerbo (Burkina Faso)'
+	},
 	language: 'French',
 	tags: ['Research Methods', 'Online Research', 'Training', 'Burkina Faso'],
 	image: 'images/communications/formation-recherche-en-ligne-ouagadougou.jpeg',
