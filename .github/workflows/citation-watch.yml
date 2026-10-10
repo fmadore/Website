@@ -61,12 +61,12 @@ jobs:
         if: steps.triage.outputs.found == 'true'
         run: |
           {
-            echo "Monthly sweep of OpenAlex for works citing this bibliography and for works under the ORCID that are not yet on the site, plus a full-text sweep of Google Books, HAL and Wikipedia for citations no index recorded."
+            echo "Monthly sweep of OpenAlex for works citing this bibliography, for works under the author that are not yet on the site, and for publications OpenAlex files under someone else or can match only by title, plus a full-text sweep of Google Books, HAL and Wikipedia for citations no index recorded."
             echo
             cat citation-report.md
             echo
             echo "---"
-            echo "Each \`citedBy\` block is ready to paste into the named data file. Entries disappear from this issue once committed — the repository is the state, so there is nothing to tick off. Full-text leads are not paste-ready: verify them, then either record the citation or dismiss the lead in \`scripts/citation-discovery-ack.json\`."
+            echo "Each \`citedBy\` block and \`openAlexId\` line is ready to paste into the named data file. Entries disappear from this issue once committed — the repository is the state, so there is nothing to tick off. Full-text leads are not paste-ready: verify them, then either record the citation or dismiss the lead in \`scripts/citation-discovery-ack.json\`."
             echo
             echo "Reproduce locally with \`npm run check:citations\`."
             echo "From [\`${{ github.workflow }}\`](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}), run ${{ github.run_number }}."
@@ -110,7 +110,7 @@ jobs:
             --json number,title \
             --jq '.[] | select(.title == "New citations and missing publications") | .number' | head -n1)
           if [ -n "$number" ]; then
-            gh issue comment "$number" --body "Every OpenAlex citation is now recorded and every indexed work is on the site. Closing."
+            gh issue comment "$number" --body "Every OpenAlex citation is now recorded, every indexed work is on the site and filed under the author. Closing."
             gh issue close "$number"
           else
             echo "No open citation-watch issue; nothing to close."

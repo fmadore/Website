@@ -1,12 +1,14 @@
 /**
  * Citation and publication watcher.
  *
- * Answers three questions the site cannot answer about itself:
+ * Answers four questions the site cannot answer about itself:
  *   1. Has anyone new cited this work since the `citedBy` lists were last
  *      updated?
  *   2. Is there a published work under this ORCID that never made it into
  *      `src/lib/data/publications/`?
- *   3. Is anyone citing this work somewhere no citation index can see?
+ *   3. Does OpenAlex still hold every publication on the site, under this
+ *      author, and by a key firmer than its title?
+ *   4. Is anyone citing this work somewhere no citation index can see?
  *
  * Why not Google Scholar. Scholar has no public API, actively serves CAPTCHAs
  * to datacentre IPs (which is all a GitHub Actions runner ever is), and
@@ -16,8 +18,12 @@
  * makes the output actionable. Its coverage of citations is smaller than
  * Scholar's, so treat the numbers here as a floor, not a census.
  *
- * Questions 1 and 2 are the citation graph, and OpenAlex is the spine of both.
- * Question 3 is what the graph structurally cannot answer: it only ever knows
+ * Questions 1 to 3 are the citation graph, and OpenAlex is the spine of all
+ * three. It is reached by every key there is — the ORCID, the OpenAlex author
+ * record, each DOI on the site and each recorded `openAlexId` — so that a work
+ * OpenAlex detaches from the author is still followed, and reported rather
+ * than silently lost (`openalex-coverage.mjs`).
+ * Question 4 is what the graph structurally cannot answer: it only ever knows
  * the references publishers deposit, which excludes most monographs and most
  * francophone grey literature — between them, the venues this bibliography is
  * cited in most. Google Books, HAL and Wikipedia search running text instead,
@@ -56,6 +62,7 @@ import { argv, exit, env } from 'node:process';
 import { collectRecords } from './lib/data-records.mjs';
 import { normDoi, normTitle, selectFreshCitations } from './citation-grouping.mjs';
 import { cleanTitle, flatten } from './citation-text.mjs';
+import { assessCoverage, localDois, normWorkId, orFilters } from './openalex-coverage.mjs';
 import {
 	nameVariants,
 	normaliseGoogleBooks,
@@ -69,6 +76,12 @@ import {
 } from './citation-discovery.mjs';
 
 const ORCID = '0000-0003-0959-2092';
+/**
+ * The author's OpenAlex record, asked separately from the ORCID because the
+ * two can come apart: a record keeps its works if it loses the ORCID link,
+ * and an ORCID can end up on a different record.
+ */
+const OPENALEX_AUTHOR = 'A5000010243';
 const AUTHOR = 'Frédérick Madore'; // the phrase the discovery sources search for
 const CONTACT = 'frederick_madore@outlook.com'; // OpenAlex "polite pool" identifier
 const API = 'https://api.openalex.org';
@@ -148,17 +161,6 @@ const EXCLUDED_CITATIONS = new Map([
 const CORPORATE =
 	/\b(gmbh|ltd|llc|inc|s\.a\.|co\.? kg|university press|press|publishers?|publishing|editions?|verlag|éditions)\b/i;
 
-/** Every DOI the local dataset knows about, however it is spelled. */
-function localDois(record) {
-	const out = new Set();
-	if (record.doi) out.add(normDoi(record.doi));
-	if (record.url) {
-		const d = normDoi(record.url);
-		if (d.startsWith('10.')) out.add(d);
-	}
-	return out;
-}
-
 // ---------------------------------------------------------------------------
 // OpenAlex
 // ---------------------------------------------------------------------------
@@ -180,7 +182,7 @@ async function allWorks(filter, select) {
 	let cursor = '*';
 	while (cursor) {
 		const page = await openAlex(
-			`/works?filter=${filter}&select=${select}&per-page=200&cursor=${encodeURIComponent(cursor)}`
+			`/works?filter=${encodeURIComponent(filter)}&select=${select}&per-page=200&cursor=${encodeURIComponent(cursor)}`
 		);
 		results.push(...page.results);
 		cursor = page.meta?.next_cursor ?? null;
@@ -189,19 +191,103 @@ async function allWorks(filter, select) {
 	return results;
 }
 
-let ownWorks;
+/** `authorships` is read only to say whom a misattributed work is filed under. */
+const WORK_FIELDS = 'id,doi,title,publication_year,cited_by_count,type,authorships';
+
+let byOrcid;
 try {
-	ownWorks = await allWorks(
-		`author.orcid:${ORCID}`,
-		'id,doi,title,publication_year,cited_by_count,type'
-	);
+	byOrcid = await allWorks(`author.orcid:${ORCID}`, WORK_FIELDS);
 } catch (err) {
 	console.error(`[check-citations] OpenAlex unreachable: ${err.message}`);
 	exit(1);
 }
 
+/**
+ * The other routes in. OpenAlex answered the ORCID query, so a failure here is
+ * a bad request or a blip, not an outage: it degrades the report (and says
+ * so) rather than failing the run. Null means the route failed.
+ */
+const lookupErrors = [];
+
+async function lookup(label, filters) {
+	const works = [];
+	try {
+		for (const filter of filters) works.push(...(await allWorks(filter, WORK_FIELDS)));
+		return works;
+	} catch (err) {
+		console.error(`[check-citations] OpenAlex ${label} lookup failed: ${err.message}`);
+		lookupErrors.push({
+			label: `OpenAlex ${label} lookup`,
+			message: err.message.replace(/ for \/works\?.*$/, '')
+		});
+		return null;
+	}
+}
+
+const siteDois = [...new Set(publications.flatMap(({ record }) => [...localDois(record)]))].sort();
+const siteIds = [
+	...new Set(publications.map(({ record }) => normWorkId(record.openAlexId)).filter(Boolean))
+].sort();
+
+const byAuthor = await lookup('author record', [`author.id:${OPENALEX_AUTHOR}`]);
+const byDoi = await lookup(
+	'DOI',
+	orFilters(
+		'doi',
+		siteDois.map((d) => `https://doi.org/${d}`)
+	)
+);
+const byId = await lookup('work id', orFilters('ids.openalex', siteIds));
+
+/** Every work found, once, with the routes that found it. */
+const routesOf = new Map(); // bare work id → Set<'orcid' | 'author' | 'doi' | 'id'>
+const indexed = new Map(); // bare work id → work
+for (const [route, list] of [
+	['orcid', byOrcid],
+	['author', byAuthor],
+	['doi', byDoi],
+	['id', byId]
+]) {
+	for (const work of list ?? []) {
+		const id = normWorkId(work.id);
+		if (!id) continue;
+		if (!indexed.has(id)) indexed.set(id, work);
+		if (!routesOf.has(id)) routesOf.set(id, new Set());
+		routesOf.get(id).add(route);
+	}
+}
+const indexedWorks = [...indexed.values()];
+
+/** Filed under the author by OpenAlex, rather than reached through the site's own identifiers. */
+const attributed = (work) => {
+	const routes = routesOf.get(normWorkId(work.id));
+	return Boolean(routes?.has('orcid') || routes?.has('author'));
+};
+const ownWorks = indexedWorks.filter(attributed);
+
+if (byAuthor && byAuthor.length === 0 && byOrcid.length > 0) {
+	console.warn(
+		`[check-citations] OpenAlex author ${OPENALEX_AUTHOR} returned no works — merged into another record? Update OPENALEX_AUTHOR.`
+	);
+}
+
+const coverage = assessCoverage({
+	publications,
+	works: indexedWorks,
+	attributed,
+	idsReturned: byId ? new Set(byId.map((w) => normWorkId(w.id))) : null
+});
+const { matchOf } = coverage;
+
+const doisFound = new Set(
+	(byDoi ?? []).map((w) => normDoi(w.doi)).filter((d) => siteDois.includes(d))
+);
+
 console.log(
-	`[check-citations] ${publications.length} local publications, ${ownWorks.length} OpenAlex works under ORCID ${ORCID}`
+	`[check-citations] ${publications.length} local publications; OpenAlex: ${byOrcid.length} works under ORCID ${ORCID}, ` +
+		`${byAuthor?.length ?? 'n/a'} under author ${OPENALEX_AUTHOR}, ` +
+		`${byDoi ? doisFound.size : 'n/a'} of ${siteDois.length} DOIs, ` +
+		`${byId?.length ?? 'n/a'} of ${siteIds.length} recorded ids → ${indexedWorks.length} works`
 );
 
 // ---------------------------------------------------------------------------
@@ -214,26 +300,16 @@ const workId = (work) =>
 		.split('/')
 		.pop();
 
-/** Link each OpenAlex work to a local publication: DOI first, then title. */
-function matchLocal(work) {
-	const doi = normDoi(work.doi);
-	if (doi) {
-		const byDoi = publications.find(({ record }) => localDois(record).has(doi));
-		if (byDoi) return byDoi;
-	}
-	const title = normTitle(work.title);
-	if (!title) return null;
-	return publications.find(({ record }) => normTitle(record.title) === title) ?? null;
-}
-
 const newCitations = []; // { publication, citing[] }
 const excluded = new Set(); // EXCLUDED_CITATIONS entries that actually fired
-const cited = ownWorks
+// Every work matched to the site, whichever route found it: a work OpenAlex has
+// detached from the author still has its citations followed.
+const cited = indexedWorks
 	.filter((w) => w.cited_by_count > 0)
 	.sort((a, b) => b.cited_by_count - a.cited_by_count);
 
 for (const work of cited) {
-	const match = matchLocal(work);
+	const match = matchOf.get(work);
 	if (!match) continue; // unmatched works are handled by pass 2
 
 	// Match a recorded citation on its DOI before its title. Titles are the
@@ -327,7 +403,7 @@ const REPORTABLE_TYPES = new Set(['article', 'book', 'book-chapter', 'dissertati
  *
  * A journal that supplies a translated title gets indexed twice: once as the
  * record of account, carrying the DOI, and once as a bare title with no
- * identifier at all. `matchLocal` cannot join them — there is no DOI to match
+ * identifier at all. `matchPublication` cannot join them — there is no DOI to match
  * on, and the two titles share almost no words once normalised — so the
  * duplicate is reported as a missing publication every month.
  *
@@ -346,7 +422,7 @@ const KNOWN_DUPLICATES = new Map([
 const missing = ownWorks
 	.filter((w) => REPORTABLE_TYPES.has(w.type))
 	.filter((w) => !KNOWN_DUPLICATES.has(workId(w)))
-	.filter((w) => !matchLocal(w))
+	.filter((w) => !matchOf.has(w))
 	.sort((a, b) => (b.publication_year ?? 0) - (a.publication_year ?? 0));
 
 // A suppression that no longer suppresses anything is worse than none: it
@@ -358,6 +434,15 @@ for (const [id, why] of KNOWN_DUPLICATES) {
 		);
 	}
 }
+
+// ---------------------------------------------------------------------------
+// Coverage — the same question asked from the site's side
+// ---------------------------------------------------------------------------
+
+const { unattributed, toRecord, stale } = coverage;
+// "Not in OpenAlex" is only an answer once every route that could have found a
+// publication has answered; after a failed lookup it would be a guess.
+const unindexed = byAuthor && byDoi && byId ? coverage.unindexed : null;
 
 // ---------------------------------------------------------------------------
 // Pass 3 — discovery: citations no index recorded
@@ -413,7 +498,7 @@ for (const { record } of publications) {
 }
 // OpenAlex often holds a translated or short-form title for the same work, and
 // Google Books indexes whichever one the publisher used.
-for (const w of ownWorks) {
+for (const w of indexedWorks) {
 	const title = normTitle(cleanTitle(w.title));
 	if (title) localTitles.add(title);
 }
@@ -706,7 +791,7 @@ if (missing.length) {
 	lines.push(
 		`## ${missing.length} work${missing.length === 1 ? '' : 's'} not on the site`,
 		'',
-		'Indexed under the ORCID but with no matching file in `src/lib/data/publications/`. Some will be duplicates or records of reviews rather than new work — verify before adding.',
+		'Filed under the ORCID or the OpenAlex author record but with no matching file in `src/lib/data/publications/`. Some will be duplicates or records of reviews rather than new work — verify before adding.',
 		''
 	);
 	for (const w of missing) {
@@ -714,6 +799,86 @@ if (missing.length) {
 		const doi = url ? ` — ${md(url)}` : '';
 		const year = Number(w.publication_year) || 'n.d.';
 		lines.push(`- **${year}** · ${md(cleanTitle(w.title))}${doi} _(${md(w.type)})_`);
+	}
+	lines.push('');
+}
+
+/** `[W123](https://openalex.org/W123)`: the record a finding is about, one click away. */
+const workLink = (work) => {
+	const id = normWorkId(work.id);
+	return id ? `[${id}](https://openalex.org/${id})` : 'an OpenAlex record with no id';
+};
+
+const fileOf = (publication) => `\`${publication.file.replace(/\\/g, '/')}\``;
+
+/** Whom OpenAlex files a work under: the names, and the author records behind them. */
+const filedUnder = (work) => {
+	const names = (work.authorships ?? [])
+		.map(({ author }) => {
+			if (!author?.display_name) return null;
+			const id = String(author.id ?? '')
+				.split('/')
+				.pop();
+			return id ? `${author.display_name} (${id})` : author.display_name;
+		})
+		.filter(Boolean);
+	if (names.length === 0) return 'no author';
+	const shown = names.slice(0, 6).join(', ');
+	return names.length > 6 ? `${shown} and ${names.length - 6} more` : shown;
+};
+
+const citations = (work) => {
+	const n = Number(work.cited_by_count) || 0;
+	return `${n} citation${n === 1 ? '' : 's'}`;
+};
+
+if (unattributed.length) {
+	lines.push(
+		`## ${unattributed.length} publication${unattributed.length === 1 ? '' : 's'} OpenAlex does not file under the author`,
+		'',
+		`Found through the site's own DOI or \`openAlexId\`, but under neither ORCID ${ORCID} nor author record ${OPENALEX_AUTHOR}. Their citations are still followed above; what is wrong is the attribution, which only OpenAlex can correct. Until it does, these works are missing from the author's OpenAlex profile and from everything built on it.`,
+		''
+	);
+	for (const { publication, works } of unattributed) {
+		lines.push(`- **${md(publication.record.title)}** — ${fileOf(publication)}`);
+		for (const work of works) {
+			lines.push(`  · ${workLink(work)}, filed under ${md(filedUnder(work))}`);
+		}
+	}
+	lines.push('');
+}
+
+if (toRecord.length) {
+	lines.push(
+		`## ${toRecord.length} OpenAlex id${toRecord.length === 1 ? '' : 's'} to record`,
+		'',
+		"Publications with no DOI of their own — none at all, or one they share with other publications on the site (a volume's on its chapters, an issue's on the pieces in it) — so OpenAlex could only be matched to them by title. A title is the weakest key there is: edit one here and the match is gone. Add the line to the data file and the work is matched on its id from then on.",
+		''
+	);
+	for (const { publication, works } of toRecord) {
+		const [best, ...others] = works;
+		lines.push(`### ${md(publication.record.title)}`, '', fileOf(publication), '');
+		lines.push('```ts', `openAlexId: '${normWorkId(best.id)}',`, '```', '');
+		if (others.length) {
+			const listed = others.map((w) => `${workLink(w)} (${citations(w)})`).join(', ');
+			lines.push(
+				`OpenAlex also matches ${listed}: a duplicate record, or a work of the same title. The id above, ${workLink(best)}, carries the most citations (${citations(best)}); the others are still followed while their titles match.`,
+				''
+			);
+		}
+	}
+}
+
+if (stale.length) {
+	lines.push(
+		`## ${stale.length} recorded OpenAlex id${stale.length === 1 ? '' : 's'} that no longer resolve${stale.length === 1 ? 's' : ''}`,
+		'',
+		'OpenAlex retires an id when it merges a duplicate record into another. Find the work on openalex.org again and replace the `openAlexId` in the data file.',
+		''
+	);
+	for (const { publication, id, malformed } of stale) {
+		const why = malformed ? 'is not an OpenAlex work id' : 'was not returned';
+		lines.push(`- **${md(publication.record.title)}** — ${fileOf(publication)} · ${md(id)} ${why}`);
 	}
 	lines.push('');
 }
@@ -757,33 +922,74 @@ if (freshMentions.length) {
 	lines.push('');
 }
 
-if (discoveryErrors.length) {
-	lines.push(
-		'## Incomplete run',
-		'',
-		'These sources could not be reached, so the discovery sections above are missing whatever they would have contributed. Nothing else in this report is affected.',
-		''
-	);
-	for (const e of discoveryErrors) lines.push(`- **${md(e.label)}** — ${md(e.message)}`);
-	lines.push('');
+if (lookupErrors.length || discoveryErrors.length) {
+	lines.push('## Incomplete run', '');
+	if (lookupErrors.length) {
+		lines.push(
+			'These OpenAlex lookups failed, so the sections above lack whatever only they would have found, and the list of publications not in OpenAlex is withheld rather than guessed at.',
+			''
+		);
+		for (const e of lookupErrors) lines.push(`- **${md(e.label)}** — ${md(e.message)}`);
+		lines.push('');
+	}
+	if (discoveryErrors.length) {
+		lines.push(
+			'These sources could not be reached, so the discovery sections above are missing whatever they would have contributed. Nothing else in this report is affected.',
+			''
+		);
+		for (const e of discoveryErrors) lines.push(`- **${md(e.label)}** — ${md(e.message)}`);
+		lines.push('');
+	}
 }
 
 const findings =
-	totalNew || missing.length || freshWorks.length || freshMentions.length || discoveryErrors.length;
+	totalNew ||
+	missing.length ||
+	unattributed.length ||
+	toRecord.length ||
+	stale.length ||
+	freshWorks.length ||
+	freshMentions.length ||
+	lookupErrors.length ||
+	discoveryErrors.length;
 
 if (!findings) {
 	lines.push(
-		'Nothing new. Every OpenAlex citation is recorded, every indexed work is on the site, and no full-text source turned up an unacknowledged lead.',
+		'Nothing new. Every OpenAlex citation is recorded, every indexed work is on the site and filed under the author, and no full-text source turned up an unacknowledged lead.',
 		''
 	);
 }
 
-const totalCitations = ownWorks.reduce((n, w) => n + w.cited_by_count, 0);
+// Reference, not a finding: most of these will never be indexed, and a list
+// that can never empty must not hold the issue open.
+if (unindexed?.length) {
+	lines.push(
+		`## ${unindexed.length} publication${unindexed.length === 1 ? '' : 's'} not in OpenAlex`,
+		'',
+		'For reference; these do not keep this issue open. No route found them: not the author, not a DOI, not a recorded id, not a title. Blog posts, special issues and much francophone work are often never indexed. If one is in OpenAlex under another title, record its `openAlexId` and it is followed from then on.',
+		''
+	);
+	const byYear = (a, b) => (Number(b.record.year) || 0) - (Number(a.record.year) || 0);
+	for (const publication of [...unindexed].sort(byYear)) {
+		const year = Number(publication.record.year) || 'n.d.';
+		lines.push(`- **${year}** · ${md(publication.record.title)} — ${fileOf(publication)}`);
+	}
+	lines.push('');
+}
+
+const totalCitations = indexedWorks.reduce((n, w) => n + (Number(w.cited_by_count) || 0), 0);
+const routeCounts = [
+	`${byOrcid.length} under the ORCID`,
+	`${byAuthor ? byAuthor.length : 'n/a'} under author record ${OPENALEX_AUTHOR}`,
+	`${byDoi ? doisFound.size : 'n/a'} of the site's ${siteDois.length} DOIs`,
+	`${byId ? byId.length : 'n/a'} of its ${siteIds.length} recorded ids`
+];
+const foundOnSite = new Set(matchOf.values()).size;
 lines.push(
 	'## Totals',
 	'',
-	`- ${ownWorks.length} works indexed by OpenAlex, cited ${totalCitations} times`,
-	`- ${publications.length} publications on the site`,
+	`- ${indexedWorks.length} works found in OpenAlex, cited ${totalCitations} times: ${routeCounts.join(', ')}`,
+	`- ${publications.length} publications on the site, ${foundOnSite} of them found in OpenAlex`,
 	'',
 	'_OpenAlex indexes fewer citations than Google Scholar, so these counts are a floor — which is what the full-text sources are there to raise._',
 	''
@@ -801,6 +1007,7 @@ console.log(`\n${report}`);
 console.log(
 	findings
 		? `[check-citations] ${totalNew} new citation(s), ${missing.length} missing publication(s), ` +
+				`${unattributed.length} misattributed, ${toRecord.length} id(s) to record, ${stale.length} stale id(s), ` +
 				`${freshWorks.length} full-text lead(s), ${freshMentions.length} Wikipedia mention(s).`
 		: '[check-citations] Up to date.'
 );

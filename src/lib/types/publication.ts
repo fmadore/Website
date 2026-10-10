@@ -56,6 +56,14 @@ export type Publication = {
 	language: string; // Publication language
 	isbn?: string; // ISBN for books
 	doi?: string; // DOI for articles
+	/**
+	 * The OpenAlex work id (`W…`), read by the citation watcher
+	 * (`scripts/check-citations.mjs`). Record it where the DOI cannot identify
+	 * the work: there is none, or other publications here share it (a volume's
+	 * DOI on its chapters). Without one the watcher can match the work only by
+	 * title. Its report prints the line to paste.
+	 */
+	openAlexId?: string;
 	abstract?: string; // Abstract or description (optional)
 	url?: string; // Optional: external URL if applicable
 	/**

@@ -49,7 +49,8 @@ npm run check:agentic   # Lighthouse 13's Agentic Browsing category (LHCI's Ligh
                         # job in ci.yml. Locally CHROME_PATH must name a Chrome ≥ 149
                         # (WebMCP); on Windows the CLI's exit 1 after the report is ignored
 npm run check:links     # external links: DOIs via the Handle System, rest over HTTP
-npm run check:citations # OpenAlex sweep for new citations + works missing from the site,
+npm run check:citations # OpenAlex sweep for new citations + works missing from the site
+                        # + misattributed works and OpenAlex ids to record,
                         # then a full-text sweep of Google Books, HAL and Wikipedia
                         # (add --skip-discovery for the OpenAlex passes alone)
 ```
@@ -106,7 +107,12 @@ npm run gen:posters -- --check  # report stale/missing posters, write nothing
 > build that fetches is a build that fails on someone else's outage.
 >
 > **Citation sources**: OpenAlex is the citation spine — keyed by DOI, it
-> answers who cites what and resolves by committing a `citedBy` entry. Google
+> answers who cites what and resolves by committing a `citedBy` entry. It is
+> reached by the ORCID, the OpenAlex author record, every DOI on the site and
+> every `openAlexId`, so a work OpenAlex files under someone else is still
+> followed and is reported (`openalex-coverage.mjs`). A publication with no DOI
+> of its own (none, or one its chapters or sibling pieces share) records its
+> `openAlexId`; the report prints the line to paste. Google
 > Books, HAL and Wikipedia (`citation-discovery.mjs`) search running text for
 > the author's name instead, which is the only way to see the monographs and
 > francophone grey literature the citation graph never records. They are
