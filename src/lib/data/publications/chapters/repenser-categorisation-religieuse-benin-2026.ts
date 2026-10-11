@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const repenserCategorisationReligieuseBenin2026: Publication = {
 	id: 'repenser-categorisation-religieuse-benin-2026',
+	wikidataId: 'Q141695564',
 	type: 'chapter',
 	title: 'Repenser la catégorisation religieuse à partir du Bénin, terre du Vodun',
 	authors: ['Frédérick Madore', { name: 'Codjo Fiacre Anato', personId: 'codjo-fiacre-anato' }],

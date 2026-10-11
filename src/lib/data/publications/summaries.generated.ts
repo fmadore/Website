@@ -297,6 +297,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "for-whom-for-what-purpose-dh-ai-african-studies-2026",
+		"wikidataId": "Q141695563",
 		"type": "working-paper",
 		"title": "For Whom and For What Purpose? A Position Paper on Digital Humanities and AI in African Studies",
 		"authors": [
@@ -1789,6 +1790,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "repenser-categorisation-religieuse-benin-2026",
+		"wikidataId": "Q141695564",
 		"type": "chapter",
 		"title": "Repenser la catégorisation religieuse à partir du Bénin, terre du Vodun",
 		"authors": [
