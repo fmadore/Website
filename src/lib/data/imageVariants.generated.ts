@@ -202,6 +202,8 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'publications/for-whom-for-what-purpose-2026.webp': [1240, 1754],
 	'publications/imams-ouagadougou-2020-hero.webp': [800, 1148],
 	'publications/imams-ouagadougou-2020.webp': [600, 861],
+	'publications/imams-precheurs-ouagadougou-2013-hero.webp': [137, 210],
+	'publications/imams-precheurs-ouagadougou-2013.webp': [137, 210],
 	'publications/islam-politique-ouagadougou-2013-hero.webp': [800, 1035],
 	'publications/islam-politique-ouagadougou-2013.webp': [600, 776],
 	'publications/journal-des-anthropologues-hero.webp': [800, 1185],
