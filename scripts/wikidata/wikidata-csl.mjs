@@ -113,7 +113,10 @@ export function toCsl(p, shared = new Set()) {
 			...(p.advisors?.length ? { advisors: p.advisors } : {}),
 			...(p.tags?.length ? { keywords: p.tags } : {}),
 			...(p.country?.length ? { places: p.country } : {}),
-			...(p.openAccess ? { openAccess: true } : {})
+			// The site's own word on free full text, both ways: a record without the
+			// flag is not open access (see Publication.openAccess), and the skill must
+			// not mark it from a repository copy the site does not count.
+			openAccess: p.openAccess === true
 		}
 	};
 	return item;
