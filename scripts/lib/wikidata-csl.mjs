@@ -97,6 +97,7 @@ export function toCsl(p, shared = new Set()) {
 		custom: {
 			...(kind.template ? { template: kind.template } : {}),
 			...(p.wikidataId ? { wikidata: p.wikidataId } : {}),
+			...(p.openAlexId ? { openalex: p.openAlexId } : {}),
 			...(sharedDoi && !ownsSharedDoi ? { containerDoi: p.doi } : {}),
 			...(p.pdfUrl ? { fullTextUrl: p.pdfUrl } : {}),
 			...(p.prefacedBy ? { foreword: p.prefacedBy } : {}),

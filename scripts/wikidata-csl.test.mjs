@@ -56,6 +56,7 @@ it('maps editors, languages, series and the recorded QID', () => {
 	expect(b['collection-title']).toBe('Afrikanische Studien/African Studies');
 	expect(b['collection-number']).toBe('64');
 	expect(b.custom.wikidata).toBe('Q117599346');
+	expect(toCsl({ ...chapter, openAlexId: 'W2966130854' }).custom.openalex).toBe('W2966130854');
 	const c = toCsl(chapter);
 	expect(c.author).toEqual([{ literal: 'Frédérick Madore' }]);
 	expect(c.editor).toEqual([{ literal: 'Abdoulaye Sounaye' }, { literal: 'Frédérick Madore' }]);
