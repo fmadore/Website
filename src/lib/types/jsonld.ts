@@ -107,6 +107,8 @@ export interface JsonLdScholarlyArticleCitation {
 		name: string;
 	};
 	url?: string;
+	/** The review's Wikidata item, when one is recorded. */
+	sameAs?: string[];
 }
 
 export interface BookJsonLd extends BaseJsonLd {

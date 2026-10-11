@@ -27,7 +27,7 @@ import type {
 import { formatAuthor, formatAuthors, formatPlaces, formatJsonLdDate } from '$lib/types/jsonld';
 import { author, address, website } from '$lib/data/siteConfig';
 import { siteUrl } from '$lib/utils/siteHelpers';
-import { recordEntityId, webPageId } from '$lib/utils/jsonLdSchemas';
+import { recordEntityId, webPageId, wikidataPageUrl } from '$lib/utils/jsonLdSchemas';
 import { stripHtml } from '$lib/utils/textUtils';
 import { splitNames } from '$lib/utils/nameUtils';
 
@@ -181,7 +181,8 @@ export function buildPublicationJsonLd(publication: PublicationWithSource): Publ
 						name: reviewData.title,
 						author: withSiteAuthorIdentity([formatAuthor(reviewData.author)])[0]!,
 						datePublished: String(reviewData.year),
-						url: reviewData.url
+						url: reviewData.url,
+						...(reviewData.wikidataId ? { sameAs: [wikidataPageUrl(reviewData.wikidataId)] } : {})
 					};
 					if (reviewData.journal) {
 						citationJson.isPartOf = {

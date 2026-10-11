@@ -142,7 +142,7 @@ const SITE_URL = website.url;
 const SITE_NAME = author.name;
 const SITE_DESCRIPTION = getDefaultDescription();
 export const wikidataEntityUrl = (id: string): string => `https://www.wikidata.org/entity/${id}`;
-const wikidataPageUrl = (id: string): string => `https://www.wikidata.org/wiki/${id}`;
+export const wikidataPageUrl = (id: string): string => `https://www.wikidata.org/wiki/${id}`;
 const rorUrl = (id: string): string => `https://ror.org/${id}`;
 
 /** `@id` of a page's WebPage node, for the page at this route path. */

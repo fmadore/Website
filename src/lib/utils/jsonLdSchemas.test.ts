@@ -69,19 +69,30 @@ describe('buildPublicationJsonLd', () => {
 				sourceDirType: 'books',
 				isEditedVolume: true,
 				authors: ['Jane Doe', 'Frédérick Madore'],
-				reviewedBy: [{ title: 'A Review', author: 'Critic', year: 2023, journal: 'JRA' }]
+				reviewedBy: [
+					{
+						title: 'A Review',
+						author: 'Critic',
+						year: 2023,
+						journal: 'JRA',
+						wikidataId: 'Q141696533'
+					},
+					{ title: 'Another Review', author: 'Reader', year: 2024, journal: 'JRA' }
+				]
 			})
 		);
 		const book = result as {
 			author?: unknown;
 			editor?: Array<{ '@id'?: string; name: string }>;
-			citation?: Array<{ '@type': string; isPartOf?: { name: string } }>;
+			citation?: Array<{ '@type': string; isPartOf?: { name: string }; sameAs?: string[] }>;
 		};
 		expect(book.author).toBeUndefined();
 		expect(book.editor?.map(({ name }) => name)).toEqual(['Jane Doe', 'Frédérick Madore']);
 		expect(book.editor?.[1]?.['@id']).toBe(`${website.url}/#person`);
 		expect(book.citation?.[0]!['@type']).toBe('ScholarlyArticle');
 		expect(book.citation?.[0]!.isPartOf?.name).toBe('JRA');
+		expect(book.citation?.[0]!.sameAs).toEqual(['https://www.wikidata.org/wiki/Q141696533']);
+		expect(book.citation?.[1]!.sameAs).toBeUndefined();
 	});
 
 	it('models chapter container editors as separate people and links the site owner', () => {
