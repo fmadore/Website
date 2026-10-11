@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const madore2026ConversationCoauthorshipDhAi: Publication = {
 	id: 'madore-2026-conversation-coauthorship-dh-ai',
+	wikidataId: 'Q141695166',
 	type: 'bulletin-article',
 	title:
 		'From Conversation to Co-authorship: A Workshop on Digital Humanities and AI in African Studies, 18–20 February 2026, Herrenhausen, Hanover',

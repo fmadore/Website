@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const madore2025PerspectivesInMotion: Publication = {
 	id: 'madore-2025-perspectives-in-motion',
+	wikidataId: 'Q141695165',
 	type: 'bulletin-article',
 	title:
 		'Perspectives in Motion: Conceptual Fields from the Global South, Workshop, 2-3 December 2024, ZMO',

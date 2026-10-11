@@ -30,6 +30,10 @@ export function validateDecisions(decisions, rows) {
 	if (!decisions || Array.isArray(decisions) || typeof decisions !== 'object')
 		throw new Error('Decisions must be an object keyed by publication ID');
 	for (const [id, decision] of Object.entries(decisions)) {
+		// A work the skill created that the site does not list (a container: an
+		// edited volume, a yearbook volume) is marked as such; any other unknown ID
+		// is a typo and stops the run.
+		if (decision?.notOnSite === true && !rows.has(id)) continue;
 		if (!rows.has(id))
 			throw new Error(
 				`Decision missing from eligible audit records (forthcoming works are excluded): ${id}`

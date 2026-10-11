@@ -200,10 +200,13 @@ export function insertQid(source, id, value) {
 		(p) => p.name?.getText(ast).replace(/['"]/g, '') === 'id'
 	);
 	const comma = source.indexOf(',', idProperty.getEnd());
-	const start =
-		comma !== -1 && !source.slice(idProperty.getEnd(), comma).trim()
-			? comma + 1
-			: object.getStart(ast) + 1;
+	let start = object.getStart(ast) + 1;
+	if (comma !== -1 && !source.slice(idProperty.getEnd(), comma).trim()) {
+		// After the comma and any line comment on the same line, which stays with `id`.
+		const lineEnd = source.slice(comma + 1).search(/\r?\n/);
+		const rest = lineEnd === -1 ? '' : source.slice(comma + 1, comma + 1 + lineEnd);
+		start = lineEnd !== -1 && /^\s*(\/\/.*)?$/.test(rest) ? comma + 1 + lineEnd : comma + 1;
+	}
 	const newline = source.includes('\r\n') ? '\r\n' : '\n';
 	return source.slice(0, start) + `${newline}\twikidataId: '${value}',` + source.slice(start);
 }

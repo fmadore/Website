@@ -904,6 +904,23 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"book": "Perspectives on the Religious Landscape in Africa",
 		"publisher": "Carolina Academic Press"
 	},
+	"imams-precheurs-ouagadougou-2013": {
+		"id": "imams-precheurs-ouagadougou-2013",
+		"itemType": "publication",
+		"title": "Imams, prêcheurs et visibilité nouvelle de l'islam à Ouagadougou depuis 1991 : entre recompositions intergénérationnelles et sphère publique musulmane",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "conference-proceedings",
+		"date": "2013",
+		"dateISO": "2013",
+		"year": 2013,
+		"image": "images/publications/imams-precheurs-ouagadougou-2013.webp",
+		"heroImage": {
+			"src": "images/publications/imams-precheurs-ouagadougou-2013-hero.webp"
+		},
+		"publisher": "Artefact"
+	},
 	"interfaith-coexistence-campuses": {
 		"id": "interfaith-coexistence-campuses",
 		"itemType": "communication",

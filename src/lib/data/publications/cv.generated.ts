@@ -340,6 +340,23 @@ export const cvPublications: CvPublication[] = [
 		"url": "https://cap-press.com/books/isbn/9781531007317/Perspectives-on-Religious-Landscape-in-Africa"
 	},
 	{
+		"id": "imams-precheurs-ouagadougou-2013",
+		"type": "conference-proceedings",
+		"title": "Imams, prêcheurs et visibilité nouvelle de l'islam à Ouagadougou depuis 1991 : entre recompositions intergénérationnelles et sphère publique musulmane",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"date": "2013",
+		"dateISO": "2013",
+		"year": 2013,
+		"proceedingsTitle": "Actes du 12e colloque international étudiant du Département d'histoire de l'Université Laval",
+		"editors": "Émilie Guilbeault-Cayer, Agueda Iturbe-Kennedy, Dorothée Kaupp, Isabel Trépanier",
+		"placeOfPublication": "Quebec City",
+		"publisher": "Artefact",
+		"pages": "233-252",
+		"url": "https://www.erudit.org/en/books/actes-des-colloques-dartefact/actes-12e-colloque-international-etudiant-departement-dhistoire-luniversite--978-2-9816015-1-3/004329co/"
+	},
+	{
 		"id": "introduction-religiosity-university-campuses-2023",
 		"type": "chapter",
 		"title": "Introduction: Religiosity on University Campuses in Africa",

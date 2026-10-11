@@ -133,6 +133,13 @@ describe('reconciliation', () => {
 		expect(() => insertQid(source, 'absent', 'Q123')).toThrow('unique');
 		expect(() => insertQid(source, publication.id, 'Q0')).toThrow('Invalid');
 	});
+	it('keeps a comment on the id line with the id', () => {
+		const source =
+			"export const p: Publication = {\n\tid: 'test-publication', // URL-friendly ID\n\ttype: 'article'\n};\n";
+		expect(insertQid(source, publication.id, 'Q123')).toBe(
+			"export const p: Publication = {\n\tid: 'test-publication', // URL-friendly ID\n\twikidataId: 'Q123',\n\ttype: 'article'\n};\n"
+		);
+	});
 	it('rejects HTTP/API errors, retries throttling, and never makes a write request', async () => {
 		const urls = [];
 		let calls = 0;

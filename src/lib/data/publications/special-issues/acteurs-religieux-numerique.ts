@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const acteursReligieuxNumerique: Publication = {
 	id: 'acteurs-religieux-numerique',
+	wikidataId: 'Q141695163',
 	type: 'special-issue',
 	title: "Les acteurs religieux africains à l'ère du numérique",
 	authors: [{ name: 'Pamela Millet-Mouity', personId: 'pamela-millet-mouity' }, 'Frédérick Madore'],

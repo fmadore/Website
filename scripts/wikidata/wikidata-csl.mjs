@@ -57,12 +57,21 @@ export function containerDois(records) {
 	return new Set([...counts].filter(([, n]) => n > 1).map(([doi]) => doi));
 }
 
+/**
+ * Periodicals whose DOIs name a whole issue, never an article in it (the ZMO
+ * Bulletin registers one DataCite DOI per issue, "ZMO Bulletin No. 44"). An
+ * article in one carries its DOI as `custom.containerDoi` even when it is the
+ * only record citing that issue.
+ */
+export const ISSUE_DOI_PERIODICALS = new Set(['ZMO Bulletin']);
+
 export function toCsl(p, shared = new Set()) {
 	if (isForthcoming(p)) throw new Error(`Forthcoming publication is not exported: ${p.id}`);
 	const kind = TYPES[p.type];
 	if (!kind) throw new Error(`No CSL mapping for publication type ${p.type}`);
 	const edited = p.isEditedVolume || p.isEditedWork || p.type === 'special-issue';
-	const sharedDoi = p.doi && shared.has(p.doi.toLowerCase());
+	const sharedDoi =
+		p.doi && (shared.has(p.doi.toLowerCase()) || ISSUE_DOI_PERIODICALS.has(p.journal));
 	const ownsSharedDoi = sharedDoi && ['book', 'special-issue'].includes(p.type);
 	const language = p.language
 		.split(',')

@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const madore2026DecenteringKnowledge: Publication = {
 	id: 'madore-2026-decentering-knowledge',
+	wikidataId: 'Q141695167',
 	type: 'bulletin-article',
 	title:
 		'Decentering Knowledge: Concepts, Conceptualizations, Translations, 13–14 October 2025, ZMO',

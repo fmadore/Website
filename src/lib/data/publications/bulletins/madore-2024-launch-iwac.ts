@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const madore2024LaunchIwac: Publication = {
 	id: 'madore-2024-launch-iwac', // URL-friendly ID
+	wikidataId: 'Q141695164',
 	type: 'bulletin-article',
 	title: 'Launch Islam West Africa Collection, 9 November 2023, MiCT, Berlin/Online',
 	authors: ['Frédérick Madore'],

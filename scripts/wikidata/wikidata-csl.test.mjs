@@ -47,6 +47,21 @@ it('moves a DOI shared with the volume to the chapter’s containerDoi', () => {
 	expect(toCsl(chapter).DOI).toBe('10.58144/20241107-000');
 });
 
+it('treats a ZMO Bulletin DOI as the issue’s, even with one record citing it', () => {
+	const report = {
+		...chapter,
+		id: 'bulletin-44',
+		type: 'bulletin-article',
+		journal: 'ZMO Bulletin',
+		issue: '44',
+		doi: '10.58144/20240415-000'
+	};
+	expect(toCsl(report).DOI).toBeUndefined();
+	expect(toCsl(report).custom.containerDoi).toBe('10.58144/20240415-000');
+	const yearbook = { ...report, id: 'yearbook-article', journal: 'Shared World' };
+	expect(toCsl(yearbook).DOI).toBe('10.58144/20240415-000');
+});
+
 it('maps editors, languages, series and the recorded QID', () => {
 	const b = toCsl(book);
 	expect(b.type).toBe('book');

@@ -5,6 +5,7 @@ import type { PublicationSummary } from '$lib/types/publication';
 export const publicationSummaries: PublicationSummary[] = [
 	{
 		"id": "acteurs-religieux-numerique",
+		"wikidataId": "Q141695163",
 		"type": "special-issue",
 		"title": "Les acteurs religieux africains à l'ère du numérique",
 		"authors": [
@@ -645,6 +646,50 @@ export const publicationSummaries: PublicationSummary[] = [
 		"sourceDirType": "chapters"
 	},
 	{
+		"id": "imams-precheurs-ouagadougou-2013",
+		"wikidataId": "Q113528119",
+		"type": "conference-proceedings",
+		"title": "Imams, prêcheurs et visibilité nouvelle de l'islam à Ouagadougou depuis 1991 : entre recompositions intergénérationnelles et sphère publique musulmane",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"date": "2013",
+		"dateISO": "2013",
+		"year": 2013,
+		"proceedingsTitle": "Actes du 12e colloque international étudiant du Département d'histoire de l'Université Laval",
+		"conferenceName": "12e colloque international étudiant du Département d'histoire de l'Université Laval",
+		"editors": "Émilie Guilbeault-Cayer, Agueda Iturbe-Kennedy, Dorothée Kaupp, Isabel Trépanier",
+		"placeOfPublication": "Quebec City",
+		"publisher": "Artefact",
+		"publisherLocation": "Canada",
+		"pages": "233-252",
+		"pageCount": 20,
+		"language": "French",
+		"tags": [
+			"Islam",
+			"Burkina Faso",
+			"Ouagadougou",
+			"Imams",
+			"Islamic Preachers",
+			"Public Sphere",
+			"Intergenerational Relations",
+			"Media",
+			"West Africa"
+		],
+		"url": "https://www.erudit.org/en/books/actes-des-colloques-dartefact/actes-12e-colloque-international-etudiant-departement-dhistoire-luniversite--978-2-9816015-1-3/004329co/",
+		"pdfUrl": "https://www.erudit.org/en/books/actes-des-colloques-dartefact/actes-12e-colloque-international-etudiant-departement-dhistoire-luniversite--978-2-9816015-1-3/004329co.pdf",
+		"openAccess": true,
+		"image": "images/publications/imams-precheurs-ouagadougou-2013.webp",
+		"country": [
+			"Burkina Faso"
+		],
+		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
+		"abstractExcerpt": "Il s'agit ici de rendre compte de l'effervescence de l'islam burkinabé depuis 1991 à travers l'étude de l'implication d'imams et de prêcheurs de Ouagadougou dans la sphère publique et de souligner l'actuelle reconfigurati",
+		"citedByCount": 0,
+		"tocAuthors": [],
+		"sourceDirType": "proceedings"
+	},
+	{
 		"id": "introduction-religiosity-university-campuses-2023",
 		"wikidataId": "Q121125754",
 		"type": "chapter",
@@ -946,6 +991,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "madore-2024-launch-iwac",
+		"wikidataId": "Q141695164",
 		"type": "bulletin-article",
 		"title": "Launch Islam West Africa Collection, 9 November 2023, MiCT, Berlin/Online",
 		"authors": [
@@ -980,6 +1026,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "madore-2025-perspectives-in-motion",
+		"wikidataId": "Q141695165",
 		"type": "bulletin-article",
 		"title": "Perspectives in Motion: Conceptual Fields from the Global South, Workshop, 2-3 December 2024, ZMO",
 		"authors": [
@@ -1013,6 +1060,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "madore-2026-conversation-coauthorship-dh-ai",
+		"wikidataId": "Q141695166",
 		"type": "bulletin-article",
 		"title": "From Conversation to Co-authorship: A Workshop on Digital Humanities and AI in African Studies, 18–20 February 2026, Herrenhausen, Hanover",
 		"authors": [
@@ -1044,6 +1092,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "madore-2026-decentering-knowledge",
+		"wikidataId": "Q141695167",
 		"type": "bulletin-article",
 		"title": "Decentering Knowledge: Concepts, Conceptualizations, Translations, 13–14 October 2025, ZMO",
 		"authors": [

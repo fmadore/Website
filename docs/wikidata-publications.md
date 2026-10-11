@@ -53,7 +53,9 @@ npm run wikidata:apply -- --accept-exact --decisions reports/wikidata/decisions.
 npm run gen:summaries
 ```
 
-The decisions file is either the wikicite file (decisions under `works`) or a flat object keyed by publication `id`. `{"qid": "Q…"}` selects an item; an empty `{}` suppresses automatic acceptance for that publication; a `create` decision assigns nothing.
+The decisions file is either the wikicite file (decisions under `works`) or a flat object keyed by publication `id`. `{"qid": "Q…"}` selects an item; an empty `{}` suppresses automatic acceptance for that publication; a `create` decision assigns nothing. A decision for a work the site does not list (a container the skill created, such as an edited volume or a ZMO Jahrbuch volume) carries `"notOnSite": true` and is skipped; any other ID with no publication record stops the run, since it is most likely a typo.
+
+ZMO Bulletin DOIs name a whole issue ("ZMO Bulletin No. 44"), never an article in it, so the export always passes them as `custom.containerDoi` (`ISSUE_DOI_PERIODICALS` in `scripts/wikidata/wikidata-csl.mjs`).
 
 Apply checks that every selected item exists, is not a redirect and carries no conflicting DOI. It validates the whole plan before writing, refuses duplicate QIDs and the replacement of an existing QID, and adds only a top-level `wikidataId` to each publication's TypeScript file, preserving comments and nested citation records. It defaults to a dry run.
 
