@@ -1891,7 +1891,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		],
 		"type": "chapter",
 		"date": "2026",
-		"dateISO": "2026-04-02",
+		"dateISO": "2026-03",
 		"year": 2026,
 		"image": "images/publications/repenser-categorisation-religieuse-benin.webp",
 		"heroImage": {

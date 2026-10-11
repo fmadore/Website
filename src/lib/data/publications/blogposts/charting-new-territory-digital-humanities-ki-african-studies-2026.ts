@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication = {
 	id: 'charting-new-territory-digital-humanities-ki-african-studies-2026',
+	wikidataId: 'Q141695522',
 	type: 'blogpost',
 	title:
 		'Charting New Territory: Digital Humanities und Künstliche Intelligenz in den African Studies',

@@ -887,7 +887,7 @@ export const cvPublications: CvPublication[] = [
 			}
 		],
 		"date": "2026",
-		"dateISO": "2026-04-02",
+		"dateISO": "2026-03",
 		"year": 2026,
 		"book": "L'Afrique des religions à l'épreuve des chiffres et des catégorisations",
 		"editors": "Marc-Antoine Pérouse de Montclos, Nathalie Bernard-Maugiron, Aurélien Dasré",

@@ -170,6 +170,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "charting-new-territory-digital-humanities-ki-african-studies-2026",
+		"wikidataId": "Q141695522",
 		"type": "blogpost",
 		"title": "Charting New Territory: Digital Humanities und Künstliche Intelligenz in den African Studies",
 		"authors": [
@@ -1126,6 +1127,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "madore-2026-iwac-private-database-public-resource",
+		"wikidataId": "Q141695523",
 		"type": "bulletin-article",
 		"title": "From Private Database to Public Resource to a Testing Ground for AI Methods: The Islam West Africa Collection (IWAC)",
 		"authors": [
@@ -1797,7 +1799,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			}
 		],
 		"date": "2026",
-		"dateISO": "2026-04-02",
+		"dateISO": "2026-03",
 		"year": 2026,
 		"book": "L'Afrique des religions à l'épreuve des chiffres et des catégorisations",
 		"editors": "Marc-Antoine Pérouse de Montclos, Nathalie Bernard-Maugiron, Aurélien Dasré",

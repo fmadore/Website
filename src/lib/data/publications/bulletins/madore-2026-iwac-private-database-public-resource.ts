@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const madore2026IwacPrivateDatabasePublicResource: Publication = {
 	id: 'madore-2026-iwac-private-database-public-resource',
+	wikidataId: 'Q141695523',
 	type: 'bulletin-article',
 	title:
 		'From Private Database to Public Resource to a Testing Ground for AI Methods: The Islam West Africa Collection (IWAC)',
