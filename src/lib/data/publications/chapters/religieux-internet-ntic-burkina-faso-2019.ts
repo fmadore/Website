@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const religieuxInternetNTICBurkinaFaso: Publication = {
 	id: 'religieux-internet-ntic-burkina-faso-2019',
+	wikidataId: 'Q113518914',
 	type: 'chapter',
 	title: 'Le religieux sur Internet et dans les NTIC au Burkina Faso',
 	authors: ['Frédérick Madore', { name: 'Louis Audet Gosselin', personId: 'louis-audet-gosselin' }],

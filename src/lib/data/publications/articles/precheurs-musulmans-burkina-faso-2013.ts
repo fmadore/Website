@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const precheursMusulmansBurkinaFaso: Publication = {
 	id: 'precheurs-musulmans-burkina-faso-2013',
+	wikidataId: 'Q58165697',
 	type: 'article',
 	title:
 		'Prêcheurs(ses) musulmans(es) et stratégies de communication au Burkina Faso depuis 1990. Des processus différentiés de conversion interne',

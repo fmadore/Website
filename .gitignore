@@ -70,3 +70,6 @@ scripts/__pycache__/convert-image.cpython-312.pyc
 
 # Local audit report from scripts/audit-publications.mjs
 /publications-audit.md
+
+# Local Wikidata audits, review decisions and submission batches
+/reports/wikidata/

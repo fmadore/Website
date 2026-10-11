@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const religionsNumeriquesAfrique: Publication = {
 	id: 'religions-numeriques-afrique-2018',
+	wikidataId: 'Q113549958',
 	type: 'blogpost',
 	title: 'Religions numériques en Afrique',
 	authors: [

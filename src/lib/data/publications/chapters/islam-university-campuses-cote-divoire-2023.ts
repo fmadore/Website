@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const islamUniversityCampusesCoteDIvoire: Publication = {
 	id: 'islam-university-campuses-cote-divoire-2023',
+	wikidataId: 'Q117818959',
 	type: 'chapter',
 	title:
 		"Islam on University Campuses in Côte d'Ivoire since the 1970s: Muslim Intellectuals and Francophone Salafism",

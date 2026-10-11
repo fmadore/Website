@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const imamsIslamicPreachersOuagadougou: Publication = {
 	id: 'imams-islamic-preachers-ouagadougou-2020',
+	wikidataId: 'Q113528028',
 	type: 'chapter',
 	title:
 		'Imams, Islamic Preachers, and Public Space in Ouagadougou (Burkina Faso) since the 1990s: Toward New Intergenerational Relationships and a Muslim Public Sphere',

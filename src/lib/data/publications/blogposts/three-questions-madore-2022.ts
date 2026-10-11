@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const threeQuestionsToMadore: Publication = {
 	id: 'three-questions-madore-2022',
+	wikidataId: 'Q113550139',
 	type: 'blogpost',
 	title: 'Three Questions to Dr. Frédérick Madore',
 	authors: [{ name: 'Rand El Zein', personId: 'rand-el-zein' }, 'Frédérick Madore'],

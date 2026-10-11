@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const salafismCoteDIvoire: Publication = {
 	id: 'salafism-cote-divoire-2016',
+	wikidataId: 'Q58165687',
 	type: 'article',
 	title:
 		"The New Vitality of Salafism in Côte d'Ivoire: Toward a Radicalization of Ivoirian Islam?",

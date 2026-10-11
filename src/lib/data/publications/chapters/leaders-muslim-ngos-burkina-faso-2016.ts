@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const leadersMuslimNGOsBurkinaFaso: Publication = {
 	id: 'leaders-muslim-ngos-burkina-faso-2016',
+	wikidataId: 'Q58165683',
 	type: 'chapter',
 	title:
 		'Leaders of National and Transnational Muslim NGOs in Burkina Faso: Diverse Forms and Experiences of Islamic Civic Engagement',

@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const spherePubliqueMusulmane: Publication = {
 	id: 'sphere-publique-musulmane',
+	wikidataId: 'Q113506258',
 	type: 'book',
 	title: "La construction d'une sphère publique musulmane en Afrique de l'Ouest",
 	authors: ['Frédérick Madore'],

@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const muslimWomenBurkinaFaso: Publication = {
 	id: 'muslim-women-burkina-faso-2016',
+	wikidataId: 'Q58165678',
 	type: 'article',
 	title:
 		'Muslim Women in Burkina Faso since the 1970s: Toward Recognition as Figures of Religious Authority?',

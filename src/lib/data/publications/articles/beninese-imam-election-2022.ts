@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const beninImamElection: Publication = {
 	id: 'beninese-imam-election-2022',
+	wikidataId: 'Q113504726',
 	type: 'article',
 	title:
 		"A Beninese Imam's Controversial 2019 Election Campaign: Muslim Leadership and Political Engagement in a Minority Context",

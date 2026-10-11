@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const religiousActivismCampuses: Publication = {
 	id: 'religious-activism-campuses',
+	wikidataId: 'Q130265572',
 	type: 'book',
 	title:
 		'Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023',

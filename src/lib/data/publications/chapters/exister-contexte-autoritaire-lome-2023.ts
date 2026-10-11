@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const existerContexteAutoritaireLome: Publication = {
 	id: 'exister-contexte-autoritaire-lome-2023',
+	wikidataId: 'Q117818951',
 	type: 'chapter',
 	title:
 		"Exister en contexte autoritaire : les associations étudiantes chrétiennes et islamiques à l'Université de Lomé sous Gnassingbé Eyadéma, 1970–2005",

@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const religiousActorsDigitalEra: Publication = {
 	id: 'religious-actors-digital-era-2017',
+	wikidataId: 'Q113506179',
 	type: 'article',
 	title: "Pour de nouvelles études sur les acteurs religieux africains à l'ère du numérique",
 	authors: [{ name: 'Pamela Millet-Mouity', personId: 'pamela-millet-mouity' }, 'Frédérick Madore'],

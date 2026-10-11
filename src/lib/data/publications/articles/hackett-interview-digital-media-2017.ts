@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const hackettInterviewDigitalMedia: Publication = {
 	id: 'hackett-interview-digital-media-2017',
+	wikidataId: 'Q113506246',
 	type: 'article',
 	title: 'Interview with Rosalind I. J. Hackett on Religion and Digital Media Trends in Africa',
 	authors: [

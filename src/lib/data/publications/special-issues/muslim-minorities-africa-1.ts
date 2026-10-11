@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const muslimMinoritiesAfrica1: Publication = {
 	id: 'muslim-minorities-africa-1',
+	wikidataId: 'Q113528560',
 	type: 'special-issue',
 	title: 'Muslim Minorities in Africa, Part 1',
 	authors: ['Frédérick Madore', { name: 'Dorothea Schulz', personId: 'dorothea-schulz' }],

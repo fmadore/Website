@@ -64,6 +64,7 @@ export type Publication = {
 	 * title. Its report prints the line to paste.
 	 */
 	openAlexId?: string;
+	wikidataId?: `Q${number}`; // Reconciled Wikidata work or edition item
 	abstract?: string; // Abstract or description (optional)
 	url?: string; // Optional: external URL if applicable
 	/**

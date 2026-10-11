@@ -123,6 +123,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "beninese-imam-election-2022",
+		"wikidataId": "Q113504726",
 		"type": "article",
 		"title": "A Beninese Imam's Controversial 2019 Election Campaign: Muslim Leadership and Political Engagement in a Minority Context",
 		"authors": [
@@ -210,6 +211,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "communaute-musulmane-burkina-faso-2014",
+		"wikidataId": "Q113549414",
 		"type": "encyclopedia",
 		"title": "Communauté Musulmane du Burkina Faso",
 		"authors": [
@@ -249,6 +251,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "exister-contexte-autoritaire-lome-2023",
+		"wikidataId": "Q117818951",
 		"type": "chapter",
 		"title": "Exister en contexte autoritaire : les associations étudiantes chrétiennes et islamiques à l'Université de Lomé sous Gnassingbé Eyadéma, 1970–2005",
 		"authors": [
@@ -427,6 +430,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "francophone-muslim-intellectuals-burkina-faso-2020",
+		"wikidataId": "Q113505202",
 		"type": "article",
 		"title": "Francophone Muslim intellectuals, Islamic associational life and religious authority in Burkina Faso",
 		"authors": [
@@ -468,6 +472,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "good-muslim-bad-muslim-togo-2021",
+		"wikidataId": "Q113505157",
 		"type": "article",
 		"title": "'Good Muslim, bad Muslim' in Togo: religious minority identity construction amid a sociopolitical crisis (2017-2018)",
 		"authors": [
@@ -509,6 +514,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "hackett-interview-digital-media-2017",
+		"wikidataId": "Q113506246",
 		"type": "article",
 		"title": "Interview with Rosalind I. J. Hackett on Religion and Digital Media Trends in Africa",
 		"authors": [
@@ -552,6 +558,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "hadj-cote-divoire-2018",
+		"wikidataId": "Q58165672",
 		"type": "article",
 		"title": "L'organisation du hadj en Côte d'Ivoire: entre facteur de cohésion et source de rivalités au sein de la communauté musulmane (1993-2010)",
 		"authors": [
@@ -596,6 +603,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "imams-islamic-preachers-ouagadougou-2020",
+		"wikidataId": "Q113528028",
 		"type": "chapter",
 		"title": "Imams, Islamic Preachers, and Public Space in Ouagadougou (Burkina Faso) since the 1990s: Toward New Intergenerational Relationships and a Muslim Public Sphere",
 		"authors": [
@@ -638,6 +646,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "introduction-religiosity-university-campuses-2023",
+		"wikidataId": "Q121125754",
 		"type": "chapter",
 		"title": "Introduction: Religiosity on University Campuses in Africa",
 		"authors": [
@@ -678,6 +687,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "islam-burkina-faso-collection-2021",
+		"wikidataId": "Q113504767",
 		"type": "article",
 		"title": "La Collection Islam Burkina Faso : promesses et défis des humanités numériques",
 		"authors": [
@@ -716,6 +726,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "islam-ivoirien-burkinabe-numerique-2016",
+		"wikidataId": "Q58165675",
 		"type": "article",
 		"title": "L'islam ivoirien et burkinabé à l'ère du numérique 2.0",
 		"authors": [
@@ -756,6 +767,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "islam-medias-senat-burkina-faso-2016",
+		"wikidataId": "Q58165690",
 		"type": "article",
 		"title": "Islam, médias, mise en place du Sénat et article 37 de la Constitution: changement de paradigme au Burkina Faso (1991–2014)?",
 		"authors": [
@@ -795,6 +807,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "islam-university-campuses-cote-divoire-2023",
+		"wikidataId": "Q117818959",
 		"type": "chapter",
 		"title": "Islam on University Campuses in Côte d'Ivoire since the 1970s: Muslim Intellectuals and Francophone Salafism",
 		"authors": [
@@ -842,6 +855,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "leaders-muslim-ngos-burkina-faso-2016",
+		"wikidataId": "Q58165683",
 		"type": "chapter",
 		"title": "Leaders of National and Transnational Muslim NGOs in Burkina Faso: Diverse Forms and Experiences of Islamic Civic Engagement",
 		"authors": [
@@ -891,6 +905,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "lutte-terrorisme-salafisme-benin-togo-2022",
+		"wikidataId": "Q114713939",
 		"type": "report",
 		"title": "Lutte contre le terrorisme et sécuritisation du salafisme au Bénin et au Togo: instrumentalisations diverses d'une « menace étrangère »",
 		"authors": [
@@ -1096,6 +1111,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "madore-islam-politique-ouagadougou-2013",
+		"wikidataId": "Q113527861",
 		"type": "masters-thesis",
 		"title": "Islam, politique et sphère publique à Ouagadougou (Burkina Faso) : différentes cohortes d'imams et de prêcheurs entre visibilité nouvelle et reconfiguration des rapports intergénérationnels (1960-2012)",
 		"authors": [
@@ -1137,6 +1153,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "muslim-feminist-media-cote-divoire-2020",
+		"wikidataId": "Q113466959",
 		"type": "article",
 		"title": "Muslim Feminist, Media Sensation, and Religious Entrepreneur: Aminata Kane Koné as a Figure of Success in Côte d'Ivoire",
 		"authors": [
@@ -1177,6 +1194,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "muslim-minorities-africa-1",
+		"wikidataId": "Q113528560",
 		"type": "special-issue",
 		"title": "Muslim Minorities in Africa, Part 1",
 		"authors": [
@@ -1223,6 +1241,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "muslim-minorities-africa-2",
+		"wikidataId": "Q115649258",
 		"type": "special-issue",
 		"title": "Muslim Minorities in Africa, Part 2",
 		"authors": [
@@ -1268,6 +1287,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "muslim-women-burkina-faso-2016",
+		"wikidataId": "Q58165678",
 		"type": "article",
 		"title": "Muslim Women in Burkina Faso since the 1970s: Toward Recognition as Figures of Religious Authority?",
 		"authors": [
@@ -1311,6 +1331,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "plan-brouillon-structurer-idees-2021",
+		"wikidataId": "Q113519400",
 		"type": "chapter",
 		"title": "Du plan au brouillon : l'essentiel pour structurer ses idées et éviter le syndrome de la page blanche",
 		"authors": [
@@ -1347,6 +1368,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "precheurs-musulmans-burkina-faso-2013",
+		"wikidataId": "Q58165697",
 		"type": "article",
 		"title": "Prêcheurs(ses) musulmans(es) et stratégies de communication au Burkina Faso depuis 1990. Des processus différentiés de conversion interne",
 		"authors": [
@@ -1393,6 +1415,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "religieux-internet-ntic-burkina-faso-2019",
+		"wikidataId": "Q113518914",
 		"type": "chapter",
 		"title": "Le religieux sur Internet et dans les NTIC au Burkina Faso",
 		"authors": [
@@ -1437,6 +1460,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "religion-internet-burkina-faso-2024",
+		"wikidataId": "Q128031672",
 		"type": "chapter",
 		"title": "Religion on the Internet and New Information and Communication Technologies in Burkina Faso",
 		"authors": [
@@ -1457,6 +1481,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pages": "263-288",
 		"pageCount": 26,
 		"language": "English",
+		"doi": "10.62010/amal4/9782359261141.003.0016",
 		"tags": [
 			"Burkina Faso",
 			"Religion",
@@ -1480,6 +1505,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "religions-numeriques-afrique-2018",
+		"wikidataId": "Q113549958",
 		"type": "blogpost",
 		"title": "Religions numériques en Afrique",
 		"authors": [
@@ -1515,6 +1541,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "religiosity-university-campuses",
+		"wikidataId": "Q117599346",
 		"type": "book",
 		"title": "Religiosity on University Campuses in Africa: Trends and Experiences",
 		"authors": [
@@ -1578,6 +1605,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "religious-activism-campuses",
+		"wikidataId": "Q130265572",
 		"type": "book",
 		"title": "Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023",
 		"authors": [
@@ -1671,6 +1699,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "religious-actors-digital-era-2017",
+		"wikidataId": "Q113506179",
 		"type": "article",
 		"title": "Pour de nouvelles études sur les acteurs religieux africains à l'ère du numérique",
 		"authors": [
@@ -1751,6 +1780,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "rivalites-collaborations-islamiques-cote-ivoire-burkina-faso-2018",
+		"wikidataId": "Q113507009",
 		"type": "phd-dissertation",
 		"title": "Rivalités et collaborations entre ainés et cadets sociaux dans les milieux associatifs islamiques en Côte d'Ivoire et au Burkina Faso (1970-2017)",
 		"authors": [
@@ -1792,6 +1822,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "salafism-cote-divoire-2016",
+		"wikidataId": "Q58165687",
 		"type": "article",
 		"title": "The New Vitality of Salafism in Côte d'Ivoire: Toward a Radicalization of Ivoirian Islam?",
 		"authors": [
@@ -1831,6 +1862,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "salafism-cote-ivoire-mande-2017",
+		"wikidataId": "Q114051347",
 		"type": "conference-proceedings",
 		"title": "Le nouveau dynamisme du salafisme en Côte d'Ivoire: vers une radicalisation de l'islam ivoirien?",
 		"authors": [
@@ -1866,6 +1898,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "sphere-publique-musulmane",
+		"wikidataId": "Q113506258",
 		"type": "book",
 		"title": "La construction d'une sphère publique musulmane en Afrique de l'Ouest",
 		"authors": [
@@ -1944,6 +1977,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "three-questions-madore-2022",
+		"wikidataId": "Q113550139",
 		"type": "blogpost",
 		"title": "Three Questions to Dr. Frédérick Madore",
 		"authors": [

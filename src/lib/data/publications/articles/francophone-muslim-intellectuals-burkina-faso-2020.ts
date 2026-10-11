@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 	id: 'francophone-muslim-intellectuals-burkina-faso-2020',
+	wikidataId: 'Q113505202',
 	type: 'article',
 	title:
 		'Francophone Muslim intellectuals, Islamic associational life and religious authority in Burkina Faso',

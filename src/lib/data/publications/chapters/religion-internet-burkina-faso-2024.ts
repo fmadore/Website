@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const religionInternetBurkinaFaso: Publication = {
 	id: 'religion-internet-burkina-faso-2024',
+	wikidataId: 'Q128031672',
 	type: 'chapter',
 	title:
 		'Religion on the Internet and New Information and Communication Technologies in Burkina Faso',
@@ -17,6 +18,7 @@ export const religionInternetBurkinaFaso: Publication = {
 	pages: '263-288',
 	pageCount: 26,
 	language: 'English',
+	doi: '10.62010/amal4/9782359261141.003.0016',
 	tags: [
 		'Burkina Faso',
 		'Religion',

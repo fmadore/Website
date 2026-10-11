@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const hadjCoteDIvoire: Publication = {
 	id: 'hadj-cote-divoire-2018',
+	wikidataId: 'Q58165672',
 	type: 'article',
 	title:
 		"L'organisation du hadj en Côte d'Ivoire: entre facteur de cohésion et source de rivalités au sein de la communauté musulmane (1993-2010)",

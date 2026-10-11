@@ -730,6 +730,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Dakar",
 		"publisher": "Amalion",
 		"pages": "263-288",
+		"doi": "10.62010/amal4/9782359261141.003.0016",
 		"url": "https://www.amalion.net/catalogue/religious-encounters-and-social-dynamics-in-burkina-faso/"
 	},
 	{

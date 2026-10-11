@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const planBrouillonStructurerIdees: Publication = {
 	id: 'plan-brouillon-structurer-idees-2021',
+	wikidataId: 'Q113519400',
 	type: 'chapter',
 	title:
 		"Du plan au brouillon : l'essentiel pour structurer ses idées et éviter le syndrome de la page blanche",

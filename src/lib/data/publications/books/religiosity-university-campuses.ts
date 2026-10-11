@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const religiosityUniversityCampuses: Publication = {
 	id: 'religiosity-university-campuses',
+	wikidataId: 'Q117599346',
 	type: 'book',
 	title: 'Religiosity on University Campuses in Africa: Trends and Experiences',
 	authors: [{ name: 'Abdoulaye Sounaye', personId: 'abdoulaye-sounaye' }, 'Frédérick Madore'],

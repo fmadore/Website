@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 	id: 'lutte-terrorisme-salafisme-benin-togo-2022',
+	wikidataId: 'Q114713939',
 	type: 'report',
 	title:
 		"Lutte contre le terrorisme et sécuritisation du salafisme au Bénin et au Togo: instrumentalisations diverses d'une « menace étrangère »",

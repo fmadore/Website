@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const salafismCoteIvoire2017: Publication = {
 	id: 'salafism-cote-ivoire-mande-2017',
+	wikidataId: 'Q114051347',
 	type: 'conference-proceedings',
 	title:
 		"Le nouveau dynamisme du salafisme en Côte d'Ivoire: vers une radicalisation de l'islam ivoirien?",

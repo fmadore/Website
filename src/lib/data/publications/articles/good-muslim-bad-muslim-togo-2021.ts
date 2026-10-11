@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const goodMuslimBadMuslimTogo: Publication = {
 	id: 'good-muslim-bad-muslim-togo-2021',
+	wikidataId: 'Q113505157',
 	type: 'article',
 	title:
 		"'Good Muslim, bad Muslim' in Togo: religious minority identity construction amid a sociopolitical crisis (2017-2018)",

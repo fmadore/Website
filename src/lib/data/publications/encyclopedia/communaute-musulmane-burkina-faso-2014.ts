@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const communauteMusulmaneBurkinaFaso: Publication = {
 	id: 'communaute-musulmane-burkina-faso-2014',
+	wikidataId: 'Q113549414',
 	type: 'encyclopedia',
 	title: 'Communauté Musulmane du Burkina Faso',
 	authors: ['Frédérick Madore', { name: 'Muriel Gomez-Perez', personId: 'muriel-gomez-perez' }],

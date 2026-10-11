@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const islamIvoirienBurkinabeNumerique: Publication = {
 	id: 'islam-ivoirien-burkinabe-numerique-2016',
+	wikidataId: 'Q58165675',
 	type: 'article',
 	title: "L'islam ivoirien et burkinabé à l'ère du numérique 2.0",
 	authors: ['Frédérick Madore'],

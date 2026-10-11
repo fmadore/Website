@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const islamBurkinaCollection: Publication = {
 	id: 'islam-burkina-faso-collection-2021',
+	wikidataId: 'Q113504767',
 	type: 'article',
 	title: 'La Collection Islam Burkina Faso : promesses et défis des humanités numériques',
 	authors: ['Frédérick Madore'],

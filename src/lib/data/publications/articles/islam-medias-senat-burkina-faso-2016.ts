@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const islamMediasSenatBurkinaFaso: Publication = {
 	id: 'islam-medias-senat-burkina-faso-2016',
+	wikidataId: 'Q58165690',
 	type: 'article',
 	title:
 		'Islam, médias, mise en place du Sénat et article 37 de la Constitution: changement de paradigme au Burkina Faso (1991–2014)?',

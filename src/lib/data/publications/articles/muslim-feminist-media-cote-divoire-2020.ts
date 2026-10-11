@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const muslimFeministMediaCoteDIvoire: Publication = {
 	id: 'muslim-feminist-media-cote-divoire-2020',
+	wikidataId: 'Q113466959',
 	type: 'article',
 	title:
 		"Muslim Feminist, Media Sensation, and Religious Entrepreneur: Aminata Kane Koné as a Figure of Success in Côte d'Ivoire",
