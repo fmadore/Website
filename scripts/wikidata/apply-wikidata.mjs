@@ -2,7 +2,13 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import { collectRecords } from '../lib/data-records.mjs';
 import { client, entities, values, doi } from './wikidata.mjs';
-import { readJson, validateReport, validateDecisions, planEdits } from './wikidata-workflow.mjs';
+import {
+	readJson,
+	validateReport,
+	validateDecisions,
+	planEdits,
+	reviewIds
+} from './wikidata-workflow.mjs';
 
 const { values: options } = parseArgs({
 	options: {
@@ -24,7 +30,7 @@ const rows = validateReport(readJson(options.audit), entries);
 // A wikicite decisions file keys its work decisions under `works`.
 const raw = options.decisions ? readJson(options.decisions) : {};
 const decisions = raw.works ?? raw;
-validateDecisions(decisions, rows);
+validateDecisions(decisions, rows, reviewIds(entries));
 const edits = planEdits(entries, rows, decisions, options['accept-exact']);
 const live = await entities(
 	edits.map((edit) => edit.qid),
@@ -35,20 +41,16 @@ for (const edit of edits) {
 	if (entity.id !== edit.qid)
 		throw new Error(`Redirected QID ${edit.qid}; reconcile canonical item ${entity.id}`);
 	const identifiers = values(entity, 'P356');
-	if (
-		edit.record.doi &&
-		identifiers.length &&
-		!identifiers.some((value) => doi(value) === doi(edit.record.doi))
-	)
+	if (edit.doi && identifiers.length && !identifiers.some((value) => doi(value) === doi(edit.doi)))
 		throw new Error(`Conflicting DOI on ${edit.qid}`);
-	console.log(`${options.write ? 'WRITE' : 'DRY RUN'} ${edit.record.id}: ${edit.qid}`);
+	console.log(`${options.write ? 'WRITE' : 'DRY RUN'} ${edit.id}: ${edit.qid}`);
 }
 // Validate the entire plan before any source is changed.
 for (const edit of edits) {
 	if (readFileSync(edit.file, 'utf8') !== edit.source)
-		throw new Error(`Source changed during live verification: ${edit.record.id}`);
+		throw new Error(`Source changed during live verification: ${edit.id}`);
 }
 for (const edit of edits) if (options.write) writeFileSync(edit.file, edit.updated);
 console.log(
-	`${edits.length} publication(s) ${options.write ? 'updated. Run npm run gen:summaries.' : 'would change. Add --write to save.'}`
+	`${edits.length} publication(s) or review(s) ${options.write ? 'updated. Run npm run gen:summaries.' : 'would change. Add --write to save.'}`
 );

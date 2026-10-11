@@ -21,6 +21,8 @@ export type ReviewWork = {
 	doi?: string; // DOI of the review
 	url?: string; // URL to the review
 	excerpt?: string; // Optional excerpt from the review
+	language?: string; // Language of the review, as on publications ('English', 'French')
+	wikidataId?: string; // The review's Wikidata item, recorded by wikidata:apply
 };
 
 // Define the structure for a table of contents entry (for edited volumes and special issues)

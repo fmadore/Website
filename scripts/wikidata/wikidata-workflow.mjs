@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { hash, qid, insertQid, isForthcoming } from './wikidata.mjs';
+import { hash, qid, insertQid, insertReviewQid, isForthcoming, doi } from './wikidata.mjs';
+import { reviewId, doiOf } from './wikidata-csl.mjs';
 
 export function readJson(file) {
 	return JSON.parse(readFileSync(file, 'utf8'));
@@ -26,7 +27,15 @@ export function validateReport(report, entries) {
 	}
 	return rows;
 }
-export function validateDecisions(decisions, rows) {
+/** The IDs of the reviews published records list, as the exporter gives them. */
+export function reviewIds(entries) {
+	return new Set(
+		entries
+			.filter(({ record }) => !isForthcoming(record))
+			.flatMap(({ record }) => (record.reviewedBy ?? []).map((review) => reviewId(record, review)))
+	);
+}
+export function validateDecisions(decisions, rows, reviews = new Set()) {
 	if (!decisions || Array.isArray(decisions) || typeof decisions !== 'object')
 		throw new Error('Decisions must be an object keyed by publication ID');
 	for (const [id, decision] of Object.entries(decisions)) {
@@ -34,7 +43,7 @@ export function validateDecisions(decisions, rows) {
 		// edited volume, a yearbook volume) is marked as such; any other unknown ID
 		// is a typo and stops the run.
 		if (decision?.notOnSite === true && !rows.has(id)) continue;
-		if (!rows.has(id))
+		if (!rows.has(id) && !reviews.has(id))
 			throw new Error(
 				`Decision missing from eligible audit records (forthcoming works are excluded): ${id}`
 			);
@@ -45,9 +54,30 @@ export function validateDecisions(decisions, rows) {
 			throw new Error(`Choose match or create: ${id}`);
 	}
 }
+/**
+ * The QIDs to write: records (by decision, or by an exact audit match with
+ * --accept-exact) and the reviews they list (by decision only). Edits to one
+ * file build on each other; each carries the file's original text and its
+ * final text.
+ */
 export function planEdits(entries, rows, decisions, acceptExact) {
 	const assigned = new Map();
-	const edits = [];
+	const assign = (value, owner) => {
+		qid(value);
+		if (assigned.has(value))
+			throw new Error(`QID ${value} assigned to both ${assigned.get(value)} and ${owner}`);
+		assigned.set(value, owner);
+	};
+	const files = new Map();
+	const change = (file, edit, patch) => {
+		const state = files.get(file) ?? { text: readFileSync(file, 'utf8'), edits: [] };
+		state.source ??= state.text;
+		const updated = patch(state.text);
+		if (updated === state.text) return;
+		state.text = updated;
+		state.edits.push({ file, source: state.source, ...edit });
+		files.set(file, state);
+	};
 	for (const { file, record } of entries) {
 		if (isForthcoming(record)) continue;
 		const row = rows.get(record.id);
@@ -56,16 +86,23 @@ export function planEdits(entries, rows, decisions, acceptExact) {
 			decision?.qid ??
 			(!decision && acceptExact && row?.status === 'exact' ? row.suggestedQid : null);
 		const value = selected ?? record.wikidataId;
-		if (value) {
-			qid(value);
-			if (assigned.has(value))
-				throw new Error(`QID ${value} assigned to both ${assigned.get(value)} and ${record.id}`);
-			assigned.set(value, record.id);
+		if (value) assign(value, record.id);
+		if (selected)
+			change(file, { id: record.id, record, qid: selected, doi: record.doi }, (text) =>
+				insertQid(text, record.id, selected)
+			);
+		for (const review of record.reviewedBy ?? []) {
+			const id = reviewId(record, review);
+			const chosen = decisions[id]?.qid;
+			if (chosen ?? review.wikidataId) assign(chosen ?? review.wikidataId, id);
+			if (!chosen) continue;
+			const reviewDoi = review.doi ?? doiOf(review.url);
+			change(file, { id, record, qid: chosen, doi: reviewDoi && doi(reviewDoi) }, (text) =>
+				insertReviewQid(text, review.title, chosen)
+			);
 		}
-		if (!selected) continue;
-		const source = readFileSync(file, 'utf8');
-		const updated = insertQid(source, record.id, selected);
-		if (source !== updated) edits.push({ file, record, qid: selected, source, updated });
 	}
-	return edits;
+	return [...files.values()].flatMap(({ text, edits }) =>
+		edits.map((edit) => ({ ...edit, updated: text }))
+	);
 }

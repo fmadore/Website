@@ -1701,6 +1701,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"featured": true,
 		"reviewedBy": [
 			{
+				"wikidataId": "Q141696534",
 				"author": "Macodou Fall",
 				"year": 2025,
 				"title": "Frédérick Madore, Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023. Berlin: De Gruyter, 2023. 308 Pages. ISBN: 978-3-11-142790-4.",
@@ -1708,10 +1709,12 @@ export const publicationSummaries: PublicationSummary[] = [
 				"volume": "9",
 				"issue": "3",
 				"pages": "15-17",
+				"language": "English",
 				"url": "https://researchafrica.duke.edu/sites/default/files/-5-7-Religious-Activism-on-Campuses-in-Togo-and-Benin-Issue3-2025.pdf",
 				"excerpt": "These nuances, however, do not detract from the book's contribution, which is considerable; this is due to its comprehensive analysis of the history and development of faith-based movements in Togo and Benin from 1970 to 2023. The book offers a valuable resource for scholars seeking to understand the complex interplay between faith, activism, and adaptation in Francophone Africa."
 			},
 			{
+				"wikidataId": "Q141696497",
 				"author": "K. D. Thompson",
 				"year": 2025,
 				"title": "Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023 by Frédérick Madore. Berlin: De Gruyter, 2025. Pp. xiii + 259. €79.99 (Hbk).",
@@ -1719,27 +1722,33 @@ export const publicationSummaries: PublicationSummary[] = [
 				"volume": "63",
 				"issue": "4",
 				"pages": "298-300",
+				"language": "English",
 				"url": "https://doi.org/10.1017/S0022278X25101195",
 				"excerpt": "Madore has produced an important work that documents previously neglected histories and demonstrates the significance of faith-based associations in shaping student activism, religious dynamics, and elite formation in West Africa. The book will be valuable for scholars of religion and higher education in Africa, students of social movements and those interested in how religious identity intersects with political and economic change."
 			},
 			{
+				"wikidataId": "Q141696498",
 				"author": "Douglas J. Falen",
 				"year": 2026,
 				"title": "Frédérick Madore. Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023. De Gruyter Brill, 2025. 281 Pp. $98.99. Hardcover. ISBN: 9783111427904",
 				"journal": "African Studies Review",
 				"volume": "69",
-				"issue": "1",
+				"issue": "3",
+				"pages": "784-785",
+				"language": "English",
 				"url": "https://doi.org/10.1017/asr.2025.10172",
 				"excerpt": "Madore's account demonstrates an admirable respect for the current and former members he interviewed and a deep knowledge of the complex relationships between student religious associations, politico-economic conditions, and the challenges of Togolese and Beninese students."
 			},
 			{
+				"wikidataId": "Q141696533",
 				"author": "Matthew Swagler",
 				"year": 2026,
 				"title": "Frédérick Madore. Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023",
 				"journal": "The American Historical Review",
 				"volume": "131",
 				"issue": "3",
-				"pages": "1417-18",
+				"pages": "1417-1418",
+				"language": "English",
 				"url": "https://doi.org/10.1093/ahr/rhag129",
 				"excerpt": "Ultimately, the book’s sweeping account of religious associations on West African campuses stands as an important resource for historians of contemporary religion, higher education, and politics."
 			}
@@ -1989,10 +1998,12 @@ export const publicationSummaries: PublicationSummary[] = [
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"reviewedBy": [
 			{
+				"wikidataId": "Q113508316",
 				"author": "Abdoulaye Sounaye",
 				"year": 2019,
 				"title": "CONSTRUCTING A MUSLIM PUBLIC SPHERE IN BURKINA FASO - La construction d'une sphère publique musulmane en Afrique de l'Ouest. By Frédérick Madore. Laval, Canada: Presses de l'Université Laval, 2016. Pp. viii + 208. $29.95, paperback (ISBN: 978-2-7637-2811-7)",
 				"journal": "The Journal of African History",
+				"language": "English",
 				"volume": "60",
 				"issue": "2",
 				"pages": "330-332",
@@ -2001,10 +2012,12 @@ export const publicationSummaries: PublicationSummary[] = [
 				"excerpt": "This book is a well-documented investigation and a case study with a sociological sensibility, yet one that is also driven by a clear historical agenda. It certainly helps to uncover the sometimes-tortuous trajectories of Islam in Africa. … By calling attention to the societal and structural developments that shaped Islam and Muslim interactions, an approach that has applications within and beyond Burkina Faso, Madore presents a valuable and insightful perspective on understanding Islam in West Africa."
 			},
 			{
+				"wikidataId": "Q113955262",
 				"author": "Robert Launay",
 				"year": 2019,
 				"title": "Madore Frédérick. — La construction d'une sphère publique musulmane en Afrique de l'Ouest. Québec, Presses de l'Université Laval, 2016, 208 p., bibl., ill.",
 				"journal": "Cahiers d'études africaines",
+				"language": "English",
 				"issue": "233",
 				"pages": "299-301",
 				"doi": "10.4000/etudesafricaines.25055",
@@ -2012,15 +2025,26 @@ export const publicationSummaries: PublicationSummary[] = [
 				"excerpt": "Madore's book chronicles this rise to visibility in the public sphere through a detailed and incisive analysis of three cohorts of Muslim leaders in Burkina Faso. … Madore's book is a highly perceptive account of the shifting terrain of Muslim leadership in Burkina Faso over the past fifty years. … This is really a detailed, authoritative, and perceptive account of the emergence of Islamic leadership in Burkina Faso."
 			},
 			{
+				"wikidataId": "Q113955268",
 				"author": "Cynthia Ohayon",
 				"year": 2017,
 				"title": "Frédérick Madore, La construction d'une sphère publique musulmane en Afrique de l'Ouest",
 				"journal": "Afrique contemporaine",
+				"language": "French",
 				"issue": "261-262",
 				"pages": "270-272",
 				"doi": "10.3917/afco.261.0270",
 				"url": "https://doi.org/10.3917/afco.261.0270",
 				"excerpt": "Alors que l'Afrique de l'Ouest est confrontée à la menace du radicalisme religieux, et alors que le Burkina Faso connaît depuis 2014 des bouleversements politiques considérables, cette analyse historique et contemporaine de l'islam burkinabé est plus que jamais pertinente."
+			},
+			{
+				"wikidataId": "Q113955277",
+				"author": "Christine Chevalier-Caron",
+				"year": 2016,
+				"title": "Frédérick Madore, La construction d’une sphère publique musulmane en Afrique de l’Ouest, Québec, Presse de l’Université Laval, 2016, 208 pages.",
+				"journal": "Le Manuscrit",
+				"language": "French",
+				"url": "https://revuehis.uqam.ca/wp-content/uploads/sites/81/Christine-Chevalier-Caron-afrique-de-lOuest.pdf"
 			}
 		],
 		"abstractExcerpt": "L'islam a connu une progression fulgurante au Burkina Faso depuis les dernières décennies. Ce pays, autrefois qualifié de \"fille aimée de l'Église\", compte aujourd'hui plus de 60 % de musulmans. Outre leur importance numé",

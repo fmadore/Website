@@ -5,7 +5,9 @@
  * the site's half of that contract and holds no Wikidata logic.
  *
  * Forthcoming records are never exported: they are not reconciled until the
- * record carries a real publication date.
+ * record carries a real publication date. The reviews a record lists
+ * (`reviewedBy`) are exported after it as CSL `review-book` items, keyed by
+ * `reviewId`, so the skill can reconcile and create them like any work.
  */
 import { isForthcoming } from '../../src/lib/utils/date-formatter.ts';
 
@@ -122,12 +124,62 @@ export function toCsl(p, shared = new Set()) {
 	return item;
 }
 
-/** Eligible records as CSL, and the forthcoming ones that were left out. */
+const slug = (text) =>
+	String(text)
+		.normalize('NFKD')
+		.replace(/\p{M}/gu, '')
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-|-$/g, '');
+/** The DOI in a doi.org link, or undefined. */
+export const doiOf = (url) => /^https?:\/\/(?:dx\.)?doi\.org\/(10\..+)$/i.exec(url ?? '')?.[1];
+
+/**
+ * A review's ID: the reviewed record's, the reviewer's family name and the
+ * year (`religious-activism-campuses--review-falen-2026`). Stable while the
+ * review is listed, and what `wikidata:apply` finds the review by.
+ */
+export function reviewId(p, review) {
+	return `${p.id}--review-${slug(review.author.trim().split(/\s+/).at(-1))}-${review.year}`;
+}
+
+/** A review listed on a record, as the CSL review of a book. */
+export function reviewToCsl(p, review) {
+	const doi = review.doi ?? doiOf(review.url);
+	return {
+		id: reviewId(p, review),
+		type: 'review-book',
+		title: review.title,
+		author: [{ literal: review.author }],
+		'reviewed-title': p.title,
+		'reviewed-author': p.authors.map(name),
+		issued: { 'date-parts': [[review.year]] },
+		...(review.language ? { language: LANGUAGES[review.language] ?? review.language } : {}),
+		'container-title': review.journal,
+		...(review.volume ? { volume: review.volume } : {}),
+		...(review.issue ? { issue: review.issue } : {}),
+		...(review.pages ? { page: review.pages } : {}),
+		...(doi ? { DOI: doi } : {}),
+		...(review.url ? { URL: review.url } : {}),
+		custom: {
+			...(review.wikidataId ? { wikidata: review.wikidataId } : {}),
+			...(p.wikidataId ? { reviewOf: p.wikidataId } : {})
+		}
+	};
+}
+
+/** Eligible records as CSL, each followed by its reviews, and the forthcoming ones that were left out. */
 export function exportCsl(records) {
 	const eligible = records.filter((p) => !isForthcoming(p));
 	const shared = containerDois(eligible);
-	return {
-		items: eligible.map((p) => toCsl(p, shared)),
-		excluded: records.filter(isForthcoming).map((p) => p.id)
-	};
+	const items = eligible.flatMap((p) => [
+		toCsl(p, shared),
+		...(p.reviewedBy ?? []).map((review) => reviewToCsl(p, review))
+	]);
+	const ids = new Set();
+	for (const { id } of items) {
+		if (ids.has(id)) throw new Error(`Two exported items share the ID ${id}`);
+		ids.add(id);
+	}
+	return { items, excluded: records.filter(isForthcoming).map((p) => p.id) };
 }

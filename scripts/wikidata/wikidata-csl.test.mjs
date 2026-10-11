@@ -95,3 +95,53 @@ it('gives each site type a CSL type the skill can template', () => {
 	}
 	expect(() => toCsl({ ...chapter, type: 'poster' })).toThrow('No CSL mapping');
 });
+
+it('exports each review after its book, as the review of a book', () => {
+	const reviewed = {
+		...book,
+		reviewedBy: [
+			{
+				author: 'Douglas J. Falen',
+				year: 2026,
+				title: 'Frédérick Madore. Religiosity on University Campuses in Africa',
+				journal: 'African Studies Review',
+				volume: '69',
+				issue: '3',
+				pages: '784-785',
+				url: 'https://doi.org/10.1017/asr.2025.10172',
+				language: 'English'
+			},
+			{
+				wikidataId: 'Q113955277',
+				author: 'Christine Chevalier-Caron',
+				year: 2016,
+				title: 'Compte rendu',
+				journal: 'Le Manuscrit',
+				language: 'French'
+			}
+		]
+	};
+	const { items } = exportCsl([reviewed]);
+	expect(items.map((i) => i.id)).toEqual([
+		'book-2023',
+		'book-2023--review-falen-2026',
+		'book-2023--review-chevalier-caron-2016'
+	]);
+	const [, falen, chevalier] = items;
+	expect(falen).toMatchObject({
+		type: 'review-book',
+		author: [{ literal: 'Douglas J. Falen' }],
+		'reviewed-title': 'Religiosity on University Campuses in Africa',
+		'container-title': 'African Studies Review',
+		page: '784-785',
+		DOI: '10.1017/asr.2025.10172',
+		language: 'en',
+		issued: { 'date-parts': [[2026]] },
+		custom: { reviewOf: 'Q117599346' }
+	});
+	expect(chevalier.custom).toEqual({ wikidata: 'Q113955277', reviewOf: 'Q117599346' });
+	expect(chevalier.DOI).toBeUndefined();
+	expect(() =>
+		exportCsl([{ ...reviewed, reviewedBy: [reviewed.reviewedBy[0], reviewed.reviewedBy[0]] }])
+	).toThrow('share the ID');
+});

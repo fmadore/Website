@@ -1,5 +1,8 @@
 import { expect, it } from 'vitest';
-import { validateDecisions } from './wikidata-workflow.mjs';
+import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { validateDecisions, planEdits } from './wikidata-workflow.mjs';
 
 const rows = new Map([['chapter-2023', { id: 'chapter-2023', status: 'review' }]]);
 
@@ -20,4 +23,60 @@ it('refuses a decision that both matches and creates', () => {
 	expect(() =>
 		validateDecisions({ 'chapter-2023': { qid: 'Q1', action: 'create' } }, rows)
 	).toThrow('Choose match or create');
+});
+
+it('accepts decisions for the reviews a record lists', () => {
+	const reviews = new Set(['chapter-2023--review-falen-2026']);
+	expect(() =>
+		validateDecisions({ 'chapter-2023--review-falen-2026': { qid: 'Q3' } }, rows, reviews)
+	).not.toThrow();
+	expect(() =>
+		validateDecisions({ 'chapter-2023--review-other-2026': { qid: 'Q3' } }, rows, reviews)
+	).toThrow('Decision missing');
+});
+
+it('writes a record’s QID and its reviews’ into one file, each edit building on the last', () => {
+	const directory = mkdtempSync(join(tmpdir(), 'wikidata-reviews-'));
+	try {
+		const file = join(directory, 'book.ts');
+		const source = `export const p = {\n\tid: 'book',\n\treviewedBy: [\n\t\t{\n\t\t\tauthor: 'Douglas J. Falen',\n\t\t\tyear: 2026,\n\t\t\ttitle: 'Review',\n\t\t\turl: 'https://doi.org/10.1017/asr.2025.10172'\n\t\t}\n\t]\n};\n`;
+		writeFileSync(file, source);
+		const record = {
+			id: 'book',
+			dateISO: '2023',
+			reviewedBy: [
+				{
+					author: 'Douglas J. Falen',
+					year: 2026,
+					title: 'Review',
+					url: 'https://doi.org/10.1017/asr.2025.10172'
+				}
+			]
+		};
+		const edits = planEdits(
+			[{ file, record }],
+			new Map([['book', { status: 'review' }]]),
+			{ book: { qid: 'Q1' }, 'book--review-falen-2026': { qid: 'Q2' } },
+			false
+		);
+		expect(edits.map((e) => [e.id, e.qid, e.doi])).toEqual([
+			['book', 'Q1', undefined],
+			['book--review-falen-2026', 'Q2', '10.1017/ASR.2025.10172']
+		]);
+		expect(edits.every((e) => e.source === source && e.updated === edits[0].updated)).toBe(true);
+		expect(edits[0].updated).toContain("\tid: 'book',\n\twikidataId: 'Q1',");
+		expect(edits[0].updated).toContain(
+			"\t\t{\n\t\t\twikidataId: 'Q2',\n\t\t\tauthor: 'Douglas J. Falen',"
+		);
+		expect(() =>
+			planEdits(
+				[{ file, record }],
+				new Map(),
+				{ book: { qid: 'Q1' }, 'book--review-falen-2026': { qid: 'Q1' } },
+				false
+			)
+		).toThrow('assigned to both');
+	} finally {
+		rmSync(directory, { recursive: true, force: true });
+	}
 });

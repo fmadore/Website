@@ -45,11 +45,13 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	reviewedBy: [
 		{
+			wikidataId: 'Q113508316',
 			author: 'Abdoulaye Sounaye',
 			year: 2019,
 			title:
 				"CONSTRUCTING A MUSLIM PUBLIC SPHERE IN BURKINA FASO - La construction d'une sphère publique musulmane en Afrique de l'Ouest. By Frédérick Madore. Laval, Canada: Presses de l'Université Laval, 2016. Pp. viii + 208. $29.95, paperback (ISBN: 978-2-7637-2811-7)",
 			journal: 'The Journal of African History',
+			language: 'English',
 			volume: '60',
 			issue: '2',
 			pages: '330-332',
@@ -59,11 +61,13 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 				'This book is a well-documented investigation and a case study with a sociological sensibility, yet one that is also driven by a clear historical agenda. It certainly helps to uncover the sometimes-tortuous trajectories of Islam in Africa. … By calling attention to the societal and structural developments that shaped Islam and Muslim interactions, an approach that has applications within and beyond Burkina Faso, Madore presents a valuable and insightful perspective on understanding Islam in West Africa.'
 		},
 		{
+			wikidataId: 'Q113955262',
 			author: 'Robert Launay',
 			year: 2019,
 			title:
 				"Madore Frédérick. — La construction d'une sphère publique musulmane en Afrique de l'Ouest. Québec, Presses de l'Université Laval, 2016, 208 p., bibl., ill.",
 			journal: "Cahiers d'études africaines",
+			language: 'English',
 			issue: '233',
 			pages: '299-301',
 			doi: '10.4000/etudesafricaines.25055',
@@ -72,17 +76,29 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 				"Madore's book chronicles this rise to visibility in the public sphere through a detailed and incisive analysis of three cohorts of Muslim leaders in Burkina Faso. … Madore's book is a highly perceptive account of the shifting terrain of Muslim leadership in Burkina Faso over the past fifty years. … This is really a detailed, authoritative, and perceptive account of the emergence of Islamic leadership in Burkina Faso."
 		},
 		{
+			wikidataId: 'Q113955268',
 			author: 'Cynthia Ohayon',
 			year: 2017,
 			title:
 				"Frédérick Madore, La construction d'une sphère publique musulmane en Afrique de l'Ouest",
 			journal: 'Afrique contemporaine',
+			language: 'French',
 			issue: '261-262',
 			pages: '270-272',
 			doi: '10.3917/afco.261.0270',
 			url: 'https://doi.org/10.3917/afco.261.0270',
 			excerpt:
 				"Alors que l'Afrique de l'Ouest est confrontée à la menace du radicalisme religieux, et alors que le Burkina Faso connaît depuis 2014 des bouleversements politiques considérables, cette analyse historique et contemporaine de l'islam burkinabé est plus que jamais pertinente."
+		},
+		{
+			wikidataId: 'Q113955277',
+			author: 'Christine Chevalier-Caron',
+			year: 2016,
+			title:
+				'Frédérick Madore, La construction d’une sphère publique musulmane en Afrique de l’Ouest, Québec, Presse de l’Université Laval, 2016, 208 pages.',
+			journal: 'Le Manuscrit',
+			language: 'French',
+			url: 'https://revuehis.uqam.ca/wp-content/uploads/sites/81/Christine-Chevalier-Caron-afrique-de-lOuest.pdf'
 		}
 	],
 	citedBy: [

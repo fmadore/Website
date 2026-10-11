@@ -49,6 +49,7 @@ The history of these associations reveals the campus as a microcosm reflecting w
 	featured: true,
 	reviewedBy: [
 		{
+			wikidataId: 'Q141696534',
 			author: 'Macodou Fall',
 			year: 2025,
 			title:
@@ -57,11 +58,13 @@ The history of these associations reveals the campus as a microcosm reflecting w
 			volume: '9',
 			issue: '3',
 			pages: '15-17',
+			language: 'English',
 			url: 'https://researchafrica.duke.edu/sites/default/files/-5-7-Religious-Activism-on-Campuses-in-Togo-and-Benin-Issue3-2025.pdf',
 			excerpt:
 				"These nuances, however, do not detract from the book's contribution, which is considerable; this is due to its comprehensive analysis of the history and development of faith-based movements in Togo and Benin from 1970 to 2023. The book offers a valuable resource for scholars seeking to understand the complex interplay between faith, activism, and adaptation in Francophone Africa."
 		},
 		{
+			wikidataId: 'Q141696497',
 			author: 'K. D. Thompson',
 			year: 2025,
 			title:
@@ -70,23 +73,28 @@ The history of these associations reveals the campus as a microcosm reflecting w
 			volume: '63',
 			issue: '4',
 			pages: '298-300',
+			language: 'English',
 			url: 'https://doi.org/10.1017/S0022278X25101195',
 			excerpt:
 				'Madore has produced an important work that documents previously neglected histories and demonstrates the significance of faith-based associations in shaping student activism, religious dynamics, and elite formation in West Africa. The book will be valuable for scholars of religion and higher education in Africa, students of social movements and those interested in how religious identity intersects with political and economic change.'
 		},
 		{
+			wikidataId: 'Q141696498',
 			author: 'Douglas J. Falen',
 			year: 2026,
 			title:
 				'Frédérick Madore. Religious Activism on Campuses in Togo and Benin: Christian and Muslim Students Navigating Authoritarianism and Laïcité, 1970–2023. De Gruyter Brill, 2025. 281 Pp. $98.99. Hardcover. ISBN: 9783111427904',
 			journal: 'African Studies Review',
 			volume: '69',
-			issue: '1',
+			issue: '3',
+			pages: '784-785',
+			language: 'English',
 			url: 'https://doi.org/10.1017/asr.2025.10172',
 			excerpt:
 				"Madore's account demonstrates an admirable respect for the current and former members he interviewed and a deep knowledge of the complex relationships between student religious associations, politico-economic conditions, and the challenges of Togolese and Beninese students."
 		},
 		{
+			wikidataId: 'Q141696533',
 			author: 'Matthew Swagler',
 			year: 2026,
 			title:
@@ -94,7 +102,8 @@ The history of these associations reveals the campus as a microcosm reflecting w
 			journal: 'The American Historical Review',
 			volume: '131',
 			issue: '3',
-			pages: '1417-18',
+			pages: '1417-1418',
+			language: 'English',
 			url: 'https://doi.org/10.1093/ahr/rhag129',
 			excerpt:
 				'Ultimately, the book’s sweeping account of religious associations on West African campuses stands as an important resource for historians of contemporary religion, higher education, and politics.'

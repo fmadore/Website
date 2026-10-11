@@ -210,3 +210,54 @@ export function insertQid(source, id, value) {
 	const newline = source.includes('\r\n') ? '\r\n' : '\n';
 	return source.slice(0, start) + `${newline}\twikidataId: '${value}',` + source.slice(start);
 }
+
+/**
+ * Patch one review of a record (an element of its `reviewedBy` array, found
+ * by its title) with the review's own QID, as its first field.
+ */
+export function insertReviewQid(source, title, value) {
+	qid(value);
+	const ast = ts.createSourceFile('publication.ts', source, ts.ScriptTarget.Latest, true);
+	const name = (p) => p.name?.getText(ast).replace(/['"]/g, '');
+	const reviews = [];
+	function visit(node) {
+		if (
+			ts.isPropertyAssignment(node) &&
+			name(node) === 'reviewedBy' &&
+			ts.isArrayLiteralExpression(node.initializer)
+		)
+			for (const element of node.initializer.elements)
+				if (
+					ts.isObjectLiteralExpression(element) &&
+					element.properties.some(
+						(p) =>
+							ts.isPropertyAssignment(p) &&
+							name(p) === 'title' &&
+							ts.isStringLiteralLike(p.initializer) &&
+							p.initializer.text === title
+					)
+				)
+					reviews.push(element);
+		ts.forEachChild(node, visit);
+	}
+	visit(ast);
+	if (reviews.length !== 1) throw new Error(`Cannot locate unique review: ${title}`);
+	const review = reviews[0];
+	const existing = review.properties.find((p) => name(p) === 'wikidataId');
+	if (existing) {
+		if (
+			!ts.isPropertyAssignment(existing) ||
+			!ts.isStringLiteral(existing.initializer) ||
+			existing.initializer.text !== value
+		)
+			throw new Error(`Refusing to replace existing QID of review ${title}`);
+		return source;
+	}
+	const first = review.properties[0];
+	const start = first.getStart(ast);
+	// On its own line when the fields are one per line, else inline.
+	const indent = source.slice(source.lastIndexOf('\n', start) + 1, start);
+	const newline = source.includes('\r\n') ? '\r\n' : '\n';
+	const separator = /^\s*$/.test(indent) ? `${newline}${indent}` : ' ';
+	return source.slice(0, start) + `wikidataId: '${value}',${separator}` + source.slice(start);
+}

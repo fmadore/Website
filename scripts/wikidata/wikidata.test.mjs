@@ -4,7 +4,15 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { hash } from './wikidata.mjs';
 import { validateReport, validateDecisions, planEdits } from './wikidata-workflow.mjs';
-import { candidate, classify, doi, insertQid, lookupQuery, client } from './wikidata.mjs';
+import {
+	candidate,
+	classify,
+	doi,
+	insertQid,
+	insertReviewQid,
+	lookupQuery,
+	client
+} from './wikidata.mjs';
 
 const publication = {
 	id: 'test-publication',
@@ -132,6 +140,15 @@ describe('reconciliation', () => {
 		expect(() => insertQid(result, publication.id, 'Q456')).toThrow('replace');
 		expect(() => insertQid(source, 'absent', 'Q123')).toThrow('unique');
 		expect(() => insertQid(source, publication.id, 'Q0')).toThrow('Invalid');
+	});
+	it('patches one review, found by its title, with its own QID first', () => {
+		const source = `export const p = {\n\tid: 'book',\n\twikidataId: 'Q1',\n\treviewedBy: [\n\t\t{\n\t\t\tauthor: 'A',\n\t\t\ttitle: 'First'\n\t\t},\n\t\t{ author: 'B', title: "Second's" }\n\t],\n\tcitedBy: [{ title: 'First' }]\n};\n`;
+		const first = insertReviewQid(source, 'First', 'Q10');
+		expect(first).toContain(`\t\t{\n\t\t\twikidataId: 'Q10',\n\t\t\tauthor: 'A',`);
+		expect(insertReviewQid(first, "Second's", 'Q11')).toContain(`{ wikidataId: 'Q11', author: 'B'`);
+		expect(insertReviewQid(first, 'First', 'Q10')).toBe(first);
+		expect(() => insertReviewQid(first, 'First', 'Q12')).toThrow('replace');
+		expect(() => insertReviewQid(source, 'Absent', 'Q10')).toThrow('unique');
 	});
 	it('keeps a comment on the id line with the id', () => {
 		const source =

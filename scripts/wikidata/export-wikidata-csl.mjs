@@ -21,5 +21,6 @@ const { items, excluded } = exportCsl(entries.map(({ record }) => record));
 const out = resolve(options.out);
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify(items, null, 2) + '\n');
-console.log(`${items.length} publications → ${out}`);
+const reviews = items.filter((item) => item.type === 'review-book').length;
+console.log(`${items.length - reviews} publications and ${reviews} reviews → ${out}`);
 if (excluded.length) console.log(`Forthcoming, not exported: ${excluded.join(', ')}`);
