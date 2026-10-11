@@ -47,7 +47,7 @@ jobs:
         # is captured for the steps below.
         run: |
           set +e
-          node scripts/check-links.mjs --report=link-report.md
+          node scripts/checks/check-links.mjs --report=link-report.md
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
           set -e
 

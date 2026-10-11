@@ -1,7 +1,7 @@
 /**
  * Pure checks for the JSON-LD a built page ships, used by
- * `scripts/check-structured-data.mjs` and tested in
- * `scripts/structured-data.test.mjs`.
+ * `scripts/checks/check-structured-data.mjs` and tested in
+ * `scripts/lib/structured-data.test.mjs`.
  *
  * Two invariants, both of which the build once broke on most of its pages:
  *

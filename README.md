@@ -56,7 +56,7 @@ Every dataset document carries `{ version, dataset, url, count, items }` (`/api/
 
 `/api/research.json` is the one to start a traversal from: research projects are the spine the rest of the corpus hangs off, and it resolves the free-text `project` label into arrays of publication, communication, grant, and fieldwork ids.
 
-Every dataset carries its **full text**, not just metadata — publication and talk abstracts, complete activity bodies, project descriptions, and the research narratives. The last of those are authored as markup in `src/routes/research/<id>/+page.svelte`, so `scripts/generate-research-prose.mjs` projects them to plain text at prebuild (`npm run gen:prose`) and CI checks the committed result is fresh. Without it, the substantive writing about each project would be the only prose on the site an API consumer could not read.
+Every dataset carries its **full text**, not just metadata — publication and talk abstracts, complete activity bodies, project descriptions, and the research narratives. The last of those are authored as markup in `src/routes/research/<id>/+page.svelte`, so `scripts/generate/generate-research-prose.mjs` projects them to plain text at prebuild (`npm run gen:prose`) and CI checks the committed result is fresh. Without it, the substantive writing about each project would be the only prose on the site an API consumer could not read.
 
 Being static, these are read-only and offer no query interface — fetch a dataset and filter locally. Together the six payloads are ~165 KB gzipped, small enough to load whole. `/llms.txt` and `/robots.txt` both advertise the manifest.
 

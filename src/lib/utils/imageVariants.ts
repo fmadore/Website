@@ -6,7 +6,7 @@ import {
 } from '$lib/data/imageVariants.generated';
 
 /**
- * The derivative ladder, mirrored from `scripts/generate-image-variants.mjs`
+ * The derivative ladder, mirrored from `scripts/generate/generate-image-variants.mjs`
  * (the generator cannot be imported here: it pulls in sharp). The two are
  * asserted equal in `imageVariants.test.ts`.
  */
@@ -82,7 +82,7 @@ export function buildSrcset(
 	const { entry, prefix, name } = found;
 	const [sourceWidth] = entry;
 	// The generator writes a derivative at every ladder width narrower than the
-	// source (scripts/generate-image-variants.mjs), and nothing else.
+	// source (scripts/generate/generate-image-variants.mjs), and nothing else.
 	const widths = VARIANT_WIDTHS.filter((width) => width < sourceWidth);
 	if (widths.length === 0) return undefined;
 

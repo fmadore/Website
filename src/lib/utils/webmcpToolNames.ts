@@ -2,7 +2,7 @@
  * The WebMCP tools the site registers, by name, in registration order.
  *
  * Dependency-free on purpose: `webmcp.ts` types its definitions by this list,
- * and `scripts/check-agentic.mjs` imports it under plain Node (type stripping,
+ * and `scripts/checks/check-agentic.mjs` imports it under plain Node (type stripping,
  * no `$lib` alias) to assert that Lighthouse sees exactly these tools on the
  * built site. One list, so the gate and the module cannot drift apart.
  *

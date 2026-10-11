@@ -49,7 +49,7 @@
 	});
 
 	// The deck site renders a 1280x720 shot of every cover slide;
-	// scripts/generate-slide-posters.mjs mirrors it into static/images, so the
+	// scripts/generate/generate-slide-posters.mjs mirrors it into static/images, so the
 	// facade opens on the actual title slide rather than an empty stage. The
 	// resolution itself lives in `$lib/utils/slidePoster` — the deck gallery
 	// prints the same posters as plates, and one rule about the deck site's URL

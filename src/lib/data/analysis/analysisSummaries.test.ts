@@ -22,7 +22,7 @@ import { corpusSummary } from '$lib/data/analysis/corpusSummary.generated';
  * publication dataset.
  */
 
-/** !! KEEP IN SYNC with the constants in scripts/generate-analysis-summaries.mjs. */
+/** !! KEEP IN SYNC with the constants in scripts/generate/generate-analysis-summaries.mjs. */
 const KEY_TERM_COUNT = 28;
 const WORD_CLOUD_WORDS = 100;
 const MAX_BIGRAMS = 30;

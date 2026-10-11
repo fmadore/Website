@@ -1,7 +1,7 @@
 /**
  * Pure checks for the FAIR Signposting links (https://signposting.org/FAIR/) a
- * built page carries, used by `scripts/check-structured-data.mjs` and tested in
- * `scripts/signposting.test.mjs`.
+ * built page carries, used by `scripts/checks/check-structured-data.mjs` and tested in
+ * `scripts/lib/signposting.test.mjs`.
  *
  * - A `describedby` link names the media type of its target, and when the
  *   target is on this site, the build ships it.

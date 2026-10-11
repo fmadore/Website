@@ -1,7 +1,7 @@
 import type { HeavyDhField } from '$lib/types/digitalHumanities';
 
 /**
- * Shared between the summaries generator (scripts/generate-summaries.mjs,
+ * Shared between the summaries generator (scripts/generate/generate-summaries.mjs,
  * which imports this file straight from TypeScript under Node's type
  * stripping) and the site, so the projection and its consumers agree.
  */

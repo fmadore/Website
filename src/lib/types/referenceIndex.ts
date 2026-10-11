@@ -8,7 +8,7 @@
  * citations, papers, participants, …). The full datasets weigh ~117 KiB on the
  * wire; importing them just to label a handful of references dominated home-page
  * LCP/TBT. The slim index is generated at build time by
- * `scripts/generate-reference-index.mjs`.
+ * `scripts/generate/generate-reference-index.mjs`.
  */
 export interface ReferenceIndexEntry {
 	id: string;

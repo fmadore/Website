@@ -2,7 +2,7 @@ import type { CvPublicationField, HeavyPublicationField } from '$lib/types/publi
 
 /**
  * Shared between the summaries generator
- * (scripts/generate-summaries.mjs, which imports this file
+ * (scripts/generate/generate-summaries.mjs, which imports this file
  * straight from TypeScript under Node's type stripping) and the site, so the
  * projection and its consumers agree on one definition.
  */

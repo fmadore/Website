@@ -17,7 +17,7 @@ import { CHART_COLOR_FALLBACKS, CHART_COLOR_FALLBACKS_DARK } from './chartColorU
  *   - `src/app.html` — the pre-hydration critical block and the theme bootstrap
  *     run before any stylesheet exists, so the page ground, the ink and the
  *     browser-chrome `theme-color` metas are all written as literals there.
- *   - `scripts/generate-pwa-icons.mjs` — the icon art is rasterised by sharp
+ *   - `scripts/generate/generate-pwa-icons.mjs` — the icon art is rasterised by sharp
  *     from an inline SVG, with no document to read tokens from.
  *
  * Every one of them is a legitimate duplicate, and one has silently fallen
@@ -407,7 +407,7 @@ describe('the PWA icon art matches variables.css', () => {
 	 * changed underfoot. Three colours, three tokens.
 	 */
 	const script = readFileSync(
-		fileURLToPath(new URL('../../../scripts/generate-pwa-icons.mjs', import.meta.url)),
+		fileURLToPath(new URL('../../../scripts/generate/generate-pwa-icons.mjs', import.meta.url)),
 		'utf8'
 	);
 

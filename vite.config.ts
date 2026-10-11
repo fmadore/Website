@@ -25,7 +25,7 @@ const D3_INTERACTIVE = [
  * into the interactive chunk and downloaded `d3-force`, `d3-zoom` and
  * `d3-selection` for a static SVG timeline. As their own group the leaves are
  * a dependency of both sides and a dependant of neither, so each page pays for
- * exactly the half it uses. `scripts/check-bundle-budget.mjs` asserts the
+ * exactly the half it uses. `scripts/checks/check-bundle-budget.mjs` asserts the
  * direction from the built manifest.
  */
 const D3_LEAVES = [
@@ -57,7 +57,7 @@ const FRAMEWORK_RUNTIME =
  * small components several routes reuse. Only these directories, because a
  * group also captures what its modules import, so anything that reaches a
  * dataset or a heavy library is kept out by the deny list below — that is what
- * preserves the dynamic-import boundary scripts/check-bundle-budget.mjs
+ * preserves the dynamic-import boundary scripts/checks/check-bundle-budget.mjs
  * enforces and keeps the datasets in their own per-route chunks.
  */
 const APP_SHARED =
@@ -94,7 +94,7 @@ export default defineConfig({
 				codeSplitting: {
 					// Groups are processed in priority order, and a group also captures
 					// its modules' dependencies (SvelteKit's strict entry signatures rule
-					// out switching that off). scripts/check-bundle-budget.mjs verifies
+					// out switching that off). scripts/checks/check-bundle-budget.mjs verifies
 					// on every build that no heavy library became statically reachable.
 					groups: [
 						// First, so the shared helpers land here (see FRAMEWORK_RUNTIME).
@@ -163,7 +163,7 @@ export default defineConfig({
 						// five per index page) bought nothing measurable: mobile
 						// Lighthouse, three runs each on /, /publications and
 						// /conference-activity, scored within noise either way (91/90/94
-						// merged, 91/92/92 unmerged). scripts/check-bundle-budget.mjs now
+						// merged, 91/92/92 unmerged). scripts/checks/check-bundle-budget.mjs now
 						// fails on any passenger, so re-adding a threshold fails CI.
 						{
 							name: 'shared',

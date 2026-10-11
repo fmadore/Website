@@ -195,7 +195,7 @@ installing. The committed file describes the latest release, `0.3.0`.
 
 The hash must be the hash of the uploaded file. The bundle is a zip with build timestamps,
 so a local rebuild of the same commit hashes differently. The release workflow therefore
-stamps `server.json` for the bundle it publishes (`scripts/stamp-mcp-registry.mjs`) and
+stamps `server.json` for the bundle it publishes (`scripts/release/stamp-mcp-registry.mjs`) and
 attaches it to the same release. Publishing stays manual, and needs a GitHub sign-in as
 `fmadore`:
 
@@ -232,7 +232,7 @@ attaches it to the same release. Publishing stays manual, and needs a GitHub sig
    curl "https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.fmadore/frederickmadore-website"
    ```
 
-`npm test` checks the committed entry against the registry's limits (`scripts/mcp-registry.test.mjs`).
+`npm test` checks the committed entry against the registry's limits (`scripts/release/mcp-registry.test.mjs`).
 The step could later run in `release-mcp.yml` through `mcp-publisher login github-oidc`, which
 needs `id-token: write` and no stored secret.
 

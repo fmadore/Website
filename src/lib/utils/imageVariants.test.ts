@@ -103,7 +103,9 @@ describe('VARIANT_WIDTHS', () => {
 		// source text instead. A drift between the two silently points srcset
 		// candidates at files that were never generated.
 		const generator = readFileSync(
-			fileURLToPath(new URL('../../../scripts/generate-image-variants.mjs', import.meta.url)),
+			fileURLToPath(
+				new URL('../../../scripts/generate/generate-image-variants.mjs', import.meta.url)
+			),
 			'utf8'
 		);
 		const declared = generator.match(/export const VARIANT_WIDTHS = \[([^\]]*)\]/);

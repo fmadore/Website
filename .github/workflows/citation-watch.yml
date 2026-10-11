@@ -33,7 +33,7 @@ jobs:
       # Node's TypeScript type stripping and talks to OpenAlex over HTTP, so it
       # needs neither dependencies nor a compiled site.
       - name: Check citations
-        run: node scripts/check-citations.mjs --report=citation-report.md
+        run: node scripts/citations/check-citations.mjs --report=citation-report.md
         env:
           # Optional. Google Books is the monograph channel and the one source
           # here that is rate-limited per IP, which on a shared runner is a
@@ -66,7 +66,7 @@ jobs:
             cat citation-report.md
             echo
             echo "---"
-            echo "Each \`citedBy\` block and \`openAlexId\` line is ready to paste into the named data file. Entries disappear from this issue once committed — the repository is the state, so there is nothing to tick off. Full-text leads are not paste-ready: verify them, then either record the citation or dismiss the lead in \`scripts/citation-discovery-ack.json\`."
+            echo "Each \`citedBy\` block and \`openAlexId\` line is ready to paste into the named data file. Entries disappear from this issue once committed — the repository is the state, so there is nothing to tick off. Full-text leads are not paste-ready: verify them, then either record the citation or dismiss the lead in \`scripts/citations/citation-discovery-ack.json\`."
             echo
             echo "Reproduce locally with \`npm run check:citations\`."
             echo "From [\`${{ github.workflow }}\`](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}), run ${{ github.run_number }}."

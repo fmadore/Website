@@ -8,7 +8,7 @@
  * therefore rode in the root layout's chunk and ran on every page load, for
  * a schema only the home page prints and only the prerender ever computes.
  * Kept under `$lib/server`, SvelteKit refuses any client import of it, and
- * `scripts/check-bundle-budget.mjs` fails a build whose shell reaches a
+ * `scripts/checks/check-bundle-budget.mjs` fails a build whose shell reaches a
  * dataset again.
  */
 import type {

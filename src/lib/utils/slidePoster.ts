@@ -4,7 +4,7 @@ import { imageVariantManifest } from '$lib/data/imageVariants.generated';
  * The mirrored cover slide of a deck, resolved from the deck's own URL.
  *
  * Decks live in a separate repository and deploy to slides.frederickmadore.com
- * on their own schedule. `scripts/generate-slide-posters.mjs` mirrors each
+ * on their own schedule. `scripts/generate/generate-slide-posters.mjs` mirrors each
  * deck's `social-card.png` into `static/images/communications/slides/<slug>.webp`
  * and the result is committed like every other generated artefact, so the site
  * can print a deck's title slide without reaching the network at build time.

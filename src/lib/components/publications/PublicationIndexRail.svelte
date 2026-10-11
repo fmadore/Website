@@ -41,7 +41,7 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 	// Read from the committed projection rather than from `$lib/data/analysis`:
 	// the full corpus is 306 KiB of frequencies for every analysed publication,
 	// and this rail prints 28 terms of one of them. The projection carries
-	// exactly those 28 (`scripts/generate-analysis-summaries.mjs`,
+	// exactly those 28 (`scripts/generate/generate-analysis-summaries.mjs`,
 	// `analysisSummaries.test.ts` proves them identical to the live corpus).
 	const keyTerms = $derived.by(() => {
 		const top = keyTermsByPublication[publication.id] ?? [];

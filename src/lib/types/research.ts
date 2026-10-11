@@ -23,7 +23,7 @@ export interface ProjectCtaLink {
 
 /**
  * A project's narrative, lifted out of its route page at build time by
- * `scripts/generate-research-prose.mjs`. Authored as markup in
+ * `scripts/generate/generate-research-prose.mjs`. Authored as markup in
  * `src/routes/research/<id>/+page.svelte`; this is the plain-text projection,
  * so `/api/research.json` can carry the full text.
  */

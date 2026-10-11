@@ -64,10 +64,19 @@ npm run gen:posters          # mirror each deck's cover slide into static/images
 npm run gen:posters -- --check  # report stale/missing posters, write nothing
 ```
 
+> **Scripts layout**: `scripts/` is grouped by domain — `checks/` (the
+> `check:*` gates), `generate/` (generators and the Python image, font and
+> corpus tools), `citations/` (the citation watcher), `wikidata/`, `vault/`
+> (Obsidian sync and audit), `release/` (MCP release), `tools/` (screenshot,
+> test runners) — with shared modules in `lib/`. Each script's tests sit beside
+> it. The Python corpus inputs (`scripts/texts/`) and virtualenv
+> (`scripts/venv/`) stay at the top. Add a script to its domain folder and
+> call it through an npm script rather than by path.
+>
 > **Testing layout**: Unit tests are co-located as `*.test.ts` next to the
 > module they cover (e.g. `src/lib/utils/vizAggregation.test.ts`) and run in a
 > plain Node environment via `vitest.config.ts`. Pure logic extracted from
-> build scripts is tested the same way (`scripts/*.test.mjs`) but stays out of
+> build scripts is tested the same way (`scripts/**/*.test.mjs`) but stays out of
 > the coverage ratchet, which measures site code only. Runes modules
 > (`*.svelte.ts`) need the Svelte compiler, so they are tested from
 > `tests-lifecycle/` under `vitest.lifecycle.config.ts` — compiled runes,
@@ -122,7 +131,7 @@ npm run gen:posters -- --check  # report stale/missing posters, write nothing
 > the `citedBy` of the work it cites (for a Wikipedia mention, with the article
 > URL as `url`, which is what marks it recorded) and it stops being reported.
 > Only a lead that is _not_ a citation needs
-> `scripts/citation-discovery-ack.json` — the one piece of watcher state that is
+> `scripts/citations/citation-discovery-ack.json` — the one piece of watcher state that is
 > not simply the data files themselves.
 
 ### Prerendering
@@ -166,7 +175,7 @@ abstract past `ABSTRACT_EXCERPT_LENGTH` (`summaryConfig.ts`).
 `data/communications/summaries.ts` drops `abstract` and adds `abstractExcerpt`;
 `/cv`, `/conference-activity`, the slides gallery, the timeline and the research
 pages read it, and only `/communications/[id]` imports the full `index.ts`.
-`gen:summaries` (`scripts/generate-summaries.mjs`, one config-driven generator
+`gen:summaries` (`scripts/generate/generate-summaries.mjs`, one config-driven generator
 for every dataset) emits all the projections; `summaries.test.ts` beside each
 proves it faithful.
 
@@ -210,7 +219,7 @@ receives its record rather than importing its whole dataset. A universal
 bundle.
 
 **Font subsets**: the latin-ext and vietnamese faces in `static/fonts/web/` are
-cut to fixed Unicode blocks by `scripts/subset-fonts.py` (x64 Python with
+cut to fixed Unicode blocks by `scripts/generate/subset-fonts.py` (x64 Python with
 fontTools + brotli); `npm run check:fonts` proves the committed files and the
 `unicode-range` declarations in `src/app.html` still match the script. Fonts are
 not part of `prebuild` — regenerate by hand when a face changes.
@@ -225,7 +234,7 @@ all / English / French, plus the counts the toggle prints) for
 nothing on a route's critical path uses it. `analysisSummaries.test.ts` proves
 both projections identical to the live computation; if a page starts asking for
 more terms than a projection carries, change the constants in
-`scripts/generate-analysis-summaries.mjs` and regenerate.
+`scripts/generate/generate-analysis-summaries.mjs` and regenerate.
 
 ## Architecture
 

@@ -45,10 +45,10 @@ tmpclaude-*
 .codex/
 AGENTS.md
 nul
-scripts/__pycache__/convert-image.cpython-312.pyc
+scripts/**/__pycache__/
 .vscode/settings.json
 
-# Generated responsive image variants (scripts/generate-image-variants.mjs)
+# Generated responsive image variants (scripts/generate/generate-image-variants.mjs)
 /static/images/_r/
 
 # Vitest coverage output
@@ -68,7 +68,7 @@ scripts/__pycache__/convert-image.cpython-312.pyc
 /.impeccable/config.local.json
 /.impeccable/hook.cache.json
 
-# Local audit report from scripts/audit-publications.mjs
+# Local audit report from scripts/vault/audit-publications.mjs
 /publications-audit.md
 
 # Local Wikidata audits, review decisions and submission batches

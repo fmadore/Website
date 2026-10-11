@@ -58,7 +58,7 @@ jobs:
         # overwrite the issue with a list of false "unlinked deck" reports.
         run: |
           set +e
-          node scripts/check-slides.mjs --report=slides-report.md
+          node scripts/checks/check-slides.mjs --report=slides-report.md
           status=$?
           set -e
           # Exit 1 is a finding only when reconciliation produced its report.
@@ -85,7 +85,7 @@ jobs:
         if: steps.decks.outputs.exit_code != '2'
         run: |
           set +e
-          node scripts/generate-slide-posters.mjs --check > poster-report.txt 2>&1
+          node scripts/generate/generate-slide-posters.mjs --check > poster-report.txt 2>&1
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
           set -e
           cat poster-report.txt
