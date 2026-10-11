@@ -688,7 +688,7 @@ export const cvPublications: CvPublication[] = [
 	{
 		"id": "precheurs-musulmans-burkina-faso-2013",
 		"type": "article",
-		"title": "Prêcheurs(ses) musulmans(es) et stratégies de communication au Burkina Faso depuis 1990. Des processus différentiés de conversion interne",
+		"title": "Prêcheurs(ses) musulman(e)s et stratégies de communication au Burkina Faso depuis 1990 : des processus différentiés de conversion interne",
 		"authors": [
 			{
 				"name": "Muriel Gomez-Perez",
