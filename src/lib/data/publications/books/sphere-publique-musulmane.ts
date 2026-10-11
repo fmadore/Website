@@ -98,7 +98,9 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 				'Frédérick Madore, La construction d’une sphère publique musulmane en Afrique de l’Ouest, Québec, Presse de l’Université Laval, 2016, 208 pages.',
 			journal: 'Le Manuscrit',
 			language: 'French',
-			url: 'https://revuehis.uqam.ca/wp-content/uploads/sites/81/Christine-Chevalier-Caron-afrique-de-lOuest.pdf'
+			url: 'https://revuehis.uqam.ca/wp-content/uploads/sites/81/Christine-Chevalier-Caron-afrique-de-lOuest.pdf',
+			excerpt:
+				"L'une des richesses de cette publication résulte de l'interdisciplinarité adoptée par l'auteur, croisant l'histoire à la sociologie et à l'anthropologie … Cet ouvrage contribue grandement à comprendre comment se déploie l'Islam dans une région qui n'est ni l'Afrique du Nord, ni le Moyen-Orient, tout en rendant compte du caractère polymorphe de cette religion, ce qui pourrait contribuer à déconstruire le regard essentialisant que les Occidentaux portent sur la foi musulmane qui comporte de multiples tendances."
 		}
 	],
 	citedBy: [
