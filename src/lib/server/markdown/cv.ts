@@ -529,7 +529,8 @@ function events(): string {
 				const date = cvEventDate(comm);
 				return entry(
 					talkKey(comm),
-					`${lead ? `${lead} ` : ''}${talkTitle(comm)}${comm.location ? `, ${text(comm.location)}` : ''}, ${inline(date)}.`
+					`${lead ? `${lead} ` : ''}${talkTitle(comm)}${comm.location ? `, ${text(comm.location)}` : ''}, ${inline(date)}.`,
+					[comm.url && outLink('Link', comm.url)]
 				);
 			})
 		)

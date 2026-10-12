@@ -23,5 +23,16 @@
 		{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 		{/if}
 		{quoteTitle(comm.title)}{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {dateDisplay}.
+		{#if comm.url}
+			<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+			<a
+				href={comm.url}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="Link to {comm.title} (opens in new tab)"
+				class="cv-detail">Link<span aria-hidden="true">&nbsp;↗</span></a
+			>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
+		{/if}
 	{/snippet}
 </CVSection>
