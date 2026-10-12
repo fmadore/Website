@@ -1,5 +1,12 @@
 import { expect, it } from 'vitest';
-import { containerDois, exportCsl, series, toCsl } from './wikidata-csl.mjs';
+import {
+	citingType,
+	containerDois,
+	exportCitingCsl,
+	exportCsl,
+	series,
+	toCsl
+} from './wikidata-csl.mjs';
 
 const chapter = {
 	id: 'chapter-2023',
@@ -144,4 +151,79 @@ it('exports each review after its book, as the review of a book', () => {
 	expect(() =>
 		exportCsl([{ ...reviewed, reviewedBy: [reviewed.reviewedBy[0], reviewed.reviewedBy[0]] }])
 	).toThrow('share the ID');
+});
+
+it('exports each citing work once, with the QIDs of every record it cites', () => {
+	const citing = {
+		authors: ['Rahmane Idrissa'],
+		year: 2017,
+		title: 'The Politics of Islam in the Sahel',
+		source: 'Europa Regional Perspectives. London: Routledge'
+	};
+	const article = {
+		authors: ['Sebastian Elischer'],
+		year: 2021,
+		title: 'Salafism and Political Order in Africa',
+		source: 'Cambridge University Press',
+		url: 'https://doi.org/10.1017/9781108909549'
+	};
+	const wiki = {
+		authors: ['Wikipedia contributors'],
+		year: 2026,
+		title: 'Sunniten',
+		source: 'Wikipedia (German), consulted 15 August 2026',
+		url: 'https://de.wikipedia.org/wiki/Sunniten'
+	};
+	const records = [
+		{ ...chapter, wikidataId: 'Q1', citedBy: [citing, article] },
+		// The same DOI under a different spelling of the title is the same work.
+		{
+			...book,
+			citedBy: [{ ...article, title: 'Salafism and political order', wikidataId: 'Q9' }, wiki]
+		},
+		{ ...chapter, id: 'soon', date: 'Forthcoming', wikidataId: 'Q3', citedBy: [citing] }
+	];
+	const { items, excluded } = exportCitingCsl(records);
+	expect(items.map((i) => i.id)).toEqual([
+		'citing--idrissa-2017-the-politics-of-islam-in',
+		'citing--elischer-2021-salafism-and-political-order-in'
+	]);
+	expect(excluded).toEqual(['citing--contributors-2026-sunniten']);
+	const [politics, salafism] = items;
+	expect(politics).toMatchObject({
+		type: 'book',
+		author: [{ literal: 'Rahmane Idrissa' }],
+		issued: { 'date-parts': [[2017]] },
+		note: 'Europa Regional Perspectives. London: Routledge',
+		custom: { cites: ['Q1'] }
+	});
+	expect(politics.DOI).toBeUndefined();
+	expect(salafism.DOI).toBe('10.1017/9781108909549');
+	expect(salafism.custom).toEqual({ wikidata: 'Q9', cites: ['Q1', 'Q117599346'] });
+	const conflicting = [
+		{ ...chapter, wikidataId: 'Q1', citedBy: [{ ...article, wikidataId: 'Q8' }] },
+		records[1]
+	];
+	expect(() => exportCitingCsl(conflicting)).toThrow('different QIDs');
+});
+
+it('reads a citing work’s type from its source line', () => {
+	const type = (source, url) => citingType({ source, url })?.type ?? null;
+	expect(citingType({ source: 'PhD dissertation, Ohio University, 2020' })).toEqual({
+		type: 'thesis',
+		genre: 'PhD dissertation'
+	});
+	expect(citingType({ source: 'Masters Thesis, Université de Montréal' }).genre).toBe(
+		"Master's thesis"
+	);
+	expect(
+		type('In Faith in the Balance, edited by Haim Malka, 111-36. Lanham, MD: Rowman, 2019')
+	).toBe('chapter');
+	expect(type('Africa Briefing. Brussels: International Crisis Group, 11 August 2023')).toBe(
+		'report'
+	);
+	expect(type('Paris: Karthala, 2019')).toBe('book');
+	expect(type("Les Cahiers de l'ACAREF 3, no. 7 (2021): 220-36")).toBe('article-journal');
+	expect(type('Diplomatie, no. 122, pp. 52-55')).toBe('article-journal');
+	expect(type('Wikipedia (English)', 'https://en.wikipedia.org/wiki/Togo')).toBeNull();
 });

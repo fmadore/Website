@@ -44,6 +44,7 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q123908032',
 			authors: ['Issouf Binaté'],
 			year: 2023,
 			title:
@@ -53,6 +54,7 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1007/978-3-031-40316-3_8'
 		},
 		{
+			wikidataId: 'Q140912844',
 			authors: ["N'Dri, Octavien Marc Aurèle"],
 			year: 2025,
 			title:
@@ -61,6 +63,7 @@ export const islamUniversityCampusesCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.4000/15onu'
 		},
 		{
+			wikidataId: 'Q141697091',
 			authors: ['Riski Taufikur Rahman', 'Irfan Fauzi', "Naufalun Ni'am"],
 			year: 2026,
 			title:

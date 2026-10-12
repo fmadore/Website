@@ -43,6 +43,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q113524571',
 			authors: ['Maud Saint-Lary'],
 			year: 2019,
 			title: 'Réislamisations au Burkina Faso : questions de genre et enjeux sociaux',
@@ -50,6 +51,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'https://www.karthala.com/religions-contemporaines/3311-reislamisations-au-burkina-faso-9782811118730.html'
 		},
 		{
+			wikidataId: 'Q113528340',
 			authors: ['Abdoulaye Sounaye'],
 			year: 2021,
 			title: "Révolution salafiste en Afrique de l'Ouest",
@@ -57,6 +59,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.3917/polaf.161.0403'
 		},
 		{
+			wikidataId: 'Q113524312',
 			authors: ['Muriel Gomez-Perez'],
 			year: 2018,
 			title:
@@ -65,6 +68,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.7202/1045130ar'
 		},
 		{
+			wikidataId: 'Q113524317',
 			authors: ['Koudbi Kaboré'],
 			year: 2017,
 			title:
@@ -73,6 +77,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.14428/emulations.024.002'
 		},
 		{
+			wikidataId: 'Q113524310',
 			authors: ['Muriel Gomez-Perez'],
 			year: 2016,
 			title: "Women's Islamic Activism in Burkina Faso: Toward Renegotiated Social Norms?",
@@ -81,6 +86,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1080/00083968.2015.1116100'
 		},
 		{
+			wikidataId: 'Q114256829',
 			authors: ['Ines Bouguerra'],
 			year: 2020,
 			title:
@@ -89,6 +95,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'https://zone.biblio.laurentian.ca/jspui/handle/10219/3606'
 		},
 		{
+			wikidataId: 'Q113528342',
 			authors: ['Abdoulaye Sounaye'],
 			year: 2020,
 			title:
@@ -98,6 +105,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.4000/books.ifra.2040'
 		},
 		{
+			wikidataId: 'Q116861122',
 			authors: ['Joepitz Frico Dorsainvil'],
 			year: 2021,
 			title: 'Conversion et transmission religieuse dans les familles haïtiennes',
@@ -105,6 +113,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'http://hdl.handle.net/1866/27554'
 		},
 		{
+			wikidataId: 'Q113527893',
 			authors: ['Lassane Ouedraogo'],
 			year: 2020,
 			title: 'Muslim Youth at a Crossroads: Media and Civic Engagement in Burkina Faso',
@@ -112,6 +121,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'http://rave.ohiolink.edu/etdc/view?acc_num=ohiou157547720848127'
 		},
 		{
+			wikidataId: 'Q113528344',
 			authors: ['Abdoulaye Sounaye'],
 			year: 2020,
 			title:
@@ -121,6 +131,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.4324/9781351256568-14'
 		},
 		{
+			wikidataId: 'Q113528372',
 			authors: ['Birgit Meyer', 'Abdoulaye Sounaye'],
 			year: 2017,
 			title: 'Introduction. Sermon in the City: Christian and Islamic Preaching in West Africa',
@@ -128,6 +139,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1163/15700666-12340095'
 		},
 		{
+			wikidataId: 'Q124645581',
 			authors: ['Mahamadou Bello Adamou'],
 			year: 2023,
 			title:
@@ -135,6 +147,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			source: 'PhD dissertation, Université Abdou Moumouni, 2023'
 		},
 		{
+			wikidataId: 'Q121125871',
 			authors: ['Mahamadou Bello Adamou'],
 			year: 2023,
 			title:
@@ -143,6 +156,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 				'In Religiosity on University Campuses in Africa: Trends and Experiences, edited by Abdoulaye Sounaye and Frédérick Madore, 119-39. Berlin: LIT Verlag, 2023'
 		},
 		{
+			wikidataId: 'Q116258270',
 			authors: ['Mahamadou Bello Adamou', 'Amadou Oumarou'],
 			year: 2022,
 			title:
@@ -150,6 +164,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			source: 'Revue Nigérienne des Sciences Sociales (RENISS), no. 5 (2022): 21-33'
 		},
 		{
+			wikidataId: 'Q141708187',
 			authors: ['Sokhna Fatou Seck-Sarr'],
 			year: 2023,
 			title:

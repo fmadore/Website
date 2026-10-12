@@ -105,6 +105,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 	],
 	citedBy: [
 		{
+			wikidataId: 'Q113524571',
 			authors: ['Maud Saint-Lary'],
 			year: 2019,
 			title: 'Réislamisations au Burkina Faso : questions de genre et enjeux sociaux',
@@ -112,6 +113,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://www.karthala.com/religions-contemporaines/3311-reislamisations-au-burkina-faso-9782811118730.html'
 		},
 		{
+			wikidataId: 'Q116777856',
 			authors: ['Luis Martinez'],
 			year: 2023,
 			title: "L'Afrique, le prochain califat? La spectaculaire expansion du djihadisme",
@@ -119,6 +121,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://www.tallandier.com/livre/lafrique-le-prochain-califat/'
 		},
 		{
+			wikidataId: 'Q113524312',
 			authors: ['Muriel Gomez-Perez'],
 			year: 2018,
 			title:
@@ -127,6 +130,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://doi.org/10.7202/1045130ar'
 		},
 		{
+			wikidataId: 'Q113524317',
 			authors: ['Koudbi Kaboré'],
 			year: 2017,
 			title:
@@ -135,6 +139,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://doi.org/10.14428/emulations.024.002'
 		},
 		{
+			wikidataId: 'Q113524333',
 			authors: ['Aude Nikiema', 'Alice Degorce', 'Honorine Sawadogo'],
 			year: 2016,
 			title:
@@ -143,6 +148,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://doi.org/10.4000/com.7839'
 		},
 		{
+			wikidataId: 'Q115964139',
 			authors: ['Koudbi Kaboré'],
 			year: 2022,
 			title:
@@ -152,6 +158,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://doi.org/10.1515/9783110733204-003'
 		},
 		{
+			wikidataId: 'Q114243315',
 			authors: ['Louis Audet Gosselin'],
 			year: 2017,
 			title:
@@ -160,6 +167,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://doi.org/10.14428/emulations.024.005'
 		},
 		{
+			wikidataId: 'Q126811639',
 			authors: ['Muriel Gomez-Perez'],
 			year: 2024,
 			title:
@@ -169,6 +177,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://doi.org/10.1515/9783111341651-020'
 		},
 		{
+			wikidataId: 'Q113528371',
 			authors: ['Abdoulaye Sounaye'],
 			year: 2021,
 			title:
@@ -178,6 +187,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://doi.org/10.1515/9783110726534-005'
 		},
 		{
+			wikidataId: 'Q113867224',
 			authors: ['Benjamin Soares'],
 			year: 2021,
 			title: 'Islam and Muslim Societies in the Contemporary Sahel',
@@ -186,6 +196,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://doi.org/10.1093/oxfordhb/9780198816959.013.32'
 		},
 		{
+			wikidataId: 'Q141697101',
 			authors: ['Leonardo A. Villalón', 'Mamadou Bodian'],
 			year: 2021,
 			title: 'Education, Citizenship, and National Identity in the Sahel',
@@ -194,6 +205,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			url: 'https://doi.org/10.1093/oxfordhb/9780198816959.013.39'
 		},
 		{
+			wikidataId: 'Q141708185',
 			authors: ['Koudbi Kaboré', 'Boubié Bazié'],
 			year: 2019,
 			title:
@@ -202,6 +214,7 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 				"In L'Islam et le Vivre ensemble en Afrique subsaharienne, edited by Hamadou Adama and Drissa Koné. Paris: L'Harmattan, 2019"
 		},
 		{
+			wikidataId: 'Q141697076',
 			authors: ['Fatimata Sow'],
 			year: 2024,
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',

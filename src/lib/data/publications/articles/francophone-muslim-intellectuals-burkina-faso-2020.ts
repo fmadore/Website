@@ -42,6 +42,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q126811639',
 			authors: ['Muriel Gomez-Perez'],
 			year: 2024,
 			title:
@@ -51,6 +52,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1515/9783111341651-020'
 		},
 		{
+			wikidataId: 'Q115964139',
 			authors: ['Koudbi Kaboré'],
 			year: 2022,
 			title:
@@ -60,6 +62,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1515/9783110733204-003'
 		},
 		{
+			wikidataId: 'Q129389958',
 			authors: ['Aminah Azis', 'Mustaqim Pabbajah', 'Hannani', 'M. Taufiq Hidayat Pabbajah'],
 			year: 2024,
 			title:
@@ -68,6 +71,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.24035/ijit.25.2024.282'
 		},
 		{
+			wikidataId: 'Q115516151',
 			authors: ['Nadine Sieveking'],
 			year: 2022,
 			title:
@@ -76,6 +80,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.4000/etudesafricaines.40262'
 		},
 		{
+			wikidataId: 'Q114051370',
 			authors: ['Nadine Sieveking'],
 			year: 2020,
 			title:
@@ -84,6 +89,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.3790/soc.70.2.159'
 		},
 		{
+			wikidataId: 'Q141697082',
 			authors: ['Riswandi Riswandi'],
 			year: 2024,
 			title:
@@ -99,6 +105,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.37899/mjdpp.v1i4.121'
 		},
 		{
+			wikidataId: 'Q141697102',
 			authors: ['Augustin Loada'],
 			year: 2021,
 			title: 'Civil Society and Political Order in the Sahel',
@@ -107,6 +114,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1093/oxfordhb/9780198816959.013.26'
 		},
 		{
+			wikidataId: 'Q141697080',
 			authors: ['Lamin Keita'],
 			year: 2024,
 			title: 'The Politics of Community Resilience to Armed Jihadism in West Africa',
@@ -114,6 +122,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://www.proquest.com/openview/602f48a833fec018b14770d3c0c73f8b'
 		},
 		{
+			wikidataId: 'Q113528116',
 			authors: ['Alexander Thurston'],
 			year: 2021,
 			title: 'Negotiating Secularism in the Sahel',
@@ -122,6 +131,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1093/oxfordhb/9780198816959.013.49'
 		},
 		{
+			wikidataId: 'Q126477529',
 			authors: ['Barbara Faccenda'],
 			year: 2023,
 			title:
@@ -130,6 +140,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'http://digital.casalini.it/9788893924382'
 		},
 		{
+			wikidataId: 'Q114315675',
 			authors: ['Aboubacar Sidiki Segda', 'Boukaré Gansonré'],
 			year: 2021,
 			title:
@@ -138,6 +149,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 			url: 'https://web.archive.org/web/20240418165459/https://revues.acaref.net/wp-content/uploads/sites/3/2021/10/Aboubakar-Sidiki-SEGDA.pdf'
 		},
 		{
+			wikidataId: 'Q114727193',
 			authors: ['Sebastian Elischer'],
 			year: 2021,
 			title: 'Salafism and Political Order in Africa',

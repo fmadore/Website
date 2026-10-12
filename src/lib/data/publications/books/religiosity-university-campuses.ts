@@ -88,6 +88,7 @@ export const religiosityUniversityCampuses: Publication = {
 	],
 	citedBy: [
 		{
+			wikidataId: 'Q141697097',
 			authors: ['Miriam Tekath'],
 			year: 2025,
 			title:
@@ -96,6 +97,7 @@ export const religiosityUniversityCampuses: Publication = {
 			url: 'https://doi.org/10.1080/21647259.2024.2411827'
 		},
 		{
+			wikidataId: 'Q141708182',
 			authors: ['Bantu Edward', 'Bashaija Athanansio', 'Omare Justine Momanyi'],
 			year: 2025,
 			title:
@@ -105,6 +107,7 @@ export const religiosityUniversityCampuses: Publication = {
 			url: 'https://doi.org/10.1007/978-3-031-88793-2_7'
 		},
 		{
+			wikidataId: 'Q141708186',
 			authors: ['Leonardo A. Villalón'],
 			year: 2026,
 			title: 'Islam',

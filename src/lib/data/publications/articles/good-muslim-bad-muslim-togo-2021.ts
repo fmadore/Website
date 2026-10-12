@@ -42,6 +42,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 	project: 'Muslim Minorities in Southern Cities of Benin and Togo',
 	citedBy: [
 		{
+			wikidataId: 'Q115606028',
 			authors: ['Nicolette D. Manglos-Weber'],
 			year: 2022,
 			title: 'Religious Life in African Societies',
@@ -50,6 +51,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			url: 'https://doi.org/10.1093/oxfordhb/9780197608494.013.16'
 		},
 		{
+			wikidataId: 'Q123192059',
 			authors: ['Kossi Eden Andrews Adandjesso'],
 			year: 2023,
 			title:
@@ -58,6 +60,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			url: 'http://hdl.handle.net/1866/31946'
 		},
 		{
+			wikidataId: 'Q113528326',
 			authors: ['Dorothea E. Schulz'],
 			year: 2021,
 			title: 'Studying Muslim Minorities in Subsaharan Africa: Preliminary Remarks',
@@ -65,6 +68,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			url: 'https://doi.org/10.1163/21540993-01202008'
 		},
 		{
+			wikidataId: 'Q141708188',
 			authors: ['Didik Hariyanto', 'Ferry Adhi Dharma', 'Isnaini Rodiyah'],
 			year: 2025,
 			title: 'Komodifikasi Agama Dalam Politik Identitas',
@@ -72,6 +76,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			url: 'https://press.umsida.ac.id/index.php/umsidapress/article/view/978-623-464-117-2'
 		},
 		{
+			wikidataId: 'Q127642102',
 			authors: ['Abel B.S. Gaiya'],
 			year: 2024,
 			title: 'Sahel, Sahara and Savannah (Sahvara): Responses to Uneven Development in West Africa',
@@ -79,6 +84,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			url: 'https://doi.org/10.51483/IJAFRS.4.1.2024.54-86'
 		},
 		{
+			wikidataId: 'Q126689386',
 			authors: ['Vanessa Watters Opalo'],
 			year: 2022,
 			title: 'Credit Worthy: Pentecostal Finance in West Africa',
@@ -86,6 +92,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 			url: 'https://www.proquest.com/openview/10eaa1c3593da0ae30f6d83521838696/'
 		},
 		{
+			wikidataId: 'Q141708183',
 			authors: ['Djamilou Ouro-Agoro'],
 			year: 2025,
 			title:
@@ -94,6 +101,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 				"In L'interculturel dans l'espace francophone postcolonial : l'éducation et la formation à l'épreuve des crises, edited by Rania Hanafi, Jean-François Bruneaud, and Mamadou Bouna Timera, 103-121. Paris: L'Harmattan, 2025"
 		},
 		{
+			wikidataId: 'Q124097960',
 			authors: ['Marius Kothor', 'Benjamin N. Lawrance'],
 			year: 2023,
 			title: 'The History of Togo and the Togolese People',

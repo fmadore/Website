@@ -37,6 +37,7 @@ export const introductionReligiosityUniversityCampuses: Publication = {
 	},
 	citedBy: [
 		{
+			wikidataId: 'Q124739421',
 			authors: ['Jeannett Martin'],
 			year: 2024,
 			title:

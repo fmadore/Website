@@ -40,6 +40,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q115964139',
 			authors: ['Koudbi Kaboré'],
 			year: 2022,
 			title:
@@ -49,6 +50,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1515/9783110733204-003'
 		},
 		{
+			wikidataId: 'Q113524317',
 			authors: ['Koudbi Kaboré'],
 			year: 2017,
 			title:
@@ -57,6 +59,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.14428/emulations.024.002'
 		},
 		{
+			wikidataId: 'Q113524350',
 			authors: ['Lassane Ouedraogo'],
 			year: 2019,
 			title: 'Muslim Women and Pious Fashion in Burkina Faso as Identity, Pose, and Defiance',
@@ -64,6 +67,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1080/10714421.2019.1651154'
 		},
 		{
+			wikidataId: 'Q113524372',
 			authors: ['Aboubakar Sidiki Segda'],
 			year: 2021,
 			title:
@@ -72,6 +76,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 			url: 'https://web.archive.org/web/20240623145336/https://revues.acaref.net/wp-content/uploads/sites/3/2021/06/18Aboubakar-Sidiki-Segda.pdf'
 		},
 		{
+			wikidataId: 'Q113524313',
 			authors: ['Muriel Gomez-Perez'],
 			year: 2017,
 			title:
@@ -80,6 +85,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1080/13629395.2016.1230947'
 		},
 		{
+			wikidataId: 'Q114261042',
 			authors: ['Daniel Eizenga'],
 			year: 2018,
 			title:
@@ -88,6 +94,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 			url: 'https://www.proquest.com/openview/228a09ef8a9f68694f08ccaa73587f07/'
 		},
 		{
+			wikidataId: 'Q131394160',
 			authors: ['Aboubakar Sidiki Segda', 'Kadré Sawadogo'],
 			year: 2024,
 			title:
@@ -96,6 +103,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.60632/ziglobitha.n011.13.vol.5.2024'
 		},
 		{
+			wikidataId: 'Q113527893',
 			authors: ['Lassane Ouedraogo'],
 			year: 2020,
 			title: 'Muslim Youth at a Crossroads: Media and Civic Engagement in Burkina Faso',
@@ -103,6 +111,7 @@ export const islamMediasSenatBurkinaFaso: Publication = {
 			url: 'http://rave.ohiolink.edu/etdc/view?acc_num=ohiou157547720848127'
 		},
 		{
+			wikidataId: 'Q141697076',
 			authors: ['Fatimata Sow'],
 			year: 2024,
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',

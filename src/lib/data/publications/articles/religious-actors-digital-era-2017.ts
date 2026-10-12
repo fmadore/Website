@@ -36,6 +36,7 @@ export const religiousActorsDigitalEra: Publication = {
 	},
 	citedBy: [
 		{
+			wikidataId: 'Q141697081',
 			authors: ['Emmanuelle Olivier'],
 			year: 2026,
 			title:
@@ -44,6 +45,7 @@ export const religiousActorsDigitalEra: Publication = {
 			url: 'https://doi.org/10.4000/16tj4'
 		},
 		{
+			wikidataId: 'Q113519394',
 			authors: ['Andrea Rota', 'Oliver Krüger'],
 			year: 2019,
 			title: 'The Dynamics of Religion, Media, and Community: An Introduction',
@@ -51,6 +53,7 @@ export const religiousActorsDigitalEra: Publication = {
 			url: 'https://doi.org/10.17885/heiup.rel.2019.0.23945'
 		},
 		{
+			wikidataId: 'Q113519391',
 			authors: ['Isabelle Jonveaux'],
 			year: 2019,
 			title: 'Internet in the Monastery: Construction or Deconstruction of the Community?',
@@ -58,6 +61,7 @@ export const religiousActorsDigitalEra: Publication = {
 			url: 'https://doi.org/10.17885/heiup.rel.2019.0.23948'
 		},
 		{
+			wikidataId: 'Q126191823',
 			authors: ['Anne-Laure Zwilling'],
 			year: 2024,
 			title: 'Complex Accounts: Reflexions on Defining and Measuring Religious Belonging',
@@ -66,6 +70,7 @@ export const religiousActorsDigitalEra: Publication = {
 			url: 'https://doi.org/10.1163/9789004677791_004'
 		},
 		{
+			wikidataId: 'Q115606103',
 			authors: ['Ignace Ndongala Maduku'],
 			year: 2021,
 			title:

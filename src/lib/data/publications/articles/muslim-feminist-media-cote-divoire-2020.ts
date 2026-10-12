@@ -56,6 +56,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.61455/sicopus.v4i01.388'
 		},
 		{
+			wikidataId: 'Q120042160',
 			authors: ['Issouf Binaté'],
 			year: 2023,
 			title: "La transmission des savoirs islamiques au prisme du beïtu en Côte d'Ivoire",
@@ -63,6 +64,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://www.archipelies.org/1498'
 		},
 		{
+			wikidataId: 'Q141697078',
 			authors: ['Laurence Jutras'],
 			year: 2022,
 			title: "Djinns, femmes et islam à Odienné en Côte d'Ivoire",
@@ -70,6 +72,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://archipel.uqam.ca/17137/'
 		},
 		{
+			wikidataId: 'Q114243279',
 			authors: ['Robert Launay'],
 			year: 2021,
 			title: "The Qur'an School and Trajectories of Islamic Education",
@@ -78,6 +81,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.4324/9780367144241-9'
 		},
 		{
+			wikidataId: 'Q124739421',
 			authors: ['Jeannett Martin'],
 			year: 2024,
 			title:
@@ -86,6 +90,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.3224/peripherie.v43i2.02'
 		},
 		{
+			wikidataId: 'Q115606028',
 			authors: ['Nicolette D. Manglos-Weber'],
 			year: 2022,
 			title: 'Religious Life in African Societies',
@@ -94,6 +99,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1093/oxfordhb/9780197608494.013.16'
 		},
 		{
+			wikidataId: 'Q130287981',
 			authors: ['Muchsin al- Fikri', 'Delvin Musa Navaro Matulessy'],
 			year: 2024,
 			title:
@@ -102,6 +108,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.61397/tla.v2i1.228'
 		},
 		{
+			wikidataId: 'Q113519427',
 			authors: ['Rahina Muazu'],
 			year: 2022,
 			title:
@@ -110,6 +117,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1017/S0001972022000286'
 		},
 		{
+			wikidataId: 'Q120966469',
 			authors: ['Jean Schmitz', 'Abdel Wedoud Ould Cheikh', 'Cédric Jourde'],
 			year: 2022,
 			title: 'Introduction : soufisme, salafisme et subalternité dans un Sahel transnational',
@@ -118,6 +126,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.3917/kart.schmi.2023.01.0009'
 		},
 		{
+			wikidataId: 'Q115930222',
 			authors: ['Bala A. Musa', 'Agnes Lucy Lando'],
 			year: 2022,
 			title: 'Religion and Online Community in African Contexts',
@@ -126,6 +135,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1093/oxfordhb/9780197549803.013.9'
 		},
 		{
+			wikidataId: 'Q113519396',
 			authors: ['Louis Audet Gosselin'],
 			year: 2021,
 			title: 'Muslim Youth and Lived Experiences of Islam',
@@ -134,6 +144,7 @@ export const muslimFeministMediaCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.4324/9780367144241-24'
 		},
 		{
+			wikidataId: 'Q141697084',
 			authors: ['Soleh Hasan Wahid', 'Syahid Abdulloh'],
 			year: 2026,
 			title: 'Digital Islamic authority: a revolutionary shift or mere hype? a systematic review',

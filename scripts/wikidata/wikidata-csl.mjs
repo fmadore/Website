@@ -168,6 +168,107 @@ export function reviewToCsl(p, review) {
 	};
 }
 
+/** How a citing work is told apart across records: its DOI, else its title. */
+const citingKey = (citing) => {
+	const doi = doiOf(citing.url);
+	return doi ? `doi:${doi.toLowerCase()}` : `title:${slug(citing.title)}`;
+};
+
+/**
+ * A citing work's ID: its first author's family name, the year and the first
+ * five words of its title (`citing--idrissa-2017-the-politics-of-islam-in`).
+ * What `wikidata:apply` finds the work's entries by.
+ */
+export function citingId(citing) {
+	const family = slug(
+		String(citing.authors?.[0] ?? 'anonymous')
+			.trim()
+			.split(/\s+/)
+			.at(-1)
+	);
+	const words = slug(citing.title).split('-').slice(0, 5).join('-');
+	return `citing--${family}-${citing.year}-${words}`;
+}
+
+/**
+ * The works citing published records, one per work however many records it
+ * cites (grouped by DOI, else by title), each with the entries that list it.
+ */
+export function citingWorks(records) {
+	const groups = new Map();
+	for (const record of records.filter((p) => !isForthcoming(p)))
+		for (const citing of record.citedBy ?? []) {
+			const key = citingKey(citing);
+			const group = groups.get(key) ?? { id: citingId(citing), entries: [] };
+			group.entries.push({ record, citing });
+			groups.set(key, group);
+		}
+	return [...groups.values()];
+}
+
+/**
+ * The CSL type of a citing work, read from the site's source line. A guess for
+ * the skill to start from: a DOI's registry record replaces it, and a work
+ * without one is checked against the work itself. Null for an encyclopedia
+ * article on a wiki, which is not reconciled.
+ */
+export function citingType(citing) {
+	const source = citing.source ?? '';
+	if (/wikipedia\.org\//.test(citing.url ?? '') || /^Wikipedia\b/.test(source)) return null;
+	if (/\b(?:PhD|Ph\.D\.|doctoral|doctorat)\b/i.test(source))
+		return { type: 'thesis', genre: 'PhD dissertation' };
+	if (/\bmaster/i.test(source)) return { type: 'thesis', genre: "Master's thesis" };
+	if (/^In\s/.test(source)) return { type: 'chapter' };
+	if (/\b(?:report|briefing|discussion paper|working paper|policy brief)\b/i.test(source))
+		return { type: 'report' };
+	// "Paris: Karthala, 2019": a place, a publisher, perhaps a year; never pages.
+	if (/^(?:[^.]+\.\s)?[^:]+:\s*[^\d\s][^:]*?(?:,\s*\d{4})?$/.test(source)) return { type: 'book' };
+	return { type: 'article-journal' };
+}
+
+/** A citing work as CSL: what the site knows of it, and the QIDs of the records it cites. */
+export function citingToCsl(group) {
+	const { citing } = group.entries[0];
+	const kind = citingType(citing);
+	if (!kind) return null;
+	const recorded = [...new Set(group.entries.map((e) => e.citing.wikidataId).filter(Boolean))];
+	if (recorded.length > 1)
+		throw new Error(`Entries of ${group.id} carry different QIDs: ${recorded.join(', ')}`);
+	const doi = doiOf(citing.url);
+	return {
+		id: group.id,
+		...kind,
+		title: citing.title,
+		author: citing.authors.map((literal) => ({ literal })),
+		issued: { 'date-parts': [[citing.year]] },
+		...(doi ? { DOI: doi } : {}),
+		...(citing.url ? { URL: citing.url } : {}),
+		// The site's citation line, for whoever completes the record.
+		...(citing.source ? { note: citing.source } : {}),
+		custom: {
+			...(recorded.length ? { wikidata: recorded[0] } : {}),
+			cites: [...new Set(group.entries.map((e) => e.record.wikidataId).filter(Boolean))]
+		}
+	};
+}
+
+/** The works citing published records as CSL, and the IDs of those not reconciled (wiki articles). */
+export function exportCitingCsl(records) {
+	const items = [];
+	const excluded = [];
+	for (const group of citingWorks(records)) {
+		const item = citingToCsl(group);
+		if (item) items.push(item);
+		else excluded.push(group.id);
+	}
+	const ids = new Set();
+	for (const { id } of items) {
+		if (ids.has(id)) throw new Error(`Two citing works share the ID ${id}`);
+		ids.add(id);
+	}
+	return { items, excluded };
+}
+
 /** Eligible records as CSL, each followed by its reviews, and the forthcoming ones that were left out. */
 export function exportCsl(records) {
 	const eligible = records.filter((p) => !isForthcoming(p));

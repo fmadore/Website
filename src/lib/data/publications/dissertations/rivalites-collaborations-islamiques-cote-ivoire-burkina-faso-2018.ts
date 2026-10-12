@@ -45,6 +45,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q141080151',
 			authors: ['Sekou Traoré'],
 			year: 2025,
 			title:
@@ -53,6 +54,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://doi.org/10.4000/145ym'
 		},
 		{
+			wikidataId: 'Q116057060',
 			authors: ['Louis Audet Gosselin'],
 			year: 2021,
 			title: "Le salafisme burkinabè à l'épreuve du djihadisme",
@@ -61,6 +63,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://doi.org/10.1515/9782760643253-007'
 		},
 		{
+			wikidataId: 'Q114315675',
 			authors: ['Aboubacar Sidiki Segda', 'Boukaré Gansonré'],
 			year: 2021,
 			title:
@@ -69,6 +72,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://web.archive.org/web/20240418165459/https://revues.acaref.net/wp-content/uploads/sites/3/2021/10/Aboubakar-Sidiki-SEGDA.pdf'
 		},
 		{
+			wikidataId: 'Q114727193',
 			authors: ['Sebastian Elischer'],
 			year: 2021,
 			title: 'Salafism and Political Order in Africa',
@@ -76,6 +80,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://doi.org/10.1017/9781108690577'
 		},
 		{
+			wikidataId: 'Q113524372',
 			authors: ['Aboubakar Sidiki Segda'],
 			year: 2021,
 			title:
@@ -84,6 +89,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://web.archive.org/web/20240623145336/https://revues.acaref.net/wp-content/uploads/sites/3/2021/06/18Aboubakar-Sidiki-Segda.pdf'
 		},
 		{
+			wikidataId: 'Q141697107',
 			authors: ['Kawsar Laanani', 'Sara Gianesello', 'Sophie Desmidt', 'Aksana Ismailbekova'],
 			year: 2023,
 			title: 'Understanding Islamic Activism in Central Asia and West Africa and the Sahel',
@@ -91,6 +97,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://ecdpm.org/work/understanding-islamic-activism-central-asia-west-africa-sahel'
 		},
 		{
+			wikidataId: 'Q113528292',
 			authors: ['Issouf Binaté'],
 			year: 2021,
 			title:
@@ -99,6 +106,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://doi.org/10.14428/emulations.037.04'
 		},
 		{
+			wikidataId: 'Q114050886',
 			authors: ['Sékou Traoré'],
 			year: 2022,
 			title:
@@ -107,6 +115,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://doi.org/10.1163/2031356X-35010007'
 		},
 		{
+			wikidataId: 'Q141697079',
 			authors: ['Aala Abdelgadir'],
 			year: 2021,
 			title: 'Islamic Identity and Politics in Muslim-Minority Contexts',
@@ -114,6 +123,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://purl.stanford.edu/kx926tq7022'
 		},
 		{
+			wikidataId: 'Q114051412',
 			authors: ['Marie Brossier'],
 			year: 2019,
 			title:
@@ -122,6 +132,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 				'In Identités sahéliennes en temps de crise : histoires, enjeux et perspectives, edited by Baz Lecocq and Amy Niang, 267-96. Münster: LIT Verlag, 2019'
 		},
 		{
+			wikidataId: 'Q113528001',
 			authors: ['Sebastian Elischer'],
 			year: 2019,
 			title: 'Burkina Faso: State and Religious Authority in Turbulent Times',
@@ -130,6 +141,7 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			url: 'https://www.csis.org/analysis/burkina-faso-state-and-religious-authority-turbulent-times'
 		},
 		{
+			wikidataId: 'Q141697076',
 			authors: ['Fatimata Sow'],
 			year: 2024,
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',

@@ -39,6 +39,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q113519396',
 			authors: ['Louis Audet Gosselin'],
 			year: 2021,
 			title: 'Muslim Youth and Lived Experiences of Islam',
@@ -47,6 +48,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.4324/9780367144241-24'
 		},
 		{
+			wikidataId: 'Q114397721',
 			authors: ['Alexis Abodohoui', 'Maxime Domanou', 'Falylath Babah Daouda', 'Janvier Egah'],
 			year: 2020,
 			title:
@@ -54,6 +56,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 			source: "Annales de Sciences de Gestion de l'UAC 2, no. 1 (2020): 77-108."
 		},
 		{
+			wikidataId: 'Q114051392',
 			authors: [
 				'Maxime Mahougnon Eminence Domanou',
 				'Alexis Abodohoui',
@@ -67,6 +70,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.48424/IMIST.PRSM/ram-v6i3.22534'
 		},
 		{
+			wikidataId: 'Q113524329',
 			authors: ['Katrin Langewiesche'],
 			year: 2021,
 			title:
@@ -75,6 +79,7 @@ export const religieuxInternetNTICBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1163/21540993-01202006'
 		},
 		{
+			wikidataId: 'Q141697075',
 			authors: ['Kassoum Drame'],
 			year: 2021,
 			title: 'İletişim ve medya teknolojilerinin sosyal ve kültürel etkileri: Burkina Faso örneği',

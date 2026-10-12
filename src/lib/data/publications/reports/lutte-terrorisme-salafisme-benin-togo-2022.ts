@@ -40,6 +40,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 	project: 'Muslim Minorities in Southern Cities of Benin and Togo',
 	citedBy: [
 		{
+			wikidataId: 'Q141708256',
 			authors: ['Abdou-Rachidou Hamidou'],
 			year: 2025,
 			title:
@@ -48,6 +49,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 			url: 'https://doi.org/10.3917/cdc.252.0057'
 		},
 		{
+			wikidataId: 'Q123192226',
 			authors: ['Maxime Ricard'],
 			year: 2023,
 			title:
@@ -56,6 +58,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 			url: 'https://www.jstor.org/stable/48737926'
 		},
 		{
+			wikidataId: 'Q123502317',
 			authors: ['Sinagabe O. Ulysse Korogone'],
 			year: 2023,
 			title:
@@ -64,6 +67,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 			url: 'https://dspace.unia.es/handle/10334/7996'
 		},
 		{
+			wikidataId: 'Q140971720',
 			authors: ['Jeannett Martin', 'Abiguël Elijan', 'Nikolaus Schareika'],
 			year: 2025,
 			title: 'Covid-19 and Pastoralism in Northern Benin',
@@ -71,6 +75,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 			url: 'https://doi.org/10.3828/whpnp.63837646691073'
 		},
 		{
+			wikidataId: 'Q141697074',
 			authors: ['Théoxane Marchand'],
 			year: 2025,
 			title: 'De père en fils : la continuité des régimes togolais et gabonais',
@@ -78,6 +83,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 			url: 'https://hdl.handle.net/1866/42365'
 		},
 		{
+			wikidataId: 'Q141697087',
 			authors: ['Ibrahim Seyni Mamoudou'],
 			year: 2025,
 			title: 'Dialogue interreligieux et reconfiguration silencieuse du paysage religieux nigérien',

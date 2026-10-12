@@ -111,6 +111,7 @@ The history of these associations reveals the campus as a microcosm reflecting w
 	],
 	citedBy: [
 		{
+			wikidataId: 'Q141697104',
 			authors: ['Michael Fisch'],
 			year: 2026,
 			title:
@@ -126,6 +127,7 @@ The history of these associations reveals the campus as a microcosm reflecting w
 			url: 'https://en.wikipedia.org/wiki/Union_for_the_Republic_(Togo)'
 		},
 		{
+			wikidataId: 'Q141697103',
 			authors: ['Leonardo A. Villalón', 'Mamadou Bodian', 'Abdourahmane Idrissa'],
 			year: 2025,
 			title:

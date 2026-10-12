@@ -30,6 +30,7 @@ export const salafismCoteIvoire2017: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q140913766',
 			authors: ['Kitanha Sosthène Touré'],
 			year: 2025,
 			title: "De l'usage de la sono dans les mosquées et les églises à Bouaké (Côte d'Ivoire)",

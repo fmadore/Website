@@ -38,6 +38,7 @@ export const islamBurkinaCollection: Publication = {
 	project: 'Digital Humanities and AI in African Studies',
 	citedBy: [
 		{
+			wikidataId: 'Q120042160',
 			authors: ['Issouf Binaté'],
 			year: 2023,
 			title: "La transmission des savoirs islamiques au prisme du beïtu en Côte d'Ivoire",
@@ -45,6 +46,7 @@ export const islamBurkinaCollection: Publication = {
 			url: 'https://www.archipelies.org/1498'
 		},
 		{
+			wikidataId: 'Q123928021',
 			authors: ['Philipp Eisenhuth', 'Myriel Fichtner', 'Britta Frede', 'Rüdiger Seesemann'],
 			year: 2023,
 			title:
@@ -53,6 +55,7 @@ export const islamBurkinaCollection: Publication = {
 			url: 'https://doi.org/10.3828/mlo.v0i0.445'
 		},
 		{
+			wikidataId: 'Q131747431',
 			authors: ['Véronique Ginouvès', 'Ibrahim Moussa'],
 			year: 2024,
 			title:
@@ -61,6 +64,7 @@ export const islamBurkinaCollection: Publication = {
 			url: 'https://doi.org/10.4000/130fv'
 		},
 		{
+			wikidataId: 'Q122948173',
 			authors: ['Vincent Hiribarren'],
 			year: 2022,
 			title: "Review of Frédérick Madore 'Islam Burkina Faso Collection'",

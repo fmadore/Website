@@ -42,6 +42,7 @@ export const imamsIslamicPreachersOuagadougou: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q113954770',
 			authors: ['Allison N. Grossman', 'William G. Nomikos', 'Niloufer A. Siddiqui'],
 			year: 2023,
 			title:

@@ -41,6 +41,7 @@ export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication 
 	project: 'Digital Humanities and AI in African Studies',
 	citedBy: [
 		{
+			wikidataId: 'Q141697098',
 			authors: ['Susan Elizabeth Gagliardi'],
 			year: 2026,
 			title: 'Are We Ready Not to Know, to Unlearn, and to Learn Anew?',

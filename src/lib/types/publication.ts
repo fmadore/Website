@@ -7,6 +7,7 @@ export type CitingWork = {
 	title: string; // Title of the citing work
 	source?: string; // Optional: Journal, book title, etc.
 	url?: string; // Optional: URL or DOI to the citing work
+	wikidataId?: string; // The citing work's Wikidata item, recorded by wikidata:apply
 };
 
 // Define the structure for a review of this publication

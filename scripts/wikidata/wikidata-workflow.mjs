@@ -1,6 +1,14 @@
 import { readFileSync } from 'node:fs';
-import { hash, qid, insertQid, insertReviewQid, isForthcoming, doi } from './wikidata.mjs';
-import { reviewId, doiOf } from './wikidata-csl.mjs';
+import {
+	hash,
+	qid,
+	insertQid,
+	insertReviewQid,
+	insertCitingQid,
+	isForthcoming,
+	doi
+} from './wikidata.mjs';
+import { reviewId, doiOf, citingWorks } from './wikidata-csl.mjs';
 
 export function readJson(file) {
 	return JSON.parse(readFileSync(file, 'utf8'));
@@ -27,13 +35,18 @@ export function validateReport(report, entries) {
 	}
 	return rows;
 }
-/** The IDs of the reviews published records list, as the exporter gives them. */
+/**
+ * The IDs of the reviews published records list and of the works citing
+ * them, as the exporter gives them.
+ */
 export function reviewIds(entries) {
-	return new Set(
-		entries
-			.filter(({ record }) => !isForthcoming(record))
-			.flatMap(({ record }) => (record.reviewedBy ?? []).map((review) => reviewId(record, review)))
-	);
+	const records = entries.map(({ record }) => record);
+	return new Set([
+		...records
+			.filter((record) => !isForthcoming(record))
+			.flatMap((record) => (record.reviewedBy ?? []).map((review) => reviewId(record, review))),
+		...citingWorks(records).map((group) => group.id)
+	]);
 }
 export function validateDecisions(decisions, rows, reviews = new Set()) {
 	if (!decisions || Array.isArray(decisions) || typeof decisions !== 'object')
@@ -56,9 +69,10 @@ export function validateDecisions(decisions, rows, reviews = new Set()) {
 }
 /**
  * The QIDs to write: records (by decision, or by an exact audit match with
- * --accept-exact) and the reviews they list (by decision only). Edits to one
- * file build on each other; each carries the file's original text and its
- * final text.
+ * --accept-exact), the reviews they list and the works citing them (by
+ * decision only; a citing work's QID goes on every entry that lists it). Edits
+ * to one file build on each other; each carries the file's original text and
+ * its final text.
  */
 export function planEdits(entries, rows, decisions, acceptExact) {
 	const assigned = new Map();
@@ -99,6 +113,29 @@ export function planEdits(entries, rows, decisions, acceptExact) {
 			const reviewDoi = review.doi ?? doiOf(review.url);
 			change(file, { id, record, qid: chosen, doi: reviewDoi && doi(reviewDoi) }, (text) =>
 				insertReviewQid(text, review.title, chosen)
+			);
+		}
+	}
+	// A work citing several records is one item: its QID is unique among the
+	// citing works, and may be a record's own (a self-citation).
+	const citing = new Map();
+	const fileOf = new Map(entries.map(({ file, record }) => [record, file]));
+	for (const group of citingWorks(entries.map(({ record }) => record))) {
+		const chosen = decisions[group.id]?.qid;
+		const value = chosen ?? group.entries.map((e) => e.citing.wikidataId).find(Boolean);
+		if (value) {
+			qid(value);
+			if (citing.has(value))
+				throw new Error(`QID ${value} assigned to both ${citing.get(value)} and ${group.id}`);
+			citing.set(value, group.id);
+		}
+		if (!chosen) continue;
+		for (const { record, citing: entry } of group.entries) {
+			const citingDoi = doiOf(entry.url);
+			change(
+				fileOf.get(record),
+				{ id: group.id, record, qid: chosen, doi: citingDoi && doi(citingDoi) },
+				(text) => insertCitingQid(text, entry.title, chosen)
 			);
 		}
 	}

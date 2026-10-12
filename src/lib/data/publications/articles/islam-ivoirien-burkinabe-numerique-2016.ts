@@ -39,6 +39,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q141697081',
 			authors: ['Emmanuelle Olivier'],
 			year: 2026,
 			title:
@@ -56,6 +57,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.5281/zenodo.18782361'
 		},
 		{
+			wikidataId: 'Q141080151',
 			authors: ['Sekou Traoré'],
 			year: 2025,
 			title:
@@ -64,6 +66,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.4000/145ym'
 		},
 		{
+			wikidataId: 'Q123908032',
 			authors: ['Issouf Binaté'],
 			year: 2023,
 			title:
@@ -73,6 +76,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.1007/978-3-031-40316-3_8'
 		},
 		{
+			wikidataId: 'Q115964275',
 			authors: ['Francis Arsène Fogué Kuaté'],
 			year: 2022,
 			title: 'Trajectoires radiophoniques de la modernité islamique au Nord-Cameroun (1958-2010)',
@@ -81,6 +85,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.1515/9783110733204-005'
 		},
 		{
+			wikidataId: 'Q115964606',
 			authors: ['Djiby Ndiaye'],
 			year: 2022,
 			title: "Flaming et pratiques d'irrévérence des « musulmans connectés » au Sénégal",
@@ -89,6 +94,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.1515/9783110733204-006'
 		},
 		{
+			wikidataId: 'Q115964898',
 			authors: ['Bourahima Diomandé'],
 			year: 2022,
 			title:
@@ -98,6 +104,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.1515/9783110733204-007'
 		},
 		{
+			wikidataId: 'Q141697095',
 			authors: ['Aboubakar Ouattara'],
 			year: 2021,
 			title:
@@ -106,6 +113,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://web.archive.org/web/20240527233926/https://www.revue-akofena.com/wp-content/uploads/2021/09/16-retourT06-56-Aboubakar-OUATTARA-pp.209-222.pdf'
 		},
 		{
+			wikidataId: 'Q113524372',
 			authors: ['Aboubakar Sidiki Segda'],
 			year: 2021,
 			title:
@@ -114,6 +122,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://web.archive.org/web/20240623145336/https://revues.acaref.net/wp-content/uploads/sites/3/2021/06/18Aboubakar-Sidiki-Segda.pdf'
 		},
 		{
+			wikidataId: 'Q113524350',
 			authors: ['Lassane Ouedraogo'],
 			year: 2019,
 			title: 'Muslim Women and Pious Fashion in Burkina Faso as Identity, Pose, and Defiance',
@@ -121,6 +130,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.1080/10714421.2019.1651154'
 		},
 		{
+			wikidataId: 'Q113528286',
 			authors: ['Issouf Binaté'],
 			year: 2017,
 			title:
@@ -129,6 +139,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.14428/emulations.024.004'
 		},
 		{
+			wikidataId: 'Q113524317',
 			authors: ['Koudbi Kaboré'],
 			year: 2017,
 			title:
@@ -137,6 +148,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.14428/emulations.024.002'
 		},
 		{
+			wikidataId: 'Q113528309',
 			authors: ['Jean-François Havard', 'Carsten Wilhelm', 'François Malick Diouf'],
 			year: 2020,
 			title:
@@ -145,6 +157,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.3917/comla1.205.0035'
 		},
 		{
+			wikidataId: 'Q120042160',
 			authors: ['Issouf Binaté'],
 			year: 2023,
 			title: "La transmission des savoirs islamiques au prisme du beïtu en Côte d'Ivoire",
@@ -152,6 +165,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://www.archipelies.org/1498'
 		},
 		{
+			wikidataId: 'Q113527893',
 			authors: ['Lassane Ouedraogo'],
 			year: 2020,
 			title: 'Muslim Youth at a Crossroads: Media and Civic Engagement in Burkina Faso',
@@ -159,6 +173,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'http://rave.ohiolink.edu/etdc/view?acc_num=ohiou157547720848127'
 		},
 		{
+			wikidataId: 'Q141708131',
 			authors: ['Drissa Koné'],
 			year: 2020,
 			title: "Le COSIM : une institution musulmane en Côte d'Ivoire (1988-2019)",
@@ -166,6 +181,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://web.archive.org/web/20250825074334/https://histarc.net/histarc_numero_5/HISTARC_N%C2%B05_2020_KONE%20D..pdf'
 		},
 		{
+			wikidataId: 'Q113528317',
 			authors: ['Serigne Sylla'],
 			year: 2017,
 			title:
@@ -174,6 +190,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.14428/emulations.024.003'
 		},
 		{
+			wikidataId: 'Q118661247',
 			authors: ["Oba Christian Abel N'Dri"],
 			year: 2022,
 			title:
@@ -182,6 +199,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://web.archive.org/web/20240308150352/https://assets.nicepagecdn.com/c2c5a27a/2881383/files/0002NDRIOBAp14-33.pdf'
 		},
 		{
+			wikidataId: 'Q141697076',
 			authors: ['Fatimata Sow'],
 			year: 2024,
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
@@ -189,6 +207,7 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://hdl.handle.net/20.500.11794/144445'
 		},
 		{
+			wikidataId: 'Q141697091',
 			authors: ['Riski Taufikur Rahman', 'Irfan Fauzi', "Naufalun Ni'am"],
 			year: 2026,
 			title:

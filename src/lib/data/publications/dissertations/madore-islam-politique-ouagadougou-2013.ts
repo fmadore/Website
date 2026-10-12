@@ -40,6 +40,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q113524515',
 			authors: ['Rahmane Idrissa'],
 			year: 2017,
 			title: 'The Politics of Islam in the Sahel: Between Persuasion and Violence',
@@ -47,6 +48,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			url: 'https://www.routledge.com/The-Politics-of-Islam-in-the-Sahel-Between-Persuasion-and-Violence/Idrissa/p/book/9781857438666'
 		},
 		{
+			wikidataId: 'Q113524310',
 			authors: ['Muriel Gomez-Perez'],
 			year: 2016,
 			title: "Women's Islamic Activism in Burkina Faso: Toward Renegotiated Social Norms?",
@@ -55,6 +57,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			url: 'https://doi.org/10.1080/00083968.2015.1116100'
 		},
 		{
+			wikidataId: 'Q113524245',
 			authors: ['Louis Audet-Gosselin'],
 			year: 2016,
 			title:
@@ -64,6 +67,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			url: 'https://doi.org/10.1080/00083968.2015.1101009'
 		},
 		{
+			wikidataId: 'Q113867008',
 			authors: ['Abdourahmane Idrissa'],
 			year: 2017,
 			title: 'Genealogies of a Non-Political Islam in the Sahel: The Burkina Case',
@@ -72,6 +76,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			url: 'https://web.archive.org/web/20241210233342/http://lost-research-group.org/wp-content/uploads/2017/08/SPP1448_WP23_Idrissa.pdf'
 		},
 		{
+			wikidataId: 'Q113524296',
 			authors: ['Kathéry Couillard'],
 			year: 2016,
 			title:
@@ -81,6 +86,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			url: 'https://doi.org/10.1080/00083968.2015.1116099'
 		},
 		{
+			wikidataId: 'Q113524201',
 			authors: ['Louis Audet Gosselin'],
 			year: 2013,
 			title:
@@ -89,6 +95,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			url: 'https://archipel.uqam.ca/6104/'
 		},
 		{
+			wikidataId: 'Q113524335',
 			authors: ['Yacouba Ouédraogo'],
 			year: 2017,
 			title: "Courant musulman francophone et émergence d'un islam critique au Burkina Faso",
@@ -97,6 +104,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			url: 'https://progres.ujkz.gov.bf/publications/4865/details'
 		},
 		{
+			wikidataId: 'Q114315675',
 			authors: ['Aboubacar Sidiki Segda', 'Boukaré Gansonré'],
 			year: 2021,
 			title:
@@ -105,6 +113,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			url: 'https://web.archive.org/web/20240418165459/https://revues.acaref.net/wp-content/uploads/sites/3/2021/10/Aboubakar-Sidiki-SEGDA.pdf'
 		},
 		{
+			wikidataId: 'Q113524372',
 			authors: ['Aboubakar Sidiki Segda'],
 			year: 2021,
 			title:
@@ -113,6 +122,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			url: 'https://web.archive.org/web/20240623145336/https://revues.acaref.net/wp-content/uploads/sites/3/2021/06/18Aboubakar-Sidiki-Segda.pdf'
 		},
 		{
+			wikidataId: 'Q141697076',
 			authors: ['Fatimata Sow'],
 			year: 2024,
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',

@@ -41,6 +41,7 @@ export const hackettInterviewDigitalMedia: Publication = {
 	},
 	citedBy: [
 		{
+			wikidataId: 'Q116257595',
 			authors: ['Nsaale Kitayimbwa', 'Lydia Nabunya'],
 			year: 2022,
 			title:
@@ -49,12 +50,14 @@ export const hackettInterviewDigitalMedia: Publication = {
 			url: 'https://scholar.sun.ac.za/handle/10019.1/126133'
 		},
 		{
+			wikidataId: 'Q113954764',
 			authors: ['Kandung Sapto Nugroho', 'Muhammad Adnan', 'Hardi Warsono', 'Riswanti Putranti'],
 			year: 2020,
 			title: 'Indonesian-Religious and Digital Pluralism: Covid-19 Impact',
 			source: 'International Journal of Psychosocial Rehabilitation 24, no. 1: 2710-28'
 		},
 		{
+			wikidataId: 'Q141697077',
 			authors: ['Gowhar Andrabi Syed'],
 			year: 2025,
 			title:
@@ -63,6 +66,7 @@ export const hackettInterviewDigitalMedia: Publication = {
 			url: 'https://uhra.herts.ac.uk/id/eprint/25898/'
 		},
 		{
+			wikidataId: 'Q141697099',
 			authors: ['K. D. Thompson'],
 			year: 2026,
 			title:
@@ -71,6 +75,7 @@ export const hackettInterviewDigitalMedia: Publication = {
 			url: 'https://doi.org/10.1093/jaarel/lfag003'
 		},
 		{
+			wikidataId: 'Q141697105',
 			authors: ['Chijioke Azuawusiefe'],
 			year: 2026,
 			title:

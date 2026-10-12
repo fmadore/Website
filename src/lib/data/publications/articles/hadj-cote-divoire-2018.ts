@@ -41,6 +41,7 @@ export const hadjCoteDIvoire: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q115964898',
 			authors: ['Bourahima Diomandé'],
 			year: 2022,
 			title:
@@ -50,6 +51,7 @@ export const hadjCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1515/9783110733204-007'
 		},
 		{
+			wikidataId: 'Q141697095',
 			authors: ['Aboubakar Ouattara'],
 			year: 2021,
 			title:
@@ -58,6 +60,7 @@ export const hadjCoteDIvoire: Publication = {
 			url: 'https://web.archive.org/web/20240527233926/https://www.revue-akofena.com/wp-content/uploads/2021/09/16-retourT06-56-Aboubakar-OUATTARA-pp.209-222.pdf'
 		},
 		{
+			wikidataId: 'Q114051444',
 			authors: ['Cédric Jourde', 'Marie Brossier', 'Muriel Gomez-Perez'],
 			year: 2021,
 			title:
@@ -66,6 +69,7 @@ export const hadjCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1017/S0022278X20000622'
 		},
 		{
+			wikidataId: 'Q113955249',
 			authors: ['Bourahima Diomandé'],
 			year: 2021,
 			title:
@@ -74,6 +78,7 @@ export const hadjCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.57054/ad.v46i4.1442'
 		},
 		{
+			wikidataId: 'Q113528290',
 			authors: ['Issouf Binaté', 'Yaya Dao'],
 			year: 2019,
 			title:
@@ -82,6 +87,7 @@ export const hadjCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.4000/anthropodev.831'
 		},
 		{
+			wikidataId: 'Q141708129',
 			authors: ['Cédric Jourde', 'Muriel Gomez-Perez', 'Marie Brossier'],
 			year: 2025,
 			title: 'The Political Management of the Hajj in Contemporary Times: An Introduction',
@@ -90,6 +96,7 @@ export const hadjCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1007/978-3-031-65349-0_1'
 		},
 		{
+			wikidataId: 'Q141697089',
 			authors: ['Kouamé Félix Grodji', 'Bony Guiblehon'],
 			year: 2024,
 			title:
@@ -98,6 +105,7 @@ export const hadjCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.19272/202431301005'
 		},
 		{
+			wikidataId: 'Q113955244',
 			authors: ['Christian Gérard Angue'],
 			year: 2022,
 			title:
@@ -106,6 +114,7 @@ export const hadjCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.4000/rdr.1804'
 		},
 		{
+			wikidataId: 'Q114261160',
 			authors: ['Gianni Dore'],
 			year: 2021,
 			title:
@@ -114,6 +123,7 @@ export const hadjCoteDIvoire: Publication = {
 			url: 'http://digital.casalini.it/9788833136806'
 		},
 		{
+			wikidataId: 'Q141697094',
 			authors: ['Cédric Jourde', 'Muriel Gomez-Perez', 'Marie Brossier'],
 			year: 2025,
 			title:

@@ -2,7 +2,7 @@ import { expect, it } from 'vitest';
 import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { validateDecisions, planEdits } from './wikidata-workflow.mjs';
+import { validateDecisions, planEdits, reviewIds } from './wikidata-workflow.mjs';
 
 const rows = new Map([['chapter-2023', { id: 'chapter-2023', status: 'review' }]]);
 
@@ -76,6 +76,43 @@ it('writes a record’s QID and its reviews’ into one file, each edit building
 				false
 			)
 		).toThrow('assigned to both');
+	} finally {
+		rmSync(directory, { recursive: true, force: true });
+	}
+});
+
+it('writes a citing work’s QID on every record that lists it', () => {
+	const directory = mkdtempSync(join(tmpdir(), 'wikidata-citing-'));
+	try {
+		const citing = (title) => ({
+			authors: ['Sebastian Elischer'],
+			year: 2021,
+			title,
+			url: 'https://doi.org/10.1017/9781108909549'
+		});
+		const entries = ['a', 'b'].map((id, i) => {
+			const title = i ? 'Salafism and political order' : 'Salafism and Political Order in Africa';
+			const file = join(directory, `${id}.ts`);
+			writeFileSync(
+				file,
+				`export const p = {\n\tid: '${id}',\n\tcitedBy: [\n\t\t{\n\t\t\tauthors: ['Sebastian Elischer'],\n\t\t\tyear: 2021,\n\t\t\ttitle: '${title}'\n\t\t}\n\t]\n};\n`
+			);
+			return { file, record: { id, dateISO: '2020', citedBy: [citing(title)] } };
+		});
+		const id = 'citing--elischer-2021-salafism-and-political-order-in';
+		expect([...reviewIds(entries)]).toEqual([id]);
+		expect(() =>
+			validateDecisions({ [id]: { qid: 'Q5' } }, new Map(), reviewIds(entries))
+		).not.toThrow();
+		const edits = planEdits(entries, new Map(), { [id]: { qid: 'Q5' } }, false);
+		expect(edits.map((e) => [e.file, e.id, e.qid, e.doi])).toEqual([
+			[entries[0].file, id, 'Q5', '10.1017/9781108909549'],
+			[entries[1].file, id, 'Q5', '10.1017/9781108909549']
+		]);
+		for (const edit of edits)
+			expect(edit.updated).toContain(
+				"\t\t{\n\t\t\twikidataId: 'Q5',\n\t\t\tauthors: ['Sebastian Elischer'],"
+			);
 	} finally {
 		rmSync(directory, { recursive: true, force: true });
 	}

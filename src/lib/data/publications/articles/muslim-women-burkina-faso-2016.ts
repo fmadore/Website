@@ -40,6 +40,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q113524312',
 			authors: ['Muriel Gomez-Perez'],
 			year: 2018,
 			title:
@@ -48,6 +49,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.7202/1045130ar'
 		},
 		{
+			wikidataId: 'Q113528241',
 			authors: ['Nelly Mwale'],
 			year: 2019,
 			title: "The Nature and Significance of a Muslim Woman's Contest for Mayor of Lusaka, Zambia",
@@ -55,6 +57,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.14426/ajgr.v25i2.17'
 		},
 		{
+			wikidataId: 'Q113528264',
 			authors: ['Muriel Gomez-Perez', 'Cédric Jourde'],
 			year: 2020,
 			title: 'Introduction to the Special Issue on Religious Entrepreneurship',
@@ -62,6 +65,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.2979/africatoday.67.2-3.01'
 		},
 		{
+			wikidataId: 'Q113528248',
 			authors: ['Hassan J. Ndzovu'],
 			year: 2019,
 			title:
@@ -70,6 +74,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.14426/ajgr.v25i2.15'
 		},
 		{
+			wikidataId: 'Q113528262',
 			authors: ['Joshua Meservey'],
 			year: 2021,
 			title: 'Salafis, Sufis, and the Contest for the Future of African Islam',
@@ -77,6 +82,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://www.hudson.org/node/44076'
 		},
 		{
+			wikidataId: 'Q113524350',
 			authors: ['Lassane Ouedraogo'],
 			year: 2019,
 			title: 'Muslim Women and Pious Fashion in Burkina Faso as Identity, Pose, and Defiance',
@@ -84,6 +90,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1080/10714421.2019.1651154'
 		},
 		{
+			wikidataId: 'Q114233419',
 			authors: ['Mustapha Hashim Kurfi'],
 			year: 2018,
 			title:
@@ -92,6 +99,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://hdl.handle.net/2144/33130'
 		},
 		{
+			wikidataId: 'Q113528266',
 			authors: ['Clarisse Barbier'],
 			year: 2020,
 			title:
@@ -100,6 +108,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://www.proquest.com/docview/2404648688/abstract/9C2DDFB3F064438BPQ/1'
 		},
 		{
+			wikidataId: 'Q126191736',
 			authors: ['Muriel Gomez-Perez', 'Bertin Yameogo'],
 			year: 2024,
 			title: 'Women in Burkina Faso',
@@ -108,6 +117,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1093/acrefore/9780190277734.013.572'
 		},
 		{
+			wikidataId: 'Q114233529',
 			authors: ['Joseph Hill'],
 			year: 2021,
 			title: 'Islam and the Question of Gender',
@@ -116,6 +126,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.4324/9780367144241-12'
 		},
 		{
+			wikidataId: 'Q113524372',
 			authors: ['Aboubakar Sidiki Segda'],
 			year: 2021,
 			title:
@@ -124,6 +135,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://web.archive.org/web/20250429100739/https://revues.acaref.net/wp-content/uploads/sites/3/2021/06/18Aboubakar-Sidiki-Segda.pdf'
 		},
 		{
+			wikidataId: 'Q114243279',
 			authors: ['Robert Launay'],
 			year: 2021,
 			title: "The Qur'an School and Trajectories of Islamic Education",
@@ -132,6 +144,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.4324/9780367144241-9'
 		},
 		{
+			wikidataId: 'Q113527893',
 			authors: ['Lassane Ouedraogo'],
 			year: 2020,
 			title: 'Muslim Youth at a Crossroads: Media and Civic Engagement in Burkina Faso',
@@ -139,6 +152,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'http://rave.ohiolink.edu/etdc/view?acc_num=ohiou157547720848127'
 		},
 		{
+			wikidataId: 'Q126811639',
 			authors: ['Muriel Gomez-Perez'],
 			year: 2024,
 			title:
@@ -148,6 +162,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1515/9783111341651-020'
 		},
 		{
+			wikidataId: 'Q126811630',
 			authors: ['Katja Werthmann'],
 			year: 2024,
 			title:
@@ -157,6 +172,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.1515/9783111341651-019'
 		},
 		{
+			wikidataId: 'Q114243272',
 			authors: ['Ousman Murzik Kobo'],
 			year: 2021,
 			title: 'Fayda-Tijaniyya and Islamic Reform in Twentieth- and Twenty-First-Century Africa',
@@ -165,6 +181,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://doi.org/10.4324/9780367144241-19'
 		},
 		{
+			wikidataId: 'Q141697078',
 			authors: ['Laurence Jutras'],
 			year: 2022,
 			title: "Djinns, femmes et islam à Odienné en Côte d'Ivoire",
@@ -172,6 +189,7 @@ export const muslimWomenBurkinaFaso: Publication = {
 			url: 'https://archipel.uqam.ca/17137/'
 		},
 		{
+			wikidataId: 'Q113528321',
 			authors: ['Nelly Mwale'],
 			year: 2022,
 			title:

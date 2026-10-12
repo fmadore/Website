@@ -47,6 +47,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://de.wikipedia.org/wiki/Sunniten'
 		},
 		{
+			wikidataId: 'Q123908032',
 			authors: ['Issouf Binaté'],
 			year: 2023,
 			title:
@@ -56,6 +57,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1007/978-3-031-40316-3_8'
 		},
 		{
+			wikidataId: 'Q116777856',
 			authors: ['Luis Martinez'],
 			year: 2023,
 			title: "L'Afrique, le prochain califat? La spectaculaire expansion du djihadisme",
@@ -63,6 +65,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://www.tallandier.com/livre/lafrique-le-prochain-califat/'
 		},
 		{
+			wikidataId: 'Q113528286',
 			authors: ['Issouf Binaté'],
 			year: 2017,
 			title:
@@ -71,6 +74,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.14428/emulations.024.004'
 		},
 		{
+			wikidataId: 'Q113528262',
 			authors: ['Joshua Meservey'],
 			year: 2021,
 			title: 'Salafis, Sufis, and the Contest for the Future of African Islam',
@@ -78,6 +82,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://www.hudson.org/node/44076'
 		},
 		{
+			wikidataId: 'Q67202893',
 			authors: ['Issouf Binaté'],
 			year: 2019,
 			title:
@@ -87,6 +92,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1080/00083968.2019.1597743'
 		},
 		{
+			wikidataId: 'Q113531132',
 			authors: ['Marie Miran-Guyon'],
 			year: 2017,
 			title:
@@ -95,6 +101,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.3917/afco.263.0249'
 		},
 		{
+			wikidataId: 'Q130297936',
 			authors: ['Kristin Plys'],
 			year: 2024,
 			title: 'The Cold War from the Global South: Maoism and the Future of Liberalism',
@@ -102,6 +109,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1017/ssh.2024.22'
 		},
 		{
+			wikidataId: 'Q120529388',
 			authors: ['Mohammad Maulana Iqbal'],
 			year: 2023,
 			title:
@@ -110,6 +118,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.14421/jsa.2023.171-03'
 		},
 		{
+			wikidataId: 'Q141697078',
 			authors: ['Laurence Jutras'],
 			year: 2022,
 			title: "Djinns, femmes et islam à Odienné en Côte d'Ivoire",
@@ -117,6 +126,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://archipel.uqam.ca/17137/'
 		},
 		{
+			wikidataId: 'Q114051525',
 			authors: ['Terje Østebø'],
 			year: 2021,
 			title: 'African Salafism',
@@ -125,6 +135,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.4324/9780367144241-16'
 		},
 		{
+			wikidataId: 'Q114051504',
 			authors: ['Joseph Hellweg'],
 			year: 2019,
 			title:
@@ -133,6 +144,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1017/asr.2018.142'
 		},
 		{
+			wikidataId: 'Q116057060',
 			authors: ['Louis Audet Gosselin'],
 			year: 2021,
 			title: "Le salafisme burkinabè à l'épreuve du djihadisme",
@@ -141,6 +153,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1515/9782760643253-007'
 		},
 		{
+			wikidataId: 'Q141697079',
 			authors: ['Aala Abdelgadir'],
 			year: 2021,
 			title: 'Islamic Identity and Politics in Muslim-Minority Contexts',
@@ -148,6 +161,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://purl.stanford.edu/kx926tq7022'
 		},
 		{
+			wikidataId: 'Q113528340',
 			authors: ['Abdoulaye Sounaye'],
 			year: 2021,
 			title: "Révolution salafiste en Afrique de l'Ouest",
@@ -155,6 +169,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.3917/polaf.161.0403'
 		},
 		{
+			wikidataId: 'Q124645581',
 			authors: ['Mahamadou Bello Adamou'],
 			year: 2023,
 			title:
@@ -162,6 +177,7 @@ export const salafismCoteDIvoire: Publication = {
 			source: 'PhD dissertation, Université Abdou Moumouni, 2023'
 		},
 		{
+			wikidataId: 'Q121541367',
 			authors: ['International Crisis Group'],
 			year: 2023,
 			title: "Keeping Jihadists Out of Northern Côte d'Ivoire",
@@ -169,6 +185,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://www.crisisgroup.org/africa/west-africa/cote-divoire/b192-keeping-jihadists-out-northern-cote-divoire'
 		},
 		{
+			wikidataId: 'Q116645315',
 			authors: ['Dinah Hannaford'],
 			year: 2023,
 			title: 'Aid and the Help: International Development and the Transnational Extraction of Care',
@@ -176,6 +193,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://www.sup.org/books/sociology/aid-and-help'
 		},
 		{
+			wikidataId: 'Q130293342',
 			authors: ['Stavros Sindakis', 'Saloome Showkat'],
 			year: 2024,
 			title: 'Innovation Synergy: Navigating Strategic Frontiers for Organizational Transformation',
@@ -184,6 +202,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.4018/IJSESD.345968'
 		},
 		{
+			wikidataId: 'Q115964886',
 			authors: ['Issouf Binaté'],
 			year: 2022,
 			title:
@@ -193,6 +212,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1515/9783110733204-010'
 		},
 		{
+			wikidataId: 'Q141697076',
 			authors: ['Fatimata Sow'],
 			year: 2024,
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
@@ -200,6 +220,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://hdl.handle.net/20.500.11794/144445'
 		},
 		{
+			wikidataId: 'Q141708184',
 			authors: ['Fiifi Edu-Afful', 'Fafali Alai'],
 			year: 2025,
 			title: "Cote d'Ivoire and Terrorism in a Delicate Neighbourhood",
@@ -208,6 +229,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1007/978-3-031-89940-9_23'
 		},
 		{
+			wikidataId: 'Q141708130',
 			authors: ['Terje Østebø'],
 			year: 2026,
 			title: 'Islamic Reform in Africa',
@@ -216,6 +238,7 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1093/oxfordhb/9780197532805.013.24'
 		},
 		{
+			wikidataId: 'Q141697091',
 			authors: ['Riski Taufikur Rahman', 'Irfan Fauzi', "Naufalun Ni'am"],
 			year: 2026,
 			title:

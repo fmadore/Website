@@ -52,5 +52,5 @@ for (const edit of edits) {
 }
 for (const edit of edits) if (options.write) writeFileSync(edit.file, edit.updated);
 console.log(
-	`${edits.length} publication(s) or review(s) ${options.write ? 'updated. Run npm run gen:summaries.' : 'would change. Add --write to save.'}`
+	`${edits.length} QID(s) on publications, reviews or citing-work entries ${options.write ? 'updated. Run npm run gen:summaries.' : 'would change. Add --write to save.'}`
 );

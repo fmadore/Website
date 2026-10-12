@@ -215,7 +215,18 @@ export function insertQid(source, id, value) {
  * Patch one review of a record (an element of its `reviewedBy` array, found
  * by its title) with the review's own QID, as its first field.
  */
-export function insertReviewQid(source, title, value) {
+export const insertReviewQid = (source, title, value) =>
+	insertEntryQid(source, 'reviewedBy', title, value);
+
+/** The same for a work that cites the record, in its `citedBy` array. */
+export const insertCitingQid = (source, title, value) =>
+	insertEntryQid(source, 'citedBy', title, value);
+
+/**
+ * Patch the element of a record's `array` whose title is `title` with its own
+ * QID, as its first field; never replaces a different QID.
+ */
+export function insertEntryQid(source, array, title, value) {
 	qid(value);
 	const ast = ts.createSourceFile('publication.ts', source, ts.ScriptTarget.Latest, true);
 	const name = (p) => p.name?.getText(ast).replace(/['"]/g, '');
@@ -223,7 +234,7 @@ export function insertReviewQid(source, title, value) {
 	function visit(node) {
 		if (
 			ts.isPropertyAssignment(node) &&
-			name(node) === 'reviewedBy' &&
+			name(node) === array &&
 			ts.isArrayLiteralExpression(node.initializer)
 		)
 			for (const element of node.initializer.elements)
@@ -241,7 +252,7 @@ export function insertReviewQid(source, title, value) {
 		ts.forEachChild(node, visit);
 	}
 	visit(ast);
-	if (reviews.length !== 1) throw new Error(`Cannot locate unique review: ${title}`);
+	if (reviews.length !== 1) throw new Error(`Cannot locate unique ${array} entry: ${title}`);
 	const review = reviews[0];
 	const existing = review.properties.find((p) => name(p) === 'wikidataId');
 	if (existing) {
@@ -250,7 +261,7 @@ export function insertReviewQid(source, title, value) {
 			!ts.isStringLiteral(existing.initializer) ||
 			existing.initializer.text !== value
 		)
-			throw new Error(`Refusing to replace existing QID of review ${title}`);
+			throw new Error(`Refusing to replace existing QID of ${array} entry ${title}`);
 		return source;
 	}
 	const first = review.properties[0];

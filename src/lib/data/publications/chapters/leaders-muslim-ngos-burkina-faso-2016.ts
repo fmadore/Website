@@ -46,6 +46,7 @@ export const leadersMuslimNGOsBurkinaFaso: Publication = {
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q113519384',
 			authors: ['Cheikh E. Abdoulaye Niang'],
 			year: 2021,
 			title:
