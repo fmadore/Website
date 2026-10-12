@@ -5,9 +5,10 @@
  * item, and the site records that item's QID on the `citedBy` entry
  * (`wikidataId`, written by `wikidata:apply`). The two then check each other:
  *
- *   - a citation on Wikidata that no `citedBy` entry records is news for the
- *     site, found by whoever added it (a WikiCite bot, a reader, an earlier
- *     run), including citations no index or full-text search reaches;
+ *   - a citation on Wikidata that the cited work's `citedBy` does not record
+ *     is news for the site, found by whoever added it (a WikiCite bot, a
+ *     reader, an earlier run), including citations no index or full-text
+ *     search reaches;
  *   - an entry that records a QID whose item does not cite the work is a link
  *     Wikidata lacks, to add with the wikicite skill;
  *   - an entry with no QID yet is coverage still to do. Counted, not listed.
@@ -60,15 +61,24 @@ export function compareWikidataCitations(records, rows, acknowledged = new Set()
 	const reviews = new Set(
 		records.flatMap((p) => (p.reviewedBy ?? []).map((r) => r.wikidataId)).filter(Boolean)
 	);
+	// By pair, not by citing item: a work recorded as citing one record may cite
+	// others the site has not recorded yet.
 	const recorded = new Set(
-		published.flatMap((p) => (p.citedBy ?? []).map((c) => c.wikidataId)).filter(Boolean)
+		published.flatMap((p) =>
+			(p.citedBy ?? []).filter((c) => c.wikidataId).map((c) => `${c.wikidataId}>${p.wikidataId}`)
+		)
 	);
 	const pairs = new Set(rows.map((r) => `${r.citing}>${r.cited}`));
 
 	const unknown = new Map();
 	for (const row of rows) {
 		const record = recordOf.get(row.cited);
-		if (!record || own.has(row.citing) || reviews.has(row.citing) || recorded.has(row.citing))
+		if (
+			!record ||
+			own.has(row.citing) ||
+			reviews.has(row.citing) ||
+			recorded.has(`${row.citing}>${row.cited}`)
+		)
 			continue;
 		if (acknowledged.has(`wikidata:${row.citing}`)) continue;
 		const entry = unknown.get(row.citing) ?? {

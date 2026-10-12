@@ -55,6 +55,15 @@ it('reports citations the site does not record, but not its own works or its rev
 	expect(dismissed.unknown.map((u) => u.qid)).toEqual(['Q30']);
 });
 
+it('reports a recorded citing work for the other records it cites on Wikidata', () => {
+	// Q10 is recorded under the book only; its link to the article is still news.
+	const { unknown } = compareWikidataCitations(
+		[book, article],
+		[row('Q10', 'Q1'), row('Q10', 'Q2', 'Linked on Wikidata', 2020)]
+	);
+	expect(unknown.map((u) => [u.qid, u.cites.map((r) => r.id)])).toEqual([['Q10', ['article']]]);
+});
+
 it('reports recorded QIDs whose item does not cite the work, and counts entries without one', () => {
 	const { unlinked, withoutQid, entries } = compareWikidataCitations(
 		[book, article],
