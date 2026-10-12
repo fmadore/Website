@@ -59,5 +59,17 @@ export const muslimMinoritiesAfrica2: Publication = {
 				'Between the Local and the Global: The Iranian Revolution and Sunni-Shia Relations in South Africa',
 			authors: ['Goolam Vahed']
 		}
+	],
+	citedBy: [
+		{
+			wikidataId: 'Q121125890',
+			authors: ['Dorothea Schulz'],
+			year: 2023,
+			title:
+				"Aspiration and Activism: Muslim Students' Future-Making in Mbarara, South-Western Uganda",
+			source:
+				'In Religiosity on University Campuses in Africa: Trends and Experiences, edited by Abdoulaye Sounaye and Frédérick Madore, 243-72. Berlin: LIT Verlag, 2023',
+			url: 'https://shs.hal.science/halshs-04220072'
+		}
 	]
 };

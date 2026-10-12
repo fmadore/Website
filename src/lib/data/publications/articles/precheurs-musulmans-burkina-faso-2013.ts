@@ -171,6 +171,14 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 				'Television: Legitimization of Religious Figures and Alternative Discourse on the Status of Muslim Women',
 			source: 'Ziglôbitha, no. 8 (2023): 595-612',
 			url: 'https://www.ziglobitha.org/wp-content/uploads/2024/01/041-Art.-Sokhna-Fatou-Seck-Sarr-pp.595-612-1.pdf'
+		},
+		{
+			wikidataId: 'Q114260904',
+			authors: ['Nana Kimbiri'],
+			year: 2021,
+			title: 'Le port du voile : un phénomène nouveau à Bamako ?',
+			source: 'LMI MaCoTer, 30 March 2021',
+			url: 'https://www.lmi-macoter.net/longform/le-port-du-voile-un-phenomene-nouveau-a-bamako/'
 		}
 	]
 };

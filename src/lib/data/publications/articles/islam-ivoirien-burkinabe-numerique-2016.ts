@@ -48,12 +48,13 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 			url: 'https://doi.org/10.4000/16tj4'
 		},
 		{
+			wikidataId: 'Q141708652',
 			authors: ['Issouf Binaté'],
 			year: 2026,
 			title:
-				"Les structures islamiques d'éducation en contexte de politique de scolarisation obligatoire en Côte d'Ivoire",
+				"Islamic Educational Institutions in the Context of the Compulsory Schooling Policy in Côte d'Ivoire",
 			source:
-				"In Éducation islamique, régulation étatique et gouvernance en Afrique de l'Ouest : une perspective comparative, edited by Luqman Saka, and Kaderi N. Bukari, 203-58. Stockholm: Research and Action for Peace (REcAP) Network",
+				'In Madrasas, State Regulation and Governance in West Africa: A Comparative Perspective, edited by Luqman Saka and Kaderi N. Bukari, 189-204. Stockholm: Research and Action for Peace (REcAP) Network, 2026',
 			url: 'https://doi.org/10.5281/zenodo.18782361'
 		},
 		{
@@ -214,6 +215,15 @@ export const islamIvoirienBurkinabeNumerique: Publication = {
 				"Peran Muslim Sunni Moderat Dalam Menangkal Gerakan Ektrimisme Jama'at Nusrat Al-Islam Wal-Muslimin (JNIM) Di Pantai Gading",
 			source: 'NUANSA: Jurnal Penelitian Ilmu Sosial dan Keagamaan Islam 23, no. 1 (2026): 233-47',
 			url: 'https://doi.org/10.19105/nuansa.v23i1.24610'
+		},
+		{
+			wikidataId: 'Q113528291',
+			authors: ['Issouf Binaté'],
+			year: 2022,
+			title:
+				"Les structures islamiques d'éducation et la résistance à la covid-19 à Bouaké (Côte d'Ivoire)",
+			source:
+				"In L'école africaine face à la Covid-19, edited by Jean-Émile Charlier, Fatoumata Hane, Jean Alain Goudiaby, and Sarah Croché, 323-43. Louvain-la-Neuve: Academia, 2022"
 		}
 	]
 };

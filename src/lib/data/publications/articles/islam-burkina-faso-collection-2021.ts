@@ -72,12 +72,12 @@ export const islamBurkinaCollection: Publication = {
 			url: 'https://doi.org/10.2979/mnd.2022.a908483'
 		},
 		{
-			authors: ['Nurul Hayati', 'Ahsan Hakim'],
-			year: 2026,
-			title:
-				'Contemporary Islamic Educational Theory in Responding to the Challenges of Digital Education',
-			source: 'JDP (Jurnal Dinamika Pendidikan) 13, no. 3 (2026): 778-87',
-			url: 'https://doi.org/10.64540/7srw6433'
+			wikidataId: 'Q117802542',
+			authors: ['Robert Launay'],
+			year: 2023,
+			title: 'Review: Islam Burkina Faso Collection',
+			source: 'Reviews in Digital Humanities 4, no. 4 (2023)',
+			url: 'https://doi.org/10.21428/3e88f64f.89e71c81'
 		}
 	]
 };

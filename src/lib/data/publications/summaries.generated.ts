@@ -555,7 +555,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"openAccess": true,
 		"image": "images/publications/acteurs-religieux-numerique.webp",
 		"abstractExcerpt": "On October 21st, 2017, the editors of this special issue conducted an interview with Rosalind I. J. Hackett, one of the pioneering scholars in the field of media and religion in Africa. The interview took place via Skype ",
-		"citedByCount": 5,
+		"citedByCount": 6,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -808,7 +808,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Á partir des cas ivoirien et burkinabé, cet article propose d'explorer les contenus de l'islam à l'ère du web et des réseaux sociaux, d'en présenter les conséquences sur l'identité, l'appartenance à la communauté, l'autor",
-		"citedByCount": 20,
+		"citedByCount": 21,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -1280,7 +1280,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"image": "images/publications/muslim-minorities-africa.webp",
 		"isEditedWork": true,
 		"project": "Muslim Minorities in Southern Cities of Benin and Togo",
-		"citedByCount": 0,
+		"citedByCount": 1,
 		"tocAuthors": [
 			"Dorothea E. Schulz",
 			"Laura Collins",
@@ -1327,7 +1327,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"image": "images/publications/muslim-minorities-africa.webp",
 		"isEditedWork": true,
 		"project": "Muslim Minorities in Southern Cities of Benin and Togo",
-		"citedByCount": 0,
+		"citedByCount": 1,
 		"tocAuthors": [
 			"Frédérick Madore",
 			"Ashley E. Leinweber",
@@ -1377,7 +1377,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "This paper examines how visibility and legitimacy have been defined and achieved by Muslim women who have contributed to the development of Islam in Burkina Faso since the 1970s. We undertake a transversal study of the tr",
-		"citedByCount": 18,
+		"citedByCount": 19,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -1461,7 +1461,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Depuis le tournant des années 1990, la visibilité accrue de l'islam dans l'espace public au Burkina Faso s'est manifestée entre autres par l'émergence de prêcheurs et prêcheuses de plus en plus médiatisés. La participatio",
-		"citedByCount": 15,
+		"citedByCount": 16,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -1954,7 +1954,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "En dépit d'un nombre croissant d'études sur l'islam en Côte d'Ivoire, relativement peu de recherches ont porté sur les derniers développements de la mouvance salafiste ou « wahhabite » dans ce pays. Cette communication se",
-		"citedByCount": 1,
+		"citedByCount": 2,
 		"tocAuthors": [],
 		"sourceDirType": "proceedings"
 	},
@@ -2049,7 +2049,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			}
 		],
 		"abstractExcerpt": "L'islam a connu une progression fulgurante au Burkina Faso depuis les dernières décennies. Ce pays, autrefois qualifié de \"fille aimée de l'Église\", compte aujourd'hui plus de 60 % de musulmans. Outre leur importance numé",
-		"citedByCount": 13,
+		"citedByCount": 16,
 		"tocAuthors": [],
 		"sourceDirType": "books"
 	},

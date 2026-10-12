@@ -82,6 +82,15 @@ export const hackettInterviewDigitalMedia: Publication = {
 				'Nollywood and Popular Religion: Productions of Prosperity, Gender, and the Supernatural in Nigerian Cinema',
 			source: 'Bloomington: Indiana University Press, 2026',
 			url: 'https://doi.org/10.2979/18936.0'
+		},
+		{
+			wikidataId: 'Q114397731',
+			authors: ['Chijioke A. Azuawusiefe'],
+			year: 2020,
+			title:
+				'Nollywood and Popular Religion: Productions of Prosperity, Gender, and the Supernatural in Nigerian Cinema',
+			source: 'PhD dissertation, University of Pennsylvania, 2020',
+			url: 'https://repository.upenn.edu/handle/20.500.14332/31113'
 		}
 	]
 };

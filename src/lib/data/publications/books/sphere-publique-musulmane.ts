@@ -220,6 +220,32 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
 			source: 'Master thesis, Université Laval',
 			url: 'https://hdl.handle.net/20.500.11794/144445'
+		},
+		{
+			wikidataId: 'Q117802542',
+			authors: ['Robert Launay'],
+			year: 2023,
+			title: 'Review: Islam Burkina Faso Collection',
+			source: 'Reviews in Digital Humanities 4, no. 4 (2023)',
+			url: 'https://doi.org/10.21428/3e88f64f.89e71c81'
+		},
+		{
+			wikidataId: 'Q114244118',
+			authors: ['Daniel Svoboda'],
+			year: 2021,
+			title:
+				'Šíření salafismu v Africe: mechanismy, strategie a nástroje zahraniční politiky Saúdské Arábie',
+			source: 'Mezinárodní vztahy 56, no. 3 (2021): 39-71',
+			url: 'https://doi.org/10.32422/mv-cjir.1798'
+		},
+		{
+			wikidataId: 'Q114243334',
+			authors: ['Raymond Lemieux'],
+			year: 2018,
+			title: "Ritualités et mystères de l'identité : gérer les défis du sujet « en processus »",
+			source:
+				"In Rites et identités, edited by Denis Jeffrey and Martine Roberge, 1-20. Québec: Presses de l'Université Laval, 2018",
+			url: 'https://www.pulaval.com/livres/rites-et-identites'
 		}
 	],
 	tableOfContents: [

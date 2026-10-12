@@ -36,6 +36,14 @@ export const salafismCoteIvoire2017: Publication = {
 			title: "De l'usage de la sono dans les mosquées et les églises à Bouaké (Côte d'Ivoire)",
 			source: 'Journal des africanistes, no. 95 (2025): 78-89',
 			url: 'https://doi.org/10.4000/14usc'
+		},
+		{
+			wikidataId: 'Q123192203',
+			authors: ['Lotfi Touatit'],
+			year: 2023,
+			title: "Problématique de la reconstruction postconflit en Côte d'Ivoire",
+			source: "PhD dissertation, Université d'Alger 3, 2023",
+			url: 'https://dspace.univ-alger3.dz/jspui/handle/123456789/9219'
 		}
 	]
 };

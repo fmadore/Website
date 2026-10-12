@@ -59,5 +59,17 @@ export const muslimMinoritiesAfrica1: Publication = {
 				'Ambiguous Positionings: The Politics and Experiences of Moral Learning at Gülen Movement Schools in Urban Tanzania',
 			authors: ['Kristina Mashimi']
 		}
+	],
+	citedBy: [
+		{
+			wikidataId: 'Q121125890',
+			authors: ['Dorothea Schulz'],
+			year: 2023,
+			title:
+				"Aspiration and Activism: Muslim Students' Future-Making in Mbarara, South-Western Uganda",
+			source:
+				'In Religiosity on University Campuses in Africa: Trends and Experiences, edited by Abdoulaye Sounaye and Frédérick Madore, 243-72. Berlin: LIT Verlag, 2023',
+			url: 'https://shs.hal.science/halshs-04220072'
+		}
 	]
 };

@@ -196,6 +196,14 @@ export const muslimWomenBurkinaFaso: Publication = {
 				"Media Representations of Local Muslim Associations' Acts of Charity in Zambia's Multi-Religious but Christian-Dominated Context since the 2010s",
 			source: 'Islamic Africa 13, no. 1 (2022): 47-65',
 			url: 'https://doi.org/10.1163/21540993-01202003'
+		},
+		{
+			wikidataId: 'Q113528253',
+			authors: ['Rudolph Ware', 'Zachary Wright', 'Amir Syed'],
+			year: 2018,
+			title: 'Jihad of the Pen: The Sufi Literature of West Africa',
+			source: 'Cairo: American University in Cairo Press, 2018',
+			url: 'https://doi.org/10.2307/j.ctv2ks6zkw'
 		}
 	]
 };
