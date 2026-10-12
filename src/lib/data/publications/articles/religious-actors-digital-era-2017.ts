@@ -45,14 +45,6 @@ export const religiousActorsDigitalEra: Publication = {
 			url: 'https://doi.org/10.4000/16tj4'
 		},
 		{
-			wikidataId: 'Q113519394',
-			authors: ['Andrea Rota', 'Oliver Krüger'],
-			year: 2019,
-			title: 'The Dynamics of Religion, Media, and Community: An Introduction',
-			source: 'Online - Heidelberg Journal of Religions on the Internet 14 (8 April 2019): 1-20.',
-			url: 'https://doi.org/10.17885/heiup.rel.2019.0.23945'
-		},
-		{
 			wikidataId: 'Q113519391',
 			authors: ['Isabelle Jonveaux'],
 			year: 2019,

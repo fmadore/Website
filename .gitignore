@@ -73,3 +73,6 @@ scripts/**/__pycache__/
 
 # Local Wikidata audits, review decisions and submission batches
 /reports/wikidata/
+
+# Citation-context extraction runs (passages quoted from other people's work)
+/reports/citation-contexts/

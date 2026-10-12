@@ -2,6 +2,7 @@ import type { Publication } from '$lib/types';
 
 export const beyondKeywordsEntityLinkingResearchMetadata2026: Publication = {
 	id: 'beyond-keywords-entity-linking-research-metadata-2026',
+	wikidataId: 'Q141709850',
 	type: 'conference-proceedings',
 	title:
 		'Beyond Keywords: Training-Free Entity Linking for Research Metadata via Cross-Lingual Retrieval Consensus',

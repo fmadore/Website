@@ -114,6 +114,14 @@ export const religiosityUniversityCampuses: Publication = {
 			source:
 				'In Elgar Encyclopedia of African Politics, edited by Anne M. Kjær, Moses Khisa, and Xichavo Alecia Ndlovu. Cheltenham: Edward Elgar Publishing, 2026',
 			url: 'https://doi.org/10.4337/9781035309306.00047'
+		},
+		{
+			wikidataId: 'Q124645581',
+			authors: ['Mahamadou Bello Adamou'],
+			year: 2023,
+			title:
+				"Analyse des dynamiques religieuses à l'Université Abdou Moumouni de Niamey (UAM) à travers les interactions entre les étudiants salafis et pentecôtistes",
+			source: 'PhD dissertation, Université Abdou Moumouni, 2023'
 		}
 	]
 };

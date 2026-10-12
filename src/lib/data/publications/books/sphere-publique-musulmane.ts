@@ -246,6 +246,14 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			source:
 				"In Rites et identités, edited by Denis Jeffrey and Martine Roberge, 1-20. Québec: Presses de l'Université Laval, 2018",
 			url: 'https://www.pulaval.com/livres/rites-et-identites'
+		},
+		{
+			wikidataId: 'Q124645581',
+			authors: ['Mahamadou Bello Adamou'],
+			year: 2023,
+			title:
+				"Analyse des dynamiques religieuses à l'Université Abdou Moumouni de Niamey (UAM) à travers les interactions entre les étudiants salafis et pentecôtistes",
+			source: 'PhD dissertation, Université Abdou Moumouni, 2023'
 		}
 	],
 	tableOfContents: [

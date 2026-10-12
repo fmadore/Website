@@ -147,6 +147,14 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
 			source: 'Master thesis, Université Laval',
 			url: 'https://hdl.handle.net/20.500.11794/144445'
+		},
+		{
+			wikidataId: 'Q141697078',
+			authors: ['Laurence Jutras'],
+			year: 2022,
+			title: "Djinns, femmes et islam à Odienné en Côte d'Ivoire",
+			source: 'Masters thesis, Université du Québec à Montréal, 2022',
+			url: 'https://archipel.uqam.ca/17137/'
 		}
 	]
 };

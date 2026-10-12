@@ -170,6 +170,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	},
 	{
 		"id": "beyond-keywords-entity-linking-research-metadata-2026",
+		"wikidataId": "Q141709850",
 		"type": "conference-proceedings",
 		"title": "Beyond Keywords: Training-Free Entity Linking for Research Metadata via Cross-Lingual Retrieval Consensus",
 		"authors": [
@@ -953,7 +954,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Drawing on the case of the Association des Élèves et Étudiants Musulmans de Côte d’Ivoire (AEEMCI), the main Muslim student association in Côte d’Ivoire, we examine how Islamic activism on campus has changed since the 197",
-		"citedByCount": 3,
+		"citedByCount": 2,
 		"tocAuthors": [],
 		"sourceDirType": "chapters"
 	},
@@ -1696,7 +1697,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"project": "Religious Activism on Campuses in Togo and Benin",
 		"featured": true,
 		"abstractExcerpt": "This volume examines religiosity on university campuses in Sub-Saharan Africa. Focusing on both individuals and organized groups, the contributions open a window onto how religion becomes a factor, affects social interact",
-		"citedByCount": 3,
+		"citedByCount": 4,
 		"tocAuthors": [
 			"Abdoulaye Sounaye",
 			"Frédérick Madore",
@@ -1850,7 +1851,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"openAccess": true,
 		"image": "images/publications/acteurs-religieux-numerique.webp",
 		"abstractExcerpt": "Depuis l'étude pionnière d'O'Leary (1996) et surtout à partir des années 2000, tout un champ de recherche s'est développé sur la façon dont la religion s'inscrit dans les médias numériques – sites web, forums, blogues, mé",
-		"citedByCount": 5,
+		"citedByCount": 4,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -1935,7 +1936,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "À première vue, les récentes actions terroristes en Côte d'Ivoire et au Burkina Faso ont laissé croire à une radicalisation de l'islam dans ces deux pays. Cependant, la grande attention médiatique portée sur ces craintes ",
-		"citedByCount": 12,
+		"citedByCount": 13,
 		"tocAuthors": [],
 		"sourceDirType": "dissertations"
 	},
@@ -1975,7 +1976,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "This article examines recent developments of Salafism in Côte d'Ivoire by exploring how the movement has evolved over the last 25 years through its main national associations and leaders. Although the situation with regar",
-		"citedByCount": 24,
+		"citedByCount": 23,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -2106,7 +2107,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			}
 		],
 		"abstractExcerpt": "L'islam a connu une progression fulgurante au Burkina Faso depuis les dernières décennies. Ce pays, autrefois qualifié de \"fille aimée de l'Église\", compte aujourd'hui plus de 60 % de musulmans. Outre leur importance numé",
-		"citedByCount": 16,
+		"citedByCount": 17,
 		"tocAuthors": [],
 		"sourceDirType": "books"
 	},
