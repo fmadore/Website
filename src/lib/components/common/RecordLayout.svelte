@@ -119,6 +119,8 @@ Usage:
 
 	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 	const hasRail = $derived(Boolean(railPrimary || railSecondary));
+	/** Blocks in the reading column — masthead, document, sibling work — one grid row each. */
+	const columnRows = $derived(1 + (main ? 1 : 0) + (related ? 1 : 0));
 </script>
 
 <JsonLd id={BREADCRUMB_SCRIPT_ID} json={breadcrumbJsonLd} />
@@ -145,7 +147,7 @@ Usage:
 		     block of the body column) so that below the two-column breakpoint the
 		     rail's blocks can order themselves against it — plate and Record next
 		     to the title, ahead of the document. -->
-		<article class="record-grid" class:record-grid--no-main={!main}>
+		<article class="record-grid record-grid--rows-{columnRows}">
 			<!-- ═══ MASTHEAD ═══ -->
 			<header class="record-header">
 				{#if eyebrow.length > 0}
@@ -320,50 +322,40 @@ Usage:
 			align-items: start;
 		}
 
-		/* Masthead over the body in column one; the rail spans both rows so it
-		   still starts level with the eyebrow. */
-		.record-header {
-			grid-column: 1;
-			grid-row: 1;
-		}
-
-		.record-main {
-			grid-column: 1;
-			grid-row: 2;
-		}
-
-		/* Below the body, still in the reading column. */
+		/* Column one — masthead, document, sibling work — fills its own rows in
+		   source order, one block to a row; a record with no document simply has
+		   one row fewer, so sibling work follows the masthead. */
+		.record-header,
+		.record-main,
 		.record-related-block {
 			grid-column: 1;
-			grid-row: 3;
 		}
 
-		/* With no document, row 2 collapses to nothing but still charges its two
-		   gaps, which would open a 96px hole under the masthead. Sibling work
-		   takes row 2 instead; the rail still spans rows 1–2 in column two, so
-		   the two never meet.
+		/* The rail occupies column two across every row of column one, so it
+		   starts level with the eyebrow and can follow the scroll to the end of
+		   the reading column. */
+		.record-rail {
+			grid-column: 2;
+			grid-row: 1 / -1;
+			position: sticky;
+			top: var(--space-xl);
+		}
 
-		   The two tracks are then declared explicitly, and the second one is
-		   flexible on purpose: an item spanning a flexible track is skipped when
-		   intrinsic tracks are sized, so a rail taller than the masthead — every
-		   talk whose venue map is now a plate in it — cannot push row one open
-		   and strand the sibling work a screen below the byline. */
-		.record-grid--no-main {
+		/* The rows are declared, and only the last is flexible. With every row
+		   intrinsic, a rail taller than the column beside it — a cover plate, a
+		   long Record ledger, tags and key terms over a short abstract — had its
+		   overflow shared equally among the rows it spans, which opened a hole of
+		   several hundred pixels between the byline and the document. An item
+		   spanning a flexible track is skipped when intrinsic tracks are sized,
+		   so the masthead and the document keep their own heights and the last
+		   row alone grows to meet the rail, below everything the column prints.
+		   A masthead alone needs no template: its one row is the rail's too. */
+		.record-grid--rows-2 {
 			grid-template-rows: max-content 1fr;
 		}
 
-		.record-grid--no-main .record-related-block {
-			grid-row: 2;
-		}
-
-		/* The rail occupies column two across both rows of the page grid
-		   (masthead and body), so it starts level with the eyebrow and can
-		   follow the scroll. */
-		.record-rail {
-			grid-column: 2;
-			grid-row: 1 / span 2;
-			position: sticky;
-			top: var(--space-xl);
+		.record-grid--rows-3 {
+			grid-template-rows: max-content max-content 1fr;
 		}
 	}
 
