@@ -377,22 +377,30 @@ test('the Content Security Policy allows no inline script but hashed ones', asyn
 	await expect(page.locator('html')).toHaveClass(/\b(light|dark)\b/);
 });
 
-test('citations in context quotes each citing work with its page and source', async ({ page }) => {
+test('citations in context quotes each citing work and filters by cited publication', async ({
+	page
+}) => {
 	await page.goto('/publications/citations');
 	await ready(page);
 	await expect(page.getByRole('heading', { level: 1, name: 'Citations in context' })).toBeVisible();
-	await expect(page.getByText('Work in progress', { exact: true })).toBeVisible();
 
-	const section = page.locator('section#salafism-cote-divoire-2016');
-	await expect(section.locator('blockquote').first()).toBeVisible();
+	const quotes = page.locator('#citations blockquote');
+	await expect(quotes.first()).toBeVisible();
 	// Every quotation is marked with the language it is written in.
-	const langs = await section
-		.locator('blockquote')
-		.evaluateAll((els) => els.map((e) => e.getAttribute('lang')));
+	const langs = await quotes.evaluateAll((els) => els.map((e) => e.getAttribute('lang')));
 	expect(langs.every((lang) => /^[a-z]{2}$/.test(lang ?? ''))).toBe(true);
-	await expect(section.getByRole('link', { name: /^View publication/ })).toHaveAttribute(
-		'href',
-		/\/publications\/salafism-cote-divoire-2016$/
-	);
-	await expect(section.getByRole('heading', { name: 'Not yet read' })).toBeVisible();
+
+	// The cited-publication facet narrows the rows to the works quoting it, and
+	// each row then shows only the passages that cite it.
+	await page
+		.getByRole('button', { name: /^Rivalités et collaborations/ })
+		.first()
+		.click();
+	await expect(page).toHaveURL(/project=/);
+	const cites = page.locator('#citations .citation-cites');
+	await expect(cites.first()).toBeVisible();
+	const cited = await cites.allTextContents();
+	expect(cited.every((line) => line.includes('Rivalités et collaborations'))).toBe(true);
+
+	await expect(page.getByRole('heading', { level: 2, name: 'Coverage' })).toBeVisible();
 });

@@ -1,8 +1,7 @@
 import type { CitationContextSet } from '$lib/types';
 
-// Pilot run of 12 October 2026: passages located by Claude Haiku 5.5 in the citing works' full texts
-// (Zotero) and matched word for word against them by script; note numbers removed for display.
-export const salafismCoteDIvoireContexts: CitationContextSet = {
+// Pilot run of 12 October 2026 (see src/lib/types/citationContext.ts).
+export const salafismCoteDivoire2016Contexts: CitationContextSet = {
 	id: 'salafism-cote-divoire-2016',
 	model: 'Claude Haiku 5.5',
 	extracted: '2026-10-12',

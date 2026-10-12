@@ -208,7 +208,7 @@ export function buildLlmsTxt(): string {
 	item(
 		'Citations in context',
 		pageUrl('/publications/citations'),
-		'The sentences in which citing works cite the publications, quoted with their pages; a pilot covering one article so far (web page).'
+		'Experimental: the sentences in which citing works cite the publications, located by a language model and quoted with their pages; a pilot, coverage partial (web page).'
 	);
 	item(
 		'Talk visualisations',

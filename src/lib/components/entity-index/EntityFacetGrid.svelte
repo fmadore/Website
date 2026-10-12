@@ -36,6 +36,12 @@
 		onclearall: () => void;
 		/** Display labels for the type codes, so the summary never prints one. */
 		typeLabels?: Record<string, string>;
+		/**
+		 * Facet headings, for a page whose dimensions carry other things: the
+		 * citations page files the cited publication under `projects` and the
+		 * citing authors under `authors`.
+		 */
+		labels?: { projects?: string; authors?: string };
 	}
 
 	let {
@@ -48,7 +54,8 @@
 		activeFilterCount,
 		anyNarrowing,
 		onclearall,
-		typeLabels
+		typeLabels,
+		labels
 	}: Props = $props();
 
 	const af = $derived(filters.activeFilters);
@@ -119,7 +126,7 @@
 	<!-- PROJECTS -->
 	{#if options.projects.length > 0}
 		<div class="facet-col">
-			<h2 class="facet-label">Projects</h2>
+			<h2 class="facet-label">{labels?.projects ?? 'Projects'}</h2>
 			<ul class="facet-list">
 				{#each options.projects as project (project)}
 					{@const active = af.projects.includes(project)}
@@ -144,7 +151,7 @@
 	<!-- CO-AUTHORS -->
 	{#if options.authors.length > 0}
 		<div class="facet-col">
-			<h2 class="facet-label">Co-authors</h2>
+			<h2 class="facet-label">{labels?.authors ?? 'Co-authors'}</h2>
 			<ul class="facet-list">
 				{#each visibleAuthors as author (author)}
 					<li>
@@ -167,7 +174,7 @@
 					options={options.authors}
 					counts={filters.counts.authors}
 					selected={af.authors}
-					label="co-authors"
+					label={(labels?.authors ?? 'Co-authors').toLowerCase()}
 					ontoggle={(value) => filters.toggle('authors', value)}
 				/>
 			{/if}
