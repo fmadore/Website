@@ -30,8 +30,9 @@ jobs:
           cache: npm
 
       # No `npm ci` and no build: the script reads the data files directly via
-      # Node's TypeScript type stripping and talks to OpenAlex over HTTP, so it
-      # needs neither dependencies nor a compiled site.
+      # Node's TypeScript type stripping and talks to OpenAlex and Wikidata's
+      # SPARQL endpoints over HTTP, so it needs neither dependencies nor a
+      # compiled site.
       - name: Check citations
         run: node scripts/citations/check-citations.mjs --report=citation-report.md
         env:

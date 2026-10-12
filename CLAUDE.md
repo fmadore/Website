@@ -51,8 +51,10 @@ npm run check:agentic   # Lighthouse 13's Agentic Browsing category (LHCI's Ligh
 npm run check:links     # external links: DOIs via the Handle System, rest over HTTP
 npm run check:citations # OpenAlex sweep for new citations + works missing from the site
                         # + misattributed works and OpenAlex ids to record,
-                        # then a full-text sweep of Google Books, HAL and Wikipedia
-                        # (add --skip-discovery for the OpenAlex passes alone)
+                        # then a full-text sweep of Google Books, HAL and Wikipedia,
+                        # then Wikidata's cites-work links against citedBy
+                        # (--skip-discovery drops the full-text sweep,
+                        # --skip-wikidata the Wikidata pass)
 ```
 
 Checks and generators that reach the **deck site** (no build needed):
@@ -133,6 +135,15 @@ npm run gen:posters -- --check  # report stale/missing posters, write nothing
 > Only a lead that is _not_ a citation needs
 > `scripts/citations/citation-discovery-ack.json` — the one piece of watcher state that is
 > not simply the data files themselves.
+>
+> Wikidata is the fourth source (`wikidata-citations.mjs`), and the one the site
+> writes back to: a `citedBy` entry records its citing work's item as
+> `wikidataId` (`npm run wikidata:export -- --citing` hands the citing works to
+> the wikicite skill, `wikidata:apply` writes the QIDs), and the watcher
+> compares the `cites work` (P2860) links on both SPARQL graphs with those
+> entries. A link on Wikidata that no entry records is a new citation; an entry
+> whose item lacks the link is one to add on Wikidata. Dismissals share the
+> acknowledgement file, keyed `wikidata:Q…`.
 
 ### Prerendering
 

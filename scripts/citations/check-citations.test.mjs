@@ -53,10 +53,10 @@ const hadjWork = (citedByCount) => ({
  * OpenAlex holds, which the DOI and id lookups search; `cites` answers each
  * `cites:` query.
  */
-function runWatcher({ orcid, author, indexed, cites }) {
+function runWatcher({ orcid, author, indexed, cites, wikidata }) {
 	const directory = mkdtempSync(join(tmpdir(), 'citation-watch-'));
 	const reportPath = join(directory, 'report.md');
-	const fixture = { orcid, author, indexed, cites };
+	const fixture = { orcid, author, indexed, cites, wikidata };
 	const preload = `
 		const fixture = ${JSON.stringify(fixture)};
 		const answer = (filter) => {
@@ -75,6 +75,8 @@ function runWatcher({ orcid, author, indexed, cites }) {
 		};
 		globalThis.fetch = async (input) => {
 			const url = new URL(input);
+			if (fixture.wikidata && url.hostname.endsWith('wikidata.org'))
+				return Response.json({ results: { bindings: fixture.wikidata } });
 			const results = answer(url.searchParams.get('filter') ?? '');
 			if (url.origin !== 'https://api.openalex.org' || url.pathname !== '/works' || !results) {
 				throw new Error('Unexpected request: ' + url);
@@ -90,6 +92,7 @@ function runWatcher({ orcid, author, indexed, cites }) {
 				`data:text/javascript,${encodeURIComponent(preload)}`,
 				'scripts/citations/check-citations.mjs',
 				'--skip-discovery',
+				...(wikidata ? [] : ['--skip-wikidata']),
 				`--report=${reportPath}`
 			],
 			{ cwd: ROOT, encoding: 'utf8', timeout: 10_000 }
@@ -177,5 +180,44 @@ describe('a work OpenAlex has detached from the author', () => {
 		expect(report).toContain('## 1 publication OpenAlex does not file under the author');
 		expect(report).toContain(HADJ_FILE);
 		expect(report).toContain('[W123](https://openalex.org/W123), filed under Someone Else (A999)');
+	});
+});
+
+describe('the Wikidata pass', () => {
+	const entity = (q) => ({ value: `http://www.wikidata.org/entity/${q}` });
+	const linked = hadjCoteDIvoire.citedBy.find((citation) => citation.wikidataId);
+	let report;
+	beforeAll(() => {
+		const own = [hadjWork(1), ...pinnedWorks];
+		({ report } = runWatcher({
+			orcid: own,
+			author: own,
+			indexed: own,
+			cites: { 'cites:W123': citingFixtures(false) },
+			wikidata: [
+				{
+					citing: entity('Q999999999'),
+					cited: entity(hadjCoteDIvoire.wikidataId),
+					title: { value: 'A citation only Wikidata knows' },
+					date: { value: '2025-01-01T00:00:00Z' }
+				}
+			]
+		}));
+	});
+
+	it('reports a citing item no citedBy entry records', () => {
+		expect(report).toContain('<!-- citation-watch: findings -->');
+		expect(report).toContain('## 1 citation on Wikidata not on the site');
+		expect(report).toContain(
+			'**2025** · A citation only Wikidata knows — [Q999999999](https://www.wikidata.org/wiki/Q999999999)'
+		);
+		expect(report).toContain('`"wikidata:Q999999999": "…"`');
+	});
+
+	it('reports a recorded citing item that does not cite the work on Wikidata', () => {
+		if (!linked) return;
+		expect(report).toMatch(/## \d+ recorded citations? Wikidata lacks/);
+		expect(report).toContain(`(https://www.wikidata.org/wiki/${linked.wikidataId})`);
+		expect(report).toContain(HADJ_FILE);
 	});
 });

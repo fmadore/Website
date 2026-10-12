@@ -1,7 +1,7 @@
 /**
  * Citation and publication watcher.
  *
- * Answers four questions the site cannot answer about itself:
+ * Answers five questions the site cannot answer about itself:
  *   1. Has anyone new cited this work since the `citedBy` lists were last
  *      updated?
  *   2. Is there a published work under this ORCID that never made it into
@@ -9,6 +9,8 @@
  *   3. Does OpenAlex still hold every publication on the site, under this
  *      author, and by a key firmer than its title?
  *   4. Is anyone citing this work somewhere no citation index can see?
+ *   5. Does Wikidata record a citation the site does not, and does it record
+ *      every citation the site lists (`wikidata-citations.mjs`)?
  *
  * Why not Google Scholar. Scholar has no public API, actively serves CAPTCHAs
  * to datacentre IPs (which is all a GitHub Actions runner ever is), and
@@ -50,7 +52,8 @@
  * Usage:
  *   node scripts/citations/check-citations.mjs                  # print a summary
  *   node scripts/citations/check-citations.mjs --report out.md  # also write markdown
- *   node scripts/citations/check-citations.mjs --skip-discovery # OpenAlex passes only
+ *   node scripts/citations/check-citations.mjs --skip-discovery # OpenAlex and Wikidata passes only
+ *   node scripts/citations/check-citations.mjs --skip-wikidata  # without the Wikidata pass
  *
  * Exit code is 0 unless OpenAlex was unreachable — "you have new citations" is
  * news, not a build failure, and a discovery source being down degrades the
@@ -74,6 +77,12 @@ import {
 	markdownHref,
 	normUrl
 } from './citation-discovery.mjs';
+import {
+	ENDPOINTS as WIKIDATA_ENDPOINTS,
+	citationQuery,
+	citationRows,
+	compareWikidataCitations
+} from './wikidata-citations.mjs';
 
 const ORCID = '0000-0003-0959-2092';
 /**
@@ -95,6 +104,7 @@ const DISCOVERY_PAUSE_MS = 250;
 
 const reportPath = argv.find((a) => a.startsWith('--report='))?.slice('--report='.length) ?? null;
 const skipDiscovery = argv.includes('--skip-discovery');
+const skipWikidata = argv.includes('--skip-wikidata');
 
 // ---------------------------------------------------------------------------
 // Local publication data
@@ -715,6 +725,62 @@ if (skipDiscovery) {
 }
 
 // ---------------------------------------------------------------------------
+// Pass 4 — Wikidata: the citation graph as `cites work` (P2860)
+// ---------------------------------------------------------------------------
+
+/**
+ * Wikidata holds a citation on the citing work's item, and the site records
+ * that item's QID on the `citedBy` entry, so each checks the other: a citation
+ * on Wikidata that no entry records is news (whoever added it: a WikiCite bot,
+ * a reader, an earlier run of the wikicite skill), and an entry whose item does
+ * not cite the work is a link to add on Wikidata. Both graphs are asked, since
+ * scholarly works moved to their own endpoint in 2025. Like discovery, a
+ * failure here degrades the report rather than failing it. Dismissals share
+ * the discovery acknowledgement file, keyed `wikidata:Q…`.
+ */
+const wikidataErrors = [];
+const recordQids = publications.map(({ record }) => record.wikidataId).filter(Boolean);
+const wikidataRows = [];
+for (const endpoint of skipWikidata ? [] : WIKIDATA_ENDPOINTS) {
+	try {
+		const res = await fetch(endpoint, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/sparql-results+json',
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'User-Agent': 'frederickmadore.com citation-watch (https://www.frederickmadore.com/)'
+			},
+			body: new URLSearchParams({ query: citationQuery(recordQids) }).toString(),
+			signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS * 2)
+		});
+		if (!res.ok) throw new Error(`HTTP ${res.status}`);
+		wikidataRows.push(...citationRows((await res.json()).results.bindings));
+	} catch (err) {
+		wikidataErrors.push({ label: new URL(endpoint).hostname, message: err.message });
+	}
+}
+const wikidata = compareWikidataCitations(
+	publications.map(({ record }) => record),
+	wikidataRows,
+	acknowledged
+);
+const fileByRecord = new Map(publications.map((p) => [p.record, p.file]));
+// With a graph missing, absence proves nothing: report only what was found.
+const wikidataComplete = !skipWikidata && !wikidataErrors.length;
+const wikidataUnlinked = wikidataComplete ? wikidata.unlinked : [];
+if (wikidataComplete)
+	for (const key of wikidata.staleAcks)
+		console.warn(
+			`[check-citations] stale acknowledgement ${key} (${ackEntries[key]}) — no longer cites anything on Wikidata`
+		);
+console.log(
+	skipWikidata
+		? '[check-citations] Wikidata skipped (--skip-wikidata)'
+		: `[check-citations] Wikidata: ${wikidataRows.length} citation link(s) → ${wikidata.unknown.length} not on the site, ` +
+				`${wikidataUnlinked.length} recorded but not linked; ${wikidata.entries - wikidata.withoutQid} of ${wikidata.entries} entries carry a QID`
+);
+
+// ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
 
@@ -922,7 +988,39 @@ if (freshMentions.length) {
 	lines.push('');
 }
 
-if (lookupErrors.length || discoveryErrors.length) {
+if (wikidata.unknown.length) {
+	lines.push(
+		`## ${wikidata.unknown.length} citation${wikidata.unknown.length === 1 ? '' : 's'} on Wikidata not on the site`,
+		'',
+		'Items that cite a publication (`cites work`, P2860) and that no `citedBy` entry records by its `wikidataId`. Verify the citation, then add the entry with `wikidataId` set to the item and it stops appearing here. A link that is wrong belongs on Wikidata, not here; anything else that should not be listed can be dismissed in `scripts/citations/citation-discovery-ack.json`.',
+		''
+	);
+	for (const hit of wikidata.unknown) {
+		const year = hit.year ?? 'n.d.';
+		const title = hit.title ? md(hit.title) : '_untitled item_';
+		lines.push(
+			`- **${year}** · ${title} — [${hit.qid}](https://www.wikidata.org/wiki/${hit.qid}), citing ${hit.cites.map((r) => md(r.title)).join('; ')}`
+		);
+		lines.push(`  · not to be listed? dismiss with \`"${hit.key}": "…"\``);
+	}
+	lines.push('');
+}
+
+if (wikidataUnlinked.length) {
+	lines.push(
+		`## ${wikidataUnlinked.length} recorded citation${wikidataUnlinked.length === 1 ? '' : 's'} Wikidata lacks`,
+		'',
+		'`citedBy` entries whose `wikidataId` item does not cite the publication. Add the `cites work` (P2860) link with the wikicite skill, or correct the QID.',
+		''
+	);
+	for (const { record, citing } of wikidataUnlinked)
+		lines.push(
+			`- ${md(citing.title)} ([${citing.wikidataId}](https://www.wikidata.org/wiki/${citing.wikidataId})) → ${md(record.title)} ([${record.wikidataId}](https://www.wikidata.org/wiki/${record.wikidataId})) — \`${fileByRecord.get(record).replace(/\\/g, '/')}\``
+		);
+	lines.push('');
+}
+
+if (lookupErrors.length || discoveryErrors.length || wikidataErrors.length) {
 	lines.push('## Incomplete run', '');
 	if (lookupErrors.length) {
 		lines.push(
@@ -940,6 +1038,14 @@ if (lookupErrors.length || discoveryErrors.length) {
 		for (const e of discoveryErrors) lines.push(`- **${md(e.label)}** — ${md(e.message)}`);
 		lines.push('');
 	}
+	if (wikidataErrors.length) {
+		lines.push(
+			'These Wikidata endpoints could not be reached, so the Wikidata sections above lack what they hold, and recorded citations are not checked against them.',
+			''
+		);
+		for (const e of wikidataErrors) lines.push(`- **${md(e.label)}** — ${md(e.message)}`);
+		lines.push('');
+	}
 }
 
 const findings =
@@ -950,8 +1056,11 @@ const findings =
 	stale.length ||
 	freshWorks.length ||
 	freshMentions.length ||
+	wikidata.unknown.length ||
+	wikidataUnlinked.length ||
 	lookupErrors.length ||
-	discoveryErrors.length;
+	discoveryErrors.length ||
+	wikidataErrors.length;
 
 if (!findings) {
 	lines.push(
@@ -990,6 +1099,7 @@ lines.push(
 	'',
 	`- ${indexedWorks.length} works found in OpenAlex, cited ${totalCitations} times: ${routeCounts.join(', ')}`,
 	`- ${publications.length} publications on the site, ${foundOnSite} of them found in OpenAlex`,
+	`- ${wikidata.entries - wikidata.withoutQid} of the ${wikidata.entries} recorded citations name their Wikidata item${skipWikidata ? '' : `; Wikidata holds ${new Set(wikidataRows.map((r) => `${r.citing}>${r.cited}`)).size} citation links to the site's publications`}`,
 	'',
 	'_OpenAlex indexes fewer citations than Google Scholar, so these counts are a floor — which is what the full-text sources are there to raise._',
 	''
@@ -1008,6 +1118,7 @@ console.log(
 	findings
 		? `[check-citations] ${totalNew} new citation(s), ${missing.length} missing publication(s), ` +
 				`${unattributed.length} misattributed, ${toRecord.length} id(s) to record, ${stale.length} stale id(s), ` +
-				`${freshWorks.length} full-text lead(s), ${freshMentions.length} Wikipedia mention(s).`
+				`${freshWorks.length} full-text lead(s), ${freshMentions.length} Wikipedia mention(s), ` +
+				`${wikidata.unknown.length} Wikidata citation(s) not on the site, ${wikidataUnlinked.length} to link on Wikidata.`
 		: '[check-citations] Up to date.'
 );
