@@ -71,6 +71,43 @@ export const cvPublications: CvPublication[] = [
 		"url": "https://doi.org/10.1163/21540993-01202004"
 	},
 	{
+		"id": "beyond-keywords-entity-linking-research-metadata-2026",
+		"type": "conference-proceedings",
+		"title": "Beyond Keywords: Training-Free Entity Linking for Research Metadata via Cross-Lingual Retrieval Consensus",
+		"authors": [
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			"Frédérick Madore",
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Mirco Schoenfeld",
+				"personId": "mirco-schonfeld"
+			}
+		],
+		"date": "2026",
+		"dateISO": "2026-10-13",
+		"year": 2026,
+		"proceedingsTitle": "Proceedings of the 26th ACM/IEEE Joint Conference on Digital Libraries",
+		"placeOfPublication": "New York, NY",
+		"publisher": "Association for Computing Machinery",
+		"pages": "1-12",
+		"doi": "10.1145/3805696.3846031",
+		"url": "https://doi.org/10.1145/3805696.3846031"
+	},
+	{
 		"id": "charting-new-territory-digital-humanities-ki-african-studies-2026",
 		"type": "blogpost",
 		"title": "Charting New Territory: Digital Humanities und Künstliche Intelligenz in den African Studies",

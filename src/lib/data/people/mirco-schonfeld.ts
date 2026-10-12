@@ -3,6 +3,9 @@ import type { Person } from '$lib/types/person';
 export const person: Person = {
 	id: 'mirco-schonfeld',
 	name: 'Mirco Schönfeld',
+	aliases: ['Mirco Schoenfeld'],
+	reviewNote:
+		'Credited as Mirco Schoenfeld on the 2026 JCDL paper (ACM byline and Crossref record, ORCID 0000-0002-2843-3137) and as Mirco Schönfeld on the talks.',
 	affiliations: [
 		{
 			institution: 'University of Bayreuth',

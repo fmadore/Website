@@ -228,6 +228,24 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "Embassy Suites by Hilton Dallas Frisco Hotel & Convention Center, Frisco, Texas",
 		"country": "United States"
 	},
+	"beyond-keywords-entity-linking-research-metadata-2026": {
+		"id": "beyond-keywords-entity-linking-research-metadata-2026",
+		"itemType": "publication",
+		"title": "Beyond Keywords: Training-Free Entity Linking for Research Metadata via Cross-Lingual Retrieval Consensus",
+		"authors": [
+			"Jiayu Yang",
+			"Durgesh Nandini",
+			"Frédérick Madore",
+			"Oliver Baumann",
+			"Neeraj Thandayan Viswajith",
+			"Mirco Schoenfeld"
+		],
+		"type": "conference-proceedings",
+		"date": "2026",
+		"dateISO": "2026-10-13",
+		"year": 2026,
+		"publisher": "Association for Computing Machinery"
+	},
 	"charting-new-territory-digital-humanities-ki-african-studies-2026": {
 		"id": "charting-new-territory-digital-humanities-ki-african-studies-2026",
 		"itemType": "publication",
