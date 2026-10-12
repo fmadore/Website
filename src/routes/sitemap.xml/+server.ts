@@ -75,6 +75,7 @@ export const GET: RequestHandler = async () => {
 		// Secondary pages
 		{ path: '/cv/timeline', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/publications/visualisations', priority: 0.8, changefreq: 'monthly' },
+		{ path: '/publications/citations', priority: 0.7, changefreq: 'monthly' },
 		{ path: '/conference-activity', priority: 0.7, changefreq: 'monthly' },
 		{ path: '/conference-activity/slides', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/conference-activity/visualisations', priority: 0.8, changefreq: 'monthly' },

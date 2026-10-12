@@ -37,7 +37,8 @@ export const navItems: NavItem[] = [
 		path: `${base}/publications`,
 		dropdown: [
 			{ name: 'All Publications', path: `${base}/publications` },
-			{ name: 'Visualisations', path: `${base}/publications/visualisations` }
+			{ name: 'Visualisations', path: `${base}/publications/visualisations` },
+			{ name: 'Citations in Context', path: `${base}/publications/citations` }
 		]
 	},
 	{ name: 'Activities', path: `${base}/activities` },

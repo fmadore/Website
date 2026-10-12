@@ -206,6 +206,11 @@ export function buildLlmsTxt(): string {
 		'Charts of the publications by year, type, language and co-author (web page).'
 	);
 	item(
+		'Citations in context',
+		pageUrl('/publications/citations'),
+		'The sentences in which citing works cite the publications, quoted with their pages; a pilot covering one article so far (web page).'
+	);
+	item(
 		'Talk visualisations',
 		pageUrl('/conference-activity/visualisations'),
 		'Maps and networks of the talks (web page).'

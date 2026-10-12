@@ -24,7 +24,9 @@ const pages: { name: string; path: string }[] = [
 	{ name: 'publication detail', path: '/publications/beninese-imam-election-2022' },
 	// The densest chrome on the site: charts, the SVG network graph with its
 	// focusable nodes, sliders, chips and a datalist-backed search field.
-	{ name: 'publication visualisations', path: '/publications/visualisations' }
+	{ name: 'publication visualisations', path: '/publications/visualisations' },
+	// Quotations in four languages, each blockquote carrying its own `lang`.
+	{ name: 'citations in context', path: '/publications/citations' }
 ];
 
 /**
