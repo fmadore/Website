@@ -100,7 +100,11 @@ export function citingKey(entry: CitingWork): string | null {
  */
 export function citingWorkKind(entry: Pick<CitingWork, 'source' | 'url'>): CitingWorkKind {
 	const source = entry.source ?? '';
-	if (/wikipedia\.org/.test(entry.url ?? '') || /^Wikipedia\b/.test(source)) return 'encyclopedia';
+	if (
+		/^https?:\/\/(?:[\w-]+\.)*wikipedia\.org\//.test(entry.url ?? '') ||
+		/^Wikipedia\b/.test(source)
+	)
+		return 'encyclopedia';
 	if (/\b(?:dissertation|thesis|thèse|mémoire)\b/i.test(source)) return 'thesis';
 	if (/^In /.test(source)) return 'chapter';
 	if (/\b(?:Briefing|Institute|Report|Working Paper)\b/i.test(source)) return 'report';

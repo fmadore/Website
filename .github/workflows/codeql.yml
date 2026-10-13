@@ -44,6 +44,12 @@ jobs:
               - 'test-results'
               - '**/*.test.ts'
               - '**/*.spec.ts'
+            # The only code here that writes files is the scripts/ report
+            # generators (citation watch, Wikidata audit), whose job is to
+            # save what they fetched; the site itself never touches the disk.
+            query-filters:
+              - exclude:
+                  id: js/http-to-file-access
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2

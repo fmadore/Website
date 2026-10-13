@@ -31,7 +31,9 @@ const EXTENSIONS = ['', '.ts', '.js', '.svelte', '/index.ts', '/index.js'];
 /** The script blocks of a Svelte component, or the whole file otherwise. */
 function codeOf(file, source) {
 	if (!file.endsWith('.svelte')) return source;
-	return [...source.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]).join('\n');
+	return [...source.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script\b[^>]*>/gi)]
+		.map((m) => m[1])
+		.join('\n');
 }
 
 /** Whether an import clause names only types (`type X`, `{ type A, type B }`). */

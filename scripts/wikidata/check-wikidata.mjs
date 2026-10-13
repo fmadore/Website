@@ -162,7 +162,7 @@ mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify(report, null, 2) + '\n');
 const cell = (text) =>
 	String(text ?? '')
-		.replace(/\|/g, '\\|')
+		.replace(/[\\|]/g, '\\$&')
 		.replace(/[\r\n]/g, ' ');
 const markdown = [
 	'# Publication reconciliation with Wikidata',

@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
  */
 const templateScriptHashes = [
 	...readFileSync(new URL('./src/app.html', import.meta.url), 'utf8').matchAll(
-		/<script>([\s\S]*?)<\/script>/g
+		/<script>([\s\S]*?)<\/script\b[^>]*>/gi
 	)
 ].map(([, body]) => `sha256-${createHash('sha256').update(body).digest('base64')}`);
 

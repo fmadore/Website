@@ -214,7 +214,11 @@ export function citingWorks(records) {
  */
 export function citingType(citing) {
 	const source = citing.source ?? '';
-	if (/wikipedia\.org\//.test(citing.url ?? '') || /^Wikipedia\b/.test(source)) return null;
+	if (
+		/^https?:\/\/(?:[\w-]+\.)*wikipedia\.org\//.test(citing.url ?? '') ||
+		/^Wikipedia\b/.test(source)
+	)
+		return null;
 	if (/\b(?:PhD|Ph\.D\.|doctoral|doctorat)\b/i.test(source))
 		return { type: 'thesis', genre: 'PhD dissertation' };
 	if (/\bmaster/i.test(source)) return { type: 'thesis', genre: "Master's thesis" };

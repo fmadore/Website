@@ -22,7 +22,7 @@ export const SITE_ORIGIN = 'https://www.frederickmadore.com';
 const URL_KEY = /^(@id|url|item|image|logo|sameAs|license|urlTemplate)$|Url$/;
 
 /** schema.org properties whose value is a Date or DateTime. */
-const DATE_KEY = /^date[A-Z]|Date$/;
+const DATE_KEY = /^(?:date[A-Z].*|.*Date)$/;
 
 /**
  * Pulls the body of every `application/ld+json` script out of a page.
