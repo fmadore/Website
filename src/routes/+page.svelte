@@ -32,7 +32,7 @@
 
 <SEO
 	title="{author.name} | {author.positionShort}"
-	description="Frédérick Madore, historian and digital humanist at the University of Bayreuth, studies Islam in francophone West Africa through open collections and AI. Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot; and Co-Principal Investigator of a Volkswagen Foundation project on AI and multilingual Islamic collections; builder of IWAC and AMIRA."
+	description="Frédérick Madore, historian and digital humanist at the University of Bayreuth, studies Islam in francophone West Africa and develops open digital collections and AI workflows, including IWAC and AMIRA. Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot; and Co-Principal Investigator of a Volkswagen Foundation project on AI and multilingual Islamic collections."
 	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Artificial Intelligence, Volkswagen Foundation, Omeka S, Islam West Africa Collection, IWAC, AMIRA, Africa Multiple Interactive Research Atlas, data curation, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
 	canonical={website.url}
 	pageType="ProfilePage"
@@ -83,9 +83,9 @@
 						href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
 						data-sveltekit-preload-data><em>Islam’s ‘Peripheries’</em></a
 					>
-					(2026–2028), a Volkswagen Foundation project shared with Aksana Ismailbekova, I use AI to compare
-					Islamic discourse in two multilingual collections, from West Africa and Central Asia. The project
-					also tests new ways into them, from searching across languages to querying them in plain language
+					(2026–2028), a Volkswagen Foundation project with Aksana Ismailbekova, I use AI to compare Islamic
+					discourse in two multilingual collections, from West Africa and Central Asia. The project also
+					tests new ways into them, from searching across languages to querying them in plain language
 					through an AI assistant, with open-source tools that researchers in both regions can use.
 				</p>
 				<p>
