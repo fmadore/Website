@@ -65,8 +65,8 @@
 						>digital humanist</a
 					>
 					at the University of Bayreuth (Germany). I study Islam in francophone West Africa, and I build
-					open collections, AI workflows and research infrastructure that let me read its sources in new
-					ways.
+					open collections, AI workflows, and research infrastructure that let me read its sources in
+					new ways.
 				</p>
 				<p>
 					My two roles feed each other. As Data Curator at the <a
@@ -114,28 +114,33 @@
 
 				<h2>Digital humanities and AI in African studies</h2>
 				<p>
-					More recently, I have started applying computational methods and AI to that material, to
-					see what they turn up once a corpus outgrows close reading, and where they mislead. The
-					same question now organises
+					What can digital humanities and AI do for African studies, and on whose terms? I
+					coordinate
 					<a href={resolve('/research/dh-ai-african-studies')} data-sveltekit-preload-data
-						>a collaborative initiative I coordinate</a
-					>: two international workshops in 2026, in
+						>a collaborative initiative</a
+					>
+					around that question. It brings together scholars from Africa, Europe, and beyond to ask how
+					computational tools can change research practice without displacing African knowledge systems.
+				</p>
+				<p>
+					The initiative held two international workshops in 2026, in
 					<ItemReference
 						id="volkswagenstiftung-dh-ai-african-studies-workshop-2026"
 						label="Hanover"
 					/>
 					and
-					<ItemReference id="stias-dh-ai-african-studies-workshop-2026" label="Stellenbosch" />, and
-					a
+					<ItemReference id="stias-dh-ai-african-studies-workshop-2026" label="Stellenbosch" />. The
+					first produced <em>For Whom and For What Purpose?</em>
+					<ItemReference id="for-whom-for-what-purpose-dh-ai-african-studies-2026" />, a position
+					paper written collectively by 25 authors. Two publications are forthcoming: a
 					<a
 						href={resolve(
 							`/activities/dh-ai-african-studies-edited-volume` as `/activities/${string}`
 						)}
 						data-sveltekit-preload-data>co-edited volume</a
 					>
-					forthcoming with Bielefeld University Press. It brings together scholars from Africa, Europe,
-					and beyond to examine how computational tools can change research practice without displacing
-					African knowledge systems.
+					with Bielefeld University Press and a special issue of the
+					<em>Journal of the Digital Humanities Association of Southern Africa</em>.
 				</p>
 
 				<h2>The <em>Islam West Africa Collection</em> (IWAC)</h2>
