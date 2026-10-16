@@ -32,8 +32,8 @@
 
 <SEO
 	title="{author.name} | {author.positionShort}"
-	description="Frédérick Madore, historian of Islam in francophone West Africa and Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot;, University of Bayreuth. He builds open digital collections with Omeka S and AI, including the Islam West Africa Collection (IWAC) and AMIRA."
-	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Artificial Intelligence, Omeka S, Islam West Africa Collection, IWAC, AMIRA, Africa Multiple Interactive Research Atlas, data curation, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
+	description="Frédérick Madore, historian and digital humanist at the University of Bayreuth, studies Islam in francophone West Africa through open collections and AI. Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot; and Co-Principal Investigator of a Volkswagen Foundation project on AI and multilingual Islamic collections; builder of IWAC and AMIRA."
+	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Artificial Intelligence, Volkswagen Foundation, Omeka S, Islam West Africa Collection, IWAC, AMIRA, Africa Multiple Interactive Research Atlas, data curation, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
 	canonical={website.url}
 	pageType="ProfilePage"
 	dateModified={profile.dateModified}
@@ -61,21 +61,32 @@
 		<div class="home-main">
 			<ContentBody variant="default" additionalClasses="home-prose">
 				<p>
-					I am a Data Curator at the <a
+					I am a historian and <a href={resolve('/digital-humanities')} data-sveltekit-preload-data
+						>digital humanist</a
+					>
+					at the University of Bayreuth (Germany). I study Islam in francophone West Africa, and I build
+					open collections, AI workflows and research infrastructure that let me read its sources in new
+					ways.
+				</p>
+				<p>
+					My two roles feed each other. As Data Curator at the <a
 						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
 						target="_blank"
 						rel="noopener noreferrer"
 						>Cluster of Excellence “Africa Multiple”<span class="sr-only">
 							(opens in new tab)</span
 						></a
-					>, University of Bayreuth (Germany), where I work at the point where research
-					infrastructure meets African Studies. I help design the systems that make research data
-					more findable and reusable under the FAIR and CARE principles, and I work with colleagues
-					on the digital literacy and ethical standards that curation demands. Alongside this, I
-					continue my own research at the intersection of Islamic studies,
-					<a href={resolve('/digital-humanities')} data-sveltekit-preload-data>digital humanities</a
+					>, I help design the systems that make research data findable and reusable under the FAIR
+					and CARE principles, and I work with colleagues on the digital literacy and ethical
+					standards that curation demands. As Co-Principal Investigator of
+					<a
+						href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
+						data-sveltekit-preload-data><em>Islam’s ‘Peripheries’</em></a
 					>
-					(DH), and artificial intelligence (AI).
+					(2026–2028), a Volkswagen Foundation project shared with Aksana Ismailbekova, I use AI to compare
+					Islamic discourse in two multilingual collections, from West Africa and Central Asia. The project
+					also tests new ways into them, from searching across languages to querying them in plain language
+					through an AI assistant, with open-source tools that researchers in both regions can use.
 				</p>
 				<p>
 					My <a href={resolve('/research')} data-sveltekit-preload-data>research</a> draws on

@@ -65,7 +65,7 @@ export interface PersonSchema {
 	description?: string;
 	url: string;
 	image?: string;
-	jobTitle?: string;
+	jobTitle?: string | string[];
 	hasOccupation?: JsonLdOccupation[];
 	worksFor?: JsonLdOrganization;
 	sameAs?: string[];

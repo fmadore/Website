@@ -44,7 +44,7 @@ export function buildLlmsTxt(): string {
 	// Required H1 + blockquote summary.
 	lines.push(`# ${author.name}`, '');
 	lines.push(
-		`> ${author.fullName} is a historian of Islam in francophone West Africa and a digital humanities specialist, working as ${author.jobTitle} at the Cluster of Excellence "Africa Multiple", University of Bayreuth. This is his academic website: his publications, talks, research projects, digital humanities work, activities and CV.`
+		`> ${author.fullName} is a historian of Islam in francophone West Africa and a digital humanist at the University of Bayreuth, where he is Data Curator at the Cluster of Excellence "Africa Multiple" and Co-Principal Investigator of "Islam's 'Peripheries'", a Volkswagen Foundation project on AI and multilingual Islamic collections from West Africa and Central Asia. This is his academic website: his publications, talks, research projects, digital humanities work, activities and CV.`
 	);
 	lines.push('');
 	lines.push(

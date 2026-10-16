@@ -31,7 +31,7 @@ export interface AuthorInfo {
 	fullName: string; // With title
 	position: string;
 	positionShort: string; // Two-word standing epithet: the masthead dateline and the home <title>
-	jobTitle: string; // Precise current role for Person JSON-LD
+	jobTitle: string[]; // Precise current roles for Person JSON-LD (schema.org allows several)
 	tagline: string; // Descriptive hero standfirst — subject + affiliation, not a role list
 	nationality: string; // Used in Person JSON-LD structured data
 }
@@ -39,11 +39,12 @@ export interface AuthorInfo {
 export const author: AuthorInfo = {
 	name: 'Frédérick Madore',
 	fullName: 'Frédérick Madore, PhD',
-	position: 'Historian | Digital Humanities & AI | Data Curator, University of Bayreuth',
+	position:
+		'Historian | Digital Humanities & AI | Data Curator & Researcher, University of Bayreuth',
 	positionShort: 'Historian & Digital Humanist',
-	jobTitle: 'Data Curator',
+	jobTitle: ['Data Curator', 'Co-Principal Investigator'],
 	tagline:
-		'Historian of Islam in francophone West Africa, working with digital humanities and AI · Data Curator, Cluster of Excellence “Africa Multiple”, University of Bayreuth',
+		'Historian of Islam in francophone West Africa and digital humanist · Data Curator and Researcher, University of Bayreuth',
 	nationality: 'Canada'
 };
 
@@ -61,6 +62,8 @@ export const researchTopics: string[] = [
 	'Secularism',
 	'Muslim Politics',
 	'Digital Humanities',
+	'Artificial Intelligence',
+	'Research Data Management',
 	'Benin',
 	'Togo',
 	"Côte d'Ivoire",
@@ -112,7 +115,7 @@ export const linkedData = {
  * to the full ISO 8601 date-time Google's Profile page report demands.
  */
 export const profile = {
-	dateModified: '2026-08-12'
+	dateModified: '2026-10-16'
 } as const;
 
 export const contact = {

@@ -180,7 +180,7 @@ describe('talk, activity and project twins', () => {
 
 	it('give the home page its prose, latest activities and a way into every section', () => {
 		const markdown = homeMarkdown();
-		expect(markdown).toContain('I am a Data Curator');
+		expect(markdown).toContain('I am a historian and');
 		expect(markdown).not.toContain('View all publications');
 		expect(markdown).toContain(markdownUrl(`/activities/${activitiesByDate[0]!.id}`));
 		for (const section of ['/publications', '/conference-activity', '/research', '/cv']) {

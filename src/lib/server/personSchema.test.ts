@@ -19,7 +19,7 @@ describe('createFullPersonSchema', () => {
 
 	it('describes the current role and durable linked-data identities', () => {
 		expect(full.description).toBe(author.tagline);
-		expect(full.jobTitle).toBe('Data Curator');
+		expect(full.jobTitle).toEqual(['Data Curator', 'Co-Principal Investigator']);
 		expect(full.hasOccupation).toEqual([
 			{
 				'@type': 'Occupation',

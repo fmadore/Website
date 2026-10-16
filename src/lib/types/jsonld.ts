@@ -35,7 +35,7 @@ export interface JsonLdPerson {
 	'@id'?: string;
 	name: string;
 	url?: string;
-	jobTitle?: string;
+	jobTitle?: string | string[];
 	affiliation?: JsonLdOrganization;
 }
 
@@ -222,7 +222,7 @@ export interface PersonPageJsonLd {
 	url?: string;
 	image?: string;
 	email?: string;
-	jobTitle?: string;
+	jobTitle?: string | string[];
 	hasOccupation?: JsonLdOccupation[];
 	worksFor?: JsonLdOrganization;
 	workLocation?: JsonLdPlace;
