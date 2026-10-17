@@ -1976,7 +1976,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "This article examines recent developments of Salafism in Côte d'Ivoire by exploring how the movement has evolved over the last 25 years through its main national associations and leaders. Although the situation with regar",
-		"citedByCount": 23,
+		"citedByCount": 24,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},

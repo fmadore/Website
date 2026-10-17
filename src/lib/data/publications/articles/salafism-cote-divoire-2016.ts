@@ -99,6 +99,14 @@ export const salafismCoteDIvoire: Publication = {
 			url: 'https://doi.org/10.1017/ssh.2024.22'
 		},
 		{
+			wikidataId: 'Q141755812',
+			authors: ['Kristin Plys'],
+			year: 2026,
+			title: 'Marxist Theory and Social History of the Global South',
+			source: 'New York: Routledge, 2026',
+			url: 'https://doi.org/10.4324/9781003599937'
+		},
+		{
 			wikidataId: 'Q120529388',
 			authors: ['Mohammad Maulana Iqbal'],
 			year: 2023,
