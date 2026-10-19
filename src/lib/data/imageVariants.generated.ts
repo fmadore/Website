@@ -178,7 +178,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'digital-humanities/live-translation.webp': [1280, 640],
 	'digital-humanities/omeka-s-docker.webp': [1280, 690],
 	'digital-humanities/remoboko.webp': [1000, 480],
-	'digital-humanities/zmo-ai-pipelines.webp': [1280, 787],
+	'digital-humanities/zmo-ai-pipelines.webp': [1280, 636],
 	'digital-humanities/zmo-visualisations.webp': [1280, 826],
 	'Profile-picture.webp': [854, 742],
 	'publications/acteurs-religieux-numerique-hero.webp': [800, 1203],

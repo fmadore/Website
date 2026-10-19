@@ -689,8 +689,8 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 	{
 		"id": "zmo-ai-pipelines",
 		"title": "ZMO AI Pipelines",
-		"years": "2025",
-		"shortDescription": "Google Colab notebooks that make AI accessible for researchers: transcribe audio/video, extract text from documents (OCR/HTR), and generate summaries—no installation required.",
+		"years": "2025-2026",
+		"shortDescription": "Google Colab notebooks that let researchers transcribe interviews, read scanned and handwritten documents, and summarise sources with AI, with no installation and a record of how every result was made.",
 		"imageUrl": "/images/digital-humanities/zmo-ai-pipelines.webp",
 		"order": 5,
 		"links": [
@@ -702,11 +702,14 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"skills": [
 			"Python",
 			"Google Colab",
-			"NLP",
+			"Gemini API",
+			"LLM",
+			"Prompt Engineering",
 			"OCR",
 			"HTR",
-			"LLM",
-			"Prompt Engineering"
+			"Audio transcription",
+			"NLP",
+			"Reproducible Research"
 		],
 		"seoKeywords": [
 			"AI tools",
@@ -720,7 +723,9 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"text analysis",
 			"audio transcription",
 			"Google Colab",
-			"multilingual AI"
+			"multilingual AI",
+			"provenance",
+			"reproducible research"
 		]
 	},
 	{
