@@ -731,8 +731,8 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 	{
 		"id": "zmo-visualisations",
 		"title": "ZMO Visualisations",
-		"years": "2025",
-		"shortDescription": "Two static web apps built using data scraped monthly from the ZMO website: a word cloud showing the topics covered by each research unit, and a dashboard providing an overview of the institute's complete publication history since 1994.",
+		"years": "2025-2026",
+		"shortDescription": "Two web apps built from data scraped monthly from the ZMO website: a word explorer showing what each research unit writes about, and a dashboard of the institute's complete publication record since 1994.",
 		"imageUrl": "/images/digital-humanities/zmo-visualisations.webp",
 		"order": 6,
 		"links": [
@@ -756,6 +756,8 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"skills": [
 			"Python",
 			"Web scraping",
+			"NLP",
+			"NLTK",
 			"D3.js",
 			"Data Visualisation",
 			"Network graphs",
@@ -767,6 +769,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Leibniz-Zentrum Moderner Orient",
 			"data visualisation",
 			"word cloud",
+			"text analysis",
 			"publications dashboard",
 			"bibliometrics",
 			"co-authorship network",
