@@ -584,13 +584,18 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "omeka-s-docker",
 		"title": "Omeka S Docker Template",
 		"years": "2026",
-		"shortDescription": "A reusable Docker template for deploying production-ready Omeka S digital archive installations with automatic setup, module management, and SSL support.",
+		"shortDescription": "A self-installing Docker template that lets research teams run their own Omeka S digital archive, secure, easy to update and backed up, without being system administrators.",
 		"imageUrl": "/images/digital-humanities/omeka-s-docker.webp",
 		"order": 2,
 		"links": [
 			{
 				"url": "https://github.com/AM-Digital-Research-Environment/omeka-s-docker",
 				"label": "omeka-s-docker",
+				"type": "code"
+			},
+			{
+				"url": "https://github.com/AM-Digital-Research-Environment/am-omeka-s-docker-bootstrap",
+				"label": "am-omeka-s-docker-bootstrap",
 				"type": "code"
 			}
 		],
@@ -600,9 +605,12 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"PHP",
 			"MySQL",
 			"Linux",
+			"Bash",
 			"Omeka S",
 			"IIIF",
-			"Bash"
+			"Typesense",
+			"Caddy",
+			"GitHub Actions"
 		],
 		"seoKeywords": [
 			"Omeka S",
@@ -614,7 +622,9 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"digital humanities",
 			"containerization",
 			"museum collections",
-			"library technology"
+			"library technology",
+			"self-hosted",
+			"research data management"
 		]
 	},
 	{
