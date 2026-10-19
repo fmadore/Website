@@ -196,7 +196,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "global-heshmat",
 		"title": "Global Heshmat",
 		"years": "2026",
-		"shortDescription": "An interactive map tracing the public artworks of the Egyptian sculptor Hassan Heshmat across ten countries, developed for the Leibniz-Zentrum Moderner Orient (ZMO). Built with SvelteKit and MapLibre GL JS.",
+		"shortDescription": "An interactive map and archive following the public artworks of the Egyptian sculptor Hassan Heshmat across ten countries, and the people who shaped his career. Developed for the Leibniz-Zentrum Moderner Orient (ZMO).",
 		"imageUrl": "/images/digital-humanities/global-heshmat.webp",
 		"order": 3,
 		"links": [
@@ -216,6 +216,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"MapLibre GL",
 			"WebGL",
 			"Interactive mapping",
+			"Prosopography",
 			"Data visualisation"
 		]
 	},
