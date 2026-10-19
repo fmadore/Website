@@ -172,7 +172,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'digital-humanities/islam-burkinafaso-banner.webp': [1280, 533],
 	'digital-humanities/iwac-ai-pipelines.webp': [1280, 746],
 	'digital-humanities/iwac-bibliographic-data-wikidata.svg': [816, 816],
-	'digital-humanities/iwac-mcp-server.webp': [1280, 816],
+	'digital-humanities/iwac-mcp-server.webp': [1280, 687],
 	'digital-humanities/iwac-sentiment-analysis.webp': [1280, 800],
 	'digital-humanities/IWAC.webp': [1280, 690],
 	'digital-humanities/live-translation.webp': [1280, 821],

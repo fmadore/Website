@@ -5,46 +5,47 @@ export const iwacMcpServer: DigitalHumanitiesProject = {
 	title: 'IWAC MCP Server',
 	years: '2026-',
 	shortDescription:
-		'A Model Context Protocol server and companion agent skill that give AI assistants structured, read-only access to the Islam West Africa Collection — overcoming the limitations of keyword search through structured, AI-mediated access to the corpus.',
-	description:
-		'<p>Keyword search, the default entry point for most digital collections, struggles with a corpus like the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"><em>Islam West Africa Collection</em></a>. The term "hadj" retrieves both articles about the pilgrimage to Mecca and those mentioning individuals bearing the honorific "El Hadj." A single imam may appear under more than twenty spelling variants. Searches miss synonyms and conceptual relationships: a query for "hajj" will not surface documents discussing "pilgrimage to Mecca" unless those exact words appear.</p>' +
-		'<p>This <a href="https://modelcontextprotocol.io/docs/getting-started/intro" target="_blank" rel="noopener noreferrer">Model Context Protocol</a> (MCP) server and its companion <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview" target="_blank" rel="noopener noreferrer">agent skill</a> address these barriers by giving AI assistants structured, read-only access to the entire IWAC through the <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol</a> — an open standard that does for AI what the <a href="https://iiif.io/" target="_blank" rel="noopener noreferrer">International Image Interoperability Framework</a> (IIIF) does for images: a decentralised interface that preserves institutional data sovereignty while enabling discovery.</p>' +
-		'<h2>What the server provides</h2>' +
-		'<p>Sixteen read-only tools let any MCP-compatible AI assistant — Claude, ChatGPT, or open-source models — search and retrieve data from the collection without API credentials. The tools cover:</p>' +
-		'<ul>' +
-		'<li><strong>Article search:</strong> Find newspaper articles by keyword, country, newspaper, subject, date range, or any combination</li>' +
-		'<li><strong>Full article retrieval:</strong> Access complete metadata and OCR text for individual articles</li>' +
-		'<li><strong>Authority records:</strong> Query the index of persons, places, organisations, events, and subjects, with frequency statistics and date ranges</li>' +
-		'<li><strong>Sentiment analysis:</strong> Retrieve and compare polarity, centrality, and subjectivity assessments from three AI models (Gemini, ChatGPT, Mistral) for any article</li>' +
-		'<li><strong>Collection statistics:</strong> Get aggregate data on corpus size, newspaper coverage, and cross-country comparisons</li>' +
-		'</ul>' +
-		'<h2>The agent skill: from plumbing to intelligence</h2>' +
-		'<p>A server alone provides plumbing — raw access to data. The companion <a href="https://github.com/fmadore/iwac-mcp-server/tree/main/.agents/skills/iwac-mcp" target="_blank" rel="noopener noreferrer">agent skill</a>, a modular instruction set written in Markdown, encodes the domain knowledge that transforms tool access into methodical research. It structures the AI\'s reasoning into a five-phase workflow inspired by archival research practice:</p>' +
-		'<ol>' +
-		'<li><strong>Scoping:</strong> Assess collection coverage for a given topic across countries, newspapers, and time periods</li>' +
-		'<li><strong>Systematic searching:</strong> Deploy French-language variants and Arabic-Islamic transliteration alternatives to overcome the vocabulary problem</li>' +
-		'<li><strong>Deep reading:</strong> Retrieve and analyse full-text articles, comparing sentiment assessments across AI models</li>' +
-		'<li><strong>Triangulation:</strong> Cross-reference findings across subsets — articles, index entries, publications, references — to build a fuller picture</li>' +
-		'<li><strong>Synthesis:</strong> Produce structured findings with source attribution and confidence grading</li>' +
-		'</ol>' +
-		'<p>The skill also documents collection biases — which countries and decades have stronger coverage, which newspapers are over- or under-represented — so that the AI can contextualise its findings rather than present them as exhaustive.</p>' +
-		'<h2>Why MCP rather than fine-tuning?</h2>' +
-		'<p>Approaches like fine-tuning or retrieval-augmented generation require surrendering data to external training pipelines. MCP takes a different path: the collection stays on its own infrastructure while AI assistants query it through defined, inspectable tools. For African digital collections, historically subject to extractive knowledge practices, this matters. The institution retains full control over its data. The skill layer makes every assumption transparent and versionable. And because MCP is an open standard, any AI model — commercial or open-source — can use the same tools without vendor lock-in.</p>',
+		'An open-source connector that lets AI assistants such as Claude and ChatGPT search, read and analyse the Islam West Africa Collection, with every answer linked back to its sources.',
+	description: `
+		<p>Search the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"><em>Islam West Africa Collection</em></a> for "hadj" and you get articles about the pilgrimage to Mecca mixed with every man honoured as "El Hadj". A single imam can appear under more than twenty spellings. And a search for "hajj" misses articles that only say "pèlerinage à La Mecque". Keyword search, the default way into most digital archives, struggles with a corpus like this one.</p>
+		<p>The IWAC MCP server offers another way in. It lets an AI assistant you already use, such as Claude or ChatGPT, query the collection on your behalf, in any language. The assistant translates your question into suitable searches, reads the relevant records and writes a synthesis in which every claim links back to its source in IWAC, so you can check it yourself.</p>
+
+		<h2>What an assistant can do with it</h2>
+		<p>The server works through the <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol</a> (MCP), an open standard for connecting AI assistants to outside sources. It offers nearly forty read-only tools, which let an assistant:</p>
+		<ul>
+			<li><strong>Search</strong> newspaper articles, Islamic publications, archives, recordings, photographs and academic references, by keyword or by meaning</li>
+			<li><strong>Read</strong> full texts and transcriptions, or just the passages around a keyword</li>
+			<li><strong>Count and compare</strong>: coverage across countries, newspapers and decades, the topics and places a set of articles dwells on, and even how coverage rises in Ramadan and around Tabaski</li>
+			<li><strong>Weigh press attitudes</strong>: how five AI models read the tone of each article, and where they disagree (all five agree on fewer than a third)</li>
+			<li><strong>Export</strong> a selection as a bibliography for Zotero or BibTeX</li>
+		</ul>
+		<p>In Claude, many of these answers appear as interactive charts rather than tables of figures.</p>
+
+		<h2>A method, not only data</h2>
+		<p>The server gives access; a companion <a href="https://github.com/fmadore/iwac-mcp-server/tree/main/.agents/skills/iwac-mcp" target="_blank" rel="noopener noreferrer">research skill</a> teaches the assistant how to use it well. It works like an archivist's checklist: first establish what the collection holds, then search French sources with their spelling and transliteration variants (Maouloud, Mawlid), read the key records closely, compare different kinds of material, and report the evidence with its limits. The skill also tells the assistant where the collection is thin, so it does not present partial coverage as the whole story.</p>
+
+		<h2>Easy to connect, safe by design</h2>
+		<p>Anyone can add the hosted connector to Claude or ChatGPT without a download, sign-up or API key; the collection's <a href="https://islam.zmo.de/s/westafrica/page/ai-access" target="_blank" rel="noopener noreferrer">Ask with AI page</a> walks through the setup. Claude Desktop users can also install it in one click and run semantic search on their own computer, so no query leaves the machine.</p>
+		<p>The design keeps the collection under the control of the institution that built it. The server only reads; it cannot change the archive. Nothing is handed over to train a model, and because MCP is an open standard, commercial and open-weight models can use the same tools. For African collections, long subject to extractive knowledge practices, that control matters.</p>
+	`,
 	imageUrl: '/images/digital-humanities/iwac-mcp-server.webp',
 	order: 0,
 	links: [
 		{ url: 'https://islam.zmo.de/s/westafrica/page/ai-access' },
-		{ url: 'https://github.com/fmadore/iwac-mcp-server', type: 'code' }
+		{ url: 'https://github.com/fmadore/iwac-mcp-server', type: 'code' },
+		{ url: 'https://doi.org/10.5281/zenodo.21805837', label: 'Software DOI (Zenodo)', type: 'code' }
 	],
 	skills: [
-		'Python',
+		'TypeScript',
 		'Model Context Protocol',
 		'LLM',
 		'Prompt Engineering',
-		'pandas',
+		'Agent skills',
+		'DuckDB',
 		'Hugging Face',
-		'JSON',
-		'Omeka S API'
+		'Embeddings',
+		'Semantic search',
+		'Docker'
 	],
 	seoKeywords: [
 		'Model Context Protocol',
@@ -58,6 +59,7 @@ export const iwacMcpServer: DigitalHumanitiesProject = {
 		'data sovereignty',
 		'open standard',
 		'Claude',
+		'ChatGPT',
 		'archival research'
 	]
 };

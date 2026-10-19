@@ -348,7 +348,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "iwac-mcp-server",
 		"title": "IWAC MCP Server",
 		"years": "2026-",
-		"shortDescription": "A Model Context Protocol server and companion agent skill that give AI assistants structured, read-only access to the Islam West Africa Collection — overcoming the limitations of keyword search through structured, AI-mediated access to the corpus.",
+		"shortDescription": "An open-source connector that lets AI assistants such as Claude and ChatGPT search, read and analyse the Islam West Africa Collection, with every answer linked back to its sources.",
 		"imageUrl": "/images/digital-humanities/iwac-mcp-server.webp",
 		"order": 0,
 		"links": [
@@ -358,17 +358,24 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			{
 				"url": "https://github.com/fmadore/iwac-mcp-server",
 				"type": "code"
+			},
+			{
+				"url": "https://doi.org/10.5281/zenodo.21805837",
+				"label": "Software DOI (Zenodo)",
+				"type": "code"
 			}
 		],
 		"skills": [
-			"Python",
+			"TypeScript",
 			"Model Context Protocol",
 			"LLM",
 			"Prompt Engineering",
-			"pandas",
+			"Agent skills",
+			"DuckDB",
 			"Hugging Face",
-			"JSON",
-			"Omeka S API"
+			"Embeddings",
+			"Semantic search",
+			"Docker"
 		],
 		"seoKeywords": [
 			"Model Context Protocol",
@@ -382,6 +389,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"data sovereignty",
 			"open standard",
 			"Claude",
+			"ChatGPT",
 			"archival research"
 		]
 	},
