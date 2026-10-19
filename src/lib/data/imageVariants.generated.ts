@@ -164,7 +164,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'communications/zmo-kitchen-talks-podcast-2025.webp': [1280, 960],
 	'communications/zzf-logo-hero.webp': [900, 1309],
 	'communications/zzf-logo.webp': [600, 872],
-	'digital-humanities/amira.webp': [1280, 695],
+	'digital-humanities/amira.webp': [1280, 645],
 	'digital-humanities/burkina-faso-digital-exhibits.webp': [1200, 679],
 	'digital-humanities/dh-ai-african-studies.webp': [1280, 800],
 	'digital-humanities/genocide-at-the-security-council.webp': [1280, 800],

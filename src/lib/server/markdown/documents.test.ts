@@ -173,8 +173,7 @@ describe('talk, activity and project twins', () => {
 	it('print a digital humanities project’s description and addresses', () => {
 		const amira = byId(allDhProjects, 'amira');
 		const markdown = dhProjectMarkdown(amira);
-		expect(markdown).toContain('## The DRE behind AMIRA');
-		expect(markdown).toContain('`find_related`');
+		expect(markdown).toContain('## Shared curation, distributed storage');
 		expect(markdown).toContain('## Addresses');
 	});
 

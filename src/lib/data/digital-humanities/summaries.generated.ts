@@ -7,7 +7,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "amira",
 		"title": "Africa Multiple Interactive Research Atlas (AMIRA)",
 		"years": "2026",
-		"shortDescription": "Interactive research atlas for the Africa Multiple Cluster of Excellence — browse, filter, and compare projects, people, institutions, and research items across partner centres in Africa, Brazil, and Germany.",
+		"shortDescription": "The research-data platform of the Africa Multiple Cluster of Excellence: one place to search, map and connect thousands of research items, projects, people, publications, podcasts and videos from partner centres in Africa, Brazil and Germany.",
 		"imageUrl": "/images/digital-humanities/amira.webp",
 		"featured": true,
 		"order": 2,
@@ -26,13 +26,23 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 				"type": "code"
 			},
 			{
-				"url": "https://github.com/AM-Digital-Research-Environment/ResourceVisualizations",
-				"label": "ResourceVisualizations",
+				"url": "https://github.com/AM-Digital-Research-Environment/DRE-Visualizations",
+				"label": "DRE-Visualizations",
+				"type": "code"
+			},
+			{
+				"url": "https://github.com/AM-Digital-Research-Environment/DRE-LinkedData",
+				"label": "DRE-LinkedData",
 				"type": "code"
 			},
 			{
 				"url": "https://github.com/AM-Digital-Research-Environment/DRE-SEO",
 				"label": "DRE-SEO",
+				"type": "code"
+			},
+			{
+				"url": "https://github.com/AM-Digital-Research-Environment/omeka-s-docker",
+				"label": "omeka-s-docker",
 				"type": "code"
 			},
 			{
@@ -43,17 +53,21 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		],
 		"skills": [
 			"Omeka S",
+			"PHP",
+			"Python",
+			"TypeScript",
+			"Svelte 5",
+			"MongoDB",
 			"Typesense",
 			"Docker",
-			"Nginx",
-			"Svelte 5",
-			"TypeScript",
 			"ECharts",
+			"D3.js",
 			"MapLibre GL",
-			"MongoDB",
+			"Linked Open Data",
+			"Wikidata",
+			"Semantic search",
 			"Model Context Protocol",
-			"Data visualisation",
-			"Network graphs"
+			"Data visualisation"
 		]
 	},
 	{

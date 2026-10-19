@@ -5,44 +5,40 @@ export const amira: DigitalHumanitiesProject = {
 	title: 'Africa Multiple Interactive Research Atlas (AMIRA)',
 	years: '2026',
 	shortDescription:
-		'Interactive research atlas for the Africa Multiple Cluster of Excellence — browse, filter, and compare projects, people, institutions, and research items across partner centres in Africa, Brazil, and Germany.',
+		'The research-data platform of the Africa Multiple Cluster of Excellence: one place to search, map and connect thousands of research items, projects, people, publications, podcasts and videos from partner centres in Africa, Brazil and Germany.',
 	description: `
-		<p>The Africa Multiple Interactive Research Atlas (AMIRA) is the public access point for the research metadata of the <a href="https://www.africamultiple.uni-bayreuth.de/" target="_blank" rel="noopener noreferrer">Africa Multiple Cluster of Excellence</a>. Built on <a href="https://omeka.org/s/" target="_blank" rel="noopener noreferrer">Omeka S</a> and hosted at <a href="https://data.africamultiple.uni-bayreuth.de/s/amira" target="_blank" rel="noopener noreferrer">data.africamultiple.uni-bayreuth.de/s/amira</a>, it makes the collections of the <a href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html" target="_blank" rel="noopener noreferrer">Africa Multiple Research Centres</a> (AMRCs) — Université Joseph Ki-Zerbo in Ouagadougou, the University of Lagos, Moi University, and Rhodes University — and their partners searchable from one place. The Cluster is based at the <a href="https://www.uni-bayreuth.de/en" target="_blank" rel="noopener noreferrer">University of Bayreuth</a> and works with these four centres alongside its privileged partner, the Federal University of Bahia.</p>
+		<p>What recordings, photographs, manuscripts and datasets do the Cluster's research projects work with, and who can tell you more about them? The Africa Multiple Interactive Research Atlas (AMIRA) answers that from one place. It is the research-data platform of the <a href="https://www.africamultiple.uni-bayreuth.de/" target="_blank" rel="noopener noreferrer">Africa Multiple Cluster of Excellence</a> at the <a href="https://www.uni-bayreuth.de/en" target="_blank" rel="noopener noreferrer">University of Bayreuth</a>, and it is open to anyone, with no account needed.</p>
+		<p>The atlas describes nearly 3,800 research items in 28 languages, from more than 90 projects, linked to over 2,000 people and nearly 700 organisations. It also gathers the Cluster's publications, podcasts and recorded talks, with their transcripts searchable. AMIRA is a catalogue: the material itself usually stays with the researchers, archives and libraries that look after it, and every record says whom to ask for access.</p>
 
-		<p>The atlas covers nearly 4,000 research items, more than 90 projects, around 1,600 associated people, and nearly 600 organisations and institutions, in 28 languages across 42 countries. Alongside the research items, it also brings together the Cluster's publications and other outputs, such as podcasts.</p>
-
-		<h2>The DRE behind AMIRA</h2>
-		<p>AMIRA is the visible layer of work carried out by the <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener noreferrer">Digital Research Environment (DRE)</a>, the digital infrastructure unit of the Cluster. The DRE designs and maintains the data systems that connect researchers across the AMRCs and partner institutions, grounded in the FAIR and CARE principles and a commitment to multiple knowledge systems.</p>
-		<p>Two principles shape the atlas. Curation is a joint effort: each centre describes the data it knows best, and the DRE runs the shared infrastructure that connects them. And storage stays distributed by default — data remains in its local repository, while Bayreuth holds the metadata layer that points to it. Research data becomes findable without being relocated. AMIRA is where that metadata comes together.</p>
-
-		<h2>How it's built</h2>
-		<p>AMIRA is built from three components I developed for Omeka S. They share one design system, so the search, the charts, and the pages all follow the same brand and the same light/dark theme:</p>
-		<ul>
-			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRE-theme" target="_blank" rel="noopener noreferrer">DRE-theme</a></strong> — a custom Omeka S theme. A "Scholarly Modernism" design system in the Cluster's Uni-Grün identity, built on OKLCH design tokens, with first-class light and dark modes.</li>
-			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRESearch" target="_blank" rel="noopener noreferrer">DRE Search</a></strong> — a Typesense-backed search layer. Full-text search with autocomplete and faceted filtering across ten corpora (research items, projects, publications, people, research sections, organisations, genres, languages, locations, and subjects &amp; tags), plus a single federated search bar that queries all of them at once and groups suggestions by type.</li>
-			<li><strong><a href="https://github.com/fmadore/ResourceVisualizations" target="_blank" rel="noopener noreferrer">Resource Visualisations</a></strong> — an Omeka S module that adds interactive charts, maps, and network graphs (ECharts and MapLibre GL) to every resource page and to collection-wide overviews. These are the same visualisations developed for the Cluster's research dashboard, ported to Omeka S.</li>
-		</ul>
-
-		<h2>Querying AMIRA from an AI assistant</h2>
-		<p>A growing share of researchers reach a collection by asking an AI assistant a question rather than by searching a catalogue. The <a href="https://github.com/AM-Digital-Research-Environment/amira-mcp-server" target="_blank" rel="noopener noreferrer">AMIRA MCP server</a> is the mediated layer between the two: a read-only <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol</a> server that lets an assistant search the atlas, retrieve full records, search inside video and podcast transcripts, and follow relations across the collection, with every answer citing the AMIRA page it came from.</p>
-		<p>Its signature tool is <code>find_related</code>, which pivots from any entity — a subject, place, person, or project — to everything that co-occurs with it. Posing that kind of relational question would normally take both familiarity with the schema and a query language such as SPARQL; here it can be asked in plain language. The curatorial knowledge needed to query the atlas well (which tool to start from, that personal names resolve in either order, that the former free-text tags are folded into subjects) is carried in the tools' own descriptions, so it travels to any compliant client rather than living in a separate instruction file.</p>
-		<p>The design keeps the collection with the institution that assembled it: queries run against AMIRA's own servers rather than handing the data over, the protocol is an open standard rather than one vendor's API, and every tool is read-only and auditable. It ships with an offline-capable bundled snapshot, so the server also answers when the site is unreachable.</p>
+		<h2>Shared curation, distributed storage</h2>
+		<p>AMIRA is the public face of the Cluster's <a href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html" target="_blank" rel="noopener noreferrer">Digital Research Environment (DRE)</a>. Curation is a joint effort with the <a href="https://www.africamultiple.uni-bayreuth.de/en/1_1-About-Us/african-cluster-centres/index.html" target="_blank" rel="noopener noreferrer">Africa Multiple Research Centres</a> at Université Joseph Ki-Zerbo in Ouagadougou, the University of Lagos, Moi University and Rhodes University, alongside the Federal University of Bahia. Each centre describes the collections it knows best.</p>
+		<p>Storage stays distributed. Data remains in its local repository, while Bayreuth holds the descriptions that point to it, so research data becomes findable without being moved. The FAIR and CARE principles guide the whole design: data should be easy to find and reuse, and governed together with the communities it comes from.</p>
 
 		<h2>What you can explore</h2>
 		<ul>
-			<li><strong>Search</strong>: full-text search with autocomplete and per-corpus facets, plus a federated search that spans every corpus at once</li>
-			<li><strong>Who</strong>: the people associated with the collections, and nearly 600 organisations (institutions and groups), linked through their projects, roles, affiliations, and co-authorships</li>
-			<li><strong>Where</strong>: items mapped by place of origin and current location, photo collections on a clustered map, and country-level choropleths</li>
-			<li><strong>When</strong>: project and research-section timelines, Gantt views of project spans, and a "What's New" feed for the last 3, 6, or 12 months</li>
-			<li><strong>What</strong>: browse and filter by resource type, genre, language, subject, tag, and target audience</li>
-			<li><strong>Collections</strong>: image-rich item sets viewable as a masonry grid, a clustered map, or a timeline, all sharing one lightbox</li>
-			<li><strong>Compare</strong>: side-by-side profiles for any two projects, people, institutions, subjects, or languages</li>
-			<li><strong>Connections</strong>: per-item knowledge graphs, collaboration networks, and "discursive communities" that cluster the subjects appearing together across the archive</li>
-			<li><strong>Publications</strong>: bibliographic analytics over the Cluster's bibliography — authors, venues, keywords, and co-authorship networks</li>
+			<li><strong>Search</strong>: one search bar across twelve collections, from research items and publications to people, places and podcast transcripts, each with its own filters</li>
+			<li><strong>Maps</strong>: where items were made, where they are held today, and where the Cluster's publications appeared</li>
+			<li><strong>Networks</strong>: a knowledge graph on every record that you can drag and explore, and maps of who works with whom across projects, institutions and publications</li>
+			<li><strong>Dashboards</strong>: charts and timelines for every project, person, place and subject, and a feed of what is new</li>
+			<li><strong>Comparisons</strong>: any two projects, people, institutions, subjects or languages side by side</li>
+			<li><strong>Related content</strong>: a semantic map that groups publications, projects, podcasts and videos by meaning across languages, and suggestions of similar records on each page</li>
+			<li><strong>Collections</strong>: photo collections as a grid, a map or a timeline</li>
 		</ul>
 
-		<h2>Interface</h2>
-		<p>Light and dark modes, a public Omeka S REST API behind every page, and a save-as-image button on each chart.</p>
+		<h2>How it's built</h2>
+		<p>AMIRA runs on <a href="https://omeka.org/s/" target="_blank" rel="noopener noreferrer">Omeka S</a>, extended by modules I developed. They share one design system, with light and dark modes:</p>
+		<ul>
+			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRE-theme" target="_blank" rel="noopener noreferrer">DRE-theme</a></strong>: the look and feel, in the Cluster's green</li>
+			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRESearch" target="_blank" rel="noopener noreferrer">DRE Search</a></strong>: fast filtered search across all twelve collections</li>
+			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRE-Visualizations" target="_blank" rel="noopener noreferrer">DRE Visualizations</a></strong>: the charts, maps, networks and semantic map</li>
+			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRE-LinkedData" target="_blank" rel="noopener noreferrer">DRE Linked Data</a></strong>: a permanent address for every record that machines can read as well as people, linked to Wikidata, the German National Library and the Library of Congress, with the whole dataset available to download</li>
+			<li><strong><a href="https://github.com/AM-Digital-Research-Environment/DRE-SEO" target="_blank" rel="noopener noreferrer">DRE SEO</a></strong>: the metadata that helps search engines find each record and lets Zotero cite it</li>
+		</ul>
+		<p>Behind the scenes, the Cluster's research data lives in a MongoDB database. A sync pipeline publishes it to AMIRA and keeps it up to date, together with the Cluster's publication repository and its YouTube channel. The site itself is hosted with my <a href="/digital-humanities/omeka-s-docker">Omeka S Docker template</a>.</p>
+
+		<h2>Ask AMIRA through an AI assistant</h2>
+		<p>More and more researchers start with a question to an AI assistant rather than a catalogue search. The <a href="https://github.com/AM-Digital-Research-Environment/amira-mcp-server" target="_blank" rel="noopener noreferrer">AMIRA MCP server</a> lets an assistant query the atlas directly through the open <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol</a>. It can search records, read podcast and video transcripts, and follow connections across the collection, all in plain language. Every answer links back to the AMIRA page it came from.</p>
+		<p>The server is read-only and queries AMIRA's own data rather than handing the collection over to a third party. A bundled snapshot keeps it working even when the site is offline.</p>
 	`,
 	imageUrl: `/images/digital-humanities/amira.webp`,
 	featured: true,
@@ -60,13 +56,23 @@ export const amira: DigitalHumanitiesProject = {
 			type: 'code'
 		},
 		{
-			url: 'https://github.com/AM-Digital-Research-Environment/ResourceVisualizations',
-			label: 'ResourceVisualizations',
+			url: 'https://github.com/AM-Digital-Research-Environment/DRE-Visualizations',
+			label: 'DRE-Visualizations',
+			type: 'code'
+		},
+		{
+			url: 'https://github.com/AM-Digital-Research-Environment/DRE-LinkedData',
+			label: 'DRE-LinkedData',
 			type: 'code'
 		},
 		{
 			url: 'https://github.com/AM-Digital-Research-Environment/DRE-SEO',
 			label: 'DRE-SEO',
+			type: 'code'
+		},
+		{
+			url: 'https://github.com/AM-Digital-Research-Environment/omeka-s-docker',
+			label: 'omeka-s-docker',
 			type: 'code'
 		},
 		{
@@ -77,16 +83,20 @@ export const amira: DigitalHumanitiesProject = {
 	],
 	skills: [
 		'Omeka S',
+		'PHP',
+		'Python',
+		'TypeScript',
+		'Svelte 5',
+		'MongoDB',
 		'Typesense',
 		'Docker',
-		'Nginx',
-		'Svelte 5',
-		'TypeScript',
 		'ECharts',
+		'D3.js',
 		'MapLibre GL',
-		'MongoDB',
+		'Linked Open Data',
+		'Wikidata',
+		'Semantic search',
 		'Model Context Protocol',
-		'Data visualisation',
-		'Network graphs'
+		'Data visualisation'
 	]
 };
