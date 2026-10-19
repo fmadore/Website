@@ -535,10 +535,14 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "live-translation",
 		"title": "Live Translation and Subtitles",
 		"years": "2026",
-		"shortDescription": "A lightweight desktop app that captions a room as people speak, either translating into English or French or transcribing the spoken language. Built in Rust and Tauri for a bilingual workshop at STIAS in Stellenbosch.",
+		"shortDescription": "A Windows app that puts live captions and translations over meetings, video calls and slides, offline with Whisper or through Gemini, OpenAI and Mistral. Built for a bilingual workshop at STIAS, now in the Microsoft Store.",
 		"imageUrl": "/images/digital-humanities/live-translation.webp",
 		"order": 2,
 		"links": [
+			{
+				"url": "https://apps.microsoft.com/detail/9PFB8LR3RR9X",
+				"label": "Microsoft Store"
+			},
 			{
 				"url": "https://github.com/fmadore/Live-translation",
 				"label": "Live-translation",
@@ -563,9 +567,11 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"WebSocket",
 			"Real-time Audio",
 			"Speech Recognition",
+			"Whisper",
 			"Machine Translation",
 			"LLM",
-			"Accessibility"
+			"Accessibility",
+			"Internationalisation"
 		],
 		"seoKeywords": [
 			"live translation",
@@ -580,6 +586,10 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Gemini",
 			"OpenAI",
 			"Mistral Voxtral",
+			"Whisper",
+			"offline transcription",
+			"Microsoft Store",
+			"Windows",
 			"digital humanities",
 			"African studies"
 		]

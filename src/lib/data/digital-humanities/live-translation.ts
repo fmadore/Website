@@ -5,27 +5,32 @@ export const liveTranslation: DigitalHumanitiesProject = {
 	title: 'Live Translation and Subtitles',
 	years: '2026',
 	shortDescription:
-		'A lightweight desktop app that captions a room as people speak, either translating into English or French or transcribing the spoken language. Built in Rust and Tauri for a bilingual workshop at STIAS in Stellenbosch.',
+		'A Windows app that puts live captions and translations over meetings, video calls and slides, offline with Whisper or through Gemini, OpenAI and Mistral. Built for a bilingual workshop at STIAS, now in the Microsoft Store.',
 	description: `
-		<p>A lightweight desktop app that captions a room as people speak. It captures the presenter's microphone or the computer's own audio output, streams it to a realtime speech model, and displays the text in a transparent, always-on-top overlay that can be positioned over the slides.</p>
+		<p>A desktop app that captions a room as people speak. It listens to a microphone, the computer's own sound or a single application such as Teams or Zoom, and shows the words in a transparent overlay that sits over the slides or the call, always on top and out of the mouse's way.</p>
 
-		<p>I wrote it for the <a href="https://fmadore.github.io/stias-dh-ai-workshop-2026/" target="_blank" rel="noopener noreferrer">Digital Humanities and Artificial Intelligence in African Studies</a> <a href="/communications/stias-dh-ai-african-studies-workshop-2026">workshop</a> at the Stellenbosch Institute for Advanced Study, 21–24 September 2026, where papers and discussion run in English and French. The workshop is hybrid, so the app can take the room microphone, the Teams or Zoom feed, or both at once.</p>
+		<p>I first wrote it for the <a href="https://fmadore.github.io/stias-dh-ai-workshop-2026/" target="_blank" rel="noopener noreferrer">Digital Humanities and Artificial Intelligence in African Studies</a> <a href="/communications/stias-dh-ai-african-studies-workshop-2026">workshop</a> at the Stellenbosch Institute for Advanced Study, 21–24 September 2026, where papers and discussion ran in English and French and part of the audience joined online. It has since grown into a general tool, published in the <a href="https://apps.microsoft.com/detail/9PFB8LR3RR9X" target="_blank" rel="noopener noreferrer">Microsoft Store</a> for Windows 11, with an interface in English, French and German.</p>
 
-		<h2>Two modes</h2>
+		<h2>What it does</h2>
 		<ul>
-			<li><strong>Live translation</strong>: Google Gemini or OpenAI detects the spoken language and returns English or French.</li>
-			<li><strong>Live subtitles</strong>: Mistral's Voxtral transcribes without translating. The transcript saves as plain text or Markdown.</li>
+			<li><strong>Offline subtitles</strong>: Whisper runs on your own computer in 99 languages, with no account, API key or internet connection, and the audio never leaves the machine</li>
+			<li><strong>Offline translation into English</strong>, with the same Whisper models</li>
+			<li><strong>Cloud translation</strong> through Google Gemini, into 78 languages, or OpenAI; Gemini and Mistral also offer same-language subtitles</li>
+			<li><strong>Bilingual audiences</strong>: two translation languages at once, or the original speech beneath the translation</li>
+			<li><strong>Readable captions</strong>: adjustable font, size, colour, contrast and reading pace, right-to-left scripts included</li>
+			<li><strong>A transcript to keep</strong>, as text, Markdown, or SRT and WebVTT subtitle files</li>
 		</ul>
 
 		<h2>What it costs to run</h2>
-		<p>All three providers bill per minute of streamed audio, so a session costs money for as long as it is open. An hour of translation runs to about $1.25–2.21 on Gemini or $3.06 on OpenAI, an hour of subtitles about $0.36. Captioning two audio sources at once doubles those figures. The repository documents the per-minute rates behind them.</p>
+		<p>Captioning with Whisper is free. The cloud services use your own account and bill per minute of streamed audio, so a session costs money for as long as it is open: roughly $1–3 an hour for translation and under $1 for subtitles. The repository documents the rates behind those figures.</p>
 
 		<h2>How it's built</h2>
-		<p>A <a href="https://tauri.app/" target="_blank" rel="noopener noreferrer">Tauri</a> app with a Rust core and a <a href="https://svelte.dev/docs/kit" target="_blank" rel="noopener noreferrer">SvelteKit</a> front end, in two windows: an operator panel for controls, meters and export, and the click-through caption overlay. Rust handles capture, including WASAPI loopback for system audio on Windows, and the WebSocket session that deals with timeouts, reconnection and stale audio. API keys stay in the operating system's keychain and are read only by the Rust side. The code is <a href="https://github.com/fmadore/Live-translation/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>.</p>
+		<p>A <a href="https://tauri.app/" target="_blank" rel="noopener noreferrer">Tauri</a> app with a Rust core and a <a href="https://svelte.dev/docs/kit" target="_blank" rel="noopener noreferrer">SvelteKit</a> front end, native on both x64 and ARM64 Windows. Rust handles audio capture, the local Whisper engine and the streaming connections to the cloud services, including timeouts and reconnection. API keys stay in Windows Credential Manager, and no audio, transcript or usage data ever reaches me. The code is <a href="https://github.com/fmadore/Live-translation/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>.</p>
 	`,
 	imageUrl: '/images/digital-humanities/live-translation.webp',
 	order: 2,
 	links: [
+		{ url: 'https://apps.microsoft.com/detail/9PFB8LR3RR9X', label: 'Microsoft Store' },
 		{ url: 'https://github.com/fmadore/Live-translation', label: 'Live-translation', type: 'code' },
 		{
 			url: 'https://fmadore.github.io/stias-dh-ai-workshop-2026/',
@@ -46,9 +51,11 @@ export const liveTranslation: DigitalHumanitiesProject = {
 		'WebSocket',
 		'Real-time Audio',
 		'Speech Recognition',
+		'Whisper',
 		'Machine Translation',
 		'LLM',
-		'Accessibility'
+		'Accessibility',
+		'Internationalisation'
 	],
 	seoKeywords: [
 		'live translation',
@@ -63,6 +70,10 @@ export const liveTranslation: DigitalHumanitiesProject = {
 		'Gemini',
 		'OpenAI',
 		'Mistral Voxtral',
+		'Whisper',
+		'offline transcription',
+		'Microsoft Store',
+		'Windows',
 		'digital humanities',
 		'African studies'
 	]

@@ -175,7 +175,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'digital-humanities/iwac-mcp-server.webp': [1280, 687],
 	'digital-humanities/iwac-sentiment-analysis.webp': [1280, 800],
 	'digital-humanities/IWAC.webp': [1280, 690],
-	'digital-humanities/live-translation.webp': [1280, 821],
+	'digital-humanities/live-translation.webp': [1280, 640],
 	'digital-humanities/omeka-s-docker.webp': [1280, 690],
 	'digital-humanities/remoboko.webp': [1000, 480],
 	'digital-humanities/zmo-ai-pipelines.webp': [1280, 787],
