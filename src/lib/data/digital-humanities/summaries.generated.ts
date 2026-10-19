@@ -138,7 +138,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "genocide-at-the-security-council",
 		"title": "Genocide at the Security Council",
 		"years": "2026-",
-		"shortDescription": "A reproducible pipeline and interactive dashboard tracing how the word genocide was used across 106,302 UN Security Council speeches, 1992–2023. Built with Python and SvelteKit, with every figure traceable to the script that made it.",
+		"shortDescription": "A reproducible pipeline and interactive dashboard tracing how the word genocide was used across 167,642 UN Security Council speeches, 1946–2024, with every figure traceable to the script that made it.",
 		"imageUrl": "/images/digital-humanities/genocide-at-the-security-council.webp",
 		"order": 0,
 		"links": [
@@ -151,7 +151,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 				"type": "code"
 			},
 			{
-				"url": "https://doi.org/10.7910/DVN/KGVSYH",
+				"url": "https://doi.org/10.7910/DVN/CKPTRB",
 				"label": "Source corpus (Dataverse)",
 				"type": "data"
 			}
@@ -169,6 +169,10 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"ECharts",
 			"MapLibre GL",
 			"Data Visualisation",
+			"LLM",
+			"Open-weight models",
+			"vLLM",
+			"Embeddings",
 			"GitHub Actions"
 		],
 		"seoKeywords": [

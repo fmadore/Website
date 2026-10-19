@@ -167,7 +167,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'digital-humanities/amira.webp': [1280, 645],
 	'digital-humanities/burkina-faso-digital-exhibits.webp': [1200, 679],
 	'digital-humanities/dh-ai-african-studies.webp': [1280, 800],
-	'digital-humanities/genocide-at-the-security-council.webp': [1280, 800],
+	'digital-humanities/genocide-at-the-security-council.webp': [1280, 655],
 	'digital-humanities/global-heshmat.webp': [1280, 729],
 	'digital-humanities/islam-burkinafaso-banner.webp': [1280, 533],
 	'digital-humanities/iwac-ai-pipelines.webp': [1280, 746],
