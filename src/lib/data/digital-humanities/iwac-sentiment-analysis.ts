@@ -3,56 +3,39 @@ import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
 export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 	id: 'iwac-sentiment-analysis',
 	title: 'IWAC Sentiment Analysis',
-	years: '2025',
+	years: '2025-2026',
 	shortDescription:
-		'Interactive visualisation of sentiment patterns in 12,280+ West African press articles on Islam, with multi-model comparison (ChatGPT, Gemini, Mistral) and third-party arbitration.',
+		'An interactive dashboard comparing how five AI models read the tone of more than 12,000 West African press articles on Islam, where they agree, and where they part ways.',
 	description: `
-		<p>An interactive dashboard exploring how West African newspapers portray Islam and Muslims, using AI-powered sentiment analysis of the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer">Islam West Africa Collection (IWAC)</a> corpus. Three large language models (LLMs) analysed over 12,000 Francophone press articles to assess their tone, objectivity, and thematic focus on Islam.</p>
-
-		<h2>Corpus</h2>
-		<p><strong>12,280+ articles</strong> from <strong>56 newspapers</strong> across <strong>5 countries</strong> (Benin, Burkina Faso, Côte d'Ivoire, Niger, Togo), sourced from the <a href="https://huggingface.co/datasets/fmadore/islam-west-africa-collection" target="_blank" rel="noopener noreferrer">IWAC Hugging Face dataset</a>.</p>
-
-		<h2>Methodology</h2>
-		<p>Each article was analysed by three LLMs using a task-specific French-language prompt:</p>
+		<p>How do West African newspapers portray Islam and Muslims, and can AI help answer that question at scale? This dashboard explores 12,349 French-language articles from 58 newspapers in Benin, Burkina Faso, Côte d'Ivoire, Niger and Togo, published between 1961 and 2025 and drawn from the <a href="/digital-humanities/iwac">Islam West Africa Collection</a>.</p>
+		<p>Rather than trust a single model, it asks five: GPT-5.6 Luna, Mistral Small 4, DeepSeek V4 Flash, Gemma 4 31B and Qwen3.8 27B. Each read every article and judged three things:</p>
 		<ul>
-			<li><strong>OpenAI GPT-5 mini</strong> (ChatGPT)</li>
-			<li><strong>Google Gemini 3.0 Flash</strong></li>
-			<li><strong>Mistral Ministral 3 14B</strong></li>
+			<li><strong>Polarity</strong>: how favourably the article portrays Islam and Muslims</li>
+			<li><strong>Subjectivity</strong>: how much opinion it contains, as against reported fact</li>
+			<li><strong>Centrality</strong>: how central Islam is to the story</li>
 		</ul>
-		<p>The models evaluated each article across three analytical dimensions:</p>
-		<ol>
-			<li><strong>Polarity</strong>: Stance toward Islam and Muslims (very negative → very positive)</li>
-			<li><strong>Subjectivity</strong>: Density of opinion vs. reported fact (1-5 scale)</li>
-			<li><strong>Centrality</strong>: Thematic prominence of Islamic topics (marginal → very central)</li>
-		</ol>
-		<p>Each model was required to generate concise justifications for its classifications, producing an auditable dataset documenting both conclusions and inferential reasoning.</p>
-		<p><strong>Cost</strong>: ~€16 each for Gemini and ChatGPT, €6 for Mistral, with 24 hours of batch processing—replacing months of potential manual coding.</p>
+		<p>Each model also explains every judgement in a sentence or two, so any rating can be checked against its reasoning.</p>
 
-		<h2>Features</h2>
-		<h3>Eight visualisation views</h3>
-		<ol>
-			<li><strong>Charts</strong>: Polarity and subjectivity distribution by newspaper</li>
-			<li><strong>Trends</strong>: Temporal evolution of sentiments over the decades</li>
-			<li><strong>Distribution</strong>: Cross-tabulation of polarity × subjectivity</li>
-			<li><strong>Volume</strong>: Article counts by country over time</li>
-			<li><strong>Heatmap</strong>: Centrality of Islam/Muslims by country and year</li>
-			<li><strong>Table</strong>: Searchable article list with full details and AI justifications</li>
-			<li><strong>Comparison</strong>: Side-by-side analysis of how different AI models interpreted the same articles</li>
-			<li><strong>Extremes</strong>: Keywords associated with the most positive/negative portrayals</li>
-		</ol>
+		<h2>Where the models disagree</h2>
+		<p>The disagreements are part of the findings. All five models agree on polarity for only about a third of the articles. The dashboard measures their agreement pair by pair, shows the articles that split them, and asks a sixth model, Claude Opus 5, to arbitrate blind on the sharpest disputes. It is also open about its gaps: Qwen declined 200 articles, mostly ones in which Islam is peripheral, and the dashboard says so rather than hiding it.</p>
 
-		<h3>Multi-model comparison</h3>
-		<p>To audit AI reliability, the dashboard compares how the three models interpreted each article. When models disagree, a more powerful AI (Gemini 3.0 Pro) serves as arbiter to evaluate which interpretation better fits the source text. This revealed that Gemini 3.0 Flash was the most reliable model overall.</p>
-
-		<h3>Interface</h3>
+		<h2>What you can explore</h2>
+		<p>Thirteen views share one set of filters, by country, newspaper and rating, and every view has its own web address for sharing:</p>
 		<ul>
-			<li>Bilingual (French/English)</li>
-			<li>Filter by country, newspaper, and sentiment criteria</li>
-			<li>Shareable URLs and CSV export for further analysis</li>
+			<li><strong>Trends</strong> over time, by country and by newspaper, with newspapers ranked by tone</li>
+			<li><strong>Seasonality</strong>: coverage nearly doubles during Ramadan and the hajj months, a rhythm only an Islamic-calendar view reveals</li>
+			<li><strong>A map</strong> of the places the articles mention</li>
+			<li><strong>The full article table</strong>, with each model's justifications</li>
+			<li><strong>Comparison and agreement</strong>: two models side by side, agreement statistics and the arbiter's verdicts</li>
+			<li><strong>Extremes</strong>: the words that characterise the most positive and most negative coverage</li>
 		</ul>
+		<p>The interface is bilingual, in French and English, and any selection can be downloaded as CSV.</p>
 
-		<h2>A "vibe coding" experiment</h2>
-		<p>This dashboard was built entirely through natural-language collaboration with AI coding assistants (Claude Sonnet and Opus), without manually writing code. This approach demonstrates how researchers without programming expertise can now develop sophisticated analytical tools by articulating their vision in plain language—lowering barriers to digital humanities work for scholars at institutions with limited technical support.</p>
+		<h2>Two rounds of analysis</h2>
+		<p>A first round in 2025 used three models (GPT-5 mini, Gemini 3 Flash and Ministral 14B), for under €40 and a day of batch processing, replacing months of manual coding. A second round in 2026, with a revised prompt and five models, is now the default. The first stays online unchanged, so figures already cited from it still resolve.</p>
+
+		<h2>Built with AI</h2>
+		<p>I built the dashboard through natural-language collaboration with AI coding assistants, without writing the code by hand. It shows how researchers without programming training can now create serious analytical tools, lowering the barrier for scholars at institutions with little technical support.</p>
 	`,
 	imageUrl: '/images/digital-humanities/iwac-sentiment-analysis.webp',
 	order: 2,
@@ -62,18 +45,22 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 			url: 'https://github.com/fmadore/IWAC-sentiment-analysis',
 			label: 'IWAC-sentiment-analysis',
 			type: 'code'
-		}
+		},
+		{ url: 'https://doi.org/10.5281/zenodo.21806223', label: 'Software DOI (Zenodo)', type: 'code' }
 	],
 	skills: [
-		'Svelte',
-		'Data Visualisation',
-		'ECharts',
-		'Vite',
-		'Tailwind CSS',
+		'Svelte 5',
+		'SvelteKit',
 		'TypeScript',
-		'Prompt Engineering',
+		'Python',
+		'ECharts',
+		'MapLibre GL',
+		'Tailwind CSS',
+		'Data Visualisation',
 		'LLM',
-		'JSON'
+		'Prompt Engineering',
+		'Sentiment analysis',
+		'Inter-rater agreement'
 	],
 	embeddableContent: [
 		{

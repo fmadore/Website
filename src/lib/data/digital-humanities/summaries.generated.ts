@@ -408,8 +408,8 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 	{
 		"id": "iwac-sentiment-analysis",
 		"title": "IWAC Sentiment Analysis",
-		"years": "2025",
-		"shortDescription": "Interactive visualisation of sentiment patterns in 12,280+ West African press articles on Islam, with multi-model comparison (ChatGPT, Gemini, Mistral) and third-party arbitration.",
+		"years": "2025-2026",
+		"shortDescription": "An interactive dashboard comparing how five AI models read the tone of more than 12,000 West African press articles on Islam, where they agree, and where they part ways.",
 		"imageUrl": "/images/digital-humanities/iwac-sentiment-analysis.webp",
 		"order": 2,
 		"links": [
@@ -420,18 +420,26 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 				"url": "https://github.com/fmadore/IWAC-sentiment-analysis",
 				"label": "IWAC-sentiment-analysis",
 				"type": "code"
+			},
+			{
+				"url": "https://doi.org/10.5281/zenodo.21806223",
+				"label": "Software DOI (Zenodo)",
+				"type": "code"
 			}
 		],
 		"skills": [
-			"Svelte",
-			"Data Visualisation",
-			"ECharts",
-			"Vite",
-			"Tailwind CSS",
+			"Svelte 5",
+			"SvelteKit",
 			"TypeScript",
-			"Prompt Engineering",
+			"Python",
+			"ECharts",
+			"MapLibre GL",
+			"Tailwind CSS",
+			"Data Visualisation",
 			"LLM",
-			"JSON"
+			"Prompt Engineering",
+			"Sentiment analysis",
+			"Inter-rater agreement"
 		]
 	},
 	{
