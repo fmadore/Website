@@ -177,7 +177,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'digital-humanities/IWAC.webp': [1280, 690],
 	'digital-humanities/live-translation.webp': [1280, 640],
 	'digital-humanities/omeka-s-docker.webp': [1280, 690],
-	'digital-humanities/remoboko.webp': [1000, 480],
+	'digital-humanities/remoboko.webp': [1280, 700],
 	'digital-humanities/zmo-ai-pipelines.webp': [1280, 636],
 	'digital-humanities/zmo-visualisations.webp': [1280, 836],
 	'Profile-picture.webp': [854, 742],

@@ -5,9 +5,30 @@ export const remoboko: DigitalHumanitiesProject = {
 	title: 'Remoboko Visualisations',
 	years: '2018-2024',
 	shortDescription:
-		"Interactive visualisations for the Remoboko research group, including a points of interest map for my book and charts documenting the group's publications, activities, and collaborative network.",
-	description:
-		'<p>I created a series of interactive visualisations for <a href="https://remoboko.hypotheses.org/" target="_blank" rel="noopener noreferrer">Remoboko</a> (<em>Religion, Morality and Boko in West Africa: Students Training for a Good Life</em>), a Leibniz Junior Research Group based at the Zentrum Moderner Orient (ZMO) that ran from 2018 to 2023. The project examined the presence of Salafism and Pentecostalism on university campuses in Niger, Nigeria, Togo, and Benin. <a href="https://remoboko.hypotheses.org/visualisations" target="_blank" rel="noopener noreferrer">These visualisations</a> make the group\'s research outputs and collaborative network more accessible.</p><h2>Book: Points of Interest Map</h2><p>This interactive map accompanies my book <a href="/publications/religious-activism-campuses"><em>Religious Activism on Campuses in Togo and Benin</em></a> (De Gruyter, 2025), part of the Remoboko project. It plots the geographic locations mentioned throughout the book—universities, mosques, churches, headquarters of religious associations, and other significant sites in Togo, Benin, and the broader West African region.</p><h2>Research Group Outputs</h2><p>Over its five-year lifespan, Remoboko collaborated with 93 researchers from 24 countries, producing over 180 publications and activities. I created visualisations to document this collective output:</p><h3>Publications and Activities at a Glance</h3><ul><li><strong>Stacked bar chart and treemap</strong> showing the evolution and breakdown of publications and activities from 2018 to 2024, categorised by type (journal articles, book chapters, conference papers, lectures, PhD dissertations, etc.)</li><li><strong>Word clouds</strong> (French and English) generated from abstracts, highlighting the key themes and concepts across the group\'s work</li></ul><h3>Collaborators at a Glance</h3><ul><li><strong>Gender distribution</strong> — pie chart showing the breakdown of collaborators (37.6% female, 62.4% male)</li><li><strong>Geographic distribution</strong> — bar chart of collaborators by country, with Germany, USA, Niger, and Nigeria among the most represented</li><li><strong>Institutional affiliations</strong> — overview of the universities and research centers involved</li></ul>',
+		"Interactive maps, a timeline and charts for the Remoboko research group: companions to my book on religious activism on campuses in Togo and Benin, and a portrait of the group's publications and collaborators.",
+	description: `
+		<p>I built the interactive figures for <a href="https://remoboko.hypotheses.org/" target="_blank" rel="noopener noreferrer">Remoboko</a> (<em>Religion, Morality and Boko in West Africa: Students Training for a Good Life</em>), a Leibniz Junior Research Group at the Leibniz-Zentrum Moderner Orient (ZMO) in Berlin that ran from 2018 to 2024. The project studied Salafism and Pentecostalism on four university campuses in Niger, Nigeria, Togo and Benin, and how students seeking a degree, and with it a better life, both embrace and reject secular education (<em>boko</em>, in Hausa). All the figures are gathered in <a href="https://fmadore.github.io/Remoboko/" target="_blank" rel="noopener noreferrer">one gallery</a>, and each can be embedded on its own.</p>
+
+		<h2>Companions to the book</h2>
+		<p>Three figures accompany my book <a href="/publications/religious-activism-campuses"><em>Religious Activism on Campuses in Togo and Benin</em></a> (De Gruyter, 2025):</p>
+		<ul>
+			<li><strong>Points of interest</strong>: a searchable map of 33 churches, mosques, schools, universities and campus landmarks around Abomey-Calavi and Lomé</li>
+			<li><strong>Universities</strong>: the public universities of Benin and Togo studied in the book</li>
+			<li><strong>Timeline</strong>: 37 key moments in religion, education and politics in Togo and Benin from 1960 to 2010, with Benin above the axis and Togo below, filterable by theme</li>
+		</ul>
+
+		<h2>The group at a glance</h2>
+		<p>Over its lifetime, Remoboko worked with 93 researchers from 24 countries and produced 181 publications and activities. The figures from its final report show:</p>
+		<ul>
+			<li><strong>Outputs</strong> by type, language and year, as a zoomable treemap and as a timeline</li>
+			<li><strong>Collaborators</strong> by country, by gender, and by institution on a world map of 56 institutions</li>
+			<li><strong>Word clouds</strong> in French and English, drawn from the abstracts of the group's work</li>
+		</ul>
+		<p>Every chart offers a table view and a CSV download, and exports as PNG or SVG. The maps fall back to a readable table when they cannot load.</p>
+
+		<h2>How it's built</h2>
+		<p>The charts are drawn with <a href="https://d3js.org/" target="_blank" rel="noopener noreferrer">D3</a> and the maps with <a href="https://maplibre.org/" target="_blank" rel="noopener noreferrer">MapLibre GL</a> over free OpenFreeMap tiles, with no build step and no API key. Each figure reads its data from the repository as it loads, so a correction goes live as soon as it is pushed. The code is MIT and the data and figures are CC BY 4.0.</p>
+	`,
 	imageUrl: `/images/digital-humanities/remoboko.webp`,
 	order: 7,
 	// The two book companions lead, then the group's visualisation hub. Labelled
@@ -22,46 +43,45 @@ export const remoboko: DigitalHumanitiesProject = {
 			url: 'https://fmadore.github.io/Remoboko/Book_DeGruyter/Timeline/',
 			label: 'Book: timeline'
 		},
+		{ url: 'https://fmadore.github.io/Remoboko/', label: 'All figures' },
 		{ url: 'https://remoboko.hypotheses.org/visualisations' },
 		{ url: 'https://github.com/fmadore/Remoboko', label: 'Remoboko', type: 'code' }
 	],
 	skills: [
 		'Data Visualisation',
 		'pandas',
-		'Plotly',
 		'Python',
-		'Folium',
 		'NLTK',
-		'Leaflet',
-		'D3.js'
+		'D3.js',
+		'MapLibre GL',
+		'Interactive mapping'
 	],
 	embeddableContent: [
 		{
 			type: 'iframe',
 			id: 'remoboko-poi-map',
 			src: 'https://fmadore.github.io/Remoboko/Book_DeGruyter/Maps/points_of_interest.html',
-			title: 'Points of Interest Map',
+			title: 'Points of interest map',
 			description:
-				"<p>Interactive map showing the main locations mentioned in my recent book <a href='/publications/religious-activism-campuses' target='_blank' rel='noopener noreferrer'>Religious Activism on University Campuses in West Africa</a>.</p>",
+				"<p>The churches, mosques, schools, universities and campus landmarks around Abomey-Calavi and Lomé that appear in my book <a href='/publications/religious-activism-campuses'><em>Religious Activism on Campuses in Togo and Benin</em></a>.</p>",
 			showTitle: true,
 			variant: 'responsive'
 		},
 		{
-			type: 'image',
-			id: 'remoboko-collaborators-gender-chart',
-			src: 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Final%20report/collaborators_gender.png',
-			alt: 'Chart showing gender distribution of Remoboko collaborators',
-			title: 'Collaborators by Gender',
+			type: 'iframe',
+			id: 'remoboko-collaborators-gender',
+			src: 'https://fmadore.github.io/Remoboko/Final%20report/collaborators_gender.html',
+			title: 'Collaborators by gender',
+			description: '<p>The share of women among the 93 Remoboko collaborators.</p>',
 			showTitle: true,
-			containerClass: 'image-embed-container'
+			variant: 'responsive'
 		},
 		{
 			type: 'iframe',
 			id: 'remoboko-collaborators-country',
 			src: 'https://fmadore.github.io/Remoboko/Final%20report/collaborators_by_country.html',
-			title: 'Collaborators by Country',
-			description:
-				'<p>Geographical distribution of the 93 Remoboko research group collaborators across 24 different countries.</p>',
+			title: 'Collaborators by country',
+			description: '<p>The 93 Remoboko collaborators across 24 countries.</p>',
 			showTitle: true,
 			variant: 'responsive'
 		},
@@ -69,9 +89,8 @@ export const remoboko: DigitalHumanitiesProject = {
 			type: 'iframe',
 			id: 'remoboko-collaborators-map',
 			src: 'https://fmadore.github.io/Remoboko/Final%20report/collaborators_map.html',
-			title: 'Collaborators Affiliations Map',
-			description:
-				'<p>Map displaying the institutional affiliations of Remoboko research group collaborators.</p>',
+			title: 'Collaborators by affiliation',
+			description: '<p>The 93 collaborators located at their 56 institutions on a world map.</p>',
 			showTitle: true,
 			variant: 'responsive'
 		},
@@ -79,9 +98,9 @@ export const remoboko: DigitalHumanitiesProject = {
 			type: 'iframe',
 			id: 'remoboko-activities-time',
 			src: 'https://fmadore.github.io/Remoboko/Final%20report/activities_type_over_time.html',
-			title: 'Publications and Activities Over Time',
+			title: 'Publications and activities over time',
 			description:
-				"<p>This stacked bar chart illustrates the evolution of Remoboko's scientific publications and activities from 2018 to 2024. It categorises publications and activities by type, showing the diverse contributions of members and collaborators across different formats each year.</p>",
+				"<p>Remoboko's 181 publications and activities, stacked by type, per quarter or per year.</p>",
 			showTitle: true,
 			variant: 'responsive'
 		},
@@ -89,9 +108,9 @@ export const remoboko: DigitalHumanitiesProject = {
 			type: 'iframe',
 			id: 'remoboko-treemap',
 			src: 'https://fmadore.github.io/Remoboko/Final%20report/treemap_chart.html',
-			title: 'Publications and Activities Treemap',
+			title: 'Publications and activities by type and language',
 			description:
-				"<p>This treemap provides a proportional breakdown of all Remoboko publications and activities by type, showing the relative weight of each category within the group's total output.</p>",
+				'<p>The same outputs as a zoomable treemap: by type, then language, then year.</p>',
 			showTitle: true,
 			variant: 'responsive'
 		},
@@ -100,9 +119,9 @@ export const remoboko: DigitalHumanitiesProject = {
 			id: 'remoboko-wordcloud-en',
 			src: 'https://raw.githubusercontent.com/fmadore/Remoboko/master/Final%20report/WordClouds/english_wordcloud.png',
 			alt: 'Word cloud of English terms related to Remoboko research',
-			title: 'Word Clouds',
+			title: 'Word clouds',
 			description:
-				'<p>These word clouds provide an insight into the work of the Remoboko research group, derived from the available abstracts of all publications and activities of members and collaborators. Presented in French and English, they highlight the most common terms and provide a visual summary of the key themes and concepts that define our research.</p>',
+				"<p>The most common terms in the abstracts of the group's publications and activities, in English and in French.</p>",
 			showTitle: true,
 			containerClass: 'image-embed-container'
 		},

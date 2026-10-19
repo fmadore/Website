@@ -654,7 +654,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "remoboko",
 		"title": "Remoboko Visualisations",
 		"years": "2018-2024",
-		"shortDescription": "Interactive visualisations for the Remoboko research group, including a points of interest map for my book and charts documenting the group's publications, activities, and collaborative network.",
+		"shortDescription": "Interactive maps, a timeline and charts for the Remoboko research group: companions to my book on religious activism on campuses in Togo and Benin, and a portrait of the group's publications and collaborators.",
 		"imageUrl": "/images/digital-humanities/remoboko.webp",
 		"order": 7,
 		"links": [
@@ -665,6 +665,10 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			{
 				"url": "https://fmadore.github.io/Remoboko/Book_DeGruyter/Timeline/",
 				"label": "Book: timeline"
+			},
+			{
+				"url": "https://fmadore.github.io/Remoboko/",
+				"label": "All figures"
 			},
 			{
 				"url": "https://remoboko.hypotheses.org/visualisations"
@@ -678,12 +682,11 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"skills": [
 			"Data Visualisation",
 			"pandas",
-			"Plotly",
 			"Python",
-			"Folium",
 			"NLTK",
-			"Leaflet",
-			"D3.js"
+			"D3.js",
+			"MapLibre GL",
+			"Interactive mapping"
 		]
 	},
 	{
