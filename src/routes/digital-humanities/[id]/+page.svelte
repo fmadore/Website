@@ -302,7 +302,7 @@
 	/* ═══ APPARATUS ═══ serif prose under a section rule; no tile, no glass. */
 	.apparatus-text {
 		font-family: var(--font-family-serif);
-		font-size: var(--font-size-base);
+		font-size: var(--font-size-prose);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text-soft);
 		margin: 0;

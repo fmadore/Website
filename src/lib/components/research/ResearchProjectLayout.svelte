@@ -302,6 +302,7 @@ co-director, programme or grant simply drop those rows.
 	.project-prose > :global(p),
 	.project-prose > :global(ul) > :global(li),
 	.project-prose > :global(ol) > :global(li) {
+		font-size: var(--font-size-prose);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
 		max-width: var(--measure-prose);
@@ -315,7 +316,7 @@ co-director, programme or grant simply drop those rows.
 	   `.drop-cap` rather than using it: the prose arrives as a snippet authored
 	   in the route page, so the layout has no element here to put a class on. */
 	.project-prose :global(> p:first-child) {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-prose-lead);
 		color: var(--color-text-emphasis);
 	}
 

@@ -353,7 +353,7 @@
 	 * It was set at --font-size-xl, which is the Title step: a Newsreader
 	 * paragraph at record-title size. */
 	.home-main :global(.home-prose > p:first-of-type) {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-prose-lead);
 		line-height: var(--line-height-normal);
 		color: var(--color-text-emphasis);
 	}
@@ -362,7 +362,7 @@
 	 * tier — for 1,100 words, which is what put the measure at ~98 characters:
 	 * the type was a step too large for a column this wide, in both directions. */
 	.home-main :global(.home-prose > p) {
-		font-size: var(--font-size-base);
+		font-size: var(--font-size-prose);
 		line-height: var(--line-height-relaxed);
 	}
 

@@ -1428,6 +1428,7 @@
 .record-prose > p,
 .record-prose > ul > li,
 .record-prose > ol > li {
+	font-size: var(--font-size-prose);
 	line-height: var(--line-height-relaxed);
 	color: var(--color-text);
 	max-width: var(--measure-prose);
@@ -1439,7 +1440,7 @@
 
 /* Opening paragraph — one step up in size and ink, the lead of the record. */
 .record-prose > p:first-child {
-	font-size: var(--font-size-lg);
+	font-size: var(--font-size-prose-lead);
 	color: var(--color-text-emphasis);
 }
 

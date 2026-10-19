@@ -251,6 +251,13 @@
 	/* Contextual font sizes */
 	--font-size-body: var(--font-size-base);
 	--font-size-lead: clamp(1.125rem, 1.05rem + 0.375vw, 1.375rem);
+	/* The reading tier — running prose and the lead paragraph that opens it, in
+	 * every long-form column (home, research and digital-humanities projects,
+	 * record apparatus). The Body and Standfirst steps above a phone; one step
+	 * up below --sm (see the block at the end of this file). Set prose with
+	 * these, never with --font-size-base: base also sizes UI text. */
+	--font-size-prose: var(--font-size-base);
+	--font-size-prose-lead: var(--font-size-lg);
 	/* Nameplate — the home masthead. Compressed-broadsheet scale. */
 	--font-size-nameplate: clamp(2.5rem, 1.6rem + 4.2vw, 5rem);
 	/* Display — index-page hero titles (Research / Publications / Activities). */
@@ -579,5 +586,23 @@
 @media (--2xs-down) {
 	:root {
 		--font-size-nameplate: 2rem;
+	}
+}
+
+/*
+ * The reading tier on a phone.
+ *
+ * Below --sm the column is the screen, so the measure no longer holds the
+ * prose down, and the Body step bottoms out at ~17px: a column of Newsreader
+ * running on for screens reads small in the hand. Its own 18px ceiling was
+ * tried and is barely visible there. 19px sets ~40 characters a line at 390px;
+ * the lead stays a minor third (1.2) above it, the scale's own interval. The
+ * abstracts and activity entries, set at the Standfirst step, already read at
+ * ~19.6px here, so every long-form column on a phone now starts at 19px.
+ */
+@media (--sm-down) {
+	:root {
+		--font-size-prose: 1.1875rem;
+		--font-size-prose-lead: 1.425rem;
 	}
 }

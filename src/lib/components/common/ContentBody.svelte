@@ -67,8 +67,11 @@
 	}
 
 	/* Typography styling for content within the body */
+	/* Paragraphs and list items take the reading tier (`--font-size-prose`),
+	 * which steps up on a phone, rather than inheriting the UI body size. */
 	.content-body :global(p) {
 		margin-bottom: var(--space-md);
+		font-size: var(--font-size-prose);
 		line-height: var(--line-height-relaxed);
 		color: var(--color-text);
 	}
@@ -112,7 +115,7 @@
 	 * visual scrub — stripe-accent on prose is an AI-UI tell.
 	 */
 	.content-body > :global(p:first-child) {
-		font-size: var(--font-size-lg);
+		font-size: var(--font-size-prose-lead);
 		font-weight: var(--font-weight-normal);
 		color: var(--color-text-emphasis);
 		line-height: var(--line-height-relaxed);
@@ -120,6 +123,7 @@
 
 	/* Reset styling for paragraphs inside blockquotes */
 	.content-body :global(blockquote p) {
+		font-size: inherit;
 		color: inherit;
 	}
 
@@ -184,6 +188,7 @@
 
 	.content-body :global(li) {
 		margin-bottom: var(--space-xs);
+		font-size: var(--font-size-prose);
 		line-height: var(--line-height-relaxed);
 	}
 
