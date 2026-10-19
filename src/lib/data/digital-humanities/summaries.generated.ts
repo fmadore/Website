@@ -93,12 +93,16 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "dh-ai-african-studies",
 		"title": "Charting New Territory: Digital Humanities and AI in African Studies",
 		"years": "2025-2026",
-		"shortDescription": "The website for a VolkswagenStiftung scoping workshop held in Hanover in February 2026, which documents its programme and 26 participants and carries a filterable bibliography of over 200 works, a concept map of the literature, six filmed interviews, and the forthcoming position paper.",
+		"shortDescription": "The website of a VolkswagenStiftung scoping workshop held in Hanover in February 2026: its programme and 26 participants, a bibliography of over 200 works, a concept map of the literature, six filmed interviews and the position paper it produced.",
 		"imageUrl": "/images/digital-humanities/dh-ai-african-studies.webp",
 		"order": 4,
 		"links": [
 			{
 				"url": "https://fmadore.github.io/dh-ai-african-studies-2026/"
+			},
+			{
+				"url": "https://doi.org/10.58144/20260827-000",
+				"label": "Position paper (ZMO Programmatic Texts)"
 			},
 			{
 				"url": "https://github.com/fmadore/dh-ai-african-studies-2026",
@@ -114,6 +118,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"D3.js",
 			"Leaflet",
 			"Python",
+			"Obsidian",
 			"Zotero",
 			"Metadata Standards",
 			"Data Visualisation",
@@ -131,7 +136,10 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"data sovereignty",
 			"digital colonialism",
 			"African language technologies",
-			"AI ethics"
+			"AI ethics",
+			"position paper",
+			"data colonialism",
+			"decolonial digital humanities"
 		]
 	},
 	{
