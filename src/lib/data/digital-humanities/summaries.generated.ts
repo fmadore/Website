@@ -329,44 +329,57 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 	{
 		"id": "iwac-bibliographic-data-wikidata",
 		"title": "IWAC Bibliographic Data on Wikidata",
-		"years": "2023",
-		"shortDescription": "Over 850 bibliographical references from the Islam West Africa Collection uploaded to Wikidata, enabling SPARQL queries and automatic visualisations through Scholia.",
+		"years": "2023-",
+		"shortDescription": "The bibliography of the Islam West Africa Collection on Wikidata: nearly all of its 867 references, open to SPARQL queries and drawn as automatic Scholia profiles of the field.",
 		"imageUrl": "/images/digital-humanities/iwac-bibliographic-data-wikidata.svg",
 		"order": 8,
 		"links": [
 			{
-				"url": "https://scholia.toolforge.org/topic/Q3155361",
+				"url": "https://qlever.scholia.wiki/topic/Q3155361",
 				"label": "Islam in Benin",
 				"type": "data"
 			},
 			{
-				"url": "https://scholia.toolforge.org/topic/Q3081878",
+				"url": "https://qlever.scholia.wiki/topic/Q3081878",
 				"label": "Islam in Burkina Faso",
 				"type": "data"
 			},
 			{
-				"url": "https://scholia.toolforge.org/topic/Q4119820",
+				"url": "https://qlever.scholia.wiki/topic/Q4119820",
 				"label": "Islam in Côte d'Ivoire",
 				"type": "data"
 			},
 			{
-				"url": "https://scholia.toolforge.org/topic/Q3087639",
+				"url": "https://qlever.scholia.wiki/topic/Q3087639",
 				"label": "Islam in Niger",
 				"type": "data"
 			},
 			{
-				"url": "https://scholia.toolforge.org/topic/Q522809",
+				"url": "https://qlever.scholia.wiki/topic/Q522809",
 				"label": "Islam in Togo",
 				"type": "data"
 			}
 		],
 		"skills": [
 			"Wikidata",
+			"WikiCite",
 			"OpenRefine",
 			"Scholia",
 			"SPARQL",
 			"Linked Data",
 			"Metadata Standards"
+		],
+		"seoKeywords": [
+			"Wikidata",
+			"WikiCite",
+			"Scholia",
+			"SPARQL",
+			"linked open data",
+			"bibliography",
+			"open science",
+			"Islam West Africa",
+			"IWAC",
+			"digital humanities"
 		]
 	},
 	{
