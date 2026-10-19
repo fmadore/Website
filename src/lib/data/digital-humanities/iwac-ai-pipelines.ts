@@ -5,25 +5,29 @@ export const iwacAiPipelines: DigitalHumanitiesProject = {
 	title: 'IWAC AI Pipelines',
 	years: '2026',
 	shortDescription:
-		'Python workflows for processing the Islam West Africa Collection using Large Language Models—automating OCR, NER, transcription, and summarisation at scale.',
-	description:
-		'<p>With over 14,500 items and 30 million words—the equivalent of more than 300 books—the <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer">Islam West Africa Collection</a> has long exceeded what any individual researcher could process manually. What began as years of fieldwork accumulation risked becoming "digital clutter": thousands of documents gathered but never fully accessible.</p>' +
-		'<p>These open-source Python pipelines address that challenge by integrating Large Language Models (Google Gemini, OpenAI, Mistral) into document processing workflows. They automate labor-intensive tasks that would otherwise consume months of work—or simply never get done. The goal is not to replace scholarly judgment, but to make large documentary collections tractable so researchers can focus on interpretation rather than data wrangling.</p>' +
-		'<h2>What the pipelines do</h2>' +
-		'<ul>' +
-		'<li><strong>OCR extraction & correction:</strong> Extract text from PDF scans using multimodal vision models, and correct errors in legacy OCR including ALTO XML with coordinate preservation</li>' +
-		'<li><strong>Named entity recognition:</strong> Identify people, places, and organisations with authority reconciliation and fuzzy matching to handle variant spellings common in West African names</li>' +
-		'<li><strong>Summarisation:</strong> Generate French summaries for document discovery across large collections</li>' +
-		'<li><strong>Audio & video processing:</strong> Transcribe interviews and oral histories (including Hausa content) and summarise videos with visual descriptions</li>' +
-		'<li><strong>Handwritten text recognition:</strong> Read manuscripts in French, Arabic, or mixed scripts</li>' +
-		'<li><strong>Magazine indexing:</strong> Extract and index individual articles from digitised periodicals with complex layouts</li>' +
-		'</ul>' +
-		'<h2>AI-NER-Validator</h2>' +
-		'<p>A companion web application (<a href="https://github.com/fmadore/AI-NER-Validator" target="_blank" rel="noopener noreferrer">AI-NER-Validator</a>) provides quality control for automatically extracted entities. Researchers can review articles with AI-extracted entities side by side, validate or reject each entity, add missing ones manually, and export clean CSV files. The tool ensures human oversight remains central to the workflow.</p>' +
-		'<h2>Open source</h2>' +
-		'<p>The code is open source and documented for adaptation. As lightweight open-source models improve, these workflows could eventually run locally without relying on commercial APIs—an important consideration for data sovereignty and long-term sustainability.</p>' +
-		'<h2>Limitations</h2>' +
-		'<p>These tools are research aids, not replacements for scholarly judgment. LLMs operate as black boxes with algorithmic opacity. Models trained predominantly on Western data may misrepresent African contexts and naming conventions. Unlike traditional OCR, which signals failure through garbled text, AI-generated errors appear as fluent prose—shifting the burden from fixing visible mistakes to detecting hidden ones. Effective use requires domain expertise and familiarity with the source material.</p>',
+		'Open-source Python pipelines that use AI models to transcribe, index, summarise and analyse the Islam West Africa Collection, with every result traceable to the model that produced it.',
+	description: `
+		<p>With nearly 21,000 items and more than 32 million words, the equivalent of over 300 books, the <a href="/digital-humanities/iwac">Islam West Africa Collection</a> has long outgrown what one researcher could read, transcribe and catalogue by hand. Without help, much of it would remain "digital clutter": gathered, but never truly accessible.</p>
+		<p>These pipelines put large language models to work on the tasks that would otherwise take months, or never get done. They draw on commercial models from Google, OpenAI and Mistral, and on open-weight models such as Qwen, DeepSeek and Gemma, which can also run on a university's own servers. The aim is to make a large collection workable, so that researchers can spend their time on interpretation rather than data wrangling. The code is open source and modular, with its prompts kept as plain text files, so other collections can adapt it.</p>
+
+		<h2>What the pipelines do</h2>
+		<ul>
+			<li><strong>Read scans</strong>: extract the text of scanned newspapers and magazines, and correct the errors left by older OCR software</li>
+			<li><strong>Read handwriting</strong>: transcribe manuscripts in French, Arabic or both</li>
+			<li><strong>Listen</strong>: transcribe interviews, oral histories and YouTube videos, including in Hausa, and describe what videos show</li>
+			<li><strong>Index</strong>: find the people, places and organisations in each document and link them to the collection's index despite variant spellings, and give academic references their subject keywords</li>
+			<li><strong>Summarise</strong>: write short French and English summaries that make documents easier to find</li>
+			<li><strong>Split magazines</strong> into their individual articles</li>
+			<li><strong>Read press attitudes</strong>: rate how each article portrays Islam and Muslims, with a <a href="/digital-humanities/iwac-sentiment-analysis">panel of five models</a></li>
+		</ul>
+
+		<h2>Careful by design</h2>
+		<p>The pipelines write to the live archive, so each one is built to be cautious. It can first report what it would change, saves a copy of every record before editing it, and asks for confirmation before a bulk update. Every AI-generated text and link also records the model that produced it, using a small <a href="https://github.com/fmadore/iwac-vocabulary" target="_blank" rel="noopener noreferrer">vocabulary</a> built for the purpose, so readers can always tell machine work from human cataloguing.</p>
+		<p>A companion web app, <a href="https://github.com/fmadore/AI-NER-Validator" target="_blank" rel="noopener noreferrer">AI-NER-Validator</a>, keeps human judgement at the centre of entity extraction. Researchers review each article with the extracted names highlighted, accept or reject each one, add what the model missed and export a clean list.</p>
+
+		<h2>Limitations</h2>
+		<p>These tools are research aids, not substitutes for scholarly judgement. The models are black boxes, and the same text run twice may not give the same answer. Trained mostly on Western data, they can misread African contexts and names. Their mistakes are also harder to spot: where old OCR produced visible gibberish, an AI error reads as fluent prose. Using them well takes expertise and close knowledge of the sources.</p>
+	`,
 	imageUrl: `/images/digital-humanities/iwac-ai-pipelines.webp`,
 	order: 3,
 	links: [
@@ -32,18 +36,22 @@ export const iwacAiPipelines: DigitalHumanitiesProject = {
 			label: 'iwac-ai-pipelines',
 			type: 'code'
 		},
-		{ url: 'https://github.com/fmadore/AI-NER-Validator', label: 'AI-NER-Validator', type: 'code' }
+		{ url: 'https://github.com/fmadore/AI-NER-Validator', label: 'AI-NER-Validator', type: 'code' },
+		{ url: 'https://doi.org/10.5281/zenodo.21804210', label: 'Software DOI (Zenodo)', type: 'code' }
 	],
 	skills: [
 		'Python',
 		'LLM',
+		'Open-weight models',
 		'Prompt Engineering',
 		'OCR',
 		'HTR',
 		'NER',
 		'NLP',
-		'Docker',
-		'Omeka S API'
+		'Audio transcription',
+		'Sentiment analysis',
+		'Omeka S API',
+		'Docker'
 	],
 	seoKeywords: [
 		'AI pipelines',
@@ -59,6 +67,10 @@ export const iwacAiPipelines: DigitalHumanitiesProject = {
 		'Google Gemini',
 		'OpenAI',
 		'Mistral',
+		'Qwen',
+		'DeepSeek',
+		'open-weight models',
+		'sentiment analysis',
 		'archival processing'
 	]
 };

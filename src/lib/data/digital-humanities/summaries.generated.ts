@@ -258,7 +258,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "iwac-ai-pipelines",
 		"title": "IWAC AI Pipelines",
 		"years": "2026",
-		"shortDescription": "Python workflows for processing the Islam West Africa Collection using Large Language Models—automating OCR, NER, transcription, and summarisation at scale.",
+		"shortDescription": "Open-source Python pipelines that use AI models to transcribe, index, summarise and analyse the Islam West Africa Collection, with every result traceable to the model that produced it.",
 		"imageUrl": "/images/digital-humanities/iwac-ai-pipelines.webp",
 		"order": 3,
 		"links": [
@@ -271,18 +271,26 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 				"url": "https://github.com/fmadore/AI-NER-Validator",
 				"label": "AI-NER-Validator",
 				"type": "code"
+			},
+			{
+				"url": "https://doi.org/10.5281/zenodo.21804210",
+				"label": "Software DOI (Zenodo)",
+				"type": "code"
 			}
 		],
 		"skills": [
 			"Python",
 			"LLM",
+			"Open-weight models",
 			"Prompt Engineering",
 			"OCR",
 			"HTR",
 			"NER",
 			"NLP",
-			"Docker",
-			"Omeka S API"
+			"Audio transcription",
+			"Sentiment analysis",
+			"Omeka S API",
+			"Docker"
 		],
 		"seoKeywords": [
 			"AI pipelines",
@@ -298,6 +306,10 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Google Gemini",
 			"OpenAI",
 			"Mistral",
+			"Qwen",
+			"DeepSeek",
+			"open-weight models",
+			"sentiment analysis",
 			"archival processing"
 		]
 	},
