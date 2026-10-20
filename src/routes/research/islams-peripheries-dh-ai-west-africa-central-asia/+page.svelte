@@ -66,8 +66,9 @@
 		<li>
 			The <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
 				><em>Islam West Africa Collection</em><span class="sr-only"> (opens in new tab)</span></a
-			>: 14,700+ items (newspapers, Islamic publications, 9,315 minutes of Hausa audio, photographs)
-			covering Islam and Muslim communities in six West African countries from the 1960s onward.
+			>: nearly 21,000 items (newspapers, Islamic publications, photographs, and some 35,000 minutes
+			of audio and video, including Hausa recordings) covering Islam and Muslim communities in six
+			West African countries from the 1960s onward.
 		</li>
 		<li>
 			The <a
