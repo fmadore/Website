@@ -24,9 +24,10 @@ export const iwacMcpServer: DigitalHumanitiesProject = {
 		<h2>A method, not only data</h2>
 		<p>The server gives access; a companion <a href="https://github.com/fmadore/iwac-mcp-server/tree/main/.agents/skills/iwac-mcp" target="_blank" rel="noopener noreferrer">research skill</a> teaches the assistant how to use it well. It works like an archivist's checklist: first establish what the collection holds, then search French sources with their spelling and transliteration variants (Maouloud, Mawlid), read the key records closely, compare different kinds of material, and report the evidence with its limits. The skill also tells the assistant where the collection is thin, so it does not present partial coverage as the whole story.</p>
 
-		<h2>Easy to connect, safe by design</h2>
-		<p>Anyone can add the hosted connector to Claude or ChatGPT without a download, sign-up or API key; the collection's <a href="https://islam.zmo.de/s/westafrica/page/ai-access" target="_blank" rel="noopener noreferrer">Ask with AI page</a> walks through the setup. Claude Desktop users can also install it in one click and run semantic search on their own computer, so no query leaves the machine.</p>
-		<p>The design keeps the collection under the control of the institution that built it. The server only reads; it cannot change the archive. Nothing is handed over to train a model, and because MCP is an open standard, commercial and open-weight models can use the same tools. For African collections, long subject to extractive knowledge practices, that control matters.</p>
+		<h2>Connecting, and its limits</h2>
+		<p>Anyone can add the hosted connector to Claude or ChatGPT without a download, sign-up or API key; the collection's <a href="https://islam.zmo.de/s/westafrica/page/ai-access" target="_blank" rel="noopener noreferrer">Ask with AI page</a> walks through the setup. Claude Desktop users can also install it in one click, with semantic search running on their own computer.</p>
+		<p>The server's own guarantees are modest. It only reads, so it cannot change the archive, and by default it serves only the public dataset, which leaves out the full text IWAC may not redistribute. Every answer points back to its source records.</p>
+		<p>Beyond that, control stops at the server. Whatever the assistant retrieves travels to the company that runs it, and whether that company keeps or trains on the conversation depends on its terms and the user's settings, not on IWAC. The public dataset is openly downloadable in any case, by researchers and AI developers alike. Because MCP is an open standard, the same tools also work with open-weight models run locally, the one set-up in which the conversation never leaves the user's computer. For African collections, long subject to extractive knowledge practices, those trade-offs need saying plainly.</p>
 	`,
 	imageUrl: '/images/digital-humanities/iwac-mcp-server.webp',
 	order: 0,
@@ -56,7 +57,6 @@ export const iwacMcpServer: DigitalHumanitiesProject = {
 		'IWAC',
 		'semantic search',
 		'agent skill',
-		'data sovereignty',
 		'open standard',
 		'Claude',
 		'ChatGPT',

@@ -38,7 +38,7 @@ export const amira: DigitalHumanitiesProject = {
 
 		<h2>Ask AMIRA through an AI assistant</h2>
 		<p>More and more researchers start with a question to an AI assistant rather than a catalogue search. The <a href="https://github.com/AM-Digital-Research-Environment/amira-mcp-server" target="_blank" rel="noopener noreferrer">AMIRA MCP server</a> lets an assistant query the atlas directly through the open <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">Model Context Protocol</a>. It can search records, read podcast and video transcripts, and follow connections across the collection, all in plain language. Every answer links back to the AMIRA page it came from.</p>
-		<p>The server is read-only and queries AMIRA's own data rather than handing the collection over to a third party. A bundled snapshot keeps it working even when the site is offline.</p>
+		<p>The server is read-only and serves AMIRA's public records, and a bundled snapshot keeps it working even when the site is offline. What the assistant retrieves still reaches the company behind that assistant, under its own terms.</p>
 	`,
 	imageUrl: `/images/digital-humanities/amira.webp`,
 	featured: true,

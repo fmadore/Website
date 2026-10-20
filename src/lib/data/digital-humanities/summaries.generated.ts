@@ -467,7 +467,6 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"IWAC",
 			"semantic search",
 			"agent skill",
-			"data sovereignty",
 			"open standard",
 			"Claude",
 			"ChatGPT",
