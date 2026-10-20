@@ -480,7 +480,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"years": "2025-2026",
 		"shortDescription": "An interactive dashboard comparing how five AI models read the tone of more than 12,000 West African press articles on Islam, where they agree, and where they part ways.",
 		"imageUrl": "/images/digital-humanities/iwac-sentiment-analysis.webp",
-		"order": 2,
+		"order": 4,
 		"links": [
 			{
 				"url": "https://iwac.frederickmadore.com/sentiment-analysis/"

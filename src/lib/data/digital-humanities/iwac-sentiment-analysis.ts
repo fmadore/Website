@@ -38,7 +38,7 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 		<p>I built the dashboard through natural-language collaboration with AI coding assistants, without writing the code by hand. It shows how researchers without programming training can now create serious analytical tools, lowering the barrier for scholars at institutions with little technical support.</p>
 	`,
 	imageUrl: '/images/digital-humanities/iwac-sentiment-analysis.webp',
-	order: 2,
+	order: 4,
 	links: [
 		{ url: 'https://iwac.frederickmadore.com/sentiment-analysis/' },
 		{
