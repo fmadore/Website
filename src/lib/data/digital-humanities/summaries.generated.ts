@@ -707,6 +707,52 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		]
 	},
 	{
+		"id": "rais-publications",
+		"title": "RAIS Publications",
+		"years": "2026",
+		"shortDescription": "Embeddable visualisations of the publications of the University of Bayreuth's Research Center for AI in Science and Society (RAIS): a semantic map, keyword and co-author networks, and a dashboard, rebuilt every week from the university repository.",
+		"imageUrl": "/images/digital-humanities/rais-publications.webp",
+		"order": 2,
+		"links": [
+			{
+				"url": "https://fmadore.github.io/RAIS-Publications/"
+			},
+			{
+				"url": "https://github.com/fmadore/RAIS-Publications",
+				"label": "RAIS-Publications",
+				"type": "code"
+			},
+			{
+				"url": "https://eref.uni-bayreuth.de/view/divisions/310022.html",
+				"label": "RAIS publications in ERef Bayreuth",
+				"type": "data"
+			}
+		],
+		"skills": [
+			"Python",
+			"Embeddings",
+			"UMAP",
+			"Network graphs",
+			"ECharts",
+			"MapLibre GL",
+			"Data Visualisation",
+			"Bibliometrics",
+			"GitHub Actions"
+		],
+		"seoKeywords": [
+			"RAIS",
+			"Research Center for AI in Science and Society",
+			"University of Bayreuth",
+			"artificial intelligence",
+			"semantic map",
+			"co-authorship network",
+			"bibliometrics",
+			"embeddings",
+			"data visualisation",
+			"digital humanities"
+		]
+	},
+	{
 		"id": "remoboko",
 		"title": "Remoboko Visualisations",
 		"years": "2018-2024",
