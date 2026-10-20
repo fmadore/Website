@@ -72,21 +72,52 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 	},
 	{
 		"id": "burkina-faso-digital-exhibits",
-		"title": "Digital Exhibits on Islam in Burkina Faso",
-		"years": "2021",
-		"shortDescription": "Two digital exhibits featuring curated materials from the Islam West Africa Collection, each with an interactive timeline, contextual narratives, and selective bibliography.",
+		"title": "Digital Exhibits on Islam in West Africa",
+		"years": "2021-2026",
+		"shortDescription": "Four digital exhibits that open thematic paths through the Islam West Africa Collection: the hajj and Muslim student activism in Burkina Faso, intégrisme in Côte d'Ivoire, and the debate over secularism across the region.",
 		"imageUrl": "/images/digital-humanities/burkina-faso-digital-exhibits.webp",
 		"order": 9,
 		"links": [
 			{
-				"url": "https://islam.zmo.de/s/westafrica/page/hajj-bf"
+				"url": "https://islam.zmo.de/s/westafrica/page/exhibits",
+				"label": "All exhibits"
 			},
 			{
-				"url": "https://islam.zmo.de/s/westafrica/page/student-activism-bf"
+				"url": "https://islam.zmo.de/s/westafrica/page/hajj-bf",
+				"label": "Hajj in Burkina Faso"
+			},
+			{
+				"url": "https://islam.zmo.de/s/westafrica/page/student-activism-bf",
+				"label": "Student activism in Burkina Faso"
+			},
+			{
+				"url": "https://islam.zmo.de/s/westafrica/page/integrisme-cote-d-ivoire",
+				"label": "Intégrisme in Côte d'Ivoire"
+			},
+			{
+				"url": "https://islam.zmo.de/s/westafrica/page/secularism",
+				"label": "Secularism"
 			}
 		],
 		"skills": [
-			"Timeline JS"
+			"Digital exhibitions",
+			"Timeline JS",
+			"Omeka S",
+			"Data Visualisation",
+			"Corpus Linguistics"
+		],
+		"seoKeywords": [
+			"digital exhibitions",
+			"hajj",
+			"Burkina Faso",
+			"Côte d'Ivoire",
+			"laïcité",
+			"secularism",
+			"intégrisme",
+			"Muslim students",
+			"Islam West Africa",
+			"IWAC",
+			"digital humanities"
 		]
 	},
 	{
