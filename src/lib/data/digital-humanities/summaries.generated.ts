@@ -263,7 +263,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "islam-burkina-faso-collection",
 		"title": "Islam Burkina Faso Collection",
 		"years": "2018-2023",
-		"shortDescription": "An open-access digital database developed to address a critical gap in research infrastructure for West African Islamic studies, containing over 2,900 documents on Islam and Muslims in Burkina Faso. Now archived within the Islam West Africa Collection (IWAC).",
+		"shortDescription": "The open-access database of over 2,900 documents on Islam and Muslims in Burkina Faso that I launched in 2021, and the foundation of the Islam West Africa Collection. Now archived.",
 		"imageUrl": "/images/digital-humanities/islam-burkinafaso-banner.webp",
 		"award": "I won a <a href='https://etcl.uvic.ca/2023/01/17/2023-open-scholarship-awards/' target='_blank' rel='noopener noreferrer'>2023 Emerging Open Scholarship Award</a>, sponsored by the <a href='https://c-ski.ca/' target='_blank' rel='noopener noreferrer'>Canadian Social Knowledge Institute (C-SKI)</a> and its partners, for my work on the Islam Burkina Faso Collection.",
 		"reviews": [
@@ -292,10 +292,22 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"skills": [
 			"Omeka S",
 			"Tesseract",
+			"OCR",
 			"Metadata Standards",
 			"OpenRefine",
 			"Zotero",
 			"Linked Data"
+		],
+		"seoKeywords": [
+			"Islam Burkina Faso Collection",
+			"Burkina Faso",
+			"Islam",
+			"digital archive",
+			"open access",
+			"Omeka S",
+			"LibraryPress@UF",
+			"Islam West Africa Collection",
+			"digital humanities"
 		]
 	},
 	{

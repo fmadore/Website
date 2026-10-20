@@ -5,9 +5,15 @@ export const islamBurkinaFasoCollection: DigitalHumanitiesProject = {
 	title: 'Islam Burkina Faso Collection',
 	years: '2018-2023',
 	shortDescription:
-		'An open-access digital database developed to address a critical gap in research infrastructure for West African Islamic studies, containing over 2,900 documents on Islam and Muslims in Burkina Faso. Now archived within the Islam West Africa Collection (IWAC).',
-	description:
-		'<p>The <em>Islam Burkina Faso Collection</em> is an open-access digital database that I developed between 2018 and 2023 to address a critical gap in research infrastructure for West African Islamic studies. The collection contains over 2,900 archival documents, newspaper articles, Islamic publications, and photographs documenting Islam and Muslims in Burkina Faso—materials that are often difficult or impossible to access outside, and sometimes even inside, the country.</p><p>Beyond primary sources, the database indexes more than 275 bibliographical references (books, chapters, journal articles, dissertations, and theses) and provides a comprehensive index of nearly 1,000 events, locations, organizations, people, and topics. Optical character recognition (OCR) has been applied to all documents, enabling full-text search across the entire collection.</p><p>The project was one of the first digital humanities initiatives published under <a href="https://librarypress.domains.uflib.ufl.edu/" target="_blank" rel="noopener noreferrer">LibraryPress@UF</a>, a program of the University of Florida Libraries and University of Florida Press that develops public scholarship across digital formats.</p><p><strong>Note:</strong> The <em>Islam Burkina Faso Collection</em> served as the foundational project for my ongoing digital humanities work and has now been archived. All materials have been integrated into the expanded <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"><em>Islam West Africa Collection (IWAC)</em></a>, which covers six countries and continues to grow.</p>',
+		'The open-access database of over 2,900 documents on Islam and Muslims in Burkina Faso that I launched in 2021, and the foundation of the Islam West Africa Collection. Now archived.',
+	description: `
+		<p>How do you study Islam in Burkina Faso when the newspapers, magazines and archives you need are scattered, fragile and often impossible to consult, even inside the country? The <em>Islam Burkina Faso Collection</em>, which I developed from 2018 and launched in 2021, was my answer: an open-access database of over 2,900 archival documents, newspaper articles, Islamic publications and photographs on Islam and Muslims in Burkina Faso since the 1960s.</p>
+		<p>Optical character recognition (OCR) made every document searchable in full. Alongside the sources, the database indexed more than 275 books, chapters, articles and theses, and nearly 1,000 events, places, organisations, people and topics. Two <a href="/digital-humanities/burkina-faso-digital-exhibits">digital exhibits</a>, on the hajj and on Muslim student activism, showed how the material could be read.</p>
+		<p>It was one of the first digital humanities projects published by <a href="https://librarypress.domains.uflib.ufl.edu/" target="_blank" rel="noopener noreferrer">LibraryPress@UF</a>, a programme of the University of Florida Libraries and University of Florida Press for public scholarship in digital formats.</p>
+
+		<h2>From Burkina Faso to West Africa</h2>
+		<p>The collection became the foundation of my digital humanities work. Its materials now live in the <a href="/digital-humanities/iwac">Islam West Africa Collection</a>, which covers six countries and has grown far beyond it: Burkina Faso alone now accounts for more than 8,000 of its newspaper articles. The original site is archived and can still be viewed through the Internet Archive.</p>
+	`,
 	imageUrl: `/images/digital-humanities/islam-burkinafaso-banner.webp`,
 	award:
 		"I won a <a href='https://etcl.uvic.ca/2023/01/17/2023-open-scholarship-awards/' target='_blank' rel='noopener noreferrer'>2023 Emerging Open Scholarship Award</a>, sponsored by the <a href='https://c-ski.ca/' target='_blank' rel='noopener noreferrer'>Canadian Social Knowledge Institute (C-SKI)</a> and its partners, for my work on the Islam Burkina Faso Collection.",
@@ -30,13 +36,33 @@ export const islamBurkinaFasoCollection: DigitalHumanitiesProject = {
 		url: 'https://doi.org/10.51185/journals/rhca.2021.e610'
 	},
 	order: 10,
-	// The LibraryPress@UF host is gone; an Internet Archive snapshot is all that
-	// remains of the original site, so it is labelled rather than shown bare.
+	// The LibraryPress@UF host still serves the static pages, but item browsing,
+	// search and the API fail (HTTP 500, October 2026), so the Internet Archive
+	// snapshot is the working copy; labelled rather than shown bare.
 	links: [
 		{
 			url: 'https://web.archive.org/web/20240312164955/https://islam.domains.uflib.ufl.edu/s/bf/page/home',
 			label: 'islam.domains.uflib.ufl.edu (Internet Archive)'
 		}
 	],
-	skills: ['Omeka S', 'Tesseract', 'Metadata Standards', 'OpenRefine', 'Zotero', 'Linked Data']
+	skills: [
+		'Omeka S',
+		'Tesseract',
+		'OCR',
+		'Metadata Standards',
+		'OpenRefine',
+		'Zotero',
+		'Linked Data'
+	],
+	seoKeywords: [
+		'Islam Burkina Faso Collection',
+		'Burkina Faso',
+		'Islam',
+		'digital archive',
+		'open access',
+		'Omeka S',
+		'LibraryPress@UF',
+		'Islam West Africa Collection',
+		'digital humanities'
+	]
 };
