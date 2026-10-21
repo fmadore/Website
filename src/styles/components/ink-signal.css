@@ -1270,18 +1270,54 @@
 }
 
 /* ===========================================================================
- * DROP CAP — Archivo initial, accent, opening an abstract or standfirst
+ * DROP CAP — a three-line Newsreader initial in ink, opening an abstract or
+ * a record's prose
+ *
+ * The initial belongs to the paragraph it opens, so it is set in the prose
+ * face. It was an Archivo 850 initial in pine until 2026-10-21: a heavy wide
+ * grotesque "I" has no serifs to read by, and at 4.4em it printed as a solid
+ * pine bar, the accent stripe the brief bans, and spent the accent on an
+ * ornament that marks nothing current. Newsreader's serifs keep every letter a
+ * letter, and ink keeps pine scarce.
+ *
+ * `initial-letter: 3` sinks it exactly: the cap's top on the first line's cap
+ * height, its baseline on the third line's. Where the engine lacks it
+ * (Firefox), the float below lands within a pixel of the same marks for prose
+ * set at 1.6: Newsreader's cap is 0.67em, so a cap spanning two lines plus one
+ * cap height needs (2 × 1.6 + 0.67) / 0.67 ≈ 5.75em, and at line-height 1
+ * its baseline falls on line three's (measured: the two engines place the
+ * glyph within a pixel of each other). The negative bottom margin gives back
+ * most of the descender room, so the fourth line runs full width while the
+ * float still clears the third. The weight is a literal: the Microfilm Weight
+ * Rule's step is for small type, and at this size the two themes match.
+ *
+ * `.drop-cap` may sit on the paragraph itself or on a prose wrapper. On a
+ * wrapper, Firefox does not carry `::first-letter` down into the first
+ * paragraph (it rendered no initial at all on the digital-humanities pages),
+ * so the rule also names that paragraph directly.
  * =========================================================================== */
 
-.drop-cap::first-letter {
+.drop-cap::first-letter,
+.drop-cap > p:first-child::first-letter {
 	float: left;
-	font-family: var(--font-family-display);
-	font-variation-settings: 'wdth' 118;
-	font-weight: 850;
-	font-size: 4.4em;
-	line-height: 0.72;
-	padding: 0.06em 0.1em 0 0;
-	color: var(--color-accent);
+	font-family: var(--font-family-serif);
+	font-weight: 600;
+	font-size: 5.75em;
+	line-height: 1;
+	margin: 0 0.06em -0.1em 0;
+	color: var(--color-text-emphasis);
+}
+
+@supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
+	.drop-cap::first-letter,
+	.drop-cap > p:first-child::first-letter {
+		float: none;
+		font-size: inherit;
+		line-height: inherit;
+		margin: 0 var(--space-2) 0 0;
+		-webkit-initial-letter: 3;
+		initial-letter: 3;
+	}
 }
 
 /* ===========================================================================

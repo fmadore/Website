@@ -1546,9 +1546,11 @@
 				<figcaption class="specimen-label">Specimen: record prose</figcaption>
 				<div class="record-prose drop-cap guide-prose-demo">
 					<p>
-						The lead paragraph opens the record: one size up, one ink step darker, and an Archivo
-						initial floated into it. Everything after it returns to the reading tier and holds the
-						prose measure however wide the column gets.
+						It is the lead paragraph that opens the record: one size up, one ink step darker, and a
+						three-line Newsreader initial sunk into it, in ink. This specimen opens on an I on
+						purpose: set in a heavy grotesque, an I is a solid bar; set in the serif, it stays a
+						letter. Everything after it returns to the reading tier and holds the prose measure
+						however wide the column gets.
 					</p>
 					<h2>A section head, opened by its rule</h2>
 					<p>

@@ -313,8 +313,9 @@ co-director, programme or grant simply drop those rows.
 		margin: 0 0 var(--space-md);
 	}
 
-	/* Opening paragraph — larger ink and a pine Archivo drop cap. This restates
-	   `.drop-cap` rather than using it: the prose arrives as a snippet authored
+	/* Opening paragraph — larger ink and a three-line Newsreader drop cap in
+	   ink. This restates `.drop-cap` (ink-signal.css, where the sizing is
+	   derived) rather than using it: the prose arrives as a snippet authored
 	   in the route page, so the layout has no element here to put a class on. */
 	.project-prose :global(> p:first-child) {
 		font-size: var(--font-size-prose-lead);
@@ -323,13 +324,23 @@ co-director, programme or grant simply drop those rows.
 
 	.project-prose :global(> p:first-child::first-letter) {
 		float: left;
-		font-family: var(--font-family-display);
-		font-variation-settings: 'wdth' 118;
-		font-weight: 850;
-		font-size: 4.4em;
-		line-height: 0.72;
-		padding: 0.06em 0.1em 0 0;
-		color: var(--color-accent);
+		font-family: var(--font-family-serif);
+		font-weight: 600;
+		font-size: 5.75em;
+		line-height: 1;
+		margin: 0 0.06em -0.1em 0;
+		color: var(--color-text-emphasis);
+	}
+
+	@supports (initial-letter: 3) or (-webkit-initial-letter: 3) {
+		.project-prose :global(> p:first-child::first-letter) {
+			float: none;
+			font-size: inherit;
+			line-height: inherit;
+			margin: 0 var(--space-2) 0 0;
+			-webkit-initial-letter: 3;
+			initial-letter: 3;
+		}
 	}
 
 	.project-prose :global(strong) {
