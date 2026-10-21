@@ -5,32 +5,57 @@
 	 * Two inks on two grounds, one accent. The press archive read
 	 * computationally: warm paper struck by ink, a single pine (warm teal)
 	 * accent for "the current thing". Dark mode is the microfilm negative —
-	 * the same page, grounds swapped to warm near-black, type to cream,
-	 * the accent brightened. Grounds and ink stay warm; the accent is the one
-	 * cooler note, kept scarce. Nothing is web-chrome. */
+	 * the same page, grounds swapped to verdigris film, type to cream, the
+	 * accent brightened. Daylight grounds are warm paper; the type is warm in
+	 * both themes. Nothing is web-chrome.
+	 *
+	 * Every literal lives in this anchor layer (`--sys-*`). The semantic
+	 * tokens below only point at anchors, in both themes, so the two
+	 * palettes can be read side by side here and nowhere else. */
 
 	/* Paper → ink (warm neutral scale). Page grounds, surfaces, ink text,
-	 * hairlines and borders all live here. Never pure white or pure black. */
+	 * hairlines and borders all live here. Never pure white or pure black.
+	 * The ink ramp mirrors the cream ramp step for step: soft, muted and
+	 * faint each measure within half a point of their cream twin against
+	 * their own ground (10.2 / 7.0 / 5.6 here, 10.2 / 7.8 / 5.4 on film). */
 	--sys-color-paper-raised: #fffdf7; /* elevated "sheet" tiles, raised paper */
 	--sys-color-paper: #faf7ef; /* page ground (daylight) */
+	--sys-color-paper-surface: #f3eee0; /* subtle warm surface */
 	--sys-color-paper-200: #ece4d1; /* muted warm surface / sunken */
+	--sys-color-paper-hairline: #dcd4be; /* 1px rule tier (daylight) */
+	--sys-color-paper-border: #c9c0aa; /* borders (daylight) */
+	--sys-color-paper-border-strong: #a39b86; /* stronger borders (daylight) */
 	--sys-color-ink-faint: #6b634e; /* faint ink — muted labels, captions (≥4.5:1 on all paper surfaces) */
 	--sys-color-ink-muted: #5c5442; /* muted ink — secondary text, standfirst */
+	--sys-color-ink-soft: #443c2b; /* soft ink — the cream-soft step in daylight (10.2:1 on paper) */
 	--sys-color-ink: #191509; /* ink — body, emphasis, rules, solid fills */
+	--sys-color-ink-deep: #0e0b04; /* deepest ink — hover on solid ink only, never text */
 
 	/* Pine (warm teal) — the single accent. Marks the current, active,
 	 * newest, primary. Brightened cut used on midnight. Applied by scarcity. */
 	--sys-color-pine: #1e6a56; /* accent (daylight) */
+	--sys-color-pine-deep: #154e40; /* accent hover / pressed (daylight) */
 	--sys-color-pine-bright: #4fbb99; /* accent (midnight) */
 
 	/* Midnight (microfilm negative) — resolved here so both palettes are
-	 * documented in one place; applied via dark.css. */
-	--sys-color-film-ground: #171310; /* warm near-black page ground */
-	--sys-color-film-100: #1f1a14; /* subtle raised film surface */
-	--sys-color-film-200: #252017; /* muted film surface */
-	--sys-color-film-hairline: #383126; /* 1px rule tier (dark) */
-	--sys-color-film-border: #453d2f; /* borders (dark) */
-	--sys-color-film-border-strong: #5a5140; /* stronger borders (dark) */
+	 * documented in one place; applied via dark.css.
+	 *
+	 * VERDIGRIS, 2026-10-21. The film was a warm near-black (#171310) until
+	 * then; it read as brown, and warm charcoal under ivory type is the most
+	 * common "warm" dark mode there is. The ground now takes the accent's own
+	 * hue (OKLCH h ≈ 178, chroma 0.022–0.034): a green-black film, the pine
+	 * seen in shadow. Each step keeps the relative luminance of the step it
+	 * replaced, so every contrast this system measures moved by at most 0.07
+	 * (cream 14.95:1, faint cream 5.38 / 5.05 / 4.70 across the three film
+	 * surfaces, pine-bright 7.79). The cream ramp is unchanged: warmth lives
+	 * in the type. Pine now stands off the ground by lightness and chroma
+	 * rather than by hue, which is why it stays the only saturated mark. */
+	--sys-color-film-ground: #081713; /* verdigris near-black page ground */
+	--sys-color-film-100: #0c1e1a; /* subtle raised film surface */
+	--sys-color-film-200: #102520; /* muted film surface */
+	--sys-color-film-hairline: #203631; /* 1px rule tier (dark) */
+	--sys-color-film-border: #2a433d; /* borders (dark) */
+	--sys-color-film-border-strong: #3d5751; /* stronger borders (dark) */
 	--sys-color-cream-faint: #948a73; /* faint cream (dark) (≥4.5:1 on all film surfaces) */
 	--sys-color-cream-muted: #b3a88d; /* muted cream (dark) */
 	--sys-color-cream-soft: #cbc0a6; /* soft cream (dark) */
@@ -39,7 +64,9 @@
 	/* Functional states — errors/success only. Warm-tinted so they read as
 	 * ink annotations, not web toast. Used sparingly (form validation). */
 	--sys-color-danger: #a3341c; /* deep warm red for errors */
-	--sys-color-danger-bright: #d65c41; /* the lightest warm-red step that clears 4.5:1 on the film ground (4.81) and under ink text (4.74) */
+	--sys-color-danger-deep: #792615; /* danger hover / pressed (daylight) — pine-deep's step applied to the red */
+	--sys-color-danger-bright: #d65c41; /* the lightest warm-red step that clears 4.5:1 on the film ground (4.79) and under ink text (4.74) */
+	--sys-color-success: #5c6b3a; /* muted olive */
 	--sys-color-success-bright: #8a9a5b;
 
 	/* Visualisation palette — derived in OKLCH from the ink + pine
@@ -73,8 +100,8 @@
 	 * solid fills, selected chips, the nameplate. The accent is NOT primary;
 	 * it is the scarce accent below. In midnight, "ink" becomes cream. */
 	--color-primary: var(--sys-color-ink);
-	--color-primary-dark: #0e0b04; /* deepest ink — hover on solid ink */
-	--color-primary-light: var(--sys-color-ink-muted);
+	--color-primary-dark: var(--sys-color-ink-deep); /* hover on solid ink */
+	--color-primary-light: var(--sys-color-ink-soft);
 
 	/* Secondary — muted ink */
 	--color-secondary: var(--sys-color-ink-muted);
@@ -83,36 +110,44 @@
 	 * Used by scarcity: eyebrows, active nav, key numbers, the newest year-bar,
 	 * link underlines, the one primary CTA. */
 	--color-accent: var(--sys-color-pine);
-	--color-accent-dark: #154e40; /* accent hover / pressed (daylight) */
+	--color-accent-dark: var(--sys-color-pine-deep); /* accent hover / pressed */
 
 	/* Highlight — pine too, so link/hover accents resolve to the accent. */
 	--color-highlight: var(--sys-color-pine);
 
 	/* Success - Positive states, confirmations (muted olive) */
-	--color-success: #5c6b3a;
+	--color-success: var(--sys-color-success);
 
-	/* Danger - Errors, destructive actions (deep warm red) */
+	/* Danger - Errors, destructive actions (deep warm red). The -dark step is
+	 * the emphatic one (hover, pressed); it used to equal the base, so the
+	 * danger button's hover changed nothing in daylight. */
 	--color-danger: var(--sys-color-danger);
-
-	--color-danger-dark: var(--sys-color-danger);
+	--color-danger-dark: var(--sys-color-danger-deep);
 
 	/* ===== BACKGROUND & TEXT COLORS ===== */
 	--color-background: var(--sys-color-paper);
 
 	--color-background-muted: var(--sys-color-paper-200);
 
+	/* The text ramp — four steps, the same four in both themes:
+	 *   --color-text        ink / cream          body, emphasis
+	 *   --color-text-soft   ink-soft / cream-soft     standfirsts, secondary prose
+	 *   --color-text-light  ink-muted / cream-muted   metadata, captions
+	 *   --color-text-muted  ink-faint / cream-faint   the floor: quiet labels
+	 * Until 2026-10-21 daylight had no soft step, so -soft and -light each sat
+	 * one step lower than their midnight twins and -light equalled -muted: the
+	 * same token named a different step in each theme. */
 	--color-text: var(--sys-color-ink);
-
-	--color-text-light: var(--sys-color-ink-faint);
+	--color-text-soft: var(--sys-color-ink-soft);
+	--color-text-light: var(--sys-color-ink-muted);
 	--color-text-muted: var(--sys-color-ink-faint);
 	--color-text-emphasis: var(--sys-color-ink);
-	--color-text-soft: var(--sys-color-ink-muted);
 	--color-text-inverted: var(--sys-color-paper);
 
 	/* ===== SURFACE COLORS ===== */
 	/* Layered surfaces for depth hierarchy. Depth now comes from ink density
 	 * and rule weight, not shadows — surfaces stay close in value. */
-	--color-surface: #f3eee0; /* subtle warm surface */
+	--color-surface: var(--sys-color-paper-surface);
 
 	--color-surface-alt: var(--sys-color-paper-200);
 	--color-surface-elevated: var(--sys-color-paper-raised);
@@ -122,9 +157,10 @@
 	 * A *rule* separates (lightest); a *border* is the edge of a box. Drawing a
 	 * separator in --color-border makes it read as a plate edge and flattens the
 	 * ramp, which is exactly the drift this split exists to prevent. */
-	--color-hairline: #dcd4be; /* THE 1px rule tier — pairs with --rule-hairline */
-	--color-border: #c9c0aa; /* box edges: cards, plates, inputs, chips */
-	--color-border-dark: #a39b86; /* stronger borders, outline buttons */
+	/* THE 1px rule tier — pairs with --rule-hairline */
+	--color-hairline: var(--sys-color-paper-hairline);
+	--color-border: var(--sys-color-paper-border); /* box edges: cards, plates, inputs, chips */
+	--color-border-dark: var(--sys-color-paper-border-strong); /* stronger borders, outline buttons */
 	--color-border-focus: var(--color-accent);
 
 	--color-code-bg: var(--sys-color-paper-200);
@@ -216,15 +252,19 @@
 		'Spline Sans Mono', 'Newsreader', 'Spline Sans Mono Fallback', 'SF Mono', 'Consolas', 'Monaco',
 		'Courier New', monospace;
 
-	/* Archivo width-axis presets. The nameplate/section heads are set on a
-	 * wide, heavy cut (a compressed-broadsheet feel); weight is carried by
-	 * font-weight (wght axis). Applied to the nameplate, h1–h3 and section
-	 * heads. Newsreader carries opsz via `font-optical-sizing: auto`. */
+	/* Archivo width-axis presets, one per tier of the display hierarchy in
+	 * DESIGN.md. The nameplate/section heads are set on a wide, heavy cut (a
+	 * compressed-broadsheet feel); weight is carried by font-weight (wght
+	 * axis). Newsreader carries opsz via `font-optical-sizing: auto`.
+	 *   nameplate  the home masthead (wdth 123)
+	 *   wordmark   the header wordmark (wdth 122)
+	 *   display    h1, index and record titles (wdth 116)
+	 *   headline   h2, h3, section heads (wdth 112) — this was two tokens,
+	 *              -display-md and -display-sm, with the same value */
 	--font-variation-nameplate: 'wdth' 123;
-	--font-variation-display: 'wdth' 116;
-	--font-variation-display-md: 'wdth' 112;
-	--font-variation-display-sm: 'wdth' 112;
 	--font-variation-wordmark: 'wdth' 122;
+	--font-variation-display: 'wdth' 116;
+	--font-variation-headline: 'wdth' 112;
 
 	/*
 	 * Type Scale — forked ratios.
@@ -275,7 +315,6 @@
 	--line-height-snug: 1.35;
 	--line-height-normal: 1.5;
 	--line-height-relaxed: 1.6;
-	--line-height-loose: 1.9;
 
 	/* Contextual line heights - tuned for Archivo display headings */
 	--line-height-heading: 1.1;
@@ -439,7 +478,6 @@
 	--space-2xl: var(--space-12);
 	--space-3xl: var(--space-16);
 	--space-4xl: var(--space-24);
-	--space-7xl: var(--space-48);
 
 	/* Reading rhythm — use on detail pages between sections to give prose room. */
 	--space-reading: var(--space-xl);
@@ -487,28 +525,35 @@
 	--border-width-medium: 2px;
 	--border-width-thick: 4px;
 
-	/* ===== ANIMATION & TRANSITIONS ===== */
-	/* 
-	 * Consistent timing for polished interactions
-	 * Based on Material Design motion principles
-	 */
+	/* ===== FOCUS =====
+	 * The one ring in the system: a flat 2px accent outline at a 2px offset,
+	 * never a glow. Write `outline: var(--focus-outline)` and
+	 * `outline-offset: var(--focus-outline-offset)`; a control whose ring
+	 * would be clipped by an `overflow` ancestor draws it inside its own box
+	 * with `--focus-outline-inset` instead. Before these tokens the colour was
+	 * spelled four ways and the offset five (4px in 31 places, 2px in 16),
+	 * against the 2px DESIGN.md documents. A ground that is not the page
+	 * (the daylight footer) keeps the shorthand and overrides
+	 * `outline-color` alone. `prefers-contrast: more` thickens the width in
+	 * the components that need it. */
+	--focus-outline-width: var(--border-width-medium);
+	--focus-outline: var(--focus-outline-width) solid var(--color-border-focus);
+	--focus-outline-offset: var(--border-width-medium);
+	--focus-outline-inset: calc(-1 * var(--focus-outline-width));
 
-	/* Duration scale */
+	/* ===== MOTION =====
+	 * Print register: transitions animate colour and border only, at
+	 * --duration-fast (the media controls at --duration-normal); the loading
+	 * spinners turn at --duration-moderate and --duration-slow. Nothing
+	 * overshoots, and no transform moves on hover. */
 	--duration-instant: 75ms;
 	--duration-fast: 150ms;
 	--duration-normal: 200ms;
 	--duration-moderate: 300ms;
 	--duration-slow: 500ms;
-	--duration-slower: 700ms;
 
-	/* Easing functions.
-	 *
-	 * Smooth overshoot-free decelerations only — real objects decelerate
-	 * smoothly; bounce/elastic easing feels dated and toy-like on a
-	 * scholarly site. */
 	--ease-out: cubic-bezier(0, 0, 0.2, 1);
 	--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-	--ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
 
 	/* ===== LAYOUT ===== */
 	/* Container widths */
@@ -525,8 +570,6 @@
 	/* 384px */
 	--content-width-6xl: 72rem;
 	/* 1152px */
-	--content-width-7xl: 80rem;
-	/* 1280px */
 
 	/* ===== Z-INDEX SCALE ===== */
 	/* Consistent layering system */
@@ -541,7 +584,6 @@
 
 	/* ===== OPACITY SCALE ===== */
 	--opacity-0: 0;
-	--opacity-5: 0.05;
 	--opacity-10: 0.1;
 	--opacity-15: 0.15;
 	--opacity-20: 0.2;
@@ -549,8 +591,6 @@
 	--opacity-40: 0.4;
 	--opacity-50: 0.5;
 	--opacity-70: 0.7;
-	--opacity-90: 0.9;
-	--opacity-100: 1;
 
 	/* ===== TRANSFORMS ===== */
 	/* The last survivor of the pre-Ink+Signal motion vocabulary: the disclosure
@@ -567,11 +607,6 @@
 	/* 400px */
 	--iframe-height-default: 37.5rem;
 	/* 600px */
-	--iframe-height-md: 37.5rem;
-	--iframe-height-lg: 50rem;
-	/* 800px */
-	--iframe-height-xl: 62.5rem;
-	/* 1000px */
 }
 
 /*

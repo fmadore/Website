@@ -242,8 +242,8 @@ as the list it is, and needs no separate data table.
 	}
 
 	.venue-tail-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 		color: var(--color-text-emphasis);
 	}
 

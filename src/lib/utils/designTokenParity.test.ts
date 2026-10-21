@@ -146,7 +146,7 @@ describe('PDF CV tokens match variables.css', () => {
 	 * There are no exceptions left. `TEXT` was one: `#3a352a`, a warm grey that
 	 * traced to no token, defined only in `pdfDesignTokens.ts` and pinned here
 	 * by the 2026-08 audit pending a decision. The decision (roadmap 2.4) was to
-	 * retire it — the system owns three ink steps, the exported CV is the same
+	 * retire it — the system owns its ink steps, the exported CV is the same
 	 * document as the web CV, and the web CV sets its body in `--color-text`.
 	 * The mapping above now covers every entry in COLORS, and this test asserts
 	 * that it keeps doing so: a new hand-copied constant has to be bound to a
@@ -278,7 +278,7 @@ describe('the pre-hydration copies in src/app.html match variables.css', () => {
 	/** The value of `prop` inside the first rule whose selector is `selector`. */
 	const declared = (selector: string, prop: string) => {
 		const block = appHtml.match(
-			new RegExp(`(?:^|\\})\\s*${selector.replace(/\./g, '\\.')}\\s*\\{([^}]*)\\}`, 'm')
+			new RegExp(`(?:^|\\})\\s*${selector.replace(/[.()]/g, '\\$&')}\\s*\\{([^}]*)\\}`, 'm')
 		);
 		if (!block) throw new Error(`no \`${selector}\` rule in app.html`);
 		// Anchored, or `color` matches inside `background-color`.
@@ -293,8 +293,21 @@ describe('the pre-hydration copies in src/app.html match variables.css', () => {
 	});
 
 	it('paints the midnight ground and ink', () => {
-		expect(declared('html.dark body', 'background-color')).toBe(resolveDark('--color-background'));
-		expect(declared('html.dark body', 'color')).toBe(resolveDark('--color-text'));
+		expect(declared(':where(html.dark) body', 'background-color')).toBe(
+			resolveDark('--color-background')
+		);
+		expect(declared(':where(html.dark) body', 'color')).toBe(resolveDark('--color-text'));
+	});
+
+	/**
+	 * The critical block runs before the stylesheet, so each of its body rules
+	 * must sit at the specificity of reset.css's bare `body` and lose to it once
+	 * it loads. Written as `html.dark body`, the midnight rule outranked the
+	 * token for the life of the page: changing `--color-background` changed
+	 * everything except the ground.
+	 */
+	it('never outranks the stylesheet once it loads', () => {
+		expect(appHtml).not.toMatch(/(?:^|\})\s*html\.dark\s+body\s*\{/m);
 	});
 
 	/**

@@ -532,7 +532,7 @@ own methods close the entry as apparatus.
 
 	.dossier-title {
 		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
+		font-variation-settings: var(--font-variation-headline);
 		font-size: var(--font-size-3xl);
 		font-weight: 780;
 		letter-spacing: var(--tracking-display);

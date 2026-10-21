@@ -99,7 +99,7 @@
 	 * `.content-body em` italic above. */
 	.content-body :global(:is(h1, h2, h3) :is(em, i, cite)) {
 		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
+		font-variation-settings: var(--font-variation-headline);
 		font-style: normal;
 	}
 
@@ -149,7 +149,7 @@
 	 * one thing the two-voice system forbids. */
 	.content-body :global(h2) {
 		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
+		font-variation-settings: var(--font-variation-headline);
 		font-size: var(--font-size-2xl);
 		font-weight: 750;
 		letter-spacing: var(--tracking-display-sm);
@@ -165,7 +165,7 @@
 
 	.content-body :global(h3) {
 		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
+		font-variation-settings: var(--font-variation-headline);
 		font-size: var(--font-size-xl);
 		font-weight: 700;
 		letter-spacing: var(--tracking-display-sm);
@@ -227,8 +227,8 @@
 
 	/* Focus — a flat accent outline, no shadow bloom. */
 	.content-body :global(a:focus-visible) {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 		border-radius: 0;
 	}
 

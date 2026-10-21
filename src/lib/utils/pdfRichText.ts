@@ -231,7 +231,7 @@ export const renderRichText = (
 	baseFont: string = defaultBaseFont,
 	boldColor?: [number, number, number],
 	// Ink, never pure black: nothing in this palette is #000, on screen or on
-	// paper (DESIGN.md, The Warm Ground Rule).
+	// paper (DESIGN.md, The Warm Type Rule).
 	textColor: [number, number, number] = [...COLORS.TEXT]
 ): number => {
 	let currentX = x;

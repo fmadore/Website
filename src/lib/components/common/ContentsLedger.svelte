@@ -4,7 +4,7 @@ ContentsLedger — the table of contents a long document opens with.
 The house contents idiom, not a visualisations component: any page deep enough
 to be read as a document rather than scanned as a screen opens with its own
 contents. Consumers are the two visualisation pages (fourteen and eleven ruled
-sections) and /style-guide (nine). It began as `VizContents`, scoped to the
+sections) and /style-guide (ten). It began as `VizContents`, scoped to the
 first of those, and was promoted here once the third needed it.
 
 It is set as a ledger, because a ledger is what this system does with anything

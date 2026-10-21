@@ -56,10 +56,10 @@ async function boot({
 }
 
 it('prefers a stored choice over the OS, and paints both metas with the ground', async () => {
-	const store = await boot({ stored: 'dark', prefersDark: false, ground: '#171310' });
+	const store = await boot({ stored: 'dark', prefersDark: false, ground: '#081713' });
 	expect(store.getTheme()).toBe('dark');
 	expect([...classes]).toEqual(['dark']);
-	expect(metas.map((meta) => meta.content)).toEqual(['#171310', '#171310']);
+	expect(metas.map((meta) => meta.content)).toEqual(['#081713', '#081713']);
 });
 
 it('falls back to the OS preference when nothing valid is stored', async () => {

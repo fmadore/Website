@@ -23,7 +23,7 @@ const ROUTES = ['/style-guide', '/publications'];
 const CONTROLS = 'button, a.btn, .chip, .page-btn, .pager-item, .sort-opt, .mono-action';
 /** Idioms the sweep must reach, or it has silently stopped testing them. */
 const REQUIRED: Record<string, string[]> = {
-	'/style-guide': ['chip--selected', 'pager-item--current', 'btn-accent', 'btn-danger'],
+	'/style-guide': ['chip--selected', 'page-btn--current', 'btn-accent', 'btn-danger'],
 	'/publications': ['chip--selected', 'page-btn--current']
 };
 const AA = 4.5;

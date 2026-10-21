@@ -212,9 +212,9 @@ export const CHART_COLOR_FALLBACKS = {
 	primary: '#191509', // ink (--color-primary) — dominant structural series colour
 	primaryDark: '#0e0b04', // ink-deep (--color-primary-dark)
 	text: '#191509', // ink (--color-text)
-	textLight: '#6b634e', // faint ink (--color-text-light) — ≥4.5:1 on every paper surface
+	textLight: '#5c5442', // muted ink (--color-text-light) — 7.0:1 on paper
 	border: '#c9c0aa', // border (--color-border)
-	surface: '#f3eee0', // paper-100 (--color-surface)
+	surface: '#f3eee0', // paper-surface (--color-surface)
 	surfaceRgb: '250, 247, 239', // warm paper #faf7ef (--color-surface-rgb is unset, so this fallback renders)
 	white: '#ffffff',
 	accent: '#1e6a56', // pine — the signal accent (--color-accent)
@@ -240,7 +240,7 @@ export const CHART_COLOR_FALLBACKS = {
  * falls through to the daylight record above. The viz series is the reason
  * this exists: `dark.css` re-steps `--sys-viz-*` for the film ground, and a
  * renderer that missed the computed value would otherwise paint the daylight
- * seven on warm near-black — the exact regression the midnight step fixes.
+ * seven on the film ground — the exact regression the midnight step fixes.
  */
 export const CHART_COLOR_FALLBACKS_DARK: Partial<
 	Record<keyof typeof CHART_COLOR_FALLBACKS, string>
@@ -249,9 +249,9 @@ export const CHART_COLOR_FALLBACKS_DARK: Partial<
 	primaryDark: '#fffdf7', // paper-raised (--color-primary-dark)
 	text: '#efe7d6', // cream (--color-text)
 	textLight: '#b3a88d', // muted cream (--color-text-light)
-	border: '#453d2f', // film border (--color-border)
-	surface: '#1f1a14', // film-100 (--color-surface)
-	surfaceRgb: '23, 19, 16', // film ground #171310
+	border: '#2a433d', // film border (--color-border)
+	surface: '#0c1e1a', // film-100 (--color-surface)
+	surfaceRgb: '8, 23, 19', // film ground #081713
 	accent: '#4fbb99', // pine-bright (--color-accent)
 	highlight: '#4fbb99', // pine-bright (--color-highlight)
 	success: '#8a9a5b', // success-bright (--color-success)

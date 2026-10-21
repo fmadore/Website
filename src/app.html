@@ -14,7 +14,7 @@
 		     the OS wins there too. Hexes mirror src/styles/base/variables.css and are
 		     bound to it by src/lib/utils/designTokenParity.test.ts. -->
 		<meta name="theme-color" content="#faf7ef" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="#171310" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#081713" media="(prefers-color-scheme: dark)" />
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -43,7 +43,7 @@
 
 		<!-- Critical CSS: Inlined to prevent render-blocking and reduce LCP -->
 		<!-- Values align with design system: variables.css Ink + Signal tokens -->
-		<!-- Light (daylight): warm paper #faf7ef bg, ink #191509 text | Dark (midnight/microfilm negative): warm near-black #171310 bg, cream #efe7d6 text -->
+		<!-- Light (daylight): warm paper #faf7ef bg, ink #191509 text | Dark (midnight/microfilm negative): verdigris film #081713 bg, cream #efe7d6 text -->
 		<!-- Square corners (--border-radius: 0), no shadows, no backdrop blur -->
 		<style>
 			*,
@@ -70,8 +70,13 @@
 				background-color: #faf7ef;
 				color: #191509;
 			}
-			html.dark body {
-				background-color: #171310;
+			/* `:where()` keeps this rule at the specificity of a bare `body`, so
+			 * reset.css (`body { background-color: var(--color-background) }`),
+			 * which loads after this block, takes over once it arrives. As
+			 * `html.dark body` it outranked the stylesheet for the life of the
+			 * page: the midnight ground was this literal, not the token. */
+			:where(html.dark) body {
+				background-color: #081713;
 				color: #efe7d6;
 			}
 			.container {
@@ -393,7 +398,7 @@
 				// media attributes stay: they are the answer for a reader with no
 				// JavaScript. Mirrors `toggleTheme` in $lib/stores/themeStore.svelte,
 				// which re-reads --color-background once the stylesheet exists.
-				const grounds = { light: '#faf7ef', dark: '#171310' };
+				const grounds = { light: '#faf7ef', dark: '#081713' };
 				const metas = document.querySelectorAll('meta[name="theme-color"]');
 				for (let i = 0; i < metas.length; i++) {
 					metas[i].setAttribute('content', grounds[initialTheme]);

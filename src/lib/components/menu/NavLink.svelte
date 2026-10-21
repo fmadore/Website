@@ -98,13 +98,13 @@
 	}
 
 	.nav-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-1);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 		border-radius: 0;
 	}
 
 	/* High contrast mode support */
-	@media (prefers-contrast: high) {
+	@media (--high-contrast) {
 		.nav-link::after {
 			height: calc(var(--border-width-medium) + var(--border-width-thin));
 		}

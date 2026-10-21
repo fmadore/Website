@@ -1,7 +1,8 @@
 /* ===== MIDNIGHT THEME — THE MICROFILM NEGATIVE =====
  * Not a slate "dark mode" and not an inversion filter: the same printed page
- * photographed as a negative. Grounds swap to warm near-black, type to cream,
- * the pine accent brightens. Warmth lives in the type, not the surface.
+ * photographed as a negative. Grounds swap to verdigris film (a green-black
+ * cut from the accent's own hue), type to cream, the pine accent brightens.
+ * Warmth lives in the type, not the surface.
  * Every value is drawn from the film-* / cream-* / pine-bright anchors
  * defined in variables.css. Shadows and glass are gone globally, so this file
  * remaps colour tokens and one typographic pair: the three shared weight
@@ -44,7 +45,11 @@ html.dark {
 	 * 0.10 floor for the same reason the daylight set does.
 	 *
 	 * Measured on the film ground: adjacent CVD ΔE 13.2 (protan) / 11.8
-	 * (tritan), normal-vision floor 16.6, every slot ≥3:1. The one check that
+	 * (tritan), normal-vision floor 16.6, every slot ≥3:1. The verdigris
+	 * re-ground (2026-10-21) held the ground's luminance, so those numbers
+	 * stand: the faintest slots are mauve 3.11:1, olive 3.15:1 and umber
+	 * 3.21:1. Olive is the hue nearest the ground (h 128 against 178), and
+	 * still clears 3:1 by lightness. The one check that
 	 * does not pass is the lightness band on slot 1: pine-bright is L 0.72
 	 * against a 0.67 ceiling. That is the accent's own value, tuned to clear
 	 * 4.5:1 as midnight link and label colour, and the series has to be the
@@ -71,7 +76,7 @@ html.dark {
 		var(--sys-color-cream)
 	);
 
-	/* Backgrounds — the warm near-black film ground. */
+	/* Backgrounds — the verdigris film ground. */
 	--color-background: var(--sys-color-film-ground);
 	--color-background-muted: var(--sys-color-film-200);
 

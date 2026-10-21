@@ -135,7 +135,7 @@
 	}
 
 	/* High contrast mode support */
-	@media (prefers-contrast: high) {
+	@media (--high-contrast) {
 		.audio-visualization {
 			background: var(--color-surface-alt);
 			border: var(--border-width-thin) solid var(--color-border);

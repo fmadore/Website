@@ -4,6 +4,7 @@ description: The press archive, read computationally — warm paper struck by in
 colors:
   ink: '#191509'
   ink-deep: '#0e0b04'
+  ink-soft: '#443c2b'
   ink-muted: '#5c5442'
   ink-faint: '#6b634e'
   paper: '#faf7ef'
@@ -16,17 +17,18 @@ colors:
   pine: '#1e6a56'
   pine-deep: '#154e40'
   pine-bright: '#4fbb99'
-  film-ground: '#171310'
-  film-raised: '#1f1a14'
-  film-sunken: '#252017'
-  film-hairline: '#383126'
-  film-border: '#453d2f'
-  film-border-strong: '#5a5140'
+  film-ground: '#081713'
+  film-raised: '#0c1e1a'
+  film-sunken: '#102520'
+  film-hairline: '#203631'
+  film-border: '#2a433d'
+  film-border-strong: '#3d5751'
   cream: '#efe7d6'
   cream-soft: '#cbc0a6'
   cream-muted: '#b3a88d'
   cream-faint: '#948a73'
   danger: '#a3341c'
+  danger-deep: '#792615'
   danger-bright: '#d65c41'
   success: '#5c6b3a'
   viz-pine: '#1e6a56'
@@ -131,7 +133,7 @@ components:
     padding: '12px 20px'
   chip:
     backgroundColor: 'transparent'
-    textColor: '{colors.ink-muted}'
+    textColor: '{colors.ink-soft}'
     typography: '{typography.label}'
     rounded: '{rounded.base}'
     padding: '6px 8px'
@@ -141,18 +143,18 @@ components:
     typography: '{typography.label}'
     rounded: '{rounded.base}'
     padding: '6px 8px'
-  pager-item:
+  page-button:
     backgroundColor: 'transparent'
-    textColor: '{colors.ink-muted}'
+    textColor: '{colors.ink-soft}'
     typography: '{typography.label}'
     rounded: '{rounded.base}'
-    padding: '6px 10px'
-  pager-item-current:
+    padding: '8px 10px'
+  page-button-current:
     backgroundColor: '{colors.ink}'
     textColor: '{colors.paper}'
     typography: '{typography.label}'
     rounded: '{rounded.base}'
-    padding: '6px 10px'
+    padding: '8px 10px'
 ---
 
 # Design System: Ink + Signal
@@ -165,7 +167,7 @@ The system comes from a collision between two real source materials: the West Af
 
 The register is print, not app. Depth is drawn rather than floated: a 5px rule opens a masthead, a 3px rule opens a section, a 1px hairline separates entries, and that weight hierarchy alone should make the page navigable if every string were set at the same size. Surfaces stay close in value and corners are square, so structure has to come from ink density and rule weight instead of elevation. Motion is nearly absent — state changes are instant, and the most a page does on arrival is a short fade.
 
-Both themes are first-class and both are warm. Daylight is warm paper struck by ink; midnight is the same printed page photographed as a microfilm negative, with grounds swapped to warm near-black, type to cream, and the pine accent brightened. It is not slate, not blue, and never an inversion filter. The browser's own surfaces take the chosen theme, not the OS: `html` narrows `color-scheme` to `light` or `dark` (never `light dark`), so scrollbars, form controls and the overscroll canvas follow the theme the reader picked; `src/app.html` ships two media-scoped `theme-color` metas for the reader with no JavaScript, and both the bootstrap and `toggleTheme` overwrite both metas with the resolved `--color-background`, so a stored choice that contradicts the OS wins in the address bar too. `static/404.html` mirrors all of it. The confirmed anti-references are specific: templated academic CMS and faculty-directory defaults; the AI-slop tells (gradients, glassmorphism, glow, `border-left` accent stripes, rounded cards with soft shadows); code-editor and terminal aesthetics, since mono here is metadata and never a page theme; and soft-launch minimalism with acres of whitespace and hero photos under overlay text.
+Both themes are first-class, and the type is warm in both. Daylight is warm paper struck by ink; midnight is the same printed page photographed as a microfilm negative, with grounds swapped to a verdigris film (a green-black cut from the accent's own hue), type to cream, and the pine accent brightened. It is not slate, not navy, not warm charcoal, and never an inversion filter. The browser's own surfaces take the chosen theme, not the OS: `html` narrows `color-scheme` to `light` or `dark` (never `light dark`), so scrollbars, form controls and the overscroll canvas follow the theme the reader picked; `src/app.html` ships two media-scoped `theme-color` metas for the reader with no JavaScript, and both the bootstrap and `toggleTheme` overwrite both metas with the resolved `--color-background`, so a stored choice that contradicts the OS wins in the address bar too. `static/404.html` mirrors all of it. The confirmed anti-references are specific: templated academic CMS and faculty-directory defaults; the AI-slop tells (gradients, glassmorphism, glow, `border-left` accent stripes, rounded cards with soft shadows); code-editor and terminal aesthetics, since mono here is metadata and never a page theme; and soft-launch minimalism with acres of whitespace and hero photos under overlay text.
 
 The system renders itself: the `/style-guide` route is a living reference that reads the live token values off `:root` and re-documents itself when a token changes. Check a claim in this file against that page before trusting it, and when you add a reusable idiom, document it there in the same change — `src/styles/styleGuideCoverage.test.ts` fails the build when a class in `ink-signal.css` appears neither on `/style-guide` nor in a component that page renders. The idiom classes themselves live in `src/styles/components/ink-signal.css`.
 
@@ -177,7 +179,7 @@ The system renders itself: the `/style-guide` route is a living reference that r
 - One accent (pine), applied by scarcity to mark only the current thing
 - Square corners, zero shadows, no glass; gradients only where they encode data
 - Data as the only permitted ornament: year-bars, counts, frequency-scaled term lists
-- Warm grounds and warm type in both themes; the accent is the single cooler note
+- Warm type in both themes; a warm paper ground by day and a verdigris film by night; pine the only saturated mark
 
 ## Colors
 
@@ -187,7 +189,7 @@ Two inks on two grounds with one accent, applied by weight: ground ≫ ink ≫ a
 
 - **Ink** (`#191509`): The dominant structural colour and the daylight reading default — body emphasis, every rule and hairline, solid fills, selected chips, the nameplate. In midnight this role is taken by **Cream** (`#efe7d6`); the structure is identical, the value inverted.
 - **Deep Ink** (`#0e0b04`): Hover and pressed state on solid ink fills only. Never a text colour.
-- **Muted Ink** (`#5c5442`) / **Faint Ink** (`#6b634e`): Secondary prose and quiet metadata respectively. Both clear 4.5:1 on every paper surface; faint ink is the floor, not a suggestion.
+- **Soft Ink** (`#443c2b`) / **Muted Ink** (`#5c5442`) / **Faint Ink** (`#6b634e`): the text ramp below ink — standfirsts and secondary prose (`--color-text-soft`), metadata and captions (`--color-text-light`), and the quiet floor (`--color-text-muted`). They mirror the cream ramp step for step (10.2 / 7.0 / 5.6:1 on paper against 10.2 / 7.8 / 5.4:1 on film), so each text token names the same step in both themes. Faint ink is the floor, not a suggestion.
 
 ### Secondary
 
@@ -203,18 +205,18 @@ The single accent. There is no third colour role in the UI.
 ### Neutral
 
 - **Warm Paper** (`#faf7ef`): The daylight page ground. **Raised Paper** (`#fffdf7`) for elevated sheet tiles, **Paper Surface** (`#f3eee0`) and **Sunken Paper** (`#ece4d1`) for muted and recessed surfaces.
-- **Film Ground** (`#171310`): The midnight page ground — warm near-black, never slate. **Raised Film** (`#1f1a14`) and **Sunken Film** (`#252017`) sit deliberately close in value to it.
+- **Film Ground** (`#081713`): The midnight page ground — a verdigris near-black, the pine seen in shadow (OKLCH hue ≈ 178, chroma 0.02–0.03). **Raised Film** (`#0c1e1a`) and **Sunken Film** (`#102520`) sit deliberately close in value to it. Until 2026-10-21 the film was a warm near-black (`#171310`); it read as brown, and warm charcoal under ivory type is the most common warm dark mode there is. The verdigris steps keep the old steps' luminance exactly, so every contrast the system measures moved by under 0.1.
 - **Cream** (`#efe7d6`) with **Soft** (`#cbc0a6`), **Muted** (`#b3a88d`) and **Faint** (`#948a73`) steps: the midnight type ramp, mirroring the ink ramp exactly.
-- **Hairline** (`--color-hairline`, `#dcd4be` / `#383126`) / **Border** (`--color-border`, `#c9c0aa` / `#453d2f`) / **Strong Border** (`--color-border-dark`, `#a39b86` / `#5a5140`): row separators, plate edges, and outlined controls respectively — one token per job, in that order of weight. See The Hairline Pairing Rule under Layout.
-- **Deep Warm Red** (`#a3341c`) and **Muted Olive** (`#5c6b3a`): errors and confirmations only. Warm-tinted so they read as ink annotations rather than web toast, and used only in form validation.
+- **Hairline** (`--color-hairline`, `#dcd4be` / `#203631`) / **Border** (`--color-border`, `#c9c0aa` / `#2a433d`) / **Strong Border** (`--color-border-dark`, `#a39b86` / `#3d5751`): row separators, plate edges, and outlined controls respectively — one token per job, in that order of weight. See The Hairline Pairing Rule under Layout.
+- **Deep Warm Red** (`#a3341c`, deepening to `#792615` on hover) and **Muted Olive** (`#5c6b3a`): errors and confirmations only. Warm-tinted so they read as ink annotations rather than web toast, and used only in form validation.
 
 ### Named Rules
 
 **The Scarcity Rule.** Pine marks the current thing. If it appears more than a handful of times on a screen it has stopped meaning anything — demote occurrences until it is scarce again. This is a countable test, not a matter of taste.
 
-**The Warm Ground Rule.** Grounds and type stay warm in both themes; the accent is the only cooler note in the system. Pure white, pure black, and any cool gray are outside the palette.
+**The Warm Type Rule.** Type stays warm in both themes: ink on paper, cream on film. The daylight ground is warm paper; the midnight ground is verdigris, cut from the accent's hue so that pine stays the only saturated mark on it. Pure white, pure black, any cool gray, slate, navy and warm charcoal are outside the palette. Every literal lives in the `--sys-*` anchor layer; a semantic token only ever points at an anchor, in both themes.
 
-**The Negative Rule.** Midnight is the same page photographed as a negative, designed as its own pass. Never ship a component specified in only one theme, and never reach for an inversion filter or a slate-blue dark palette. That pass carries exactly one typographic adjustment alongside the colour remap — the Microfilm Weight Rule below. **The midnight footer is the page:** daylight's footer is an inverted ink block, and the negative of an inverted block would be a bright cream slab, which the microfilm register refuses — so in midnight the footer takes the page ground itself (`--color-footer-bg: var(--color-background)`) and the 4px cream masthead rule plus the hairlines carry the boundary. Likewise the film ramp holds three steps for four paper roles, so `--color-background-muted` and `--color-surface-elevated` share the lightest step in midnight by design; the style guide records it rather than hiding it.
+**The Negative Rule.** Midnight is the same page photographed as a negative, designed as its own pass. Never ship a component specified in only one theme, and never reach for an inversion filter, a slate-blue or navy dark palette, or a warm-charcoal one. That pass carries exactly one typographic adjustment alongside the colour remap — the Microfilm Weight Rule below. **The midnight footer is the page:** daylight's footer is an inverted ink block, and the negative of an inverted block would be a bright cream slab, which the microfilm register refuses — so in midnight the footer takes the page ground itself (`--color-footer-bg: var(--color-background)`) and the 4px cream masthead rule plus the hairlines carry the boundary. Likewise the film ramp holds three steps for four paper roles, so `--color-background-muted` and `--color-surface-elevated` share the lightest step in midnight by design; the style guide records it rather than hiding it.
 
 ## Typography
 
@@ -285,7 +287,7 @@ Never cross the pair. The failure is silent — a separator drawn in the edge co
 
 **This system has no shadows.** There are no `--shadow-*` tokens to reach for, and `box-shadow` must never be added to a style. Glass does not exist either: no `backdrop-filter`, no translucent chrome. Depth is drawn instead of floated, and it comes from exactly two sources — the weight of the rule separating two regions, and the density of ink within them. Surfaces are layered (`paper` → `paper-surface` → `paper-raised`, and their film equivalents) but stay deliberately close in value, so a surface change alone never carries hierarchy; the rule above it does.
 
-Focus is the one place a ring appears, and it is a flat accent outline (2px solid pine with a 2px offset), never a glow; the translucent `--focus-ring` token was retired on 2026-09-12 with its last consumer.
+Focus is the one place a ring appears, and it is a flat accent outline (2px solid pine with a 2px offset), never a glow. It is written with the focus tokens: `outline: var(--focus-outline)` and `outline-offset: var(--focus-outline-offset)`, or `--focus-outline-inset` where an `overflow` ancestor would clip the ring. A ground that is not the page (the daylight footer) overrides `outline-color` alone. The translucent `--focus-ring` token was retired on 2026-09-12 with its last consumer.
 
 ### Named Rules
 
@@ -295,7 +297,7 @@ Focus is the one place a ring appears, and it is a flat accent outline (2px soli
 
 Corners are square. Every radius token resolves to `0` — cards, chips, buttons, panels, inputs, and image plates are all sharp-cornered by design. `--border-radius-full` (9999px) survives for genuinely circular micro-controls that opt in explicitly: slider thumbs, loading spinners, status dots, and a legend swatch that mirrors a genuinely circular map or network mark. Nothing else may use it.
 
-The recurring silhouette is the rectangle with a 1px border: the flat chip, the pager item, the image plate. **Plates** are the imagery treatment — a photograph, cover, or archival scan gets a 1px border, square corners, a muted ground behind it, and a serif-italic caption below (`Fig. 1 — …`). Scans from the press corpus are first-class imagery and are preferred to stock photography of any kind.
+The recurring silhouette is the rectangle with a 1px border: the flat chip, the page button, the image plate. **Plates** are the imagery treatment — a photograph, cover, or archival scan gets a 1px border, square corners, a muted ground behind it, and a serif-italic caption below (`Fig. 1 — …`). Scans from the press corpus are first-class imagery and are preferred to stock photography of any kind.
 
 Borders come in three weights (1px, 2px, 4px) and take their colour from the hairline/border/strong-border ramp, which is warm rather than neutral gray.
 
@@ -315,7 +317,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **Hover / Focus:** Hover deepens the fill (ink → deep ink, pine → deep pine) with no movement whatsoever, and always restates its label colour, because the bare `a:hover` prose rule is written `a:hover:not(:where(.btn))` and must stay out of the button family. **Midnight reverses the direction a fill deepens in:** `--color-accent-dark` is itself lighter than the accent on the film ground (pine-bright mixed 25% toward the cream), so the accent fill hovers lighter under its dark label and pine hover text on the ground stays above 4.5:1. Every link and button on the site must also read at 4.5:1 in its hover state; the record's `Open publication ↗` once hovered at 1.48:1 because of the prose rule above. Focus-visible draws a 2px pine outline at a 2px offset; on a touch pointer every `.btn` is at least 44px tall.
 - **Secondary / Outline / Ghost:** Secondary is a transparent control with a strong-border edge that fills with the alt surface on hover. Outline variants (`primary`, `secondary`, `accent`) invert to a solid fill on hover. Ghost carries faint-ink text and no border.
 - **Sizes:** `sm` (8px 16px), default (12px 20px), `lg` (16px 28px). Icon-only variants are padded to stay square.
-- **Danger:** Warm red, reserved for a destructive action; no control on the site consumes it today. Its midnight fill was re-stepped to `#d65c41` on 2026-09-09 so the skin clears 4.5:1 on the film ground — `/style-guide` § 5 renders it and prints the measurement.
+- **Danger:** Warm red, reserved for a destructive action; no control on the site consumes it today. Its midnight fill was re-stepped to `#d65c41` on 2026-09-09 so the skin clears 4.5:1 on the film ground (4.79:1 on verdigris), and its hover now deepens to `#792615` in daylight. `/style-guide` renders it under Controls and prints both measurements.
 - **Bare:** A zero-specificity `:where(.btn-bare)` primitive exists for controls that are semantically buttons but must not look like one (transport controls, close crosses). It carries only hit behaviour, a focus ring, and the native reset, so a consumer's own class styles it without `!important`.
 
 ### Chips
@@ -343,7 +345,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 
 ### Navigation
 
-- **Style:** Mono data voice, uppercase, letterspaced. The active item takes pine and a 2px pine rule beneath; the rest are set in `--color-text-soft`, one step quieter than body ink (6.85:1 on paper), so the current section reads as the only lit label.
+- **Style:** Mono data voice, uppercase, letterspaced. The active item takes pine and a 2px pine rule beneath; the rest are set in `--color-text-soft`, one step quieter than body ink (10.2:1 on paper), so the current section reads as the only lit label.
 - **States:** Colour change only, instantly. A hovered label answers with ink, never with a second rule beside the current one. No underline sweep, no sliding indicator, no scale; a submenu appears and disappears without reveal, stagger or nudge.
 - **A record title inside chrome keeps the document voice.** Submenu entries — research projects, collections, workshops — are set in Archivo at the text tier, sentence case, on the desktop dropdown and the mobile panel alike; only the section labels above them are mono. The desktop nav shows from 1280px because the seven labels, the wordmark and the toggle first fit on one line at 1180px; below that the masthead opens a full-bleed panel that prints the whole index, expanded.
 - **Externals are marked** with an `aria-hidden` `↗` and a hidden " (opens in new tab)", the same markup the footer and every record rail use. Every page opens with a skip link to `#main`.
@@ -356,7 +358,7 @@ Components are **typeset, not manufactured**: they read as set type and printer'
 - **The Year-Bar Strip:** Publication distribution drawn as flush ink bars with the newest year in pine, and a mono legend beneath. Real data used as the page's ornament.
 - **The Key-Terms Cloud:** A frequency-scaled serif term list where size encodes actual corpus frequency.
 - **The Drop Cap:** An Archivo initial at 4.4em, weight 850, in pine, floated into an abstract or standfirst.
-- **The Prose Link and the Inline Citation:** A link in running prose takes ink text and a 1px pine underline at a 3px offset, warming to pine text and 2px on hover or focus — and the idiom is opt-in by _container_ (`.prose`, `.content-body`, `.page-intro`, `.record-prose`, `.project-prose`, `.abstract`, `.apparatus-text`, `.audio-description`, `.embed-desc`, `.guide-note`), never by `p a` / `li a`, which used to put 209 of the site's 246 pine underlines on chips, plate links, breadcrumbs and ledger rows that had each written `text-decoration: none` and lost. An **inline citation** is that prose link with a softer rule — ink text, the pine underline held at 55% and set at a 0.18em offset, pine on hover — not a pine word; it carries `.no-underline` because it always sits inside a prose container and draws its own rule.
+- **The Prose Link and the Inline Citation:** A link in running prose takes ink text and a 1px pine underline at a 3px offset, warming to pine text and 2px on hover or focus — and the idiom is opt-in by _container_ (`.prose`, `.content-body`, `.page-intro`, `.record-prose`, `.project-prose`, `.abstract`, `.apparatus-text`, `.audio-description`, `.embed-desc`), never by `p a` / `li a`, which used to put 209 of the site's 246 pine underlines on chips, plate links, breadcrumbs and ledger rows that had each written `text-decoration: none` and lost. An **inline citation** is that prose link with a softer rule — ink text, the pine underline held at 55% and set at a 0.18em offset, pine on hover — not a pine word; it carries `.no-underline` because it always sits inside a prose container and draws its own rule.
 - **The Stat Ledger:** "The corpus, in numbers" — mono rows with tabular figures, the key figure in pine.
 - **The Contents Ledger** (`.contents-ledger`, `.contents-link`, rendered by `ContentsLedger.svelte`): what any document long enough to need one opens with — a `§`-keyed ledger of anchors with the machine's count per section in the meta column, quiet ink at rest and pine only under the pointer. The visualisation pages and the style guide open with it.
 - **The Specimen Frame** (`.specimen`, `.specimen-label`, `.specimen--flush`): frames a live demo of an idiom that is itself page chrome, so a documentation page can show a ruled section head without the reader mistaking the exhibit for the room — a plate, never a card: 1px box edge on `--color-surface`, square, no shadow, a data-voice caption as its first child closed by a hairline; the flush variant drops the inner padding so a demo's own full-width rules reach the frame's edge.

@@ -98,7 +98,7 @@
 
 .index-title {
 	font-family: var(--font-family-display);
-	font-variation-settings: var(--font-variation-display-sm);
+	font-variation-settings: var(--font-variation-headline);
 	font-size: var(--font-size-display);
 	font-weight: 830;
 	line-height: 0.95;
@@ -174,7 +174,7 @@
 
 .section-title {
 	font-family: var(--font-family-display);
-	font-variation-settings: var(--font-variation-display-sm);
+	font-variation-settings: var(--font-variation-headline);
 	font-size: var(--font-size-2xl);
 	font-weight: 750;
 	letter-spacing: var(--tracking-display-sm);
@@ -359,8 +359,8 @@
 }
 
 .ledger-action:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-2xs);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 /* The same stamp closing a ledger rather than ending one of its rows — a
@@ -470,8 +470,8 @@
 }
 
 .contents-link:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-2xs);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 /* A 17px serif line on a phone still has to clear the 24px target floor. */
@@ -641,8 +641,8 @@
 }
 
 .meta-link:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-0-5);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 /* An identifier mark (the Academicons DOI glyph) — inline SVG in currentColor
@@ -778,8 +778,8 @@
 }
 
 .mono-action:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-2xs);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -835,8 +835,8 @@
 /* A colour change alone is not a focus indicator: the ring is the same one
  * every other control on the site draws. */
 .facet-toggle:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-2xs);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 @media (--lg-down) {
@@ -904,8 +904,8 @@
 }
 
 .apparatus-line a:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-2xs);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 	color: var(--color-text-emphasis);
 }
 
@@ -1102,8 +1102,8 @@
 }
 
 .year-meter-row:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-1);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 .year-meter-key {
@@ -1464,7 +1464,7 @@
 	padding-top: var(--rule-gap);
 	margin: var(--space-2xl) 0 var(--space-md);
 	font-family: var(--font-family-display);
-	font-variation-settings: var(--font-variation-display-sm);
+	font-variation-settings: var(--font-variation-headline);
 	font-size: var(--font-size-2xl);
 	font-weight: 750;
 	letter-spacing: var(--tracking-display-sm);
@@ -1678,59 +1678,8 @@
 	color: var(--color-text-light);
 }
 
-/* ===========================================================================
- * PAGINATION — mono, square, ink-fill on the current page
- * =========================================================================== */
-
-.pager {
-	display: flex;
-	align-items: center;
-	gap: var(--space-2);
-	font-family: var(--font-family-mono);
-	font-size: var(--font-size-2xs);
-	font-weight: var(--font-weight-semibold);
-	letter-spacing: var(--tracking-label);
-	text-transform: uppercase;
-}
-
-.pager-item {
-	/* Button-ready like .chip: a native <button> must not keep the UA face. */
-	appearance: none;
-	background: transparent;
-	font: inherit;
-	cursor: pointer;
-	padding: var(--space-1-5) var(--space-2-5);
-	border: var(--border-width-thin) solid var(--color-border);
-	color: var(--color-text-soft);
-	text-decoration: none;
-	transition:
-		border-color var(--duration-fast) var(--ease-out),
-		color var(--duration-fast) var(--ease-out);
-}
-
-.pager-item:hover {
-	border-color: var(--color-border-dark);
-	color: var(--color-text-emphasis);
-}
-
-.pager-item--current {
-	background: var(--color-primary);
-	border-color: var(--color-primary);
-	color: var(--color-text-inverted);
-}
-
-/* The current page keeps its fill under the pointer: `.pager-item:hover` is
- * (0,2,0) and would otherwise repaint the label in emphasis ink on the ink
- * fill (1.00:1). Same move as `.chip--selected:hover`. */
-.pager-item--current:hover {
-	background: var(--color-primary-dark);
-	border-color: var(--color-primary-dark);
-	color: var(--color-text-inverted);
-}
-
 @media (prefers-reduced-motion: reduce) {
 	.chip,
-	.pager-item,
 	.apparatus-line a,
 	.facet-combobox-field,
 	.facet-combobox-option,
@@ -1779,15 +1728,6 @@
 	 * 1.3) measures 25px, clearing the 24px WCAG floor without drawing anything. */
 	.apparatus-line a {
 		padding-block: var(--space-1-5);
-	}
-
-	.pager-item {
-		padding: var(--space-3) var(--space-3-5);
-		min-height: 44px;
-		min-width: 44px;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
 	}
 
 	/* The data-table disclosure under every chart plate. */
@@ -1932,8 +1872,8 @@
 }
 
 .chart-table > summary:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-2xs);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 /* A long table scrolls inside its own box; the page never scrolls sideways. */

@@ -63,7 +63,7 @@
 
 .bib-row--featured .bib-year {
 	font-family: var(--font-family-display);
-	font-variation-settings: var(--font-variation-display-sm);
+	font-variation-settings: var(--font-variation-headline);
 	font-size: var(--font-size-2xl);
 	font-weight: 750;
 	color: var(--color-text-emphasis);
@@ -83,8 +83,8 @@
 }
 
 .bib-plate-link:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-1);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 .bib-plate {
@@ -189,8 +189,8 @@
 }
 
 .bib-title-link:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-0-5);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 .bib-byline {

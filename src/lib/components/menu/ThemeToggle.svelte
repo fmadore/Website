@@ -67,8 +67,8 @@
 	}
 
 	.theme-toggle:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-1);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	/* Icon stack — both icons occupy one grid cell so the cross-fade reads as
@@ -122,7 +122,7 @@
 		}
 	}
 
-	@media (prefers-contrast: high) {
+	@media (--high-contrast) {
 		.theme-toggle {
 			border-width: var(--border-width-medium);
 		}

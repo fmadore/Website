@@ -93,9 +93,9 @@ describe('choropleth helpers', () => {
 			return (hi + 0.05) / (lo + 0.05);
 		};
 		const daylight = buildChoroplethPalette('#f3eee0', '#1e6a56');
-		const midnight = buildChoroplethPalette('#1f1a14', '#4fbb99');
+		const midnight = buildChoroplethPalette('#0c1e1a', '#4fbb99');
 		expect(contrast(daylight[0]!, 'rgb(250, 247, 239)')).toBeGreaterThanOrEqual(2);
-		expect(contrast(midnight[0]!, 'rgb(23, 19, 16)')).toBeGreaterThanOrEqual(2);
+		expect(contrast(midnight[0]!, 'rgb(8, 23, 19)')).toBeGreaterThanOrEqual(2);
 	});
 
 	it('includes a boundary for every country currently supported by LocationMap', () => {

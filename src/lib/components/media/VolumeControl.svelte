@@ -114,6 +114,13 @@
 		border-color: var(--color-accent);
 	}
 
+	/* `outline: none` above outranks the global `:focus-visible` ring, so the
+	 * range input needs its own or keyboard focus shows nothing. */
+	.volume-slider:focus-visible {
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
+	}
+
 	.volume-slider::-webkit-slider-thumb {
 		appearance: none;
 		width: var(--space-3);

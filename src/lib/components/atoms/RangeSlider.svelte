@@ -389,8 +389,8 @@
 	.range-handle:focus-visible {
 		background: var(--color-accent);
 		border-color: var(--color-accent);
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	.range-handle.active {

@@ -199,7 +199,7 @@
 	 */
 	:global(#cv-content h3) {
 		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
+		font-variation-settings: var(--font-variation-headline);
 		font-size: var(--font-size-2xl);
 		font-weight: 750;
 		letter-spacing: var(--tracking-display-sm);
@@ -292,8 +292,8 @@
 	}
 
 	:global(#cv-content a:focus-visible) {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--border-width-thin);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	:global(#cv-content a.review-link) {

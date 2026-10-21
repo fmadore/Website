@@ -270,8 +270,8 @@
 
 	/* Focus states */
 	.item-reference:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--border-width-medium);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	/* Reduced motion support */

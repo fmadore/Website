@@ -401,7 +401,7 @@
 
 	.record-head-title {
 		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
+		font-variation-settings: var(--font-variation-headline);
 		font-size: var(--font-size-xl);
 		font-weight: 750;
 		letter-spacing: var(--tracking-display-sm);

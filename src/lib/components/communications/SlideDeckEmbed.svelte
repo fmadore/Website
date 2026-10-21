@@ -252,8 +252,8 @@
 	}
 
 	.deck-chrome-btn:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: 2px;
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	.deck-stage {
@@ -293,8 +293,8 @@
 	}
 
 	.deck-facade:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: -4px;
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-inset);
 	}
 
 	/* The plate itself. min-height:0 lets the row shrink instead of overflowing. */
@@ -355,7 +355,7 @@
 	/* Label — the display voice; hint — the data voice. */
 	.deck-facade-label {
 		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
+		font-variation-settings: var(--font-variation-headline);
 		font-size: var(--font-size-base);
 		font-weight: 700;
 		letter-spacing: var(--tracking-display-sm);

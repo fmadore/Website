@@ -66,15 +66,15 @@
 			"film-ground": {
 				"role": "neutral",
 				"displayName": "Film Ground",
-				"canonical": "#171310",
+				"canonical": "#081713",
 				"tonalRamp": [
 					"#0f0c08",
-					"#171310",
-					"#1f1a14",
-					"#252017",
-					"#383126",
-					"#453d2f",
-					"#5a5140",
+					"#081713",
+					"#0c1e1a",
+					"#102520",
+					"#203631",
+					"#2a433d",
+					"#3d5751",
 					"#7e7460"
 				]
 			},
@@ -83,8 +83,8 @@
 				"displayName": "Cream",
 				"canonical": "#efe7d6",
 				"tonalRamp": [
-					"#453d2f",
-					"#5a5140",
+					"#2a433d",
+					"#3d5751",
 					"#7e7460",
 					"#948a73",
 					"#b3a88d",
@@ -320,7 +320,7 @@
 	],
 	"narrative": {
 		"northStar": "The Press Archive, Read Computationally",
-		"overview": "The system comes from a collision between two real source materials: the West African press corpus this scholar studies — nameplates, section rules, typeset bibliographies, dated columns — and the computational layer he builds on top of it, all structured metadata and machine-readable records. Neither half decorates the other. The page demonstrates the method: primary sources set with editorial gravity, apparatus set in a machine voice. A visitor should feel they have opened a working archive, not landed on a personal-brand page.\n\nThe register is print, not app. Depth is drawn rather than floated: a 5px rule opens a masthead, a 3px rule opens a section, a 1px hairline separates entries, and that weight hierarchy alone should make the page navigable if every string were set at the same size. Surfaces stay close in value and corners are square, so structure has to come from ink density and rule weight instead of elevation. Motion is nearly absent — state changes are instant, and the most a page does on arrival is a short fade.\n\nBoth themes are first-class and both are warm. Daylight is warm paper struck by ink; midnight is the same printed page photographed as a microfilm negative, with grounds swapped to warm near-black, type to cream, and the pine accent brightened. It is not slate, not blue, and never an inversion filter. The browser's own surfaces take the chosen theme, not the OS: html narrows color-scheme to light or dark (never light dark), so scrollbars, form controls and the overscroll canvas follow the theme the reader picked; src/app.html ships two media-scoped theme-color metas for the reader with no JavaScript, and both the bootstrap and toggleTheme overwrite both metas with the resolved --color-background, so a stored choice that contradicts the OS wins in the address bar too. static/404.html mirrors all of it. The confirmed anti-references are specific: templated academic CMS and faculty-directory defaults; the AI-slop tells (gradients, glassmorphism, glow, border-left accent stripes, rounded cards with soft shadows); code-editor and terminal aesthetics, since mono here is metadata and never a page theme; and soft-launch minimalism with acres of whitespace and hero photos under overlay text.\n\nThe system renders itself: the /style-guide route is a living reference that reads the live token values off :root and re-documents itself when a token changes. Check a claim in this file against that page before trusting it, and when you add a reusable idiom, document it there in the same change — src/styles/styleGuideCoverage.test.ts fails the build when a class in ink-signal.css appears neither on /style-guide nor in a component that page renders. The idiom classes themselves live in src/styles/components/ink-signal.css.",
+		"overview": "The system comes from a collision between two real source materials: the West African press corpus this scholar studies — nameplates, section rules, typeset bibliographies, dated columns — and the computational layer he builds on top of it, all structured metadata and machine-readable records. Neither half decorates the other. The page demonstrates the method: primary sources set with editorial gravity, apparatus set in a machine voice. A visitor should feel they have opened a working archive, not landed on a personal-brand page.\n\nThe register is print, not app. Depth is drawn rather than floated: a 5px rule opens a masthead, a 3px rule opens a section, a 1px hairline separates entries, and that weight hierarchy alone should make the page navigable if every string were set at the same size. Surfaces stay close in value and corners are square, so structure has to come from ink density and rule weight instead of elevation. Motion is nearly absent — state changes are instant, and the most a page does on arrival is a short fade.\n\nBoth themes are first-class and both are warm. Daylight is warm paper struck by ink; midnight is the same printed page photographed as a microfilm negative, with grounds swapped to verdigris near-black, type to cream, and the pine accent brightened. It is not slate, not blue, and never an inversion filter. The browser's own surfaces take the chosen theme, not the OS: html narrows color-scheme to light or dark (never light dark), so scrollbars, form controls and the overscroll canvas follow the theme the reader picked; src/app.html ships two media-scoped theme-color metas for the reader with no JavaScript, and both the bootstrap and toggleTheme overwrite both metas with the resolved --color-background, so a stored choice that contradicts the OS wins in the address bar too. static/404.html mirrors all of it. The confirmed anti-references are specific: templated academic CMS and faculty-directory defaults; the AI-slop tells (gradients, glassmorphism, glow, border-left accent stripes, rounded cards with soft shadows); code-editor and terminal aesthetics, since mono here is metadata and never a page theme; and soft-launch minimalism with acres of whitespace and hero photos under overlay text.\n\nThe system renders itself: the /style-guide route is a living reference that reads the live token values off :root and re-documents itself when a token changes. Check a claim in this file against that page before trusting it, and when you add a reusable idiom, document it there in the same change — src/styles/styleGuideCoverage.test.ts fails the build when a class in ink-signal.css appears neither on /style-guide nor in a component that page renders. The idiom classes themselves live in src/styles/components/ink-signal.css.",
 		"keyCharacteristics": [
 			"Two typographic voices, strictly cast — document (Archivo + Newsreader) versus data (Spline Sans Mono)",
 			"Hierarchy drawn in ink-coloured rules at four weights, never in gray",
@@ -337,8 +337,8 @@
 				"section": "colors"
 			},
 			{
-				"name": "The Warm Ground Rule",
-				"body": "Grounds and type stay warm in both themes; the accent is the only cooler note in the system. Pure white, pure black, and any cool gray are outside the palette.",
+				"name": "The Warm Type Rule",
+				"body": "Type stays warm in both themes: ink on paper, cream on film. The daylight ground is warm paper; the midnight ground is verdigris, cut from the accent's hue so that pine stays the only saturated mark on it. Pure white, pure black, any cool gray, slate, navy and warm charcoal are outside the palette. Every literal lives in the `--sys-*` anchor layer; a semantic token only ever points at an anchor, in both themes.",
 				"section": "colors"
 			},
 			{

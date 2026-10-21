@@ -145,8 +145,8 @@
 	}
 
 	.mobile-nav-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: calc(-1 * var(--border-width-medium));
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-inset);
 		border-radius: 0;
 	}
 
@@ -226,8 +226,8 @@
 	}
 
 	.mobile-dropdown-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: calc(-1 * var(--border-width-medium));
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-inset);
 		border-radius: 0;
 	}
 
@@ -263,7 +263,7 @@
 	}
 
 	/* High contrast — thicken the current marker and rules. */
-	@media (prefers-contrast: high) {
+	@media (--high-contrast) {
 		.mobile-nav-link.current::before {
 			width: calc(var(--border-width-thick) + var(--border-width-thin));
 		}

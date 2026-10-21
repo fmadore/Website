@@ -26,7 +26,7 @@ import { fileURLToPath } from 'node:url';
  * judgement a test cannot make. The first half is exactly the half that rotted.
  *
  * See: DESIGN.md ("when you add a reusable idiom, document it there in the same
- * change"), `/style-guide` § 9 "Colophon — where the system lives", and the
+ * change"), `/style-guide`, Colophon "Where the system lives", and the
  * sibling guards `trackingScale.test.ts`, `hairlinePairing.test.ts` and
  * `midnightWeight.test.ts`.
  */
@@ -40,10 +40,10 @@ const GUIDE = 'routes/style-guide/+page.svelte';
  * Sub-part classes that exist only inside another idiom's markup and are
  * covered by documenting the parent.
  *
- * Deliberately empty. Every class in the sheet is either typed on the guide or
- * emitted by a component the guide renders, and an entry added here has to
- * carry the reason it cannot be. An allowlist is where this kind of guard goes
- * to die, so it starts at zero and any growth is a reviewed decision.
+ * Every class in the sheet is either typed on the guide or emitted by a
+ * component the guide renders, and an entry added here has to carry the reason
+ * it cannot be. An allowlist is where this kind of guard goes to die, so it
+ * started at zero and any growth is a reviewed decision.
  */
 const ALLOWED_UNDOCUMENTED: string[] = [];
 

@@ -130,7 +130,7 @@
 	}
 
 	.network-chart {
-		height: var(--iframe-height-md);
+		height: var(--iframe-height-default);
 		contain: strict;
 	}
 

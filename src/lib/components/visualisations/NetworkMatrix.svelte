@@ -436,8 +436,8 @@ ledger — ruled, gridded, set in the data voice.
 	}
 
 	.matrix-cell:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: -1px;
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-inset);
 	}
 
 	.matrix-label {

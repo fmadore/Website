@@ -476,8 +476,8 @@
 
 	/* Enhanced focus states */
 	.card-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 		border-radius: 0;
 	}
 
@@ -493,7 +493,7 @@
 	}
 
 	/* High contrast support */
-	@media (prefers-contrast: high) {
+	@media (--high-contrast) {
 		.preview-card {
 			border-width: var(--border-width-medium);
 		}

@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
  * This test is the thing that was missing. It reads the real stylesheets and
  * components rather than restating the rule, so crossing the pair fails loudly.
  *
- * See: DESIGN.md § The Hairline Pairing Rule, and /style-guide § 3.
+ * See: DESIGN.md § The Hairline Pairing Rule, and /style-guide § 4 (Rules).
  */
 
 const root = fileURLToPath(new URL('..', import.meta.url));

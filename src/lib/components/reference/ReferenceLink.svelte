@@ -133,8 +133,8 @@
 	}
 
 	.reference-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	/* Reduced motion support */
@@ -145,7 +145,7 @@
 	}
 
 	/* High contrast mode */
-	@media (prefers-contrast: high) {
+	@media (--high-contrast) {
 		.reference-link {
 			text-decoration-thickness: var(--border-width-medium);
 			font-weight: var(--font-weight-semibold);

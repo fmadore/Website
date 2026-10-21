@@ -255,8 +255,8 @@
 	}
 
 	.cv-toc-fab:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--border-width-thin);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	/* ===================== PANEL =====================
@@ -359,8 +359,8 @@
 	}
 
 	.cv-toc-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--border-width-thin);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	/* The section's own row count — tabular so the column aligns down the list. */

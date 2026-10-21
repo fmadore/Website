@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="robots" content="noindex, follow" />
 		<meta name="theme-color" content="#faf7ef" media="(prefers-color-scheme: light)" />
-		<meta name="theme-color" content="#171310" media="(prefers-color-scheme: dark)" />
+		<meta name="theme-color" content="#081713" media="(prefers-color-scheme: dark)" />
 		<title>Page not found | Frédérick Madore</title>
 
 		<!--
@@ -45,7 +45,7 @@
 				// Both theme-color metas take the resolved ground, so a stored choice
 				// that contradicts the OS wins in the address bar too. Mirrors the
 				// bootstrap in src/app.html.
-				var grounds = { light: '#faf7ef', dark: '#171310' };
+				var grounds = { light: '#faf7ef', dark: '#081713' };
 				var metas = document.querySelectorAll('meta[name="theme-color"]');
 				for (var i = 0; i < metas.length; i++) {
 					metas[i].setAttribute('content', grounds[initial]);
@@ -84,8 +84,8 @@
 				   import them, so it restates them. */
 				--bg: #faf7ef; /* --color-background */
 				--ink: #191509; /* --color-primary / --color-text-emphasis */
-				--muted: #5c5442; /* --color-text-soft */
-				--faint: #6b634e; /* --color-text-light */
+				--muted: #443c2b; /* --color-text-soft */
+				--faint: #5c5442; /* --color-text-light */
 				--border: #c9c0aa; /* --color-border */
 				--border-dark: #a39b86; /* --color-border-dark */
 				--accent: #1e6a56; /* --color-accent */
@@ -95,32 +95,32 @@
 				--font-mono: 'Spline Sans Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
 			}
 
-			/* Midnight: the microfilm negative — warm film ground, cream type.
+			/* Midnight: the microfilm negative — verdigris film ground, cream type.
 			   The class is what the bootstrap above sets; the media query is the
 			   no-JavaScript fallback, scoped so it never fights an explicit choice. */
 			:root.dark {
 				color-scheme: dark;
-				--bg: #171310;
+				--bg: #081713;
 				--ink: #efe7d6;
 				--muted: #cbc0a6;
 				--faint: #b3a88d;
-				--border: #453d2f;
-				--border-dark: #5a5140;
+				--border: #2a433d;
+				--border-dark: #3d5751;
 				--accent: #4fbb99;
-				--code-bg: #1f1a14;
+				--code-bg: #0c1e1a;
 			}
 
 			@media (prefers-color-scheme: dark) {
 				:root:not(.light):not(.dark) {
 					color-scheme: dark;
-					--bg: #171310;
+					--bg: #081713;
 					--ink: #efe7d6;
 					--muted: #cbc0a6;
 					--faint: #b3a88d;
-					--border: #453d2f;
-					--border-dark: #5a5140;
+					--border: #2a433d;
+					--border-dark: #3d5751;
 					--accent: #4fbb99;
-					--code-bg: #1f1a14;
+					--code-bg: #0c1e1a;
 				}
 			}
 

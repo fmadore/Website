@@ -264,8 +264,8 @@
 	}
 
 	.search-clear:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-3xs);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	@media (--sm-down) {

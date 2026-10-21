@@ -244,8 +244,8 @@
 	}
 
 	:global(.mobile-site-title:focus-visible) {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-1);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 		border-radius: 0;
 	}
 
@@ -289,8 +289,8 @@
 	}
 
 	.mobile-close-button:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-1);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 		border-radius: 0;
 	}
 

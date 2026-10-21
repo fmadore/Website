@@ -2,7 +2,7 @@
 
 This document outlines the CSS architecture used in this project. The CSS is organized using a modular approach with a focus on maintainability, scalability, and reusability.
 
-> **🖋 Design system: Ink + Signal (2026-07).** The press archive, read computationally. Warm paper + ink with a single **pine (warm teal)** accent in daylight; a warm near-black **microfilm negative** with cream type at midnight. **Two type voices, strictly cast:** Archivo (display), Newsreader (prose serif), Spline Sans Mono (data voice). **Square corners, no shadows, no glass; gradients only where they encode data** — hierarchy is drawn in rules (5px masthead, 3px section, 1px hairline) and ledger rows. Structural idioms live in [`components/ink-signal.css`](./components/ink-signal.css); the design system of record is [`DESIGN.md`](../../DESIGN.md) with the narrative brief in [`.impeccable.md`](../../.impeccable.md), and the living reference renders at `/style-guide`. Source of truth for tokens: [`base/variables.css`](./base/variables.css) and [`base/dark.css`](./base/dark.css).
+> **🖋 Design system: Ink + Signal (2026-07).** The press archive, read computationally. Warm paper + ink with a single **pine (warm teal)** accent in daylight; a verdigris **microfilm negative** (a green-black film cut from the accent's hue) with cream type at midnight. **Two type voices, strictly cast:** Archivo (display), Newsreader (prose serif), Spline Sans Mono (data voice). **Square corners, no shadows, no glass; gradients only where they encode data** — hierarchy is drawn in rules (5px masthead, 3px section, 1px hairline) and ledger rows. Structural idioms live in [`components/ink-signal.css`](./components/ink-signal.css); the design system of record is [`DESIGN.md`](../../DESIGN.md) with the narrative brief in [`.impeccable.md`](../../.impeccable.md), and the living reference renders at `/style-guide`. Source of truth for tokens: [`base/variables.css`](./base/variables.css) and [`base/dark.css`](./base/dark.css).
 
 ## Directory Structure
 
@@ -80,9 +80,9 @@ Every `--border-radius-*` token (`--border-radius`, `-sm`) resolves to `0`. The 
 
 There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, not elevation — never add `box-shadow` to new styles.
 
-#### Spacing System (8-point grid)
+#### Spacing System (4px base)
 
-- **Semantic scale**: `--space-3xs` through `--space-4xl`, plus `--space-7xl`
+- **Semantic scale**: `--space-3xs` through `--space-4xl`
 - **Numeric scale**: `--space-px` through `--space-48`
 - **Tight variant**: `--space-xl-tight` (28px)
 - **Reading rhythm**: `--space-reading`, `--space-reading-loose` for detail-page sections
@@ -90,7 +90,7 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 #### Typography Tokens — two voices
 
 - **Font families**: `--font-family-display` (Archivo — nameplate, h1–h3, section heads, big data numbers), `--font-family-serif` (Newsreader — all prose, h4–h5, captions, italics; the reading default), `--font-family-mono` (Spline Sans Mono — the data voice: eyebrows, datelines, counts, nav, chips, DOIs, pagination; **never body copy**). There is no fourth family: `--font-family-sans` was removed once nothing used it — form controls take `font: inherit` from the reset, so its stated purpose never existed, while chart containers and the network plate were quietly inheriting it.
-- **Archivo width axis**: `--font-variation-nameplate/-display/-display-md/-display-sm/-wordmark` presets for the wide, heavy display cut
+- **Archivo width axis**: `--font-variation-nameplate/-wordmark/-display/-headline` presets for the wide, heavy display cut, one per tier
 - **Type scale**: Fluid `clamp()` steps with forked ratios — Minor Third (1.2) for body/UI, Major Third (1.25) for display; plus `--font-size-nameplate` and `--font-size-display` for mastheads and index heroes
 - **Semantic sizes**: `--font-size-2xs` through `--font-size-5xl`, `--font-size-heading-1..6`
 - **Line heights / weights**: `--line-height-*` (plus the contextual `--line-height-heading/-body/-caption`), `--font-weight-*`
@@ -98,12 +98,12 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 
 #### Focus Ring (Accessibility)
 
-- There is no ring token. Every control draws the same flat outline on `:focus-visible` — `var(--border-width-medium) solid var(--color-border-focus)` with a matching offset — never a translucent halo (the `--focus-ring` box-shadow token was retired on 2026-09-12 with its last consumer).
+- Every control draws the same flat outline on `:focus-visible`: `outline: var(--focus-outline)` (2px solid `--color-border-focus`) and `outline-offset: var(--focus-outline-offset)` (2px); `--focus-outline-inset` draws it inside a box an `overflow` ancestor would clip. Never a translucent halo (the `--focus-ring` box-shadow token was retired on 2026-09-12 with its last consumer).
 
 #### Animation & Transitions
 
-- **Duration scale**: `--duration-instant` (75ms) through `--duration-slower` (700ms); decorative motion is essentially retired
-- **Easing**: `--ease-out`, `--ease-in-out`, `--ease-out-quart` — smooth decelerations only, nothing overshoots
+- **Duration scale**: `--duration-instant` (75ms) through `--duration-slow` (500ms); transitions are colour and border only, and the longer steps turn the loading spinners
+- **Easing**: `--ease-out`, `--ease-in-out` — smooth decelerations only, nothing overshoots
 
 Example usage:
 
@@ -119,7 +119,7 @@ Example usage:
 
 ### Dark Theme (`base/dark.css`)
 
-Midnight is **the microfilm negative** — the same printed page photographed as a negative, not a slate "dark mode" and not an inversion filter. `html.dark` only remaps colour tokens: grounds swap to warm near-black (`#171310` film scale), "ink" becomes cream (`#efe7d6` scale), and the pine accent brightens to `#4fbb99`. Because shadows and glass are gone globally, no other overrides are needed. Component dark-mode tweaks use the `:global(html.dark) .my-class` selector pattern with tokens and `color-mix()`.
+Midnight is **the microfilm negative** — the same printed page photographed as a negative, not a slate "dark mode" and not an inversion filter. `html.dark` only remaps colour tokens: grounds swap to verdigris film (`#081713` film scale, the luminance of the old warm near-black at the accent's hue), "ink" becomes cream (`#efe7d6` scale), and the pine accent brightens to `#4fbb99`. Because shadows and glass are gone globally, no other overrides are needed. Component dark-mode tweaks use the `:global(html.dark) .my-class` selector pattern with tokens and `color-mix()`.
 
 ### Typography (`base/typography.css`)
 

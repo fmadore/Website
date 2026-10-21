@@ -333,7 +333,7 @@
 
 	.dossier-title {
 		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
+		font-variation-settings: var(--font-variation-headline);
 		font-size: var(--font-size-3xl);
 		font-weight: 780;
 		letter-spacing: var(--tracking-display);
@@ -400,8 +400,8 @@
 	}
 
 	.ledger-entry:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: calc(-1 * var(--border-width-medium));
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-inset);
 	}
 
 	@media (--md) {

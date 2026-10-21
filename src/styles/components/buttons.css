@@ -56,8 +56,8 @@
 }
 
 .btn:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--border-width-medium);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 .btn:active:not(:disabled) {
@@ -102,8 +102,8 @@
 }
 
 :where(.btn-bare):focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--border-width-medium);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 }
 
 :where(.btn-bare):disabled,
@@ -298,7 +298,7 @@
 /* ===== TOUCH TARGETS =====
  * `.btn` carries padding and a tight line-height, which lands it at ~41.5px —
  * a hair under the 44px every other control on the site takes under `--touch`
- * (`.chip`, `.mono-action`, `.pager-item`, `.facet-combobox-input`). Keyed to
+ * (`.chip`, `.mono-action`, `.page-btn`, `.facet-combobox-input`). Keyed to
  * the input method, not the viewport, like the rest of the touch pass. */
 @media (--touch) {
 	.btn {
@@ -308,7 +308,7 @@
 
 /* ===== ACCESSIBILITY ===== */
 
-@media (prefers-contrast: high) {
+@media (--high-contrast) {
 	.btn {
 		border-width: var(--border-width-medium);
 	}

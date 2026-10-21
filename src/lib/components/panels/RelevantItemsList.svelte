@@ -162,8 +162,8 @@
 	}
 
 	.relevant-row:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-1);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	/* One step below the reading column beside it: the panel is apparatus

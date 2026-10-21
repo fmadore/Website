@@ -700,15 +700,15 @@ shown as markers while preserving the reader's country-shading preference.
 	 * every other focus ring on the site. */
 	.map-mode-toggle button:focus-visible,
 	.map-mode-status button:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-border-focus);
-		outline-offset: var(--border-width-medium);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 		position: relative;
 		z-index: 1;
 	}
 
 	.map-mode-region:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-border-focus);
-		outline-offset: var(--border-width-medium);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	.map-mode-status {

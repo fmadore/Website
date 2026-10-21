@@ -367,8 +367,8 @@
 	}
 
 	/* The letterbox behind a video, and the scrim over it while it loads, are
-	 * warm near-black — the system's own film ground — not pure black. Black is
-	 * outside the palette in both themes, and beside a warm-paper or microfilm
+	 * the verdigris film ground — the system's own near-black — not pure black.
+	 * Black is outside the palette in both themes, and beside a paper or microfilm
 	 * plate it reads as a hole rather than a ground. */
 	.media-element {
 		width: 100%;
@@ -547,11 +547,11 @@
 
 	/* Focus states for accessibility */
 	.media-player:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-highlight);
-		outline-offset: var(--space-1);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
-	/* Dark mode: warm near-black film ground, same flat treatment. */
+	/* Dark mode: the film ground, same flat treatment. */
 	:global(html.dark) .player-controls {
 		background: var(--color-surface);
 		border-color: var(--color-border);

@@ -118,7 +118,7 @@
 
 	/* Enhanced focus states for accessibility */
 	.citation-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-0-5);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 </style>

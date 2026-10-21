@@ -363,7 +363,8 @@
 	.footer-link:focus-visible,
 	.footer-address-link:focus-visible,
 	.footer-typecredit:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-footer-accent);
-		outline-offset: var(--border-width-medium);
+		outline: var(--focus-outline);
+		outline-color: var(--color-footer-accent);
+		outline-offset: var(--focus-outline-offset);
 	}
 </style>

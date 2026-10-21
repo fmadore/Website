@@ -213,8 +213,8 @@
 	}
 
 	.close-btn-minimal:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-border-focus);
-		outline-offset: var(--border-width-medium);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	.detail-meta-row {

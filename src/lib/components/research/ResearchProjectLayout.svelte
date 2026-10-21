@@ -351,7 +351,7 @@ co-director, programme or grant simply drop those rows.
 		padding-top: var(--rule-gap);
 		margin: var(--space-2xl) 0 var(--space-md);
 		font-family: var(--font-family-display);
-		font-variation-settings: var(--font-variation-display-sm);
+		font-variation-settings: var(--font-variation-headline);
 		font-size: var(--font-size-2xl);
 		font-weight: 750;
 		letter-spacing: var(--tracking-display-sm);

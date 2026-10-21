@@ -104,8 +104,8 @@
 	}
 
 	.progress-bar:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-1);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	.progress-fill {
@@ -182,7 +182,7 @@
 	}
 
 	/* High contrast mode support */
-	@media (prefers-contrast: high) {
+	@media (--high-contrast) {
 		.progress-bar {
 			background: color-mix(in srgb, var(--color-text) calc(var(--opacity-50) * 100%), transparent);
 		}

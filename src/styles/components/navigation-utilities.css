@@ -17,13 +17,13 @@
 /* Focus visible utility for all interactive elements — pine signals the
  * keyboard target. Square (no radius). */
 *:focus-visible {
-	outline: var(--border-width-medium) solid var(--color-accent);
-	outline-offset: var(--space-1);
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
 	border-radius: 0;
 }
 
 /* High contrast mode support */
-@media (prefers-contrast: high) {
+@media (--high-contrast) {
 	/* Enhanced borders and outlines for better visibility */
 	*:focus-visible {
 		outline-width: var(--border-width-thick);

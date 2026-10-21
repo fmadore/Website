@@ -233,8 +233,8 @@ string: a screen reader reads it as what it is.
 	}
 
 	.crosstab-row-link:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: var(--space-2xs);
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	/*
@@ -259,13 +259,13 @@ string: a screen reader reads it as what it is.
 	}
 
 	a.crosstab-fill:hover {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: -2px;
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-inset);
 	}
 
 	a.crosstab-fill:focus-visible {
-		outline: var(--border-width-medium) solid var(--color-accent);
-		outline-offset: 1px;
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	/* A tile is a link, so on a touch screen it takes the 44px floor. */
