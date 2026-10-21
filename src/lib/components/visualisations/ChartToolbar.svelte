@@ -9,8 +9,8 @@ export themselves via `downloadSvgAsImage`.
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	// Types from the tree-shaken core, never the all-in-one 'echarts' entry.
-	import type * as echarts from '$lib/utils/echartsCore';
-	import { downloadChartAsImage } from '$lib/utils/chartActions';
+	import type * as echarts from '#lib/utils/echartsCore.ts';
+	import { downloadChartAsImage } from '#lib/utils/chartActions.ts';
 
 	let {
 		chart,

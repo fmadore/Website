@@ -1,13 +1,13 @@
 import { describe, it, expect } from 'vitest';
 
-import { allPublications } from '$lib/data/publications';
-import { allPublicationSummaries } from '$lib/data/publications/summaries';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { allPublicationSummaries } from '#lib/data/publications/summaries.ts';
 import {
 	ABSTRACT_EXCERPT_LENGTH,
 	HEAVY_PUBLICATION_FIELDS
-} from '$lib/data/publications/summaryConfig';
-import { truncateAbstract } from '$lib/utils/textUtils';
-import type { Publication, TableOfContentsEntry } from '$lib/types';
+} from '#lib/data/publications/summaryConfig.ts';
+import { truncateAbstract } from '#lib/utils/textUtils.ts';
+import type { Publication, TableOfContentsEntry } from '#lib/types/index.ts';
 
 /**
  * The committed summaries must be a faithful projection of the full dataset:
@@ -87,17 +87,17 @@ describe('publication summaries', () => {
 
 describe('the CV view of the publications', () => {
 	it("lists every publication in the summaries' date order", async () => {
-		const { cvPublicationsByDate } = await import('$lib/data/publications/cv');
-		const { publicationSummariesByDate } = await import('$lib/data/publications/summaries');
+		const { cvPublicationsByDate } = await import('#lib/data/publications/cv.ts');
+		const { publicationSummariesByDate } = await import('#lib/data/publications/summaries.ts');
 		expect(cvPublicationsByDate.map((p) => p.id)).toEqual(
 			publicationSummariesByDate.map((s) => s.id)
 		);
 	});
 
 	it('carries exactly the CV fields of each summary, unchanged', async () => {
-		const { cvPublicationsByDate } = await import('$lib/data/publications/cv');
-		const { allPublicationSummaries } = await import('$lib/data/publications/summaries');
-		const { CV_PUBLICATION_FIELDS } = await import('$lib/data/publications/summaryConfig');
+		const { cvPublicationsByDate } = await import('#lib/data/publications/cv.ts');
+		const { allPublicationSummaries } = await import('#lib/data/publications/summaries.ts');
+		const { CV_PUBLICATION_FIELDS } = await import('#lib/data/publications/summaryConfig.ts');
 		const keep: readonly string[] = CV_PUBLICATION_FIELDS;
 		const byId = new Map(allPublicationSummaries.map((s) => [s.id, s]));
 		for (const entry of cvPublicationsByDate) {

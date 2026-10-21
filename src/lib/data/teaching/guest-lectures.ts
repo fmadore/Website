@@ -1,4 +1,4 @@
-import type { GuestLecture } from '$lib/types';
+import type { GuestLecture } from '#lib/types/index.ts';
 
 const guestLectures: GuestLecture[] = [
 	{

@@ -140,7 +140,7 @@ hostname-based; ports on those trusted hosts are not restricted. Native clients
 without Origin are accepted; untrusted, malformed, and null origins are rejected.
 Forwarded headers do not override these guards; configure the proxy's actual Host.
 
-`get_citation` is not reimplemented here — the build aliases `$lib` and bundles the site's
+`get_citation` is not reimplemented here — the build aliases `#lib` and bundles the site's
 own `bibtexGenerator` and `citationFormatter`, so the BibTeX this returns is byte-identical
 to the site's download button. Only BibTeX and a plain reference are offered because those
 are the only formats the site itself generates; adding APA/MLA/Chicago is a change to

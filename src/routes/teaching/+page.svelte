@@ -1,19 +1,20 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { base, resolve } from '$app/paths'; // base for files, resolve for hrefs
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import teaching from '$lib/data/teaching';
-	import { sortCoursesByYear } from '$lib/utils/cvSections';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { resolve } from '$app/paths';
+	import { assetHref } from '#lib/utils/paths.ts';
+	import PageHeader from '#lib/components/common/PageHeader.svelte';
+	import PageIntro from '#lib/components/common/PageIntro.svelte';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import teaching from '#lib/data/teaching/index.ts';
+	import { sortCoursesByYear } from '#lib/utils/cvSections.ts';
 	import {
 		courseSpan as spanOfCourses,
 		hostPeriod,
 		lectureHosts,
 		lectureSpan as spanOfLectures
-	} from '$lib/utils/teachingIndex';
+	} from '#lib/utils/teachingIndex.ts';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -22,7 +23,7 @@
 	const breadcrumbs = createSectionBreadcrumbs('Teaching', '/teaching');
 
 	/**
-	 * The courses come from `$lib/data/teaching`, which is also what `/cv` and
+	 * The courses come from `#lib/data/teaching`, which is also what `/cv` and
 	 * `/api/cv.json` read. This page used to hold its own copy of the same four
 	 * records, and the two had drifted: the guest-lecture list printed eight
 	 * entries against the dataset's nine, named the host institutions without
@@ -46,8 +47,8 @@
 	 * the full list is its own page, and what this page owes the reader is the
 	 * shape of it — who hosted, over which years, how many times. Every figure
 	 * is counted off the rows the load supplies — the guest lectures and the
-	 * talks given as teaching (`$lib/server/teachingLectures`) — with
-	 * `$lib/utils/teachingIndex`, which the page's Markdown twin counts off
+	 * talks given as teaching (`#lib/server/teachingLectures`) — with
+	 * `#lib/utils/teachingIndex`, which the page's Markdown twin counts off
 	 * too, so the index cannot drift from the list.
 	 */
 	const hosts = $derived(lectureHosts(data.lectures));
@@ -134,7 +135,7 @@
 								     accessible name, so speech input still matches it. -->
 									<a
 										class="ledger-action"
-										href={`${base}${course.syllabusUrl}`}
+										href={assetHref(course.syllabusUrl)}
 										target="_blank"
 										rel="noopener noreferrer"
 										aria-label={`Syllabus PDF: ${course.title} (opens in new tab)`}

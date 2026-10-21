@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { COUNTRY_COORDINATES, type LocationDatum } from '$lib/data/geo';
+import { COUNTRY_COORDINATES, type LocationDatum } from '#lib/data/geo.ts';
 import {
 	buildChoroplethBins,
 	buildChoroplethFillExpression,

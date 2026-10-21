@@ -1,11 +1,11 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { author, address, contact, website } from '$lib/data/siteConfig';
-import { allPublications, publicationsByDate } from '$lib/data/publications/index';
-import { allCommunications, communicationsByDate } from '$lib/data/communications/index';
-import { allActivities, activitiesByDate } from '$lib/data/activities';
-import { allDhProjects } from '$lib/data/digital-humanities';
-import { allResearchProjects } from '$lib/data/research';
-import { API_VERSION, compact, jsonResponse } from '$lib/utils/apiPayload';
+import { author, address, contact, website } from '#lib/data/siteConfig.ts';
+import { allPublications, publicationsByDate } from '#lib/data/publications/index.ts';
+import { allCommunications, communicationsByDate } from '#lib/data/communications/index.ts';
+import { allActivities, activitiesByDate } from '#lib/data/activities/index.ts';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
+import { allResearchProjects } from '#lib/data/research/index.ts';
+import { API_VERSION, compact, jsonResponse } from '#lib/utils/apiPayload.ts';
 
 // Prerendered to build/api/index.json alongside the rest of the site.
 export const prerender = true;

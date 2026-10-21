@@ -1,4 +1,4 @@
-import { selectDataRecord } from '$lib/dataRecords';
+import { selectDataRecord } from '#lib/dataRecords.ts';
 
 /** Every matched source must produce one record; only explicit template IDs are omitted. */
 export function loadData<T extends { id: string }>(

@@ -2,8 +2,8 @@
  * What each CV section prints, and in what order.
  *
  * Two surfaces print the CV: the page (`/cv`, one component per section in
- * `$lib/components/cv/`) and its Markdown twin (`/cv.md`,
- * `$lib/server/markdown/cv.ts`). They set an entry in their own medium —
+ * `#lib/components/cv/`) and its Markdown twin (`/cv.md`,
+ * `#lib/server/markdown/cv.ts`). They set an entry in their own medium —
  * markup on one, Markdown on the other — but they must agree on which records
  * a section holds and in what order, and on the few derived strings both
  * print. Those decisions live here, once, so the page and its twin cannot
@@ -13,17 +13,17 @@
  * component keeps importing the projection it already reads and this module
  * never pulls a dataset into a bundle.
  */
-import type { CvCommunication } from '$lib/types/communication';
-import type { Education } from '$lib/types/education';
-import type { EditorialMembership } from '$lib/types/editorial-membership';
-import type { Fieldwork } from '$lib/types/fieldwork';
-import type { PeerReview } from '$lib/types/peer-review';
-import type { CvPublication } from '$lib/types/publication';
+import type { CvCommunication } from '#lib/types/communication.ts';
+import type { Education } from '#lib/types/education.ts';
+import type { EditorialMembership } from '#lib/types/editorial-membership.ts';
+import type { Fieldwork } from '#lib/types/fieldwork.ts';
+import type { PeerReview } from '#lib/types/peer-review.ts';
+import type { CvPublication } from '#lib/types/publication.ts';
 import type {
 	GuestLecture,
 	TeachingExperience,
 	TeachingLecture
-} from '$lib/types/teachingExperience';
+} from '#lib/types/teachingExperience.ts';
 import { formatDayMonth } from './date-formatter';
 
 // ── Header ───────────────────────────────────────────────────────────────────

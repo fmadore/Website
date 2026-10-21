@@ -3,7 +3,9 @@
 /// <reference lib="webworker" />
 /// <reference types="@sveltejs/kit" />
 
-import { version, prerendered, build } from '$service-worker';
+import { version } from '$app/env';
+import { immutable, prerendered } from '$app/manifest';
+import { resolve } from '$app/paths';
 import { chooseStrategy } from './service-worker-routes';
 import { createCacheHandler } from './service-worker-cache';
 import { navigationTarget, navigationAssets } from './service-worker-navigation';
@@ -15,8 +17,13 @@ const sw = /** @type {ServiceWorkerGlobalScope} */ (/** @type {unknown} */ (glob
 const CACHE_NAME = `cache-v${version}`;
 const RUNTIME_CACHE = `runtime-v${version}`;
 const MEDIA_CACHE = `media-v${version}`;
-const pages = new Set(prerendered.filter((path) => !/\.[^/]+$/.test(path)));
-const buildAssets = new Set(build.filter((path) => /\.(?:js|css)$/.test(path)));
+// The manifest lists paths relative to the base path; requests carry it.
+const pages = new Set(
+	prerendered.map(({ path }) => resolve(path)).filter((path) => !/\.[^/]+$/.test(path))
+);
+const buildAssets = new Set(
+	immutable.map(({ path }) => resolve(path)).filter((path) => /\.(?:js|css)$/.test(path))
+);
 /** @type {Map<string, Promise<void>>} */
 const pendingPages = new Map();
 /** @type {Map<string, Promise<void>>} */

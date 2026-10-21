@@ -1,14 +1,14 @@
 import { describe, it, expect } from 'vitest';
 
-import { allCommunications, communicationsByDate } from '$lib/data/communications';
+import { allCommunications, communicationsByDate } from '#lib/data/communications/index.ts';
 import {
 	allCommunicationSummaries,
 	communicationSummariesByDate,
 	communicationSummariesWithSlides
-} from '$lib/data/communications/summaries';
-import { HEAVY_COMMUNICATION_FIELDS } from '$lib/data/communications/summaryConfig';
-import { ABSTRACT_EXCERPT_LENGTH } from '$lib/data/publications/summaryConfig';
-import { truncateAbstract } from '$lib/utils/textUtils';
+} from '#lib/data/communications/summaries.ts';
+import { HEAVY_COMMUNICATION_FIELDS } from '#lib/data/communications/summaryConfig.ts';
+import { ABSTRACT_EXCERPT_LENGTH } from '#lib/data/publications/summaryConfig.ts';
+import { truncateAbstract } from '#lib/utils/textUtils.ts';
 
 /**
  * The committed summaries must be a faithful projection of the full dataset:
@@ -97,15 +97,15 @@ describe('communication summaries', () => {
 
 describe('the CV view of the talks', () => {
 	it("lists every talk in the summaries' date order", async () => {
-		const { cvCommunicationsByDate } = await import('$lib/data/communications/cv');
+		const { cvCommunicationsByDate } = await import('#lib/data/communications/cv.ts');
 		expect(cvCommunicationsByDate.map((c) => c.id)).toEqual(
 			communicationSummariesByDate.map((s) => s.id)
 		);
 	});
 
 	it('carries exactly the CV fields of each summary, unchanged', async () => {
-		const { cvCommunicationsByDate } = await import('$lib/data/communications/cv');
-		const { CV_COMMUNICATION_FIELDS } = await import('$lib/data/communications/summaryConfig');
+		const { cvCommunicationsByDate } = await import('#lib/data/communications/cv.ts');
+		const { CV_COMMUNICATION_FIELDS } = await import('#lib/data/communications/summaryConfig.ts');
 		const keep: readonly string[] = CV_COMMUNICATION_FIELDS;
 		for (const entry of cvCommunicationsByDate) {
 			const summary = summariesById.get(entry.id)!;

@@ -1,5 +1,5 @@
 // src/lib/data/peer-reviews/www2026.ts
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const www2026: PeerReview = {
 	id: 'www2026',

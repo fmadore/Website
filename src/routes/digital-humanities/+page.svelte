@@ -1,18 +1,19 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { base, resolve } from '$app/paths';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { resolve } from '$app/paths';
+	import { assetHref } from '#lib/utils/paths.ts';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import { browser } from '$app/environment';
-	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
-	import Pagination from '$lib/components/molecules/Pagination.svelte';
-	import { allDhProjectSummaries as allDhProjects } from '$lib/data/digital-humanities/summaries';
-	import { buildSrcset } from '$lib/utils/imageVariants';
-	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
-	import { BUILT_AT } from '$lib/utils/buildDate';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { browser } from '$app/env';
+	import FacetCombobox from '#lib/components/entity-index/FacetCombobox.svelte';
+	import Pagination from '#lib/components/molecules/Pagination.svelte';
+	import { allDhProjectSummaries as allDhProjects } from '#lib/data/digital-humanities/summaries.ts';
+	import { buildSrcset } from '#lib/utils/imageVariants.ts';
+	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Digital Humanities', '/digital-humanities');
@@ -105,10 +106,10 @@
 	 * about IWAC's two entry points already warns about.
 	 */
 	const projects = allDhProjects.map((project) => {
-		const imageUrl = `${base}${project.imageUrl.startsWith('/') ? project.imageUrl : `/${project.imageUrl}`}`;
+		const imageUrl = assetHref(project.imageUrl);
 		return {
 			id: project.id,
-			href: resolve(`/digital-humanities/${project.id}` as `/digital-humanities/${string}`),
+			href: resolve('/digital-humanities/[id]', { id: project.id }),
 			// Prose fields take the display register; the skill keys stay raw,
 			// because they are the values the filter matches.
 			title: typesetQuotes(project.title),
@@ -196,20 +197,19 @@
 	);
 
 	function skillHref(skill: string): string {
-		return `${base}/digital-humanities?skill=${encodeURIComponent(skill)}`;
+		return resolve(`/digital-humanities?skill=${encodeURIComponent(skill)}`);
 	}
 
 	/** Picking the active value again clears the filter — the chips do the same. */
 	function toggleSkill(skill: string) {
-		const href = skill === selectedSkill ? `${base}/digital-humanities` : skillHref(skill);
+		const href = skill === selectedSkill ? resolve('/digital-humanities') : skillHref(skill);
 		// eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed query string
-		void goto(href, { keepFocus: true, noScroll: true });
+		void goto(href, { reset: false });
 	}
 
 	/** The filter note's way out — the same action the three sibling indexes fire. */
 	function clearSkill() {
-		// eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed path
-		void goto(`${base}/digital-humanities`, { keepFocus: true, noScroll: true });
+		void goto(resolve('/digital-humanities'), { reset: false });
 	}
 </script>
 
@@ -346,7 +346,7 @@
 					<a
 						class="chip"
 						class:chip--selected={!selectedSkill}
-						href="{base}/digital-humanities"
+						href={resolve('/digital-humanities')}
 						aria-current={!selectedSkill ? 'true' : undefined}
 					>
 						All <span class="chip-count">{projectCount}</span>

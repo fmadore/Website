@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
 
-import { allActivities, activitiesByDate, activitiesByYear } from '$lib/data/activities';
+import { allActivities, activitiesByDate, activitiesByYear } from '#lib/data/activities/index.ts';
 import {
 	allActivitySummaries,
 	activitySummariesByDate,
 	activitySummariesByYear
-} from '$lib/data/activities/summaries';
-import { HEAVY_ACTIVITY_FIELDS } from '$lib/data/activities/summaryConfig';
+} from '#lib/data/activities/summaries.ts';
+import { HEAVY_ACTIVITY_FIELDS } from '#lib/data/activities/summaryConfig.ts';
 
 /**
  * The committed summaries must be a faithful projection of the full dataset:

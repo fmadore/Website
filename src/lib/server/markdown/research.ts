@@ -4,13 +4,13 @@
  * with its narrative (read from the route page's own markup), its grants and
  * the publications and talks that belong to it.
  */
-import type { Grant, ResearchProject } from '$lib/types';
-import { allGrants } from '$lib/data/grants/index';
-import { publicationsByDate } from '$lib/data/publications/index';
-import { communicationsByDate } from '$lib/data/communications/index';
-import { formatProjectPeriod } from '$lib/utils/projectPeriod';
-import { formatReferenceText } from '$lib/utils/citationFormatter';
-import { formatCommunicationCitation } from '$lib/utils/citationFormatter';
+import type { Grant, ResearchProject } from '#lib/types/index.ts';
+import { allGrants } from '#lib/data/grants/index.ts';
+import { publicationsByDate } from '#lib/data/publications/index.ts';
+import { communicationsByDate } from '#lib/data/communications/index.ts';
+import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+import { formatReferenceText } from '#lib/utils/citationFormatter.ts';
+import { formatCommunicationCitation } from '#lib/utils/citationFormatter.ts';
 import { talkTypeLabel } from './communications';
 import { bullets, document, entries, fields, inline, link, section } from './markdown';
 import { publicationTypeLabel } from './publications';

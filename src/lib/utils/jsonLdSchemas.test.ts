@@ -10,11 +10,11 @@ import {
 	createWebPageSchema,
 	recordEntityId
 } from './jsonLdSchemas';
-import { website, author, profile } from '$lib/data/siteConfig';
-import { maHistUlaval } from '$lib/data/education/ma-hist-ulaval';
-import type { Publication } from '$lib/types/publication';
-import type { Communication } from '$lib/types/communication';
-import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
+import { website, author, profile } from '#lib/data/siteConfig.ts';
+import { maHistUlaval } from '#lib/data/education/ma-hist-ulaval.ts';
+import type { Publication } from '#lib/types/publication.ts';
+import type { Communication } from '#lib/types/communication.ts';
+import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 
 // Minimal fixtures: cast through `unknown` so tests stay focused on the fields
 // the builders actually read, without reconstructing the full content types.

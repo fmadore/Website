@@ -27,12 +27,12 @@ record with no site at all — a module, a pipeline, a dataset — carries no
 accent, which is correct: a repository is not "the current thing".
 -->
 <script lang="ts">
-	import { base } from '$app/paths';
-	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
-	import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { plateFallback } from '$lib/actions/plateFallback';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
+	import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
+	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { plateFallback } from '#lib/actions/plateFallback.ts';
 
 	// The rail is 380px wide from --lg up; below that the plate spans the single
 	// column. Same contract as the record rails.
@@ -49,7 +49,9 @@ accent, which is correct: a repository is not "the current thing".
 	// manifest, so the box is reserved before the bytes arrive; the sources are
 	// not one ratio and there is only one plate per page, so it is printed at
 	// its own rather than cropped to a common one.
-	const plateSrc = $derived(resolveImagePath(project.heroImageUrl ?? project.imageUrl, base));
+	const plateSrc = $derived(
+		resolveImagePath(project.heroImageUrl ?? project.imageUrl, basePrefix())
+	);
 	const plateSrcset = $derived(buildSrcset(plateSrc));
 	const plateSize = $derived(imageDimensions(plateSrc));
 

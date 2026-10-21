@@ -23,8 +23,8 @@
  * counts key, and folding it into the display form would break all three.
  */
 
-export { normalizeSearchText as foldFacetText } from '$lib/utils/searchText';
-import { normalizeSearchText as foldFacetText } from '$lib/utils/searchText';
+export { normalizeSearchText as foldFacetText } from '#lib/utils/searchText.ts';
+import { normalizeSearchText as foldFacetText } from '#lib/utils/searchText.ts';
 
 /**
  * Orders options by live count descending, then alphabetically. The count is

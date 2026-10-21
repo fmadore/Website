@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { getContributorNames } from '$lib/utils/contributor';
-	import { allPublicationSummaries } from '$lib/data/publications/summaries';
-	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
-	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
-	import { formatAuthorsCompact as formatAuthors } from '$lib/utils/nameUtils';
-	import { PUBLICATION_TYPE_PANEL_LABELS } from '$lib/utils/publicationTypeLabels';
+	import { getContributorNames } from '#lib/utils/contributor.ts';
+	import { allPublicationSummaries } from '#lib/data/publications/summaries.ts';
+	import RelevantItemsList from '#lib/components/panels/RelevantItemsList.svelte';
+	import type { RelevantItem } from '#lib/components/panels/RelevantItemsList.svelte';
+	import { formatAuthorsCompact as formatAuthors } from '#lib/utils/nameUtils.ts';
+	import { PUBLICATION_TYPE_PANEL_LABELS } from '#lib/utils/publicationTypeLabels.ts';
 
 	// Props - project name and limit
 	let {

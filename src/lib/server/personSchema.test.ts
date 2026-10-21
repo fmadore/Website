@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { createFullPersonSchema } from './personSchema';
-import { createPersonSchema } from '$lib/utils/jsonLdSchemas';
-import { website, contact, author, researchTopics, linkedData } from '$lib/data/siteConfig';
-import { allAffiliations } from '$lib/data/affiliations';
+import { createPersonSchema } from '#lib/utils/jsonLdSchemas.ts';
+import { website, contact, author, researchTopics, linkedData } from '#lib/data/siteConfig.ts';
+import { allAffiliations } from '#lib/data/affiliations/index.ts';
 
 describe('createFullPersonSchema', () => {
 	const full = createFullPersonSchema();

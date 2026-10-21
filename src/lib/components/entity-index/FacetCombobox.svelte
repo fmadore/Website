@@ -23,7 +23,7 @@
 	 * Labels are typeset at render time; the RAW value stays the toggle key, so
 	 * URL sync and `?tag=` deep links keep matching the data.
 	 */
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { matchFacetOptions } from './facetSearch';
 
 	interface Props {

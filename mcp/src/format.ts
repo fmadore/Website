@@ -7,7 +7,7 @@ import type { Item } from './datasets.js';
  * caller that wants everything follows up with the matching `get_*` tool, and
  * returning 25 full publication records instead would spend a large part of the
  * context window on fields nobody asked for. The structured form of the same
- * page, `summariseStructured`, lives in `$lib/utils/apiSearch`, where the site's
+ * page, `summariseStructured`, lives in `#lib/utils/apiSearch`, where the site's
  * WebMCP tools share it.
  */
 

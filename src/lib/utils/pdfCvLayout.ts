@@ -1,3 +1,4 @@
+import { assetHref } from '#lib/utils/paths.ts';
 /**
  * Layout primitives for the CV PDF (see pdfCvGenerator.ts for the design
  * brief). This module owns the typeset mechanics — page cursor, page breaks,
@@ -5,15 +6,14 @@
  * helpers (font embedding, contact-link classification). The generator keeps
  * only the DOM reading and document orchestration.
  */
-import { base } from '$app/paths';
 import {
 	extractRichText,
 	renderRichText,
 	measureRichTextHeight,
 	trimFragments,
 	type TextFragment
-} from '$lib/utils/pdfRichText';
-import { FONT_SIZE, SPACING, RULE, COLORS, LETTER_SPACING } from '$lib/utils/pdfDesignTokens';
+} from '#lib/utils/pdfRichText.ts';
+import { FONT_SIZE, SPACING, RULE, COLORS, LETTER_SPACING } from '#lib/utils/pdfDesignTokens.ts';
 
 type JsPdf = import('jspdf').jsPDF;
 
@@ -72,7 +72,7 @@ export async function registerCvFonts(pdf: JsPdf): Promise<boolean> {
 		// mutate a PDF that has already selected its fallback voices.
 		const fonts = await Promise.all(
 			CV_FONTS.map(async (font) => {
-				const response = await fetch(`${base}/fonts/pdf/${font.file}`, {
+				const response = await fetch(assetHref(`fonts/pdf/${font.file}`), {
 					signal: controller.signal
 				});
 				if (!response.ok) throw new Error(`${font.file}: HTTP ${response.status}`);

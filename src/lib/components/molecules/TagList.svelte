@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { pageHref } from '#lib/utils/paths.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	let {
 		tags = [],
@@ -29,10 +29,13 @@
 				<!-- `.no-underline`: a chip is apparatus, and a tag list can sit inside a
 				     prose container, where the prose-link idiom would otherwise draw a pine
 				     rule through the inside of the chip's box. -->
-				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-				<a class="chip no-underline" rel="nofollow" href="{base}{baseUrl}{encodeURIComponent(tag)}"
-					>{typesetQuotes(tag)}</a
+				<!-- eslint-disable svelte/no-navigation-without-resolve -- pageHref() resolves the tag search URL; the tag wraps, so the report lands on `href` and disable-next-line cannot reach it -->
+				<a
+					class="chip no-underline"
+					rel="nofollow"
+					href={pageHref(`${baseUrl}${encodeURIComponent(tag)}`)}>{typesetQuotes(tag)}</a
 				>
+				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			{/each}
 		</div>
 	</section>

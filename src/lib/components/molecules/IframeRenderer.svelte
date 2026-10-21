@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IframeEmbed } from '$lib/types/digitalHumanities';
+	import type { IframeEmbed } from '#lib/types/digitalHumanities.ts';
 
 	const DEFAULT_SANDBOX =
 		'allow-downloads allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts';

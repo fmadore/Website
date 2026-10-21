@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { consulting } from '$lib/data/consulting';
+	import { consulting } from '#lib/data/consulting.ts';
 	import CVSection from './CVSection.svelte';
 </script>
 

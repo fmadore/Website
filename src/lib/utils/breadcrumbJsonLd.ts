@@ -8,8 +8,8 @@
  * @example
  * ```svelte
  * <script lang="ts">
- *   import JsonLd from '$lib/components/common/JsonLd.svelte';
- *   import { buildBreadcrumbJsonLd, BREADCRUMB_SCRIPT_ID } from '$lib/utils/breadcrumbJsonLd';
+ *   import JsonLd from '#lib/components/common/JsonLd.svelte';
+ *   import { buildBreadcrumbJsonLd, BREADCRUMB_SCRIPT_ID } from '#lib/utils/breadcrumbJsonLd.ts';
  *
  *   const breadcrumbItems = $derived([
  *     { label: 'Research', path: '/research' },
@@ -22,8 +22,8 @@
  * ```
  */
 
-import { createBreadcrumbSchema } from '$lib/utils/jsonLdSchemas';
-import { siteUrl } from '$lib/utils/siteHelpers';
+import { createBreadcrumbSchema } from '#lib/utils/jsonLdSchemas.ts';
+import { siteUrl } from '#lib/utils/siteHelpers.ts';
 
 /**
  * One step of a trail, for the structured data. `path` is the route path from
@@ -53,7 +53,7 @@ export const BREADCRUMB_SCRIPT_ID = 'breadcrumb-json-ld';
  * component and `buildBreadcrumbJsonLd`.
  *
  * @example
- * createSubsectionBreadcrumbs(base, 'Publications', '/publications', 'Visualisations', '/publications/visualisations')
+ * createSubsectionBreadcrumbs(basePrefix(), 'Publications', '/publications', 'Visualisations', '/publications/visualisations')
  */
 export function createSubsectionBreadcrumbs(
 	base: string,

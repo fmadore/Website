@@ -4,8 +4,8 @@
  * Instantiates the runed EntityFilterSystem for the /conference-activity index.
  */
 
-import { countOccurrences, byFrequencyThenAlpha } from '$lib/utils/facetOrdering';
-import type { CommunicationSummary, YearRange } from '$lib/types';
+import { countOccurrences, byFrequencyThenAlpha } from '#lib/utils/facetOrdering.ts';
+import type { CommunicationSummary, YearRange } from '#lib/types/index.ts';
 import {
 	allCommunicationSummaries as allCommunications,
 	communicationSummariesByType as communicationsByType,
@@ -13,9 +13,9 @@ import {
 	communicationSummaryTags as allTags,
 	communicationSummariesByCountry as communicationsByCountry
 } from './summaries';
-import { author as siteAuthor } from '$lib/data/siteConfig';
-import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
-import { getContributorNames } from '$lib/utils/contributor';
+import { author as siteAuthor } from '#lib/data/siteConfig.ts';
+import { EntityFilterSystem } from '#lib/utils/entityFilterSystem.svelte.ts';
+import { getContributorNames } from '#lib/utils/contributor.ts';
 
 // --- Computed unique values ---
 

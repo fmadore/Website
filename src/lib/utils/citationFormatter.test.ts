@@ -7,7 +7,7 @@ import {
 	formatReferenceText,
 	formatCommunicationCitation
 } from './citationFormatter';
-import type { Publication } from '$lib/types/publication';
+import type { Publication } from '#lib/types/publication.ts';
 
 // Minimal fixture factory: supplies every required Publication field so tests
 // only spell out the fields the formatter branch under test actually reads.

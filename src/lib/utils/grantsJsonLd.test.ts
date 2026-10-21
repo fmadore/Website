@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { allGrants } from '$lib/data/grants/index';
+import { allGrants } from '#lib/data/grants/index.ts';
 import { buildGrantsJsonLd } from './grantsJsonLd';
 
 const PAGE = 'https://www.frederickmadore.com/research/example';

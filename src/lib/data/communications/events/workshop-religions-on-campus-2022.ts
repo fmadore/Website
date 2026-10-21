@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Workshop: Religions on Campus: Coexisting Traditions, Reformulating the Secular and Life Projects
 export const workshopReligionsOnCampus2022: Communication = {

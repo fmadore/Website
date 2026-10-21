@@ -78,7 +78,7 @@ function declaredClasses(css: string): string[] {
 }
 
 /**
- * The `$lib` component sources the guide imports, resolved one level deep.
+ * The `#lib` component sources the guide imports, resolved one level deep.
  *
  * One level is the right depth: the guide is responsible for the idioms it puts
  * on the page, and a component it renders directly is part of that page. A
@@ -88,9 +88,9 @@ function declaredClasses(css: string): string[] {
 function importedComponentSources(guide: string): { file: string; source: string }[] {
 	const script = guide.slice(0, guide.indexOf('</script>'));
 	const files = new Set<string>();
-	for (const match of script.matchAll(/from\s+'(\$lib\/[^']+\.svelte)'/g)) {
+	for (const match of script.matchAll(/from\s+'(#lib\/[^']+\.svelte)'/g)) {
 		const spec = match[1];
-		if (spec) files.add(spec.replace('$lib/', 'lib/'));
+		if (spec) files.add(spec.replace('#lib/', 'lib/'));
 	}
 	return [...files]
 		.filter((file) => existsSync(`${src}/${file}`))

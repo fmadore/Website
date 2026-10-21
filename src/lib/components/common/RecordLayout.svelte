@@ -28,7 +28,7 @@ the title; `railSecondary` indexes it and belongs after the document it indexes.
 Usage:
 
   <RecordLayout
-    section={{ label: 'Publications', href: `${base}/publications` }}
+    section={{ label: 'Publications', href: resolve('/publications') }}
     eyebrow={[{ label: typeLabel }, { label: date }]}
     title={displayTitle}
     byline={byline}
@@ -55,12 +55,12 @@ Usage:
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import Icon from '@iconify/svelte';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
 	import {
 		buildBreadcrumbJsonLd,
 		BREADCRUMB_SCRIPT_ID,
 		type BreadcrumbTrailItem
-	} from '$lib/utils/breadcrumbJsonLd';
+	} from '#lib/utils/breadcrumbJsonLd.ts';
 
 	interface Props {
 		/** Section this record belongs to — the breadcrumb's back-link. */

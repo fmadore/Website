@@ -1,7 +1,7 @@
-import type { Publication } from '$lib/types';
-import type { Contributor } from '$lib/types/contributor';
-import { getContributorNames } from '$lib/utils/contributor';
-import { splitNames } from '$lib/utils/nameUtils';
+import type { Publication } from '#lib/types/index.ts';
+import type { Contributor } from '#lib/types/contributor.ts';
+import { getContributorNames } from '#lib/utils/contributor.ts';
+import { splitNames } from '#lib/utils/nameUtils.ts';
 
 // Helper function to format authors for BibTeX
 function formatAuthors(authors: readonly Contributor[] | undefined): string {

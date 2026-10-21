@@ -1,6 +1,6 @@
 // src/lib/data/languages/index.ts
-import type { Language } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
+import type { Language } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 
 type ModuleType = Record<string, unknown>;
 

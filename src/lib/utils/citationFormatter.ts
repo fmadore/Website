@@ -1,10 +1,10 @@
-import type { Publication } from '$lib/types/publication';
-import type { Contributor } from '$lib/types/contributor';
-import { getContributorNames } from '$lib/utils/contributor';
-import { formatDisplayDate, isForthcoming } from '$lib/utils/date-formatter';
-import { joinNames, splitNames } from '$lib/utils/nameUtils';
-import { PUBLICATION_TYPE_CITATION_LABELS } from '$lib/utils/publicationTypeLabels';
-import { quoteTitle, typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
+import type { Publication } from '#lib/types/publication.ts';
+import type { Contributor } from '#lib/types/contributor.ts';
+import { getContributorNames } from '#lib/utils/contributor.ts';
+import { formatDisplayDate, isForthcoming } from '#lib/utils/date-formatter.ts';
+import { joinNames, splitNames } from '#lib/utils/nameUtils.ts';
+import { PUBLICATION_TYPE_CITATION_LABELS } from '#lib/utils/publicationTypeLabels.ts';
+import { quoteTitle, typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 
 // Human-readable labels for publication types (citation register).
 // Re-exported from the single type-label registry in publicationTypeLabels.

@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Talk: Militantisme religieux sur les campus universitaires : le cas du Bénin et du Togo
 export const talkMilitantismeReligieuxCampusBeninTogo2025: Communication = {

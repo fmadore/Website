@@ -1,6 +1,6 @@
 // src/lib/data/citation-contexts/index.ts
-import type { CitationContextSet } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
+import type { CitationContextSet } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 
 type ModuleType = Record<string, unknown>;
 

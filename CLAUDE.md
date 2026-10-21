@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Academic personal website for Dr. Frédérick Madore (historian specializing in Islam in West Africa). Built with **SvelteKit 2** using **Svelte 5 runes**, TypeScript, and a custom token-driven CSS system implementing the **Ink + Signal** design language (flat print register — no glass, no shadows, square corners). Deployed as a static site to GitHub Pages.
+Academic personal website for Dr. Frédérick Madore (historian specializing in Islam in West Africa). Built with **SvelteKit 3** using **Svelte 5 runes**, TypeScript, and a custom token-driven CSS system implementing the **Ink + Signal** design language (flat print register — no glass, no shadows, square corners). Deployed as a static site to GitHub Pages.
 
 ## Commands
 
@@ -210,12 +210,13 @@ through `stores/activities.ts`; `/activities/[id]` receives its one full
 record from a server load, and the home page's latest-activities rail receives
 five rows and a year meter (`utils/activityLog.ts`) from its server load. Only
 server code (API, RSS, sitemap, those loads) imports the full `index.ts`. The
-activity records import `$lib` at runtime (`formatDisplayDate`), which
-`scripts/lib/data-records.mjs` resolves with a Node resolve hook.
+activity records import `#lib` at runtime (`formatDisplayDate`), which Node
+resolves from the `imports` field of `package.json` when
+`scripts/lib/data-records.mjs` loads them.
 
 **Reference index**: `referenceIndex.generated.ts` never reaches the client.
 A page that cites with `<ItemReference id="…">` gets the entries it cites from
-its `+page.server.ts` (`citedReferences` from `$lib/server/references`; the
+its `+page.server.ts` (`citedReferences` from `#lib/server/references`; the
 activity record extracts them from its body), and `ItemReference` reads
 `page.data.references`. Citations may live only in a route's `+page.svelte` or
 an activity record, and a citing route needs that load: `gen:refs -- --check`
@@ -255,7 +256,7 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 
 - Individual item files (e.g., `publications/books/religious-activism-campuses.ts`)
 - An `index.ts` that aggregates items using `import.meta.glob()` and exports precomputed collections (`publicationsByType`, `publicationsByYear`, `allTags`, etc.)
-- **Use `loadData()` from `$lib/utils/dataLoader.ts`** for new data categories — it handles module extraction, template filtering, and validation
+- **Use `loadData()` from `#lib/utils/dataLoader.ts`** for new data categories — it handles module extraction, template filtering, and validation
 
 **Data categories** (18 total): publications, communications, activities, research, digital-humanities, appointments, awards, education, editorial-memberships, fieldworks, grants, languages, media-appearances, peer-reviews, research-roles, affiliations, teaching, analysis
 
@@ -351,7 +352,23 @@ Motion is near-zero by design (print register). Page navigation is one short opa
 
 ### Import Paths
 
-Use `$lib` alias for all imports from `src/lib/`.
+Import from `src/lib/` through `#lib`, with the file's extension
+(`#lib/utils/foo.ts`, `#lib/components/X.svelte`), and shared stylesheets
+through `#styles/…`. Both are Node subpath imports declared in the `imports`
+field of `package.json`, which Vite, TypeScript, Vitest and plain Node all
+resolve; SvelteKit 3 dropped the `$lib` alias.
+
+### Links and static files
+
+`$app/paths` has no `base` in SvelteKit 3. Write a literal route with
+`resolve('/publications')` or `resolve('/communications/[id]', { id })`, and a
+literal static file with `asset('images/x.webp')`; both are typed against the
+routes and `static/`. A path held as a string in the data goes through
+`pageHref()` / `assetHref()` from `#lib/utils/paths.ts`, and a pure helper that
+joins a prefix itself takes `basePrefix()`. All of them depend on the page being
+rendered, so call them while rendering, never at module scope. Route prose that
+the Markdown twins read (`svelteProse.ts` takes the first string literal) links
+with the pathname form, `resolve('activities/some-id')`.
 
 ### Console Logging
 
@@ -365,7 +382,7 @@ For non-critical `catch` blocks (analytics, PWA, fullscreen), use empty catch wi
 
 ### Author/Affiliation Data
 
-Always import author info from `$lib/data/siteConfig` (`author`, `address`, `website`). Never hardcode name, position, or institution strings in JSON-LD or SEO metadata.
+Always import author info from `#lib/data/siteConfig` (`author`, `address`, `website`). Never hardcode name, position, or institution strings in JSON-LD or SEO metadata.
 
 ### Interface Copy
 
@@ -379,11 +396,11 @@ Run `npm run format` before committing. CI enforces Prettier + ESLint via `npm r
 
 ### Theme colour
 
-`toggleTheme` (`$lib/stores/themeStore.svelte.ts`) also repaints both `theme-color` metas from the computed `--color-background`. The pre-hydration copy of the same logic is in `src/app.html` (and again in `static/404.html`), where the stylesheet does not exist yet and the two grounds are written as literals; `src/lib/utils/designTokenParity.test.ts` binds those literals to the tokens.
+`toggleTheme` (`#lib/stores/themeStore.svelte.ts`) also repaints both `theme-color` metas from the computed `--color-background`. The pre-hydration copy of the same logic is in `src/app.html` (and again in `static/404.html`), where the stylesheet does not exist yet and the two grounds are written as literals; `src/lib/utils/designTokenParity.test.ts` binds those literals to the tokens.
 
 ### Content Security Policy
 
-`kit.csp` in `svelte.config.js` (hash mode), written by Kit as a `<meta>` on
+`csp` in the `sveltekit()` options of `vite.config.ts` (hash mode), written by Kit as a `<meta>` on
 every prerendered page — GitHub Pages sets no headers, so `frame-ancestors`
 cannot be set. `script-src` has no `'unsafe-inline'`: Kit hashes its own
 bootstrap, the config hashes `app.html`'s inline scripts from the file, and
@@ -394,7 +411,7 @@ origin (an embed, an API) needs its host added to the matching directive.
 
 ### WebMCP
 
-`$lib/utils/webmcp.ts` registers the site's agent tools with `document.modelContext`;
+`#lib/utils/webmcp.ts` registers the site's agent tools with `document.modelContext`;
 the root layout imports it only where that exists. The tools are the MCP server's
 twelve (same names, arguments and records: both read `/api/*.json` through the
 shared `utils/apiDocumentLoader.ts`, `apiSearch.ts` and `apiCitation.ts`) plus
@@ -422,7 +439,7 @@ token its three WebMCP audits turn from not applicable to scored.
 
 ### Filter Implementation
 
-Entity-index pages instantiate `new EntityFilterSystem(config)` from `$lib/utils/entityFilterSystem.svelte.ts` and read/mutate it directly (no store `$` prefix):
+Entity-index pages instantiate `new EntityFilterSystem(config)` from `#lib/utils/entityFilterSystem.svelte.ts` and read/mutate it directly (no store `$` prefix):
 
 - Toggle facet values: `system.toggle('types' | 'tags' | …, value)`
 - Range filters: `system.updateYearRange(min, max)`, `system.resetYearRange()`
@@ -447,8 +464,8 @@ There is no APA/MLA/Chicago generator. Adding one belongs here, where the site a
   route's server load), `breadcrumbJsonLd.ts` (BreadcrumbList, from route paths,
   starting at Home), all rendered into `<svelte:head>` by `JsonLd.svelte`
 - JSON-LD addresses are absolute: build them with `siteUrl()` from
-  `siteHelpers.ts`, never from Kit's `base`, which `paths.relative` renders as
-  `.` or `..`. Record dates go through `formatJsonLdDate()` at the precision the
+  `siteHelpers.ts`, never from `resolve()`/`asset()`, which `paths.relative`
+  renders as `./…` or `../…`. Record dates go through `formatJsonLdDate()` at the precision the
   data has. A record node's `@id` is its page URL + `#record` (`recordEntityId`),
   named by the page's WebPage `mainEntity`. `npm run check:structured-data`
   enforces both rules on the build
@@ -464,21 +481,21 @@ There is no APA/MLA/Chicago generator. Adding one belongs here, where the site a
 Every content page has a prerendered Markdown version at its own address with
 `.md` added (`/index.md` for the home page), per llms.txt v2: the `*.md`
 server routes under `src/routes/` (`publications.md/`, `publications/[id].md/`,
-`cv.md/`, …), built by `$lib/server/markdown/` from the same data modules as the
+`cv.md/`, …), built by `#lib/server/markdown/` from the same data modules as the
 HTML — never by scraping it. Index twins list the whole dataset the HTML index
 pages through. Prose authored in route markup (the home page, each research
 project) is read from the `.svelte` source by `svelteProse.ts`, which throws on
 any Svelte it cannot read; HTML bodies go through `htmlToMarkdown.ts`. Links
 inside a twin point at other twins (`resolveLink`). The CV is printed twice, by
 the section components and by `cv.ts`: which records each section holds and in
-what order is decided once, in `$lib/utils/cvSections.ts`, and the consulting
-and computer-skills entries are data (`$lib/data/consulting.ts`,
-`$lib/data/computerSkills.ts`). Change a section's selection there, never in a
+what order is decided once, in `#lib/utils/cvSections.ts`, and the consulting
+and computer-skills entries are data (`#lib/data/consulting.ts`,
+`#lib/data/computerSkills.ts`). Change a section's selection there, never in a
 component.
 
 `SEO.svelte` announces the twin with `<link rel="alternate" type="text/markdown">`
-for the route ids in `$lib/utils/markdownTwin.ts`, plus `<link rel="describedby">`
-to `/llms.txt` (built in `$lib/server/llmsTxt.ts`). A new content route needs a
+for the route ids in `#lib/utils/markdownTwin.ts`, plus `<link rel="describedby">`
+to `/llms.txt` (built in `#lib/server/llmsTxt.ts`). A new content route needs a
 twin route and an entry there, or neither: `npm run check:prerender` fails on an
 announced twin that did not ship, a shipped twin its page does not announce, a
 twin in the sitemap, or an llms.txt link into the site that resolves to nothing.

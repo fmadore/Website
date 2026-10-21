@@ -1,18 +1,22 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import { base, resolve } from '$app/paths';
-	import { communicationSummariesWithSlides as communicationsWithSlides } from '$lib/data/communications/summaries';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import { plateFallback } from '$lib/actions/plateFallback';
-	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
-	import { resolveSlidePoster } from '$lib/utils/slidePoster';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { COMMUNICATION_TYPE_LIST_LABELS } from '$lib/utils/typeUtils';
-	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import PageHeader from '#lib/components/common/PageHeader.svelte';
+	import PageIntro from '#lib/components/common/PageIntro.svelte';
+	import Breadcrumb from '#lib/components/molecules/Breadcrumb.svelte';
+	import { resolve } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import { communicationSummariesWithSlides as communicationsWithSlides } from '#lib/data/communications/summaries.ts';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
+	import { plateFallback } from '#lib/actions/plateFallback.ts';
+	import { buildSrcset, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { resolveSlidePoster } from '#lib/utils/slidePoster.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { COMMUNICATION_TYPE_LIST_LABELS } from '#lib/utils/typeUtils.ts';
+	import {
+		buildBreadcrumbJsonLd,
+		createSubsectionBreadcrumbs
+	} from '#lib/utils/breadcrumbJsonLd.ts';
 
 	/**
 	 * The gallery was six equal tiles with ragged bottoms, a `01 02 03` stamp
@@ -62,10 +66,10 @@
 	const PLATE_SIZES = '(max-width: 768px) 96px, 176px';
 	const decks = communicationsWithSlides.map((communication) => {
 		const posterPath = resolveSlidePoster(communication.slidesUrl);
-		const posterSrc = resolveImagePath(posterPath, base);
+		const posterSrc = resolveImagePath(posterPath, basePrefix());
 		return {
 			id: communication.id,
-			href: resolve(`/communications/${communication.id}` as `/communications/${string}`),
+			href: resolve('/communications/[id]', { id: communication.id }),
 			slidesUrl: communication.slidesUrl,
 			title: typesetQuotes(communication.title),
 			venue: typesetQuotes(
@@ -88,7 +92,7 @@
 			: '';
 
 	const breadcrumbItems = createSubsectionBreadcrumbs(
-		base,
+		basePrefix(),
 		'Talks & Events',
 		'/conference-activity',
 		'Slides',

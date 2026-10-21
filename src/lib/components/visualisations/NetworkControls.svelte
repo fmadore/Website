@@ -8,8 +8,8 @@
 	 * Two-way bind:
 	 *   <NetworkControls bind:topN bind:visibleKinds bind:searchQuery … />
 	 */
-	import RangeSlider from '$lib/components/atoms/RangeSlider.svelte';
-	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
+	import RangeSlider from '#lib/components/atoms/RangeSlider.svelte';
+	import type { NetworkEdgeKind } from '#lib/utils/networkAggregation.ts';
 
 	let {
 		topN = $bindable(20),

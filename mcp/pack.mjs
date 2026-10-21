@@ -58,7 +58,7 @@ await build({
 	target: 'node20',
 	format: 'esm',
 	minify: true,
-	alias: { $lib: here('../src/lib') },
+	alias: { '#lib': here('../src/lib') },
 	logLevel: 'info'
 });
 

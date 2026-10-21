@@ -10,14 +10,14 @@ verbatim with the MCP server; a talk is not a bibliographic record it knows how
 to emit, and widening it for one button would be the wrong place to decide that.
 -->
 <script lang="ts">
-	import { base } from '$app/paths';
-	import type { Communication } from '$lib/types/communication';
-	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
-	import { formatAuthorList, formatCommunicationCitation } from '$lib/utils/citationFormatter';
-	import { createCopyFeedback } from '$lib/utils/clipboard.svelte';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
-	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { plateFallback } from '$lib/actions/plateFallback';
+	import { assetHref, basePrefix } from '#lib/utils/paths.ts';
+	import type { Communication } from '#lib/types/communication.ts';
+	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
+	import { formatAuthorList, formatCommunicationCitation } from '#lib/utils/citationFormatter.ts';
+	import { createCopyFeedback } from '#lib/utils/clipboard.svelte.ts';
+	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { plateFallback } from '#lib/actions/plateFallback.ts';
 
 	// The rail is 380px wide from --lg up; below that the plate spans the single
 	// column. The intrinsic size reserves the plate's box before the lazily
@@ -38,7 +38,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 
 	// Venue plate. Prefer the dedicated hero; fall back to the list image.
 	const plateSrc = $derived(
-		resolveImagePath(communication.heroImage?.src ?? communication.image, base)
+		resolveImagePath(communication.heroImage?.src ?? communication.image, basePrefix())
 	);
 	const plateSrcset = $derived(buildSrcset(plateSrc));
 	const plateSize = $derived(imageDimensions(plateSrc));
@@ -201,7 +201,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 			<a href="#poster" class="btn btn-outline-primary btn-block"
 				>View poster<span aria-hidden="true">&nbsp;↓</span></a
 			>
-			<a href="{base}/{posterPdf}" download class="btn btn-outline-primary btn-block"
+			<a href={assetHref(posterPdf)} download class="btn btn-outline-primary btn-block"
 				>Download PDF</a
 			>
 		{/if}

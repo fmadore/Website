@@ -1,14 +1,14 @@
 <script lang="ts">
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import ContentBody from '$lib/components/common/ContentBody.svelte';
+	import PageHeader from '#lib/components/common/PageHeader.svelte';
+	import PageIntro from '#lib/components/common/PageIntro.svelte';
+	import ContentBody from '#lib/components/common/ContentBody.svelte';
 	import CareerTimeline, {
 		TIMELINE_MIN_PLATE_WIDTH
-	} from '$lib/components/visualisations/CareerTimeline.svelte';
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { getAllTimelineItems } from '$lib/utils/timelineData';
-	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
+	} from '#lib/components/visualisations/CareerTimeline.svelte';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { getAllTimelineItems } from '#lib/utils/timelineData.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
 
 	// Get all timeline items
 	const items = getAllTimelineItems();

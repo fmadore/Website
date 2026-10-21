@@ -3,7 +3,7 @@
  *
  * Dependency-free on purpose: `webmcp.ts` types its definitions by this list,
  * and `scripts/checks/check-agentic.mjs` imports it under plain Node (type stripping,
- * no `$lib` alias) to assert that Lighthouse sees exactly these tools on the
+ * no `#lib` alias) to assert that Lighthouse sees exactly these tools on the
  * built site. One list, so the gate and the module cannot drift apart.
  *
  * Every name but `show_publications` is also a tool of the MCP server in `mcp/`,

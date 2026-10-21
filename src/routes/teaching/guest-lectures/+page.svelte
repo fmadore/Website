@@ -1,21 +1,25 @@
 <script lang="ts">
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { base, resolve } from '$app/paths';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import { groupLecturesByInstitution, lectureSpan } from '$lib/utils/teachingIndex';
-	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { resolve } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import PageHeader from '#lib/components/common/PageHeader.svelte';
+	import PageIntro from '#lib/components/common/PageIntro.svelte';
+	import Breadcrumb from '#lib/components/molecules/Breadcrumb.svelte';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
+	import { groupLecturesByInstitution, lectureSpan } from '#lib/utils/teachingIndex.ts';
+	import {
+		buildBreadcrumbJsonLd,
+		createSubsectionBreadcrumbs
+	} from '#lib/utils/breadcrumbJsonLd.ts';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	// Define breadcrumb items
 	const breadcrumbItems = createSubsectionBreadcrumbs(
-		base,
+		basePrefix(),
 		'Teaching',
 		'/teaching',
 		'Guest Lectures and Workshops',
@@ -25,14 +29,14 @@
 	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 
 	/**
-	 * The lectures come from the load: `$lib/data/teaching/guest-lectures` and
+	 * The lectures come from the load: `#lib/data/teaching/guest-lectures` and
 	 * the talks given as teaching, merged by `teachingLectures` — the same list
 	 * `/cv`, `/api/cv.json` and `/teaching` read. This page used to hold
 	 * its own copy, and the copy had drifted: it printed eight rows against the
 	 * dataset's nine (the January 2017 and February 2016 deliveries of one
 	 * lecture were merged into a single date string) and dropped the country
 	 * from every host institution, while the courses ledger one click away kept
-	 * it. Grouping is derived (`$lib/utils/teachingIndex`, shared with the
+	 * it. Grouping is derived (`#lib/utils/teachingIndex`, shared with the
 	 * page's Markdown twin), so a new record needs no edit here.
 	 */
 	const byInstitution = $derived(groupLecturesByInstitution(data.lectures));

@@ -1,5 +1,5 @@
 // src/lib/data/grants/thyssen-2023.ts
-import type { Grant } from '$lib/types';
+import type { Grant } from '#lib/types/index.ts';
 
 export const thyssen2023: Grant = {
 	id: 'fritz-thyssen-2023',

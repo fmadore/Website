@@ -1,5 +1,5 @@
-import type { ResearchRole } from '$lib/types/researchRole';
-import { loadData } from '$lib/utils/dataLoader';
+import type { ResearchRole } from '#lib/types/researchRole.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 
 // Dynamically import all research role files
 const roleModules = import.meta.glob<Record<string, ResearchRole>>(['./*.ts', '!./index.ts'], {

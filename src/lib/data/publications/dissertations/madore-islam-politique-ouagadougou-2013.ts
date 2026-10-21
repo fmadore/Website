@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 	id: 'madore-islam-politique-ouagadougou-2013',

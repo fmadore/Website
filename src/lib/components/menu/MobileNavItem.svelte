@@ -2,9 +2,9 @@
 	// One entry of the mobile menu contents — the mono section label plus its
 	// optional sub-index of record titles. Split out of MobileMenu.svelte, which
 	// keeps the container and the masthead strip.
-	import type { NavItem } from '$lib/types/navigation';
+	import type { NavItem } from '#lib/types/navigation.ts';
 	import { page } from '$app/state';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	let {
 		item,

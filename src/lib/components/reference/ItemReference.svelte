@@ -9,7 +9,7 @@
 	 * both datasets, use `publication:id` or `communication:id` explicitly.
 	 */
 
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 	import { beforeNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 	import { crossfade, fade } from 'svelte/transition';
@@ -17,11 +17,11 @@
 
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
-	import { portal } from '$lib/actions/portal';
+	import { portal } from '#lib/actions/portal.ts';
 	import {
 		getActiveReferenceId,
 		setActiveReferenceId
-	} from '$lib/stores/activeItemReferenceStore.svelte';
+	} from '#lib/stores/activeItemReferenceStore.svelte.ts';
 
 	/* ───────────────────────────── Props ─────────────────────────────── */
 	/** ID of the referenced item. */
@@ -35,7 +35,7 @@
 		fallback: (node: Element) => fade(node, { duration: 200, easing: quintOut })
 	}); /* ───────────────────────── Derived data ──────────────────────────── */
 	// Resolve the referenced item from the entries the page's server load passed
-	// (`$lib/server/references`): only the ones this page cites, never the whole
+	// (`#lib/server/references`): only the ones this page cites, never the whole
 	// reference index. Historical cross-dataset collisions are stored under
 	// explicit `publication:` / `communication:` keys.
 	const entry = $derived(page.data.references?.[id]);

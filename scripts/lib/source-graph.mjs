@@ -12,7 +12,7 @@
  * Static edges only, as in the chunk graph: `import()` is the split working as
  * designed. Type-only imports are erased by the compiler, so they are skipped.
  * An eager `import.meta.glob` is a static edge to every file it matches.
- * Specifiers that are not `$lib`, `$styles` or relative (packages, `$app/*`)
+ * Specifiers that are not `#lib`, `#styles` or relative (packages, `$app/*`)
  * are the framework's, and are left to the chunk budgets.
  *
  * The parse is regular-expression based, anchored at line starts: it
@@ -23,8 +23,8 @@ import { existsSync, globSync, readFileSync, statSync } from 'node:fs';
 import { dirname, matchesGlob, relative, resolve } from 'node:path';
 
 const ALIASES = [
-	['$lib/', 'src/lib/'],
-	['$styles/', 'src/styles/']
+	['#lib/', 'src/lib/'],
+	['#styles/', 'src/styles/']
 ];
 const EXTENSIONS = ['', '.ts', '.js', '.svelte', '/index.ts', '/index.js'];
 

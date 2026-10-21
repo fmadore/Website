@@ -128,7 +128,7 @@ export const website = {
 	rssPath: '/rss.xml'
 };
 
-// Social links with icons for Iconify (registered in $lib/icons.ts; academic
+// Social links with icons for Iconify (registered in #lib/icons.ts; academic
 // profiles use the Academicons set so the trio shares one optical weight)
 export const socialLinks = {
 	email: {

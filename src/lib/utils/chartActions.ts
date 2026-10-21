@@ -7,10 +7,10 @@
  * - Toggle decal patterns for accessibility
  */
 
-import { base } from '$app/paths';
+import { asset } from '$app/paths';
 // Types come from the tree-shaken core (see echartsCore.ts) rather than the
 // all-in-one 'echarts' entry, so nothing here can reintroduce the full build.
-import type * as echarts from '$lib/utils/echartsCore';
+import type * as echarts from '#lib/utils/echartsCore.ts';
 import { getCSSVariableValueWithFallback, CHART_COLOR_FALLBACKS } from './chartColorUtils';
 
 /**
@@ -39,7 +39,7 @@ export function downloadChartAsImage(chart: echarts.ECharts, filename: string = 
 }
 
 /** The data-voice font, inlined into exported SVGs so labels survive. */
-const EXPORT_FONT_URL = `${base}/fonts/web/spline-sans-mono-normal-latin.woff2`;
+const EXPORT_FONT_URL = asset('fonts/web/spline-sans-mono-normal-latin.woff2');
 let exportFontFace: string | null | undefined;
 
 /**

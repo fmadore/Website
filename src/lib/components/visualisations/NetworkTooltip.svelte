@@ -10,8 +10,8 @@ text nodes.
 Callers provide the mark position; the shared action contains the measured box.
 -->
 <script lang="ts">
-	import '$styles/components/network-viz.css';
-	import { viewportTooltip } from '$lib/actions/viewportTooltip';
+	import '#styles/components/network-viz.css';
+	import { viewportTooltip } from '#lib/actions/viewportTooltip.ts';
 
 	export interface TooltipContent {
 		title: string;

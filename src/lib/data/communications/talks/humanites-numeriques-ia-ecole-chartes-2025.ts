@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const humanitesNumeriquesIaEcoleChartes2025: Communication = {
 	id: 'humanites-numeriques-ia-ecole-chartes-2025',

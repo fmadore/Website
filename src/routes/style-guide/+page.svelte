@@ -1,31 +1,32 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { base, resolve } from '$app/paths';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
-	import type { ContentsLedgerItem } from '$lib/components/common/ContentsLedger.svelte';
-	import Button from '$lib/components/atoms/Button.svelte';
-	import RecordLedger from '$lib/components/molecules/RecordLedger.svelte';
-	import type { MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
-	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
-	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
-	import { scaleKeyTerms } from '$lib/utils/keyTerms';
-	import { formatReferenceText } from '$lib/utils/citationFormatter';
-	import { PUBLICATION_TYPE_BADGE_LABELS } from '$lib/utils/publicationTypeLabels';
+	import SEO from '#lib/SEO.svelte';
+	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { resolve } from '$app/paths';
+	import { assetHref } from '#lib/utils/paths.ts';
+	import PageHeader from '#lib/components/common/PageHeader.svelte';
+	import PageIntro from '#lib/components/common/PageIntro.svelte';
+	import ContentsLedger from '#lib/components/common/ContentsLedger.svelte';
+	import type { ContentsLedgerItem } from '#lib/components/common/ContentsLedger.svelte';
+	import Button from '#lib/components/atoms/Button.svelte';
+	import RecordLedger from '#lib/components/molecules/RecordLedger.svelte';
+	import type { MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
+	import FacetCombobox from '#lib/components/entity-index/FacetCombobox.svelte';
+	import VizDataTable from '#lib/components/visualisations/VizDataTable.svelte';
+	import { scaleKeyTerms } from '#lib/utils/keyTerms.ts';
+	import { formatReferenceText } from '#lib/utils/citationFormatter.ts';
+	import { PUBLICATION_TYPE_BADGE_LABELS } from '#lib/utils/publicationTypeLabels.ts';
 	import {
 		allPublicationSummaries as allPublications,
 		publicationSummariesByYear as publicationsByYear,
 		publicationSummaryTags as allTags
-	} from '$lib/data/publications/summaries';
-	import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
-	import { activitySummariesByDate as activitiesByDate } from '$lib/data/activities/summaries';
-	import { tallyBy } from '$lib/utils/vizAggregation';
+	} from '#lib/data/publications/summaries.ts';
+	import { allCommunicationSummaries as allCommunications } from '#lib/data/communications/summaries.ts';
+	import { activitySummariesByDate as activitiesByDate } from '#lib/data/activities/summaries.ts';
+	import { tallyBy } from '#lib/utils/vizAggregation.ts';
 	/* The index pages' search field is documented in § 5, so the guide loads the
 	 * stylesheet that owns it rather than restating its declarations locally —
 	 * a restatement is exactly the drift this page exists to prevent. */
-	import '$styles/components/entity-index.css';
+	import '#styles/components/entity-index.css';
 
 	const breadcrumbs = createSectionBreadcrumbs('Style Guide', '/style-guide');
 
@@ -1237,7 +1238,7 @@
 					<a
 						class="no-underline"
 						rel="nofollow"
-						href="{base}/publications?tag={encodeURIComponent(term)}">{term}</a
+						href={resolve(`/publications?tag=${encodeURIComponent(term)}`)}>{term}</a
 					>
 				{/each}
 			</p>
@@ -1767,7 +1768,7 @@
 			<div class="key-terms">
 				{#each keywordTerms as term (term.word)}
 					<a
-						href="{base}/publications?tag={encodeURIComponent(term.word)}"
+						href={resolve(`/publications?tag=${encodeURIComponent(term.word)}`)}
 						rel="nofollow"
 						style="font-size: {term.size}px;"
 						title="{term.count} publications">{term.word}</a
@@ -1842,7 +1843,7 @@
 
 			<figure class="plate-demo">
 				<img
-					src="{base}/{pagePlate.src}"
+					src={assetHref(pagePlate.src)}
 					alt={pagePlate.alt}
 					class="plate"
 					width={pagePlate.width}
@@ -1870,7 +1871,7 @@
 					<figure class="rail-plate">
 						<img
 							class="plate"
-							src="{base}/{railPlate.src}"
+							src={assetHref(railPlate.src)}
 							alt={railPlate.alt}
 							width={railPlate.width}
 							height={railPlate.height}

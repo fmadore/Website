@@ -1,8 +1,8 @@
 <script lang="ts">
 	// Hover tooltip of the CareerTimeline — split out of CareerTimeline.svelte.
 	import { fade } from 'svelte/transition';
-	import { viewportTooltip } from '$lib/actions/viewportTooltip';
-	import { type TimelineItem, getCategoryColor, getCategoryLabel } from '$lib/types/timeline';
+	import { viewportTooltip } from '#lib/actions/viewportTooltip.ts';
+	import { type TimelineItem, getCategoryColor, getCategoryLabel } from '#lib/types/timeline.ts';
 
 	interface Props {
 		item: TimelineItem;

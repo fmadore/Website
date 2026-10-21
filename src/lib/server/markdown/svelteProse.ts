@@ -5,7 +5,7 @@
  * `+page.svelte`, because it embeds components — `<ItemReference>` citations,
  * `<RelevantGrants>` — that a data file could not hold. That markup is the one
  * source of the text, so the twin reads it from there (the same raw sources
- * `$lib/server/references` reads) rather than from a copy that could drift.
+ * `#lib/server/references` reads) rather than from a copy that could drift.
  *
  * The markup is reduced to plain HTML first: a citation becomes a link
  * carrying the text the page prints, `href={resolve('/x')}` becomes
@@ -15,9 +15,9 @@
  * expression — throws, so a page that outgrows this reader fails the build
  * instead of shipping a twin with prose missing.
  */
-import { referenceIndex } from '$lib/data/referenceIndex.generated';
-import { inlineCitation } from '$lib/utils/inlineCitation';
-import { typesetQuotes } from '$lib/utils/typesetQuotes';
+import { referenceIndex } from '#lib/data/referenceIndex.generated.ts';
+import { inlineCitation } from '#lib/utils/inlineCitation.ts';
+import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 import { htmlToMarkdown } from './htmlToMarkdown';
 import { resolveLink } from './site';
 

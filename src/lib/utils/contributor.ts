@@ -1,4 +1,4 @@
-import type { Contributor } from '$lib/types/contributor';
+import type { Contributor } from '#lib/types/contributor.ts';
 
 /** Read the credited name without resolving or changing a historical byline. */
 export function getContributorName(contributor: Contributor): string {

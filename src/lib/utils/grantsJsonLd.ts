@@ -10,8 +10,8 @@
  * @example
  * ```svelte
  * <script lang="ts">
- *   import JsonLd from '$lib/components/common/JsonLd.svelte';
- *   import { buildGrantsJsonLd, GRANTS_SCRIPT_ID } from '$lib/utils/grantsJsonLd';
+ *   import JsonLd from '#lib/components/common/JsonLd.svelte';
+ *   import { buildGrantsJsonLd, GRANTS_SCRIPT_ID } from '#lib/utils/grantsJsonLd.ts';
  *
  *   const grantsJsonLd = $derived(
  *     buildGrantsJsonLd('Digital Humanities and AI in African Studies', pageUrl)
@@ -22,8 +22,8 @@
  * ```
  */
 
-import { allGrants } from '$lib/data/grants/index';
-import { createMonetaryGrantSchemas, combineSchemas } from '$lib/utils/seoUtils';
+import { allGrants } from '#lib/data/grants/index.ts';
+import { createMonetaryGrantSchemas, combineSchemas } from '#lib/utils/seoUtils.ts';
 
 export const GRANTS_SCRIPT_ID = 'grants-json-ld';
 

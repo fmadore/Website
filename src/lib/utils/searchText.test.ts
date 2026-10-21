@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { matchesSearchTerms, normalizeSearchText, searchTerms } from './searchText';
-import { foldFacetText } from '$lib/components/entity-index/facetSearch';
+import { foldFacetText } from '#lib/components/entity-index/facetSearch.ts';
 import { normalise } from './apiSearch';
 
 it.each(['Côte d’Ivoire', "CÔTE D'IVOIRE", 'Côte dʼIvoire'])(

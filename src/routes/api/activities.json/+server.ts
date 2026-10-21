@@ -1,13 +1,13 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { activitiesByDate } from '$lib/data/activities';
-import type { Activity } from '$lib/types/activity';
+import { activitiesByDate } from '#lib/data/activities/index.ts';
+import type { Activity } from '#lib/types/activity.ts';
 import {
 	absoluteUrl,
 	buildLinks,
 	compact,
 	datasetPayload,
 	jsonResponse
-} from '$lib/utils/apiPayload';
+} from '#lib/utils/apiPayload.ts';
 
 // Prerendered to build/api/activities.json alongside the rest of the site.
 export const prerender = true;

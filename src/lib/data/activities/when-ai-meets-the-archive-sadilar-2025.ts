@@ -1,5 +1,5 @@
-import type { Activity } from '$lib/types';
-import { formatDisplayDate } from '$lib/utils/date-formatter';
+import type { Activity } from '#lib/types/index.ts';
+import { formatDisplayDate } from '#lib/utils/date-formatter.ts';
 
 // Activity: When AI Meets the Archive - SADiLaR Digital Humanities Colloquium Talk
 export const whenAIMeetsTheArchiveSadilar2025: Activity = {

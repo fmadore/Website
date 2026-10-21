@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const retourNoteSyntheseDhIaReaf2026: Communication = {
 	id: 'retour-note-synthese-dh-ia-reaf-2026',

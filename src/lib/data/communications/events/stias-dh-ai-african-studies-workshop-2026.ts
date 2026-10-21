@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // STIAS Workshop: Digital Humanities and Artificial Intelligence in African Studies
 export const stiasDHAIAfricanStudiesWorkshop2026: Communication = {

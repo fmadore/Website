@@ -18,10 +18,10 @@
  *
  * `license` is left out because no record carries a licence.
  */
-import type { Publication } from '$lib/types';
-import { author, socialLinks } from '$lib/data/siteConfig';
-import { getContributorName } from '$lib/utils/contributor';
-import { siteUrl } from '$lib/utils/siteHelpers';
+import type { Publication } from '#lib/types/index.ts';
+import { author, socialLinks } from '#lib/data/siteConfig.ts';
+import { getContributorName } from '#lib/utils/contributor.ts';
+import { siteUrl } from '#lib/utils/siteHelpers.ts';
 
 export interface Signpost {
 	rel: 'type' | 'describedby' | 'author' | 'related';

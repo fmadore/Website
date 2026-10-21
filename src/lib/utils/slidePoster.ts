@@ -1,4 +1,4 @@
-import { imageVariantManifest } from '$lib/data/imageVariants.generated';
+import { imageVariantManifest } from '#lib/data/imageVariants.generated.ts';
 
 /**
  * The mirrored cover slide of a deck, resolved from the deck's own URL.

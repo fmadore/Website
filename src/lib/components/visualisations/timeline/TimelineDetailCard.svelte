@@ -2,9 +2,9 @@
 	// Detail card + previous/next navigation of the CareerTimeline —
 	// split out of CareerTimeline.svelte.
 	import Icon from '@iconify/svelte';
-	import { type TimelineItem, getCategoryColor, getCategoryLabel } from '$lib/types/timeline';
-	import { getContrastLabelStyle, resolveColor } from '$lib/utils/chartColorUtils';
-	import { getTheme } from '$lib/stores/themeStore.svelte';
+	import { type TimelineItem, getCategoryColor, getCategoryLabel } from '#lib/types/timeline.ts';
+	import { getContrastLabelStyle, resolveColor } from '#lib/utils/chartColorUtils.ts';
+	import { getTheme } from '#lib/stores/themeStore.svelte.ts';
 
 	interface Props {
 		item: TimelineItem;

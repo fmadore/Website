@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const imamsIslamicPreachersOuagadougou: Communication = {
 	id: 'imams-islamic-preachers-ouagadougou-2013',

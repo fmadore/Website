@@ -32,7 +32,7 @@ This website showcases my academic work including:
 
 This site is built with:
 
-- [SvelteKit 2](https://kit.svelte.dev/) with [Svelte 5 runes](https://svelte.dev/docs/svelte/what-are-runes) - Frontend framework, fully prerendered to static HTML
+- [SvelteKit 3](https://svelte.dev/docs/kit) with [Svelte 5 runes](https://svelte.dev/docs/svelte/what-are-runes) - Frontend framework, fully prerendered to static HTML
 - [TypeScript](https://www.typescriptlang.org/) (strict, `noUncheckedIndexedAccess`) - Language
 - Custom token-driven CSS system — the **Ink + Signal** design language (see `src/styles/CSS-README.md`)
 - Content as typed TypeScript data files in `src/lib/data/` (18 categories), auto-discovered via `import.meta.glob`
@@ -66,7 +66,7 @@ Being static, these are read-only and offer no query interface — fetch a datas
 
 It ships two ways. `npm run mcp:pack` produces `frederickmadore-website.mcpb` — an [MCP Bundle](https://github.com/anthropics/mcpb) that Claude Desktop installs on a double-click, with no config file to edit and no Node install required; CI attaches it to every run as the `mcpb` artifact. Other stdio clients point at `mcp/dist/index.js`; remote deployments run `mcp/dist/http.js`. See [`mcp/README.md`](mcp/README.md).
 
-Citation output is not reimplemented there — the build aliases `$lib` and bundles the site's own `bibtexGenerator`, so what the server returns is byte-identical to the site's download button.
+Citation output is not reimplemented there — the build aliases `#lib` and bundles the site's own `bibtexGenerator`, so what the server returns is byte-identical to the site's download button.
 
 ### WebMCP
 

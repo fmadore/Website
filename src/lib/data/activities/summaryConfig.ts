@@ -1,4 +1,4 @@
-import type { HeavyActivityField } from '$lib/types/activity';
+import type { HeavyActivityField } from '#lib/types/activity.ts';
 
 /**
  * Shared between the summaries generator

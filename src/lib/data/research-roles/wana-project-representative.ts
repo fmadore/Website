@@ -1,4 +1,4 @@
-import type { ResearchRole } from '$lib/types/researchRole';
+import type { ResearchRole } from '#lib/types/researchRole.ts';
 
 export const wanaProjectRepresentative: ResearchRole = {
 	id: 'wana-project-representative-2024',

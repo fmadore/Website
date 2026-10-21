@@ -6,8 +6,8 @@ import {
 	paragraphsToMarkdown,
 	parseHtml
 } from './htmlToMarkdown';
-import { allActivities } from '$lib/data/activities';
-import { allDhProjects } from '$lib/data/digital-humanities';
+import { allActivities } from '#lib/data/activities/index.ts';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
 
 describe('decodeEntities', () => {
 	it('decodes named and numeric references in one pass', () => {

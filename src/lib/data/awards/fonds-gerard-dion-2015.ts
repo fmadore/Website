@@ -1,4 +1,4 @@
-import type { Award } from '$lib/types';
+import type { Award } from '#lib/types/index.ts';
 
 export const fondsGerardDion2015: Award = {
 	id: 'fonds-gerard-dion-2015',

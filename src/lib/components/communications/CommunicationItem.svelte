@@ -1,12 +1,13 @@
 <script lang="ts">
-	import type { CommunicationSummary } from '$lib/types/communication';
-	import { base, resolve } from '$app/paths';
-	import { truncateAbstract } from '$lib/utils/textUtils';
-	import { formatCommunicationCitation } from '$lib/utils/citationFormatter';
-	import { titleLangAttr } from '$lib/utils/languageUtils';
-	import { COMMUNICATION_TYPE_LIST_LABELS } from '$lib/utils/typeUtils';
-	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
-	import type { BibliographyAction } from '$lib/components/molecules/BibliographyRow.svelte';
+	import type { CommunicationSummary } from '#lib/types/communication.ts';
+	import { resolve } from '$app/paths';
+	import { assetHref } from '#lib/utils/paths.ts';
+	import { truncateAbstract } from '#lib/utils/textUtils.ts';
+	import { formatCommunicationCitation } from '#lib/utils/citationFormatter.ts';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
+	import { COMMUNICATION_TYPE_LIST_LABELS } from '#lib/utils/typeUtils.ts';
+	import BibliographyRow from '#lib/components/molecules/BibliographyRow.svelte';
+	import type { BibliographyAction } from '#lib/components/molecules/BibliographyRow.svelte';
 
 	interface Props {
 		/** A summary: the list never needs the full abstract. */
@@ -47,7 +48,7 @@
 	// output, so the venue line arrives in the display register already).
 	const citationDetails = $derived(formatCommunicationCitation(communication));
 
-	const detailHref = $derived(resolve(`/communications/${communication.id}`));
+	const detailHref = $derived(resolve('/communications/[id]', { id: communication.id }));
 
 	const kindLabel = $derived(
 		COMMUNICATION_TYPE_LIST_LABELS[communication.type ?? 'conference'] ?? 'Academic event'
@@ -69,7 +70,7 @@
 			list.push({ href: communication.slidesUrl, label: 'Slides', primary: true });
 		if (communication.poster)
 			list.push({
-				href: `${base}/${communication.poster.pdf}`,
+				href: assetHref(communication.poster.pdf),
 				label: 'Poster',
 				primary: list.length === 0
 			});

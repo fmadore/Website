@@ -1,4 +1,4 @@
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const cahiersEtudesAfricaines2025: PeerReview = {
 	id: 'cahiers-etudes-africaines-2025',

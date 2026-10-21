@@ -3,7 +3,7 @@
 // The prose is authored in src/routes/research/<slug>/+page.svelte; this is the
 // plain-text projection of it, so /api/research.json can carry the full text.
 /* eslint-disable */
-import type { ResearchProse } from '$lib/types/research';
+import type { ResearchProse } from '#lib/types/research.ts';
 
 export const researchProse: Record<string, ResearchProse> = {
 	"dh-ai-african-studies": {

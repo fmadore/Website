@@ -18,7 +18,7 @@
  * compiler; this module wires it to `$state`/`$derived`.
  */
 
-import type { YearRange } from '$lib/types';
+import type { YearRange } from '#lib/types/index.ts';
 import {
 	ENTITY_ARRAY_FILTER_KEYS,
 	filterEntityItems,

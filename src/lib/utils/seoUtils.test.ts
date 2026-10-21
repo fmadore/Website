@@ -8,10 +8,10 @@ import {
 	createActivitySEOKeywords,
 	truncateTitle
 } from './seoUtils';
-import { author } from '$lib/data/siteConfig';
-import type { Publication } from '$lib/types/publication';
-import type { Communication } from '$lib/types/communication';
-import type { Activity } from '$lib/types/activity';
+import { author } from '#lib/data/siteConfig.ts';
+import type { Publication } from '#lib/types/publication.ts';
+import type { Communication } from '#lib/types/communication.ts';
+import type { Activity } from '#lib/types/activity.ts';
 
 // Minimal fixtures: cast through `unknown` (same style as jsonLdSchemas.test.ts)
 // so tests can omit or blank out required fields the builders guard against.

@@ -20,7 +20,7 @@
  */
 import { joinNames } from './nameUtils';
 import { typesetQuotes } from './typesetQuotes';
-import type { Contributor } from '$lib/types/contributor';
+import type { Contributor } from '#lib/types/contributor.ts';
 
 /**
  * Formats a name or list of names as a display byline: "A", "A and B",

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { website } from '$lib/data/siteConfig';
+import { website } from '#lib/data/siteConfig.ts';
 import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from './breadcrumbJsonLd';
 
 describe('createSubsectionBreadcrumbs', () => {

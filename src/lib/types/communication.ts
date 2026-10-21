@@ -1,4 +1,4 @@
-import type { Contributor } from '$lib/types/contributor';
+import type { Contributor } from '#lib/types/contributor.ts';
 
 export type Communication = {
 	id: string; // URL-friendly ID for routing
@@ -62,7 +62,7 @@ export type Communication = {
 	 * course, a master class, a training workshop. The talk keeps its place on
 	 * /conference-activity and its own page; the CV prints it under Teaching
 	 * rather than Invited Talks, and /teaching lists it with the guest lectures
-	 * (`teachingLectures` in $lib/utils/cvSections).
+	 * (`teachingLectures` in #lib/utils/cvSections).
 	 */
 	teaching?: TalkTeaching;
 };

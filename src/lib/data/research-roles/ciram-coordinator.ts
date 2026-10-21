@@ -1,4 +1,4 @@
-import type { ResearchRole } from '$lib/types/researchRole';
+import type { ResearchRole } from '#lib/types/researchRole.ts';
 
 export const ciramCoordinator: ResearchRole = {
 	id: 'ciram-coordinator-2016-17',

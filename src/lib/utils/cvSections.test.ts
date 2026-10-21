@@ -18,7 +18,7 @@ import {
 	teachingLectures,
 	teachingLevelLabel
 } from './cvSections';
-import type { CvCommunication } from '$lib/types/communication';
+import type { CvCommunication } from '#lib/types/communication.ts';
 
 describe('formatCvEditionDate', () => {
 	it('prints the build date in British form, in UTC', () => {

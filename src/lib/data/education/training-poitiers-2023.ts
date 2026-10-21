@@ -1,5 +1,5 @@
 // src/lib/data/education/training-poitiers-2023.ts
-import type { Education } from '$lib/types';
+import type { Education } from '#lib/types/index.ts';
 
 export const trainingPoitiers2023: Education = {
 	id: 'training-poitiers-2023',

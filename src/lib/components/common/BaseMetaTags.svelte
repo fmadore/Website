@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MetaTag } from '$lib/utils/metaTags';
+	import type { MetaTag } from '#lib/utils/metaTags.ts';
 
 	// Shared renderer for the entity MetaTags components (publications,
 	// communications, activities). Each caller computes its own MetaTag[]

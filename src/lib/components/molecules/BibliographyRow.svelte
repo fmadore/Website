@@ -37,13 +37,13 @@
 	// plate whenever the entry has one. PublicationItem, CommunicationItem and
 	// ActivityItem adapt their entities onto these props so the three record
 	// lists stay in visual lock-step.
-	import '$styles/components/bibliography.css';
+	import '#styles/components/bibliography.css';
 	import Icon from '@iconify/svelte';
-	import { base } from '$app/paths';
-	import Button from '$lib/components/atoms/Button.svelte';
-	import { createCopyFeedback, type CopyState } from '$lib/utils/clipboard.svelte';
-	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import Button from '#lib/components/atoms/Button.svelte';
+	import { createCopyFeedback, type CopyState } from '#lib/utils/clipboard.svelte.ts';
+	import { buildSrcset, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	// The plate column is 80px wide at every breakpoint: the narrow collapse
 	// moves the key above the record rather than shrinking the plate, so the
@@ -176,7 +176,7 @@
 
 	// Base-relative source (data files store `images/…`), plus the generated
 	// downscaled candidates when the manifest has them.
-	const plateSrc = $derived(resolveImagePath(image, base));
+	const plateSrc = $derived(resolveImagePath(image, basePrefix()));
 	const plateSrcset = $derived(buildSrcset(plateSrc));
 
 	// ── The cite control ───────────────────────────────────────────────────────

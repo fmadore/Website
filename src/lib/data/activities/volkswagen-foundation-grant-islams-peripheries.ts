@@ -1,4 +1,4 @@
-import type { Activity } from '$lib/types';
+import type { Activity } from '#lib/types/index.ts';
 
 const volkswagenFoundationGrantIslamsPeripheries: Activity = {
 	id: 'volkswagen-foundation-grant-islams-peripheries',

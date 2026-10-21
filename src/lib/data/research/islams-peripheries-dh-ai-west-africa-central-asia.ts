@@ -1,4 +1,4 @@
-import type { ResearchProject } from '$lib/types/research';
+import type { ResearchProject } from '#lib/types/research.ts';
 
 export const islamsPeripheries: ResearchProject = {
 	id: 'islams-peripheries-dh-ai-west-africa-central-asia',

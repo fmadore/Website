@@ -16,18 +16,18 @@ its share — so the step is a convenience, not the only route.
 -->
 <script lang="ts">
 	import { page } from '$app/state';
-	import { getActivities } from '$lib/stores/activities';
-	import type { ActivitySummary } from '$lib/types';
-	import { base, resolve } from '$app/paths';
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
+	import { getActivities } from '#lib/stores/activities.ts';
+	import type { ActivitySummary } from '#lib/types/index.ts';
+	import { resolve } from '$app/paths';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import ActivityItem from '#lib/components/activities/ActivityItem.svelte';
 	// Activity-list styles relocated from the global app.css.
-	import '$styles/components/activity-list.css';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import { buildBreadcrumbJsonLd } from '$lib/utils/breadcrumbJsonLd';
-	import { formatShortDateMono } from '$lib/utils/date-formatter';
+	import '#styles/components/activity-list.css';
+	import Breadcrumb from '#lib/components/molecules/Breadcrumb.svelte';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
+	import { buildBreadcrumbJsonLd } from '#lib/utils/breadcrumbJsonLd.ts';
+	import { formatShortDateMono } from '#lib/utils/date-formatter.ts';
 
 	// Get the year parameter from the URL - reactive to route changes
 	let year = $derived(parseInt(page.params.year || ''));
@@ -202,7 +202,7 @@ its share — so the step is a convenience, not the only route.
 
 				<section class="aside-block aside-footer">
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->
-					<a href="{base}/rss.xml" class="aside-rss">RSS feed</a>
+					<a href={resolve('/rss.xml')} class="aside-rss">RSS feed</a>
 					{#if updatedLabel}
 						<span class="aside-updated">Last entry {updatedLabel}</span>
 					{/if}

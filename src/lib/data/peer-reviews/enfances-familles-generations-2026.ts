@@ -1,4 +1,4 @@
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const enfancesFamillesGenerations2026: PeerReview = {
 	id: 'enfances-familles-generations-2026',

@@ -1,5 +1,5 @@
 // src/lib/data/peer-reviews/cjaf-2018.ts
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const cjaf2018: PeerReview = {
 	id: 'cjaf-2018',

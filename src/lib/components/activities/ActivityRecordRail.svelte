@@ -29,12 +29,13 @@ place to decide that.
 </script>
 
 <script lang="ts">
-	import { base } from '$app/paths';
-	import type { Activity } from '$lib/types/activity';
-	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { plateFallback } from '$lib/actions/plateFallback';
+	import { resolve } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import type { Activity } from '#lib/types/activity.ts';
+	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
+	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { plateFallback } from '#lib/actions/plateFallback.ts';
 
 	interface Props {
 		activity: Activity;
@@ -47,7 +48,9 @@ place to decide that.
 	let { activity, kindLabel, hasDocument = false }: Props = $props();
 
 	// Event plate. Prefer the dedicated hero; fall back to the list image.
-	const plateSrc = $derived(resolveImagePath(activity.heroImage?.src ?? activity.image, base));
+	const plateSrc = $derived(
+		resolveImagePath(activity.heroImage?.src ?? activity.image, basePrefix())
+	);
 	const plateSrcset = $derived(buildSrcset(plateSrc));
 	const plateSize = $derived(imageDimensions(plateSrc));
 	const plateAlt = $derived(typesetQuotes(activity.heroImage?.alt ?? activity.title));
@@ -61,7 +64,7 @@ place to decide that.
 		return typesetQuotes(source.trim().replace(/\.$/, ''));
 	});
 
-	const yearHref = $derived(`${base}/activities/year/${activity.year}`);
+	const yearHref = $derived(resolve('/activities/year/[year]', { year: String(activity.year) }));
 
 	// ── Metadata ledger rows — render only fields present in the data. ──────────
 	const metadataRows = $derived.by((): MetaRow[] => {

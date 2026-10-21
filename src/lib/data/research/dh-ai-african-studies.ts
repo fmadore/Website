@@ -1,4 +1,4 @@
-import type { ResearchProject } from '$lib/types/research';
+import type { ResearchProject } from '#lib/types/research.ts';
 
 export const dhAiAfricanStudies: ResearchProject = {
 	id: 'dh-ai-african-studies',

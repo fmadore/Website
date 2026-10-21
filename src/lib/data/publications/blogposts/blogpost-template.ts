@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 // Blog Post Template - Copy this file and fill in the details
 export const blogpostTemplate: Publication = {

@@ -1,4 +1,4 @@
-import type { Contributor } from '$lib/types/contributor';
+import type { Contributor } from '#lib/types/contributor.ts';
 
 // Define the structure for a work that cites this publication
 export type CitingWork = {

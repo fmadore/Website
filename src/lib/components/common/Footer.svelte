@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { resolve } from '$app/paths';
-	import { socialGroups, author, address } from '$lib/data/siteConfig';
-	import { BUILT_AT } from '$lib/utils/buildDate';
+	import { socialGroups, author, address } from '#lib/data/siteConfig.ts';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 
 	const currentYear = BUILT_AT.getUTCFullYear();
 </script>

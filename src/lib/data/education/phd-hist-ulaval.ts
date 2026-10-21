@@ -1,5 +1,5 @@
 // src/lib/data/education/phd-hist-ulaval.ts
-import type { Education } from '$lib/types';
+import type { Education } from '#lib/types/index.ts';
 
 export const phdHistUlaval: Education = {
 	id: 'phd-hist-ulaval',

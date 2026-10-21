@@ -7,7 +7,7 @@
  * are the MCP server's (`mcp/src/server.ts`): the same names, the same arguments,
  * and the same records, because both read the same static API documents
  * (`/api/*.json`, fetched here same-origin) through the same search, lookup and
- * citation code in `$lib/utils/api*`. One tool more drives the visible page:
+ * citation code in `#lib/utils/api*`. One tool more drives the visible page:
  * `show_publications` opens the publications index on a filtered view.
  *
  * Progressive enhancement: the root layout imports this module only when the
@@ -25,10 +25,10 @@
  * Spec: https://webmachinelearning.github.io/webmcp/
  */
 
-import { CV_SECTIONS, type ApiItem, type CvPayload, type DatasetName } from '$lib/apiContract';
-import { author, website } from '$lib/data/siteConfig';
-import { CITATION_STYLES, citationFor } from '$lib/utils/apiCitation';
-import { createDocumentLoader } from '$lib/utils/apiDocumentLoader';
+import { CV_SECTIONS, type ApiItem, type CvPayload, type DatasetName } from '#lib/apiContract.ts';
+import { author, website } from '#lib/data/siteConfig.ts';
+import { CITATION_STYLES, citationFor } from '#lib/utils/apiCitation.ts';
+import { createDocumentLoader } from '#lib/utils/apiDocumentLoader.ts';
 import {
 	SEARCH_FIELDS,
 	WEIGHTED_FIELDS,
@@ -36,11 +36,14 @@ import {
 	normalise,
 	search,
 	summariseStructured
-} from '$lib/utils/apiSearch';
-import { serializeFiltersToQuery, type UrlSyncableFilters } from '$lib/utils/filterSerialization';
-import { PUBLICATION_TYPE_BADGE_LABELS } from '$lib/utils/publicationTypeLabels';
-import { COMMUNICATION_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
-import type { WebMcpToolName } from '$lib/utils/webmcpToolNames';
+} from '#lib/utils/apiSearch.ts';
+import {
+	serializeFiltersToQuery,
+	type UrlSyncableFilters
+} from '#lib/utils/filterSerialization.ts';
+import { PUBLICATION_TYPE_BADGE_LABELS } from '#lib/utils/publicationTypeLabels.ts';
+import { COMMUNICATION_TYPE_BADGE_LABELS } from '#lib/utils/typeUtils.ts';
+import type { WebMcpToolName } from '#lib/utils/webmcpToolNames.ts';
 
 // ---------------------------------------------------------------------------
 // Typings for the parts of the (still experimental) WebMCP API used here.

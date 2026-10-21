@@ -1,4 +1,4 @@
-import type { CitationContextSet } from '$lib/types';
+import type { CitationContextSet } from '#lib/types/index.ts';
 
 // Pilot run of 12 October 2026 (see src/lib/types/citationContext.ts).
 export const islamUniversityCampusesCoteDivoire2023Contexts: CitationContextSet = {

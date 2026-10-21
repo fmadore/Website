@@ -4,8 +4,8 @@
  * Tracks online/offline status and updates global state.
  */
 
-import { browser } from '$app/environment';
-import { getGlobalState } from '$lib/stores/globalState.svelte';
+import { browser } from '$app/env';
+import { getGlobalState } from '#lib/stores/globalState.svelte.ts';
 
 /**
  * Sets up network status monitoring and PWA install prevention.

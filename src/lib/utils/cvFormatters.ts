@@ -1,9 +1,9 @@
-import type { Publication } from '$lib/types';
-import type { Contributor } from '$lib/types/contributor';
-import { getContributorNames } from '$lib/utils/contributor';
-import type { AffiliationPeriod } from '$lib/types/affiliation';
-import { author as siteAuthor } from '$lib/data/siteConfig';
-import { formatAuthorsWithEtAl, joinNames, splitNames } from '$lib/utils/nameUtils';
+import type { Publication } from '#lib/types/index.ts';
+import type { Contributor } from '#lib/types/contributor.ts';
+import { getContributorNames } from '#lib/utils/contributor.ts';
+import type { AffiliationPeriod } from '#lib/types/affiliation.ts';
+import { author as siteAuthor } from '#lib/data/siteConfig.ts';
+import { formatAuthorsWithEtAl, joinNames, splitNames } from '#lib/utils/nameUtils.ts';
 
 /**
  * Returns the year label to show in the CV gutter. Forthcoming publications

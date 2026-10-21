@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const beyondKeywordsEntityLinkingJcdl2026: Communication = {
 	id: 'beyond-keywords-entity-linking-jcdl-2026',

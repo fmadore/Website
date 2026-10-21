@@ -1,4 +1,4 @@
-import type { Education } from '$lib/types';
+import type { Education } from '#lib/types/index.ts';
 
 export const certArabicUlaval2017: Education = {
 	id: 'cert-arabic-ulaval-2017',

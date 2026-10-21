@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { NavItem } from '$lib/types/navigation';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import type { NavItem } from '#lib/types/navigation.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	let {
 		id,

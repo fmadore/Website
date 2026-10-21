@@ -20,15 +20,15 @@ const DEFAULT_BASE = 'https://www.frederickmadore.com';
  */
 const apiBase = (process.env.WEBSITE_API_BASE?.trim() || DEFAULT_BASE).replace(/\/+$/, '');
 
-import { createDocumentLoader } from '$lib/utils/apiDocumentLoader';
-import { findRecord } from '$lib/utils/apiSearch';
+import { createDocumentLoader } from '#lib/utils/apiDocumentLoader.ts';
+import { findRecord } from '#lib/utils/apiSearch.ts';
 import type {
 	DatasetName,
 	ApiDocumentName,
 	ApiItem as Item,
 	DatasetPayload,
 	CvPayload
-} from '$lib/apiContract';
+} from '#lib/apiContract.ts';
 export type { DatasetName, ApiDocumentName, Item, CvPayload };
 
 const fetchDocument = createDocumentLoader({

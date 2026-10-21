@@ -1,15 +1,16 @@
 <script>
-	import { BUILT_AT } from '$lib/utils/buildDate';
-	import { base, resolve } from '$app/paths';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { allResearchProjects } from '$lib/data/research';
-	import { buildSrcset } from '$lib/utils/imageVariants';
-	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
+	import { resolve } from '$app/paths';
+	import { assetHref } from '#lib/utils/paths.ts';
+	import PageHeader from '#lib/components/common/PageHeader.svelte';
+	import PageIntro from '#lib/components/common/PageIntro.svelte';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { allResearchProjects } from '#lib/data/research/index.ts';
+	import { buildSrcset } from '#lib/utils/imageVariants.ts';
+	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	// Helper to resolve dynamic research project paths
 	const resolvePath = (/** @type {string} */ path) => resolve(/** @type {any} */ (path));
@@ -28,7 +29,7 @@
 	// prints them from the same record. `formatProjectPeriod` is shared with that
 	// masthead so "2026-" can never read one way here and another there.
 	const researchProjects = allResearchProjects.map((p) => {
-		const imageUrl = `${base}/images/research/${p.imageSrc}`;
+		const imageUrl = assetHref(`images/research/${p.imageSrc}`);
 		return {
 			id: p.id,
 			title: typesetQuotes(p.cardTitle ?? p.title),

@@ -1,5 +1,5 @@
-import type { Person } from '$lib/types/person';
-import { loadData } from '$lib/utils/dataLoader';
+import type { Person } from '#lib/types/person.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 
 const modules = import.meta.glob(['./*.ts', '!./index.ts', '!./*.test.ts'], { eager: true });
 

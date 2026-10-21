@@ -5,7 +5,7 @@ import {
 	terminalPeriod,
 	trimTerminalPeriod
 } from './cvFormatters';
-import { author as siteAuthor } from '$lib/data/siteConfig';
+import { author as siteAuthor } from '#lib/data/siteConfig.ts';
 
 describe('formatCVAuthorList', () => {
 	it('recognizes the site owner and coauthors represented by person references', () => {

@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const religionsNumeriquesAfrique: Publication = {
 	id: 'religions-numeriques-afrique-2018',

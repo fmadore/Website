@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const madore2025PerspectivesInMotion: Publication = {
 	id: 'madore-2025-perspectives-in-motion',

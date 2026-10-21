@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const beninImamElection: Publication = {
 	id: 'beninese-imam-election-2022',

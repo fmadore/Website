@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import type { NavItem } from '$lib/types/navigation';
-	import ThemeToggle from '$lib/components/menu/ThemeToggle.svelte';
-	import MobileNavItem from '$lib/components/menu/MobileNavItem.svelte';
+	import type { NavItem } from '#lib/types/navigation.ts';
+	import ThemeToggle from '#lib/components/menu/ThemeToggle.svelte';
+	import MobileNavItem from '#lib/components/menu/MobileNavItem.svelte';
 	import { resolve } from '$app/paths';
 
 	let {

@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const religionInternetBurkinaFaso: Publication = {
 	id: 'religion-internet-burkina-faso-2024',

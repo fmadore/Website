@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const evolutionsNouvellesFormesIslamAfriqueOuest: Communication = {
 	id: 'evolutions-nouvelles-formes-islam-afrique-ouest',

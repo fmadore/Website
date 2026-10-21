@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Talk: Islam's "Peripheries": Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia
 export const talkIslamPeripheriesDhAiWestAfricaCentralAsia2026: Communication = {

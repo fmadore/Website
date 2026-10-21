@@ -8,7 +8,7 @@
  * empty vocabularies so no UI or URL surface ever exercises them.
  */
 
-import type { ActivitySummary, YearRange } from '$lib/types';
+import type { ActivitySummary, YearRange } from '#lib/types/index.ts';
 import {
 	activitySummariesByDate as activitiesByDate,
 	activitySummariesByYear as activitiesByYear
@@ -16,8 +16,8 @@ import {
 import {
 	EntityFilterSystem,
 	type EntityArrayDimension
-} from '$lib/utils/entityFilterSystem.svelte';
-import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
+} from '#lib/utils/entityFilterSystem.svelte.ts';
+import { ACTIVITY_TYPE_BADGE_LABELS } from '#lib/utils/typeUtils.ts';
 
 // --- Vocabularies ---
 

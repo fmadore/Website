@@ -11,15 +11,15 @@
  *
  * Generated from the same data modules as the pages, so it cannot drift.
  */
-import { author, website, contact, address, socialLinks } from '$lib/data/siteConfig';
-import { allPublications } from '$lib/data/publications/index';
-import { allCommunications } from '$lib/data/communications/index';
-import { activitiesByDate } from '$lib/data/activities';
-import { allDhProjects } from '$lib/data/digital-humanities';
-import { allResearchProjects } from '$lib/data/research';
-import { formatProjectPeriod } from '$lib/utils/projectPeriod';
-import { entries } from '$lib/server/markdown/markdown';
-import { markdownUrl, pageUrl } from '$lib/server/markdown/site';
+import { author, website, contact, address, socialLinks } from '#lib/data/siteConfig.ts';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { allCommunications } from '#lib/data/communications/index.ts';
+import { activitiesByDate } from '#lib/data/activities/index.ts';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
+import { allResearchProjects } from '#lib/data/research/index.ts';
+import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+import { entries } from '#lib/server/markdown/markdown.ts';
+import { markdownUrl, pageUrl } from '#lib/server/markdown/site.ts';
 
 const SITE = website.url;
 

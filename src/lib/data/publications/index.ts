@@ -1,17 +1,17 @@
-import type { Publication } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
+import type { Publication } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 import {
 	groupByYear,
 	groupByField,
 	extractUniqueTags,
 	extractUnique,
 	extractUniqueDelimited
-} from '$lib/utils/dataAggregation';
+} from '#lib/utils/dataAggregation.ts';
 
 import {
 	PUBLICATION_TEMPLATE_IDS as templateIds,
 	PUBLICATION_DIRECTORY_TYPES
-} from '$lib/dataMetadata';
+} from '#lib/dataMetadata.ts';
 import { sortPublicationsByDate } from './order';
 
 // Use a single static glob import (excluding per-type template files)

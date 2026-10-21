@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { awardsByDate } from '$lib/data/awards';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { awardsByDate } from '#lib/data/awards/index.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVSection from './CVSection.svelte';
 </script>
 

@@ -1,16 +1,16 @@
-import type { Communication } from '$lib/types/communication';
-import type { Publication } from '$lib/types';
-import { getContributorName, getContributorNames } from '$lib/utils/contributor';
-import type { Activity } from '$lib/types/activity';
-import { author } from '$lib/data/siteConfig';
-import { smartTruncate, stripHtml } from '$lib/utils/textUtils';
-import { COMMUNICATION_TYPE_SEO_LABELS, ACTIVITY_TYPE_SEO_LABELS } from '$lib/utils/typeUtils';
-import { PUBLICATION_TYPE_SEO_LABELS } from '$lib/utils/publicationTypeLabels';
+import type { Communication } from '#lib/types/communication.ts';
+import type { Publication } from '#lib/types/index.ts';
+import { getContributorName, getContributorNames } from '#lib/utils/contributor.ts';
+import type { Activity } from '#lib/types/activity.ts';
+import { author } from '#lib/data/siteConfig.ts';
+import { smartTruncate, stripHtml } from '#lib/utils/textUtils.ts';
+import { COMMUNICATION_TYPE_SEO_LABELS, ACTIVITY_TYPE_SEO_LABELS } from '#lib/utils/typeUtils.ts';
+import { PUBLICATION_TYPE_SEO_LABELS } from '#lib/utils/publicationTypeLabels.ts';
 
 // JSON-LD schema construction (including `createSectionBreadcrumbs`, whose
 // canonical definition lives in jsonLdSchemas.ts) is re-exported here so
-// existing `$lib/utils/seoUtils` imports keep working unchanged.
-export * from '$lib/utils/jsonLdSchemas';
+// existing `#lib/utils/seoUtils` imports keep working unchanged.
+export * from '#lib/utils/jsonLdSchemas.ts';
 
 // ============================================================================
 // SEO DESCRIPTION GENERATORS

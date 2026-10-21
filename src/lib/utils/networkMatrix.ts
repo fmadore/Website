@@ -11,8 +11,8 @@
  * It is also the right idiom for this site: a matrix *is* a ledger, set in the
  * data voice, ruled rather than drawn.
  */
-import type { NetworkEdge, NetworkNode, SelectedGraph } from '$lib/utils/networkAggregation';
-import { orderNodes, type NodeOrder } from '$lib/utils/seriation';
+import type { NetworkEdge, NetworkNode, SelectedGraph } from '#lib/utils/networkAggregation.ts';
+import { orderNodes, type NodeOrder } from '#lib/utils/seriation.ts';
 
 export interface MatrixCell {
 	/** Row / column indices into `nodes`. */

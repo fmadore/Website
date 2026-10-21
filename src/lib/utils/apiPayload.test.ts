@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { website } from '$lib/data/siteConfig';
+import { website } from '#lib/data/siteConfig.ts';
 import {
 	API_VERSION,
 	absoluteUrl,

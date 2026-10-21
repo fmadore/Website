@@ -1,5 +1,5 @@
-import type { Activity } from '$lib/types';
-import { formatDisplayDate } from '$lib/utils/date-formatter';
+import type { Activity } from '#lib/types/index.ts';
+import { formatDisplayDate } from '#lib/utils/date-formatter.ts';
 
 // Define the ISO date first
 const activityDateISO = '2025-11-03';

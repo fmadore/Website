@@ -1,25 +1,25 @@
 <script lang="ts">
-	import LatestActivities from '$lib/components/panels/LatestActivities.svelte';
-	import ProfileBanner from '$lib/components/common/ProfileBanner.svelte';
-	import ContentBody from '$lib/components/common/ContentBody.svelte';
-	import SEO from '$lib/SEO.svelte';
-	import { base, resolve } from '$app/paths';
-	import ItemReference from '$lib/components/reference/ItemReference.svelte';
-	import Button from '$lib/components/atoms/Button.svelte';
-	import { author, profile, website } from '$lib/data/siteConfig';
-	import { buildSrcset } from '$lib/utils/imageVariants';
+	import LatestActivities from '#lib/components/panels/LatestActivities.svelte';
+	import ProfileBanner from '#lib/components/common/ProfileBanner.svelte';
+	import ContentBody from '#lib/components/common/ContentBody.svelte';
+	import SEO from '#lib/SEO.svelte';
+	import { asset, resolve } from '$app/paths';
+	import ItemReference from '#lib/components/reference/ItemReference.svelte';
+	import Button from '#lib/components/atoms/Button.svelte';
+	import { author, profile, website } from '#lib/data/siteConfig.ts';
+	import { buildSrcset } from '#lib/utils/imageVariants.ts';
 	import type { PageData } from './$types';
 
 	// The portrait's slot is 22rem wide on a phone (capped), 18rem at --md and
 	// 380px from --lg — the record rail's width — so a 2× screen wants ~760 px;
 	// the 854 px source and its 400/800 derivatives come from the variant
 	// manifest, like every plate.
-	const portraitSrc = `${base}/images/Profile-picture.webp`;
+	const portraitSrc = asset('images/Profile-picture.webp');
 	const portraitSrcset = buildSrcset(portraitSrc);
 	const PORTRAIT_SIZES =
 		'(max-width: 767px) min(100vw - 2rem, 22rem), (max-width: 1023px) 18rem, 380px';
 
-	let { data } = $props<{ data: PageData }>();
+	let { data }: { data: PageData } = $props();
 
 	// Use the Person schema from page load data as additional schema
 	const additionalSchemas = $derived(data.personSchema ? [data.personSchema] : []);
@@ -134,9 +134,7 @@
 					<ItemReference id="for-whom-for-what-purpose-dh-ai-african-studies-2026" />, a position
 					paper written collectively by 25 authors. Two publications are forthcoming: a
 					<a
-						href={resolve(
-							`/activities/dh-ai-african-studies-edited-volume` as `/activities/${string}`
-						)}
+						href={resolve('activities/dh-ai-african-studies-edited-volume')}
 						data-sveltekit-preload-data>co-edited volume</a
 					>
 					with Bielefeld University Press and a special issue of the
@@ -188,9 +186,7 @@
 						target="_blank"
 						rel="noopener noreferrer">AMIRA<span class="sr-only"> (opens in new tab)</span></a
 					>, the Africa Multiple Interactive Research Atlas, on
-					<a
-						href={resolve('/digital-humanities/amira' as `/digital-humanities/${string}`)}
-						data-sveltekit-preload-data
+					<a href={resolve('digital-humanities/amira')} data-sveltekit-preload-data
 						>a custom theme, a federated search layer, and a visualisation module</a
 					>. Built with our Digital Research Environment, it makes the collections of the Africa
 					Multiple Research Centres in Burkina Faso, Kenya, Nigeria, and South Africa searchable

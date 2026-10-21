@@ -1,9 +1,9 @@
 <script lang="ts">
+	import { basePrefix } from '#lib/utils/paths.ts';
 	import type { Snippet } from 'svelte';
-	import { base } from '$app/paths';
-	import type { LocationDatum } from '$lib/data/geo';
-	import type { buildPublicationCollaborators } from '$lib/utils/collaboratorAggregation';
-	import { locationItemHref } from '$lib/utils/locationMapContent';
+	import type { LocationDatum } from '#lib/data/geo.ts';
+	import type { buildPublicationCollaborators } from '#lib/utils/collaboratorAggregation.ts';
+	import { locationItemHref } from '#lib/utils/locationMapContent.ts';
 	import VizChartCard from './VizChartCard.svelte';
 	import VizDataTable from './VizDataTable.svelte';
 
@@ -142,8 +142,10 @@
 									<td>
 										<ul class="work-list">
 											{#each person.items as item (item.id)}
-												<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-aware data-driven record route -->
-												<li><a href={locationItemHref(item, base, basePath)}>{item.title}</a></li>
+												<li>
+													<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-aware data-driven record route -->
+													<a href={locationItemHref(item, basePrefix(), basePath)}>{item.title}</a>
+												</li>
 											{/each}
 										</ul>
 									</td>
@@ -179,7 +181,7 @@
 					<ul class="work-list">
 						{#each person.items as item (item.id)}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-aware data-driven record route -->
-							<li><a href={locationItemHref(item, base, basePath)}>{item.title}</a></li>
+							<li><a href={locationItemHref(item, basePrefix(), basePath)}>{item.title}</a></li>
 						{/each}
 					</ul>
 				</li>

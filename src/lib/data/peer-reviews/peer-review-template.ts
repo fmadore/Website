@@ -1,5 +1,5 @@
 // src/lib/data/peer-reviews/peer-review-template.ts
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const peerReviewTemplate: PeerReview = {
 	id: 'peer-review-template-id', // Replace with a unique ID (e.g., journal-name-year-number)

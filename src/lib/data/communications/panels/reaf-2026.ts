@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const reaf2026Panel: Communication = {
 	id: 'humanites-numeriques-dh-ia-etudes-africaines-reaf-2026',

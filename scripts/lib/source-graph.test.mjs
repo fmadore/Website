@@ -53,7 +53,7 @@ it('follows an eager glob, honouring its exclusions, and skips a lazy one', () =
 	expect(staticImports(index, "import.meta.glob('./*.ts');").globbed).toEqual([]);
 });
 
-it('closes over $lib aliases, extensionless paths and globbed data', () => {
+it('closes over #lib aliases, extensionless paths and globbed data', () => {
 	const closure = sourceClosure([resolve('src/lib/data/languages/index.ts')]);
 	expect(closure.has('src/lib/utils/dataLoader.ts')).toBe(true);
 	expect(closure.has('src/lib/data/languages/english.ts')).toBe(true);

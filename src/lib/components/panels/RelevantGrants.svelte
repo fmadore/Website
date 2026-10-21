@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { allGrants } from '$lib/data/grants/index';
-	import type { Grant } from '$lib/types';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { allGrants } from '#lib/data/grants/index.ts';
+	import type { Grant } from '#lib/types/index.ts';
 	import PanelBase from './PanelBase.svelte';
 
 	// Props - project name

@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const religiousActorsDigitalEra: Publication = {
 	id: 'religious-actors-digital-era-2017',

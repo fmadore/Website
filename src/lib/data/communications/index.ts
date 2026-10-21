@@ -1,16 +1,16 @@
-import type { Communication } from '$lib/types/communication';
-import { loadData } from '$lib/utils/dataLoader';
+import type { Communication } from '#lib/types/communication.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 import {
 	sortByDate,
 	groupByYear,
 	groupByField,
 	extractUniqueTags,
 	extractUnique
-} from '$lib/utils/dataAggregation';
+} from '#lib/utils/dataAggregation.ts';
 
 type ModuleType = Record<string, unknown>;
 
-import { COMMUNICATION_TEMPLATE_IDS as templateIds } from '$lib/dataMetadata';
+import { COMMUNICATION_TEMPLATE_IDS as templateIds } from '#lib/dataMetadata.ts';
 
 // Dynamically import all communication files from relevant subfolders,
 // excluding sub-indexes and per-type template files

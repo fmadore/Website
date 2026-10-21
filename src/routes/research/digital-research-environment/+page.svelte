@@ -1,7 +1,7 @@
 <script lang="ts">
-	import ResearchProjectLayout from '$lib/components/research/ResearchProjectLayout.svelte';
-	import { researchProject } from '$lib/data/research';
-	import ItemReference from '$lib/components/reference/ItemReference.svelte';
+	import ResearchProjectLayout from '#lib/components/research/ResearchProjectLayout.svelte';
+	import { researchProject } from '#lib/data/research/index.ts';
+	import ItemReference from '#lib/components/reference/ItemReference.svelte';
 </script>
 
 <ResearchProjectLayout {...researchProject('digital-research-environment')}>

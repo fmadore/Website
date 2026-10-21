@@ -1,5 +1,5 @@
 // src/lib/data/grants/sshrc-postdoctoral-2018.ts
-import type { Grant } from '$lib/types';
+import type { Grant } from '#lib/types/index.ts';
 
 export const sshrcPostdoctoral2018: Grant = {
 	id: 'sshrc-postdoctoral-2018',

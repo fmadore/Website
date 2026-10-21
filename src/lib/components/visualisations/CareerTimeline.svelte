@@ -19,11 +19,11 @@
 
 <script lang="ts">
 	import { scaleUtc } from 'd3-scale';
-	import { type TimelineItem, TIMELINE_CATEGORIES, getCategoryColor } from '$lib/types/timeline';
+	import { type TimelineItem, TIMELINE_CATEGORIES, getCategoryColor } from '#lib/types/timeline.ts';
 	import TimelineTooltip from './timeline/TimelineTooltip.svelte';
 	import TimelineDetailCard from './timeline/TimelineDetailCard.svelte';
 	import { onMount } from 'svelte';
-	import { BUILT_AT } from '$lib/utils/buildDate';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 
 	interface Props {
 		items?: TimelineItem[];

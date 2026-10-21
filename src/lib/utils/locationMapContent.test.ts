@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { LocationDatum } from '$lib/data/geo';
+import type { LocationDatum } from '#lib/data/geo.ts';
 import {
 	collaboratorPopupContent,
 	locationCoordinates,

@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const ecas2025Panel: Communication = {
 	id: 'dh-ai-african-studies-2025',

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { generateBibtex } from './bibtexGenerator';
-import type { Publication } from '$lib/types/publication';
+import type { Publication } from '#lib/types/publication.ts';
 
 // Minimal fixture factory: supplies every required Publication field so tests
 // only spell out the fields the branch under test actually reads.

@@ -5,16 +5,16 @@
  * construction (WebSite, Person, breadcrumbs, WebPage, grants, @graph
  * combination); seoUtils.ts owns SEO description/keyword generation and
  * re-exports everything here for backward-compatible imports. Per-entity
- * detail-page builders live in `$lib/utils/entityJsonLd.ts`.
+ * detail-page builders live in `#lib/utils/entityJsonLd.ts`.
  *
  * `SEO.svelte` imports this module on every page, so it must stay free of
  * datasets: the home page's dataset-derived Person schema lives in
- * `$lib/server/personSchema.ts`.
+ * `#lib/server/personSchema.ts`.
  */
-import type { Grant } from '$lib/types/grant';
-import type { JsonLdOrganization, JsonLdOccupation } from '$lib/types/jsonld';
-import { author, website, socialLinks, linkedData } from '$lib/data/siteConfig';
-import { getDefaultDescription, siteUrl } from '$lib/utils/siteHelpers';
+import type { Grant } from '#lib/types/grant.ts';
+import type { JsonLdOrganization, JsonLdOccupation } from '#lib/types/jsonld.ts';
+import { author, website, socialLinks, linkedData } from '#lib/data/siteConfig.ts';
+import { getDefaultDescription, siteUrl } from '#lib/utils/siteHelpers.ts';
 
 // ============================================================================
 // JSON-LD SCHEMA TYPES

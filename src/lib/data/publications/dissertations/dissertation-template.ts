@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 // Dissertation Template - Copy this file and fill in the details
 export const dissertationTemplate: Publication = {

@@ -1,5 +1,5 @@
 import type { jsPDF } from 'jspdf';
-import { COLORS } from '$lib/utils/pdfDesignTokens';
+import { COLORS } from '#lib/utils/pdfDesignTokens.ts';
 
 export interface TextFragment {
 	text: string;

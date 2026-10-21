@@ -1,27 +1,28 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { base } from '$app/paths';
-	import type { Communication } from '$lib/types/communication';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { resolve } from '$app/paths';
+	import { assetHref, basePrefix, pageHref } from '#lib/utils/paths.ts';
+	import type { Communication } from '#lib/types/communication.ts';
 	import type { ComponentType } from 'svelte';
-	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
-	import CommunicationRecordRail from '$lib/components/communications/CommunicationRecordRail.svelte';
-	import SlideDeckEmbed from '$lib/components/communications/SlideDeckEmbed.svelte';
-	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
-	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
+	import RecordLayout, { type EyebrowToken } from '#lib/components/common/RecordLayout.svelte';
+	import CommunicationRecordRail from '#lib/components/communications/CommunicationRecordRail.svelte';
+	import SlideDeckEmbed from '#lib/components/communications/SlideDeckEmbed.svelte';
+	import RelatedItemsList from '#lib/components/organisms/RelatedItemsList.svelte';
+	import RelatedItemCard from '#lib/components/molecules/RelatedItemCard.svelte';
 	import {
 		createCommunicationSEODescription,
 		createCommunicationSEOKeywords,
 		recordEntityId,
 		truncateTitle
-	} from '$lib/utils/seoUtils';
-	import { getCommunicationTypeBadge } from '$lib/utils/typeUtils';
-	import { formatByline } from '$lib/utils/byline';
-	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
-	import MetaTags from '$lib/components/communications/MetaTags.svelte';
-	import { inView } from '$lib/actions/inView';
-	import { plateFallback } from '$lib/actions/plateFallback';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
+	} from '#lib/utils/seoUtils.ts';
+	import { getCommunicationTypeBadge } from '#lib/utils/typeUtils.ts';
+	import { formatByline } from '#lib/utils/byline.ts';
+	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
+	import MetaTags from '#lib/components/communications/MetaTags.svelte';
+	import { inView } from '#lib/actions/inView.ts';
+	import { plateFallback } from '#lib/actions/plateFallback.ts';
+	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
 
 	// Get communication from the page data
 	let { data } = $props();
@@ -62,7 +63,7 @@
 
 	// Internal research page for this talk's project, when the name matches one.
 	const projectPath = $derived(data.projectPath);
-	const projectUrl = $derived(projectPath ? `${base}${projectPath}` : undefined);
+	const projectUrl = $derived(projectPath ? pageHref(projectPath) : undefined);
 
 	// Abstract → paragraphs. Rendered via {@html} because abstracts carry inline
 	// markup, so they take the HTML-aware typesetter — `typesetQuotes` would curl
@@ -85,7 +86,7 @@
 	// reader zooms into.
 	const POSTER_SIZES = '(max-width: 1024px) 100vw, 580px';
 	const poster = $derived(communication.poster);
-	const posterSrc = $derived(resolveImagePath(poster?.image, base));
+	const posterSrc = $derived(resolveImagePath(poster?.image, basePrefix()));
 	const posterSrcset = $derived(buildSrcset(posterSrc));
 	const posterSize = $derived(imageDimensions(posterSrc));
 	// The rail's venue plate is Fig. 1 whenever the record has one, and below
@@ -122,7 +123,7 @@
 	// The gate itself is `use:inView` (src/lib/actions/inView.ts), the one
 	// 400px observer every heavy plate on the site now hangs on.
 	let MapVisualization:
-		typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
+		typeof import('#lib/components/visualisations/MapVisualization.svelte').default | null =
 		$state(null);
 	let mapRequested = false;
 	let mapLoadError = $state(false);
@@ -130,7 +131,7 @@
 	function loadMap() {
 		if (mapRequested) return;
 		mapRequested = true;
-		import('$lib/components/visualisations/MapVisualization.svelte')
+		import('#lib/components/visualisations/MapVisualization.svelte')
 			.then((module) => {
 				MapVisualization = module.default;
 			})
@@ -178,7 +179,7 @@
 	schemaName={communication.title}
 	description={seoDescription}
 	keywords={seoKeywords}
-	ogImage="{base}/{communication.image}"
+	ogImage={communication.image ? assetHref(communication.image) : undefined}
 	mainEntity={recordEntityId(`/communications/${communication.id}`)}
 />
 
@@ -223,7 +224,8 @@
 					<a
 						class="chip"
 						rel="nofollow"
-						href="{base}/conference-activity?tag={encodeURIComponent(tag)}">{typesetQuotes(tag)}</a
+						href={resolve(`/conference-activity?tag=${encodeURIComponent(tag)}`)}
+						>{typesetQuotes(tag)}</a
 					>
 				{/each}
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
@@ -257,7 +259,7 @@
 			</div>
 			<figure class="comm-poster">
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static file, not a route -->
-				<a href="{base}/{poster.pdf}" target="_blank" rel="noopener" class="comm-poster-link">
+				<a href={assetHref(poster.pdf)} target="_blank" rel="noopener" class="comm-poster-link">
 					<img
 						class="plate"
 						src={posterSrc}
@@ -347,8 +349,8 @@
 		filterValue={communication.project}
 		title="More in this project"
 		itemComponent={RelatedItemCard as unknown as ComponentType}
-		baseItemUrl="{base}/communications/"
-		viewAllUrl="{base}/conference-activity"
+		baseItemUrl={pageHref('/communications/')}
+		viewAllUrl={resolve('/conference-activity')}
 		maxItems={3}
 		sectionClass="comm-related section section--flush"
 		titleClass="comm-related-title section-title"
@@ -356,7 +358,7 @@
 {/snippet}
 
 <RecordLayout
-	section={{ label: 'Talks & Events', href: `${base}/conference-activity` }}
+	section={{ label: 'Talks & Events', href: resolve('/conference-activity') }}
 	{eyebrow}
 	title={displayTitle}
 	{byline}

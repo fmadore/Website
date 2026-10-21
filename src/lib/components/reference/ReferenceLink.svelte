@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { inlineCitation } from '$lib/utils/inlineCitation';
-	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { inlineCitation } from '#lib/utils/inlineCitation.ts';
+	import type { ReferenceIndexEntry } from '#lib/types/referenceIndex.ts';
 
 	let {
 		item,
@@ -42,7 +42,7 @@
 	} = $props();
 
 	// The author–date citation itself is shared with the Markdown twins
-	// (`$lib/utils/inlineCitation`), so a page and its `.md` cite alike.
+	// (`#lib/utils/inlineCitation`), so a page and its `.md` cite alike.
 
 	// The inline citation sits in running prose, so it takes the same register as
 	// the sentence around it — "(N'Dri, 2024)" would otherwise be the one
@@ -50,7 +50,9 @@
 	const referenceText = $derived(typesetQuotes(label ? label : inlineCitation(item)));
 
 	const itemUrl = $derived(
-		resolve(`/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`)
+		itemType === 'publication'
+			? resolve('/publications/[id]', { id: item.id })
+			: resolve('/communications/[id]', { id: item.id })
 	);
 
 	// WCAG 2.5.3 (Label in Name): the accessible name must contain the visible

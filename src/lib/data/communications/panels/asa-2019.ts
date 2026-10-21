@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const asa2019Panel: Communication = {
 	id: 'muslim-minorities-africa-2019',

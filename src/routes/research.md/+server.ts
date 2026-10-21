@@ -1,6 +1,6 @@
-import { allResearchProjects } from '$lib/data/research';
-import { researchIndexMarkdown } from '$lib/server/markdown/research';
-import { markdownResponse } from '$lib/server/markdown/site';
+import { allResearchProjects } from '#lib/data/research/index.ts';
+import { researchIndexMarkdown } from '#lib/server/markdown/research.ts';
+import { markdownResponse } from '#lib/server/markdown/site.ts';
 import type { RequestHandler } from './$types';
 
 /** The research section's Markdown twin. */

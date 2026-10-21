@@ -1,5 +1,5 @@
-import type { Contributor } from '$lib/types/contributor';
-import { getContributorNames } from '$lib/utils/contributor';
+import type { Contributor } from '#lib/types/contributor.ts';
+import { getContributorNames } from '#lib/utils/contributor.ts';
 
 interface RelatedRecord {
 	id: string;

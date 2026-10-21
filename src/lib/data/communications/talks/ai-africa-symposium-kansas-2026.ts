@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Talk: invited panellist, AI and Africa Symposium, University of Kansas (African Digital Humanities / AAAS-KASC)
 export const talkAiAfricaSymposiumKansas2026: Communication = {

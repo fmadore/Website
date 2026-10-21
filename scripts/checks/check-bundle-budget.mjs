@@ -98,7 +98,7 @@ if (!existsSync(MANIFEST)) {
 
 const manifest = JSON.parse(readFileSync(MANIFEST, 'utf8'));
 
-const APP_ENTRY = '.svelte-kit/generated/client-optimized/app.js';
+const APP_ENTRY = '.svelte-kit/generated/build/client-optimized/app.js';
 const KIT_ENTRY = 'node_modules/@sveltejs/kit/src/runtime/client/entry.js';
 
 /** Walk only STATIC import edges — dynamic ones are the split working as designed. */
@@ -150,7 +150,7 @@ function heavyLibsIn(file) {
 
 /** Every route node, plus the app shell, is an entry point a visitor can land on. */
 const routeKeys = Object.keys(manifest).filter((k) =>
-	/^\.svelte-kit\/generated\/client-optimized\/nodes\/\d+\.js$/.test(k)
+	/^\.svelte-kit\/generated\/build\/client-optimized\/nodes\/\d+\.js$/.test(k)
 );
 
 for (const root of [APP_ENTRY, KIT_ENTRY, ...routeKeys]) {
@@ -167,11 +167,11 @@ for (const root of [APP_ENTRY, KIT_ENTRY, ...routeKeys]) {
 
 const { manifest: serverManifest } =
 	await import('../../.svelte-kit/output/server/manifest-full.js');
-const pages = serverManifest._.routes
+const pages = serverManifest.routes
 	.filter((route) => route.page)
 	.map((route) => ({
 		name: route.id,
-		roots: pageRoots(route.page, '.svelte-kit/generated/client-optimized/nodes')
+		roots: pageRoots(route.page, '.svelte-kit/generated/build/client-optimized/nodes')
 	}));
 if (!pages.length) throw new Error('No pages found in server manifest');
 
@@ -218,7 +218,7 @@ const FORBIDDEN_PACKAGES = [
 ];
 
 /** Route source file → the generated client node key the manifest uses. */
-const NODE_DIR = '.svelte-kit/generated/client-optimized/nodes';
+const NODE_DIR = '.svelte-kit/generated/build/client-optimized/nodes';
 function nodeKeyFor(source) {
 	for (const key of routeKeys) {
 		const file = `${NODE_DIR}/${key.slice(key.lastIndexOf('/') + 1)}`;
@@ -315,7 +315,7 @@ for (const key of staticGraph(APP_ENTRY, KIT_ENTRY, ROOT_LAYOUT)) {
 }
 if (shellDatasets.size > 0) {
 	problems.push(
-		`The app shell (entry + root layout) statically loads ${shellDatasets.size} dataset module(s): ${[...shellDatasets].sort().join(', ')}. Every page pays for them; import the dataset from the route (or a \`$lib/server\` module) that needs it.`
+		`The app shell (entry + root layout) statically loads ${shellDatasets.size} dataset module(s): ${[...shellDatasets].sort().join(', ')}. Every page pays for them; import the dataset from the route (or a \`#lib/server\` module) that needs it.`
 	);
 }
 console.log(

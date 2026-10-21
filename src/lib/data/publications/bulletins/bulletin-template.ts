@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 // Bulletin Article Template - Copy this file and fill in the details for articles published in bulletins
 // Examples: Event reports, workshop summaries published in institutional bulletins

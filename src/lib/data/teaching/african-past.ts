@@ -1,4 +1,4 @@
-import type { TeachingExperience } from '$lib/types';
+import type { TeachingExperience } from '#lib/types/index.ts';
 
 export const africanPast: TeachingExperience = {
 	id: 'african-past-2020',

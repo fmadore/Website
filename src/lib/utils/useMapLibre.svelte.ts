@@ -35,7 +35,7 @@
  */
 
 import { untrack } from 'svelte';
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 import type { Map as MapLibreMap, MapOptions } from 'maplibre-gl';
 import {
 	MAP_STYLES,
@@ -43,7 +43,7 @@ import {
 	loadMapLibre,
 	waitForContainerLayout,
 	type MapLibreModule
-} from '$lib/utils/maplibre';
+} from '#lib/utils/maplibre.ts';
 
 export const MAP_STYLE_TIMEOUT_MS = 15000;
 

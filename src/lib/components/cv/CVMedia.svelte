@@ -1,10 +1,10 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { mediaAppearancesByDate } from '$lib/data/media-appearances';
-	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
-	import { splitCvTalks } from '$lib/utils/cvSections';
-	import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
-	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { mediaAppearancesByDate } from '#lib/data/media-appearances/index.ts';
+	import { cvCommunicationsByDate as communicationsByDate } from '#lib/data/communications/cv.ts';
+	import { splitCvTalks } from '#lib/utils/cvSections.ts';
+	import { formatDayMonth, getYearFromISODate } from '#lib/utils/date-formatter.ts';
+	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 
 	const { podcasts } = splitCvTalks(communicationsByDate);

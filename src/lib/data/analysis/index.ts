@@ -8,7 +8,12 @@
  * and lazy-loaded via the publications index.
  */
 
-import type { CorpusAnalysis, WordFrequency, WordCloudConfig, NgramFrequency } from '$lib/types';
+import type {
+	CorpusAnalysis,
+	WordFrequency,
+	WordCloudConfig,
+	NgramFrequency
+} from '#lib/types/index.ts';
 
 // Re-export from publications index (individual files for fast loading)
 export { publicationAnalyses, getAnalysis, hasAnalysis, getAnalyzedIds } from './publications';

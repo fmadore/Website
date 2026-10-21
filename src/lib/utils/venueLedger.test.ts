@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildVenueLedger, venueOf, type VenueSource } from './venueLedger';
-import { allPublications } from '$lib/data/publications';
+import { allPublications } from '#lib/data/publications/index.ts';
 
 let seq = 0;
 function pub(fields: Partial<VenueSource> & Pick<VenueSource, 'type'>): VenueSource {

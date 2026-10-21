@@ -1,4 +1,4 @@
-import type { SkillGroup } from '$lib/types/cv';
+import type { SkillGroup } from '#lib/types/cv.ts';
 
 /**
  * Computer skills by category, printed by `CVComputerSkills.svelte` and the

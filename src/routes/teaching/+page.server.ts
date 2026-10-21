@@ -1,5 +1,5 @@
 import type { PageServerLoad } from './$types';
-import { allLectures } from '$lib/server/teachingLectures';
+import { allLectures } from '#lib/server/teachingLectures.ts';
 
 /** The lectures the host index counts, without the talks dataset some are drawn from. */
 export const load: PageServerLoad = () => ({ lectures: allLectures });

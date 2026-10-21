@@ -1,4 +1,4 @@
-import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
+import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 
 export const omekaSDocker: DigitalHumanitiesProject = {
 	id: 'omeka-s-docker',

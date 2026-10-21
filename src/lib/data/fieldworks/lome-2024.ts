@@ -1,4 +1,4 @@
-import type { Fieldwork } from '$lib/types';
+import type { Fieldwork } from '#lib/types/index.ts';
 
 export const lome2024: Fieldwork = {
 	id: 'lome-togo-2024',

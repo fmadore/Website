@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
-import { allResearchProjects } from '$lib/data/research';
-import { researchProjectMarkdown } from '$lib/server/markdown/research';
-import { markdownResponse } from '$lib/server/markdown/site';
+import { allResearchProjects } from '#lib/data/research/index.ts';
+import { researchProjectMarkdown } from '#lib/server/markdown/research.ts';
+import { markdownResponse } from '#lib/server/markdown/site.ts';
 import type { EntryGenerator, RequestHandler } from './$types';
 
 /**

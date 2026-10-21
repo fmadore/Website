@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { allPeople } from './index';
-import { institutions } from '$lib/data/institutions';
-import { allPublications } from '$lib/data/publications';
-import { allCommunications } from '$lib/data/communications';
-import { collaboratorNameKey } from '$lib/utils/collaboratorAggregation';
-import { getContributorName } from '$lib/utils/contributor';
-import { author } from '$lib/data/siteConfig';
+import { institutions } from '#lib/data/institutions.ts';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { allCommunications } from '#lib/data/communications/index.ts';
+import { collaboratorNameKey } from '#lib/utils/collaboratorAggregation.ts';
+import { getContributorName } from '#lib/utils/contributor.ts';
+import { author } from '#lib/data/siteConfig.ts';
 
 describe('sourced collaborator registry', () => {
 	it('resolves every explicit reference without changing the credited name', () => {

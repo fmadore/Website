@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 	id: 'lutte-terrorisme-salafisme-benin-togo-2022',

@@ -1,4 +1,4 @@
-import { createWebSiteSchema, createPersonSchema, combineSchemas } from '$lib/utils/seoUtils';
+import { createWebSiteSchema, createPersonSchema, combineSchemas } from '#lib/utils/seoUtils.ts';
 import type { LayoutLoad } from './$types';
 
 export const prerender = true;

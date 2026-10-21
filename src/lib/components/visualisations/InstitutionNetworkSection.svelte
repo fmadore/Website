@@ -2,7 +2,7 @@
 	import NetworkGraph from './NetworkGraph.svelte';
 	import NetworkControls from './NetworkControls.svelte';
 	import VizSection from './VizSection.svelte';
-	import type { NetworkData } from '$lib/utils/networkAggregation';
+	import type { NetworkData } from '#lib/utils/networkAggregation.ts';
 	let {
 		network,
 		section

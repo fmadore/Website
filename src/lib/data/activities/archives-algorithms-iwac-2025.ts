@@ -1,5 +1,5 @@
-import type { Activity } from '$lib/types';
-import { formatDisplayDate } from '$lib/utils/date-formatter';
+import type { Activity } from '#lib/types/index.ts';
+import { formatDisplayDate } from '#lib/utils/date-formatter.ts';
 
 export const archivesAlgorithmsIwac2025: Activity = {
 	id: 'archives-algorithms-iwac-2025',

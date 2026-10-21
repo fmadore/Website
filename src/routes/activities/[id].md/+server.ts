@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
-import { allActivities } from '$lib/data/activities';
-import { activityMarkdown } from '$lib/server/markdown/activities';
-import { markdownResponse } from '$lib/server/markdown/site';
+import { allActivities } from '#lib/data/activities/index.ts';
+import { activityMarkdown } from '#lib/server/markdown/activities.ts';
+import { markdownResponse } from '#lib/server/markdown/site.ts';
 import type { EntryGenerator, RequestHandler } from './$types';
 
 /** An activity's Markdown twin, its HTML body converted. */

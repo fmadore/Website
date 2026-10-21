@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const madore2026IwacPrivateDatabasePublicResource: Publication = {
 	id: 'madore-2026-iwac-private-database-public-resource',

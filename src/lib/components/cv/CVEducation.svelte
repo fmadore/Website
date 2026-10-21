@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { educationByDate } from '$lib/data/education';
-	import { splitEducation } from '$lib/utils/cvSections';
-	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { educationByDate } from '#lib/data/education/index.ts';
+	import { splitEducation } from '#lib/utils/cvSections.ts';
+	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 
 	const {

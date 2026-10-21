@@ -1,4 +1,4 @@
-import type { ResearchRole } from '$lib/types/researchRole';
+import type { ResearchRole } from '#lib/types/researchRole.ts';
 
 export const uqamResearchAssistant: ResearchRole = {
 	id: 'uqam-research-assistant-2011',

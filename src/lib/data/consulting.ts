@@ -1,4 +1,4 @@
-import type { ConsultingEngagement } from '$lib/types/cv';
+import type { ConsultingEngagement } from '#lib/types/cv.ts';
 
 /**
  * Consulting and legal expertise, printed by `CVConsulting.svelte` and the

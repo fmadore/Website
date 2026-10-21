@@ -6,7 +6,7 @@
  * and SPA-friendly page view tracking via afterNavigate.
  */
 
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 
 interface GtmState {
 	loaded: boolean;

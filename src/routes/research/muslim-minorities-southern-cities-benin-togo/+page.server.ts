@@ -1,4 +1,4 @@
-import { citedReferences } from '$lib/server/references';
+import { citedReferences } from '#lib/server/references.ts';
 import type { PageServerLoad } from './$types';
 
 /** The project cites publications and talks inline: send just those entries. */

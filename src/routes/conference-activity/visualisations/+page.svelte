@@ -1,10 +1,11 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import { base, resolve } from '$app/paths';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import PageHeader from '#lib/components/common/PageHeader.svelte';
+	import PageIntro from '#lib/components/common/PageIntro.svelte';
+	import Breadcrumb from '#lib/components/molecules/Breadcrumb.svelte';
+	import { resolve } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
 	// The charts and networks tally fields, never prose: the committed
 	// projection (no abstracts) carries everything they read, `papers`
 	// included — the co-presenter and institution networks are built from it.
@@ -12,44 +13,47 @@
 		allCommunicationSummaries as allCommunications,
 		communicationSummariesByType as communicationsByType,
 		communicationSummariesByProject as communicationsByProject
-	} from '$lib/data/communications/summaries';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
-	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
-	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
-	import InstitutionNetworkSection from '$lib/components/visualisations/InstitutionNetworkSection.svelte';
-	import NetworkMatrix from '$lib/components/visualisations/NetworkMatrix.svelte';
-	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
-	import CrossTabTable from '$lib/components/visualisations/CrossTabTable.svelte';
-	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
-	import VizSection from '$lib/components/visualisations/VizSection.svelte';
-	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
-	import CollaboratorExplorer from '$lib/components/visualisations/CollaboratorExplorer.svelte';
-	import { buildCommunicationCollaborators } from '$lib/utils/collaboratorAggregation';
-	import type { Institution, Person } from '$lib/types/person';
-	import { inView } from '$lib/actions/inView';
-	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
+	} from '#lib/data/communications/summaries.ts';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
+	import {
+		buildBreadcrumbJsonLd,
+		createSubsectionBreadcrumbs
+	} from '#lib/utils/breadcrumbJsonLd.ts';
+	import EChartsHorizontalBarChart from '#lib/components/visualisations/EChartsHorizontalBarChart.svelte';
+	import EChartsStackedBarChart from '#lib/components/visualisations/EChartsStackedBarChart.svelte';
+	import InstitutionNetworkSection from '#lib/components/visualisations/InstitutionNetworkSection.svelte';
+	import NetworkMatrix from '#lib/components/visualisations/NetworkMatrix.svelte';
+	import NetworkArcDiagram from '#lib/components/visualisations/NetworkArcDiagram.svelte';
+	import CrossTabTable from '#lib/components/visualisations/CrossTabTable.svelte';
+	import EChartsGanttChart from '#lib/components/visualisations/EChartsGanttChart.svelte';
+	import VizSection from '#lib/components/visualisations/VizSection.svelte';
+	import VizDataTable from '#lib/components/visualisations/VizDataTable.svelte';
+	import CollaboratorExplorer from '#lib/components/visualisations/CollaboratorExplorer.svelte';
+	import { buildCommunicationCollaborators } from '#lib/utils/collaboratorAggregation.ts';
+	import type { Institution, Person } from '#lib/types/person.ts';
+	import { inView } from '#lib/actions/inView.ts';
+	import ContentsLedger from '#lib/components/common/ContentsLedger.svelte';
 	import {
 		buildLocationData,
 		tallyBy,
 		buildCrossTab,
 		buildProjectTimeline,
 		buildStackedByYear
-	} from '$lib/utils/vizAggregation';
+	} from '#lib/utils/vizAggregation.ts';
 	// Shared page layout for the two visualisation routes.
-	import '$styles/components/viz-page.css';
+	import '#styles/components/viz-page.css';
 	import {
 		buildCommunicationCoPresenterNetwork,
 		buildCooccurrenceNetwork,
 		buildInstitutionNetwork
-	} from '$lib/utils/networkAggregation';
-	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
-	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
-	import type { LocationDatum } from '$lib/data/geo';
-	import type { Communication } from '$lib/types/communication';
-	import { author } from '$lib/data/siteConfig';
-	import { scaleKeyTerms } from '$lib/utils/keyTerms';
-	import { COMMUNICATION_TYPE_CHART_LABELS } from '$lib/utils/typeUtils';
+	} from '#lib/utils/networkAggregation.ts';
+	import type { NetworkEdgeKind } from '#lib/utils/networkAggregation.ts';
+	import NetworkControls from '#lib/components/visualisations/NetworkControls.svelte';
+	import type { LocationDatum } from '#lib/data/geo.ts';
+	import type { Communication } from '#lib/types/communication.ts';
+	import { author } from '#lib/data/siteConfig.ts';
+	import { scaleKeyTerms } from '#lib/utils/keyTerms.ts';
+	import { COMMUNICATION_TYPE_CHART_LABELS } from '#lib/utils/typeUtils.ts';
 
 	// ---------- Shared types for derived data ----------
 
@@ -263,8 +267,8 @@
 		affiliationStatus = 'loading';
 		try {
 			const [peopleModule, institutionsModule] = await Promise.all([
-				import('$lib/data/people'),
-				import('$lib/data/institutions')
+				import('#lib/data/people/index.ts'),
+				import('#lib/data/institutions.ts')
 			]);
 			collaboratorPeople = peopleModule.allPeople;
 			collaboratorInstitutions = institutionsModule.institutions;
@@ -318,7 +322,7 @@
 	 * publications page and the talk record use. MapLibre is 966 KiB of
 	 * JavaScript before a single vector tile, for a plate far below the fold.
 	 */
-	let VenueMap: typeof import('$lib/components/visualisations/LocationMap.svelte').default | null =
+	let VenueMap: typeof import('#lib/components/visualisations/LocationMap.svelte').default | null =
 		$state(null);
 	let mapRequested = false;
 	let mapChunkFailed = $state(false);
@@ -326,7 +330,7 @@
 	function loadVenueMap() {
 		if (mapRequested) return;
 		mapRequested = true;
-		import('$lib/components/visualisations/LocationMap.svelte')
+		import('#lib/components/visualisations/LocationMap.svelte')
 			.then((module) => {
 				VenueMap = module.default;
 			})
@@ -459,7 +463,7 @@
 	// ---------- Breadcrumbs + SEO ----------
 
 	const breadcrumbItems = createSubsectionBreadcrumbs(
-		base,
+		basePrefix(),
 		'Talks & Events',
 		'/conference-activity',
 		'Visualisations',
@@ -614,7 +618,7 @@
 				<!-- eslint-disable svelte/no-navigation-without-resolve -- tag filter URLs -->
 				{#each tagTerms as term (term.word)}
 					<a
-						href="{base}/conference-activity?tag={encodeURIComponent(term.word)}"
+						href={resolve(`/conference-activity?tag=${encodeURIComponent(term.word)}`)}
 						rel="nofollow"
 						style="font-size: {term.size}px;"
 						title={countOf(term.count, 'talk')}>{term.word}</a

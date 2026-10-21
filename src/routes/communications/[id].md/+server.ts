@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
-import { allCommunications } from '$lib/data/communications/index';
-import { communicationMarkdown } from '$lib/server/markdown/communications';
-import { markdownResponse } from '$lib/server/markdown/site';
+import { allCommunications } from '#lib/data/communications/index.ts';
+import { communicationMarkdown } from '#lib/server/markdown/communications.ts';
+import { markdownResponse } from '#lib/server/markdown/site.ts';
 import type { EntryGenerator, RequestHandler } from './$types';
 
 /** A talk's Markdown twin: abstract, programme and participants. */

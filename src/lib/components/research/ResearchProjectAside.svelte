@@ -12,12 +12,12 @@
 	//
 	// <ResearchProjectLayout> owns the grid placement (RecordLayout's
 	// `railPrimary` slot) and derives every value below from the grant record.
-	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
-	import type { ProjectCtaLink } from '$lib/types/research';
-	import { buildSrcset } from '$lib/utils/imageVariants';
-	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { plateFallback } from '$lib/actions/plateFallback';
+	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
+	import type { ProjectCtaLink } from '#lib/types/research.ts';
+	import { buildSrcset } from '#lib/utils/imageVariants.ts';
+	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { plateFallback } from '#lib/actions/plateFallback.ts';
 
 	// The rail is 380px wide from --lg up; below that the plate spans the single
 	// column. Same contract as the record rails.

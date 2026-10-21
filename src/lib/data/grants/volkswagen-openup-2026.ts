@@ -1,4 +1,4 @@
-import type { Grant } from '$lib/types';
+import type { Grant } from '#lib/types/index.ts';
 
 export const volkswagenOpenUp2026: Grant = {
 	id: 'volkswagen-openup-2026',

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/components/atoms/Button.svelte';
+	import Button from '#lib/components/atoms/Button.svelte';
 	import AudioVisualization from './AudioVisualization.svelte';
 	import ProgressBar from './ProgressBar.svelte';
 	import VolumeControl from './VolumeControl.svelte';

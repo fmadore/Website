@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const aiArchivesHumanistica: Communication = {
 	id: 'ai-archives-humanistica-2025',

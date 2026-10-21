@@ -1,31 +1,32 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { base } from '$app/paths';
-	import type { Publication } from '$lib/types';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { resolve } from '$app/paths';
+	import { assetHref, pageHref } from '#lib/utils/paths.ts';
+	import type { Publication } from '#lib/types/index.ts';
 	import type { ComponentType } from 'svelte';
 	import type { PageData } from './$types';
-	import MetaTags from '$lib/components/publications/MetaTags.svelte';
-	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
+	import MetaTags from '#lib/components/publications/MetaTags.svelte';
+	import RecordLayout, { type EyebrowToken } from '#lib/components/common/RecordLayout.svelte';
 
-	import CitedBy from '$lib/components/publications/CitedBy.svelte';
-	import Reviews from '$lib/components/publications/Reviews.svelte';
-	import PublicationRecordRail from '$lib/components/publications/PublicationRecordRail.svelte';
+	import CitedBy from '#lib/components/publications/CitedBy.svelte';
+	import Reviews from '#lib/components/publications/Reviews.svelte';
+	import PublicationRecordRail from '#lib/components/publications/PublicationRecordRail.svelte';
 	import PublicationIndexRail, {
 		hasIndexApparatus
-	} from '$lib/components/publications/PublicationIndexRail.svelte';
-	import PublicationToc, { hasToc } from '$lib/components/publications/PublicationToc.svelte';
-	import RelatedItemsList from '$lib/components/organisms/RelatedItemsList.svelte';
-	import RelatedItemCard from '$lib/components/molecules/RelatedItemCard.svelte';
+	} from '#lib/components/publications/PublicationIndexRail.svelte';
+	import PublicationToc, { hasToc } from '#lib/components/publications/PublicationToc.svelte';
+	import RelatedItemsList from '#lib/components/organisms/RelatedItemsList.svelte';
+	import RelatedItemCard from '#lib/components/molecules/RelatedItemCard.svelte';
 	import {
 		createPublicationSEODescription,
 		createPublicationSEOKeywords,
 		recordEntityId,
 		truncateTitle
-	} from '$lib/utils/seoUtils';
-	import { getPublicationTypeBadge } from '$lib/utils/publicationTypeLabels';
-	import { formatByline } from '$lib/utils/byline';
-	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
+	} from '#lib/utils/seoUtils.ts';
+	import { getPublicationTypeBadge } from '#lib/utils/publicationTypeLabels.ts';
+	import { formatByline } from '#lib/utils/byline.ts';
+	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 
 	interface Props {
 		data: PageData;
@@ -71,7 +72,7 @@
 	// Internal research page for this publication's project, resolved from the
 	// research dataset so a new project links itself.
 	const projectPath = $derived(data.projectPath);
-	const projectUrl = $derived(projectPath ? `${base}${projectPath}` : undefined);
+	const projectUrl = $derived(projectPath ? pageHref(projectPath) : undefined);
 
 	// Byline — "by A, B and C", with the preface credit as its trailing clause.
 	const byline = $derived(formatByline(publication.authors));
@@ -111,7 +112,7 @@
 	schemaName={publication.title}
 	description={seoDescription}
 	keywords={seoKeywords}
-	ogImage={publication.image ? `${base}/${publication.image}` : undefined}
+	ogImage={publication.image ? assetHref(publication.image) : undefined}
 	mainEntity={recordEntityId(`/publications/${publication.id}`)}
 />
 
@@ -158,8 +159,8 @@
 		filterValue={publication.project}
 		title="More in this project"
 		itemComponent={RelatedItemCard as unknown as ComponentType}
-		baseItemUrl="{base}/publications/"
-		viewAllUrl="{base}/publications"
+		baseItemUrl={pageHref('/publications/')}
+		viewAllUrl={resolve('/publications')}
 		maxItems={3}
 		sectionClass="pub-related section section--flush"
 		titleClass="pub-related-title section-title"
@@ -167,7 +168,7 @@
 {/snippet}
 
 <RecordLayout
-	section={{ label: 'Publications', href: `${base}/publications` }}
+	section={{ label: 'Publications', href: resolve('/publications') }}
 	{eyebrow}
 	title={displayTitle}
 	{byline}

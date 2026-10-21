@@ -15,17 +15,17 @@ the peer/contributor edges become arcs in the gutter beside it. What was
 background texture is now the whole subject of the chart.
 -->
 <script lang="ts">
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { innerWidth } from 'svelte/reactivity/window';
-	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
-	import { downloadSvgAsImage } from '$lib/utils/chartActions';
+	import { getResolvedChartColors } from '#lib/utils/chartColorUtils.ts';
+	import { downloadSvgAsImage } from '#lib/utils/chartActions.ts';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import NetworkTooltip from './NetworkTooltip.svelte';
 	import type { TooltipContent } from './NetworkTooltip.svelte';
-	import { selectGraph } from '$lib/utils/networkAggregation';
-	import type { NetworkEdge, NetworkEdgeKind, NetworkNode } from '$lib/utils/networkAggregation';
-	import { orderNodes, type NodeOrder } from '$lib/utils/seriation';
-	import '$styles/components/network-viz.css';
+	import { selectGraph } from '#lib/utils/networkAggregation.ts';
+	import type { NetworkEdge, NetworkEdgeKind, NetworkNode } from '#lib/utils/networkAggregation.ts';
+	import { orderNodes, type NodeOrder } from '#lib/utils/seriation.ts';
+	import '#styles/components/network-viz.css';
 
 	let {
 		nodes = [] as NetworkNode[],

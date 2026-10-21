@@ -21,24 +21,25 @@ co-director, programme or grant simply drop those rows.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import SEO from '$lib/SEO.svelte';
-	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
-	import RelevantPublications from '$lib/components/panels/RelevantPublications.svelte';
-	import RelevantCommunications from '$lib/components/panels/RelevantCommunications.svelte';
-	import MediaPlayer from '$lib/components/media/MediaPlayer.svelte';
-	import ResearchProjectAside from '$lib/components/research/ResearchProjectAside.svelte';
-	import { GRANTS_SCRIPT_ID, buildGrantsJsonLd } from '$lib/utils/grantsJsonLd';
-	import { allGrants } from '$lib/data/grants/index';
-	import { allPublicationSummaries as allPublications } from '$lib/data/publications/summaries';
-	import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
-	import type { Grant, ResearchProject } from '$lib/types';
-	import { website, pageTitle } from '$lib/utils/siteHelpers';
-	import { base } from '$app/paths';
-	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import SEO from '#lib/SEO.svelte';
+	import RecordLayout, { type EyebrowToken } from '#lib/components/common/RecordLayout.svelte';
+	import RelevantPublications from '#lib/components/panels/RelevantPublications.svelte';
+	import RelevantCommunications from '#lib/components/panels/RelevantCommunications.svelte';
+	import MediaPlayer from '#lib/components/media/MediaPlayer.svelte';
+	import ResearchProjectAside from '#lib/components/research/ResearchProjectAside.svelte';
+	import { GRANTS_SCRIPT_ID, buildGrantsJsonLd } from '#lib/utils/grantsJsonLd.ts';
+	import { allGrants } from '#lib/data/grants/index.ts';
+	import { allPublicationSummaries as allPublications } from '#lib/data/publications/summaries.ts';
+	import { allCommunicationSummaries as allCommunications } from '#lib/data/communications/summaries.ts';
+	import type { Grant, ResearchProject } from '#lib/types/index.ts';
+	import { website, pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { resolve } from '$app/paths';
+	import { assetHref } from '#lib/utils/paths.ts';
+	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	/**
-	 * Every project record in `$lib/data/research` is spread straight into this
+	 * Every project record in `#lib/data/research` is spread straight into this
 	 * layout, so the props *are* the record — plus the narrative snippet, which
 	 * stays in the route page because it embeds components.
 	 */
@@ -181,7 +182,7 @@ co-director, programme or grant simply drop those rows.
 	title={pageTitle(cardTitle ?? shortTitle)}
 	description={seoDescription}
 	keywords={seoKeywords}
-	ogImage="{base}/images/research/{imageSrc}"
+	ogImage={assetHref(`images/research/${imageSrc}`)}
 	type="article"
 />
 
@@ -193,7 +194,7 @@ co-director, programme or grant simply drop those rows.
 
 {#snippet railPrimary()}
 	<ResearchProjectAside
-		plateSrc="{base}/images/research/{imageSrc}"
+		plateSrc={assetHref(`images/research/${imageSrc}`)}
 		plateAlt={imageAlt}
 		plateCaption={figCaption}
 		{years}
@@ -240,7 +241,7 @@ co-director, programme or grant simply drop those rows.
 				<h2 class="section-title">Podcast discussion (AI-generated)</h2>
 			</div>
 			<MediaPlayer
-				src="{base}/{audioSrc}"
+				src={assetHref(audioSrc)}
 				type="audio"
 				title="Google NotebookLM discussion"
 				surface=""
@@ -251,7 +252,7 @@ co-director, programme or grant simply drop those rows.
 {/snippet}
 
 <RecordLayout
-	section={{ label: 'Research', href: `${base}/research` }}
+	section={{ label: 'Research', href: resolve('/research') }}
 	{eyebrow}
 	title={displayTitle}
 	{deck}

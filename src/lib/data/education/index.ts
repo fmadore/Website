@@ -1,7 +1,7 @@
 // src/lib/data/education/index.ts
-import type { Education } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
-import { sortByDate, groupByYear } from '$lib/utils/dataAggregation';
+import type { Education } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
+import { sortByDate, groupByYear } from '#lib/utils/dataAggregation.ts';
 
 // Define a type for module imports
 type ModuleType = Record<string, unknown>;

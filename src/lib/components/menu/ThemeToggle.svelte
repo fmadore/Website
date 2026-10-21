@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Svelte 5: use $props() for props
 	let { size = 18 } = $props();
-	import { getTheme, toggleTheme } from '$lib/stores/themeStore.svelte';
+	import { getTheme, toggleTheme } from '#lib/stores/themeStore.svelte.ts';
 	import Icon from '@iconify/svelte';
 
 	// Get reactive theme value

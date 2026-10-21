@@ -1,4 +1,4 @@
-import type { MediaAppearance } from '$lib/types';
+import type { MediaAppearance } from '#lib/types/index.ts';
 
 export const qubRadio20190128: MediaAppearance = {
 	id: 'qub-radio-2019-01-28',

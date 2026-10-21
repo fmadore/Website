@@ -9,12 +9,12 @@ ECharts Gantt Chart - Timeline visualization for research projects with publicat
 		getEChartsTooltipStyle,
 		getChartMotion,
 		CHART_CATEGORICAL_COLORS
-	} from '$lib/utils/chartColorUtils';
-	import { useECharts } from '$lib/utils/useECharts.svelte';
+	} from '#lib/utils/chartColorUtils.ts';
+	import { useECharts } from '#lib/utils/useECharts.svelte.ts';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import ChartStatus from './ChartStatus.svelte';
-	import { getAriaConfig } from '$lib/utils/chartActions';
-	import { PUBLICATION_TYPE_GANTT_LABELS } from '$lib/utils/publicationTypeLabels';
+	import { getAriaConfig } from '#lib/utils/chartActions.ts';
+	import { PUBLICATION_TYPE_GANTT_LABELS } from '#lib/utils/publicationTypeLabels.ts';
 
 	// Types for project data
 	interface ProjectPublication {

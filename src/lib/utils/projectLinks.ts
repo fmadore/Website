@@ -2,8 +2,8 @@ import type {
 	DigitalHumanitiesProject,
 	ProjectLink,
 	ProjectLinkType
-} from '$lib/types/digitalHumanities';
-import { formatDisplayUrl } from '$lib/utils/textUtils';
+} from '#lib/types/digitalHumanities.ts';
+import { formatDisplayUrl } from '#lib/utils/textUtils.ts';
 
 export interface ProjectLinkGroup {
 	type: ProjectLinkType;

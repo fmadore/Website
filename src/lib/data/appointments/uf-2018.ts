@@ -1,5 +1,5 @@
 // src/lib/data/appointments/uf-2018.ts
-import type { Appointment } from '$lib/types';
+import type { Appointment } from '#lib/types/index.ts';
 
 export const uf2018: Appointment = {
 	id: 'banting-uf-2018',

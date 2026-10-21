@@ -9,8 +9,8 @@ thing it indexes.
 Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 -->
 <script module lang="ts">
-	import type { Publication as PublicationRecord } from '$lib/types';
-	import { keyTermsByPublication } from '$lib/data/analysis/keyTerms.generated';
+	import type { Publication as PublicationRecord } from '#lib/types/index.ts';
+	import { keyTermsByPublication } from '#lib/data/analysis/keyTerms.generated.ts';
 
 	/**
 	 * Whether this record has anything to index. The rail block is a grid child
@@ -25,9 +25,9 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 </script>
 
 <script lang="ts">
-	import { base } from '$app/paths';
-	import type { Publication } from '$lib/types';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { resolve } from '$app/paths';
+	import type { Publication } from '#lib/types/index.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	interface Props {
 		publication: Publication;
@@ -38,7 +38,7 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 	// KEY TERMS — real full-text frequencies, sized by rank. Only shown when a
 	// text analysis exists for this publication (data as ornament, never faked).
 	//
-	// Read from the committed projection rather than from `$lib/data/analysis`:
+	// Read from the committed projection rather than from `#lib/data/analysis`:
 	// the full corpus is 306 KiB of frequencies for every analysed publication,
 	// and this rail prints 28 terms of one of them. The projection carries
 	// exactly those 28 (`scripts/generate/generate-analysis-summaries.mjs`,
@@ -67,8 +67,10 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 			{#each tags as tag (tag)}
 				<!-- Label typeset; the href keeps the raw tag the filter matches. -->
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-				<a class="chip" rel="nofollow" href="{base}/publications?tag={encodeURIComponent(tag)}"
-					>{typesetQuotes(tag)}</a
+				<a
+					class="chip"
+					rel="nofollow"
+					href={resolve(`/publications?tag=${encodeURIComponent(tag)}`)}>{typesetQuotes(tag)}</a
 				>
 			{/each}
 		</div>

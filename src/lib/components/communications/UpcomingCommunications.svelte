@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CommunicationSummary } from '$lib/types/communication';
+	import type { CommunicationSummary } from '#lib/types/communication.ts';
 	import CommunicationItem from './CommunicationItem.svelte';
 	import Icon from '@iconify/svelte';
 

@@ -3,9 +3,9 @@
  * log pages through, and `/activities/<id>.md`, one entry with its full body
  * converted from the HTML it is authored in.
  */
-import type { Activity } from '$lib/types/activity';
-import { author } from '$lib/data/siteConfig';
-import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
+import type { Activity } from '#lib/types/activity.ts';
+import { author } from '#lib/data/siteConfig.ts';
+import { ACTIVITY_TYPE_BADGE_LABELS } from '#lib/utils/typeUtils.ts';
 import { htmlToMarkdown } from './htmlToMarkdown';
 import { citationsToLinks } from './svelteProse';
 import { bullets, document, entries, fields, groupByYear, inline, link, section } from './markdown';

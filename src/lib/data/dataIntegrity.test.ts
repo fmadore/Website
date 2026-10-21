@@ -1,23 +1,23 @@
 import { describe, it, expect } from 'vitest';
 
-import { allPublications } from '$lib/data/publications';
-import { allCommunications } from '$lib/data/communications';
-import { allActivities } from '$lib/data/activities';
-import { allDhProjects } from '$lib/data/digital-humanities';
-import { allResearchProjects } from '$lib/data/research';
-import { allAppointments } from '$lib/data/appointments';
-import { allAwards } from '$lib/data/awards';
-import { allEducation } from '$lib/data/education';
-import { allEditorialMemberships } from '$lib/data/editorial-memberships';
-import { allFieldworks } from '$lib/data/fieldworks';
-import { allGrants } from '$lib/data/grants';
-import { allLanguages } from '$lib/data/languages';
-import { allMediaAppearances } from '$lib/data/media-appearances';
-import { allPeerReviews } from '$lib/data/peer-reviews';
-import { allResearchRoles } from '$lib/data/research-roles';
-import { allAffiliations } from '$lib/data/affiliations';
-import allTeaching from '$lib/data/teaching';
-import { publicationAnalyses } from '$lib/data/analysis/publications';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { allCommunications } from '#lib/data/communications/index.ts';
+import { allActivities } from '#lib/data/activities/index.ts';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
+import { allResearchProjects } from '#lib/data/research/index.ts';
+import { allAppointments } from '#lib/data/appointments/index.ts';
+import { allAwards } from '#lib/data/awards/index.ts';
+import { allEducation } from '#lib/data/education/index.ts';
+import { allEditorialMemberships } from '#lib/data/editorial-memberships/index.ts';
+import { allFieldworks } from '#lib/data/fieldworks/index.ts';
+import { allGrants } from '#lib/data/grants/index.ts';
+import { allLanguages } from '#lib/data/languages/index.ts';
+import { allMediaAppearances } from '#lib/data/media-appearances/index.ts';
+import { allPeerReviews } from '#lib/data/peer-reviews/index.ts';
+import { allResearchRoles } from '#lib/data/research-roles/index.ts';
+import { allAffiliations } from '#lib/data/affiliations/index.ts';
+import allTeaching from '#lib/data/teaching/index.ts';
+import { publicationAnalyses } from '#lib/data/analysis/publications/index.ts';
 
 /**
  * Integrity checks over shipped datasets. The loader rejects malformed sources

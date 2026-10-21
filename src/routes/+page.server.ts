@@ -1,14 +1,14 @@
 import type { PageServerLoad } from './$types';
-import { createFullPersonSchema } from '$lib/server/personSchema';
-import { activitiesByDate } from '$lib/data/activities';
-import { summariseActivityLog } from '$lib/utils/activityLog';
-import { citedReferences } from '$lib/server/references';
+import { createFullPersonSchema } from '#lib/server/personSchema.ts';
+import { activitiesByDate } from '#lib/data/activities/index.ts';
+import { summariseActivityLog } from '#lib/utils/activityLog.ts';
+import { citedReferences } from '#lib/server/references.ts';
 
 /**
  * Home page load: provides the full Person schema (the rich superset of the
  * layout's base Person schema, sharing the same `@id`) for the ProfilePage
  * structured data. All biographical fields are derived from the data in
- * `$lib/data/` — see `createFullPersonSchema` in `$lib/server/personSchema.ts`.
+ * `#lib/data/` — see `createFullPersonSchema` in `#lib/server/personSchema.ts`.
  */
 export const load: PageServerLoad = (event) => {
 	return {

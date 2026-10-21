@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import { asset } from '$app/paths';
 	import {
 		createBreadcrumbSchema,
 		createWebPageSchema,
 		createPersonSchema,
 		combineSchemas,
 		type BreadcrumbItem
-	} from '$lib/utils/seoUtils';
+	} from '#lib/utils/seoUtils.ts';
 	import { page } from '$app/state';
-	import { getDefaultDescription, author, website } from '$lib/utils/siteHelpers';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import { markdownTwinPath } from '$lib/utils/markdownTwin';
+	import { getDefaultDescription, author, website } from '#lib/utils/siteHelpers.ts';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
+	import { markdownTwinPath } from '#lib/utils/markdownTwin.ts';
 
 	interface Props {
 		// SEO props
@@ -56,7 +56,7 @@
 		description = getDefaultDescription(),
 		keywords = 'Frédérick Madore, Islam, West Africa, Digital Humanities, Research',
 		canonical = '',
-		ogImage = `${base}/images/Profile-picture.webp`,
+		ogImage = asset('images/Profile-picture.webp'),
 		type = 'website',
 		breadcrumbs = [],
 		pageType = 'WebPage',

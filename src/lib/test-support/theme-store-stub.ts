@@ -1,5 +1,5 @@
 /**
- * Vitest-only stub for `$lib/stores/themeStore.svelte`.
+ * Vitest-only stub for `#lib/stores/themeStore.svelte`.
  *
  * The real module uses Svelte 5 runes (`$state`), which only exist after
  * Svelte compilation — the standalone vitest.config.ts runs plain TS in Node,

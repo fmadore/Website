@@ -1,7 +1,7 @@
 # CV Page Architecture
 
 The CV route is a thin container; the section components and formatting
-logic live under `$lib` so the PDF generator and the timeline can share them.
+logic live under `#lib` so the PDF generator and the timeline can share them.
 
 ## Structure
 
@@ -32,7 +32,7 @@ src/lib/utils/
 
 ## Conventions
 
-- **Data flow**: each section component imports its dataset from `$lib/data/`
+- **Data flow**: each section component imports its dataset from `#lib/data/`
   directly, filters/transforms locally, and renders independently. Shared
   formatting goes through `cvFormatters.ts` and `date-formatter.ts` — don't
   inline date or author formatting in components.

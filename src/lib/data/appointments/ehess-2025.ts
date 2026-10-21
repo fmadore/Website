@@ -1,4 +1,4 @@
-import type { Appointment } from '$lib/types';
+import type { Appointment } from '#lib/types/index.ts';
 
 export const ehess2025: Appointment = {
 	id: 'visiting-ehess-2025',

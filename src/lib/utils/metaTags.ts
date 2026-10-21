@@ -3,12 +3,12 @@
  * Provides common meta tag creation, author name formatting, and tag validation.
  */
 
-import { toLastFirstFormat } from '$lib/utils/nameUtils';
-import type { Contributor } from '$lib/types/contributor';
+import { toLastFirstFormat } from '#lib/utils/nameUtils.ts';
+import type { Contributor } from '#lib/types/contributor.ts';
 
 // Name-string helpers live in nameUtils; re-exported here so existing
-// `$lib/utils/metaTags` imports keep working unchanged.
-export { toLastFirstFormat, splitNames, parseAuthorName } from '$lib/utils/nameUtils';
+// `#lib/utils/metaTags` imports keep working unchanged.
+export { toLastFirstFormat, splitNames, parseAuthorName } from '#lib/utils/nameUtils.ts';
 
 export interface MetaTag {
 	name: string;

@@ -1,4 +1,4 @@
-import type { ApiItem as Item, DatasetName } from '$lib/apiContract';
+import type { ApiItem as Item, DatasetName } from '#lib/apiContract.ts';
 
 /**
  * Search over the static JSON API (`/api/*.json`).
@@ -15,7 +15,7 @@ import type { ApiItem as Item, DatasetName } from '$lib/apiContract';
  * "Côte d'Ivoire".
  */
 
-import { normalizeSearchText as normalise, searchTerms } from '$lib/utils/searchText';
+import { normalizeSearchText as normalise, searchTerms } from '#lib/utils/searchText.ts';
 export { normalise };
 
 /** The datasets a search tool scans, and the fields its free text reaches. */

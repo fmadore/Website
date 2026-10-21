@@ -1,4 +1,4 @@
-import type { ResearchProject } from '$lib/types/research';
+import type { ResearchProject } from '#lib/types/research.ts';
 
 /**
  * The infrastructure strand of the research programme, distinct from

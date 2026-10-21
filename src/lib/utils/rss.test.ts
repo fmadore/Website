@@ -6,8 +6,8 @@ import {
 	generatePublicationsRSSFeed,
 	type RSSItem
 } from './rss';
-import type { Activity } from '$lib/types/activity';
-import type { Publication } from '$lib/types/publication';
+import type { Activity } from '#lib/types/activity.ts';
+import type { Publication } from '#lib/types/publication.ts';
 
 const SITE = 'https://example.com';
 

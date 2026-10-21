@@ -5,12 +5,12 @@
  * builders (publications, communications, DH projects, activities);
  * jsonLdSchemas.ts owns the generic site/page schema factories.
  */
-import type { Activity } from '$lib/types/activity';
-import type { Publication } from '$lib/types/publication';
-import type { Contributor } from '$lib/types/contributor';
-import type { Communication } from '$lib/types/communication';
-import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
-import type { ReviewWork } from '$lib/types';
+import type { Activity } from '#lib/types/activity.ts';
+import type { Publication } from '#lib/types/publication.ts';
+import type { Contributor } from '#lib/types/contributor.ts';
+import type { Communication } from '#lib/types/communication.ts';
+import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
+import type { ReviewWork } from '#lib/types/index.ts';
 import type {
 	PublicationJsonLd,
 	JsonLdAgent,
@@ -23,13 +23,13 @@ import type {
 	JsonLdScholarlyArticleCitation,
 	EventJsonLd,
 	CreativeWorkJsonLd
-} from '$lib/types/jsonld';
-import { formatAuthor, formatAuthors, formatPlaces, formatJsonLdDate } from '$lib/types/jsonld';
-import { author, address, website } from '$lib/data/siteConfig';
-import { siteUrl } from '$lib/utils/siteHelpers';
-import { recordEntityId, webPageId, wikidataPageUrl } from '$lib/utils/jsonLdSchemas';
-import { stripHtml } from '$lib/utils/textUtils';
-import { splitNames } from '$lib/utils/nameUtils';
+} from '#lib/types/jsonld.ts';
+import { formatAuthor, formatAuthors, formatPlaces, formatJsonLdDate } from '#lib/types/jsonld.ts';
+import { author, address, website } from '#lib/data/siteConfig.ts';
+import { siteUrl } from '#lib/utils/siteHelpers.ts';
+import { recordEntityId, webPageId, wikidataPageUrl } from '#lib/utils/jsonLdSchemas.ts';
+import { stripHtml } from '#lib/utils/textUtils.ts';
+import { splitNames } from '#lib/utils/nameUtils.ts';
 
 /**
  * The identity every record node carries: its own `@id`, its page as `url`,

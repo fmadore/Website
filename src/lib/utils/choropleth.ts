@@ -1,5 +1,5 @@
-import type { CountryCoordinates, LocationDatum } from '$lib/data/geo';
-import { parseColor } from '$lib/utils/colorContrast';
+import type { CountryCoordinates, LocationDatum } from '#lib/data/geo.ts';
+import { parseColor } from '#lib/utils/colorContrast.ts';
 import type { ExpressionSpecification } from 'maplibre-gl';
 
 export type CountryBoundaryProperties = Record<string, unknown> & {

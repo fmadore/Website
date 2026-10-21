@@ -1,5 +1,5 @@
 // src/lib/data/peer-reviews/communication-review-2019.ts
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const communicationReview2019: PeerReview = {
 	id: 'communication-review-2019',

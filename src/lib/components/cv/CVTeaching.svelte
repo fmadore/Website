@@ -1,16 +1,16 @@
 <script lang="ts">
-	import teaching from '$lib/data/teaching';
-	import guestLectures from '$lib/data/teaching/guest-lectures';
-	import { cvCommunicationsByDate } from '$lib/data/communications/cv';
-	import { formatCVYearRange } from '$lib/utils/cvFormatters';
+	import teaching from '#lib/data/teaching/index.ts';
+	import guestLectures from '#lib/data/teaching/guest-lectures.ts';
+	import { cvCommunicationsByDate } from '#lib/data/communications/cv.ts';
+	import { formatCVYearRange } from '#lib/utils/cvFormatters.ts';
 	import {
 		lectureHostAndLevel,
 		sortCoursesByYear,
 		splitCvTalks,
 		teachingLectures,
 		teachingLevelLabel
-	} from '$lib/utils/cvSections';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	} from '#lib/utils/cvSections.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 
 	// Newest first, on copies: the imported arrays are the shared datasets every

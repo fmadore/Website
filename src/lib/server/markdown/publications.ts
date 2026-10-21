@@ -7,14 +7,14 @@
  * the same two products the record page's "Copy reference" and "BibTeX"
  * controls hand out, so a twin can never cite a work differently.
  */
-import type { Publication, TableOfContentsEntry } from '$lib/types/publication';
-import { researchProjectPath } from '$lib/data/research';
-import { author } from '$lib/data/siteConfig';
-import { generateBibtex } from '$lib/utils/bibtexGenerator';
-import { formatReferenceText } from '$lib/utils/citationFormatter';
-import { getContributorNames } from '$lib/utils/contributor';
-import { joinNames } from '$lib/utils/nameUtils';
-import { PUBLICATION_TYPE_SEO_LABELS } from '$lib/utils/publicationTypeLabels';
+import type { Publication, TableOfContentsEntry } from '#lib/types/publication.ts';
+import { researchProjectPath } from '#lib/data/research/index.ts';
+import { author } from '#lib/data/siteConfig.ts';
+import { generateBibtex } from '#lib/utils/bibtexGenerator.ts';
+import { formatReferenceText } from '#lib/utils/citationFormatter.ts';
+import { getContributorNames } from '#lib/utils/contributor.ts';
+import { joinNames } from '#lib/utils/nameUtils.ts';
+import { PUBLICATION_TYPE_SEO_LABELS } from '#lib/utils/publicationTypeLabels.ts';
 import { paragraphsToMarkdown } from './htmlToMarkdown';
 import {
 	bullets,

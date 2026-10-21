@@ -1,5 +1,5 @@
 // src/lib/data/awards/cski-2023.ts
-import type { Award } from '$lib/types';
+import type { Award } from '#lib/types/index.ts';
 
 export const cski2023: Award = {
 	id: 'cski-emerging-2023',

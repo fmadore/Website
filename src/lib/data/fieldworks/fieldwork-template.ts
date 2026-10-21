@@ -1,4 +1,4 @@
-import type { Fieldwork } from '$lib/types';
+import type { Fieldwork } from '#lib/types/index.ts';
 
 // Fieldwork Template - Copy this file and fill in the details
 export const fieldworkTemplate: Fieldwork = {

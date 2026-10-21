@@ -1,5 +1,5 @@
-import { activitiesByDate } from '$lib/data/activities';
-import { generateActivitiesRSSFeed, DEFAULT_RSS_CONFIG } from '$lib/utils/rss';
+import { activitiesByDate } from '#lib/data/activities/index.ts';
+import { generateActivitiesRSSFeed, DEFAULT_RSS_CONFIG } from '#lib/utils/rss.ts';
 import type { RequestHandler } from '@sveltejs/kit';
 
 // Prerender this endpoint for static site generation

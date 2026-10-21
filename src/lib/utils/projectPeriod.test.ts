@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { formatProjectPeriod } from './projectPeriod';
-import { allResearchProjects } from '$lib/data/research';
+import { allResearchProjects } from '#lib/data/research/index.ts';
 
 describe('formatProjectPeriod', () => {
 	it('sets a closed span with a spaced en dash', () => {

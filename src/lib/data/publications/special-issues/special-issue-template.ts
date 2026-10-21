@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 // Special Issue Template - Copy this file and fill in the details
 export const specialIssueTemplate: Publication = {

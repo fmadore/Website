@@ -1,14 +1,14 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { getContributorNames } from '$lib/utils/contributor';
-import { publicationsByDate } from '$lib/data/publications/index';
-import type { Publication, TableOfContentsEntry } from '$lib/types/publication';
+import { getContributorNames } from '#lib/utils/contributor.ts';
+import { publicationsByDate } from '#lib/data/publications/index.ts';
+import type { Publication, TableOfContentsEntry } from '#lib/types/publication.ts';
 import {
 	absoluteUrl,
 	buildLinks,
 	compact,
 	datasetPayload,
 	jsonResponse
-} from '$lib/utils/apiPayload';
+} from '#lib/utils/apiPayload.ts';
 
 // Prerendered to build/api/publications.json alongside the rest of the site.
 export const prerender = true;

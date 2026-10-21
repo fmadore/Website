@@ -12,8 +12,8 @@
  * or in an activity's `content`. `npm run gen:refs -- --check` fails on an
  * `<ItemReference>` anywhere else, since no load would supply its entry.
  */
-import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
-import { referenceIndex } from '$lib/data/referenceIndex.generated';
+import type { ReferenceIndexEntry } from '#lib/types/referenceIndex.ts';
+import { referenceIndex } from '#lib/data/referenceIndex.generated.ts';
 
 /** Same pattern the reference-index generator resolves at build time. */
 const CITATION = /<ItemReference\s+[^>]*?\bid="([^"]+)"/g;

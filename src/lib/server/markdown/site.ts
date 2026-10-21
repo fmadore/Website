@@ -9,13 +9,13 @@
  * rest of the machine-readable surface (`/llms.txt`, `/api/*.json`), so a
  * twin quoted out of context still resolves.
  */
-import { website } from '$lib/data/siteConfig';
-import { allPublications } from '$lib/data/publications/index';
-import { allCommunications } from '$lib/data/communications/index';
-import { allActivities } from '$lib/data/activities';
-import { allDhProjects } from '$lib/data/digital-humanities';
-import { allResearchProjects } from '$lib/data/research';
-import { markdownPathFor } from '$lib/utils/markdownTwin';
+import { website } from '#lib/data/siteConfig.ts';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { allCommunications } from '#lib/data/communications/index.ts';
+import { allActivities } from '#lib/data/activities/index.ts';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
+import { allResearchProjects } from '#lib/data/research/index.ts';
+import { markdownPathFor } from '#lib/utils/markdownTwin.ts';
 
 export const SITE = website.url;
 const SITE_ORIGIN = new URL(SITE).origin;

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { peerReviewsByDate } from '$lib/data/peer-reviews';
-	import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
-	import { realEditorialMemberships, realPeerReviews } from '$lib/utils/cvSections';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { peerReviewsByDate } from '#lib/data/peer-reviews/index.ts';
+	import { editorialMembershipsByDate } from '#lib/data/editorial-memberships/index.ts';
+	import { realEditorialMemberships, realPeerReviews } from '#lib/utils/cvSections.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 
 	// The datasets minus their template records.

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { findRecord, normalise, search, summariseStructured } from './apiSearch';
-import type { ApiItem as Item } from '$lib/apiContract';
+import type { ApiItem as Item } from '#lib/apiContract.ts';
 
 const items: Item[] = [
 	{

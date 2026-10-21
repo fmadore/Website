@@ -1,4 +1,4 @@
-import type { ResearchProject } from '$lib/types/research';
+import type { ResearchProject } from '#lib/types/research.ts';
 
 export const youthWomensIslamicActivism: ResearchProject = {
 	id: 'youth-womens-islamic-activism-cote-divoire-burkina-faso',

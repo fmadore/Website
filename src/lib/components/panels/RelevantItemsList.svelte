@@ -14,9 +14,10 @@
 
 <script lang="ts">
 	import { type Snippet } from 'svelte';
-	import { base, resolve } from '$app/paths';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { PANEL_EXCERPT_LENGTH } from '$lib/data/publications/summaryConfig';
+	import { resolve } from '$app/paths';
+	import { pageHref } from '#lib/utils/paths.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { PANEL_EXCERPT_LENGTH } from '#lib/data/publications/summaryConfig.ts';
 	import PanelBase from './PanelBase.svelte';
 	import Button from '../atoms/Button.svelte';
 
@@ -50,8 +51,8 @@
 	// Construct the view all URL with project filter if projectName is provided
 	const viewAllUrl = $derived(
 		projectName
-			? `${base}${viewAllPath}?project=${encodeURIComponent(projectName)}`
-			: `${base}${viewAllPath}`
+			? pageHref(`${viewAllPath}?project=${encodeURIComponent(projectName)}`)
+			: pageHref(viewAllPath)
 	);
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

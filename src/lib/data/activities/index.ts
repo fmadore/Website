@@ -1,7 +1,7 @@
-import type { Activity } from '$lib/types';
-import { getYearFromISODate } from '$lib/utils/date-formatter';
-import { sortByDate } from '$lib/utils/dataAggregation';
-import { loadData } from '$lib/utils/dataLoader';
+import type { Activity } from '#lib/types/index.ts';
+import { getYearFromISODate } from '#lib/utils/date-formatter.ts';
+import { sortByDate } from '#lib/utils/dataAggregation.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 
 // Dynamically import all activity files (excluding this index, the template,
 // and the modules that live alongside the items but are not activity records:

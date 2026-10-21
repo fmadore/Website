@@ -1,4 +1,4 @@
-import type { ResearchRole } from '$lib/types/researchRole';
+import type { ResearchRole } from '#lib/types/researchRole.ts';
 
 export const sshrcResearchAssistant2016: ResearchRole = {
 	id: 'sshrc-research-assistant-2016-17',

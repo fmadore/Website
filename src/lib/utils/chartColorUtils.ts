@@ -5,8 +5,8 @@
  * Used by ECharts and D3 visualization components to ensure consistent theming.
  */
 
-import { getTheme } from '$lib/stores/themeStore.svelte';
-import { contrastRatio, pickContrastColor } from '$lib/utils/colorContrast';
+import { getTheme } from '#lib/stores/themeStore.svelte.ts';
+import { contrastRatio, pickContrastColor } from '#lib/utils/colorContrast.ts';
 
 /**
  * Gets the computed value of a CSS custom property from the document root.

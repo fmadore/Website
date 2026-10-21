@@ -1,12 +1,12 @@
 import { error } from '@sveltejs/kit';
-import { allPublications } from '$lib/data/publications/index';
-import { generateBibtex } from '$lib/utils/bibtexGenerator';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { generateBibtex } from '#lib/utils/bibtexGenerator.ts';
 import type { EntryGenerator, RequestHandler } from './$types';
 
 /**
  * A publication's BibTeX record, shipped beside its page as
  * `/publications/<id>.bib`: the metadata document the page names with its FAIR
- * Signposting `describedby` link (`$lib/utils/signposting.ts`). The rail's
+ * Signposting `describedby` link (`#lib/utils/signposting.ts`). The rail's
  * "Download BibTeX" and the MCP server's citations come from the same
  * generator, so all three agree.
  *

@@ -1,4 +1,4 @@
-import type { Institution } from '$lib/types/person';
+import type { Institution } from '#lib/types/person.ts';
 
 /**
  * Public institutional sites. Every point keeps its source; how it was located is in the

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-	import { browser, dev } from '$app/environment';
+	import { assetHref } from '#lib/utils/paths.ts';
+	import { browser, dev } from '$app/env';
 	import { page } from '$app/state';
 	import { untrack } from 'svelte';
-	import Button from '$lib/components/atoms/Button.svelte';
+	import Button from '#lib/components/atoms/Button.svelte';
 
 	let updateReady = $state(false);
 	let deferredAt = $state<number | null>(null);
@@ -49,7 +49,10 @@
 				return () => {};
 			}
 
-			const current = await navigator.serviceWorker.register(`${base}/service-worker.js`);
+			// Kit 3 bundles the worker as an ES module, so it registers as one.
+			const current = await navigator.serviceWorker.register(assetHref('service-worker.js'), {
+				type: 'module'
+			});
 			if (disposed) return () => {};
 			registration = current;
 

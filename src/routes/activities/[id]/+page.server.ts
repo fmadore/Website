@@ -1,7 +1,7 @@
-import { activitiesByDate } from '$lib/data/activities';
-import { buildActivityJsonLd } from '$lib/utils/entityJsonLd';
-import { loadEntityDetail } from '$lib/utils/entityPageLoader';
-import { referencesIn } from '$lib/server/references';
+import { activitiesByDate } from '#lib/data/activities/index.ts';
+import { buildActivityJsonLd } from '#lib/utils/entityJsonLd.ts';
+import { loadEntityDetail } from '#lib/utils/entityPageLoader.ts';
+import { referencesIn } from '#lib/server/references.ts';
 import type { PageServerLoad } from './$types';
 
 /** Every activity gets a page — see the note in publications/[id]/+page.server.ts. */

@@ -4,7 +4,7 @@
  * index, the CV). Same order as the full index. Only the project page (through
  * its server load) and the server endpoints read the full records.
  */
-import type { DigitalHumanitiesSummary } from '$lib/types/digitalHumanities';
+import type { DigitalHumanitiesSummary } from '#lib/types/digitalHumanities.ts';
 import { compareDhProjects } from './order';
 import { dhProjectSummaries } from './summaries.generated';
 

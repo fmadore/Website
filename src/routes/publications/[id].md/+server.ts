@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
-import { allPublications } from '$lib/data/publications/index';
-import { publicationMarkdown } from '$lib/server/markdown/publications';
-import { markdownResponse } from '$lib/server/markdown/site';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { publicationMarkdown } from '#lib/server/markdown/publications.ts';
+import { markdownResponse } from '#lib/server/markdown/site.ts';
 import type { EntryGenerator, RequestHandler } from './$types';
 
 /** A publication's Markdown twin: reference, abstract, apparatus and BibTeX. */

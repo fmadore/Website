@@ -12,16 +12,17 @@
 
 <script lang="ts">
 	import RecoveryActions from './RecoveryActions.svelte';
-	import { base } from '$app/paths';
-	import { getTheme } from '$lib/stores/themeStore.svelte';
+	import { resolve } from '$app/paths';
+	import { assetHref } from '#lib/utils/paths.ts';
+	import { getTheme } from '#lib/stores/themeStore.svelte.ts';
 	import {
 		getCSSVariableValueWithFallback,
 		getResolvedChartColors
-	} from '$lib/utils/chartColorUtils';
-	import { toRgbString } from '$lib/utils/colorContrast';
-	import { prefersReducedMotion } from '$lib/utils/maplibre';
-	import { useMapLibre } from '$lib/utils/useMapLibre.svelte';
-	import { createContainedPopup } from '$lib/utils/mapPopups';
+	} from '#lib/utils/chartColorUtils.ts';
+	import { toRgbString } from '#lib/utils/colorContrast.ts';
+	import { prefersReducedMotion } from '#lib/utils/maplibre.ts';
+	import { useMapLibre } from '#lib/utils/useMapLibre.svelte.ts';
+	import { createContainedPopup } from '#lib/utils/mapPopups.ts';
 	import type { GeoJSONSource, Popup } from 'maplibre-gl';
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
@@ -102,9 +103,9 @@
 
 	// Function to create popup content
 	function createPopupContent(item: MarkerData): string {
-		const linkUrl = `${base}/communications/${item.id}`;
+		const linkUrl = resolve('/communications/[id]', { id: item.id });
 		const imageHtml = item.image
-			? `<img src="${base}/${item.image}" alt="${item.title}" class="map-popup-image">`
+			? `<img src="${assetHref(item.image)}" alt="${item.title}" class="map-popup-image">`
 			: '';
 
 		return `

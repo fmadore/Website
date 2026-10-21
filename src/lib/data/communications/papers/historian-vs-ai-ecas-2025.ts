@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const historianVsAiEcas2025: Communication = {
 	id: 'historian-vs-ai-ecas-2025',

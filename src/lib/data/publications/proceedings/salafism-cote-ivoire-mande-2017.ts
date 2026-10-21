@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const salafismCoteIvoire2017: Publication = {
 	id: 'salafism-cote-ivoire-mande-2017',

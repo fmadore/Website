@@ -1,4 +1,4 @@
-import { COUNTRY_COORDINATES, type LocationDatum, type LocationMapItem } from '$lib/data/geo';
+import { COUNTRY_COORDINATES, type LocationDatum, type LocationMapItem } from '#lib/data/geo.ts';
 
 type Coordinates = { lat: number; lng: number };
 

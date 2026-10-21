@@ -1,4 +1,4 @@
-import type { Fieldwork } from '$lib/types';
+import type { Fieldwork } from '#lib/types/index.ts';
 
 export const cotonouPortoNovo2022: Fieldwork = {
 	id: 'cotonou-porto-novo-benin-2022',

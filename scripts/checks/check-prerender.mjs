@@ -9,7 +9,7 @@
  * The check is therefore stated as the invariant that actually matters: every
  * URL the site advertises must resolve to a file the site ships. Reading the
  * expected set from the built sitemap rather than from the datasets keeps this
- * script free of module loading (several data files use runtime `$lib`
+ * script free of module loading (several data files use runtime `#lib`
  * imports that plain Node cannot resolve) and automatically covers every route
  * type, including any added later.
  *
@@ -133,7 +133,7 @@ if (problems.length) {
 	for (const problem of problems) console.error(`  ${problem}`);
 	console.error(
 		'\nTwins are the `*.md` server routes; pages announce them from SEO.svelte by route id' +
-			'\n(`$lib/utils/markdownTwin.ts`). A new record route needs both, or neither.\n'
+			'\n(`#lib/utils/markdownTwin.ts`). A new record route needs both, or neither.\n'
 	);
 	exit(1);
 }

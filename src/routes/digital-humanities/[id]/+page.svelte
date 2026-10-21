@@ -1,16 +1,17 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { recordEntityId } from '$lib/utils/jsonLdSchemas';
-	import MetaTags from '$lib/components/digital-humanities/MetaTags.svelte';
-	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
-	import DhProjectRail from '$lib/components/digital-humanities/DhProjectRail.svelte';
-	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
-	import { formatProjectPeriod } from '$lib/utils/projectPeriod';
-	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { recordEntityId } from '#lib/utils/jsonLdSchemas.ts';
+	import MetaTags from '#lib/components/digital-humanities/MetaTags.svelte';
+	import RecordLayout, { type EyebrowToken } from '#lib/components/common/RecordLayout.svelte';
+	import DhProjectRail from '#lib/components/digital-humanities/DhProjectRail.svelte';
+	import IframeRenderer from '#lib/components/molecules/IframeRenderer.svelte';
+	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 
-	import { base } from '$app/paths';
-	import { plateFallback } from '$lib/actions/plateFallback';
+	import { resolve } from '$app/paths';
+	import { assetHref } from '#lib/utils/paths.ts';
+	import { plateFallback } from '#lib/actions/plateFallback.ts';
 
 	import type { PageData } from './$types';
 
@@ -61,7 +62,7 @@
 	description={project.seoDescription || project.shortDescription}
 	keywords={project.seoKeywords?.join(', ') ||
 		[project.title, 'Digital Humanities', 'Frédérick Madore', ...(project.skills || [])].join(', ')}
-	ogImage={project.heroImageUrl ? `${base}${project.heroImageUrl}` : `${base}${project.imageUrl}`}
+	ogImage={assetHref(project.heroImageUrl ?? project.imageUrl)}
 	mainEntity={recordEntityId(`/digital-humanities/${project.id}`)}
 />
 
@@ -85,7 +86,7 @@
 				<a
 					class="chip"
 					rel="nofollow"
-					href="{base}/digital-humanities?skill={encodeURIComponent(skill)}"
+					href={resolve(`/digital-humanities?skill=${encodeURIComponent(skill)}`)}
 					>{typesetQuotes(skill)}</a
 				>
 			{/each}
@@ -236,7 +237,7 @@
 {/snippet}
 
 <RecordLayout
-	section={{ label: 'Digital Humanities', href: `${base}/digital-humanities` }}
+	section={{ label: 'Digital Humanities', href: resolve('/digital-humanities') }}
 	{eyebrow}
 	title={displayTitle}
 	{breadcrumbItems}

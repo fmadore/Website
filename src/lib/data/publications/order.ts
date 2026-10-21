@@ -5,8 +5,8 @@
  * here rather than in dataAggregation so that module stays free of
  * date-formatter for the pages that sort other records.
  */
-import { isForthcoming } from '$lib/utils/date-formatter';
-import { sortByDate } from '$lib/utils/dataAggregation';
+import { isForthcoming } from '#lib/utils/date-formatter.ts';
+import { sortByDate } from '#lib/utils/dataAggregation.ts';
 
 export function sortPublicationsByDate<T extends { date?: string; dateISO?: string }>(
 	items: T[]

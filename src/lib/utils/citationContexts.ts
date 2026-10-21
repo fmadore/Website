@@ -4,8 +4,8 @@ import type {
 	CitationPassage,
 	CitingWork,
 	Publication
-} from '$lib/types';
-import { typesetQuotes } from '$lib/utils/typesetQuotes';
+} from '#lib/types/index.ts';
+import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 /**
  * The joins behind `/publications/citations`.

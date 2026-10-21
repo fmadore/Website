@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { grantsByDate } from '$lib/data/grants';
-	import { formatCVYearRange } from '$lib/utils/cvFormatters';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { grantsByDate } from '#lib/data/grants/index.ts';
+	import { formatCVYearRange } from '#lib/utils/cvFormatters.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVSection from './CVSection.svelte';
 </script>
 

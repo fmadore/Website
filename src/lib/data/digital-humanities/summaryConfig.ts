@@ -1,4 +1,4 @@
-import type { HeavyDhField } from '$lib/types/digitalHumanities';
+import type { HeavyDhField } from '#lib/types/digitalHumanities.ts';
 
 /**
  * Shared between the summaries generator (scripts/generate/generate-summaries.mjs,

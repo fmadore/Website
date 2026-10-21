@@ -1,4 +1,4 @@
-import type { MediaAppearance } from '$lib/types';
+import type { MediaAppearance } from '#lib/types/index.ts';
 
 export const jdm20190126: MediaAppearance = {
 	id: 'jdm-2019-01-26',

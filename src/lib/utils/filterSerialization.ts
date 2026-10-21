@@ -1,14 +1,14 @@
 /**
  * Pure URL <-> filter-state serialization.
  *
- * Extracted from `$lib/actions/urlFilterSync.svelte.ts` so the query-string
+ * Extracted from `#lib/actions/urlFilterSync.svelte.ts` so the query-string
  * building/parsing and the change-detection comparisons can be unit-tested in
  * plain Node (the Vitest config has no Svelte compiler, so the `$effect`-based
  * action can't be imported by tests). The action wraps these functions;
  * behaviour is identical.
  */
 
-import type { YearRange } from '$lib/types';
+import type { YearRange } from '#lib/types/index.ts';
 
 /** The subset of filter state that round-trips through the URL. */
 export interface UrlSyncableFilters {
@@ -69,7 +69,7 @@ export function serializeFiltersToQuery(filters: UrlSyncableFilters, searchTerm 
 }
 
 /** Reads the free-text search back out of a URL; absent means empty. */
-export function parseSearchParam(searchParams: URLSearchParams): string {
+export function parseSearchParam(searchParams: Pick<URLSearchParams, 'get'>): string {
 	return searchParams.get(SEARCH_PARAM)?.trim() ?? '';
 }
 
@@ -79,7 +79,10 @@ export function parseSearchParam(searchParams: URLSearchParams): string {
  * taken verbatim, so values containing commas (e.g. long project names)
  * survive the round trip.
  */
-export function parseArrayFilterParam(searchParams: URLSearchParams, paramName: string): string[] {
+export function parseArrayFilterParam(
+	searchParams: Pick<URLSearchParams, 'getAll'>,
+	paramName: string
+): string[] {
 	return searchParams.getAll(paramName).filter(Boolean);
 }
 

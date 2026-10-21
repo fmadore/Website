@@ -1,5 +1,5 @@
 // src/lib/data/grants/frqsc-doctoral-2013.ts
-import type { Grant } from '$lib/types';
+import type { Grant } from '#lib/types/index.ts';
 
 export const frqscDoctoral2013: Grant = {
 	id: 'frqsc-doctoral-2013',

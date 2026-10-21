@@ -7,7 +7,7 @@ actually carry a tableOfContents render anything — everything else emits
 nothing.
 -->
 <script module lang="ts">
-	import type { Publication as PublicationType } from '$lib/types';
+	import type { Publication as PublicationType } from '#lib/types/index.ts';
 
 	/**
 	 * Does this record print a contents section?
@@ -28,8 +28,8 @@ nothing.
 </script>
 
 <script lang="ts">
-	import type { Publication } from '$lib/types';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import type { Publication } from '#lib/types/index.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	interface Props {
 		publication: Publication;

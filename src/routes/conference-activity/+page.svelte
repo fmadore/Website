@@ -1,36 +1,36 @@
 <script lang="ts">
-	import { getContributorNames } from '$lib/utils/contributor';
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import '$styles/components/entity-index.css';
-	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { communicationFilters } from '$lib/data/communications/filters.svelte';
-	import CommunicationItem from '$lib/components/communications/CommunicationItem.svelte';
-	import UpcomingCommunications from '$lib/components/communications/UpcomingCommunications.svelte';
-	import { usePagination } from '$lib/utils/pagination.svelte';
-	import Pagination from '$lib/components/molecules/Pagination.svelte';
-	import EntityFilterBar from '$lib/components/entity-index/EntityFilterBar.svelte';
-	import EntityFacetGrid from '$lib/components/entity-index/EntityFacetGrid.svelte';
+	import { getContributorNames } from '#lib/utils/contributor.ts';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import '#styles/components/entity-index.css';
+	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { communicationFilters } from '#lib/data/communications/filters.svelte.ts';
+	import CommunicationItem from '#lib/components/communications/CommunicationItem.svelte';
+	import UpcomingCommunications from '#lib/components/communications/UpcomingCommunications.svelte';
+	import { usePagination } from '#lib/utils/pagination.svelte.ts';
+	import Pagination from '#lib/components/molecules/Pagination.svelte';
+	import EntityFilterBar from '#lib/components/entity-index/EntityFilterBar.svelte';
+	import EntityFacetGrid from '#lib/components/entity-index/EntityFacetGrid.svelte';
 	import { onMount } from 'svelte';
-	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
-	import { BUILT_DATE } from '$lib/utils/buildDate';
-	import { localISODate } from '$lib/utils/date-formatter';
-	import { sortItems } from '$lib/utils/sortUtils';
+	import { urlFilterSync } from '#lib/actions/urlFilterSync.svelte.ts';
+	import { BUILT_DATE } from '#lib/utils/buildDate.ts';
+	import { localISODate } from '#lib/utils/date-formatter.ts';
+	import { sortItems } from '#lib/utils/sortUtils.ts';
 	import {
 		COMMUNICATION_TYPE_LIST_LABELS,
 		COMMUNICATION_TYPE_CHIP_LABELS
-	} from '$lib/utils/typeUtils';
+	} from '#lib/utils/typeUtils.ts';
 	import {
 		matchesSearchTerms,
 		summariseYears,
 		truncateSearchTerm
-	} from '$lib/utils/entityFilterCore';
+	} from '#lib/utils/entityFilterCore.ts';
 	// The index lists talks, it never opens one: the committed projection
 	// (no abstracts) is what the rows, the facets and the map markers need.
-	import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import { organisedWorkshopsJsonLd } from '$lib/data/organisedWorkshops';
-	import type { CommunicationSummary } from '$lib/types/communication';
+	import { allCommunicationSummaries as allCommunications } from '#lib/data/communications/summaries.ts';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
+	import { organisedWorkshopsJsonLd } from '#lib/data/organisedWorkshops.ts';
+	import type { CommunicationSummary } from '#lib/types/communication.ts';
 
 	// The runed filter system: `af` is the stable deep-reactive filter state.
 	// (Mirrors the /publications page.)
@@ -73,7 +73,7 @@
 
 	// ── Map (lazy — maplibre-gl is only fetched when the reader asks for it) ─────
 	let MapVisualization:
-		typeof import('$lib/components/visualisations/MapVisualization.svelte').default | null =
+		typeof import('#lib/components/visualisations/MapVisualization.svelte').default | null =
 		$state(null);
 	let mapLoadError = $state(false);
 	let showMap = $state(false);
@@ -81,7 +81,7 @@
 	async function loadMapComponent() {
 		if (MapVisualization) return;
 		try {
-			const module = await import('$lib/components/visualisations/MapVisualization.svelte');
+			const module = await import('#lib/components/visualisations/MapVisualization.svelte');
 			MapVisualization = module.default;
 		} catch (e) {
 			if (import.meta.env.DEV) console.error('Failed to load MapVisualization:', e);

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import ResearchProjectLayout from '$lib/components/research/ResearchProjectLayout.svelte';
-	import { researchProject } from '$lib/data/research';
-	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
+	import ResearchProjectLayout from '#lib/components/research/ResearchProjectLayout.svelte';
+	import { researchProject } from '#lib/data/research/index.ts';
+	import RelevantGrants from '#lib/components/panels/RelevantGrants.svelte';
 </script>
 
 <ResearchProjectLayout {...researchProject('religious-activism-campuses-togo-benin')}>

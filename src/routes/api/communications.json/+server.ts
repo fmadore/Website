@@ -1,14 +1,14 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { getContributorNames } from '$lib/utils/contributor';
-import { communicationsByDate } from '$lib/data/communications/index';
-import type { Communication } from '$lib/types/communication';
+import { getContributorNames } from '#lib/utils/contributor.ts';
+import { communicationsByDate } from '#lib/data/communications/index.ts';
+import type { Communication } from '#lib/types/communication.ts';
 import {
 	absoluteUrl,
 	buildLinks,
 	compact,
 	datasetPayload,
 	jsonResponse
-} from '$lib/utils/apiPayload';
+} from '#lib/utils/apiPayload.ts';
 
 // Prerendered to build/api/communications.json alongside the rest of the site.
 export const prerender = true;

@@ -1,5 +1,5 @@
 // src/lib/data/peer-reviews/ecas-2027.ts
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const ecas2027: PeerReview = {
 	id: 'ecas-2027',

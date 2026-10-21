@@ -10,9 +10,9 @@
  * component free of aggregation logic and makes the algorithms unit-testable
  * alongside the other builders in `vizAggregation.ts`.
  */
-import type { Publication } from '$lib/types/publication';
-import type { Communication } from '$lib/types/communication';
-import { getContributorNames, isPersonContributor } from '$lib/utils/contributor';
+import type { Publication } from '#lib/types/publication.ts';
+import type { Communication } from '#lib/types/communication.ts';
+import { getContributorNames, isPersonContributor } from '#lib/utils/contributor.ts';
 
 /** Node roles: colour is keyed on the role, size on the weight. */
 export type NetworkNodeKind = 'center' | 'collaborator' | 'contributor' | 'entity';

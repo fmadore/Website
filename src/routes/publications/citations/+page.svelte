@@ -1,29 +1,33 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import '$styles/components/entity-index.css';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import EntityFilterBar from '$lib/components/entity-index/EntityFilterBar.svelte';
-	import EntityFacetGrid from '$lib/components/entity-index/EntityFacetGrid.svelte';
-	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import '#styles/components/entity-index.css';
+	import Breadcrumb from '#lib/components/molecules/Breadcrumb.svelte';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
+	import EntityFilterBar from '#lib/components/entity-index/EntityFilterBar.svelte';
+	import EntityFacetGrid from '#lib/components/entity-index/EntityFacetGrid.svelte';
+	import { urlFilterSync } from '#lib/actions/urlFilterSync.svelte.ts';
 	import {
 		EntityFilterSystem,
 		type EntityArrayDimension
-	} from '$lib/utils/entityFilterSystem.svelte';
+	} from '#lib/utils/entityFilterSystem.svelte.ts';
 	import {
 		matchesSearchTerms,
 		summariseYears,
 		truncateSearchTerm
-	} from '$lib/utils/entityFilterCore';
-	import { byFrequencyThenAlpha, countOccurrences } from '$lib/utils/facetOrdering';
-	import { CITING_WORK_KIND_LABELS, type CitingWorkRow } from '$lib/utils/citationContexts';
-	import { base, resolve } from '$app/paths';
+	} from '#lib/utils/entityFilterCore.ts';
+	import { byFrequencyThenAlpha, countOccurrences } from '#lib/utils/facetOrdering.ts';
+	import { CITING_WORK_KIND_LABELS, type CitingWorkRow } from '#lib/utils/citationContexts.ts';
+	import { resolve } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
 	import { untrack } from 'svelte';
-	import { usePagination } from '$lib/utils/pagination.svelte';
-	import Pagination from '$lib/components/molecules/Pagination.svelte';
-	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
-	import type { CitationPassage } from '$lib/types';
+	import { usePagination } from '#lib/utils/pagination.svelte.ts';
+	import Pagination from '#lib/components/molecules/Pagination.svelte';
+	import {
+		buildBreadcrumbJsonLd,
+		createSubsectionBreadcrumbs
+	} from '#lib/utils/breadcrumbJsonLd.ts';
+	import type { CitationPassage } from '#lib/types/index.ts';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -177,7 +181,7 @@
 		list.map((w) => `${w.authors.join(', ')} (${w.year})`).join('; ');
 
 	const breadcrumbItems = createSubsectionBreadcrumbs(
-		base,
+		basePrefix(),
 		'Publications',
 		'/publications',
 		'Citations in Context',

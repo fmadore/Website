@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Communication } from '$lib/types/communication';
-	import { base } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import type { Communication } from '#lib/types/communication.ts';
 	import { page } from '$app/state';
 	import {
 		type CoinsField,
@@ -9,10 +9,10 @@
 		getFullUrl,
 		parseAuthorName,
 		toLastFirstFormat
-	} from '$lib/utils/metaTags';
-	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
-	import { author, website } from '$lib/data/siteConfig';
-	import { stripHtml } from '$lib/utils/textUtils';
+	} from '#lib/utils/metaTags.ts';
+	import BaseMetaTags from '#lib/components/common/BaseMetaTags.svelte';
+	import { author, website } from '#lib/data/siteConfig.ts';
+	import { stripHtml } from '#lib/utils/textUtils.ts';
 
 	let { communication }: { communication: Communication } = $props();
 
@@ -30,7 +30,7 @@
 	const authorCitationName = toLastFirstFormat(author.name);
 	const authorNameParts = parseAuthorName(authorCitationName);
 
-	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, base, path);
+	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, basePrefix(), path);
 
 	// Helper to get presentation type for Zotero
 	const getPresentationType = (): string => {

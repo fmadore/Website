@@ -2,12 +2,12 @@
  * How the teaching pages summarise their two datasets: the span of years a
  * list covers, and the guest lectures grouped by the institution that hosted
  * them. `/teaching`, `/teaching/guest-lectures` and their Markdown twins
- * (`$lib/server/markdown/teaching.ts`) all count off these, so a page and its
+ * (`#lib/server/markdown/teaching.ts`) all count off these, so a page and its
  * twin cannot disagree about the same record.
  *
  * Pure and dataset-free: each function takes the records it summarises.
  */
-import type { GuestLecture, TeachingExperience } from '$lib/types/teachingExperience';
+import type { GuestLecture, TeachingExperience } from '#lib/types/teachingExperience.ts';
 
 /**
  * "2016–2020": the first and last of a set of years. An empty set has no

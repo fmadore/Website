@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Talk: Rencontre entre chrétiens et musulmans : au-delà du binaire coexistence pacifique/conflits religieux
 export const talkRencontreChretiensMusulmans2025: Communication = {

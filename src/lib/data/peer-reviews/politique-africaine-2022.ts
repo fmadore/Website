@@ -1,5 +1,5 @@
 // src/lib/data/peer-reviews/politique-africaine-2022.ts
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const politiqueAfricaine2022: PeerReview = {
 	id: 'politique-africaine-2022',

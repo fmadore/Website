@@ -3,7 +3,7 @@ import { flushSync } from 'svelte';
 import { useMapLibre, MAP_STYLE_TIMEOUT_MS } from '../src/lib/utils/useMapLibre.svelte';
 
 const mocks = vi.hoisted(() => ({ load: vi.fn(), layout: vi.fn() }));
-vi.mock('$lib/utils/maplibre', () => ({
+vi.mock('#lib/utils/maplibre.ts', () => ({
 	MAP_STYLES: { light: 'light', dark: 'dark' },
 	hasWebGLSupport: () => true,
 	loadMapLibre: mocks.load,

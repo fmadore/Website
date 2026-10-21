@@ -1,4 +1,4 @@
-export type { ProfessionalAffiliation } from '$lib/types/affiliation';
+export type { ProfessionalAffiliation } from '#lib/types/affiliation.ts';
 
 // Example Template - Replace with actual data
 /*

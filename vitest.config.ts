@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
  *
  * Deliberately does NOT load the SvelteKit Vite plugin: the tested modules are
  * plain TS (data aggregation, JSON-LD builders) with no component or `$app/*`
- * runtime dependency, so we only need the `$lib` path alias resolved.
+ * runtime dependency. `#lib` needs no alias: Vite resolves it from the
+ * `imports` field of package.json.
  */
 export default defineConfig({
 	plugins: [
@@ -26,23 +27,21 @@ export default defineConfig({
 	],
 	resolve: {
 		alias: {
-			// Stub SvelteKit's `$app/environment` virtual module (no SvelteKit
+			// Stub SvelteKit's `$app/env` virtual module (no SvelteKit
 			// plugin here) so pure utils with a transitive dependency on it
 			// (e.g. chartColorUtils → themeStore) stay importable in plain Node.
-			// More specific aliases must come before the generic `$lib` entry.
-			'$app/environment': fileURLToPath(
+			'$app/env': fileURLToPath(
 				new URL('./src/lib/test-support/app-environment-stub.ts', import.meta.url)
 			),
-			// Data files import `base` from `$app/paths` for internal links.
+			// Modules that link through `#lib/utils/paths.ts` import `$app/paths`.
 			'$app/paths': fileURLToPath(
 				new URL('./src/lib/test-support/app-paths-stub.ts', import.meta.url)
 			),
 			// themeStore uses Svelte 5 runes ($state), which need the Svelte
 			// compiler; stub it with a rune-free getTheme() for plain-Node tests.
-			'$lib/stores/themeStore.svelte': fileURLToPath(
+			'#lib/stores/themeStore.svelte.ts': fileURLToPath(
 				new URL('./src/lib/test-support/theme-store-stub.ts', import.meta.url)
-			),
-			$lib: fileURLToPath(new URL('./src/lib', import.meta.url))
+			)
 		}
 	},
 	test: {

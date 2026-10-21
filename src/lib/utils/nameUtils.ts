@@ -2,8 +2,8 @@
  * Pure helpers for parsing and formatting person-name strings
  * (authors, editors). Shared by metaTags, citation and BibTeX code.
  */
-import type { Contributor } from '$lib/types/contributor';
-import { getContributorName, getContributorNames } from '$lib/utils/contributor';
+import type { Contributor } from '#lib/types/contributor.ts';
+import { getContributorName, getContributorNames } from '#lib/utils/contributor.ts';
 
 /**
  * Converts "First Last" to "Last, First" format for citation managers (Zotero).

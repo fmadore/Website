@@ -3,15 +3,15 @@
  * HTML index pages through, and `/communications/<id>.md`, one talk with its
  * abstract, programme and participants.
  */
-import type { Communication } from '$lib/types/communication';
-import { author } from '$lib/data/siteConfig';
-import { formatCommunicationCitation } from '$lib/utils/citationFormatter';
-import { getContributorNames } from '$lib/utils/contributor';
-import { joinNames } from '$lib/utils/nameUtils';
+import type { Communication } from '#lib/types/communication.ts';
+import { author } from '#lib/data/siteConfig.ts';
+import { formatCommunicationCitation } from '#lib/utils/citationFormatter.ts';
+import { getContributorNames } from '#lib/utils/contributor.ts';
+import { joinNames } from '#lib/utils/nameUtils.ts';
 import {
 	COMMUNICATION_TYPE_LIST_LABELS,
 	COMMUNICATION_TYPE_SEO_LABELS
-} from '$lib/utils/typeUtils';
+} from '#lib/utils/typeUtils.ts';
 import { paragraphsToMarkdown } from './htmlToMarkdown';
 import { bullets, document, entries, fields, groupByYear, inline, link, section } from './markdown';
 import { projectField } from './publications';

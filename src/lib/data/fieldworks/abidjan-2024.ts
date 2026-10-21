@@ -1,4 +1,4 @@
-import type { Fieldwork } from '$lib/types';
+import type { Fieldwork } from '#lib/types/index.ts';
 
 export const abidjan2024: Fieldwork = {
 	id: 'abidjan-cote-divoire-2024',

@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
-import { allDhProjects } from '$lib/data/digital-humanities';
-import { dhProjectMarkdown } from '$lib/server/markdown/digitalHumanities';
-import { markdownResponse } from '$lib/server/markdown/site';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
+import { dhProjectMarkdown } from '#lib/server/markdown/digitalHumanities.ts';
+import { markdownResponse } from '#lib/server/markdown/site.ts';
 import type { EntryGenerator, RequestHandler } from './$types';
 
 /** A digital humanities project's Markdown twin. */

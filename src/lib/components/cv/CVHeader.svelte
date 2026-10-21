@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { address, contact, website, socialLinks, author } from '$lib/data/siteConfig';
-	import { BUILT_AT } from '$lib/utils/buildDate';
-	import { formatCvEditionDate } from '$lib/utils/cvSections';
+	import { address, contact, website, socialLinks, author } from '#lib/data/siteConfig.ts';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
+	import { formatCvEditionDate } from '#lib/utils/cvSections.ts';
 
 	// "As of" the build: the CV prints the records as they stood when the site
 	// was built, and the prerendered page and its hydration agree on the date.

@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const religieuxInternetNTICBurkinaFaso: Publication = {
 	id: 'religieux-internet-ntic-burkina-faso-2019',

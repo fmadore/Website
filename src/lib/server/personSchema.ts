@@ -3,11 +3,11 @@
  *
  * Server-only on purpose. It is the one schema built from datasets
  * (`education`, `languages`, `affiliations`), and it lived beside the
- * generic factories in `$lib/utils/jsonLdSchemas.ts` — which `SEO.svelte`
+ * generic factories in `#lib/utils/jsonLdSchemas.ts` — which `SEO.svelte`
  * imports on every page. Those three datasets, their loader and its validation
  * therefore rode in the root layout's chunk and ran on every page load, for
  * a schema only the home page prints and only the prerender ever computes.
- * Kept under `$lib/server`, SvelteKit refuses any client import of it, and
+ * Kept under `#lib/server`, SvelteKit refuses any client import of it, and
  * `scripts/checks/check-bundle-budget.mjs` fails a build whose shell reaches a
  * dataset again.
  */
@@ -15,12 +15,12 @@ import type {
 	PersonPageJsonLd,
 	JsonLdOrganization,
 	JsonLdEducationalCredential
-} from '$lib/types/jsonld';
-import { address, contact, researchTopics, linkedData } from '$lib/data/siteConfig';
-import { allEducation } from '$lib/data/education';
-import { languagesByProficiency } from '$lib/data/languages';
-import { allAffiliations } from '$lib/data/affiliations';
-import { createPersonSchema, wikidataEntityUrl } from '$lib/utils/jsonLdSchemas';
+} from '#lib/types/jsonld.ts';
+import { address, contact, researchTopics, linkedData } from '#lib/data/siteConfig.ts';
+import { allEducation } from '#lib/data/education/index.ts';
+import { languagesByProficiency } from '#lib/data/languages/index.ts';
+import { allAffiliations } from '#lib/data/affiliations/index.ts';
+import { createPersonSchema, wikidataEntityUrl } from '#lib/utils/jsonLdSchemas.ts';
 
 /** Maps a degree-name prefix to a schema.org educationalLevel label. */
 const DEGREE_LEVELS: ReadonlyArray<readonly [prefix: string, level: string]> = [
@@ -37,11 +37,11 @@ const DEGREE_LEVELS: ReadonlyArray<readonly [prefix: string, level: string]> = [
  * two nodes into one Person identity, with this one being the richer superset.
  * The biographical fields are derived from the real datasets instead of being
  * hand-maintained:
- * - `alumniOf` — degree-granting institutions from `$lib/data/education`
- * - `hasCredential` — degrees from `$lib/data/education`
- * - `memberOf` — ongoing memberships from `$lib/data/affiliations`
- * - `knowsLanguage` — from `$lib/data/languages`
- * - `knowsAbout` — the curated `researchTopics` list in `$lib/data/siteConfig`
+ * - `alumniOf` — degree-granting institutions from `#lib/data/education`
+ * - `hasCredential` — degrees from `#lib/data/education`
+ * - `memberOf` — ongoing memberships from `#lib/data/affiliations`
+ * - `knowsLanguage` — from `#lib/data/languages`
+ * - `knowsAbout` — the curated `researchTopics` list in `#lib/data/siteConfig`
  *   (editorial, not derivable from data)
  */
 export function createFullPersonSchema(): PersonPageJsonLd {

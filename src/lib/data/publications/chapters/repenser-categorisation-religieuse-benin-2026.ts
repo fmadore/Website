@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const repenserCategorisationReligieuseBenin2026: Publication = {
 	id: 'repenser-categorisation-religieuse-benin-2026',

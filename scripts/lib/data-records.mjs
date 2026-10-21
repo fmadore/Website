@@ -9,11 +9,11 @@
  * `import()` load each one directly — no Vite, no bundler.
  *
  * Publication and talk records import types alone. Activity records do not:
- * they format their display date with `$lib/utils/date-formatter`, and one
- * links a talk through `$app/paths`. So the resolve hook below gives Node the
- * two things Vite would: the `$lib` alias with extensionless `.ts` resolution,
- * and a `$app/paths` carrying the site's (empty) base path. Anything a data
- * file imports must itself be loadable this way — alias-free past `$lib`.
+ * they format their display date with `#lib/utils/date-formatter.ts`, which
+ * Node resolves itself, from the `imports` field of package.json. The resolve
+ * hook below adds the one thing Vite would and Node will not: extensionless
+ * `.ts` resolution for relative specifiers. Anything a data file imports must
+ * itself be loadable this way, so no `$app/*` module.
  */
 import { registerHooks } from 'node:module';
 import { globSync } from 'node:fs';
@@ -25,24 +25,15 @@ import {
 	COMMUNICATION_TEMPLATE_IDS
 } from '../../src/lib/dataMetadata.ts';
 import { selectDataRecord } from '../../src/lib/dataRecords.ts';
-const LIB_URL = pathToFileURL(resolve('src/lib') + '/').href;
-
-/** `svelte.config.js` sets `paths.base` to '' and records only ever read `base`. */
-const APP_PATHS_STUB = `data:text/javascript,${encodeURIComponent("export const base = ''; export const assets = '';")}`;
 
 registerHooks({
 	resolve(specifier, context, nextResolve) {
-		if (specifier === '$app/paths') return { url: APP_PATHS_STUB, shortCircuit: true };
-		const target = specifier.startsWith('$lib/')
-			? new URL(specifier.slice('$lib/'.length), LIB_URL).href
-			: specifier;
-		// Vite resolves `$lib/utils/date-formatter` to the .ts file; Node needs the
-		// extension spelled out, for aliased and relative specifiers alike.
-		const local = target.startsWith('file:') || target.startsWith('.');
-		if (local && !/\.[cm]?[jt]s$/.test(target)) {
-			return nextResolve(`${target}.ts`, context);
+		// Vite resolves `./date-formatter` to the .ts file; Node needs the
+		// extension spelled out.
+		if (specifier.startsWith('.') && !/\.[cm]?[jt]s$/.test(specifier)) {
+			return nextResolve(`${specifier}.ts`, context);
 		}
-		return nextResolve(target, context);
+		return nextResolve(specifier, context);
 	}
 });
 

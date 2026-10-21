@@ -3,7 +3,7 @@ import { flushSync } from 'svelte';
 import { useECharts } from '../src/lib/utils/useECharts.svelte';
 
 const mocks = vi.hoisted(() => ({ init: vi.fn() }));
-vi.mock('$lib/utils/echartsCore', () => ({ init: mocks.init }));
+vi.mock('#lib/utils/echartsCore.ts', () => ({ init: mocks.init }));
 let stop: (() => void) | undefined;
 afterEach(() => {
 	stop?.();

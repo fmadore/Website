@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { allDhProjectSummaries as allDhProjects } from '$lib/data/digital-humanities/summaries';
-	import { formatCVYearRange, trimTerminalPeriod } from '$lib/utils/cvFormatters';
-	import { sortDhProjectsByRecency } from '$lib/utils/cvSections';
-	import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
-	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
+	import { allDhProjectSummaries as allDhProjects } from '#lib/data/digital-humanities/summaries.ts';
+	import { formatCVYearRange, trimTerminalPeriod } from '#lib/utils/cvFormatters.ts';
+	import { sortDhProjectsByRecency } from '#lib/utils/cvSections.ts';
+	import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
+	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 	import CVSection from './CVSection.svelte';
 
 	// Strictly most recent first, as the CV's Markdown twin orders them too.

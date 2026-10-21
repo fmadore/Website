@@ -26,7 +26,7 @@
  * constant from `COLORS`, which `designTokenParity.test.ts` binds back to
  * `variables.css`; `pdfCvLayout.test.ts` pins the voice each string is cast in.
  *
- * Voice→font mapping, palette and type sizes live in $lib/utils/pdfDesignTokens,
+ * Voice→font mapping, palette and type sizes live in #lib/utils/pdfDesignTokens,
  * kept in sync with the site's Ink + Signal design tokens.
  */
 import {
@@ -37,8 +37,8 @@ import {
 	visibleText,
 	setPdfBaseFont,
 	type TextFragment
-} from '$lib/utils/pdfRichText';
-import { getAddressLines } from '$lib/utils/siteHelpers';
+} from '#lib/utils/pdfRichText.ts';
+import { getAddressLines } from '#lib/utils/siteHelpers.ts';
 import {
 	FONTS,
 	FONT_SIZE,
@@ -48,8 +48,8 @@ import {
 	LETTER_SPACING,
 	yearColumnWidth,
 	wideColumnWidth
-} from '$lib/utils/pdfDesignTokens';
-import { CvPdfLayout, registerCvFonts, classifyContactLink } from '$lib/utils/pdfCvLayout';
+} from '#lib/utils/pdfDesignTokens.ts';
+import { CvPdfLayout, registerCvFonts, classifyContactLink } from '#lib/utils/pdfCvLayout.ts';
 
 type JsPdfConstructor = typeof import('jspdf').jsPDF;
 

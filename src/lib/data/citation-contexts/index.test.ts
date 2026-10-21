@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
-import { allPublications } from '$lib/data/publications';
-import { buildCitationContextSections } from '$lib/utils/citationContexts';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { buildCitationContextSections } from '#lib/utils/citationContexts.ts';
 import { citationContextSets } from './index';
 
 /**

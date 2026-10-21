@@ -1,4 +1,4 @@
-import type { CvCommunicationField, HeavyCommunicationField } from '$lib/types/communication';
+import type { CvCommunicationField, HeavyCommunicationField } from '#lib/types/communication.ts';
 
 /**
  * Shared between the summaries generator

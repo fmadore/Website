@@ -1,18 +1,18 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { allResearchProjects } from '$lib/data/research';
-import { researchProse } from '$lib/data/researchProse.generated';
-import { publicationsByDate } from '$lib/data/publications/index';
-import { communicationsByDate } from '$lib/data/communications/index';
-import { grantsByDate } from '$lib/data/grants';
-import { fieldworksByDate } from '$lib/data/fieldworks';
-import type { ResearchProject } from '$lib/types/research';
+import { allResearchProjects } from '#lib/data/research/index.ts';
+import { researchProse } from '#lib/data/researchProse.generated.ts';
+import { publicationsByDate } from '#lib/data/publications/index.ts';
+import { communicationsByDate } from '#lib/data/communications/index.ts';
+import { grantsByDate } from '#lib/data/grants/index.ts';
+import { fieldworksByDate } from '#lib/data/fieldworks/index.ts';
+import type { ResearchProject } from '#lib/types/research.ts';
 import {
 	absoluteUrl,
 	buildLinks,
 	compact,
 	datasetPayload,
 	jsonResponse
-} from '$lib/utils/apiPayload';
+} from '#lib/utils/apiPayload.ts';
 
 // Prerendered to build/api/research.json alongside the rest of the site.
 export const prerender = true;

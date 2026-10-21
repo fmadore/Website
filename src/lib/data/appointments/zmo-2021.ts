@@ -1,5 +1,5 @@
 // src/lib/data/appointments/zmo-2021.ts
-import type { Appointment } from '$lib/types';
+import type { Appointment } from '#lib/types/index.ts';
 
 export const zmo2021: Appointment = {
 	id: 'research-zmo-2021',

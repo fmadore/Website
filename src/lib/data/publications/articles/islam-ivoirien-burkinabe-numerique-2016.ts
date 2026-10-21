@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const islamIvoirienBurkinabeNumerique: Publication = {
 	id: 'islam-ivoirien-burkinabe-numerique-2016',

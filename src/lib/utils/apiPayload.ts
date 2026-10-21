@@ -1,4 +1,4 @@
-import { website } from '$lib/data/siteConfig';
+import { website } from '#lib/data/siteConfig.ts';
 
 /**
  * Helpers for the static JSON API under `/api/*.json`.
@@ -16,7 +16,7 @@ import { website } from '$lib/data/siteConfig';
  */
 
 /** Payload schema version. Bump on any breaking change to the item shapes. */
-import { API_VERSION, type DatasetPayload } from '$lib/apiContract';
+import { API_VERSION, type DatasetPayload } from '#lib/apiContract.ts';
 export { API_VERSION, type DatasetPayload };
 
 const SITE = website.url;

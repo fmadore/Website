@@ -3,9 +3,9 @@
  * and `/digital-humanities/<id>.md`, with the project's full description,
  * addresses, methods and apparatus.
  */
-import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
-import { author } from '$lib/data/siteConfig';
-import { formatProjectPeriod } from '$lib/utils/projectPeriod';
+import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
+import { author } from '#lib/data/siteConfig.ts';
+import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
 import { htmlToMarkdown } from './htmlToMarkdown';
 import { bullets, document, entries, fields, inline, link, section } from './markdown';
 import { markdownUrl, pageUrl, resolveLink, SITE } from './site';

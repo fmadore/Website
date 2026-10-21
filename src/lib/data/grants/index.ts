@@ -1,7 +1,7 @@
 // src/lib/data/grants/index.ts
-import type { Grant } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
-import { sortByStartDate } from '$lib/utils/dataAggregation';
+import type { Grant } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
+import { sortByStartDate } from '#lib/utils/dataAggregation.ts';
 
 type ModuleType = Record<string, unknown>;
 

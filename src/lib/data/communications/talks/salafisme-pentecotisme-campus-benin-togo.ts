@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const salafismePentecotismeCampusBeninTogo: Communication = {
 	id: 'salafisme-pentecotisme-campus-benin-togo',

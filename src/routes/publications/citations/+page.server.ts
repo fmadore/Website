@@ -1,6 +1,6 @@
-import { allPublications } from '$lib/data/publications/index';
-import { citationContextSets } from '$lib/data/citation-contexts';
-import { buildCitationContextSections, buildCitingWorkRows } from '$lib/utils/citationContexts';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { citationContextSets } from '#lib/data/citation-contexts/index.ts';
+import { buildCitationContextSections, buildCitingWorkRows } from '#lib/utils/citationContexts.ts';
 import type { PageServerLoad } from './$types';
 
 /**

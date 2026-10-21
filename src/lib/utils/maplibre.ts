@@ -27,7 +27,7 @@
  */
 
 import { retryableLoader } from './retryableLoader';
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 // Static import so Vite resolves and emits the worker chunk at build time.
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { author, socialLinks, website } from '$lib/data/siteConfig';
+import { author, socialLinks, website } from '#lib/data/siteConfig.ts';
 import { publicationBibtexPath, publicationSignposts } from './signposting';
 
 describe('publicationSignposts', () => {

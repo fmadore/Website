@@ -1,5 +1,5 @@
-import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
-import { loadData } from '$lib/utils/dataLoader';
+import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 import { compareDhProjects } from './order';
 
 // Dynamically import all DH project files (excluding this index and the

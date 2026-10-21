@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const ambitionFederatriceFaitieresIslamiques2026: Publication = {
 	id: 'ambition-federatrice-faitieres-islamiques-2026',

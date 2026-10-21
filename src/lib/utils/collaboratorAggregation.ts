@@ -1,10 +1,10 @@
-import type { Contributor } from '$lib/types/contributor';
-import type { Person, PersonAffiliation, Institution } from '$lib/types/person';
-import type { Publication } from '$lib/types/publication';
-import type { Communication } from '$lib/types/communication';
-import type { LocationDatum, LocationCollaborator } from '$lib/data/geo';
-import { author } from '$lib/data/siteConfig';
-import { getContributorName } from '$lib/utils/contributor';
+import type { Contributor } from '#lib/types/contributor.ts';
+import type { Person, PersonAffiliation, Institution } from '#lib/types/person.ts';
+import type { Publication } from '#lib/types/publication.ts';
+import type { Communication } from '#lib/types/communication.ts';
+import type { LocationDatum, LocationCollaborator } from '#lib/data/geo.ts';
+import { author } from '#lib/data/siteConfig.ts';
+import { getContributorName } from '#lib/utils/contributor.ts';
 
 export type CollaboratorItem = { id: string; title: string; href: string };
 export type UnresolvedCollaborator = {

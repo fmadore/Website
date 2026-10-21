@@ -1,27 +1,27 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import '$styles/components/entity-index.css';
-	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import { publicationFilters } from '$lib/data/publications/filters.svelte';
-	import PublicationItem from '$lib/components/publications/PublicationItem.svelte';
-	import { usePagination } from '$lib/utils/pagination.svelte';
-	import Pagination from '$lib/components/molecules/Pagination.svelte';
-	import EntityFilterBar from '$lib/components/entity-index/EntityFilterBar.svelte';
-	import EntityFacetGrid from '$lib/components/entity-index/EntityFacetGrid.svelte';
-	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
-	import { sortItems } from '$lib/utils/sortUtils';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import '#styles/components/entity-index.css';
+	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { publicationFilters } from '#lib/data/publications/filters.svelte.ts';
+	import PublicationItem from '#lib/components/publications/PublicationItem.svelte';
+	import { usePagination } from '#lib/utils/pagination.svelte.ts';
+	import Pagination from '#lib/components/molecules/Pagination.svelte';
+	import EntityFilterBar from '#lib/components/entity-index/EntityFilterBar.svelte';
+	import EntityFacetGrid from '#lib/components/entity-index/EntityFacetGrid.svelte';
+	import { urlFilterSync } from '#lib/actions/urlFilterSync.svelte.ts';
+	import { sortItems } from '#lib/utils/sortUtils.ts';
 	import {
 		matchesSearchTerms,
 		summariseYears,
 		truncateSearchTerm
-	} from '$lib/utils/entityFilterCore';
-	import { getAuthorsArray } from '$lib/utils/citationFormatter';
-	import { allPublicationSummaries as allPublications } from '$lib/data/publications/summaries';
+	} from '#lib/utils/entityFilterCore.ts';
+	import { getAuthorsArray } from '#lib/utils/citationFormatter.ts';
+	import { allPublicationSummaries as allPublications } from '#lib/data/publications/summaries.ts';
 	import {
 		PUBLICATION_TYPE_FILTER_LABELS as typeLabels,
 		PUBLICATION_TYPE_CHIP_LABELS as typeChipLabels
-	} from '$lib/utils/publicationTypeLabels';
+	} from '#lib/utils/publicationTypeLabels.ts';
 
 	// The runed filter system: `af` is the stable deep-reactive filter state.
 	// No store prefixes, no casts.

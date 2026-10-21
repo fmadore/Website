@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Talk: When AI Meets the Archive: Transforming the Islam West Africa Collection with Large Language Models
 export const talkWhenAIMeetsTheArchive2025: Communication = {

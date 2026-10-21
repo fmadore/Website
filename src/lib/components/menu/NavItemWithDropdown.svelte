@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import NavLink from '$lib/components/menu/NavLink.svelte';
-	import DropdownMenu from '$lib/components/menu/DropdownMenu.svelte';
-	import type { NavItem } from '$lib/types/navigation';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import NavLink from '#lib/components/menu/NavLink.svelte';
+	import DropdownMenu from '#lib/components/menu/DropdownMenu.svelte';
+	import type { NavItem } from '#lib/types/navigation.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	let {
 		item,

@@ -1,4 +1,4 @@
-import type { Fieldwork } from '$lib/types';
+import type { Fieldwork } from '#lib/types/index.ts';
 
 export const ouagadougou2015: Fieldwork = {
 	id: 'ouagadougou-burkina-faso-2015',

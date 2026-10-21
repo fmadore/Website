@@ -1,7 +1,7 @@
 /**
  * The two CV sections whose records have no dataset of their own elsewhere on
- * the site. Their data lives in `$lib/data/consulting.ts` and
- * `$lib/data/computerSkills.ts`, read by the CV page and its Markdown twin.
+ * the site. Their data lives in `#lib/data/consulting.ts` and
+ * `#lib/data/computerSkills.ts`, read by the CV page and its Markdown twin.
  */
 
 /** A consulting engagement ("Consulting and legal expertise"). */

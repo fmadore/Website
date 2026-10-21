@@ -1,6 +1,6 @@
-import { allDhProjects } from '$lib/data/digital-humanities';
-import { buildDhProjectJsonLd } from '$lib/utils/entityJsonLd';
-import { loadEntityDetail } from '$lib/utils/entityPageLoader';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
+import { buildDhProjectJsonLd } from '#lib/utils/entityJsonLd.ts';
+import { loadEntityDetail } from '#lib/utils/entityPageLoader.ts';
 import type { PageServerLoad } from './$types';
 
 /** Every project gets a page — see the note in publications/[id]/+page.server.ts. */

@@ -18,13 +18,13 @@ Two differences from its siblings, both of them the record's own:
     carries where a bibliographic row carries a byline.
 -->
 <script lang="ts">
-	import type { ActivitySummary } from '$lib/types';
+	import type { ActivitySummary } from '#lib/types/index.ts';
 	import { resolve } from '$app/paths';
 	import BibliographyRow, {
 		type BibliographyAction
-	} from '$lib/components/molecules/BibliographyRow.svelte';
-	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
-	import { formatShortDateMono } from '$lib/utils/date-formatter';
+	} from '#lib/components/molecules/BibliographyRow.svelte';
+	import { ACTIVITY_TYPE_BADGE_LABELS } from '#lib/utils/typeUtils.ts';
+	import { formatShortDateMono } from '#lib/utils/date-formatter.ts';
 
 	// `headingLevel` follows the page, not the component: the index heads each
 	// year group with a real <h2>, so an entry there is an <h3>; the year archive

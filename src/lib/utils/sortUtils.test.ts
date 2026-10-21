@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Publication } from '$lib/types/publication';
+import type { Publication } from '#lib/types/publication.ts';
 import { sortItems } from './sortUtils';
 
 function publication(id: string, overrides: Partial<Publication> = {}): Publication {

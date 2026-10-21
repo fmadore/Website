@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { Contributor } from '$lib/types/contributor';
-	import { resolve } from '$app/paths';
-	import { formatByline } from '$lib/utils/byline';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import TagList from '$lib/components/molecules/TagList.svelte'; // Use the one from molecules
+	import type { Contributor } from '#lib/types/contributor.ts';
+	import { pageHref } from '#lib/utils/paths.ts';
+	import { formatByline } from '#lib/utils/byline.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import TagList from '#lib/components/molecules/TagList.svelte'; // Use the one from molecules
 
 	let {
 		title,
@@ -51,8 +51,8 @@
 	class:index-masthead={isIndex}
 >
 	{#if backLinkHref}
-		<!-- eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic path resolved at runtime -->
-		<a href={resolve(`/${backLinkHref}` as any)} class="back-link"
+		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pageHref() resolves the path -->
+		<a href={pageHref(backLinkHref)} class="back-link"
 			><span aria-hidden="true">← </span>{backLinkLabel.replace(/^←s*/, '')}</a
 		>
 	{/if}

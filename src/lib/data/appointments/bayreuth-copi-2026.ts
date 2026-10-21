@@ -1,5 +1,5 @@
 // src/lib/data/appointments/bayreuth-copi-2026.ts
-import type { Appointment } from '$lib/types';
+import type { Appointment } from '#lib/types/index.ts';
 
 export const bayreuthCoPi2026: Appointment = {
 	id: 'co-pi-bayreuth-2026',

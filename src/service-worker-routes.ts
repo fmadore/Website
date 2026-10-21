@@ -2,7 +2,7 @@
  * The service worker's routing table, extracted from `service-worker.js` so the
  * decision it encodes can be unit-tested.
  *
- * It lives here rather than under `$lib` because nothing but the worker uses it,
+ * It lives here rather than under `#lib` because nothing but the worker uses it,
  * and it is deliberately pure: no `$service-worker`, no `caches`, no `fetch`.
  * The worker keeps the strategies themselves; this module only answers which one
  * a path gets.
@@ -63,7 +63,7 @@ export const FONT_EXTENSIONS = ['.woff2', '.woff', '.ttf', '.otf'];
  * reports "no new version" across a deploy that has already renamed every chunk:
  * no reload, and `Error 500` on a page whose only problem was being one deploy
  * old. Matched as a suffix so a configured `paths.base` still resolves; the
- * `app/` segment tracks `appDir` in svelte.config.js.
+ * `app/` segment tracks `appDir` in vite.config.ts.
  */
 export const VERSION_FILE = '/app/version.json';
 

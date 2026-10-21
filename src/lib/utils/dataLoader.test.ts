@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { loadData } from './dataLoader';
-import type { Publication } from '$lib/types/publication';
+import type { Publication } from '#lib/types/publication.ts';
 
 /** Minimal item factory — only the fields loadData itself touches. */
 function item(id: string, extra: Record<string, unknown> = {}) {

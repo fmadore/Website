@@ -1,5 +1,5 @@
 // src/lib/data/peer-reviews/tpdl-2026.ts
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const tpdl2026: PeerReview = {
 	id: 'tpdl-2026',

@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { getContributorNames } from '$lib/utils/contributor';
-	import { allCommunicationSummaries } from '$lib/data/communications/summaries';
-	import RelevantItemsList from '$lib/components/panels/RelevantItemsList.svelte';
-	import type { RelevantItem } from '$lib/components/panels/RelevantItemsList.svelte';
-	import { formatAuthorsCompact as formatAuthors } from '$lib/utils/nameUtils';
-	import { getCommunicationTypeBadge } from '$lib/utils/typeUtils';
+	import { getContributorNames } from '#lib/utils/contributor.ts';
+	import { allCommunicationSummaries } from '#lib/data/communications/summaries.ts';
+	import RelevantItemsList from '#lib/components/panels/RelevantItemsList.svelte';
+	import type { RelevantItem } from '#lib/components/panels/RelevantItemsList.svelte';
+	import { formatAuthorsCompact as formatAuthors } from '#lib/utils/nameUtils.ts';
+	import { getCommunicationTypeBadge } from '#lib/utils/typeUtils.ts';
 
 	// Props - project name and limit
 	let {

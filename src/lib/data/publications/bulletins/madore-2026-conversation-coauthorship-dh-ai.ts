@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const madore2026ConversationCoauthorshipDhAi: Publication = {
 	id: 'madore-2026-conversation-coauthorship-dh-ai',

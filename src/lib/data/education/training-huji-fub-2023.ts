@@ -1,4 +1,4 @@
-import type { Education } from '$lib/types';
+import type { Education } from '#lib/types/index.ts';
 
 export const trainingHujiFub2023: Education = {
 	id: 'training-huji-fub-2023',

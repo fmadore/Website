@@ -7,9 +7,9 @@
  * the activity record page and the server endpoints (API, RSS, sitemap) read
  * the full index.
  */
-import type { ActivitySummary } from '$lib/types/activity';
-import { getYearFromISODate } from '$lib/utils/date-formatter';
-import { sortByDate } from '$lib/utils/dataAggregation';
+import type { ActivitySummary } from '#lib/types/activity.ts';
+import { getYearFromISODate } from '#lib/utils/date-formatter.ts';
+import { sortByDate } from '#lib/utils/dataAggregation.ts';
 import { activitySummaries } from './summaries.generated';
 
 export const allActivitySummaries: ActivitySummary[] = activitySummaries;

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { buildLlmsTxt, MCP_SERVER } from './llmsTxt';
-import { allResearchProjects } from '$lib/data/research';
-import { allDhProjects } from '$lib/data/digital-humanities';
+import { allResearchProjects } from '#lib/data/research/index.ts';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
 import { TWIN_PAGE_PATHS, SITE } from './markdown/site';
 
 const text = buildLlmsTxt();

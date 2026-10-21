@@ -6,7 +6,7 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
 declare global {
-	/** ISO timestamp of the build, from `define` in vite.config.ts; read it through `$lib/utils/buildDate`. */
+	/** ISO timestamp of the build, from `define` in vite.config.ts; read it through `#lib/utils/buildDate`. */
 	const __BUILT_AT__: string;
 
 	namespace App {
@@ -15,10 +15,10 @@ declare global {
 		interface PageData {
 			/**
 			 * The reference-index entries a page's inline citations need, keyed by
-			 * id, from its server load (`$lib/server/references`). Read by
+			 * id, from its server load (`#lib/server/references`). Read by
 			 * `<ItemReference>`; absent on pages that cite nothing.
 			 */
-			references?: Record<string, import('$lib/types/referenceIndex').ReferenceIndexEntry>;
+			references?: Record<string, import('#lib/types/referenceIndex.ts').ReferenceIndexEntry>;
 		}
 		// interface PageState {}
 		// interface Platform {}

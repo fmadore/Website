@@ -6,9 +6,9 @@ import {
 	getAnalyzedIds,
 	getCombinedWordCloudData,
 	getCombinedBigrams
-} from '$lib/data/analysis';
-import { keyTermsByPublication } from '$lib/data/analysis/keyTerms.generated';
-import { corpusSummary } from '$lib/data/analysis/corpusSummary.generated';
+} from '#lib/data/analysis/index.ts';
+import { keyTermsByPublication } from '#lib/data/analysis/keyTerms.generated.ts';
+import { corpusSummary } from '#lib/data/analysis/corpusSummary.generated.ts';
 
 /**
  * The committed analysis projections must be faithful to the corpus they are

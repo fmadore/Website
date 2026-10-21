@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // VolkswagenStiftung Workshop: Charting New Territory: Digital Humanities and AI in African Studies
 export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {

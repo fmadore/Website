@@ -6,8 +6,8 @@
  * generated projection, so a list built here matches one built there row for
  * row. The publication page and the visualisations keep the full index.
  */
-import type { PublicationSummary } from '$lib/types';
-import { groupByYear, groupByField, extractUniqueTags } from '$lib/utils/dataAggregation';
+import type { PublicationSummary } from '#lib/types/index.ts';
+import { groupByYear, groupByField, extractUniqueTags } from '#lib/utils/dataAggregation.ts';
 import { publicationSummaries } from './summaries.generated';
 import { sortPublicationsByDate } from './order';
 

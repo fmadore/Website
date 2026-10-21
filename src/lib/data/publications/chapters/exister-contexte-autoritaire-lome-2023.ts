@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const existerContexteAutoritaireLome: Publication = {
 	id: 'exister-contexte-autoritaire-lome-2023',

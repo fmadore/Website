@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const hadjCoteDIvoire: Publication = {
 	id: 'hadj-cote-divoire-2018',

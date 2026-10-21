@@ -4,7 +4,7 @@
  *
  * Built from the same records and the same formatters as the HTML CV
  * (`src/routes/cv/+page.svelte` and the section components in
- * `$lib/components/cv/`), never by reading the rendered page: the same
+ * `#lib/components/cv/`), never by reading the rendered page: the same
  * sections in the same order, each filtering and ordering its records as its
  * component does, each entry set as the component sets it. A ledger row
  * becomes a bullet that leads with its key in bold (`**2021–25**`); the
@@ -18,34 +18,34 @@
  * are dropped.
  *
  * Which records a section holds and in what order is decided once, in
- * `$lib/utils/cvSections.ts`, which the components read too; the consulting
- * and computer-skills entries are data (`$lib/data/consulting.ts`,
- * `$lib/data/computerSkills.ts`). Only the setting of an entry is this
+ * `#lib/utils/cvSections.ts`, which the components read too; the consulting
+ * and computer-skills entries are data (`#lib/data/consulting.ts`,
+ * `#lib/data/computerSkills.ts`). Only the setting of an entry is this
  * module's own.
  */
-import { affiliationsByStartDate } from '$lib/data/affiliations';
-import { appointmentsByDate } from '$lib/data/appointments';
-import { awardsByDate } from '$lib/data/awards';
-import { cvCommunicationsByDate } from '$lib/data/communications/cv';
-import { computerSkills as skillGroups } from '$lib/data/computerSkills';
-import { consulting as consultingEngagements } from '$lib/data/consulting';
-import { allDhProjectSummaries } from '$lib/data/digital-humanities/summaries';
-import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
-import { educationByDate } from '$lib/data/education';
-import { fieldworksByDate } from '$lib/data/fieldworks';
-import { grantsByDate } from '$lib/data/grants';
-import { languagesByProficiency } from '$lib/data/languages';
-import { mediaAppearancesByDate } from '$lib/data/media-appearances';
-import { peerReviewsByDate } from '$lib/data/peer-reviews';
-import { cvPublicationsByDate } from '$lib/data/publications/cv';
-import { researchRolesByDate } from '$lib/data/research-roles';
-import { address, author, contact, socialLinks, website } from '$lib/data/siteConfig';
-import teaching from '$lib/data/teaching';
-import guestLectures from '$lib/data/teaching/guest-lectures';
-import type { CvCommunication } from '$lib/types/communication';
-import type { DigitalHumanitiesSummary } from '$lib/types/digitalHumanities';
-import type { CvPublication } from '$lib/types/publication';
-import { BUILT_AT } from '$lib/utils/buildDate';
+import { affiliationsByStartDate } from '#lib/data/affiliations/index.ts';
+import { appointmentsByDate } from '#lib/data/appointments/index.ts';
+import { awardsByDate } from '#lib/data/awards/index.ts';
+import { cvCommunicationsByDate } from '#lib/data/communications/cv.ts';
+import { computerSkills as skillGroups } from '#lib/data/computerSkills.ts';
+import { consulting as consultingEngagements } from '#lib/data/consulting.ts';
+import { allDhProjectSummaries } from '#lib/data/digital-humanities/summaries.ts';
+import { editorialMembershipsByDate } from '#lib/data/editorial-memberships/index.ts';
+import { educationByDate } from '#lib/data/education/index.ts';
+import { fieldworksByDate } from '#lib/data/fieldworks/index.ts';
+import { grantsByDate } from '#lib/data/grants/index.ts';
+import { languagesByProficiency } from '#lib/data/languages/index.ts';
+import { mediaAppearancesByDate } from '#lib/data/media-appearances/index.ts';
+import { peerReviewsByDate } from '#lib/data/peer-reviews/index.ts';
+import { cvPublicationsByDate } from '#lib/data/publications/cv.ts';
+import { researchRolesByDate } from '#lib/data/research-roles/index.ts';
+import { address, author, contact, socialLinks, website } from '#lib/data/siteConfig.ts';
+import teaching from '#lib/data/teaching/index.ts';
+import guestLectures from '#lib/data/teaching/guest-lectures.ts';
+import type { CvCommunication } from '#lib/types/communication.ts';
+import type { DigitalHumanitiesSummary } from '#lib/types/digitalHumanities.ts';
+import type { CvPublication } from '#lib/types/publication.ts';
+import { BUILT_AT } from '#lib/utils/buildDate.ts';
 import {
 	formatAffiliationPeriod,
 	formatBlogDate,
@@ -57,7 +57,7 @@ import {
 	groupPublicationsByType,
 	terminalPeriod,
 	trimTerminalPeriod
-} from '$lib/utils/cvFormatters';
+} from '#lib/utils/cvFormatters.ts';
 import {
 	cvEventDate,
 	formatCvEditionDate,
@@ -74,11 +74,11 @@ import {
 	splitEducation,
 	teachingLectures,
 	teachingLevelLabel
-} from '$lib/utils/cvSections';
-import { formatDayMonth, getYearFromISODate } from '$lib/utils/date-formatter';
-import { groupProjectLinks, projectLinkText } from '$lib/utils/projectLinks';
-import { getPublicationTypeDisplayName } from '$lib/utils/publicationTypeLabels';
-import { quoteTitle, typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
+} from '#lib/utils/cvSections.ts';
+import { formatDayMonth, getYearFromISODate } from '#lib/utils/date-formatter.ts';
+import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
+import { getPublicationTypeDisplayName } from '#lib/utils/publicationTypeLabels.ts';
+import { quoteTitle, typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 import { htmlToMarkdown } from './htmlToMarkdown';
 import { blocks, bullets, document, fields, inline, link, section } from './markdown';
 import { markdownUrl, pageUrl, resolveLink, SITE } from './site';

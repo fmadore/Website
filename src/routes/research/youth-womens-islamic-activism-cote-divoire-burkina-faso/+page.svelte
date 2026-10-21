@@ -1,8 +1,8 @@
 <script lang="ts">
-	import ResearchProjectLayout from '$lib/components/research/ResearchProjectLayout.svelte';
-	import { researchProject } from '$lib/data/research';
-	import RelevantGrants from '$lib/components/panels/RelevantGrants.svelte';
-	import ItemReference from '$lib/components/reference/ItemReference.svelte';
+	import ResearchProjectLayout from '#lib/components/research/ResearchProjectLayout.svelte';
+	import { researchProject } from '#lib/data/research/index.ts';
+	import RelevantGrants from '#lib/components/panels/RelevantGrants.svelte';
+	import ItemReference from '#lib/components/reference/ItemReference.svelte';
 </script>
 
 <ResearchProjectLayout

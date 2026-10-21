@@ -15,7 +15,7 @@ export default defineConfig({
 		conditions: ['browser'],
 		alias: [
 			{
-				find: '$app/environment',
+				find: '$app/env',
 				replacement: fileURLToPath(new URL('./tests-lifecycle/environment.ts', import.meta.url))
 			},
 			{
@@ -39,8 +39,7 @@ export default defineConfig({
 				replacement: fileURLToPath(
 					new URL('./node_modules/svelte/src/index-client.js', import.meta.url)
 				)
-			},
-			{ find: '$lib', replacement: fileURLToPath(new URL('./src/lib', import.meta.url)) }
+			}
 		]
 	},
 	test: {

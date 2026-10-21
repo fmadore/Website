@@ -1,4 +1,4 @@
-import type { Grant } from '$lib/types';
+import type { Grant } from '#lib/types/index.ts';
 
 export const frqscMasters2011: Grant = {
 	id: 'frqsc-masters-2011',

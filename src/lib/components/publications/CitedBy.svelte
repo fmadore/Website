@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { CitingWork } from '$lib/types/publication';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import type { CitingWork } from '#lib/types/publication.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	// Prop to receive the array of citing works.
 	let { citedBy = [] }: { citedBy?: CitingWork[] } = $props();

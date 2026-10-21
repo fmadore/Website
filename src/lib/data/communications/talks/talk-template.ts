@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Talk Template - Copy this file and fill in the details
 export const talkTemplate: Communication = {

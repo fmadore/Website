@@ -1,7 +1,7 @@
 /**
  * Stub for SvelteKit's `$app/paths` virtual module in plain-Node Vitest runs
- * (no SvelteKit plugin loaded — see vitest.config.ts). Data files import
- * `base` to prefix internal links; an empty base matches the dev default.
+ * (no SvelteKit plugin loaded — see vitest.config.ts). The site deploys at the
+ * domain root, so both resolve to a root path, as on the client.
  */
-export const base = '';
-export const assets = '';
+export const resolve = (path: string): string => (path.startsWith('/') ? path : `/${path}`);
+export const asset = (file: string): string => `/${file.replace(/^\/+/, '')}`;

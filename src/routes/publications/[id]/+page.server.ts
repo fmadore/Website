@@ -1,8 +1,8 @@
-import { relatedItems } from '$lib/server/relatedItems';
-import { researchProjectPath } from '$lib/data/research';
-import { allPublications } from '$lib/data/publications/index';
-import { buildPublicationJsonLd, resolvePublicationJsonLdType } from '$lib/utils/entityJsonLd';
-import { loadEntityDetail } from '$lib/utils/entityPageLoader';
+import { relatedItems } from '#lib/server/relatedItems.ts';
+import { researchProjectPath } from '#lib/data/research/index.ts';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { buildPublicationJsonLd, resolvePublicationJsonLdType } from '#lib/utils/entityJsonLd.ts';
+import { loadEntityDetail } from '#lib/utils/entityPageLoader.ts';
 import type { PageServerLoad } from './$types';
 
 /**

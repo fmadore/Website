@@ -5,7 +5,7 @@
  * Each helper takes the raw item array plus accessor callbacks; it owns the
  * group-then-sort algorithm so the two viz pages no longer hand-roll it.
  */
-import type { LocationDatum } from '$lib/data/geo';
+import type { LocationDatum } from '#lib/data/geo.ts';
 
 /**
  * Group items by a country/location key, collect per-item metadata, and sort

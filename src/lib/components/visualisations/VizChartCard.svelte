@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { inView } from '$lib/actions/inView';
+	import { inView } from '#lib/actions/inView.ts';
 
 	/**
 	 * Shared chart container used by the visualisations pages.

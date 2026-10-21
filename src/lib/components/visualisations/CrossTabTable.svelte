@@ -17,7 +17,7 @@ It is a native <table>, so it needs no separate data table and no description
 string: a screen reader reads it as what it is.
 -->
 <script lang="ts">
-	import type { CrossTab } from '$lib/utils/vizAggregation';
+	import type { CrossTab } from '#lib/utils/vizAggregation.ts';
 
 	let {
 		table,

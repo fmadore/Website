@@ -1,10 +1,9 @@
-import { activitiesByDate } from '$lib/data/activities';
-import { allPublications } from '$lib/data/publications/index';
-import { allCommunications } from '$lib/data/communications/index';
-import { allDhProjects } from '$lib/data/digital-humanities';
+import { activitiesByDate } from '#lib/data/activities/index.ts';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { allCommunications } from '#lib/data/communications/index.ts';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
 import type { RequestHandler } from '@sveltejs/kit';
-import { base } from '$app/paths';
-import { website as site } from '$lib/data/siteConfig';
+import { website as site } from '#lib/data/siteConfig.ts';
 
 // Explicitly prerender this endpoint
 export const prerender = true;
@@ -96,7 +95,7 @@ export const GET: RequestHandler = async () => {
 
 	// Digital Humanities project routes
 	const dhProjectPages: SitemapEntry[] = allDhProjects.map((project) => ({
-		path: `${base}/digital-humanities/${project.id}`,
+		path: `/digital-humanities/${project.id}`,
 		priority: 0.8,
 		changefreq: 'monthly' as const
 	}));

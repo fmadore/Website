@@ -1,5 +1,5 @@
 // src/lib/data/appointments/uottawa-2020.ts
-import type { Appointment } from '$lib/types';
+import type { Appointment } from '#lib/types/index.ts';
 
 export const uottawa2020: Appointment = {
 	id: 'part-time-uottawa-2020',

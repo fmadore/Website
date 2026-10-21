@@ -1,5 +1,5 @@
-import { allPublications } from '$lib/data/publications/index';
-import { generatePublicationsRSSFeed } from '$lib/utils/rss';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { generatePublicationsRSSFeed } from '#lib/utils/rss.ts';
 import type { RequestHandler } from '@sveltejs/kit';
 
 // Prerender this endpoint for static site generation

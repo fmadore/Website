@@ -1,5 +1,5 @@
-import type { Activity } from '$lib/types';
-import { formatDisplayDate } from '$lib/utils/date-formatter';
+import type { Activity } from '#lib/types/index.ts';
+import { formatDisplayDate } from '#lib/utils/date-formatter.ts';
 
 const volkswagenStiftungOpenUpKickoff2026: Activity = {
 	id: 'volkswagenstiftung-open-up-kickoff-2026',

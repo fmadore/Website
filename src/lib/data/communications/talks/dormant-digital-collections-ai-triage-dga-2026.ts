@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Talk: Dormant Digital Collections, AI Triage: Lessons from the Islam West Africa Collection and Beyond
 export const talkDormantDigitalCollectionsAiTriageDga2026: Communication = {

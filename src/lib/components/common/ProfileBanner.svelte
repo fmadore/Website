@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { author, website } from '$lib/data/siteConfig';
+	import { author, website } from '#lib/data/siteConfig.ts';
 
 	// Display the site domain as a quiet mono dateline. The `www.` is dropped:
 	// a masthead dateline names the publication, and the subdomain is transport.

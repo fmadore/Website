@@ -1,26 +1,26 @@
 // src/lib/utils/timelineData.ts
 // Utility functions to transform various data types into TimelineItem format
 
-import type { TimelineItem, TimelineCategory } from '$lib/types/timeline';
-import type { Appointment } from '$lib/types/appointment';
-import type { Education } from '$lib/types/education';
-import type { Grant } from '$lib/types/grant';
-import type { Publication } from '$lib/types/publication';
-import type { CommunicationSummary } from '$lib/types/communication';
-import type { Award } from '$lib/types/award';
-import type { Fieldwork } from '$lib/types/fieldwork';
+import type { TimelineItem, TimelineCategory } from '#lib/types/timeline.ts';
+import type { Appointment } from '#lib/types/appointment.ts';
+import type { Education } from '#lib/types/education.ts';
+import type { Grant } from '#lib/types/grant.ts';
+import type { Publication } from '#lib/types/publication.ts';
+import type { CommunicationSummary } from '#lib/types/communication.ts';
+import type { Award } from '#lib/types/award.ts';
+import type { Fieldwork } from '#lib/types/fieldwork.ts';
 
 // Data imports
-import { allAppointments } from '$lib/data/appointments';
-import { allEducation } from '$lib/data/education';
-import { allGrants } from '$lib/data/grants';
-import { allPublications } from '$lib/data/publications';
+import { allAppointments } from '#lib/data/appointments/index.ts';
+import { allEducation } from '#lib/data/education/index.ts';
+import { allGrants } from '#lib/data/grants/index.ts';
+import { allPublications } from '#lib/data/publications/index.ts';
 // A talk card prints title, venue and location — never the abstract — so the
 // timeline takes the committed projection. Publications keep the full index:
 // their card's description IS the abstract.
-import { allCommunicationSummaries as allCommunications } from '$lib/data/communications/summaries';
-import { allAwards } from '$lib/data/awards';
-import { allFieldworks } from '$lib/data/fieldworks';
+import { allCommunicationSummaries as allCommunications } from '#lib/data/communications/summaries.ts';
+import { allAwards } from '#lib/data/awards/index.ts';
+import { allFieldworks } from '#lib/data/fieldworks/index.ts';
 
 /**
  * Transform an Appointment to a TimelineItem

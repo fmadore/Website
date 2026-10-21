@@ -1,5 +1,5 @@
-import type { Communication } from '$lib/types/communication';
-import { loadData } from '$lib/utils/dataLoader';
+import type { Communication } from '#lib/types/communication.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 
 // Dynamically import all event files (excluding this index and the template)
 const eventModules = import.meta.glob(['./*.ts', '!./index.ts', '!./event-template.ts'], {

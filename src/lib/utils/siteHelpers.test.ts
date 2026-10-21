@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { address, author, contact, website } from '$lib/data/siteConfig';
+import { address, author, contact, website } from '#lib/data/siteConfig.ts';
 import {
 	getAddressLines,
 	getCvDescription,

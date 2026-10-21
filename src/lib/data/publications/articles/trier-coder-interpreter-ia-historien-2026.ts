@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const trierCoderInterpreterIaHistorien2026: Publication = {
 	id: 'trier-coder-interpreter-ia-historien-2026',

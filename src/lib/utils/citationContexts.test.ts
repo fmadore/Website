@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { CitationContextSet, CitingWork } from '$lib/types';
+import type { CitationContextSet, CitingWork } from '#lib/types/index.ts';
 import {
 	buildCitationContextSection,
 	buildCitationContextSections,

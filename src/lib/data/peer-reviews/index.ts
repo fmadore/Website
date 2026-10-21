@@ -1,7 +1,7 @@
 // src/lib/data/peer-reviews/index.ts
-import type { PeerReview } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
-import { sortByDate, groupByYear } from '$lib/utils/dataAggregation';
+import type { PeerReview } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
+import { sortByDate, groupByYear } from '#lib/utils/dataAggregation.ts';
 
 type ModuleType = Record<string, unknown>;
 

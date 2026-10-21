@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const digitalHoardingOpenArchivesWarsaw: Communication = {
 	id: 'digital-hoarding-open-archives-warsaw-2026',

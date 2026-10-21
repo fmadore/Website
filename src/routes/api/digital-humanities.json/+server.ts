@@ -1,13 +1,13 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { allDhProjects } from '$lib/data/digital-humanities';
-import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
+import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 import {
 	absoluteUrl,
 	buildLinks,
 	compact,
 	datasetPayload,
 	jsonResponse
-} from '$lib/utils/apiPayload';
+} from '#lib/utils/apiPayload.ts';
 
 // Prerendered to build/api/digital-humanities.json alongside the rest of the site.
 export const prerender = true;

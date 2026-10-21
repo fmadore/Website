@@ -1,7 +1,7 @@
 // src/lib/data/awards/index.ts
-import type { Award } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
-import { sortByDate } from '$lib/utils/dataAggregation';
+import type { Award } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
+import { sortByDate } from '#lib/utils/dataAggregation.ts';
 
 type ModuleType = Record<string, unknown>;
 

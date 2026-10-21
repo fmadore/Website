@@ -14,7 +14,7 @@
  * `--lg-down` in `media.css` is the same boundary; a literal is unavoidable in
  * `matchMedia`, so this module is the single place it is written down.
  */
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 
 /** Mirrors `--lg-down` in `src/styles/base/media.css`. */
 export const FACET_COLLAPSIBLE_QUERY = '(max-width: 1023px)';

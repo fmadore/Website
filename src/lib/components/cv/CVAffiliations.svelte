@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { affiliationsByStartDate } from '$lib/data/affiliations';
-	import { formatAffiliationPeriod } from '$lib/utils/cvFormatters';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { affiliationsByStartDate } from '#lib/data/affiliations/index.ts';
+	import { formatAffiliationPeriod } from '#lib/utils/cvFormatters.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 </script>
 

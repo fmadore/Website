@@ -6,21 +6,27 @@ import {
 	website,
 	socialLinks,
 	researchTopics
-} from '$lib/data/siteConfig';
-import { appointmentsByDate } from '$lib/data/appointments';
-import { educationByDate } from '$lib/data/education';
-import { grantsByDate } from '$lib/data/grants';
-import { awardsByDate } from '$lib/data/awards';
-import { editorialMembershipsByDate } from '$lib/data/editorial-memberships';
-import { peerReviewsByDate } from '$lib/data/peer-reviews';
-import { researchRolesByDate } from '$lib/data/research-roles';
-import { affiliationsByStartDate } from '$lib/data/affiliations';
-import { languagesByProficiency } from '$lib/data/languages';
-import { fieldworksByDate } from '$lib/data/fieldworks';
-import { mediaAppearancesByDate } from '$lib/data/media-appearances';
-import teaching from '$lib/data/teaching';
-import { allLectures } from '$lib/server/teachingLectures';
-import { absoluteUrl, API_VERSION, buildLinks, compact, jsonResponse } from '$lib/utils/apiPayload';
+} from '#lib/data/siteConfig.ts';
+import { appointmentsByDate } from '#lib/data/appointments/index.ts';
+import { educationByDate } from '#lib/data/education/index.ts';
+import { grantsByDate } from '#lib/data/grants/index.ts';
+import { awardsByDate } from '#lib/data/awards/index.ts';
+import { editorialMembershipsByDate } from '#lib/data/editorial-memberships/index.ts';
+import { peerReviewsByDate } from '#lib/data/peer-reviews/index.ts';
+import { researchRolesByDate } from '#lib/data/research-roles/index.ts';
+import { affiliationsByStartDate } from '#lib/data/affiliations/index.ts';
+import { languagesByProficiency } from '#lib/data/languages/index.ts';
+import { fieldworksByDate } from '#lib/data/fieldworks/index.ts';
+import { mediaAppearancesByDate } from '#lib/data/media-appearances/index.ts';
+import teaching from '#lib/data/teaching/index.ts';
+import { allLectures } from '#lib/server/teachingLectures.ts';
+import {
+	absoluteUrl,
+	API_VERSION,
+	buildLinks,
+	compact,
+	jsonResponse
+} from '#lib/utils/apiPayload.ts';
 
 // Prerendered to build/api/cv.json alongside the rest of the site.
 export const prerender = true;

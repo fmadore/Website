@@ -1,4 +1,4 @@
-import type { CvPublicationField, HeavyPublicationField } from '$lib/types/publication';
+import type { CvPublicationField, HeavyPublicationField } from '#lib/types/publication.ts';
 
 /**
  * Shared between the summaries generator

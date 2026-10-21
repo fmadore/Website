@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const reconfiguringArchiveAmira2026: Communication = {
 	id: 'reconfiguring-archive-amira-2026',

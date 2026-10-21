@@ -39,7 +39,7 @@ import type {
 	NetworkEdgeKind,
 	NetworkNode,
 	SelectedGraph
-} from '$lib/utils/networkAggregation';
+} from '#lib/utils/networkAggregation.ts';
 
 /** A node kept by `selectGraph`, with the radius the layout will draw it at. */
 export interface LaidOutNode extends NetworkNode {

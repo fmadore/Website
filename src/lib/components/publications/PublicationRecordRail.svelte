@@ -9,15 +9,15 @@ The other half of the old <PublicationAside> — tags and key terms — is
 <PublicationIndexRail>, which belongs *after* the document it indexes.
 -->
 <script lang="ts">
-	import { base } from '$app/paths';
-	import type { Publication } from '$lib/types';
-	import RecordLedger, { type MetaRow } from '$lib/components/molecules/RecordLedger.svelte';
-	import { generateBibtex } from '$lib/utils/bibtexGenerator';
-	import { formatReferenceHtml, formatReferenceText } from '$lib/utils/citationFormatter';
-	import { createCopyFeedback } from '$lib/utils/clipboard.svelte';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '$lib/utils/imageVariants';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { plateFallback } from '$lib/actions/plateFallback';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import type { Publication } from '#lib/types/index.ts';
+	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
+	import { generateBibtex } from '#lib/utils/bibtexGenerator.ts';
+	import { formatReferenceHtml, formatReferenceText } from '#lib/utils/citationFormatter.ts';
+	import { createCopyFeedback } from '#lib/utils/clipboard.svelte.ts';
+	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { plateFallback } from '#lib/actions/plateFallback.ts';
 
 	// The rail is 380px wide from --lg up; below that the cover spans the
 	// single column. The intrinsic size reserves the plate's box before the
@@ -36,7 +36,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 
 	// Cover image (aside plate). Prefer the dedicated cover; fall back to hero.
 	const coverSrc = $derived(
-		resolveImagePath(publication.image ?? publication.heroImage?.src, base)
+		resolveImagePath(publication.image ?? publication.heroImage?.src, basePrefix())
 	);
 	const coverSrcset = $derived(buildSrcset(coverSrc));
 	const coverSize = $derived(imageDimensions(coverSrc));

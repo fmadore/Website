@@ -4,7 +4,7 @@
  * organiser attribution machine-readable. Consumed by the
  * conference-activity route, which renders it through `<JsonLd>`.
  */
-import { address, author, website } from '$lib/data/siteConfig';
+import { address, author, website } from '#lib/data/siteConfig.ts';
 
 const organiserPerson = {
 	'@type': 'Person',

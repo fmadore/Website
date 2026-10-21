@@ -1,6 +1,6 @@
 // src/lib/data/research/index.ts
-import type { ResearchProject } from '$lib/types/research';
-import { loadData } from '$lib/utils/dataLoader';
+import type { ResearchProject } from '#lib/types/research.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 
 type ModuleType = Record<string, unknown>;
 

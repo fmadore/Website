@@ -8,13 +8,13 @@
  * page (/communications/[id]) and the server endpoints that serialise whole
  * records keep the full index.
  */
-import type { CommunicationSummary } from '$lib/types/communication';
+import type { CommunicationSummary } from '#lib/types/communication.ts';
 import {
 	sortByDate,
 	groupByYear,
 	groupByField,
 	extractUniqueTags
-} from '$lib/utils/dataAggregation';
+} from '#lib/utils/dataAggregation.ts';
 import { communicationSummaries } from './summaries.generated';
 
 export const allCommunicationSummaries: CommunicationSummary[] = communicationSummaries;

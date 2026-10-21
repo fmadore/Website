@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { tick } from 'svelte';
-	import { browser } from '$app/environment';
-	import { base, resolve } from '$app/paths';
+	import { browser } from '$app/env';
+	import { resolve } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import { resolveImagePath } from '#lib/utils/imageVariants.ts';
 	import { goto } from '$app/navigation';
-	import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
-	import { calculateCardPosition, getItemYear } from '$lib/utils/cardPositioning';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import type { ReferenceIndexEntry } from '#lib/types/referenceIndex.ts';
+	import { calculateCardPosition, getItemYear } from '#lib/utils/cardPositioning.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	let {
 		item,
@@ -39,15 +41,19 @@
 
 	const itemUrl = $derived(
 		item && itemType
-			? resolve(`/${itemType === 'publication' ? 'publications' : 'communications'}/${item.id}`)
+			? itemType === 'publication'
+				? resolve('/publications/[id]', { id: item.id })
+				: resolve('/communications/[id]', { id: item.id })
 			: '#'
 	);
 
 	// Consolidate image source logic
 	const imageSrc = $derived(
-		item && (('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image))
-			? `${base}/${('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image)}`
-			: null
+		resolveImagePath(
+			(item && (('heroImage' in item && item.heroImage?.src) || ('image' in item && item.image))) ||
+				undefined,
+			basePrefix()
+		) ?? null
 	);
 
 	// Use $effect to reactively position the card when dependencies change

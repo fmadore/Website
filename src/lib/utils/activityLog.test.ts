@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { summariseActivityLog } from './activityLog';
-import { activitiesByDate } from '$lib/data/activities';
+import { activitiesByDate } from '#lib/data/activities/index.ts';
 
 const entry = (id: string, year: number) => ({ id, title: `T ${id}`, date: `1 May ${year}`, year });
 

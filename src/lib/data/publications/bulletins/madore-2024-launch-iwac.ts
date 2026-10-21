@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const madore2024LaunchIwac: Publication = {
 	id: 'madore-2024-launch-iwac', // URL-friendly ID

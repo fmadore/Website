@@ -5,11 +5,11 @@ import {
 	buildActivityJsonLd,
 	buildDhProjectJsonLd
 } from './entityJsonLd';
-import type { Publication } from '$lib/types/publication';
-import type { Communication } from '$lib/types/communication';
-import type { Activity } from '$lib/types/activity';
-import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
-import { website } from '$lib/data/siteConfig';
+import type { Publication } from '#lib/types/publication.ts';
+import type { Communication } from '#lib/types/communication.ts';
+import type { Activity } from '#lib/types/activity.ts';
+import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
+import { website } from '#lib/data/siteConfig.ts';
 
 const pub = (over: Partial<Publication>): Publication & { sourceDirType: string } =>
 	({

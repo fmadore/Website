@@ -1,6 +1,6 @@
-import guestLectures from '$lib/data/teaching/guest-lectures';
-import { cvCommunicationsByDate } from '$lib/data/communications/cv';
-import { teachingLectures } from '$lib/utils/cvSections';
+import guestLectures from '#lib/data/teaching/guest-lectures.ts';
+import { cvCommunicationsByDate } from '#lib/data/communications/cv.ts';
+import { teachingLectures } from '#lib/utils/cvSections.ts';
 
 /**
  * The guest lectures and the talks given as teaching, newest first: the list

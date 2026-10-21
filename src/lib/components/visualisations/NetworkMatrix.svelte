@@ -13,18 +13,18 @@ It is also the site's own idiom rather than a borrowed one: a matrix is a
 ledger — ruled, gridded, set in the data voice.
 -->
 <script lang="ts">
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { innerWidth } from 'svelte/reactivity/window';
-	import { getResolvedChartColors, colorWithOpacity } from '$lib/utils/chartColorUtils';
-	import { downloadSvgAsImage } from '$lib/utils/chartActions';
+	import { getResolvedChartColors, colorWithOpacity } from '#lib/utils/chartColorUtils.ts';
+	import { downloadSvgAsImage } from '#lib/utils/chartActions.ts';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import NetworkTooltip from './NetworkTooltip.svelte';
 	import type { TooltipContent } from './NetworkTooltip.svelte';
-	import { selectGraph } from '$lib/utils/networkAggregation';
-	import type { NetworkEdge, NetworkNode } from '$lib/utils/networkAggregation';
-	import { buildMatrix } from '$lib/utils/networkMatrix';
-	import type { NodeOrder } from '$lib/utils/seriation';
-	import '$styles/components/network-viz.css';
+	import { selectGraph } from '#lib/utils/networkAggregation.ts';
+	import type { NetworkEdge, NetworkNode } from '#lib/utils/networkAggregation.ts';
+	import { buildMatrix } from '#lib/utils/networkMatrix.ts';
+	import type { NodeOrder } from '#lib/utils/seriation.ts';
+	import '#styles/components/network-viz.css';
 
 	let {
 		nodes = [] as NetworkNode[],

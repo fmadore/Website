@@ -11,12 +11,12 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		getEChartsSplitLineStyle,
 		getEChartsAccentDecal,
 		getChartMotion
-	} from '$lib/utils/chartColorUtils';
-	import { useECharts } from '$lib/utils/useECharts.svelte';
+	} from '#lib/utils/chartColorUtils.ts';
+	import { useECharts } from '#lib/utils/useECharts.svelte.ts';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import ChartStatus from './ChartStatus.svelte';
-	import { getAriaConfig } from '$lib/utils/chartActions';
-	import { describeSeries } from '$lib/utils/chartDescriptions';
+	import { getAriaConfig } from '#lib/utils/chartActions.ts';
+	import { describeSeries } from '#lib/utils/chartDescriptions.ts';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;

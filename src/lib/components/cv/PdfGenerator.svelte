@@ -1,11 +1,11 @@
 <script lang="ts">
 	/**
 	 * CV PDF download button. The actual DOM-reading + jsPDF typesetting lives
-	 * in $lib/utils/pdfCvGenerator (Ink + Signal print design notes there);
+	 * in #lib/utils/pdfCvGenerator (Ink + Signal print design notes there);
 	 * this component only lazy-loads jsPDF and tracks the busy state.
 	 */
 	import Icon from '@iconify/svelte';
-	import { generateCvPdf } from '$lib/utils/pdfCvGenerator';
+	import { generateCvPdf } from '#lib/utils/pdfCvGenerator.ts';
 
 	let isGenerating = $state(false);
 	/** A failed export must say so. Previously the only report was a DEV-only

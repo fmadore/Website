@@ -3,7 +3,7 @@
 import {
 	imageVariantManifest,
 	type ImageVariantManifestEntry
-} from '$lib/data/imageVariants.generated';
+} from '#lib/data/imageVariants.generated.ts';
 
 /**
  * The derivative ladder, mirrored from `scripts/generate/generate-image-variants.mjs`

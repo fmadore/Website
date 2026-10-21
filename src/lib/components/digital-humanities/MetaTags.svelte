@@ -3,11 +3,11 @@
 	// Highwire/Dublin Core tags plus a COinS span, mirroring the MetaTags
 	// components the publication/communication/activity detail routes carry.
 	// A DH project is described as a web resource (DC format, type "webpage").
-	import type { DigitalHumanitiesProject } from '$lib/types/digitalHumanities';
+	import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 	import { page } from '$app/state';
-	import { author, website } from '$lib/data/siteConfig';
-	import { buildCoins, buildHeadTags, toLastFirstFormat } from '$lib/utils/metaTags';
-	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
+	import { author, website } from '#lib/data/siteConfig.ts';
+	import { buildCoins, buildHeadTags, toLastFirstFormat } from '#lib/utils/metaTags.ts';
+	import BaseMetaTags from '#lib/components/common/BaseMetaTags.svelte';
 
 	let { project }: { project: DigitalHumanitiesProject } = $props();
 

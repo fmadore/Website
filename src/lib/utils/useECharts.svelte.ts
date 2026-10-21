@@ -8,7 +8,7 @@
  * Usage:
  * ```svelte
  * <script lang="ts">
- *   import { useECharts } from '$lib/utils/useECharts.svelte';
+ *   import { useECharts } from '#lib/utils/useECharts.svelte.ts';
  *
  *   let chartContainer: HTMLDivElement;
  *   const chartOption = $derived({ ... });
@@ -48,7 +48,7 @@
 
 import { untrack } from 'svelte';
 import { echartsTooltipPlacement } from './echartsTooltip';
-import type * as echarts from '$lib/utils/echartsCore';
+import type * as echarts from '#lib/utils/echartsCore.ts';
 
 /** Options accepted by ECharts' `setOption`, in object form. */
 export interface EChartsSetOptionOpts {
@@ -167,7 +167,7 @@ export function useECharts(options: UseEChartsOptions): UseEChartsReturn {
 			if (!echartsLib) {
 				try {
 					// Tree-shaken core (see echartsCore.ts) — never the full 'echarts'.
-					const echartsModule = await import('$lib/utils/echartsCore');
+					const echartsModule = await import('#lib/utils/echartsCore.ts');
 					if (!mounted) return;
 					echartsLib = echartsModule;
 				} catch (error) {

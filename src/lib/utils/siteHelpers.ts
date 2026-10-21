@@ -3,7 +3,7 @@
  * Provides formatted output for various contexts (HTML, PDF, SEO, RSS)
  */
 
-import { address, author, contact, website, socialLinks } from '$lib/data/siteConfig';
+import { address, author, contact, website, socialLinks } from '#lib/data/siteConfig.ts';
 
 /**
  * Get address as array of lines (for PDF generation)

@@ -6,19 +6,19 @@
  * is handled via dimension match functions.
  */
 
-import { countOccurrences, byFrequencyThenAlpha } from '$lib/utils/facetOrdering';
-import type { PublicationSummary, YearRange } from '$lib/types';
+import { countOccurrences, byFrequencyThenAlpha } from '#lib/utils/facetOrdering.ts';
+import type { PublicationSummary, YearRange } from '#lib/types/index.ts';
 import {
 	allPublicationSummaries,
 	publicationSummariesByType,
 	publicationSummariesByYear,
 	publicationSummaryTags
 } from './summaries';
-import { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
-import { PUBLICATION_TYPE_FILTER_LABELS as typeLabels } from '$lib/utils/publicationTypeLabels';
-import { splitNames } from '$lib/utils/nameUtils';
-import { getContributorNames } from '$lib/utils/contributor';
-import { author } from '$lib/data/siteConfig';
+import { EntityFilterSystem } from '#lib/utils/entityFilterSystem.svelte.ts';
+import { PUBLICATION_TYPE_FILTER_LABELS as typeLabels } from '#lib/utils/publicationTypeLabels.ts';
+import { splitNames } from '#lib/utils/nameUtils.ts';
+import { getContributorNames } from '#lib/utils/contributor.ts';
+import { author } from '#lib/data/siteConfig.ts';
 
 // The index filters over the summaries: every facet, count and sort key below
 // is a summary field, so the page never pays for abstracts or citation lists.

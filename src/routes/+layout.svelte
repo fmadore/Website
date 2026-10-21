@@ -1,22 +1,22 @@
 <script lang="ts">
+	import { pageHref } from '#lib/utils/paths.ts';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 	import { afterNavigate, goto } from '$app/navigation';
-	import { base } from '$app/paths';
 	import { fade } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
-	import { motionDuration } from '$lib/utils/motion';
-	import Footer from '$lib/components/common/Footer.svelte';
-	import Header from '$lib/components/menu/Header.svelte';
-	import PWAUpdatePrompt from '$lib/components/common/PWAUpdatePrompt.svelte';
-	import NetworkStatusIndicator from '$lib/components/atoms/NetworkStatusIndicator.svelte';
+	import { motionDuration } from '#lib/utils/motion.ts';
+	import Footer from '#lib/components/common/Footer.svelte';
+	import Header from '#lib/components/menu/Header.svelte';
+	import PWAUpdatePrompt from '#lib/components/common/PWAUpdatePrompt.svelte';
+	import NetworkStatusIndicator from '#lib/components/atoms/NetworkStatusIndicator.svelte';
 	import '../app.css';
 	import type { LayoutProps } from './$types';
-	import { registerIcons } from '$lib/icons';
-	import { useGtm } from '$lib/utils/gtm.svelte';
-	import { useNetworkMonitor } from '$lib/utils/networkMonitor.svelte';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
+	import { registerIcons } from '#lib/icons.ts';
+	import { useGtm } from '#lib/utils/gtm.svelte.ts';
+	import { useNetworkMonitor } from '#lib/utils/networkMonitor.svelte.ts';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
 
 	// Readiness signal for progressive enhancements and browser checks.
 	onMount(() => {
@@ -64,13 +64,13 @@
 
 		let disposed = false;
 		let unregister = () => {};
-		void import('$lib/utils/webmcp')
+		void import('#lib/utils/webmcp.ts')
 			.then(({ registerWebMcp }) => {
 				if (disposed) return;
 				unregister = registerWebMcp({
 					// show_publications hands over a site path it built (`/publications?…`).
 					// eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed site path
-					navigate: (path) => goto(`${base}${path}`)
+					navigate: (path) => goto(pageHref(path))
 				});
 			})
 			.catch((error) => {

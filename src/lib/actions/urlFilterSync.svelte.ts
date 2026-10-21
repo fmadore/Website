@@ -1,6 +1,6 @@
 import { page } from '$app/state';
 import { replaceState } from '$app/navigation';
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 import { untrack } from 'svelte';
 import type { Action } from 'svelte/action';
 import {
@@ -12,7 +12,7 @@ import {
 	arrayValuesEqual,
 	yearRangesEqual,
 	type UrlSyncableFilters
-} from '$lib/utils/filterSerialization';
+} from '#lib/utils/filterSerialization.ts';
 
 type ActiveFilters = UrlSyncableFilters;
 
@@ -59,7 +59,7 @@ const ARRAY_FILTER_SETTERS = {
 /**
  * Svelte Action to synchronize filter state with URL query parameters.
  * Modernized for Svelte 5 using $effect() and $app/state. The pure
- * serialization/parsing logic lives in `$lib/utils/filterSerialization`.
+ * serialization/parsing logic lives in `#lib/utils/filterSerialization`.
  *
  * @example
  * ```svelte
@@ -110,6 +110,11 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		// without a navigation, which is exactly the amount of work a filter
 		// change is. Still replace and not push, so Back/Forward leaves the page
 		// rather than stepping through filter states.
+		// SvelteKit 3 deprecates replaceState for goto(url, { shallow: true,
+		// replace: true }), but that form runs the navigation hooks (a page view
+		// in the root layout's afterNavigate per chip click) and finishes as a
+		// navigation; replaceState still skips both, so it stays until Kit
+		// removes it.
 		// eslint-disable-next-line svelte/no-navigation-without-resolve -- targetUrl is built from page.url.pathname, which is already resolved
 		if (browser) replaceState(targetUrl, page.state);
 	});
@@ -128,7 +133,7 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		untrack(() => syncFromUrl(searchParams));
 	});
 
-	function syncFromUrl(searchParams: URLSearchParams) {
+	function syncFromUrl(searchParams: Pick<URLSearchParams, 'get' | 'getAll'>) {
 		let filtersChanged = false;
 
 		// Sync array filters: compare order-insensitively and update via the

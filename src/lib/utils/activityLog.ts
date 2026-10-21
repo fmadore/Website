@@ -4,7 +4,7 @@
  * five titles and a dozen counts instead of the activity dataset they come
  * from.
  */
-import type { Activity } from '$lib/types/activity';
+import type { Activity } from '#lib/types/activity.ts';
 
 /** One row of the rail's ledger. */
 export interface ActivityLogEntry {

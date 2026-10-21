@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 // Working Paper Template - Copy this file and fill in the details
 // A working paper is a numbered instalment in an institutional series

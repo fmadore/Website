@@ -75,7 +75,7 @@ for (const { from, family, jsonLd } of [
 
 /**
  * Inline citations resolve from the entries each page's server load sends
- * (`$lib/server/references`), not from a client-side copy of the index — so
+ * (`#lib/server/references`), not from a client-side copy of the index — so
  * they must resolve on a first load and again after a client-side navigation,
  * when `page.data` is replaced. An unresolved citation prints its raw id.
  */

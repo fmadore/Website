@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Talk: Questions d'islam en Afrique de lOuest. Les enjeux et défis de la recherche avec les archives physiques et numériques
 export const talkQuestionsIslamAfriqueOuest2025: Communication = {

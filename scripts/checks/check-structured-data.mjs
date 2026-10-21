@@ -104,9 +104,9 @@ if (failures.size > 0) {
 		console.error(`  ${description}\n    on ${sample}${more}`);
 	}
 	console.error(
-		'\nBuild JSON-LD addresses with `siteUrl()` from $lib/utils/siteHelpers (never from' +
+		'\nBuild JSON-LD addresses with `siteUrl()` from #lib/utils/siteHelpers (never from' +
 			"\nKit's `base`, which is page-relative), and dates with `formatJsonLdDate()`." +
-			'\nSignposting links come from `publicationSignposts()` in $lib/utils/signposting.ts.\n'
+			'\nSignposting links come from `publicationSignposts()` in #lib/utils/signposting.ts.\n'
 	);
 	exit(1);
 }

@@ -1,5 +1,5 @@
 // src/lib/data/grants/banting-2018.ts
-import type { Grant } from '$lib/types';
+import type { Grant } from '#lib/types/index.ts';
 
 export const banting2018: Grant = {
 	id: 'banting-2018',

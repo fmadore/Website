@@ -8,8 +8,8 @@ import {
 	buildInstitutionNetwork
 } from './networkAggregation';
 import type { NetworkData } from './networkAggregation';
-import type { Publication } from '$lib/types/publication';
-import type { Communication } from '$lib/types/communication';
+import type { Publication } from '#lib/types/publication.ts';
+import type { Communication } from '#lib/types/communication.ts';
 
 const CENTER = 'Frédérick Madore';
 

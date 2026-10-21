@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import type { ActivityLog } from '$lib/utils/activityLog';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import type { ActivityLog } from '#lib/utils/activityLog.ts';
 	import { resolve } from '$app/paths';
 	import PanelBase from './PanelBase.svelte';
 	import Button from '../atoms/Button.svelte';
@@ -54,10 +54,7 @@
 		<ol class="ledger log-ledger">
 			{#each activityList as activity (activity.id)}
 				<li>
-					<a
-						class="ledger-row log-row"
-						href={resolve(`/activities/${activity.id}` as `/activities/${string}`)}
-					>
+					<a class="ledger-row log-row" href={resolve('/activities/[id]', { id: activity.id })}>
 						<span class="ledger-key">
 							<span>{formatDayMonth(activity.date)}</span>
 							<span class="ledger-status">{formatYear(activity.date)}</span>
@@ -86,7 +83,7 @@
 				<li>
 					<a
 						class="year-meter-row"
-						href={resolve(`/activities/year/${row.year}` as `/activities/year/${string}`)}
+						href={resolve('/activities/year/[year]', { year: String(row.year) })}
 						aria-label="{row.year}, {row.count} {row.count === 1 ? 'activity' : 'activities'}"
 					>
 						<span class="year-meter-key" class:year-meter-key--current={row.year === newestYear}>

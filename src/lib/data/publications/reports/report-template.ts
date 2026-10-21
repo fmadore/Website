@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 // Report Publication Template - Copy this file and fill in the details
 export const reportTemplate: Publication = {

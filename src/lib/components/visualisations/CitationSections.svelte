@@ -4,8 +4,8 @@
 	import VizSection from './VizSection.svelte';
 	import VizChartCard from './VizChartCard.svelte';
 	import VizDataTable from './VizDataTable.svelte';
-	import Pagination from '$lib/components/molecules/Pagination.svelte';
-	import { usePagination } from '$lib/utils/pagination.svelte';
+	import Pagination from '#lib/components/molecules/Pagination.svelte';
+	import { usePagination } from '#lib/utils/pagination.svelte.ts';
 	type YearCount = { year: number; count: number };
 	type AuthorCount = { author: string; count: number };
 	type Section = { id: string; no: string; title: string; count: string };

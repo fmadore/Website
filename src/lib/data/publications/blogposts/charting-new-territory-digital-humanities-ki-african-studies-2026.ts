@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication = {
 	id: 'charting-new-territory-digital-humanities-ki-african-studies-2026',

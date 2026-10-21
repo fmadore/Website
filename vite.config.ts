@@ -1,4 +1,8 @@
+import adapter from '@sveltejs/adapter-static';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'vite';
 
 /** D3 packages only the lazily-loaded interactive charts need. */
@@ -53,6 +57,16 @@ const FRAMEWORK_RUNTIME =
 	/node_modules[\\/](svelte|@sveltejs|esm-env|devalue|clsx)[\\/]|vite[\\/]preload-helper|rolldown[:\\/]runtime/;
 
 /**
+ * Kit 3's client entry and the runtime it loads with `import()`, held out of
+ * the `framework` group: Kit reads that dynamic import from the client
+ * manifest to find the runtime chunk, and a group that captures both files
+ * turns it into a same-chunk import the manifest no longer records ("Could
+ * not find the client runtime chunk").
+ */
+const KIT_CLIENT_ENTRIES =
+	/@sveltejs[\\/]kit[\\/]src[\\/]runtime[\\/]client[\\/](client-)?entry\.js$/;
+
+/**
  * Site modules eligible for the `shared` chunk group: leaf utilities and the
  * small components several routes reuse. Only these directories, because a
  * group also captures what its modules import, so anything that reaches a
@@ -68,17 +82,128 @@ const APP_SHARED_DENY =
 /** The tree-shaking wrapper that rides in the `echarts` chunk with the library. */
 const ECHARTS_GLUE = /[\\/]src[\\/]lib[\\/]utils[\\/]echartsCore\.ts$/;
 
+/**
+ * Hashes of the inline scripts in src/app.html (the theme bootstrap). Kit
+ * hashes the scripts it generates itself; the template's are ours to declare.
+ * Read from the file, so editing the script changes its hash with it — a
+ * hand-copied hash would block the bootstrap the first time anyone touched it.
+ */
+const templateScriptHashes = [
+	...readFileSync(new URL('./src/app.html', import.meta.url), 'utf8').matchAll(
+		/<script>([\s\S]*?)<\/script\b[^>]*>/gi
+	)
+].map(([, body = '']) => `sha256-${createHash('sha256').update(body).digest('base64')}` as const);
+
+/**
+ * Svelte's server renderer writes `onload="this.__e=event"` and
+ * `onerror="this.__e=event"` on elements with load/error handlers (images,
+ * here), so an event that fires before hydration is replayed to the handler.
+ * A hash only covers an inline event-handler attribute under 'unsafe-hashes',
+ * which then allows exactly the handlers whose hash is listed — this one.
+ */
+const svelteEventReplayHash =
+	`sha256-${createHash('sha256').update('this.__e=event').digest('base64')}` as const;
+
 export default defineConfig({
-	plugins: [sveltekit()],
+	plugins: [
+		sveltekit({
+			preprocess: vitePreprocess(),
+			compilerOptions: {
+				runes: true
+			},
+			extensions: ['.svelte'],
+			adapter: adapter({
+				pages: 'build',
+				assets: 'build',
+				strict: true
+			}),
+			// Inline stylesheets into the prerendered HTML to eliminate
+			// render-blocking CSS requests. This has now silently failed twice: the
+			// shared app stylesheet grows, crosses the ceiling, and goes back out to
+			// a render-blocking <link> on every page with nothing in the build log
+			// to say so. Measured at 79,623 B (~12 KB compressed) when the ceiling
+			// was 72 KiB, costing 153 ms before first paint on all eight routes
+			// audited. 96 KiB restores the inline with ~16 KB of headroom; the
+			// caching trade-off is minor because GitHub Pages caps Cache-Control at
+			// max-age=600 anyway. Only the MapLibre sheet (~83KB, loaded with the
+			// map) stays external.
+			//
+			// The guard against a third recurrence is in lighthouserc.yml:
+			// `resource-summary:stylesheet:count` is budgeted at the one sheet a
+			// page legitimately requests, so an app stylesheet that falls out of the
+			// inline fails CI instead of quietly costing a round trip. Raise this
+			// ceiling only with the measured size named in the commit.
+			inlineStyleThreshold: 96 * 1024,
+			paths: {
+				base: ''
+			},
+			appDir: 'app', // Ensures all generated JS is under this directory
+			// Make sure all pages are pre-rendered
+			prerender: {
+				entries: ['*']
+			},
+			// Content Security Policy, delivered as a <meta> on every prerendered page
+			// (GitHub Pages sets no headers; frame-ancestors therefore cannot be set).
+			// Hash mode: Kit hashes its own inline bootstrap, the template's script is
+			// hashed above, and so `script-src` needs no 'unsafe-inline' — an injected
+			// inline script does not run. Google Analytics loads by `src` from the
+			// hosts below (https://developers.google.com/tag-platform/security/guides/csp).
+			// `style-src` keeps 'unsafe-inline': Svelte writes style attributes
+			// (`style="--pct: 40%"`) and inlines the stylesheet, and while it is
+			// present Kit adds no style hashes (a hash would disable it).
+			csp: {
+				mode: 'hash',
+				directives: {
+					'default-src': ['self'],
+					'script-src': [
+						'self',
+						'https://*.googletagmanager.com',
+						'https://*.google-analytics.com',
+						...templateScriptHashes,
+						'unsafe-hashes',
+						svelteEventReplayHash
+					],
+					'style-src': ['self', 'unsafe-inline'],
+					'font-src': ['self'],
+					'img-src': ['self', 'data:', 'https:', 'blob:'],
+					'connect-src': [
+						'self',
+						'https://*.google-analytics.com',
+						'https://*.analytics.google.com',
+						'https://*.googletagmanager.com',
+						'https://api.maptiler.com',
+						'https://zenodo.org',
+						'https://*.cartocdn.com'
+					],
+					'frame-src': [
+						'self',
+						'https://fmadore.github.io',
+						'https://zmo-berlin.github.io',
+						'https://slides.frederickmadore.com',
+						'https://iwac.frederickmadore.com',
+						'https://heshmat.zmo.de',
+						'https://cdn.knightlab.com'
+					],
+					'worker-src': ['self', 'blob:'],
+					'base-uri': ['self'],
+					'form-action': ['self']
+				}
+			},
+			serviceWorker: {
+				// PWAUpdatePrompt owns registration so updates can wait for consent.
+				register: false
+			}
+		})
+	],
 	// When the build ran, baked into the server and client bundles alike, so a
 	// date the page renders is the same in the prerendered HTML and in the
-	// client that hydrates it (see $lib/utils/buildDate.ts).
+	// client that hydrates it (see #lib/utils/buildDate.ts).
 	define: {
 		__BUILT_AT__: JSON.stringify(new Date().toISOString())
 	},
 	build: {
 		// Note: cssCodeSplit is controlled by SvelteKit internally
-		// Use kit.inlineStyleThreshold in svelte.config.js instead
+		// Use inlineStyleThreshold in the sveltekit() options above instead
 		chunkSizeWarningLimit: 1000, // Warn at 1000KB (1MB) to accommodate large libraries like ECharts
 		// 'hidden' emits .map files for local debugging without sourceMappingURL
 		// references; the deploy workflow strips *.map before the Pages upload so
@@ -98,7 +223,11 @@ export default defineConfig({
 					// on every build that no heavy library became statically reachable.
 					groups: [
 						// First, so the shared helpers land here (see FRAMEWORK_RUNTIME).
-						{ name: 'framework', test: FRAMEWORK_RUNTIME, priority: 100 },
+						{
+							name: 'framework',
+							test: (id) => FRAMEWORK_RUNTIME.test(id) && !KIT_CLIENT_ENTRIES.test(id),
+							priority: 100
+						},
 
 						// Heavy charting library — dynamically imported, its own chunk.
 						// The test deliberately matches the tree-shaking wrapper
@@ -146,7 +275,7 @@ export default defineConfig({
 						// gone, but natural splitting already gives each its own chunk and
 						// keeps it off every route that does not use it. MapLibre's Web
 						// Worker is emitted separately, out of `?worker&url` in
-						// `$lib/utils/maplibre.ts` — see that file before touching this.
+						// `#lib/utils/maplibre.ts` — see that file before touching this.
 
 						// Site utilities and small components shared by two or more routes.
 						// `entriesAware` groups them by the exact set of routes that import

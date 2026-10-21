@@ -1,4 +1,4 @@
-import type { EditorialMembership } from '$lib/types';
+import type { EditorialMembership } from '#lib/types/index.ts';
 
 export const rhcaCommittee2025: EditorialMembership = {
 	id: 'rhca-committee-2025',

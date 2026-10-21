@@ -17,7 +17,7 @@ as the list it is, and needs no separate data table.
 -->
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { VenueLedger, VenueWork } from '$lib/utils/venueLedger';
+	import type { VenueLedger, VenueWork } from '#lib/utils/venueLedger.ts';
 
 	let { ledger }: { ledger: VenueLedger } = $props();
 

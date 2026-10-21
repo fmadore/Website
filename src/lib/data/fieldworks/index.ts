@@ -1,6 +1,11 @@
-import type { Fieldwork } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
-import { sortByYear, groupByYear, groupByField, extractUnique } from '$lib/utils/dataAggregation';
+import type { Fieldwork } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
+import {
+	sortByYear,
+	groupByYear,
+	groupByField,
+	extractUnique
+} from '#lib/utils/dataAggregation.ts';
 
 // Define all template IDs to filter out
 const templateIds = ['fieldwork-template-id'];

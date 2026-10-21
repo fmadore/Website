@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { languagesByProficiency } from '$lib/data/languages';
+	import { languagesByProficiency } from '#lib/data/languages/index.ts';
 	import CVEntry from './CVEntry.svelte';
 </script>
 

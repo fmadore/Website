@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { base, resolve } from '$app/paths';
-	import { author } from '$lib/data/siteConfig';
-	import { getGlobalState } from '$lib/stores/globalState.svelte';
+	import { resolve } from '$app/paths';
+	import { pageHref } from '#lib/utils/paths.ts';
+	import { author } from '#lib/data/siteConfig.ts';
+	import { getGlobalState } from '#lib/stores/globalState.svelte.ts';
 
 	/*
 	 * The in-app error page. It is reached only by client-side navigation into a
@@ -24,7 +25,7 @@
 		{
 			href: resolve('/conference-activity'),
 			label: 'Talks & events',
-			also: [`${base}/communications`]
+			also: [pageHref('/communications')]
 		},
 		{ href: resolve('/activities'), label: 'Activities' },
 		{ href: resolve('/digital-humanities'), label: 'Digital humanities' },

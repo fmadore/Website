@@ -1,53 +1,57 @@
 <script lang="ts">
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import PageHeader from '$lib/components/common/PageHeader.svelte';
-	import PageIntro from '$lib/components/common/PageIntro.svelte';
-	import Breadcrumb from '$lib/components/molecules/Breadcrumb.svelte';
-	import { base } from '$app/paths';
-	import { allPublications, publicationsByType } from '$lib/data/publications';
-	import JsonLd from '$lib/components/common/JsonLd.svelte';
-	import { buildBreadcrumbJsonLd, createSubsectionBreadcrumbs } from '$lib/utils/breadcrumbJsonLd';
-	import EChartsBarChart from '$lib/components/visualisations/EChartsBarChart.svelte';
-	import EChartsHorizontalBarChart from '$lib/components/visualisations/EChartsHorizontalBarChart.svelte';
-	import EChartsStackedBarChart from '$lib/components/visualisations/EChartsStackedBarChart.svelte';
-	import NetworkMatrix from '$lib/components/visualisations/NetworkMatrix.svelte';
-	import NetworkArcDiagram from '$lib/components/visualisations/NetworkArcDiagram.svelte';
-	import VenueLedger from '$lib/components/visualisations/VenueLedger.svelte';
-	import EChartsGanttChart from '$lib/components/visualisations/EChartsGanttChart.svelte';
-	import VizSection from '$lib/components/visualisations/VizSection.svelte';
-	import VizDataTable from '$lib/components/visualisations/VizDataTable.svelte';
-	import CollaboratorExplorer from '$lib/components/visualisations/CollaboratorExplorer.svelte';
-	import { buildPublicationCollaborators } from '$lib/utils/collaboratorAggregation';
-	import type { Institution, Person } from '$lib/types/person';
-	import ContentsLedger from '$lib/components/common/ContentsLedger.svelte';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import PageHeader from '#lib/components/common/PageHeader.svelte';
+	import PageIntro from '#lib/components/common/PageIntro.svelte';
+	import Breadcrumb from '#lib/components/molecules/Breadcrumb.svelte';
+	import { resolve } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import { allPublications, publicationsByType } from '#lib/data/publications/index.ts';
+	import JsonLd from '#lib/components/common/JsonLd.svelte';
+	import {
+		buildBreadcrumbJsonLd,
+		createSubsectionBreadcrumbs
+	} from '#lib/utils/breadcrumbJsonLd.ts';
+	import EChartsBarChart from '#lib/components/visualisations/EChartsBarChart.svelte';
+	import EChartsHorizontalBarChart from '#lib/components/visualisations/EChartsHorizontalBarChart.svelte';
+	import EChartsStackedBarChart from '#lib/components/visualisations/EChartsStackedBarChart.svelte';
+	import NetworkMatrix from '#lib/components/visualisations/NetworkMatrix.svelte';
+	import NetworkArcDiagram from '#lib/components/visualisations/NetworkArcDiagram.svelte';
+	import VenueLedger from '#lib/components/visualisations/VenueLedger.svelte';
+	import EChartsGanttChart from '#lib/components/visualisations/EChartsGanttChart.svelte';
+	import VizSection from '#lib/components/visualisations/VizSection.svelte';
+	import VizDataTable from '#lib/components/visualisations/VizDataTable.svelte';
+	import CollaboratorExplorer from '#lib/components/visualisations/CollaboratorExplorer.svelte';
+	import { buildPublicationCollaborators } from '#lib/utils/collaboratorAggregation.ts';
+	import type { Institution, Person } from '#lib/types/person.ts';
+	import ContentsLedger from '#lib/components/common/ContentsLedger.svelte';
 	import LanguageToggle, {
 		languageToggleOptions
-	} from '$lib/components/visualisations/LanguageToggle.svelte';
-	import CitationSections from '$lib/components/visualisations/CitationSections.svelte';
+	} from '#lib/components/visualisations/LanguageToggle.svelte';
+	import CitationSections from '#lib/components/visualisations/CitationSections.svelte';
 	import {
 		buildLocationData,
 		tallyBy,
 		groupByKey,
 		buildProjectTimeline,
 		buildStackedByYear
-	} from '$lib/utils/vizAggregation';
+	} from '#lib/utils/vizAggregation.ts';
 	// Shared page layout for the two visualisation routes.
-	import '$styles/components/viz-page.css';
+	import '#styles/components/viz-page.css';
 	import {
 		buildPublicationCollaborationNetwork,
 		buildCooccurrenceNetwork
-	} from '$lib/utils/networkAggregation';
-	import type { NetworkEdgeKind } from '$lib/utils/networkAggregation';
-	import { PUBLICATION_TYPE_CHART_LABELS } from '$lib/utils/publicationTypeLabels';
-	import NetworkControls from '$lib/components/visualisations/NetworkControls.svelte';
-	import { buildVenueLedger } from '$lib/utils/venueLedger';
-	import { author } from '$lib/data/siteConfig';
-	import type { LocationDatum } from '$lib/data/geo';
-	import { scaleKeyTerms } from '$lib/utils/keyTerms';
-	import { corpusSummary } from '$lib/data/analysis/corpusSummary.generated';
-	import { inView } from '$lib/actions/inView';
-	import type { NgramFrequency } from '$lib/types';
+	} from '#lib/utils/networkAggregation.ts';
+	import type { NetworkEdgeKind } from '#lib/utils/networkAggregation.ts';
+	import { PUBLICATION_TYPE_CHART_LABELS } from '#lib/utils/publicationTypeLabels.ts';
+	import NetworkControls from '#lib/components/visualisations/NetworkControls.svelte';
+	import { buildVenueLedger } from '#lib/utils/venueLedger.ts';
+	import { author } from '#lib/data/siteConfig.ts';
+	import type { LocationDatum } from '#lib/data/geo.ts';
+	import { scaleKeyTerms } from '#lib/utils/keyTerms.ts';
+	import { corpusSummary } from '#lib/data/analysis/corpusSummary.generated.ts';
+	import { inView } from '#lib/actions/inView.ts';
+	import type { NgramFrequency } from '#lib/types/index.ts';
 
 	type CitationYearData = { year: number; count: number };
 	type CitedAuthorData = { author: string; count: number };
@@ -276,8 +280,8 @@
 		affiliationStatus = 'loading';
 		try {
 			const [peopleModule, institutionsModule] = await Promise.all([
-				import('$lib/data/people'),
-				import('$lib/data/institutions')
+				import('#lib/data/people/index.ts'),
+				import('#lib/data/institutions.ts')
 			]);
 			collaboratorPeople = peopleModule.allPeople;
 			collaboratorInstitutions = institutionsModule.institutions;
@@ -333,7 +337,7 @@
 	 * 400px gate), inside the box the section has already reserved.
 	 */
 	let PublisherMap:
-		typeof import('$lib/components/visualisations/LocationMap.svelte').default | null =
+		typeof import('#lib/components/visualisations/LocationMap.svelte').default | null =
 		$state(null);
 	let mapRequested = false;
 	let mapChunkFailed = $state(false);
@@ -341,7 +345,7 @@
 	function loadPublisherMap() {
 		if (mapRequested) return;
 		mapRequested = true;
-		import('$lib/components/visualisations/LocationMap.svelte')
+		import('#lib/components/visualisations/LocationMap.svelte')
 			.then((module) => {
 				PublisherMap = module.default;
 			})
@@ -514,7 +518,7 @@
 
 	// Define breadcrumb items
 	const breadcrumbItems = createSubsectionBreadcrumbs(
-		base,
+		basePrefix(),
 		'Publications',
 		'/publications',
 		'Visualisations',
@@ -643,7 +647,7 @@
 				<!-- eslint-disable svelte/no-navigation-without-resolve -- tag filter URLs -->
 				{#each keywordTerms as term (term.word)}
 					<a
-						href="{base}/publications?tag={encodeURIComponent(term.word)}"
+						href={resolve(`/publications?tag=${encodeURIComponent(term.word)}`)}
 						rel="nofollow"
 						style="font-size: {term.size}px;"
 						title={countOf(term.count, 'publication')}>{term.word}</a

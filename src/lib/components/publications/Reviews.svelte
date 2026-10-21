@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import type { ReviewWork } from '$lib/types/publication';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import type { ReviewWork } from '#lib/types/publication.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	// Prop to receive the array of reviews.
 	let { reviewedBy = [] }: { reviewedBy?: ReviewWork[] } = $props();

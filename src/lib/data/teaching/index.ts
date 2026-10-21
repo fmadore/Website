@@ -1,5 +1,5 @@
-import type { TeachingExperience } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
+import type { TeachingExperience } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 
 export type { TeachingExperience };
 

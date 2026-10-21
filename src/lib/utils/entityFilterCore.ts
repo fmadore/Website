@@ -8,7 +8,7 @@
  * these functions with `$state`/`$derived`; behaviour is identical.
  */
 
-import type { YearRange } from '$lib/types';
+import type { YearRange } from '#lib/types/index.ts';
 
 export interface EntityIndexFilters {
 	types: string[];
@@ -178,7 +178,7 @@ export function countActiveFilters(filters: EntityIndexFilters): number {
  * semantics). A term holds no whitespace, so it can never match across the
  * boundary between two fields. An empty or blank query matches everything.
  */
-export { matchesSearchTerms } from '$lib/utils/searchText';
+export { matchesSearchTerms } from '#lib/utils/searchText.ts';
 
 /** One bar of an index hero's year strip. */
 export interface YearBar {

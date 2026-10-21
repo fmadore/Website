@@ -1,4 +1,4 @@
-import type { Award } from '$lib/types';
+import type { Award } from '#lib/types/index.ts';
 
 export const ulavalHonorRoll2013: Award = {
 	id: 'ulaval-honor-roll-2013',

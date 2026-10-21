@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Workshop: Religion in Higher Educational Institutions in Africa and Beyond: (Re)Conversion, Power, and Authority from a Comparative Perspective
 export const workshopReligionInHigherEducationalInstitutions2021: Communication = {

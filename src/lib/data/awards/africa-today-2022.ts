@@ -1,4 +1,4 @@
-import type { Award } from '$lib/types';
+import type { Award } from '#lib/types/index.ts';
 
 export const africaToday2022: Award = {
 	id: 'africa-today-author-2022',

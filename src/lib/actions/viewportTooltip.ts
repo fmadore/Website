@@ -1,5 +1,9 @@
 import type { Action } from 'svelte/action';
-import { positionTooltip, tooltipViewport, TOOLTIP_EDGE_PADDING } from '$lib/utils/tooltipPosition';
+import {
+	positionTooltip,
+	tooltipViewport,
+	TOOLTIP_EDGE_PADDING
+} from '#lib/utils/tooltipPosition.ts';
 
 interface Options {
 	/** Coordinates in the original parent's scrollable content. */

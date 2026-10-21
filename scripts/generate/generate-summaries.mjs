@@ -23,7 +23,7 @@
  * and a publication as its bibliographic apparatus — a quarter and a half of
  * a summary's bytes — so it reads `cv.generated.ts` rather than the summaries
  * the index pages need. A view keeps the summary's order and key order and
- * picks only its CV_*_FIELDS (the types in $lib/types hold the two in step).
+ * picks only its CV_*_FIELDS (the types in #lib/types hold the two in step).
  *
  * Ordering: records are emitted in the order the full index is built from —
  * source-path order, which is the order Vite's `import.meta.glob` hands it —
@@ -72,13 +72,13 @@ const DATASETS = [
 		dir: 'src/lib/data/publications',
 		glob: '**/*.ts',
 		heavy: HEAVY_PUBLICATION_FIELDS,
-		type: ['PublicationSummary', '$lib/types/publication'],
+		type: ['PublicationSummary', '#lib/types/publication.ts'],
 		exportName: 'publicationSummaries',
 		views: [
 			{
 				file: 'cv.generated.ts',
 				exportName: 'cvPublications',
-				type: ['CvPublication', '$lib/types/publication'],
+				type: ['CvPublication', '#lib/types/publication.ts'],
 				fields: CV_PUBLICATION_FIELDS
 			}
 		],
@@ -93,13 +93,13 @@ const DATASETS = [
 		dir: 'src/lib/data/communications',
 		glob: '**/*.ts',
 		heavy: HEAVY_COMMUNICATION_FIELDS,
-		type: ['CommunicationSummary', '$lib/types/communication'],
+		type: ['CommunicationSummary', '#lib/types/communication.ts'],
 		exportName: 'communicationSummaries',
 		views: [
 			{
 				file: 'cv.generated.ts',
 				exportName: 'cvCommunications',
-				type: ['CvCommunication', '$lib/types/communication'],
+				type: ['CvCommunication', '#lib/types/communication.ts'],
 				fields: CV_COMMUNICATION_FIELDS
 			}
 		]
@@ -108,14 +108,14 @@ const DATASETS = [
 		dir: 'src/lib/data/activities',
 		glob: '*.ts',
 		heavy: HEAVY_ACTIVITY_FIELDS,
-		type: ['ActivitySummary', '$lib/types/activity'],
+		type: ['ActivitySummary', '#lib/types/activity.ts'],
 		exportName: 'activitySummaries'
 	},
 	{
 		dir: 'src/lib/data/digital-humanities',
 		glob: '*.ts',
 		heavy: HEAVY_DH_FIELDS,
-		type: ['DigitalHumanitiesSummary', '$lib/types/digitalHumanities'],
+		type: ['DigitalHumanitiesSummary', '#lib/types/digitalHumanities.ts'],
 		exportName: 'dhProjectSummaries'
 	}
 ];

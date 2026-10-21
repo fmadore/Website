@@ -1,4 +1,4 @@
-import type { MediaAppearance } from '$lib/types';
+import type { MediaAppearance } from '#lib/types/index.ts';
 
 export const tv5Monde20190129: MediaAppearance = {
 	id: 'tv5-monde-2019-01-29',

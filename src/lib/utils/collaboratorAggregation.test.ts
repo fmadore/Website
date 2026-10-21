@@ -4,10 +4,10 @@ import {
 	buildCommunicationCollaborators,
 	buildPublicationCollaborators
 } from './collaboratorAggregation';
-import type { Communication } from '$lib/types/communication';
-import type { Contributor } from '$lib/types/contributor';
-import type { Institution, Person, PersonAffiliation } from '$lib/types/person';
-import type { Publication } from '$lib/types/publication';
+import type { Communication } from '#lib/types/communication.ts';
+import type { Contributor } from '#lib/types/contributor.ts';
+import type { Institution, Person, PersonAffiliation } from '#lib/types/person.ts';
+import type { Publication } from '#lib/types/publication.ts';
 
 const OWNER = 'Frédérick Madore';
 const SOURCE = { label: 'Dated publisher affiliation', url: 'https://example.org/article' };

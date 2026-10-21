@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Panel Template - Copy this file and fill in the details
 export const panelTemplate: Communication = {

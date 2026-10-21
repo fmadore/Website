@@ -1,7 +1,7 @@
 // src/lib/data/editorial-memberships/index.ts
-import type { EditorialMembership } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
-import { sortByStartDate } from '$lib/utils/dataAggregation';
+import type { EditorialMembership } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
+import { sortByStartDate } from '#lib/utils/dataAggregation.ts';
 
 type ModuleType = Record<string, unknown>;
 

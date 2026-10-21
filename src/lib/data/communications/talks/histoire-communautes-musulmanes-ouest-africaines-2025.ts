@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 // Talk: L’histoire des communautés musulmanes ouest-africaines : approches et perspectives des humanités numériques
 export const talkHistoireCommunautesMusulmanesOuestAfricaines2025: Communication = {

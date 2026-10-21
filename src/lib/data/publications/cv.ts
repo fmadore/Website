@@ -4,7 +4,7 @@
  * newest first, forthcoming works above them. The CV section reads this rather than the summaries, which carry the
  * excerpts, tags, images and facet data the list pages need.
  */
-import type { CvPublication } from '$lib/types/publication';
+import type { CvPublication } from '#lib/types/publication.ts';
 import { cvPublications } from './cv.generated';
 import { sortPublicationsByDate } from './order';
 

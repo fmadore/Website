@@ -1,9 +1,9 @@
-import type { ReferenceIndexEntry } from '$lib/types/referenceIndex';
+import type { ReferenceIndexEntry } from '#lib/types/referenceIndex.ts';
 
 /**
  * The author–date citation an `<ItemReference>` prints in running prose —
  * "(Madore, 2025)". Shared by `ReferenceLink.svelte`, which sets it on the
- * page, and the Markdown twins (`$lib/server/markdown/svelteProse`), which set
+ * page, and the Markdown twins (`#lib/server/markdown/svelteProse`), which set
  * the same prose as text, so a page and its `.md` cite a work identically.
  */
 

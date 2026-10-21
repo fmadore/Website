@@ -12,7 +12,7 @@ import {
 	section
 } from './markdown';
 import { markdownResponse, markdownUrl, pageUrl, resolveLink, SITE, TWIN_PAGE_PATHS } from './site';
-import { allResearchProjects } from '$lib/data/research';
+import { allResearchProjects } from '#lib/data/research/index.ts';
 import { componentChildren, pageProseMarkdown, svelteMarkupToHtml } from './svelteProse';
 
 describe('markdown composition', () => {

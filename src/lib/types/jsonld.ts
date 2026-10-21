@@ -3,8 +3,8 @@
  * Used across route load functions (publications, activities, communications, etc.)
  * to generate schema.org compliant structured data.
  */
-import type { Contributor } from '$lib/types/contributor';
-import { getContributorName, isPersonContributor } from '$lib/utils/contributor';
+import type { Contributor } from '#lib/types/contributor.ts';
+import { getContributorName, isPersonContributor } from '#lib/utils/contributor.ts';
 
 // --- Primitive Schema Types ---
 

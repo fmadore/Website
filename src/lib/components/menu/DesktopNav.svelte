@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { NavItem } from '$lib/types/navigation';
-	import NavItemWithDropdown from '$lib/components/menu/NavItemWithDropdown.svelte';
+	import type { NavItem } from '#lib/types/navigation.ts';
+	import NavItemWithDropdown from '#lib/components/menu/NavItemWithDropdown.svelte';
 
 	let {
 		navItems,

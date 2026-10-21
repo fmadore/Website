@@ -1,10 +1,10 @@
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { CV_SECTIONS, type ApiItem, type CvPayload } from '$lib/apiContract';
-import { website } from '$lib/data/siteConfig';
-import { citationFor } from '$lib/utils/apiCitation';
-import { WEBMCP_TOOL_NAMES, WEBMCP_UI_TOOLS } from '$lib/utils/webmcpToolNames';
+import { CV_SECTIONS, type ApiItem, type CvPayload } from '#lib/apiContract.ts';
+import { website } from '#lib/data/siteConfig.ts';
+import { citationFor } from '#lib/utils/apiCitation.ts';
+import { WEBMCP_TOOL_NAMES, WEBMCP_UI_TOOLS } from '#lib/utils/webmcpToolNames.ts';
 import { GET as activitiesApi } from '../../routes/api/activities.json/+server';
 import { GET as communicationsApi } from '../../routes/api/communications.json/+server';
 import { GET as cvApi } from '../../routes/api/cv.json/+server';

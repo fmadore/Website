@@ -5,9 +5,9 @@
 	// by the page). Page-specific controls (e.g. the map toggle) render through
 	// the `extraControls` snippet, between the facet toggle and the sort group.
 	import type { Snippet } from 'svelte';
-	import type { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
-	import { createFacetCollapsible } from '$lib/utils/facetDisclosure.svelte';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import type { EntityFilterSystem } from '#lib/utils/entityFilterSystem.svelte.ts';
+	import { createFacetCollapsible } from '#lib/utils/facetDisclosure.svelte.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { FACET_GRID_ID } from './EntityFacetGrid.svelte';
 
 	interface Props {

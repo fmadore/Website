@@ -2,8 +2,8 @@
 	import type { ComponentType } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import { cubicOut } from 'svelte/easing';
-	import { motionDuration } from '$lib/utils/motion';
-	import Button from '$lib/components/atoms/Button.svelte';
+	import { motionDuration } from '#lib/utils/motion.ts';
+	import Button from '#lib/components/atoms/Button.svelte';
 
 	const FADE_DURATION = 220;
 

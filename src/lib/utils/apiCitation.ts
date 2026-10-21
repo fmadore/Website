@@ -1,7 +1,7 @@
-import type { Publication } from '$lib/types/publication';
-import type { ApiItem as Item } from '$lib/apiContract';
-import { generateBibtex } from '$lib/utils/bibtexGenerator';
-import { formatReferenceText } from '$lib/utils/citationFormatter';
+import type { Publication } from '#lib/types/publication.ts';
+import type { ApiItem as Item } from '#lib/apiContract.ts';
+import { generateBibtex } from '#lib/utils/bibtexGenerator.ts';
+import { formatReferenceText } from '#lib/utils/citationFormatter.ts';
 
 /**
  * Citation output for a publication read from the static JSON API, for the two
@@ -9,7 +9,7 @@ import { formatReferenceText } from '$lib/utils/citationFormatter';
  *
  * Borrowed wholesale from the site: `bibtexGenerator` and `citationFormatter`
  * are pure modules whose only imports are types and other pure helpers, so the
- * MCP build aliases `$lib` and bundles them straight in. Reimplementing them
+ * MCP build aliases `#lib` and bundles them straight in. Reimplementing them
  * would guarantee an agent and the site's own download button eventually
  * disagree.
  *

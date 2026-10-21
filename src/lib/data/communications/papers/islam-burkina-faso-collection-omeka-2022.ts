@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const islamBurkinaFasoCollectionOmeka: Communication = {
 	id: 'islam-burkina-faso-collection-omeka-2022',

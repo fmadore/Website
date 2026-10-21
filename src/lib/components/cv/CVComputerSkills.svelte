@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { computerSkills } from '$lib/data/computerSkills';
+	import { computerSkills } from '#lib/data/computerSkills.ts';
 	import CVEntry from './CVEntry.svelte';
 </script>
 

@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const hackettInterviewDigitalMedia: Publication = {
 	id: 'hackett-interview-digital-media-2017',

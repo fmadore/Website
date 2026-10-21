@@ -1,9 +1,14 @@
 import { McpServer } from '@modelcontextprotocol/server';
 import * as z from 'zod/v4';
 import { findItem, loadApiDocument, loadCv, loadDataset } from './datasets.js';
-import { SEARCH_FIELDS, WEIGHTED_FIELDS, search, summariseStructured } from '$lib/utils/apiSearch';
-import { CITATION_STYLES, citationFor } from '$lib/utils/apiCitation';
-import { CV_SECTIONS } from '$lib/apiContract';
+import {
+	SEARCH_FIELDS,
+	WEIGHTED_FIELDS,
+	search,
+	summariseStructured
+} from '#lib/utils/apiSearch.ts';
+import { CITATION_STYLES, citationFor } from '#lib/utils/apiCitation.ts';
+import { CV_SECTIONS } from '#lib/apiContract.ts';
 import { detail, summariseAll } from './format.js';
 
 /**

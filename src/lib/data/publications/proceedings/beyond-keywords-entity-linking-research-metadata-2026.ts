@@ -1,4 +1,4 @@
-import type { Publication } from '$lib/types';
+import type { Publication } from '#lib/types/index.ts';
 
 export const beyondKeywordsEntityLinkingResearchMetadata2026: Publication = {
 	id: 'beyond-keywords-entity-linking-research-metadata-2026',

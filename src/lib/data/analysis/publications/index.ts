@@ -9,7 +9,7 @@
  * shape doesn't apply.
  */
 
-import type { PublicationTextAnalysis } from '$lib/types';
+import type { PublicationTextAnalysis } from '#lib/types/index.ts';
 
 // Module type for glob imports
 type AnalysisModule = {

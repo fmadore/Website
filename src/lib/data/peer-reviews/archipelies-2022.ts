@@ -1,4 +1,4 @@
-import type { PeerReview } from '$lib/types';
+import type { PeerReview } from '#lib/types/index.ts';
 
 export const archipelies2022: PeerReview = {
 	id: 'archipelies-2022',

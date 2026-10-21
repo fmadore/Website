@@ -1,4 +1,4 @@
-import type { Communication } from '$lib/types/communication';
+import type { Communication } from '#lib/types/communication.ts';
 
 export const asa2024Panel: Communication = {
 	id: 'author-meets-critic-faith-activism-2024',

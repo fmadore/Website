@@ -1,5 +1,5 @@
 <!--
-NetworkGraph — renders NetworkData from $lib/utils/networkAggregation:
+NetworkGraph — renders NetworkData from #lib/utils/networkAggregation:
 egocentric collaboration networks (with a centre node) and flat co-occurrence
 networks (keywords, institutions).
 
@@ -21,18 +21,18 @@ no two channels carry the same value.
 -->
 <script lang="ts">
 	import RecoveryActions from './RecoveryActions.svelte';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import Icon from '@iconify/svelte';
-	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
-	import { downloadSvgAsImage } from '$lib/utils/chartActions';
+	import { getResolvedChartColors } from '#lib/utils/chartColorUtils.ts';
+	import { downloadSvgAsImage } from '#lib/utils/chartActions.ts';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import NetworkTooltip from './NetworkTooltip.svelte';
 	import type { TooltipContent } from './NetworkTooltip.svelte';
-	import '$styles/components/network-viz.css';
-	import { selectGraph } from '$lib/utils/networkAggregation';
-	import type { NetworkNode, NetworkEdge, NetworkEdgeKind } from '$lib/utils/networkAggregation';
-	import type { FitTransform, NetworkLayout } from '$lib/utils/networkLayout';
+	import '#styles/components/network-viz.css';
+	import { selectGraph } from '#lib/utils/networkAggregation.ts';
+	import type { NetworkNode, NetworkEdge, NetworkEdgeKind } from '#lib/utils/networkAggregation.ts';
+	import type { FitTransform, NetworkLayout } from '#lib/utils/networkLayout.ts';
 
 	type NetworkLabels = {
 		itemSingular?: string; // e.g. 'publication' or 'communication'
@@ -192,13 +192,13 @@ no two channels carry the same value.
 	// --- Layout -------------------------------------------------------------
 	// networkLayout.ts is the only module importing d3-force, so it loads
 	// lazily and the force code stays in the d3-interactive chunk.
-	type LayoutModule = typeof import('$lib/utils/networkLayout');
+	type LayoutModule = typeof import('#lib/utils/networkLayout.ts');
 	let layoutModule = $state<LayoutModule | null>(null);
 	let layout = $state<NetworkLayout | null>(null);
 
 	$effect(() => {
 		let cancelled = false;
-		import('$lib/utils/networkLayout')
+		import('#lib/utils/networkLayout.ts')
 			.then((mod) => {
 				if (!cancelled) layoutModule = mod;
 			})

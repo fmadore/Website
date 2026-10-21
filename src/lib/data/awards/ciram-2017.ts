@@ -1,5 +1,5 @@
 // src/lib/data/awards/ciram-2017.ts
-import type { Award } from '$lib/types';
+import type { Award } from '#lib/types/index.ts';
 
 export const ciram2017: Award = {
 	id: 'ciram-excellence-2017',

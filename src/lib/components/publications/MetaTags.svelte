@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Publication } from '$lib/types';
-	import { base } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import type { Publication } from '#lib/types/index.ts';
 	import { page } from '$app/state';
 	import {
 		type CoinsField,
@@ -12,12 +12,12 @@
 		createAuthorTags,
 		getFullUrl,
 		parseAuthorName
-	} from '$lib/utils/metaTags';
-	import BaseMetaTags from '$lib/components/common/BaseMetaTags.svelte';
-	import { website } from '$lib/data/siteConfig';
-	import { getCitationGenre, getDcType } from '$lib/utils/publicationTypeLabels';
-	import { stripHtml } from '$lib/utils/textUtils';
-	import { publicationSignposts } from '$lib/utils/signposting';
+	} from '#lib/utils/metaTags.ts';
+	import BaseMetaTags from '#lib/components/common/BaseMetaTags.svelte';
+	import { website } from '#lib/data/siteConfig.ts';
+	import { getCitationGenre, getDcType } from '#lib/utils/publicationTypeLabels.ts';
+	import { stripHtml } from '#lib/utils/textUtils.ts';
+	import { publicationSignposts } from '#lib/utils/signposting.ts';
 
 	let { publication, schemaType }: { publication: Publication; schemaType: string } = $props();
 
@@ -33,7 +33,7 @@
 	// Resolve URLs against the canonical site origin — at prerender time
 	// page.url.origin is the placeholder http://sveltekit-prerender, which must
 	// never reach the baked head tags Zotero and crawlers consume.
-	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, base, path);
+	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, basePrefix(), path);
 
 	// Editor entries for the publication types that carry editors.
 	const editorEntries = (): HeadTagEntry[] => {

@@ -9,11 +9,12 @@ shown as markers while preserving the reader's country-shading preference.
 -->
 <script lang="ts">
 	import RecoveryActions from './RecoveryActions.svelte';
-	import { base } from '$app/paths';
-	import { createBoundaryLoader } from '$lib/utils/countryBoundaries';
-	import { COUNTRY_COORDINATES, type LocationDatum } from '$lib/data/geo';
-	import { getTheme } from '$lib/stores/themeStore.svelte';
-	import { getResolvedChartColors } from '$lib/utils/chartColorUtils';
+	import { asset } from '$app/paths';
+	import { basePrefix } from '#lib/utils/paths.ts';
+	import { createBoundaryLoader } from '#lib/utils/countryBoundaries.ts';
+	import { COUNTRY_COORDINATES, type LocationDatum } from '#lib/data/geo.ts';
+	import { getTheme } from '#lib/stores/themeStore.svelte.ts';
+	import { getResolvedChartColors } from '#lib/utils/chartColorUtils.ts';
 	import {
 		buildChoroplethBins,
 		buildChoroplethFillExpression,
@@ -21,17 +22,17 @@ shown as markers while preserving the reader's country-shading preference.
 		enrichCountryBoundaries,
 		mixRgbColors,
 		type CountryBoundaryCollection
-	} from '$lib/utils/choropleth';
-	import { toRgbString } from '$lib/utils/colorContrast';
-	import { prefersReducedMotion, type MapLibreModule } from '$lib/utils/maplibre';
-	import { useMapLibre } from '$lib/utils/useMapLibre.svelte';
-	import { createContainedPopup } from '$lib/utils/mapPopups';
+	} from '#lib/utils/choropleth.ts';
+	import { toRgbString } from '#lib/utils/colorContrast.ts';
+	import { prefersReducedMotion, type MapLibreModule } from '#lib/utils/maplibre.ts';
+	import { useMapLibre } from '#lib/utils/useMapLibre.svelte.ts';
+	import { createContainedPopup } from '#lib/utils/mapPopups.ts';
 	import {
 		collaboratorPopupContent,
 		escapeMapText as escapeHtml,
 		locationCoordinates,
 		locationItemHref
-	} from '$lib/utils/locationMapContent';
+	} from '#lib/utils/locationMapContent.ts';
 	import { onMount } from 'svelte';
 	import type { Map as MapLibreMap, MapLayerMouseEvent, Popup } from 'maplibre-gl';
 
@@ -39,7 +40,7 @@ shown as markers while preserving the reader's country-shading preference.
 	type ChoroplethStatus = 'idle' | 'loading' | 'ready' | 'error';
 
 	const VIEW_MODE_STORAGE_KEY = 'location-map-view-mode';
-	const loadCountryBoundaries = createBoundaryLoader(`${base}/data/world-countries-110m.geojson`);
+	const loadCountryBoundaries = createBoundaryLoader(asset('data/world-countries-110m.geojson'));
 	const CHOROPLETH_SOURCE_ID = 'location-country-boundaries';
 	const CHOROPLETH_BASE_LAYER_ID = 'location-country-outlines';
 	const CHOROPLETH_FILL_LAYER_ID = 'location-country-fills';
@@ -139,7 +140,7 @@ shown as markers while preserving the reader's country-shading preference.
 
 	// Create popup content
 	function createPopupContent(datum: LocationDatum): string {
-		if (precisePoints) return collaboratorPopupContent(datum, base, basePath);
+		if (precisePoints) return collaboratorPopupContent(datum, basePrefix(), basePath);
 		let content = `<div class="location-popup">
 			<strong>${escapeHtml(datum.country)}</strong>
 			<div class="item-count">${pluralLabel(datum.count)}</div>`;
@@ -152,7 +153,7 @@ shown as markers while preserving the reader's country-shading preference.
 				const truncated = isTruncated
 					? escapeHtml(item.title.substring(0, 50)) + '&hellip;'
 					: fullTitle;
-				const itemUrl = escapeHtml(locationItemHref(item, base, basePath));
+				const itemUrl = escapeHtml(locationItemHref(item, basePrefix(), basePath));
 				content += `<li>
 					<a href="${itemUrl}" class="item-link" title="${fullTitle}">
 						<span class="item-title">${truncated}</span>
@@ -188,7 +189,7 @@ shown as markers while preserving the reader's country-shading preference.
 						const truncated = isTruncated
 							? escapeHtml(item.title.substring(0, 40)) + '&hellip;'
 							: fullTitle;
-						content += `<li><a href="${escapeHtml(locationItemHref(item, base, basePath))}" class="item-link" title="${fullTitle}">${truncated}</a></li>`;
+						content += `<li><a href="${escapeHtml(locationItemHref(item, basePrefix(), basePath))}" class="item-link" title="${fullTitle}">${truncated}</a></li>`;
 					});
 					if (data.items.length > 3) {
 						content += `<li class="more-items">+${data.items.length - 3} more</li>`;

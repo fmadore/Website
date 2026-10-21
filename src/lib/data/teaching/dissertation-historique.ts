@@ -1,4 +1,4 @@
-import type { TeachingExperience } from '$lib/types';
+import type { TeachingExperience } from '#lib/types/index.ts';
 
 export const dissertationHistorique: TeachingExperience = {
 	id: 'dissertation-historique-2013-2018',

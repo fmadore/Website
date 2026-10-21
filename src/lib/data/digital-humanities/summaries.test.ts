@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
-import { allDhProjects } from '$lib/data/digital-humanities';
-import { allDhProjectSummaries } from '$lib/data/digital-humanities/summaries';
-import { HEAVY_DH_FIELDS } from '$lib/data/digital-humanities/summaryConfig';
+import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
+import { allDhProjectSummaries } from '#lib/data/digital-humanities/summaries.ts';
+import { HEAVY_DH_FIELDS } from '#lib/data/digital-humanities/summaryConfig.ts';
 
 /**
  * The committed summaries must be a faithful projection of the full dataset:

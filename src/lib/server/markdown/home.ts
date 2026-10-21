@@ -3,10 +3,10 @@
  * from the page's own markup, the latest entries in the log, and a way into
  * every other twin.
  */
-import { author, address, contact, socialLinks } from '$lib/data/siteConfig';
-import { activitiesByDate } from '$lib/data/activities';
-import { allPublications } from '$lib/data/publications/index';
-import { allCommunications } from '$lib/data/communications/index';
+import { author, address, contact, socialLinks } from '#lib/data/siteConfig.ts';
+import { activitiesByDate } from '#lib/data/activities/index.ts';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { allCommunications } from '#lib/data/communications/index.ts';
 import { bullets, document, entries, fields, inline, link, section } from './markdown';
 import { markdownUrl, SITE } from './site';
 import { pageProseMarkdown } from './svelteProse';

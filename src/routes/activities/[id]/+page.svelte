@@ -15,27 +15,28 @@
 	// the badge read `panelType` ("Media", "News") while the log row beside it
 	// read `type` through the shared label map ("Podcast", "News"). One record,
 	// one kind, one label — the map.
-	import SEO from '$lib/SEO.svelte';
-	import { base } from '$app/paths';
-	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
-	import RecordLayout, { type EyebrowToken } from '$lib/components/common/RecordLayout.svelte';
+	import SEO from '#lib/SEO.svelte';
+	import { asset, resolve } from '$app/paths';
+	import { assetHref, basePrefix } from '#lib/utils/paths.ts';
+	import { buildSrcset, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import RecordLayout, { type EyebrowToken } from '#lib/components/common/RecordLayout.svelte';
 	import ActivityRecordRail, {
 		RAIL_PLATE_SIZES
-	} from '$lib/components/activities/ActivityRecordRail.svelte';
-	import ItemReference from '$lib/components/reference/ItemReference.svelte';
+	} from '#lib/components/activities/ActivityRecordRail.svelte';
+	import ItemReference from '#lib/components/reference/ItemReference.svelte';
 	import type { PageData } from './$types';
 
-	import IframeRenderer from '$lib/components/molecules/IframeRenderer.svelte';
+	import IframeRenderer from '#lib/components/molecules/IframeRenderer.svelte';
 	import {
 		createActivitySEODescription,
 		createActivitySEOKeywords,
 		recordEntityId,
 		truncateTitle
-	} from '$lib/utils/seoUtils';
-	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
-	import { typesetQuotes, typesetQuotesInHtml } from '$lib/utils/typesetQuotes';
-	import MetaTags from '$lib/components/activities/MetaTags.svelte';
-	import { author } from '$lib/data/siteConfig';
+	} from '#lib/utils/seoUtils.ts';
+	import { ACTIVITY_TYPE_BADGE_LABELS } from '#lib/utils/typeUtils.ts';
+	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
+	import MetaTags from '#lib/components/activities/MetaTags.svelte';
+	import { author } from '#lib/data/siteConfig.ts';
 
 	// Get data from the load function
 	let { data }: { data: PageData } = $props();
@@ -93,7 +94,7 @@
 	// resolve the same candidate, hence the shared helpers and the `sizes`
 	// string exported by the rail itself.
 	const heroImagePreloadHtml = $derived.by(() => {
-		const resolved = resolveImagePath(activity?.heroImage?.src ?? activity?.image, base);
+		const resolved = resolveImagePath(activity?.heroImage?.src ?? activity?.image, basePrefix());
 		if (!resolved) return '';
 		const srcset = buildSrcset(encodeURI(resolved));
 		const attrs = [
@@ -116,7 +117,10 @@
 	const contentSegments = $derived(
 		activity?.content
 			? (() => {
-					const rawContent = activity.content.replace(/href="\/([^/])/g, `href="${base}/$1`);
+					const rawContent = activity.content.replace(
+						/href="\/([^/])/g,
+						`href="${basePrefix()}/$1`
+					);
 					const regex = /<ItemReference\s+id="([^"]+)"\s*>/g;
 					const segments: ContentSegment[] = [];
 					let lastIndex = 0;
@@ -172,8 +176,8 @@
 	keywords={seoKeywords}
 	type="article"
 	ogImage={activity.heroImage?.src
-		? `${base}/${activity.heroImage.src}`
-		: `${base}/images/Profile-picture.webp`}
+		? assetHref(activity.heroImage.src)
+		: asset('images/Profile-picture.webp')}
 	mainEntity={recordEntityId(`/activities/${activity.id}`)}
 />
 
@@ -218,7 +222,7 @@
 			</div>
 			<IframeRenderer
 				id="activity-pdf-{activity.id}"
-				src="{base}/{activity.pdfPath}"
+				src={assetHref(activity.pdfPath)}
 				title="PDF document: {activity.title}"
 				height="800px"
 				variant="document"
@@ -235,7 +239,7 @@
 			{#each tags as tag (tag)}
 				<!-- Label typeset; the href keeps the raw tag the filter matches. -->
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-				<a class="chip" rel="nofollow" href="{base}/activities?tag={encodeURIComponent(tag)}"
+				<a class="chip" rel="nofollow" href={resolve(`/activities?tag=${encodeURIComponent(tag)}`)}
 					>{typesetQuotes(tag)}</a
 				>
 			{/each}
@@ -244,7 +248,7 @@
 {/snippet}
 
 <RecordLayout
-	section={{ label: 'Activities', href: `${base}/activities` }}
+	section={{ label: 'Activities', href: resolve('/activities') }}
 	{eyebrow}
 	title={displayTitle}
 	{deck}

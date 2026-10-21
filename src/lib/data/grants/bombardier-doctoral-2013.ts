@@ -1,5 +1,5 @@
 // src/lib/data/grants/bombardier-doctoral-2013.ts
-import type { Grant } from '$lib/types';
+import type { Grant } from '#lib/types/index.ts';
 
 export const bombardierDoctoral2013: Grant = {
 	id: 'bombardier-doctoral-2013',

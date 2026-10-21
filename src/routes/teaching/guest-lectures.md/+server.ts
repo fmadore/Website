@@ -1,6 +1,6 @@
-import { allLectures } from '$lib/server/teachingLectures';
-import { guestLecturesMarkdown } from '$lib/server/markdown/teaching';
-import { markdownResponse } from '$lib/server/markdown/site';
+import { allLectures } from '#lib/server/teachingLectures.ts';
+import { guestLecturesMarkdown } from '#lib/server/markdown/teaching.ts';
+import { markdownResponse } from '#lib/server/markdown/site.ts';
 import type { RequestHandler } from './$types';
 
 /** Every guest lecture and workshop, under the institution that hosted it, as Markdown. */

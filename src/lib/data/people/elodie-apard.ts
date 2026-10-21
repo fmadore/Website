@@ -1,4 +1,4 @@
-import type { Person } from '$lib/types/person';
+import type { Person } from '#lib/types/person.ts';
 
 export const person: Person = {
 	id: 'elodie-apard',

@@ -71,8 +71,8 @@ ci:
           # render-blocking stylesheet lands; these fail outright. Measured on
           # the five pages above (transfer sizes, gzip): fonts 4–5 files /
           # ≤330 KB, scripts ≤192 KB, 32–41 requests. The document carries the
-          # inlined app stylesheet (~12 KB compressed; `kit.inlineStyleThreshold`
-          # in svelte.config.js must stay above the sheet's raw size — it
+          # inlined app stylesheet (~12 KB compressed; `inlineStyleThreshold`
+          # in vite.config.ts must stay above the sheet's raw size — it
           # silently fell below it once and every page render-blocked for
           # 150 ms, which is why the stylesheet budget is 1: the only sheet
           # request left is the 1 KB error-page sheet) on top of 21–25 KB of

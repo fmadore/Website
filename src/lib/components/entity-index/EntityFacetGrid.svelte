@@ -10,14 +10,14 @@
 	// Previously byte-identical markup duplicated across /publications and
 	// /conference-activity; now parameterized by the runed EntityFilterSystem.
 	// Styled by entity-index.css (imported by the page).
-	import RangeSlider from '$lib/components/atoms/RangeSlider.svelte';
+	import RangeSlider from '#lib/components/atoms/RangeSlider.svelte';
 	import FacetCombobox from './FacetCombobox.svelte';
 	import { needsFacetCombobox, visibleFacetOptions } from './facetSearch';
-	import type { EntityFilterSystem } from '$lib/utils/entityFilterSystem.svelte';
+	import type { EntityFilterSystem } from '#lib/utils/entityFilterSystem.svelte.ts';
 	// Facet *labels* are typeset; the raw value stays the toggle key and the URL
 	// parameter, so filtering and deep links keep matching the data.
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
-	import { clampYearRange } from '$lib/utils/entityFilterCore';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { clampYearRange } from '#lib/utils/entityFilterCore.ts';
 
 	interface Props {
 		filters: EntityFilterSystem<TItem>;

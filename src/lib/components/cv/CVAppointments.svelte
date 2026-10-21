@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { appointmentsByDate } from '$lib/data/appointments';
-	import { formatCVYearRange } from '$lib/utils/cvFormatters';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { appointmentsByDate } from '#lib/data/appointments/index.ts';
+	import { formatCVYearRange } from '#lib/utils/cvFormatters.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 </script>
 

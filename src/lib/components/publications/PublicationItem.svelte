@@ -1,22 +1,22 @@
 <script lang="ts">
-	import type { PublicationSummary } from '$lib/types/publication';
+	import type { PublicationSummary } from '#lib/types/publication.ts';
 	import { resolve } from '$app/paths';
-	import { truncateAbstract } from '$lib/utils/textUtils';
+	import { truncateAbstract } from '#lib/utils/textUtils.ts';
 	// Import the necessary functions from the new formatter
 	import {
 		formatCitation,
 		formatReferenceText,
 		getAuthorsArray
-	} from '$lib/utils/citationFormatter';
-	import { formatAuthorsWithEtAl } from '$lib/utils/nameUtils';
-	import { author as siteAuthor } from '$lib/data/siteConfig';
-	import { titleLangAttr } from '$lib/utils/languageUtils';
-	import { isForthcoming } from '$lib/utils/date-formatter';
-	import BibliographyRow from '$lib/components/molecules/BibliographyRow.svelte';
+	} from '#lib/utils/citationFormatter.ts';
+	import { formatAuthorsWithEtAl } from '#lib/utils/nameUtils.ts';
+	import { author as siteAuthor } from '#lib/data/siteConfig.ts';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
+	import { isForthcoming } from '#lib/utils/date-formatter.ts';
+	import BibliographyRow from '#lib/components/molecules/BibliographyRow.svelte';
 	import type {
 		BibliographyAction,
 		BibliographyNote
-	} from '$lib/components/molecules/BibliographyRow.svelte';
+	} from '#lib/components/molecules/BibliographyRow.svelte';
 
 	interface Props {
 		/** A summary: the list never needs the abstract or the citation list. */

@@ -1,9 +1,9 @@
-import type { Activity } from '$lib/types/activity';
-import type { Publication } from '$lib/types/publication';
-import { getContributorNames } from '$lib/utils/contributor';
-import { author, website } from '$lib/data/siteConfig';
-import { getRssDescription, getEmailWithName } from '$lib/utils/siteHelpers';
-import { stripHtml } from '$lib/utils/textUtils';
+import type { Activity } from '#lib/types/activity.ts';
+import type { Publication } from '#lib/types/publication.ts';
+import { getContributorNames } from '#lib/utils/contributor.ts';
+import { author, website } from '#lib/data/siteConfig.ts';
+import { getRssDescription, getEmailWithName } from '#lib/utils/siteHelpers.ts';
+import { stripHtml } from '#lib/utils/textUtils.ts';
 
 // ============================================================================
 // RSS FEED CONFIGURATION

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { getGlobalState } from '$lib/stores/globalState.svelte';
-	import Button from '$lib/components/atoms/Button.svelte';
+	import { getGlobalState } from '#lib/stores/globalState.svelte.ts';
+	import Button from '#lib/components/atoms/Button.svelte';
 
 	/*
 	 * The connection strip. It sits in flow directly under the masthead rather

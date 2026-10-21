@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { allPublicationSummaries } from '$lib/data/publications/summaries';
+import { allPublicationSummaries } from '#lib/data/publications/summaries.ts';
 import {
 	PUBLICATION_TYPE_BADGE_LABELS,
 	PUBLICATION_TYPE_CHART_LABELS,

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
-	import { navItems } from '$lib/data/navigation';
+	import { navItems } from '#lib/data/navigation.ts';
 	// Import Components
-	import DesktopNav from '$lib/components/menu/DesktopNav.svelte';
-	import MobileMenu from '$lib/components/menu/MobileMenu.svelte';
-	import HamburgerButton from '$lib/components/menu/HamburgerButton.svelte';
-	import ThemeToggle from '$lib/components/menu/ThemeToggle.svelte';
+	import DesktopNav from '#lib/components/menu/DesktopNav.svelte';
+	import MobileMenu from '#lib/components/menu/MobileMenu.svelte';
+	import HamburgerButton from '#lib/components/menu/HamburgerButton.svelte';
+	import ThemeToggle from '#lib/components/menu/ThemeToggle.svelte';
 
 	// State management
 	let mobileMenuOpen = $state(false);

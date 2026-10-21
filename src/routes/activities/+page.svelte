@@ -1,26 +1,26 @@
 <script lang="ts">
-	import { getActivities } from '$lib/stores/activities';
-	import type { ActivitySummary } from '$lib/types';
-	import { base, resolve } from '$app/paths';
-	import SEO from '$lib/SEO.svelte';
-	import { pageTitle } from '$lib/utils/siteHelpers';
-	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import ActivityItem from '$lib/components/activities/ActivityItem.svelte';
-	import Pagination from '$lib/components/molecules/Pagination.svelte';
-	import { activityFilters } from '$lib/data/activities/filters.svelte';
-	import FacetCombobox from '$lib/components/entity-index/FacetCombobox.svelte';
+	import { getActivities } from '#lib/stores/activities.ts';
+	import type { ActivitySummary } from '#lib/types/index.ts';
+	import { resolve } from '$app/paths';
+	import SEO from '#lib/SEO.svelte';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import ActivityItem from '#lib/components/activities/ActivityItem.svelte';
+	import Pagination from '#lib/components/molecules/Pagination.svelte';
+	import { activityFilters } from '#lib/data/activities/filters.svelte.ts';
+	import FacetCombobox from '#lib/components/entity-index/FacetCombobox.svelte';
 	import {
 		needsFacetCombobox,
 		visibleFacetOptions
-	} from '$lib/components/entity-index/facetSearch';
-	import { urlFilterSync } from '$lib/actions/urlFilterSync.svelte';
-	import { createFacetCollapsible } from '$lib/utils/facetDisclosure.svelte';
-	import { ACTIVITY_TYPE_BADGE_LABELS } from '$lib/utils/typeUtils';
-	import { formatShortDateMono } from '$lib/utils/date-formatter';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	} from '#lib/components/entity-index/facetSearch.ts';
+	import { urlFilterSync } from '#lib/actions/urlFilterSync.svelte.ts';
+	import { createFacetCollapsible } from '#lib/utils/facetDisclosure.svelte.ts';
+	import { ACTIVITY_TYPE_BADGE_LABELS } from '#lib/utils/typeUtils.ts';
+	import { formatShortDateMono } from '#lib/utils/date-formatter.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	// Page-specific CSS relocated from the global app.css (this page renders the
 	// activities log, the browse-by-year meter, and the tag facet).
-	import '$styles/components/activity-list.css';
+	import '#styles/components/activity-list.css';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Activities', '/activities');
@@ -207,7 +207,10 @@
 							{@const count = countForYear(year)}
 							<li>
 								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolve() -->
-								<a class="year-meter-row" href={resolve(`/activities/year/${year}`)}>
+								<a
+									class="year-meter-row"
+									href={resolve('/activities/year/[year]', { year: String(year) })}
+								>
 									<span class="year-meter-key" class:year-meter-key--current={year === newestYear}>
 										{year}
 									</span>
@@ -372,7 +375,7 @@
 			     riding above the record inside the disclosure. -->
 			<section class="aside-block aside-footer activities-footer">
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- static asset -->
-				<a href="{base}/rss.xml" class="aside-rss">RSS feed</a>
+				<a href={resolve('/rss.xml')} class="aside-rss">RSS feed</a>
 				{#if updatedLabel}
 					<span class="aside-updated">Log updated {updatedLabel}</span>
 				{/if}

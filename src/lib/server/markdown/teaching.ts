@@ -3,22 +3,22 @@
  * the guest lectures and workshops indexed by host, and
  * `/teaching/guest-lectures.md`, every one of them under the institution that
  * hosted it. The lectures are the pages' rows: the guest lectures and the
- * talks given as teaching (`$lib/server/teachingLectures`).
+ * talks given as teaching (`#lib/server/teachingLectures`).
  *
  * Ordered and counted as the pages are: the course sort is `CVTeaching`'s
- * (`$lib/utils/cvSections`), the spans and host groupings are
- * `$lib/utils/teachingIndex`'s, and each page's standfirst is read from its
+ * (`#lib/utils/cvSections`), the spans and host groupings are
+ * `#lib/utils/teachingIndex`'s, and each page's standfirst is read from its
  * own markup.
  */
-import type { TeachingExperience, TeachingLecture } from '$lib/types/teachingExperience';
-import { sortCoursesByYear, teachingLevelLabel } from '$lib/utils/cvSections';
+import type { TeachingExperience, TeachingLecture } from '#lib/types/teachingExperience.ts';
+import { sortCoursesByYear, teachingLevelLabel } from '#lib/utils/cvSections.ts';
 import {
 	courseSpan,
 	groupLecturesByInstitution,
 	hostPeriod,
 	lectureHosts,
 	lectureSpan
-} from '$lib/utils/teachingIndex';
+} from '#lib/utils/teachingIndex.ts';
 import { bullets, document, entries, inline, link, section } from './markdown';
 import { markdownUrl, pageUrl, resolveLink, SITE } from './site';
 import { pageProseMarkdown } from './svelteProse';

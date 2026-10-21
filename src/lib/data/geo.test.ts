@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { allCommunications } from '$lib/data/communications';
+import { allCommunications } from '#lib/data/communications/index.ts';
 import { COUNTRY_COORDINATES } from './geo';
 
 describe('country map coverage', () => {

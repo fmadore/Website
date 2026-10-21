@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { fieldworksByDate } from '$lib/data/fieldworks';
-	import { researchRolesByDate } from '$lib/data/research-roles';
-	import { formatCVYearRange } from '$lib/utils/cvFormatters';
-	import { groupFieldworkByPlace } from '$lib/utils/cvSections';
-	import { typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { fieldworksByDate } from '#lib/data/fieldworks/index.ts';
+	import { researchRolesByDate } from '#lib/data/research-roles/index.ts';
+	import { formatCVYearRange } from '#lib/utils/cvFormatters.ts';
+	import { groupFieldworkByPlace } from '#lib/utils/cvSections.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 
 	// Every place visited, keyed by every year on site — the grouping the CV's

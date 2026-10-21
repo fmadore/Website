@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { cvPublicationsByDate as publicationsByDate } from '$lib/data/publications/cv';
-	import type { CvPublication } from '$lib/types';
+	import { cvPublicationsByDate as publicationsByDate } from '#lib/data/publications/cv.ts';
+	import type { CvPublication } from '#lib/types/index.ts';
 	import {
 		groupPublicationsByType,
 		formatVolumeIssueDisplay,
@@ -10,10 +10,10 @@
 		terminalPeriod,
 		formatBlogDate,
 		getCVDisplayYear
-	} from '$lib/utils/cvFormatters';
-	import { isCvPublication } from '$lib/utils/cvSections';
-	import { getPublicationTypeDisplayName } from '$lib/utils/publicationTypeLabels';
-	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
+	} from '#lib/utils/cvFormatters.ts';
+	import { isCvPublication } from '#lib/utils/cvSections.ts';
+	import { getPublicationTypeDisplayName } from '#lib/utils/publicationTypeLabels.ts';
+	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 
 	// Group publications using the utility function

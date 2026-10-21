@@ -11,12 +11,12 @@ ECharts Stacked Bar Chart component
 		getEChartsAxisLineStyle,
 		getEChartsSplitLineStyle,
 		getChartMotion
-	} from '$lib/utils/chartColorUtils';
-	import { useECharts } from '$lib/utils/useECharts.svelte';
+	} from '#lib/utils/chartColorUtils.ts';
+	import { useECharts } from '#lib/utils/useECharts.svelte.ts';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import ChartStatus from './ChartStatus.svelte';
-	import { getAriaConfig } from '$lib/utils/chartActions';
-	import { describeStack } from '$lib/utils/chartDescriptions';
+	import { getAriaConfig } from '#lib/utils/chartActions.ts';
+	import { describeStack } from '#lib/utils/chartDescriptions.ts';
 	import type { DefaultLabelFormatterCallbackParams } from 'echarts';
 
 	/** Series beyond this count are folded into "Other" rather than given hues. */

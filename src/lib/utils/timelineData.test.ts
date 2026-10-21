@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import type { Appointment } from '$lib/types/appointment';
-import type { Education } from '$lib/types/education';
-import type { Grant } from '$lib/types/grant';
-import type { Publication } from '$lib/types/publication';
-import type { Communication } from '$lib/types/communication';
-import type { Award } from '$lib/types/award';
-import type { Fieldwork } from '$lib/types/fieldwork';
+import type { Appointment } from '#lib/types/appointment.ts';
+import type { Education } from '#lib/types/education.ts';
+import type { Grant } from '#lib/types/grant.ts';
+import type { Publication } from '#lib/types/publication.ts';
+import type { Communication } from '#lib/types/communication.ts';
+import type { Award } from '#lib/types/award.ts';
+import type { Fieldwork } from '#lib/types/fieldwork.ts';
 import {
 	appointmentToTimelineItem,
 	educationToTimelineItem,

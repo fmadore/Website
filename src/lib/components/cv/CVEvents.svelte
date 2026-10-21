@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { cvCommunicationsByDate as communicationsByDate } from '$lib/data/communications/cv';
-	import { formatCVAuthorList, terminalPeriod } from '$lib/utils/cvFormatters';
-	import { cvEventDate, splitCvTalks } from '$lib/utils/cvSections';
-	import { getYearFromISODate } from '$lib/utils/date-formatter';
-	import { quoteTitle, typesetQuotes } from '$lib/utils/typesetQuotes';
+	import { cvCommunicationsByDate as communicationsByDate } from '#lib/data/communications/cv.ts';
+	import { formatCVAuthorList, terminalPeriod } from '#lib/utils/cvFormatters.ts';
+	import { cvEventDate, splitCvTalks } from '#lib/utils/cvSections.ts';
+	import { getYearFromISODate } from '#lib/utils/date-formatter.ts';
+	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVSection from './CVSection.svelte';
 
 	const { events: organizedEvents } = splitCvTalks(communicationsByDate);

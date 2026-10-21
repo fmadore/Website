@@ -1,5 +1,5 @@
 // src/lib/data/languages/english.ts
-import type { Language } from '$lib/types';
+import type { Language } from '#lib/types/index.ts';
 
 export const english: Language = {
 	id: 'english',

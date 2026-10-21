@@ -1,6 +1,6 @@
-import type { Publication, PublicationSummary } from '$lib/types/publication';
-import type { Communication } from '$lib/types/communication';
-import { isForthcoming } from '$lib/utils/date-formatter';
+import type { Publication, PublicationSummary } from '#lib/types/publication.ts';
+import type { Communication } from '#lib/types/communication.ts';
+import { isForthcoming } from '#lib/utils/date-formatter.ts';
 
 // Generic type for items that can be sorted (must have date and title)
 // Use union type for items we know we'll sort

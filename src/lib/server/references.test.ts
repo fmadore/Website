@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { referencesForRoute, referencesIn } from './references';
-import { referenceIndex } from '$lib/data/referenceIndex.generated';
+import { referenceIndex } from '#lib/data/referenceIndex.generated.ts';
 
 describe('referencesIn', () => {
 	it('picks the entries a piece of markup cites, and nothing else', () => {

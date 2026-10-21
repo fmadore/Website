@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { basePrefix } from '#lib/utils/paths.ts';
 	import Icon from '@iconify/svelte';
-	import { base } from '$app/paths';
-	import { buildSrcset, resolveImagePath } from '$lib/utils/imageVariants';
-	import { resolveSlidePoster } from '$lib/utils/slidePoster';
+	import { buildSrcset, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { resolveSlidePoster } from '#lib/utils/slidePoster.ts';
 
 	interface Props {
 		/** Embeddable deck URL (e.g. https://slides.frederickmadore.com/talks/<slug>/). */
@@ -51,11 +51,11 @@
 	// The deck site renders a 1280x720 shot of every cover slide;
 	// scripts/generate/generate-slide-posters.mjs mirrors it into static/images, so the
 	// facade opens on the actual title slide rather than an empty stage. The
-	// resolution itself lives in `$lib/utils/slidePoster` — the deck gallery
+	// resolution itself lives in `#lib/utils/slidePoster` — the deck gallery
 	// prints the same posters as plates, and one rule about the deck site's URL
 	// shape serves both.
 	const posterPath = $derived(resolveSlidePoster(src));
-	const posterSrc = $derived(resolveImagePath(posterPath, base));
+	const posterSrc = $derived(resolveImagePath(posterPath, basePrefix()));
 	const posterSrcset = $derived(buildSrcset(posterSrc));
 	// Measured against the detail page's reading column, which is no longer the
 	// full page: the record layout gives the document `--container-lg` minus the

@@ -11,7 +11,7 @@ The three SVG network plates do not use it: their `sr-only` tables are already
 in the accessibility tree, and a closed `<details>` is not.
 -->
 <script lang="ts">
-	import type { LabelledValue } from '$lib/utils/chartDescriptions';
+	import type { LabelledValue } from '#lib/utils/chartDescriptions.ts';
 
 	let {
 		rows,

@@ -11,13 +11,13 @@ ECharts Horizontal Bar Chart component
 		getEChartsSplitLineStyle,
 		getEChartsAccentDecal,
 		getChartMotion
-	} from '$lib/utils/chartColorUtils';
-	import { useECharts } from '$lib/utils/useECharts.svelte';
+	} from '#lib/utils/chartColorUtils.ts';
+	import { useECharts } from '#lib/utils/useECharts.svelte.ts';
 	import ChartToolbar from './ChartToolbar.svelte';
 	import ChartStatus from './ChartStatus.svelte';
-	import { getAriaConfig } from '$lib/utils/chartActions';
-	import { describeRanked } from '$lib/utils/chartDescriptions';
-	import { niceTickInterval, tickBudgetForWidth } from '$lib/utils/chartAxis';
+	import { getAriaConfig } from '#lib/utils/chartActions.ts';
+	import { describeRanked } from '#lib/utils/chartDescriptions.ts';
+	import { niceTickInterval, tickBudgetForWidth } from '#lib/utils/chartAxis.ts';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;

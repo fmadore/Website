@@ -1,5 +1,5 @@
-import type { ProfessionalAffiliation } from '$lib/types';
-import { loadData } from '$lib/utils/dataLoader';
+import type { ProfessionalAffiliation } from '#lib/types/index.ts';
+import { loadData } from '#lib/utils/dataLoader.ts';
 
 // Dynamically import all affiliation files (excluding template and index)
 const affiliationModules = import.meta.glob<Record<string, ProfessionalAffiliation>>(

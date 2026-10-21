@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { getCvDescription, pageTitle } from '$lib/utils/siteHelpers';
+	import { getCvDescription, pageTitle } from '#lib/utils/siteHelpers.ts';
 	import Icon from '@iconify/svelte';
-	import SEO from '$lib/SEO.svelte';
-	import { createSectionBreadcrumbs } from '$lib/utils/seoUtils';
-	import PdfGenerator from '$lib/components/cv/PdfGenerator.svelte';
-	import CVHeader from '$lib/components/cv/CVHeader.svelte';
-	import CVEducation from '$lib/components/cv/CVEducation.svelte';
-	import CVAppointments from '$lib/components/cv/CVAppointments.svelte';
-	import CVPublications from '$lib/components/cv/CVPublications.svelte';
-	import CVTableOfContents from '$lib/components/cv/CVTableOfContents.svelte';
+	import SEO from '#lib/SEO.svelte';
+	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import PdfGenerator from '#lib/components/cv/PdfGenerator.svelte';
+	import CVHeader from '#lib/components/cv/CVHeader.svelte';
+	import CVEducation from '#lib/components/cv/CVEducation.svelte';
+	import CVAppointments from '#lib/components/cv/CVAppointments.svelte';
+	import CVPublications from '#lib/components/cv/CVPublications.svelte';
+	import CVTableOfContents from '#lib/components/cv/CVTableOfContents.svelte';
 	// Every section is a static import, so the whole CV is in the prerendered
 	// HTML. It used to ship three sections and fetch the other fourteen in four
 	// timed batches after mount: `build/cv.html` held no Grants, Awards or
@@ -16,20 +16,20 @@
 	// contain, and the page spent 23 requests and 400 ms of self-imposed
 	// latency on a staircase no reader could see the end of. The record's
 	// completeness is the product; the request count is the bonus.
-	import CVGrants from '$lib/components/cv/CVGrants.svelte';
-	import CVAwards from '$lib/components/cv/CVAwards.svelte';
-	import CVDigitalHumanities from '$lib/components/cv/CVDigitalHumanities.svelte';
-	import CVInvitedTalks from '$lib/components/cv/CVInvitedTalks.svelte';
-	import CVConferences from '$lib/components/cv/CVConferences.svelte';
-	import CVEvents from '$lib/components/cv/CVEvents.svelte';
-	import CVTeaching from '$lib/components/cv/CVTeaching.svelte';
-	import CVResearchExperience from '$lib/components/cv/CVResearchExperience.svelte';
-	import CVService from '$lib/components/cv/CVService.svelte';
-	import CVConsulting from '$lib/components/cv/CVConsulting.svelte';
-	import CVMedia from '$lib/components/cv/CVMedia.svelte';
-	import CVLanguages from '$lib/components/cv/CVLanguages.svelte';
-	import CVAffiliations from '$lib/components/cv/CVAffiliations.svelte';
-	import CVComputerSkills from '$lib/components/cv/CVComputerSkills.svelte';
+	import CVGrants from '#lib/components/cv/CVGrants.svelte';
+	import CVAwards from '#lib/components/cv/CVAwards.svelte';
+	import CVDigitalHumanities from '#lib/components/cv/CVDigitalHumanities.svelte';
+	import CVInvitedTalks from '#lib/components/cv/CVInvitedTalks.svelte';
+	import CVConferences from '#lib/components/cv/CVConferences.svelte';
+	import CVEvents from '#lib/components/cv/CVEvents.svelte';
+	import CVTeaching from '#lib/components/cv/CVTeaching.svelte';
+	import CVResearchExperience from '#lib/components/cv/CVResearchExperience.svelte';
+	import CVService from '#lib/components/cv/CVService.svelte';
+	import CVConsulting from '#lib/components/cv/CVConsulting.svelte';
+	import CVMedia from '#lib/components/cv/CVMedia.svelte';
+	import CVLanguages from '#lib/components/cv/CVLanguages.svelte';
+	import CVAffiliations from '#lib/components/cv/CVAffiliations.svelte';
+	import CVComputerSkills from '#lib/components/cv/CVComputerSkills.svelte';
 
 	import { resolve } from '$app/paths';
 
