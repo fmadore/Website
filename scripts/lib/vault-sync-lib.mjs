@@ -76,10 +76,12 @@ export function walkData(dir) {
 			name.endsWith('.ts') &&
 			name !== 'index.ts' &&
 			name !== 'cv.ts' &&
+			name !== 'order.ts' &&
 			!name.endsWith('.svelte.ts') &&
 			// A record module stands alone once transpiled, which is what lets
 			// `loadModule` import it from a data: URL. The data trees also hold
-			// modules that do not: the CV view (`cv.ts`), the summary projection (`summaries.ts`, which
+			// modules that do not: the CV view (`cv.ts`), the sort helpers
+			// (`order.ts`, which import through `#lib/*`), the summary projection (`summaries.ts`, which
 			// imports its generated sibling), the generated projection itself,
 			// its config, and the Vitest spec that proves the projection faithful
 			// (`summaries.test.ts`, whose `import 'vitest'` cannot resolve from a
@@ -308,8 +310,11 @@ function inlineToMarkdown(html, where) {
 	// `<br>` becomes a sentinel rather than a newline: source markup is hard
 	// wrapped, so every other newline has to collapse to a space, and an early
 	// `\n` here would be indistinguishable from the wrapping.
+	// Screen-reader-only text ("(opens in new tab)") describes the rendered link,
+	// not the content, so it has no place in a note.
 	const BR = '\u0000';
 	let text = String(html)
+		.replace(/<span\s+class="sr-only"\s*>[\s\S]*?<\/span\s*>/g, '')
 		.replace(/<br\s*\/?>/g, BR)
 		.replace(/<a\b[^>]*\bhref="([^"]*)"[^>]*>([\s\S]*?)<\/a\s*>/g, (_, href, label) => {
 			const clean = label.replace(/\s+/g, ' ').trim();
