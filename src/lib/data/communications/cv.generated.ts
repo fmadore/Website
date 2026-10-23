@@ -1133,6 +1133,20 @@ export const cvCommunications: CvCommunication[] = [
 		"type": "lecture"
 	},
 	{
+		"id": "same-name-different-country-alevi-archive-leipzig-2026",
+		"title": "Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"date": "3 December 2026",
+		"dateISO": "2026-12-03",
+		"conference": "Data Modelling in the Project Alevi Archive",
+		"panelTitle": "Panel 1",
+		"location": "Sächsische Akademie der Wissenschaften zu Leipzig, Leipzig",
+		"type": "workshop",
+		"url": "https://aleviarchive.saw-leipzig.de"
+	},
+	{
 		"id": "tracing-islamic-knowledge-production",
 		"title": "Tracing Islamic Knowledge Production in Francophone West African Newspapers (1990-Present)",
 		"authors": [

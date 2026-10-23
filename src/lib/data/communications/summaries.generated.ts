@@ -3990,6 +3990,41 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"abstractExcerpt": "Généralement présentées comme étant à l’avant-garde de la lutte contre le (néo) colonialisme, une pépinière d’élites en devenir, un bastion des idéologies révolutionnaires de gauche ou encore un haut lieu de contestation "
 	},
 	{
+		"id": "same-name-different-country-alevi-archive-leipzig-2026",
+		"title": "Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"date": "3 December 2026",
+		"dateISO": "2026-12-03",
+		"year": 2026,
+		"conference": "Data Modelling in the Project Alevi Archive",
+		"panelTitle": "Panel 1",
+		"location": "Sächsische Akademie der Wissenschaften zu Leipzig, Leipzig",
+		"country": "Germany",
+		"type": "workshop",
+		"language": "English",
+		"tags": [
+			"AI",
+			"AI Agents",
+			"Digital Humanities",
+			"IWAC",
+			"Entity Linking",
+			"Large Language Models",
+			"Metadata",
+			"West Africa",
+			"Archives"
+		],
+		"url": "https://aleviarchive.saw-leipzig.de",
+		"urlLabel": "Project Website",
+		"coordinates": {
+			"latitude": 51.3328,
+			"longitude": 12.3684
+		},
+		"project": "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
+		"abstractExcerpt": "The Islam West Africa Collection (IWAC), curated by one person, holds more than 20,000 items and over 32 million words. Its press articles, Islamic publications and scholarly references are linked to a single set of more "
+	},
+	{
 		"id": "tracing-islamic-knowledge-production",
 		"title": "Tracing Islamic Knowledge Production in Francophone West African Newspapers (1990-Present)",
 		"authors": [

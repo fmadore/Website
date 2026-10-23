@@ -2090,6 +2090,21 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "University of Maroua",
 		"country": "Cameroon"
 	},
+	"same-name-different-country-alevi-archive-leipzig-2026": {
+		"id": "same-name-different-country-alevi-archive-leipzig-2026",
+		"itemType": "communication",
+		"title": "Same Name, Different Country: AI Agents, Human Oversight and Entity Disambiguation in the Islam West Africa Collection",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "workshop",
+		"date": "3 December 2026",
+		"dateISO": "2026-12-03",
+		"year": 2026,
+		"conference": "Data Modelling in the Project Alevi Archive",
+		"location": "Sächsische Akademie der Wissenschaften zu Leipzig, Leipzig",
+		"country": "Germany"
+	},
 	"serveurs-mcp-glam-africains-stias-2026": {
 		"id": "serveurs-mcp-glam-africains-stias-2026",
 		"itemType": "communication",
