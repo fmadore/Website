@@ -32,7 +32,7 @@
 
 <SEO
 	title="{author.name} | {author.positionShort}"
-	description="Frédérick Madore, historian and digital humanist at the University of Bayreuth, studies Islam in francophone West Africa and develops open digital collections and AI workflows, including IWAC and AMIRA. Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot; and Co-Principal Investigator of a Volkswagen Foundation project on AI and multilingual Islamic collections."
+	description="Frédérick Madore, historian and digital humanist at the University of Bayreuth, studies Islam in francophone West Africa and develops open digital collections and AI workflows, including IWAC and AMIRA. Data Curator at the Cluster of Excellence &quot;Africa Multiple&quot; and researcher in its Research Section Digitalities, and Co-Principal Investigator of a Volkswagen Foundation project on AI and multilingual Islamic collections."
 	keywords="Frédérick Madore, Islam, West Africa, Digital Humanities, Artificial Intelligence, Volkswagen Foundation, Omeka S, Islam West Africa Collection, IWAC, AMIRA, Africa Multiple Interactive Research Atlas, data curation, University of Bayreuth, Cluster of Excellence Africa Multiple, ZMO, Leibniz-Zentrum Moderner Orient, historian"
 	canonical={website.url}
 	pageType="ProfilePage"
@@ -69,16 +69,17 @@
 					new ways.
 				</p>
 				<p>
-					My two roles feed each other. As Data Curator at the <a
+					My two roles feed each other. At the <a
 						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
 						target="_blank"
 						rel="noopener noreferrer"
 						>Cluster of Excellence “Africa Multiple”<span class="sr-only">
 							(opens in new tab)</span
 						></a
-					>, I help design the systems that make research data findable and reusable under the FAIR
-					and CARE principles, and I work with colleagues on the digital literacy and ethical
-					standards that curation demands. As Co-Principal Investigator of
+					>, I am Data Curator and a researcher in the Research Section Digitalities. As curator, I
+					help design the systems that make research data findable and reusable under the FAIR and
+					CARE principles, and I work with colleagues on the digital literacy and ethical standards
+					that curation demands. As Co-Principal Investigator of
 					<a
 						href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
 						data-sveltekit-preload-data><em>Islam’s ‘Peripheries’</em></a
