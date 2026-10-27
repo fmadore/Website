@@ -76,10 +76,22 @@
 						>Cluster of Excellence “Africa Multiple”<span class="sr-only">
 							(opens in new tab)</span
 						></a
-					>, I am Data Curator and a researcher in the Research Section Digitalities. As curator, I
-					help design the systems that make research data findable and reusable under the FAIR and
-					CARE principles, and I work with colleagues on the digital literacy and ethical standards
-					that curation demands. As Co-Principal Investigator of
+					>, I am
+					<a
+						href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html"
+						target="_blank"
+						rel="noopener noreferrer"
+						>Data Curator<span class="sr-only"> (opens in new tab)</span></a
+					>
+					and a researcher in the
+					<a
+						href="https://www.africamultiple.uni-bayreuth.de/en/1_2-Research/Research-Sections-AM-2_0/Digitalities/index.html"
+						target="_blank"
+						rel="noopener noreferrer"
+						>Research Section Digitalities<span class="sr-only"> (opens in new tab)</span></a
+					>. As curator, I help design the systems that make research data findable and reusable
+					under the FAIR and CARE principles, and I work with colleagues on the digital literacy and
+					ethical standards that curation demands. As Co-Principal Investigator of
 					<a
 						href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
 						data-sveltekit-preload-data><em>Islam’s ‘Peripheries’</em></a
