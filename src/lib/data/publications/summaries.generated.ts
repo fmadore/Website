@@ -1697,7 +1697,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"project": "Religious Activism on Campuses in Togo and Benin",
 		"featured": true,
 		"abstractExcerpt": "This volume examines religiosity on university campuses in Sub-Saharan Africa. Focusing on both individuals and organized groups, the contributions open a window onto how religion becomes a factor, affects social interact",
-		"citedByCount": 4,
+		"citedByCount": 5,
 		"tocAuthors": [
 			"Abdoulaye Sounaye",
 			"Frédérick Madore",

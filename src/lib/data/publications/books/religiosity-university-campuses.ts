@@ -116,6 +116,16 @@ export const religiosityUniversityCampuses: Publication = {
 			url: 'https://doi.org/10.4337/9781035309306.00047'
 		},
 		{
+			wikidataId: 'Q141886065',
+			authors: ['Onias Matumbu'],
+			year: 2027,
+			title:
+				'Governance and Pluralism in Higher Education: Strategies for Managing Internal Stakeholder Diversity and External Religious Pressures',
+			source:
+				'In Negotiating Faith, Fact, and the Future of Higher Education, edited by Indria Nur and Ibrahim Alhussain Khalil, 221-50. Hershey, PA: IGI Global Scientific Publishing, 2027',
+			url: 'https://doi.org/10.4018/979-8-3373-7857-2.ch009'
+		},
+		{
 			wikidataId: 'Q124645581',
 			authors: ['Mahamadou Bello Adamou'],
 			year: 2023,
