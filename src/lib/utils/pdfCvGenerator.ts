@@ -66,8 +66,10 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	const dateStr = today.toISOString().split('T')[0];
 	const filename = `Frederick_Madore_CV_${dateStr}.pdf`;
 
-	// Create PDF with proper text rendering
-	const pdf = new jsPDF('p', 'mm', 'a4');
+	// Create PDF with proper text rendering. jsPDF writes every stream raw
+	// unless asked: `compress` Flate-encodes the page content and the
+	// embedded font subsets alike.
+	const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
 
 	// Embed the real Ink + Signal faces; fall back to the standard PDF fonts
 	// if the fetch fails. Resolve each voice to its font-family id once so
