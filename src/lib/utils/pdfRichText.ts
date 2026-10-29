@@ -50,7 +50,7 @@ export const visibleText = (el: Element): string => {
 	clone
 		.querySelectorAll('.sr-only, [aria-hidden="true"], [data-pdf-hide]')
 		.forEach((n) => n.remove());
-	return (clone.textContent || '').replace(/s+/g, ' ').trim();
+	return (clone.textContent || '').replace(/\s+/g, ' ').trim();
 };
 
 export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
@@ -107,8 +107,10 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 		// Handle links
 		if (tagName === 'A') {
 			const href = el.getAttribute('href') || '';
-			// Normalize link text
-			const linkText = (el.textContent?.trim() || '').replace(/\s+/g, ' ');
+			// The link's visible text: its own `.sr-only` " (opens in new tab)"
+			// notice would otherwise print inline, since this branch reads the
+			// anchor whole instead of recursing past the skip above.
+			const linkText = visibleText(el);
 			// Honor the title class on the <a> itself (grant and award titles
 			// render as <a class="cv-title">). Without this, linked entries
 			// render in regular weight while non-linked siblings bold.
