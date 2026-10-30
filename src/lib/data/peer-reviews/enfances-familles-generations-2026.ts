@@ -6,7 +6,7 @@ export const enfancesFamillesGenerations2026: PeerReview = {
 	type: 'Journal Article',
 	count: 1,
 	year: 2026,
-	dateISO: '2026-10-01'
+	dateISO: '2026-10-30'
 };
 
 export default enfancesFamillesGenerations2026;
