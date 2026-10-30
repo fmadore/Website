@@ -46,6 +46,7 @@
 			{#each lectures as lecture (lecture.title + lecture.dateISO)}
 				<CVEntry year={lecture.year}>
 					<strong>{typesetQuotes(lecture.title)}</strong>, <em>{typesetQuotes(lecture.course)}</em>,
+					{#if lecture.format}{lecture.format},{/if}
 					{typesetQuotes(lectureHostAndLevel(lecture))}.
 				</CVEntry>
 			{/each}

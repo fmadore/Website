@@ -68,13 +68,14 @@ export function teachingMarkdown(
 	);
 }
 
-/** One lecture: date, title, the course it was part of, its level when known, and its talk page. */
+/** One lecture: date, title, the course it was part of, its level when known, its format, and its talk page. */
 function lectureRow(lecture: TeachingLecture): string {
 	const level = lecture.level ? ` (${teachingLevelLabel(lecture.level)})` : '';
+	const format = lecture.format ? ` ${inline(lecture.format)}.` : '';
 	const talk = lecture.talkId
 		? ` ${link('Talk', markdownUrl(`/communications/${lecture.talkId}`))}.`
 		: '';
-	return `**${inline(lecture.date)}** ${inline(lecture.title)}, in *${inline(lecture.course)}*${level}.${talk}`;
+	return `**${inline(lecture.date)}** ${inline(lecture.title)}, in *${inline(lecture.course)}*${level}.${format}${talk}`;
 }
 
 /** `/teaching/guest-lectures.md` */

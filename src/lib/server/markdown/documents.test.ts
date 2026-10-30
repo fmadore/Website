@@ -224,6 +224,14 @@ describe('teaching twins', () => {
 		);
 	});
 
+	it('print a lecture’s format when it was not given in person', () => {
+		const formatted = allLectures.filter((lecture) => lecture.format);
+		expect(formatted.length).toBeGreaterThan(0);
+		for (const lecture of formatted) {
+			expect(lectures).toContain(` ${escapeMarkdownText(lecture.format!)}.`);
+		}
+	});
+
 	it('link each talk given as teaching to its record', () => {
 		const talks = allLectures.filter((lecture) => lecture.talkId);
 		expect(talks.length).toBeGreaterThan(0);

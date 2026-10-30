@@ -2,6 +2,16 @@ import type { GuestLecture } from '#lib/types/index.ts';
 
 const guestLectures: GuestLecture[] = [
 	{
+		year: '2026',
+		title: 'KI-Superkräfte – und Kompetenzverlust? Historisches Arbeiten lernen',
+		course: 'KI-Basiszertifikat [AI Basic Certificate]',
+		institution: 'Universität Bayreuth (Germany)',
+		level: 'undergraduate',
+		date: '28 October 2026',
+		dateISO: '2026-10-28',
+		format: 'Recorded e-learning unit (German)'
+	},
+	{
 		year: '2022',
 		title: 'Islam and Muslims in West Africa',
 		course: 'Religion in/from Africa',

@@ -7,6 +7,11 @@ export interface GuestLecture {
 	date: string;
 	/** The date as YYYY-MM-DD, which orders the lectures among the talks given as teaching. */
 	dateISO: string;
+	/**
+	 * How the lecture was given, when not in person: "Recorded e-learning unit
+	 * (German)". The lists, the CV and their twins print it after the course.
+	 */
+	format?: string;
 }
 
 /**

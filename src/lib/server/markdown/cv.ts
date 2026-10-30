@@ -566,7 +566,7 @@ function teachingExperience(): string {
 					entry(
 						lecture.year,
 						// A talk given as teaching links to its record, as the other talks do.
-						`${lecture.talkId ? `**${link(typesetQuotes(lecture.title), markdownUrl(`/communications/${lecture.talkId}`))}**` : strong(lecture.title)}, ${em(lecture.course)}, ${text(lectureHostAndLevel(lecture))}.`
+						`${lecture.talkId ? `**${link(typesetQuotes(lecture.title), markdownUrl(`/communications/${lecture.talkId}`))}**` : strong(lecture.title)}, ${em(lecture.course)}, ${lecture.format ? `${text(lecture.format)}, ` : ''}${text(lectureHostAndLevel(lecture))}.`
 					)
 				)
 			)

@@ -108,6 +108,9 @@
 								<span class="dateline">In</span>
 								<em>{typesetQuotes(lecture.course)}</em>
 							</span>
+							{#if lecture.format}
+								<span class="dateline lecture-format">{lecture.format}</span>
+							{/if}
 							{#if lecture.talkId}
 								<a
 									class="ledger-action lecture-talk"
@@ -145,6 +148,12 @@
 	.lecture-course em {
 		font-style: italic;
 		color: var(--color-text-emphasis);
+	}
+
+	/* How the lecture was given, when not in person: a catalogue attribute,
+	 * so it takes the data voice under the course line. */
+	.lecture-format {
+		color: var(--color-text-soft);
 	}
 
 	/* The stamp keeps its own width in the content column, which stretches its
