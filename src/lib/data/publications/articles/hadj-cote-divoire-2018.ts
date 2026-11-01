@@ -130,6 +130,15 @@ export const hadjCoteDIvoire: Publication = {
 				"'The holy opacity of the organization of the pilgrimage': comparing the state's management of the hajj in contemporary Senegal and Cameroon",
 			source: 'Politics, Religion & Ideology 26, no. 2 (2025): 279-99',
 			url: 'https://doi.org/10.1080/21567689.2025.2548398'
+		},
+		{
+			wikidataId: 'Q141776469',
+			authors: ['Attaoua Paule-Estelle Kra Adjangba'],
+			year: 2024,
+			title:
+				"Laïcité et liberté de culte dans un contexte de pluralisme religieux : comparaison France-Côte d'Ivoire : interprétations et applications contextuelles de la laïcité",
+			source: 'PhD dissertation, Nantes Université, 2024',
+			url: 'https://doi.org/10.70675/80dcb307zcd1dz4aa0za34bzf84ad7b4b243'
 		}
 	]
 };

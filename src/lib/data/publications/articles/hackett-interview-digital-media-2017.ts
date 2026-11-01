@@ -91,6 +91,14 @@ export const hackettInterviewDigitalMedia: Publication = {
 				'Nollywood and Popular Religion: Productions of Prosperity, Gender, and the Supernatural in Nigerian Cinema',
 			source: 'PhD dissertation, University of Pennsylvania, 2020',
 			url: 'https://repository.upenn.edu/handle/20.500.14332/31113'
+		},
+		{
+			wikidataId: 'Q141963902',
+			authors: ['Enzo Pace', 'Hans Geir Aasmundsen'],
+			year: 2026,
+			title: 'Communicating Pentecostal Narrative(s)',
+			source: 'In Communicating Religion, 13-29. Cham: Springer, 2026',
+			url: 'https://doi.org/10.1007/978-3-032-17363-8_2'
 		}
 	]
 };

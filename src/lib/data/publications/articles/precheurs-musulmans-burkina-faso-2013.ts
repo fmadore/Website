@@ -179,6 +179,24 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 			title: 'Le port du voile : un phénomène nouveau à Bamako ?',
 			source: 'LMI MaCoTer, 30 March 2021',
 			url: 'https://www.lmi-macoter.net/longform/le-port-du-voile-un-phenomene-nouveau-a-bamako/'
+		},
+		{
+			wikidataId: 'Q141963900',
+			authors: ['Alfonso Castellanos Malagon'],
+			year: 2019,
+			title:
+				'Création musicale et collectifs urbains au Burkina Faso : circulations, appropriations et innovations sur la scène musicale de Bobo-Dioulasso',
+			source: 'PhD dissertation, EHESS, 2019',
+			url: 'https://doi.org/10.70675/3bdd37e9za8b7z402fzade5z0d7f28e650e5'
+		},
+		{
+			wikidataId: 'Q141963901',
+			authors: ['Ibrahim Abdoulaye Seyni'],
+			year: 2021,
+			title:
+				'Rôle des radios dans les crises sociales à caractère religieux au Niger de 2000 à 2015',
+			source: 'PhD dissertation, Université Bordeaux Montaigne, 2021',
+			url: 'https://doi.org/10.70675/61cbb9adz2589z4271z9ffczd81c42ee530b'
 		}
 	]
 };

@@ -254,6 +254,15 @@ Frédérick Madore montre comment l'islam peut constituer un vecteur d'autonomis
 			title:
 				"Analyse des dynamiques religieuses à l'Université Abdou Moumouni de Niamey (UAM) à travers les interactions entre les étudiants salafis et pentecôtistes",
 			source: 'PhD dissertation, Université Abdou Moumouni, 2023'
+		},
+		{
+			wikidataId: 'Q113527907',
+			authors: ['Mara Vitale'],
+			year: 2020,
+			title:
+				"Pouvoir charismatique et appropriation de l'espace public : le cas de la Tijânîyya au Burkina Faso",
+			source: 'PhD dissertation, EHESS, 2020',
+			url: 'https://doi.org/10.70675/51deafdazaa64z4ef2zaa67zc0c7ac00b102'
 		}
 	],
 	tableOfContents: [

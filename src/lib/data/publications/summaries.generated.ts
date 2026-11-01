@@ -613,7 +613,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"openAccess": true,
 		"image": "images/publications/acteurs-religieux-numerique.webp",
 		"abstractExcerpt": "On October 21st, 2017, the editors of this special issue conducted an interview with Rosalind I. J. Hackett, one of the pioneering scholars in the field of media and religion in Africa. The interview took place via Skype ",
-		"citedByCount": 6,
+		"citedByCount": 7,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -658,7 +658,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "L'importance du <i>hadj</i> et les sommes d'argent considérables qui y sont consacrées sont sources de convoitises. Il n'est dès lors pas surprenant que les États ouest-africains aient souvent été au centre de cette entre",
-		"citedByCount": 10,
+		"citedByCount": 11,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -1519,7 +1519,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Depuis le tournant des années 1990, la visibilité accrue de l'islam dans l'espace public au Burkina Faso s'est manifestée entre autres par l'émergence de prêcheurs et prêcheuses de plus en plus médiatisés. La participatio",
-		"citedByCount": 16,
+		"citedByCount": 18,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -1877,6 +1877,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"publisherLocation": "France",
 		"pages": "25-48",
 		"pageCount": 24,
+		"openAlexId": "W7221579897",
 		"language": "French",
 		"tags": [
 			"Religion",
@@ -1914,6 +1915,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pageCount": 419,
 		"language": "French",
 		"url": "http://hdl.handle.net/20.500.11794/33246",
+		"openAlexId": "W2900769327",
 		"openAccess": true,
 		"tags": [
 			"Côte d'Ivoire",
@@ -2107,7 +2109,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			}
 		],
 		"abstractExcerpt": "L'islam a connu une progression fulgurante au Burkina Faso depuis les dernières décennies. Ce pays, autrefois qualifié de \"fille aimée de l'Église\", compte aujourd'hui plus de 60 % de musulmans. Outre leur importance numé",
-		"citedByCount": 17,
+		"citedByCount": 18,
 		"tocAuthors": [],
 		"sourceDirType": "books"
 	},

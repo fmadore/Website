@@ -186,13 +186,20 @@ async function openAlex(path) {
 	return res.json();
 }
 
-/** Page through a filtered work list (200 per page is the API maximum). */
+/**
+ * Page through a filtered work list (200 per page is the API maximum).
+ *
+ * `include_xpac` admits the works OpenAlex built from repository records
+ * (HAL, Knowledge Commons…), which a list leaves out by default though a
+ * lookup by id still returns them: without it a recorded `openAlexId` for one
+ * of them reads as retired, and its citations go unfollowed.
+ */
 async function allWorks(filter, select) {
 	const results = [];
 	let cursor = '*';
 	while (cursor) {
 		const page = await openAlex(
-			`/works?filter=${encodeURIComponent(filter)}&select=${select}&per-page=200&cursor=${encodeURIComponent(cursor)}`
+			`/works?filter=${encodeURIComponent(filter)}&select=${select}&include_xpac=true&per-page=200&cursor=${encodeURIComponent(cursor)}`
 		);
 		results.push(...page.results);
 		cursor = page.meta?.next_cursor ?? null;
