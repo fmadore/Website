@@ -262,6 +262,8 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 
 **Navigation data**: `src/lib/data/navigation.ts` exports `navItems` used by the Header component.
 
+**Projects and applications**: `/digital-humanities` (_Digital Humanities & Software_) holds both. A record in `data/digital-humanities/` that carries an `application` block (status, platform, licence) is filed under _Software & applications_ by `projectGroup` in `#lib/utils/projectGroups.ts`, which the index, the record rail, the CV's two sections, the Markdown twins, the API's `group` field and both MCP servers all read. One record per project, at its one address; its store listing is a link of `type: 'install'`. Why a section and not a `/software` page, and when to revisit: `docs/digital-humanities-and-software.md`.
+
 **Adding new items**: Create a `.ts` file exporting a typed object in the appropriate `src/lib/data/<category>/` directory. The `import.meta.glob()` in `index.ts` auto-discovers it — no manual registration needed.
 
 ### Component Organization (Atomic Design)

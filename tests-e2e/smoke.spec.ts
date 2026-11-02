@@ -404,3 +404,44 @@ test('citations in context quotes each citing work and filters by cited publicat
 
 	await expect(page.getByRole('heading', { level: 2, name: 'Coverage' })).toBeVisible();
 });
+
+test('the digital humanities index files applications apart, and the CV mirrors it', async ({
+	page
+}) => {
+	await page.goto('/digital-humanities');
+	await ready(page);
+	const software = page.locator('section#software');
+	await expect(
+		software.getByRole('heading', { name: 'Software & applications', level: 2 })
+	).toBeVisible();
+	await expect(software.getByRole('link', { name: 'Kalamu', exact: true })).toBeVisible();
+	// An application is printed once: in its section, not again in the catalogue.
+	await expect(
+		page.locator('section#projects').getByRole('link', { name: 'Kalamu', exact: true })
+	).toHaveCount(0);
+
+	// A method filter lists every record that uses it, applications included.
+	await page.goto('/digital-humanities?skill=Whisper');
+	await ready(page);
+	await expect(page.locator('section#software')).toHaveCount(0);
+	await expect(
+		page.locator('section#projects').getByRole('link', { name: 'Kalamu', exact: true })
+	).toBeVisible();
+
+	// The record's front door is where the application is installed.
+	await page.goto('/digital-humanities/kalamu');
+	await ready(page);
+	await expect(page.getByRole('link', { name: /Install from Microsoft Store/ })).toHaveAttribute(
+		'href',
+		'https://apps.microsoft.com/detail/9MXT5555BZ1H'
+	);
+
+	await page.goto('/cv');
+	await ready(page);
+	const cvSoftware = page.locator('#cv-software');
+	await expect(cvSoftware.getByRole('heading', { name: 'Software & Applications' })).toBeVisible();
+	await expect(cvSoftware.getByText('Kalamu', { exact: true })).toBeVisible();
+	await expect(
+		page.locator('#cv-digital-humanities').getByText('Kalamu', { exact: true })
+	).toHaveCount(0);
+});

@@ -38,7 +38,7 @@ export function homeMarkdown(): string {
 				`${link('Talks and events', markdownUrl('/conference-activity'))}: every talk, panel, workshop and podcast, ${entries(allCommunications.length)}.`,
 				`${link('Activities', markdownUrl('/activities'))}: news and notes, ${entries(activitiesByDate.length)}.`,
 				`${link('Research', markdownUrl('/research'))}: research projects and their narratives.`,
-				`${link('Digital humanities', markdownUrl('/digital-humanities'))}: archives, datasets, tools and AI workflows.`,
+				`${link('Digital humanities and software', markdownUrl('/digital-humanities'))}: archives, datasets, tools, AI workflows and research applications.`,
 				`${link('CV', markdownUrl('/cv'))}: the full curriculum vitae.`,
 				`${link('Teaching', markdownUrl('/teaching'))}: courses taught, guest lectures and workshops.`,
 				`${link('llms.txt', `${SITE}/llms.txt`)}: a map of the site for language models, with the JSON API and the MCP server.`

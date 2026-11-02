@@ -14,9 +14,13 @@
 	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
 	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { applicationSummary } from '#lib/utils/projectGroups.ts';
 
 	// Breadcrumbs for this section
-	const breadcrumbs = createSectionBreadcrumbs('Digital Humanities', '/digital-humanities');
+	const breadcrumbs = createSectionBreadcrumbs(
+		'Digital Humanities & Software',
+		'/digital-humanities'
+	);
 
 	const PER_PAGE = 8;
 
@@ -117,6 +121,10 @@
 			period: formatProjectPeriod(project.years),
 			skills: project.skills ?? [],
 			featured: Boolean(project.featured),
+			// An application's platform, status and licence, set as apparatus in
+			// its entry wherever it is printed, so a filtered catalogue that mixes
+			// the two groups still says which records are software.
+			applicationLine: project.application ? applicationSummary(project.application) : undefined,
 			imageUrl,
 			imageSrcset: buildSrcset(imageUrl)
 		};
@@ -166,12 +174,20 @@
 	const otherFeatured = featuredProjects.slice(1);
 	const shouldShowFeatured = $derived(!selectedSkill && Boolean(leadProject));
 
-	// Catalogue list: when filtering by skill, every matching project (featured
-	// included) so the filter is complete; otherwise the non-featured records.
+	// Software & applications: the standalone apps, given their own section
+	// after the flagship so they are not paged away at the end of the
+	// catalogue. Hidden while a method filter is active, like the featured
+	// block, because the filtered catalogue then lists every match.
+	const applications = projects.filter((project) => project.applicationLine);
+	const shouldShowSoftware = $derived(!selectedSkill && applications.length > 0);
+
+	// Catalogue list: when filtering by skill, every matching record (featured
+	// and applications included) so the filter is complete; otherwise the
+	// digital humanities projects the two sections above do not already print.
 	const catalogueProjects = $derived(
 		selectedSkill
 			? projects.filter((project) => project.skills.includes(selectedSkill))
-			: projects.filter((project) => !project.featured)
+			: projects.filter((project) => !project.featured && !project.applicationLine)
 	);
 
 	// The catalogue's own tally. Half the methods on record are used by a single
@@ -214,9 +230,9 @@
 </script>
 
 <SEO
-	title={pageTitle('Digital Humanities')}
-	description="Digital humanities projects by Frédérick Madore including the Islam West Africa Collection (IWAC), AI-assisted workflows, and data visualisation."
-	keywords="digital humanities, IWAC, Islam West Africa Collection, AI, machine learning, data visualisation, Frédérick Madore"
+	title={pageTitle('Digital Humanities & Software')}
+	description="Digital humanities projects and open-source research software by Frédérick Madore, including the Islam West Africa Collection (IWAC), AI-assisted workflows, data visualisation, and the Windows apps Kalamu and Live Translation and Subtitles."
+	keywords="digital humanities, research software, IWAC, Islam West Africa Collection, AI, OCR, transcription, data visualisation, Kalamu, Frédérick Madore"
 	{breadcrumbs}
 	pageType="CollectionPage"
 />
@@ -234,14 +250,15 @@
 				<p class="eyebrow dh-hero-eyebrow">
 					Infrastructure · {projectCount} entries · {corpusPeriod}
 				</p>
-				<h1 class="index-title">Digital Humanities</h1>
+				<h1 class="index-title">Digital Humanities &amp; Software</h1>
 				<p class="standfirst">
 					Not an end in itself, but a response to a concrete problem. After years of fieldwork
 					across West Africa, I had accumulated thousands of documents that exceeded what
 					traditional methods could process. These projects turn that accumulation into open
-					research infrastructure — digital archives, AI-assisted pipelines, interactive
-					visualisations, and conversational interfaces — so that African historical sources are not
-					only preserved but made usable.
+					research infrastructure (digital archives, AI-assisted pipelines, interactive
+					visualisations and conversational interfaces) so that African historical sources are not
+					only preserved but made usable. The applications package the same methods as free,
+					open-source desktop software for colleagues who do not write code.
 				</p>
 			</div>
 
@@ -327,15 +344,45 @@
 			</section>
 		{/if}
 
+		<!-- SOFTWARE & APPLICATIONS — the standalone apps, as ledger entries
+		     carrying their platform and status. `#software` is what the
+		     navigation's "Software & Applications" item opens. -->
+		{#if shouldShowSoftware}
+			<section
+				class="section"
+				class:section--flush={!shouldShowFeatured}
+				id="software"
+				aria-labelledby="dh-software-heading"
+			>
+				<div class="section-head">
+					<h2 class="section-title" id="dh-software-heading">Software &amp; applications</h2>
+					<span class="dateline catalogue-count">
+						{applications.length}
+						{applications.length === 1 ? 'entry' : 'entries'}
+					</span>
+				</div>
+				<div class="ledger ledger--ruled">
+					{#each applications as project (project.id)}
+						{@render entry(project)}
+					{/each}
+				</div>
+			</section>
+		{/if}
+
 		<!-- CATALOGUE — 3px rule, Archivo head with a live count, the methods
-		     facet, then ruled ledger entries. -->
+		     facet, then ruled ledger entries. Unfiltered, it holds the digital
+		     humanities projects the two sections above do not print; filtered by
+		     a method, every record that uses it, applications included. -->
 		<section
 			class="section"
-			class:section--flush={!shouldShowFeatured}
+			class:section--flush={!shouldShowFeatured && !shouldShowSoftware}
+			id="projects"
 			aria-labelledby="dh-catalogue-heading"
 		>
 			<div class="section-head">
-				<h2 class="section-title" id="dh-catalogue-heading">Catalogue</h2>
+				<h2 class="section-title" id="dh-catalogue-heading">
+					{selectedSkill ? 'Catalogue' : 'Digital humanities projects'}
+				</h2>
 				<span class="dateline catalogue-count">{catalogueCount}</span>
 			</div>
 
@@ -448,6 +495,12 @@ own methods close the entry as apparatus.
 					<a class="link-animated" href={project.href}>{project.title}</a>
 				</h3>
 				<p class="ledger-desc">{project.shortDescription}</p>
+				{#if project.applicationLine}
+					<p class="apparatus-line dh-entry-application">
+						<span class="dh-entry-application-key">Application</span>
+						{project.applicationLine}
+					</p>
+				{/if}
 				{#if project.skills.length > 0}
 					<!-- The record's own methods, set as apparatus rather than as a row
 					     of filter controls — see .apparatus-line in ink-signal.css.
@@ -650,8 +703,16 @@ own methods close the entry as apparatus.
 	/* The content column's flex gap already separates this from the description,
 	 * and the run's links carry their own block padding, so the trim keeps it
 	 * reading as the entry's closing line rather than a detached second group. */
-	.dh-entry-methods {
+	.dh-entry-methods,
+	.dh-entry-application {
 		margin-block-start: calc(-1 * var(--space-1));
+	}
+
+	/* The key of the application line, in the weight the CV's address keys
+	 * take: it names what the figures after it describe. */
+	.dh-entry-application-key {
+		margin-right: var(--space-2);
+		font-weight: var(--font-weight-bold);
 	}
 
 	@media (--md) {

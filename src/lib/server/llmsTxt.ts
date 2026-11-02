@@ -96,9 +96,9 @@ export function buildLlmsTxt(): string {
 		'Research projects on Islam in West Africa and on digital humanities and AI, each with its full narrative, grants, publications and talks.'
 	);
 	item(
-		'Digital humanities',
+		'Digital humanities and software',
 		markdownUrl('/digital-humanities'),
-		'Digital archives, datasets, tools and AI workflows, including the Islam West Africa Collection (IWAC) and AMIRA.'
+		'Digital archives, datasets, tools and AI workflows, including the Islam West Africa Collection (IWAC) and AMIRA, and open-source desktop applications for researchers.'
 	);
 	item(
 		'CV',

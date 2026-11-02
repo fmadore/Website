@@ -82,7 +82,10 @@
 		<CVAwards />
 	</div>
 	<div id="cv-digital-humanities" class="cv-section-wrapper">
-		<CVDigitalHumanities />
+		<CVDigitalHumanities group="projects" />
+	</div>
+	<div id="cv-software" class="cv-section-wrapper">
+		<CVDigitalHumanities group="applications" />
 	</div>
 	<div id="cv-invited-talks" class="cv-section-wrapper">
 		<CVInvitedTalks />

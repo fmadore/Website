@@ -16,6 +16,7 @@
 		{ id: 'cv-grants', label: 'Grants & Fellowships' },
 		{ id: 'cv-awards', label: 'Awards & Honours' },
 		{ id: 'cv-digital-humanities', label: 'Digital Humanities Projects' },
+		{ id: 'cv-software', label: 'Software & Applications' },
 		{ id: 'cv-invited-talks', label: 'Invited Talks' },
 		{ id: 'cv-conferences', label: 'Conference Participation' },
 		{ id: 'cv-events', label: 'Organisation of Academic Events' },

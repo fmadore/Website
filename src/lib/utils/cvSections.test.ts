@@ -12,6 +12,7 @@ import {
 	realPeerReviews,
 	sortCoursesByYear,
 	sortDhProjectsByRecency,
+	splitCvProjects,
 	splitCvTalks,
 	splitEducation,
 	talkAsLecture,
@@ -70,6 +71,18 @@ describe('digital humanities projects', () => {
 		const sorted = sortDhProjectsByRecency(projects);
 		expect(sorted.map((project) => project.title)).toEqual(['Ongoing', 'Alpha', 'Closed', 'Long']);
 		expect(projects[0]!.title).toBe('Long');
+	});
+
+	it('split into projects and applications, each most recent first', () => {
+		const app = { status: 'released', operatingSystem: 'Windows 11' } as const;
+		const { projects, applications } = splitCvProjects([
+			{ title: 'Old project', years: '2019' },
+			{ title: 'Old app', years: '2025', application: app },
+			{ title: 'New project', years: '2024-' },
+			{ title: 'New app', years: '2026-', application: app }
+		]);
+		expect(projects.map((project) => project.title)).toEqual(['New project', 'Old project']);
+		expect(applications.map((project) => project.title)).toEqual(['New app', 'Old app']);
 	});
 });
 

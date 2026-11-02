@@ -23,7 +23,7 @@
 	// Breadcrumb trail — the shell prints an editorial back-link from `section`;
 	// this array is what feeds the breadcrumb JSON-LD, unchanged.
 	const breadcrumbItems = $derived([
-		{ label: 'Digital Humanities', path: '/digital-humanities' },
+		{ label: 'Digital Humanities & Software', path: '/digital-humanities' },
 		{ label: project.title, path: `/digital-humanities/${project.id}` }
 	]);
 
@@ -34,8 +34,17 @@
 	 * page header did before.
 	 */
 	const eyebrow = $derived.by((): EyebrowToken[] => [
-		{ label: formatProjectPeriod(project.years) }
+		{ label: formatProjectPeriod(project.years) },
+		...(project.application ? [{ label: 'Application' }] : [])
 	]);
+
+	// An application's back-link returns to the section of the index that
+	// lists it, and names that section.
+	const backLink = $derived(
+		project.application
+			? { label: 'Software & Applications', href: resolve('/digital-humanities#software') }
+			: { label: 'Digital Humanities & Software', href: resolve('/digital-humanities') }
+	);
 
 	const displayTitle = $derived(typesetQuotes(project.title));
 
@@ -57,7 +66,8 @@
 </script>
 
 <SEO
-	title={project.seoTitle || pageTitle(project.title, 'Digital Humanities')}
+	title={project.seoTitle ||
+		pageTitle(project.title, project.application ? 'Software' : 'Digital Humanities')}
 	schemaName={project.title}
 	description={project.seoDescription || project.shortDescription}
 	keywords={project.seoKeywords?.join(', ') ||
@@ -237,7 +247,7 @@
 {/snippet}
 
 <RecordLayout
-	section={{ label: 'Digital Humanities', href: resolve('/digital-humanities') }}
+	section={backLink}
 	{eyebrow}
 	title={displayTitle}
 	{breadcrumbItems}

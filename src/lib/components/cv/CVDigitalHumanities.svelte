@@ -1,26 +1,46 @@
 <script lang="ts">
 	import { allDhProjectSummaries as allDhProjects } from '#lib/data/digital-humanities/summaries.ts';
 	import { formatCVYearRange, trimTerminalPeriod } from '#lib/utils/cvFormatters.ts';
-	import { sortDhProjectsByRecency } from '#lib/utils/cvSections.ts';
+	import { splitCvProjects } from '#lib/utils/cvSections.ts';
+	import { applicationSummary } from '#lib/utils/projectGroups.ts';
 	import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 	import CVSection from './CVSection.svelte';
 
+	/**
+	 * Prints one of the CV's two project sections: the digital humanities
+	 * projects, or the standalone applications. Which records each holds is
+	 * decided in `splitCvProjects`, which the Markdown twin reads too.
+	 */
+	interface Props {
+		group: 'projects' | 'applications';
+	}
+
+	let { group }: Props = $props();
+
 	// Strictly most recent first, as the CV's Markdown twin orders them too.
-	const dhProjectsByRecency = sortDhProjectsByRecency(allDhProjects);
+	const groups = splitCvProjects(allDhProjects);
+	const isApplications = $derived(group === 'applications');
 </script>
 
 <CVSection
-	title="Digital Humanities Projects"
-	items={dhProjectsByRecency}
+	title={isApplications ? 'Software & Applications' : 'Digital Humanities Projects'}
+	items={groups[group]}
 	year={(project) => formatCVYearRange(project.years)}
 	key={(project) => project.id}
-	emptyMessage="No digital humanities projects listed."
+	emptyMessage={isApplications
+		? 'No software or applications listed.'
+		: 'No digital humanities projects listed.'}
 >
 	{#snippet entry(project)}
 		<span class="cv-title">{typesetQuotes(project.title)}</span>
 		{#if project.shortDescription}
 			<div class="cv-note">{typesetQuotes(project.shortDescription)}</div>
+		{/if}
+		{#if project.application}
+			<!-- Platform, status and licence: the application's own apparatus,
+			     set in the address rows' data voice. -->
+			<div class="dh-links">{applicationSummary(project.application)}</div>
 		{/if}
 		{#each groupProjectLinks(project) as group (group.type)}
 			<!-- Ledger of addresses: mono key, then the sites/repos/datasets it holds. -->

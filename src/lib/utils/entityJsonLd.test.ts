@@ -216,4 +216,23 @@ describe('buildDhProjectJsonLd', () => {
 			'@id': `${website.url}/digital-humanities/proj-1#webpage`
 		});
 	});
+
+	it('models an application as a SoftwareApplication, installed from its first install link', () => {
+		const ld = buildDhProjectJsonLd(
+			project({
+				application: { status: 'released', operatingSystem: 'Windows 11', licence: 'MIT' },
+				links: [
+					{ url: 'https://github.com/x/y', type: 'code' },
+					{ url: 'https://apps.microsoft.com/detail/X', type: 'install' },
+					{ url: 'https://github.com/x/y/releases', type: 'install' }
+				]
+			})
+		);
+		expect(ld['@type']).toBe('SoftwareApplication');
+		expect(ld.url).toBe(`${website.url}/digital-humanities/proj-1`);
+		expect(ld.operatingSystem).toBe('Windows 11');
+		expect(ld.applicationCategory).toBe('DesktopApplication');
+		expect(ld.installUrl).toBe('https://apps.microsoft.com/detail/X');
+		expect(ld.license).toBe('https://spdx.org/licenses/MIT.html');
+	});
 });

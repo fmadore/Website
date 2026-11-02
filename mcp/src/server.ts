@@ -8,7 +8,7 @@ import {
 	summariseStructured
 } from '#lib/utils/apiSearch.ts';
 import { CITATION_STYLES, citationFor } from '#lib/utils/apiCitation.ts';
-import { CV_SECTIONS } from '#lib/apiContract.ts';
+import { CV_SECTIONS, DH_PROJECT_GROUPS } from '#lib/apiContract.ts';
 import { detail, summariseAll } from './format.js';
 
 /**
@@ -354,21 +354,32 @@ export function createWebsiteServer(): McpServer {
 	server.registerTool(
 		'list_dh_projects',
 		{
-			title: 'List digital humanities projects',
+			title: 'List digital humanities projects and software',
 			description:
-				'Digital archives, datasets and tools built by Madore — including the Islam West Africa Collection (IWAC) — with skills, awards and published reviews.',
-			inputSchema: z.object({}).strict(),
+				"Digital archives, datasets, tools and standalone applications built by Madore, including the Islam West Africa Collection (IWAC) and open-source desktop applications for researchers, with skills, awards and published reviews. Each record's `group` is 'project' (a digital humanities project) or 'software' (an application, which also carries `application`: status, operating system, architectures, licence); pass `group` to list one of them.",
+			inputSchema: z
+				.object({
+					group: z
+						.enum(DH_PROJECT_GROUPS)
+						.optional()
+						.describe("'project' or 'software'. Omit it for both.")
+				})
+				.strict(),
 			outputSchema: recordListSchema,
 			annotations: READ_ONLY
 		},
-		tool(async () => success(await loadDataset('digital-humanities')))
+		tool(async ({ group }) => {
+			const records = await loadDataset('digital-humanities');
+			return success(group ? records.filter((record) => record.group === group) : records);
+		})
 	);
 
 	server.registerTool(
 		'get_dh_project',
 		{
-			title: 'Get a digital humanities project',
-			description: 'Full record for one digital humanities project.',
+			title: 'Get a digital humanities project or application',
+			description:
+				'Full record for one digital humanities project or software application, including its description, links and, for an application, its status and platform.',
 			inputSchema: z.object({ id: z.string().min(1).max(300) }).strict(),
 			outputSchema: recordSchema,
 			annotations: READ_ONLY
@@ -382,7 +393,7 @@ export function createWebsiteServer(): McpServer {
 		'get_cv',
 		{
 			title: 'Get the CV',
-			description: `Career record. Omit \`section\` for everything (person details plus all sections), or name one of: ${CV_SECTIONS.join(', ')}. Grants live under 'grants', with funder, amount, currency, status and co-applicants.`,
+			description: `Career record. Omit \`section\` for everything (person details plus all sections), or name one of: ${CV_SECTIONS.join(', ')}. Grants live under 'grants', with funder, amount, currency, status and co-applicants; the computer skills under 'computerSkills'. Projects and software are in list_dh_projects, not here.`,
 			inputSchema: z
 				.object({
 					section: z.enum(CV_SECTIONS).optional().describe('Restrict output to one section.')
@@ -437,10 +448,10 @@ export function createWebsiteServer(): McpServer {
 		['activities', 'Activities', 'News and scholarly activity entries with full bodies.'],
 		[
 			'digital-humanities',
-			'Digital humanities projects',
-			'Archives, datasets, tools, embeds, awards, and reviews.'
+			'Digital humanities projects and software',
+			'Archives, datasets, tools and applications, with embeds, awards and reviews; each record names its group.'
 		],
-		['cv', 'Curriculum vitae', 'Career record grouped by section.']
+		['cv', 'Curriculum vitae', 'Career record grouped by section, computer skills included.']
 	] as const;
 
 	for (const [name, title, description] of resources) {

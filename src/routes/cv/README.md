@@ -18,7 +18,8 @@ src/lib/components/cv/            # Section components (one per CV section)
 │   CVGrants, CVAwards
 │   CVConferences, CVEvents, CVInvitedTalks
 │   CVTeaching, CVMedia, CVService, CVConsulting
-│   CVAffiliations, CVLanguages, CVComputerSkills, CVDigitalHumanities
+│   CVAffiliations, CVLanguages, CVComputerSkills,
+│   CVDigitalHumanities           # Twice: group="projects" and group="applications"
 │   CVSection                     # Generic year-grouped section wrapper
 │   CVEntry                       # Ledger-row entry (mono key left, content right)
 │   PdfGenerator                  # "Download PDF" button → jsPDF (lazy-loaded)

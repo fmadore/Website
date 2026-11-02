@@ -73,10 +73,17 @@ claude mcp add frederickmadore -- node /absolute/path/to/Website/mcp/dist/index.
 | `get_activity`           | One activity in full, including its complete body text.                                                         |
 | `list_research_projects` | All research projects, each listing the ids of its publications, talks, grants and fieldwork.                   |
 | `get_research_project`   | One project in full: its complete narrative, span, regions, source languages, funding, cross-references.        |
-| `list_dh_projects`       | Digital archives, datasets and tools, with skills, awards and reviews.                                          |
-| `get_dh_project`         | One digital humanities project in full.                                                                         |
-| `get_cv`                 | The career record. Optionally one section (`grants`, `teaching`, `awards`, …).                                  |
+| `list_dh_projects`       | Digital archives, datasets, tools and applications. Optionally one `group`: `project` or `software`.            |
+| `get_dh_project`         | One digital humanities project or application in full.                                                          |
+| `get_cv`                 | The career record. Optionally one section (`grants`, `teaching`, `computerSkills`, …).                          |
 | `get_citation`           | BibTeX, or a plain-text reference.                                                                              |
+
+Digital humanities projects and standalone applications share one dataset, so the tool
+names stay `*_dh_projects` / `*_dh_project`. Each record carries a `group` (`project` or
+`software`); an application also carries `application` (status, operating system,
+architectures, licence, interface languages) and lists where to install it among its links.
+Called without `group`, `list_dh_projects` returns every record as before, so existing
+clients need no change. The CV's computer skills are its `computerSkills` section.
 
 Search matches accent-insensitively, so `cote d'ivoire` reaches `Côte d'Ivoire`. `type` and
 `country` match a whole value (`Niger` does not reach `Nigeria`, nor `article` a
@@ -96,7 +103,7 @@ research narratives — so nothing on the site is searchable but unreadable.
 
 The same seven API documents are also exposed as MCP resources under `website://api/`:
 the discovery manifest, research, publications, communications, activities, digital
-humanities projects, and the CV. Tools are the efficient path for filtered questions;
+humanities projects and software, and the CV. Tools are the efficient path for filtered questions;
 resources are the complete, URI-addressable datasets for clients that want the data plane
 directly.
 
