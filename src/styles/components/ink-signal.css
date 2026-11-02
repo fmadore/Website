@@ -1912,11 +1912,19 @@
 	outline-offset: var(--focus-outline-offset);
 }
 
-/* A long table scrolls inside its own box; the page never scrolls sideways. */
+/* A long table scrolls inside its own box; the page never scrolls sideways.
+ * The bar is a hairline-weight rule in the plate's own border ink, square like
+ * every edge in the system, in a gutter of its own: the figures column is set
+ * flush right, and an overlay bar drawn on top of it cut the counts in half.
+ * The standard properties also opt Chromium out of its overlay bars. */
 .chart-table-scroll {
 	max-height: 22rem;
 	overflow: auto;
 	padding-bottom: var(--space-2);
+	padding-inline-end: var(--space-sm);
+	scrollbar-gutter: stable;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-border) transparent;
 }
 
 .chart-table table {
@@ -1938,8 +1946,13 @@
 	vertical-align: baseline;
 }
 
+/* The column heads stay with the figures they name while the rows scroll. */
 .chart-table thead th {
+	position: sticky;
+	top: 0;
+	z-index: 1;
 	border-top: 0;
+	background: var(--color-background);
 }
 
 /* The category. Machine text printed case-intact, on the figures tracking:
