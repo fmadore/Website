@@ -28,7 +28,7 @@
 			also: [pageHref('/communications')]
 		},
 		{ href: resolve('/activities'), label: 'Activities' },
-		{ href: resolve('/digital-humanities'), label: 'Digital humanities' },
+		{ href: resolve('/digital-humanities'), label: 'Digital humanities and software' },
 		{ href: resolve('/cv'), label: 'CV' }
 	];
 

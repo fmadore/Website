@@ -1,10 +1,15 @@
 /**
- * Markdown twins of the digital humanities projects: `/digital-humanities.md`
- * and `/digital-humanities/<id>.md`, with the project's full description,
- * addresses, methods and apparatus.
+ * Markdown twins of the digital humanities projects and applications:
+ * `/digital-humanities.md` and `/digital-humanities/<id>.md`, with the
+ * record's full description, addresses, methods and apparatus.
  */
 import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 import { author } from '#lib/data/siteConfig.ts';
+import {
+	applicationPlatform,
+	applicationStatusLabel,
+	splitProjectGroups
+} from '#lib/utils/projectGroups.ts';
 import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
 import { htmlToMarkdown } from './htmlToMarkdown';
 import { bullets, document, entries, fields, inline, link, section } from './markdown';
@@ -49,12 +54,28 @@ function embeds(project: DigitalHumanitiesProject): string {
 	);
 }
 
+/** An application's platform, status, licence and interface, as the record rail prints them. */
+function applicationFields(project: DigitalHumanitiesProject): [string, string | undefined][] {
+	const app = project.application;
+	if (!app) return [];
+	return [
+		['Application', inline(applicationPlatform(app))],
+		['Status', inline(applicationStatusLabel(app.status))],
+		['Licence', app.licence && inline(app.licence)],
+		[
+			'Interface',
+			app.interfaceLanguages?.length ? inline(app.interfaceLanguages.join(', ')) : undefined
+		]
+	];
+}
+
 /** `/digital-humanities/<id>.md` */
 export function dhProjectMarkdown(project: DigitalHumanitiesProject): string {
 	return document(
 		`# ${inline(project.title)}`,
 		fields([
 			['Years', inline(formatProjectPeriod(project.years))],
+			...applicationFields(project),
 			['Methods', project.skills?.length ? inline(project.skills.join(', ')) : undefined],
 			['Web page', pageUrl(`/digital-humanities/${project.id}`)]
 		]),
@@ -79,16 +100,22 @@ export function dhProjectMarkdown(project: DigitalHumanitiesProject): string {
 	);
 }
 
-/** `/digital-humanities.md`: every project, in the order the index prints them. */
-export function dhIndexMarkdown(projects: readonly DigitalHumanitiesProject[]): string {
+/** One record of the index: its title, period and summary. */
+function indexEntry(project: DigitalHumanitiesProject): string {
+	const title = link(project.title, markdownUrl(`/digital-humanities/${project.id}`));
+	return `${title} · ${inline(formatProjectPeriod(project.years))}\n${inline(project.shortDescription)}`;
+}
+
+/**
+ * `/digital-humanities.md`: every record, in the order the index prints them,
+ * in its two groups.
+ */
+export function dhIndexMarkdown(records: readonly DigitalHumanitiesProject[]): string {
+	const { projects, applications } = splitProjectGroups(records);
 	return document(
-		'# Digital humanities',
-		`Digital archives, datasets, research tools and AI workflows built by ${author.name}: ${entries(projects.length)}. The [web page](${pageUrl('/digital-humanities')}) shows the same projects a page at a time. Each title links to the project's Markdown record, with its full description. The same records are available as JSON at ${SITE}/api/digital-humanities.json.`,
-		bullets(
-			projects.map((project) => {
-				const title = link(project.title, markdownUrl(`/digital-humanities/${project.id}`));
-				return `${title} · ${inline(formatProjectPeriod(project.years))}\n${inline(project.shortDescription)}`;
-			})
-		)
+		'# Digital humanities and software',
+		`Digital archives, datasets, research tools and AI workflows built by ${author.name}, and open-source applications for researchers: ${entries(records.length)}. The [web page](${pageUrl('/digital-humanities')}) shows the same records a page at a time. Each title links to the record's Markdown version, with its full description. The same records are available as JSON at ${SITE}/api/digital-humanities.json, where each names its \`group\`.`,
+		section('Digital humanities projects', bullets(projects.map(indexEntry))),
+		section('Software and applications', bullets(applications.map(indexEntry)))
 	);
 }

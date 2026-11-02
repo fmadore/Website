@@ -1,6 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
 import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
+import { projectGroup } from '#lib/utils/projectGroups.ts';
 import {
 	absoluteUrl,
 	buildLinks,
@@ -18,6 +19,10 @@ const serialise = (project: DigitalHumanitiesProject) =>
 		url: absoluteUrl(`/digital-humanities/${project.id}`),
 		title: project.title,
 		years: project.years,
+		/** 'project' (digital humanities project) or 'software' (a standalone application). */
+		group: projectGroup(project),
+		/** Applications only: status, operating system, architectures, licence, interface languages. */
+		application: project.application,
 		shortDescription: project.shortDescription,
 		/** Full project description. HTML, as authored for the detail page. */
 		description: project.description,
@@ -43,7 +48,7 @@ const serialise = (project: DigitalHumanitiesProject) =>
 		),
 		links: buildLinks([
 			{ label: 'Project', url: project.linkUrl },
-			// `links` carries a `type` ('site' | 'code' | 'data'); the label defaults
+			// `links` carries a `type` ('site' | 'install' | 'code' | 'data'); the label defaults
 			// to the bare URL on the CV, so fall back to the type for a stable key.
 			...(project.links ?? []).map((link) => ({
 				label: link.label ?? link.type ?? 'site',

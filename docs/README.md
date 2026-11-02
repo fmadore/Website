@@ -7,6 +7,9 @@ What is here and why. The conventions themselves live in the root files
   pass on this site: sources of truth, standing rules, the guard tests, the
   agent pattern that worked, and the backlog that outlived the last gate.
   **Start here.**
+- [`digital-humanities-and-software.md`](digital-humanities-and-software.md) —
+  why the applications are a section of `/digital-humanities` rather than a
+  page of their own, how a record is filed as software, and when to revisit.
 - Audits are not kept here once they close. The 2026-08 and 2026-09 technical
   audits were removed on 2026-09-25 with every finding fixed or ruled on;
   `git show c0343ec:docs/audits/2026-09-audit.md` recovers the last one. A new

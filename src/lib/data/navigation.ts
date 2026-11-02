@@ -44,9 +44,18 @@ export const navItems: NavItem[] = [
 	},
 	{ name: 'Activities', path: '/activities' },
 	{
-		name: 'Digital Humanities',
+		// One section, two groups: the applications are a section of the same
+		// page (`#software`), not a page of their own, until there are enough of
+		// them to need one (docs/digital-humanities-and-software.md). The page
+		// spells the name out; the bar abbreviates it, because "Digital
+		// Humanities & Software" pushes the theme toggle off a 1280px header.
+		name: 'DH & Software',
 		path: '/digital-humanities',
-		dropdown: [{ name: 'Islam West Africa Collection', path: 'https://islam.zmo.de/s/westafrica/' }]
+		dropdown: [
+			{ name: 'All Projects & Software', path: '/digital-humanities' },
+			{ name: 'Software & Applications', path: '/digital-humanities#software' },
+			{ name: 'Islam West Africa Collection', path: 'https://islam.zmo.de/s/westafrica/' }
+		]
 	},
 	{
 		name: 'Talks & Events',

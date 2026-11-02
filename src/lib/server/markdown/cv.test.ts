@@ -9,6 +9,7 @@ import { cvPublicationsByDate } from '#lib/data/publications/cv.ts';
 import { author, contact, socialLinks } from '#lib/data/siteConfig.ts';
 import type { CvCommunication } from '#lib/types/communication.ts';
 import { groupPublicationsByType } from '#lib/utils/cvFormatters.ts';
+import { splitProjectGroups } from '#lib/utils/projectGroups.ts';
 import { getPublicationTypeDisplayName } from '#lib/utils/publicationTypeLabels.ts';
 import { cvMarkdown } from './cv';
 import { link } from './markdown';
@@ -27,6 +28,7 @@ const SECTIONS = [
 	'Grants and fellowships',
 	'Awards and honours',
 	'Digital humanities projects',
+	'Software and applications',
 	'Invited talks',
 	'Conference participation',
 	'Organisation of academic events',
@@ -174,11 +176,21 @@ describe('cvMarkdown', () => {
 		}
 	});
 
-	it('prints every digital humanities project, linked to its record', () => {
-		const body = sectionBody('Digital humanities projects');
-		expect(rows(body)).toHaveLength(allDhProjectSummaries.length);
-		for (const project of allDhProjectSummaries) {
-			expect(body).toContain(`(${markdownUrl(`/digital-humanities/${project.id}`)})`);
+	it('prints every project and application once, in its group, linked to its record', () => {
+		const { projects, applications } = splitProjectGroups(allDhProjectSummaries);
+		expect(applications.length).toBeGreaterThan(0);
+		for (const [title, records, others] of [
+			['Digital humanities projects', projects, applications],
+			['Software and applications', applications, projects]
+		] as const) {
+			const body = sectionBody(title);
+			expect(rows(body)).toHaveLength(records.length);
+			for (const project of records) {
+				expect(body).toContain(`(${markdownUrl(`/digital-humanities/${project.id}`)})`);
+			}
+			for (const project of others) {
+				expect(body).not.toContain(`(${markdownUrl(`/digital-humanities/${project.id}`)})`);
+			}
 		}
 	});
 

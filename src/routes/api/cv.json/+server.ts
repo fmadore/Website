@@ -16,6 +16,7 @@ import { peerReviewsByDate } from '#lib/data/peer-reviews/index.ts';
 import { researchRolesByDate } from '#lib/data/research-roles/index.ts';
 import { affiliationsByStartDate } from '#lib/data/affiliations/index.ts';
 import { languagesByProficiency } from '#lib/data/languages/index.ts';
+import { computerSkills } from '#lib/data/computerSkills.ts';
 import { fieldworksByDate } from '#lib/data/fieldworks/index.ts';
 import { mediaAppearancesByDate } from '#lib/data/media-appearances/index.ts';
 import teaching from '#lib/data/teaching/index.ts';
@@ -112,7 +113,9 @@ export const GET: RequestHandler = async () => {
 					links: buildLinks([{ label: 'Appearance', url: appearance.url }])
 				})
 			),
-			languages: languagesByProficiency.map((item) => compact({ ...item }))
+			languages: languagesByProficiency.map((item) => compact({ ...item })),
+			// Categories and the skills in each, as the CV prints them.
+			computerSkills: computerSkills.map((group) => compact({ ...group }))
 		}
 	};
 

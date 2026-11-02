@@ -15,6 +15,7 @@ export interface ProjectLinkGroup {
 /** Display order; also the keys the CV and project pages print. */
 const LINK_KEYS: readonly { type: ProjectLinkType; key: string }[] = [
 	{ type: 'site', key: 'Site' },
+	{ type: 'install', key: 'Install' },
 	{ type: 'code', key: 'Code' },
 	{ type: 'data', key: 'Data' }
 ] as const;

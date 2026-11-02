@@ -25,6 +25,12 @@ record has a single front door, and as the ledger's Site row when it has
 several and no one of them can be called "the project" without picking. A
 record with no site at all — a module, a pipeline, a dataset — carries no
 accent, which is correct: a repository is not "the current thing".
+
+An application's front door is where it is installed, not its website: when
+the record carries an `application` block, its first install address (the
+store listing) is the button, and an Application ledger (platform, status,
+licence, interface languages) sits above the addresses, which is what a
+reader checks before installing anything.
 -->
 <script lang="ts">
 	import { basePrefix } from '#lib/utils/paths.ts';
@@ -33,6 +39,8 @@ accent, which is correct: a repository is not "the current thing".
 	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { plateFallback } from '#lib/actions/plateFallback.ts';
+	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
+	import { applicationPlatform, applicationStatusLabel } from '#lib/utils/projectGroups.ts';
 
 	// The rail is 380px wide from --lg up; below that the plate spans the single
 	// column. Same contract as the record rails.
@@ -66,13 +74,38 @@ accent, which is correct: a repository is not "the current thing".
 	 * and mis-naming what it opens.
 	 */
 	const ctaLink = $derived.by(() => {
-		const sites = linkGroups.find((group) => group.type === 'site')?.links ?? [];
+		const linksOf = (type: string) => linkGroups.find((group) => group.type === type)?.links ?? [];
+		// An application opens where it is installed; the first install address
+		// is its store listing (the record's order), the rest are alternatives.
+		if (project.application && linksOf('install').length > 0) return linksOf('install')[0];
+		const sites = linksOf('site');
 		return sites.length === 1 ? sites[0] : undefined;
 	});
 
 	// A bare URL is the project's own address, so the button names the errand;
-	// an authored label already names the destination, so it is kept.
-	const ctaLabel = $derived(ctaLink?.label ? typesetQuotes(ctaLink.label) : 'Open project');
+	// an authored label already names the destination, so it is kept. An
+	// install address names where the application is installed from.
+	const ctaLabel = $derived.by(() => {
+		if (ctaLink?.type === 'install')
+			return ctaLink.label ? `Install from ${typesetQuotes(ctaLink.label)}` : 'Install';
+		return ctaLink?.label ? typesetQuotes(ctaLink.label) : 'Open project';
+	});
+
+	// What a reader checks before installing: where it runs, whether it is
+	// released, and under what licence.
+	const applicationRows = $derived.by((): MetaRow[] => {
+		const app = project.application;
+		if (!app) return [];
+		const rows: MetaRow[] = [
+			{ key: 'Platform', value: applicationPlatform(app) },
+			{ key: 'Status', value: applicationStatusLabel(app.status) }
+		];
+		// The key already says licence, so the value is the bare identifier.
+		if (app.licence) rows.push({ key: 'Licence', value: app.licence });
+		if (app.interfaceLanguages?.length)
+			rows.push({ key: 'Interface', value: app.interfaceLanguages.join(', ') });
+		return rows;
+	});
 
 	/**
 	 * A record whose whole address list *is* the button below it prints no
@@ -104,6 +137,8 @@ accent, which is correct: a repository is not "the current thing".
 		/>
 	</figure>
 {/if}
+
+<RecordLedger rows={applicationRows} label="Application" />
 
 {#if linkGroups.length > 0 && !ledgerIsTheCta}
 	<div>

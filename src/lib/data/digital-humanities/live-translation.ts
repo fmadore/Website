@@ -3,7 +3,7 @@ import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 export const liveTranslation: DigitalHumanitiesProject = {
 	id: 'live-translation',
 	title: 'Live Translation and Subtitles',
-	years: '2026',
+	years: '2026-',
 	shortDescription:
 		'A Windows app that puts live captions and translations over meetings, video calls and slides, offline with Whisper or through Gemini, OpenAI and Mistral. Built for a bilingual workshop at STIAS, now in the Microsoft Store.',
 	description: `
@@ -29,8 +29,24 @@ export const liveTranslation: DigitalHumanitiesProject = {
 	`,
 	imageUrl: '/images/digital-humanities/live-translation.webp',
 	order: 2,
+	application: {
+		status: 'released',
+		operatingSystem: 'Windows 11',
+		architectures: ['x64', 'ARM64'],
+		licence: 'MIT',
+		interfaceLanguages: ['English', 'French', 'German']
+	},
 	links: [
-		{ url: 'https://apps.microsoft.com/detail/9PFB8LR3RR9X', label: 'Microsoft Store' },
+		{
+			url: 'https://apps.microsoft.com/detail/9PFB8LR3RR9X',
+			label: 'Microsoft Store',
+			type: 'install'
+		},
+		{
+			url: 'https://github.com/fmadore/Live-translation/releases',
+			label: 'GitHub releases',
+			type: 'install'
+		},
 		{ url: 'https://github.com/fmadore/Live-translation', label: 'Live-translation', type: 'code' },
 		{
 			url: 'https://fmadore.github.io/stias-dh-ai-workshop-2026/',

@@ -39,9 +39,38 @@ export interface ProjectPublication {
 
 /**
  * What a project link points at. Drives the mono key printed before the
- * addresses on the CV ("Site", "Code", "Data"). Defaults to 'site'.
+ * addresses on the CV ("Site", "Install", "Code", "Data"). Defaults to 'site'.
+ * `install` is where an application is obtained: a store listing, a releases
+ * page.
  */
-export type ProjectLinkType = 'site' | 'code' | 'data';
+export type ProjectLinkType = 'site' | 'install' | 'code' | 'data';
+
+/**
+ * Where an application stands: `released` has a public stable release anyone
+ * can install, `beta` has public test builds only, `in-development` has no
+ * public build yet.
+ */
+export type ApplicationStatus = 'released' | 'beta' | 'in-development';
+
+/**
+ * A standalone application: software a reader installs and runs, rather than
+ * a site, a dataset or a pipeline. Its presence files the record under
+ * "Software & applications" (`projectGroup`), and nothing else about the
+ * record changes: it keeps its address, its methods and its research context,
+ * so an application that serves digital humanities research is still found by
+ * its methods alongside the projects.
+ */
+export interface SoftwareApplication {
+	status: ApplicationStatus;
+	/** The operating system as printed, e.g. 'Windows 11'. */
+	operatingSystem: string;
+	/** The processor architectures it ships for, e.g. ['x64', 'ARM64']. */
+	architectures?: string[];
+	/** SPDX licence identifier, e.g. 'MIT'. */
+	licence?: string;
+	/** The interface languages, as printed, e.g. ['English', 'French']. */
+	interfaceLanguages?: string[];
+}
 
 /**
  * A public address for the project: its live site, a source repository, a
@@ -78,6 +107,12 @@ export interface DigitalHumanitiesProject {
 	 * never change where the project's card points.
 	 */
 	links?: ProjectLink[];
+
+	/**
+	 * Set on a standalone application; files the record under "Software &
+	 * applications" and carries what a reader needs before installing it.
+	 */
+	application?: SoftwareApplication;
 
 	award?: string;
 	reviews?: Review[];

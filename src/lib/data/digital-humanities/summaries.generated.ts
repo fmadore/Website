@@ -596,16 +596,109 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		]
 	},
 	{
+		"id": "kalamu",
+		"title": "Kalamu",
+		"years": "2026-",
+		"shortDescription": "A free, open-source Windows app for researchers: read scanned and handwritten documents, transcribe interviews and analyse texts with Gemini, OpenAI, Claude or Mistral, or offline with Whisper, and check every result against its source. In the Microsoft Store.",
+		"imageUrl": "/images/digital-humanities/kalamu.webp",
+		"order": 1,
+		"application": {
+			"status": "released",
+			"operatingSystem": "Windows 11",
+			"architectures": [
+				"x64",
+				"ARM64"
+			],
+			"licence": "MIT",
+			"interfaceLanguages": [
+				"English"
+			]
+		},
+		"links": [
+			{
+				"url": "https://apps.microsoft.com/detail/9MXT5555BZ1H",
+				"label": "Microsoft Store",
+				"type": "install"
+			},
+			{
+				"url": "https://github.com/fmadore/Kalamu/releases",
+				"label": "GitHub releases",
+				"type": "install"
+			},
+			{
+				"url": "https://github.com/fmadore/Kalamu",
+				"label": "Kalamu",
+				"type": "code"
+			}
+		],
+		"skills": [
+			"Rust",
+			"Tauri",
+			"SvelteKit",
+			"Svelte 5",
+			"TypeScript",
+			"LLM",
+			"Prompt Engineering",
+			"OCR",
+			"HTR",
+			"Audio transcription",
+			"Whisper",
+			"NER",
+			"Sentiment analysis",
+			"Reproducible Research"
+		],
+		"seoKeywords": [
+			"Kalamu",
+			"OCR",
+			"handwritten text recognition",
+			"HTR",
+			"interview transcription",
+			"speech to text",
+			"Whisper",
+			"Gemini",
+			"OpenAI",
+			"Claude",
+			"Mistral",
+			"research software",
+			"Tauri",
+			"Rust",
+			"Microsoft Store",
+			"Windows",
+			"digital humanities",
+			"African studies"
+		]
+	},
+	{
 		"id": "live-translation",
 		"title": "Live Translation and Subtitles",
-		"years": "2026",
+		"years": "2026-",
 		"shortDescription": "A Windows app that puts live captions and translations over meetings, video calls and slides, offline with Whisper or through Gemini, OpenAI and Mistral. Built for a bilingual workshop at STIAS, now in the Microsoft Store.",
 		"imageUrl": "/images/digital-humanities/live-translation.webp",
 		"order": 2,
+		"application": {
+			"status": "released",
+			"operatingSystem": "Windows 11",
+			"architectures": [
+				"x64",
+				"ARM64"
+			],
+			"licence": "MIT",
+			"interfaceLanguages": [
+				"English",
+				"French",
+				"German"
+			]
+		},
 		"links": [
 			{
 				"url": "https://apps.microsoft.com/detail/9PFB8LR3RR9X",
-				"label": "Microsoft Store"
+				"label": "Microsoft Store",
+				"type": "install"
+			},
+			{
+				"url": "https://github.com/fmadore/Live-translation/releases",
+				"label": "GitHub releases",
+				"type": "install"
 			},
 			{
 				"url": "https://github.com/fmadore/Live-translation",

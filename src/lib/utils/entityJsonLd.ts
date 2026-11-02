@@ -347,14 +347,18 @@ export function buildCommunicationJsonLd(communication: Communication): EventJso
 /**
  * Build the schema.org JSON-LD object for a digital-humanities project page.
  *
- * Projects with an external link are modelled as WebSite, otherwise as
- * CreativeWork. Extracted verbatim from `digital-humanities/[id]/+page.ts`.
+ * Applications are modelled as SoftwareApplication, projects with an external
+ * link as WebSite, and the rest as CreativeWork.
  */
 export function buildDhProjectJsonLd(project: DigitalHumanitiesProject): CreativeWorkJsonLd {
 	const identity = recordIdentity(`/digital-humanities/${project.id}`);
 	const jsonLdObject: Partial<CreativeWorkJsonLd> = {
 		'@context': 'https://schema.org',
-		'@type': project.linkUrl ? 'WebSite' : 'CreativeWork',
+		'@type': project.application
+			? 'SoftwareApplication'
+			: project.linkUrl
+				? 'WebSite'
+				: 'CreativeWork',
 		...identity,
 		name: project.title,
 		description: project.seoDescription || project.shortDescription,
@@ -363,6 +367,16 @@ export function buildDhProjectJsonLd(project: DigitalHumanitiesProject): Creativ
 	};
 
 	jsonLdObject.author = [siteAuthorIdentity()];
+
+	const app = project.application;
+	if (app) {
+		jsonLdObject.operatingSystem = app.operatingSystem;
+		// A desktop application: schema.org has no narrower type for one.
+		jsonLdObject.applicationCategory = 'DesktopApplication';
+		const install = project.links?.find((link) => link.type === 'install');
+		if (install) jsonLdObject.installUrl = install.url;
+		if (app.licence) jsonLdObject.license = `https://spdx.org/licenses/${app.licence}.html`;
+	}
 
 	const image = project.heroImageUrl || project.imageUrl;
 	if (image) {

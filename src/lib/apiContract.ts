@@ -16,9 +16,16 @@ export const CV_SECTIONS = [
 	'affiliations',
 	'fieldworks',
 	'mediaAppearances',
-	'languages'
+	'languages',
+	'computerSkills'
 ] as const;
 export type CvSection = (typeof CV_SECTIONS)[number];
+/**
+ * The two groups of `/api/digital-humanities.json`, published as each item's
+ * `group`: digital humanities projects, and standalone software applications.
+ */
+export const DH_PROJECT_GROUPS = ['project', 'software'] as const;
+export type DhProjectGroup = (typeof DH_PROJECT_GROUPS)[number];
 export interface ApiItem {
 	id: string;
 	url?: string;

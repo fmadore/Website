@@ -69,13 +69,14 @@ import {
 	realEditorialMemberships,
 	realPeerReviews,
 	sortCoursesByYear,
-	sortDhProjectsByRecency,
+	splitCvProjects,
 	splitCvTalks,
 	splitEducation,
 	teachingLectures,
 	teachingLevelLabel
 } from '#lib/utils/cvSections.ts';
 import { formatDayMonth, getYearFromISODate } from '#lib/utils/date-formatter.ts';
+import { applicationSummary } from '#lib/utils/projectGroups.ts';
 import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
 import { getPublicationTypeDisplayName } from '#lib/utils/publicationTypeLabels.ts';
 import { quoteTitle, typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
@@ -433,7 +434,7 @@ function awards(): string {
 }
 
 // ---------------------------------------------------------------------------
-// Digital humanities projects (CVDigitalHumanities)
+// Digital humanities projects and software (CVDigitalHumanities, twice)
 // ---------------------------------------------------------------------------
 
 function projectReviews(project: DigitalHumanitiesSummary): string | undefined {
@@ -449,13 +450,16 @@ function projectReviews(project: DigitalHumanitiesSummary): string | undefined {
 	return `${reviews.length === 1 ? 'Review:' : 'Reviews:'} ${citations.join('; ')}`;
 }
 
-function digitalHumanities(): string {
-	const rows = sortDhProjectsByRecency(allDhProjectSummaries).map((project) =>
+const cvProjects = splitCvProjects(allDhProjectSummaries);
+
+function projectRows(projects: readonly DigitalHumanitiesSummary[]): string[] {
+	return projects.map((project) =>
 		entry(
 			formatCVYearRange(project.years),
 			link(typesetQuotes(project.title), markdownUrl(`/digital-humanities/${project.id}`)),
 			[
 				project.shortDescription && text(project.shortDescription),
+				project.application && inline(applicationSummary(project.application)),
 				...groupProjectLinks(project).map(
 					(group) =>
 						`${inline(group.key)}: ${group.links
@@ -466,9 +470,19 @@ function digitalHumanities(): string {
 			]
 		)
 	);
+}
+
+function digitalHumanities(): string {
 	return section(
 		'Digital humanities projects',
-		ledgerOr(rows, 'No digital humanities projects listed.')
+		ledgerOr(projectRows(cvProjects.projects), 'No digital humanities projects listed.')
+	);
+}
+
+function software(): string {
+	return section(
+		'Software and applications',
+		ledgerOr(projectRows(cvProjects.applications), 'No software or applications listed.')
 	);
 }
 
@@ -748,6 +762,7 @@ export function cvMarkdown(): string {
 		grants(),
 		awards(),
 		digitalHumanities(),
+		software(),
 		invitedTalks(),
 		conferences(),
 		events(),

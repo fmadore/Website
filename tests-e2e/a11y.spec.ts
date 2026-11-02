@@ -19,6 +19,10 @@ const pages: { name: string; path: string }[] = [
 	{ name: 'talks index', path: '/conference-activity' },
 	{ name: 'activities log', path: '/activities' },
 	{ name: 'CV', path: '/cv' },
+	// Projects and applications on one index, and an application record: the
+	// rail's install button and Application ledger.
+	{ name: 'digital humanities and software', path: '/digital-humanities' },
+	{ name: 'application record', path: '/digital-humanities/kalamu' },
 	// A content detail page — the citation path, and the only page family
 	// carrying the accent CTA.
 	{ name: 'publication detail', path: '/publications/beninese-imam-election-2022' },

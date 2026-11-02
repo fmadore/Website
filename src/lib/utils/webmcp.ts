@@ -25,7 +25,13 @@
  * Spec: https://webmachinelearning.github.io/webmcp/
  */
 
-import { CV_SECTIONS, type ApiItem, type CvPayload, type DatasetName } from '#lib/apiContract.ts';
+import {
+	CV_SECTIONS,
+	DH_PROJECT_GROUPS,
+	type ApiItem,
+	type CvPayload,
+	type DatasetName
+} from '#lib/apiContract.ts';
 import { author, website } from '#lib/data/siteConfig.ts';
 import { CITATION_STYLES, citationFor } from '#lib/utils/apiCitation.ts';
 import { createDocumentLoader } from '#lib/utils/apiDocumentLoader.ts';
@@ -416,30 +422,39 @@ function buildTools({ navigate, fetch }: WebMcpOptions): WebMcpTool[] {
 		// ------------------------------------------------------ digital humanities
 		tool({
 			name: 'list_dh_projects',
-			title: 'List digital humanities projects',
-			description: `Digital archives, datasets and tools built by ${author.name}, including the Islam West Africa Collection (IWAC): title, years, summary, skills, awards, the article describing each and its published reviews. Use get_dh_project for a project's full description and embedded views.`,
-			inputSchema: schema(),
-			async run() {
+			title: 'List digital humanities projects and software',
+			description: `Digital archives, datasets, tools and standalone applications built by ${author.name}, including the Islam West Africa Collection (IWAC) and open-source desktop applications for researchers: title, years, group, summary, skills, awards, the article describing each and its published reviews. A record's group is 'project' or 'software'; an application also carries its status, operating system, architectures and licence. Use get_dh_project for a record's full description and embedded views.`,
+			inputSchema: schema({
+				group: {
+					type: 'string',
+					enum: [...DH_PROJECT_GROUPS],
+					description: "'project' or 'software'. Omit it for both."
+				}
+			}),
+			async run(args) {
+				const group = choice(args, 'group', DH_PROJECT_GROUPS);
 				// The HTML description and the embeds are most of the bytes;
 				// get_dh_project returns them.
-				const items = (await loadDataset('digital-humanities')).map(
-					({
-						description,
-						embeddableContent: _embeds,
-						seoTitle: _seoTitle,
-						seoDescription: _seoDescription,
-						seoKeywords: _seoKeywords,
-						...summary
-					}) => ({ ...summary, descriptionChars: String(description ?? '').length })
-				);
+				const items = (await loadDataset('digital-humanities'))
+					.filter((record) => !group || record.group === group)
+					.map(
+						({
+							description,
+							embeddableContent: _embeds,
+							seoTitle: _seoTitle,
+							seoDescription: _seoDescription,
+							seoKeywords: _seoKeywords,
+							...summary
+						}) => ({ ...summary, descriptionChars: String(description ?? '').length })
+					);
 				return { count: items.length, items };
 			}
 		}),
 		tool({
 			name: 'get_dh_project',
-			title: 'Get a digital humanities project',
+			title: 'Get a digital humanities project or application',
 			description:
-				'One digital humanities project in full: its description (HTML), skills, award, the article describing it, published reviews, embedded views and links. Takes an id from list_dh_projects.',
+				"One digital humanities project or application in full: its description (HTML), group, skills, award, the article describing it, published reviews, embedded views and links, and an application's status and platform. Takes an id from list_dh_projects.",
 			inputSchema: schema({ id: idParam('list_dh_projects') }, ['id']),
 			run: (args) => getRecord('digital-humanities', args, 'list_dh_projects')
 		}),

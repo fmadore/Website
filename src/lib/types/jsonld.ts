@@ -202,12 +202,16 @@ export interface SoftwareApplicationJsonLd extends BaseJsonLd {
 }
 
 export interface CreativeWorkJsonLd extends BaseJsonLd {
-	'@type': 'CreativeWork' | 'WebSite' | 'Dataset';
+	'@type': 'CreativeWork' | 'WebSite' | 'Dataset' | 'SoftwareApplication';
 	author?: JsonLdAgent[];
 	datePublished?: string;
 	dateModified?: string;
 	publisher?: JsonLdOrganization;
 	license?: string;
+	/** SoftwareApplication only: where it runs, and where it is installed from. */
+	operatingSystem?: string;
+	applicationCategory?: string;
+	installUrl?: string;
 }
 
 // --- Person Page Types ---

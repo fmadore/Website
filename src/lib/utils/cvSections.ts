@@ -14,6 +14,7 @@
  * never pulls a dataset into a bundle.
  */
 import type { CvCommunication } from '#lib/types/communication.ts';
+import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 import type { Education } from '#lib/types/education.ts';
 import type { EditorialMembership } from '#lib/types/editorial-membership.ts';
 import type { Fieldwork } from '#lib/types/fieldwork.ts';
@@ -25,6 +26,7 @@ import type {
 	TeachingLecture
 } from '#lib/types/teachingExperience.ts';
 import { formatDayMonth } from './date-formatter';
+import { splitProjectGroups } from './projectGroups.ts';
 
 // ── Header ───────────────────────────────────────────────────────────────────
 
@@ -86,6 +88,21 @@ export function sortDhProjectsByRecency<T extends { years: string; title: string
 		if (ay.end !== by.end) return by.end - ay.end;
 		return a.title.localeCompare(b.title);
 	});
+}
+
+/**
+ * The CV's two project sections, each most recent first: the digital
+ * humanities projects, and the standalone applications (`projectGroups.ts`).
+ * Every record is printed once, in the section of its group.
+ */
+export function splitCvProjects<
+	T extends Pick<DigitalHumanitiesProject, 'application' | 'years' | 'title'>
+>(projects: readonly T[]): { projects: T[]; applications: T[] } {
+	const groups = splitProjectGroups(projects);
+	return {
+		projects: sortDhProjectsByRecency(groups.projects),
+		applications: sortDhProjectsByRecency(groups.applications)
+	};
 }
 
 // ── Talks ────────────────────────────────────────────────────────────────────

@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { CV_SECTIONS, type ApiItem, type CvPayload } from '#lib/apiContract.ts';
+import { CV_SECTIONS, DH_PROJECT_GROUPS, type ApiItem, type CvPayload } from '#lib/apiContract.ts';
 import { website } from '#lib/data/siteConfig.ts';
 import { citationFor } from '#lib/utils/apiCitation.ts';
 import { WEBMCP_TOOL_NAMES, WEBMCP_UI_TOOLS } from '#lib/utils/webmcpToolNames.ts';
@@ -363,6 +363,23 @@ describe('project and CV tools', () => {
 		}
 		const project = docs['digital-humanities'][0]!;
 		expect(await ok(tools, 'get_dh_project', { id: project.id })).toEqual(project);
+	});
+
+	it('lists one group of the digital humanities dataset on request', async () => {
+		const { tools } = register();
+		const all = docs['digital-humanities'];
+		for (const group of DH_PROJECT_GROUPS) {
+			const list = await ok<{ count: number; items: ApiItem[] }>(tools, 'list_dh_projects', {
+				group
+			});
+			const expected = all.filter((p) => p.group === group).map((p) => p.id);
+			expect(expected.length, group).toBeGreaterThan(0);
+			expect(list.items.map((p) => p.id)).toEqual(expected);
+		}
+		for (const app of all.filter((p) => p.group === 'software')) {
+			expect(app.application, app.id).toBeDefined();
+		}
+		expect(await fails(tools, 'list_dh_projects', { group: 'apps' })).toMatch(/project, software/);
 	});
 
 	it('gives the person and section sizes by default, and one section on request', async () => {
