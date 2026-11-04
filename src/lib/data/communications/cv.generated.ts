@@ -766,6 +766,18 @@ export const cvCommunications: CvCommunication[] = [
 		"type": "workshop"
 	},
 	{
+		"id": "digital-humanities-ai-social-sciences-zmo-2026",
+		"title": "Digital Humanities and AI in the Social Sciences: Datafication in Practice",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"date": "12 November 2026",
+		"dateISO": "2026-11-12",
+		"conference": "ZMO Projektversammlung",
+		"location": "Leibniz-Zentrum Moderner Orient",
+		"type": "seminar"
+	},
+	{
 		"id": "digital-humanities-islam-burkina-faso",
 		"title": "Digital Humanities in the Making: The Islam Burkina Faso Collection",
 		"authors": [

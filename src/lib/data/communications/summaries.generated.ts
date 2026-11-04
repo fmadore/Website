@@ -3029,6 +3029,38 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"abstractExcerpt": "Arlette Farge's celebrated model of archival research — the slow, tactile encounter with documents in a silent reading room — presupposes well-ordered European institutions. For historians of West Africa, the reality is d"
 	},
 	{
+		"id": "digital-humanities-ai-social-sciences-zmo-2026",
+		"title": "Digital Humanities and AI in the Social Sciences: Datafication in Practice",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"date": "12 November 2026",
+		"dateISO": "2026-11-12",
+		"year": 2026,
+		"conference": "ZMO Projektversammlung",
+		"location": "Leibniz-Zentrum Moderner Orient",
+		"country": "Germany",
+		"type": "seminar",
+		"language": "English",
+		"tags": [
+			"AI",
+			"Digital Humanities",
+			"Datafication",
+			"Large Language Models",
+			"Data Sovereignty",
+			"IWAC",
+			"Kalamu",
+			"ZMO"
+		],
+		"slidesUrl": "https://slides.frederickmadore.com/talks/2026-11-12-zmo-unit-pv/",
+		"coordinates": {
+			"latitude": 52.42814222811816,
+			"longitude": 13.202338657893593
+		},
+		"project": "Digital Humanities and AI in African Studies",
+		"abstractExcerpt": "What is decided, and by whom, when a source becomes data? Most of the work in digital research goes into datafication: turning social life, objects and records into machine-readable data. Analysis comes after.\n\nThis prese"
+	},
+	{
 		"id": "digital-humanities-islam-burkina-faso",
 		"title": "Digital Humanities in the Making: The Islam Burkina Faso Collection",
 		"authors": [

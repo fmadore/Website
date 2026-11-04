@@ -144,6 +144,7 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'communications/slides/2026-07-01-rhodes-reconfiguring-archive.webp': [1280, 720],
 	'communications/slides/2026-09-17-kansas-ai-and-the-work-of.webp': [1280, 720],
 	'communications/slides/2026-09-23-stellenbosch-mcp-glam-africains.webp': [1280, 720],
+	'communications/slides/2026-11-12-zmo-unit-pv.webp': [1280, 720],
 	'communications/ubt-ai-day-2026-logo.webp': [1200, 630],
 	'communications/union-islamique-benin-elections-hero.webp': [900, 675],
 	'communications/union-islamique-benin-elections.webp': [600, 450],

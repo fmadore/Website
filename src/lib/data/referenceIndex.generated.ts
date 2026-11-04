@@ -435,6 +435,21 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "Tadeusz Manteuffel Institute of History, Polish Academy of Sciences, Warsaw",
 		"country": "Poland"
 	},
+	"digital-humanities-ai-social-sciences-zmo-2026": {
+		"id": "digital-humanities-ai-social-sciences-zmo-2026",
+		"itemType": "communication",
+		"title": "Digital Humanities and AI in the Social Sciences: Datafication in Practice",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "seminar",
+		"date": "12 November 2026",
+		"dateISO": "2026-11-12",
+		"year": 2026,
+		"conference": "ZMO Projektversammlung",
+		"location": "Leibniz-Zentrum Moderner Orient",
+		"country": "Germany"
+	},
 	"digital-humanities-islam-burkina-faso": {
 		"id": "digital-humanities-islam-burkina-faso",
 		"itemType": "communication",
