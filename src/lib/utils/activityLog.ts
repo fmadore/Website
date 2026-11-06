@@ -1,52 +1,35 @@
 /**
- * The home page's latest-activities rail, as data: the newest entries and the
- * per-year meter. Computed by the home page's server load, so the page ships
- * five titles and a dozen counts instead of the activity dataset they come
- * from.
+ * The home page's latest-activities feed, as data: the newest entries and the
+ * size of the log. Computed by the home page's server load, so the page ships
+ * four titles and a count instead of the activity dataset they come from.
  */
 import type { Activity } from '#lib/types/activity.ts';
 
-/** One row of the rail's ledger. */
+/** One entry in the feed. */
 export interface ActivityLogEntry {
 	id: string;
 	title: string;
-	/** The display date the ledger key is formatted from. */
-	date: string;
-}
-
-/** One row of the "Browse by year" meter. */
-export interface ActivityLogYear {
-	year: number;
-	count: number;
-	/** Bar length as a percentage of the busiest year. */
-	pct: number;
+	/**
+	 * The ISO date the feed's dateline is formatted from. Never the display
+	 * `date`: read back through `new Date()`, a display string parses as local
+	 * midnight, and east of UTC that is the previous day.
+	 */
+	dateISO: string;
 }
 
 export interface ActivityLog {
 	/** How many entries the whole log holds. */
 	total: number;
 	latest: ActivityLogEntry[];
-	/** Newest year first. */
-	years: ActivityLogYear[];
 }
 
-/**
- * The rail for `activities` (newest first): the first `limit` entries, and a
- * meter row per year — counted on the record's `year` — scaled so the busiest
- * year fills the bar.
- */
+/** The first `limit` entries of `activities` (newest first), and the log's size. */
 export function summariseActivityLog(
-	activities: readonly Pick<Activity, 'id' | 'title' | 'date' | 'year'>[],
+	activities: readonly Pick<Activity, 'id' | 'title' | 'dateISO'>[],
 	limit: number
 ): ActivityLog {
-	const counts = new Map<number, number>();
-	for (const { year } of activities) counts.set(year, (counts.get(year) ?? 0) + 1);
-	const busiest = Math.max(1, ...counts.values());
 	return {
 		total: activities.length,
-		latest: activities.slice(0, limit).map(({ id, title, date }) => ({ id, title, date })),
-		years: [...counts]
-			.map(([year, count]) => ({ year, count, pct: (count / busiest) * 100 }))
-			.sort((a, b) => b.year - a.year)
+		latest: activities.slice(0, limit).map(({ id, title, dateISO }) => ({ id, title, dateISO }))
 	};
 }

@@ -17,7 +17,7 @@
  * wherever they sit side by side (footer, CV, bibliography actions).
  *
  * Brand icons that are not available in the installed packages (currently
- * Bluesky) are bundled as local SVG data too, so no runtime fallback is needed.
+ * Bluesky and the Microsoft Store) are bundled as local SVG data too, so no runtime fallback is needed.
  */
 
 import { addIcon } from '@iconify/svelte';
@@ -88,6 +88,14 @@ const blueskyIcon = {
 	height: 24
 };
 
+// Microsoft Store mark, drawn for this site in one ink (no installed set
+// carries it): the store's bag, with the four Windows panes inside.
+const microsoftStoreIcon = {
+	body: '<g fill="none" stroke="currentColor" stroke-width="1.75"><path d="M8.5 7.5V6a3.5 3.5 0 0 1 7 0v1.5"/><path d="M3.5 7.5h17v13h-17z"/></g><path fill="currentColor" d="M7.5 9.75h4v4h-4zm5 0h4v4h-4zm-5 5h4v4h-4zm5 0h4v4h-4z"/>',
+	width: 24,
+	height: 24
+};
+
 /**
  * Register all icons for string-based usage.
  * Call this once at app startup (in +layout.svelte).
@@ -114,6 +122,7 @@ export function registerIcons(): void {
 
 	// Simple Icons
 	addIcon('simple-icons:bluesky', blueskyIcon);
+	addIcon('local:microsoft-store', microsoftStoreIcon);
 
 	// Academicons
 	addIcon('academicons:google-scholar', academiconsGoogleScholar);
@@ -176,6 +185,7 @@ export {
 	mdiTrendingUp,
 	// Simple Icons
 	blueskyIcon,
+	microsoftStoreIcon,
 	// Academicons
 	academiconsGoogleScholar,
 	academiconsOrcid,

@@ -21,12 +21,15 @@
 		/>
 		<ItemReference id="stias-dh-ai-african-studies-workshop-2026" /> and a co-edited volume,
 		<em>Digital Humanities and Artificial Intelligence in African Studies</em>, to be published by
-		Bielefeld University Press. The project brings together scholars and practitioners from Africa,
-		Europe and beyond, and opens dialogue between the Global North and South. Three themes organise
-		the work: transforming research methods through computational tools, building sustainable
-		infrastructures in resource-constrained settings, and centring African knowledge systems in
-		digital design. The move is from policy governance about AI to “practising with AI”, and towards
-		the ethical development of DH across the continent.
+		Bielefeld University Press. The first workshop produced <em>For Whom and For What Purpose?</em>
+		<ItemReference id="for-whom-for-what-purpose-dh-ai-african-studies-2026" />, a position paper
+		written collectively by 25 authors, and a special issue of the
+		<em>Journal of the Digital Humanities Association of Southern Africa</em> is forthcoming. The project
+		brings together scholars and practitioners from Africa, Europe and beyond, and opens dialogue between
+		the Global North and South. Three themes organise the work: transforming research methods through
+		computational tools, building sustainable infrastructures in resource-constrained settings, and centring
+		African knowledge systems in digital design. The move is from policy governance about AI to “practising
+		with AI”, and towards the ethical development of DH across the continent.
 	</p>
 	<p>
 		My contribution addresses the practical “problem of scale” in African digital collections.

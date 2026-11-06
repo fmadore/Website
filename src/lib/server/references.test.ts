@@ -22,11 +22,11 @@ describe('referencesIn', () => {
 });
 
 describe('referencesForRoute', () => {
-	it("returns what the home page's own source cites", () => {
-		const home = referencesForRoute('/');
-		expect(Object.keys(home)).toContain('religious-activism-campuses');
+	it("returns what a page's own source cites", () => {
+		const page = referencesForRoute('/research/dh-ai-african-studies');
+		expect(Object.keys(page)).toContain('for-whom-for-what-purpose-dh-ai-african-studies-2026');
 		// A handful, not the index: the point of passing entries per page.
-		expect(Object.keys(home).length).toBeLessThan(Object.keys(referenceIndex).length / 4);
+		expect(Object.keys(page).length).toBeLessThan(Object.keys(referenceIndex).length / 4);
 	});
 
 	it('covers a research project, and is empty for a page that cites nothing', () => {
@@ -34,6 +34,7 @@ describe('referencesForRoute', () => {
 			Object.keys(referencesForRoute('/research/dh-ai-african-studies')).length
 		).toBeGreaterThan(0);
 		expect(referencesForRoute('/teaching')).toEqual({});
+		expect(referencesForRoute('/')).toEqual({});
 		expect(referencesForRoute(null)).toEqual({});
 	});
 });

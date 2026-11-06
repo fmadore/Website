@@ -150,7 +150,7 @@ describe('Svelte prose', () => {
 			expect(pageProseMarkdown(file, 'ResearchProjectLayout').length, file).toBeGreaterThan(500);
 		}
 		expect(pageProseMarkdown('/src/routes/+page.svelte', 'ContentBody')).toMatch(
-			/^I am a historian and/
+			/^My two roles feed each other/
 		);
 		expect(() => pageProseMarkdown('/src/routes/nowhere/+page.svelte', 'X')).toThrow(
 			/No page source/

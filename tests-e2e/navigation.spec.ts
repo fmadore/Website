@@ -90,9 +90,9 @@ test('inline citations resolve on load and after client-side navigation', async 
 		await page.keyboard.press('Escape');
 	};
 
-	await page.goto('/');
+	await page.goto('/research/muslim-minorities-southern-cities-benin-togo');
 	await ready(page);
-	await expectResolved('religious-activism-campuses');
+	await expectResolved('good-muslim-bad-muslim-togo-2021');
 
 	await page.goto('/research');
 	await ready(page);

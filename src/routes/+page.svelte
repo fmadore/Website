@@ -1,33 +1,69 @@
 <script lang="ts">
-	import LatestActivities from '#lib/components/panels/LatestActivities.svelte';
-	import ProfileBanner from '#lib/components/common/ProfileBanner.svelte';
+	import Icon from '@iconify/svelte';
 	import ContentBody from '#lib/components/common/ContentBody.svelte';
-	import SEO from '#lib/SEO.svelte';
-	import { asset, resolve } from '$app/paths';
-	import ItemReference from '#lib/components/reference/ItemReference.svelte';
+	import ActivityFeed from '#lib/components/home/ActivityFeed.svelte';
+	import OutputRecordChart from '#lib/components/home/OutputRecordChart.svelte';
 	import Button from '#lib/components/atoms/Button.svelte';
+	import SEO from '#lib/SEO.svelte';
+	import { onMount } from 'svelte';
+	import { asset, resolve } from '$app/paths';
 	import { author, profile, website } from '#lib/data/siteConfig.ts';
-	import { buildSrcset } from '#lib/utils/imageVariants.ts';
+	import { assetHref } from '#lib/utils/paths.ts';
+	import { buildSrcset, imageDimensions } from '#lib/utils/imageVariants.ts';
+	import { formatDayMonth } from '#lib/utils/homeDigest.ts';
 	import type { PageData } from './$types';
-
-	// The portrait's slot is 22rem wide on a phone (capped), 18rem at --md and
-	// 380px from --lg — the record rail's width — so a 2× screen wants ~760 px;
-	// the 854 px source and its 400/800 derivatives come from the variant
-	// manifest, like every plate.
-	const portraitSrc = asset('images/Profile-picture.webp');
-	const portraitSrcset = buildSrcset(portraitSrc);
-	const PORTRAIT_SIZES =
-		'(max-width: 767px) min(100vw - 2rem, 22rem), (max-width: 1023px) 18rem, 380px';
 
 	let { data }: { data: PageData } = $props();
 
-	// Use the Person schema from page load data as additional schema
+	// The portrait spans the column on a phone, then takes a 15rem slot at --md
+	// and 18.75rem from --lg, so a 2× screen wants up to ~700 px of the 854 px
+	// source.
+	const portraitSrc = asset('images/Profile-picture.webp');
+	const portraitSrcset = buildSrcset(portraitSrc);
+	const PORTRAIT_SIZES = '(max-width: 767px) calc(100vw - 2rem), (max-width: 1023px) 15rem, 300px';
+
 	const additionalSchemas = $derived(data.personSchema ? [data.personSchema] : []);
 
-	// No JS preload for the portrait: the image below is in the prerendered
-	// HTML with loading="eager" + fetchpriority="high", so the browser already
-	// requests it from the preload scanner — a link injected after hydration
-	// arrives long after the image has loaded.
+	// "Upcoming" was fixed when the page was built. Once the page is live, check
+	// the date again, so a talk that has passed since the last build is never
+	// announced as next. Before hydration (and for the prerender) the build's
+	// list stands as it is.
+	let today = $state<string | null>(null);
+	onMount(() => {
+		today = new Date().toISOString().slice(0, 10);
+	});
+	const nextTalk = $derived(data.upcoming.find((talk) => !today || talk.dateISO >= today));
+
+	// What the page says about each collection and app; the title, image and
+	// platform line come from the record itself.
+	const DH_COPY: Record<string, { blurb: string; stats?: [string, string][] }> = {
+		iwac: {
+			blurb:
+				'Newspapers, Islamic publications, documents and audiovisual records, processed with OCR, transcription and entity recognition.',
+			stats: [
+				['20,944', 'Items'],
+				['6', 'Countries']
+			]
+		},
+		amira: {
+			blurb:
+				'The collections of research centres in Burkina Faso, Kenya, Nigeria and South Africa, searchable in one place.',
+			stats: [
+				['3,800', 'Items'],
+				['90+', 'Projects']
+			]
+		},
+		kalamu: {
+			blurb:
+				'Read scans and handwriting, transcribe interviews and analyse texts with AI, then check every result against its source.'
+		},
+		'live-translation': {
+			blurb: 'Live captions and translations over meetings, video calls and slides.'
+		}
+	};
+
+	const COVER_SIZES = '(max-width: 767px) 30vw, 10rem';
+	const DH_SIZES = '(max-width: 767px) 8rem, 12rem';
 </script>
 
 <SEO
@@ -40,9 +76,69 @@
 	{additionalSchemas}
 />
 
-<div class="home-shell py-8">
-	<ProfileBanner />
-	<div class="home-grid">
+{#snippet dhCard(card: (typeof data.collections)[number])}
+	{@const copy = DH_COPY[card.id]}
+	{@const src = assetHref(card.imageUrl)}
+	{@const size = imageDimensions(src)}
+	<li class="dh-card">
+		<img
+			class="plate dh-plate"
+			{src}
+			srcset={buildSrcset(src)}
+			sizes={DH_SIZES}
+			alt=""
+			width={size?.width}
+			height={size?.height}
+			loading="lazy"
+			decoding="async"
+		/>
+		<div class="dh-text">
+			<h4 class="dh-title">
+				<a href={resolve('/digital-humanities/[id]', { id: card.id })}>{card.title}</a>
+			</h4>
+			{#if copy}<p class="dh-blurb">{copy.blurb}</p>{/if}
+			{#if copy?.stats}
+				<dl class="dh-stats">
+					{#each copy.stats as [value, label] (label)}
+						<div>
+							<dt class="dh-stat-label">{label}</dt>
+							<dd class="dh-stat-value">{value}</dd>
+						</div>
+					{/each}
+				</dl>
+			{/if}
+			{#if card.platform || card.store}
+				<p class="dh-meta">
+					{#if card.platform}<span>{card.platform}</span>{/if}
+					{#if card.platform && card.store}<span aria-hidden="true">·</span>{/if}
+					{#if card.store}
+						<a class="dh-store" href={card.store.url} target="_blank" rel="noopener noreferrer">
+							{#if card.store.label === 'Microsoft Store'}
+								<Icon icon="local:microsoft-store" width="14" height="14" aria-hidden="true" />
+							{/if}
+							{card.store.label}<span class="sr-only"> (opens in new tab)</span>
+						</a>
+					{/if}
+				</p>
+			{/if}
+		</div>
+	</li>
+{/snippet}
+
+<div class="home-shell">
+	<!-- The name once, then what the work is, then what is happening now. -->
+	<header class="home-lede">
+		<p class="lede-dateline dateline">
+			<span>{author.positionShort}</span>
+			<span>University of Bayreuth</span>
+		</p>
+		<div class="lede-main">
+			<h1 class="home-name">{author.fullName}</h1>
+			<p class="home-thesis">
+				I study Islam in francophone West Africa, and I build open collections, AI workflows and
+				interactive dashboards that let me read sources in new ways.
+			</p>
+		</div>
 		<figure class="home-portrait">
 			<img
 				class="plate"
@@ -57,350 +153,670 @@
 				fetchpriority="high"
 			/>
 		</figure>
-		<!-- Keep this long prose column fully readable throughout scrolling. -->
-		<div class="home-main">
-			<ContentBody variant="default" additionalClasses="home-prose">
-				<p>
-					I am a historian and <a href={resolve('/digital-humanities')} data-sveltekit-preload-data
-						>digital humanist</a
-					>
-					at the University of Bayreuth (Germany). I study Islam in francophone West Africa, and I build
-					open collections, AI workflows, and research infrastructure that let me read its sources in
-					new ways.
-				</p>
-				<p>
-					My two roles feed each other. At the <a
-						href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
-						target="_blank"
-						rel="noopener noreferrer"
-						>Cluster of Excellence “Africa Multiple”<span class="sr-only">
-							(opens in new tab)</span
-						></a
-					>, I am
-					<a
-						href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html"
-						target="_blank"
-						rel="noopener noreferrer"
-						>Data Curator<span class="sr-only"> (opens in new tab)</span></a
-					>
-					and a researcher in the
-					<a
-						href="https://www.africamultiple.uni-bayreuth.de/en/1_2-Research/Research-Sections-AM-2_0/Digitalities/index.html"
-						target="_blank"
-						rel="noopener noreferrer"
-						>Research Section Digitalities<span class="sr-only"> (opens in new tab)</span></a
-					>. As curator, I help design the systems that make research data findable and reusable
-					under the FAIR and CARE principles, and I work with colleagues on the digital literacy and
-					ethical standards that curation demands. As Co-Principal Investigator of
-					<a
-						href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
-						data-sveltekit-preload-data><em>Islam’s ‘Peripheries’</em></a
-					>
-					(2026–2028), a Volkswagen Foundation project with Aksana Ismailbekova, I use AI to compare Islamic
-					discourse in two multilingual collections, from West Africa and Central Asia. The project also
-					tests new ways into them, from searching across languages to querying them in plain language
-					through an AI assistant, with open-source tools that researchers in both regions can use.
-				</p>
-				<p>
-					My <a href={resolve('/research')} data-sveltekit-preload-data>research</a> draws on
-					fifteen years of work on Islam in francophone West Africa and extensive fieldwork in the
-					region. It examines how Muslim communities, particularly youth and women, have engaged
-					with politics, education, and the public sphere in Benin, Burkina Faso, Côte d’Ivoire, and
-					Togo since the 1960s. Before Bayreuth, I was a Research Fellow at
-					<a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
-						>Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only">
-							(opens in new tab)</span
-						></a
-					>
-					in Berlin, and before that a
-					<a
-						href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
-						target="_blank"
-						rel="noopener noreferrer"
-						>Banting Postdoctoral Fellow<span class="sr-only"> (opens in new tab)</span></a
-					>
-					at the
-					<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
-						>University of Florida<span class="sr-only"> (opens in new tab)</span></a
-					>.
-				</p>
+		<dl class="now-ledger">
+			{#if nextTalk}
+				<div class="now-row now-row--next">
+					<dt>Next talk</dt>
+					<dd>
+						<a href={resolve('/communications/[id]', { id: nextTalk.id })}>{nextTalk.title}</a>
+					</dd>
+					<dd class="now-when">
+						<time datetime={nextTalk.dateISO}>{formatDayMonth(nextTalk.dateISO)}</time>
+					</dd>
+				</div>
+			{/if}
+			<div class="now-row">
+				<dt>Project</dt>
+				<dd>
+					<a href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
+						><em>Islam’s ‘Peripheries’</em></a
+					>, Co-PI, Volkswagen Foundation
+				</dd>
+				<dd class="now-when">2026–2028</dd>
+			</div>
+			<div class="now-row">
+				<dt>Project</dt>
+				<dd>
+					<a href={resolve('/research/dh-ai-african-studies')}
+						><em>Digital Humanities and Artificial Intelligence in African Studies</em></a
+					>, Volkswagen Foundation and DFG Point Sud
+				</dd>
+				<dd class="now-when">2025–2027</dd>
+			</div>
+			<div class="now-row">
+				<dt>Role</dt>
+				<dd>Data Curator, Cluster of Excellence “Africa Multiple”</dd>
+				<dd class="now-when">Bayreuth</dd>
+			</div>
+		</dl>
+	</header>
 
-				<h2>Digital humanities and AI in African studies</h2>
-				<p>
-					What can digital humanities and AI do for African studies, and on whose terms? I
-					coordinate
-					<a href={resolve('/research/dh-ai-african-studies')} data-sveltekit-preload-data
-						>a collaborative initiative</a
-					>
-					around that question. It brings together scholars from Africa, Europe, and beyond to ask how
-					computational tools can change research practice without displacing African knowledge systems.
-				</p>
-				<p>
-					The initiative held two international workshops in 2026, in
-					<ItemReference
-						id="volkswagenstiftung-dh-ai-african-studies-workshop-2026"
-						label="Hanover"
-					/>
-					and
-					<ItemReference id="stias-dh-ai-african-studies-workshop-2026" label="Stellenbosch" />. The
-					first produced <em>For Whom and For What Purpose?</em>
-					<ItemReference id="for-whom-for-what-purpose-dh-ai-african-studies-2026" />, a position
-					paper written collectively by 25 authors. Two publications are forthcoming: a
-					<a
-						href={resolve('activities/dh-ai-african-studies-edited-volume')}
-						data-sveltekit-preload-data>co-edited volume</a
-					>
-					with Bielefeld University Press and a special issue of the
-					<em>Journal of the Digital Humanities Association of Southern Africa</em>.
-				</p>
+	<section class="section home-about" aria-labelledby="home-about">
+		<h2 class="section-title" id="home-about">About</h2>
+		<ContentBody variant="default" additionalClasses="home-prose">
+			<p>
+				My two roles feed each other. At the <a
+					href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
+					target="_blank"
+					rel="noopener noreferrer"
+					>Cluster of Excellence “Africa Multiple”<span class="sr-only">
+						(opens in new tab)</span
+					></a
+				>, I am
+				<a
+					href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html"
+					target="_blank"
+					rel="noopener noreferrer">Data Curator<span class="sr-only"> (opens in new tab)</span></a
+				>
+				and a researcher in the
+				<a
+					href="https://www.africamultiple.uni-bayreuth.de/en/1_2-Research/Research-Sections-AM-2_0/Digitalities/index.html"
+					target="_blank"
+					rel="noopener noreferrer"
+					>Research Section Digitalities<span class="sr-only"> (opens in new tab)</span></a
+				>. As curator, I help design the systems that make research data findable and reusable under
+				the FAIR and CARE principles, and I work with colleagues on the digital literacy and ethical
+				standards that curation demands. As Co-Principal Investigator of
+				<a
+					href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
+					data-sveltekit-preload-data><em>Islam’s ‘Peripheries’</em></a
+				>
+				(2026–2028), a Volkswagen Foundation project with Aksana Ismailbekova, I use AI to compare Islamic
+				discourse in two multilingual collections, from West Africa and Central Asia. The project also
+				tests new ways into them, from searching across languages to querying them in plain language through
+				an AI assistant, with open-source tools that researchers in both regions can use.
+			</p>
+			<p>
+				My <a href={resolve('/research')} data-sveltekit-preload-data>research</a> draws on fifteen
+				years of work on Islam in francophone West Africa and extensive fieldwork in the region. It
+				examines how Muslim communities, particularly youth and women, have engaged with politics,
+				education, and the public sphere in Benin, Burkina Faso, Côte d’Ivoire, and Togo since the
+				1960s. Before Bayreuth, I was a Research Fellow at
+				<a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
+					>Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only"> (opens in new tab)</span></a
+				>
+				in Berlin, and before that a
+				<a
+					href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
+					target="_blank"
+					rel="noopener noreferrer"
+					>Banting Postdoctoral Fellow<span class="sr-only"> (opens in new tab)</span></a
+				>
+				at the
+				<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
+					>University of Florida<span class="sr-only"> (opens in new tab)</span></a
+				>.
+			</p>
+			<p>
+				Beyond academia, I work with <a
+					href="https://communitology.co/"
+					target="_blank"
+					rel="noopener noreferrer">Communitology<span class="sr-only"> (opens in new tab)</span></a
+				>
+				to produce specialised Country of Origin Information (COI) reports for asylum and immigration
+				cases involving Benin, Côte d’Ivoire, and Togo.
+			</p>
+		</ContentBody>
+	</section>
 
-				<h2>The <em>Islam West Africa Collection</em> (IWAC)</h2>
-				<p>
-					Since 2023, I have been developing the <a
-						href="https://islam.zmo.de/s/westafrica/"
-						target="_blank"
-						rel="noopener noreferrer"
-						><em>Islam West Africa Collection</em> (IWAC)<span class="sr-only">
-							(opens in new tab)</span
-						></a
-					>, an open-access collection of more than 17,500 items on Islam across Benin, Burkina
-					Faso, Côte d’Ivoire, Niger, Nigeria, and Togo.
-					<a
-						href="https://github.com/fmadore/iwac-ai-pipelines"
-						target="_blank"
-						rel="noopener noreferrer"
-						>AI-assisted workflows<span class="sr-only"> (opens in new tab)</span></a
-					>
-					carry the heavy processing: OCR and handwriting recognition, audio transcription, named-entity
-					recognition, summarisation. Results are written back into the collection itself, so the machine-generated
-					metadata travels with the record. A separate experiment compares
-					<a
-						href="https://iwac.frederickmadore.com/sentiment-analysis/"
-						target="_blank"
-						rel="noopener noreferrer"
-						>how three AI models read the tone<span class="sr-only"> (opens in new tab)</span></a
-					> of press coverage of Islam.
-				</p>
+	<!-- The two halves of the work, side by side. -->
+	<div class="home-columns">
+		<section class="section home-col" aria-labelledby="home-publications">
+			<h2 class="section-title home-col-title" id="home-publications">Selected publications</h2>
+			<ol class="covers">
+				{#each data.books as book (book.id)}
+					{@const src = assetHref(book.image)}
+					{@const size = imageDimensions(src)}
+					<li>
+						<a class="cover" href={resolve('/publications/[id]', { id: book.id })}>
+							<img
+								class="plate cover-plate"
+								{src}
+								srcset={buildSrcset(src)}
+								sizes={COVER_SIZES}
+								alt=""
+								width={size?.width}
+								height={size?.height}
+								loading="lazy"
+								decoding="async"
+							/>
+							<span class="cover-year">{book.year}{book.edited ? ' · Co-edited' : ''}</span>
+							<span class="cover-title">{book.title}</span>
+						</a>
+					</li>
+				{/each}
+			</ol>
+			<ol
+				class="ledger writing"
+				class:writing--forthcoming={data.writing.some((work) => work.when !== String(work.year))}
+			>
+				{#each data.writing as work (work.id)}
+					<li>
+						<a class="ledger-row writing-row" href={resolve('/publications/[id]', { id: work.id })}>
+							<span class="ledger-key">{work.when}</span>
+							<span class="ledger-content">
+								<span class="writing-title">{work.title}</span>
+								{#if work.venue}<span class="writing-venue">{work.venue}</span>{/if}
+							</span>
+						</a>
+					</li>
+				{/each}
+			</ol>
+			<p class="home-cta">
+				<Button href={resolve('/publications')} variant="outline-secondary" size="base">
+					View all {data.record.publications} publications <span aria-hidden="true">→</span>
+				</Button>
+			</p>
+		</section>
 
-				<h2>Omeka S development & AMIRA</h2>
-				<p>
-					IWAC runs on <a href="https://omeka.org/s/" target="_blank" rel="noopener noreferrer"
-						>Omeka S<span class="sr-only"> (opens in new tab)</span></a
-					>, an open-source platform for digital collections, and so does most of my other digital
-					work. I design custom modules and themes for it: search layers, visualisations, structured
-					metadata, bilingual interfaces. All of it is open source, on
-					<a href="https://github.com/fmadore" target="_blank" rel="noopener noreferrer"
-						>GitHub<span class="sr-only"> (opens in new tab)</span></a
-					>.
-				</p>
-				<p>
-					At Bayreuth I built <a
-						href="https://data.africamultiple.uni-bayreuth.de/s/amira"
-						target="_blank"
-						rel="noopener noreferrer">AMIRA<span class="sr-only"> (opens in new tab)</span></a
-					>, the Africa Multiple Interactive Research Atlas, on
-					<a href={resolve('digital-humanities/amira')} data-sveltekit-preload-data
-						>a custom theme, a federated search layer, and a visualisation module</a
-					>. Built with our Digital Research Environment, it makes the collections of the Africa
-					Multiple Research Centres in Burkina Faso, Kenya, Nigeria, and South Africa searchable
-					from one place: close to 4,000 research items, more than 90 projects, some 1,600 people,
-					and nearly 600 institutions. IWAC has a visualisation module of its own, which generates
-					its
-					<a
-						href="https://islam.zmo.de/s/westafrica/page/explore"
-						target="_blank"
-						rel="noopener noreferrer"
-						>interactive views<span class="sr-only"> (opens in new tab)</span></a
-					>: maps, networks of people and organisations, machine-derived themes, and charts of how
-					words rise and fall across the decades.
-				</p>
-
-				<h2>Books & publications</h2>
-				<p>
-					My latest book, <em>Religious Activism on Campuses in Togo and Benin</em>
-					<ItemReference id="religious-activism-campuses" />, examines the emergence of Christian
-					and Muslim student associations in the 1970s and how they reshaped university life in Lomé
-					and Abomey-Calavi, against prevailing secular ideologies. I am also the author of
-					<em>La construction d’une sphère publique musulmane en Afrique de l’Ouest</em>
-					<ItemReference id="sphere-publique-musulmane" /> and the co-editor of
-					<em>Religiosity on University Campuses in Africa</em>
-					<ItemReference id="religiosity-university-campuses" />. In addition, I have co-edited two
-					special journal issues: “Muslim Minorities in Africa, Part 1”
-					<ItemReference id="muslim-minorities-africa-1" /> & “Part 2”
-					<ItemReference id="muslim-minorities-africa-2" /> and “Les acteurs religieux africains à l’ère
-					du numérique”
-					<ItemReference id="acteurs-religieux-numerique" />. My research has been
-					<a href={resolve('/publications')} data-sveltekit-preload-data>published</a> in eleven peer-reviewed
-					journals and seven edited volumes.
-				</p>
-				<!-- The section's own way into the index. The word "published" in the
-				     paragraph above was the only route to the bibliography from this
-				     page, eight paragraphs down; the activities rail beside it has
-				     carried a named control to its index all along. -->
-				<p class="home-section-cta">
-					<Button href={resolve('/publications')} variant="outline-secondary" size="base">
-						View all publications <span aria-hidden="true">→</span>
-					</Button>
-				</p>
-
-				<h2>Consulting</h2>
-				<p>
-					Beyond academia, I work with <a
-						href="https://communitology.co/"
-						target="_blank"
-						rel="noopener noreferrer"
-						>Communitology<span class="sr-only"> (opens in new tab)</span></a
-					>
-					to produce specialised Country of Origin Information (COI) reports for asylum and immigration
-					cases involving Benin, Côte d’Ivoire, and Togo.
-				</p>
-			</ContentBody>
-		</div>
-		<div class="home-rail">
-			<LatestActivities log={data.activityLog} />
-		</div>
+		<section class="section home-col" aria-labelledby="home-dh">
+			<h2 class="section-title home-col-title" id="home-dh">Digital humanities and software</h2>
+			<h3 class="rail-label dh-group">Collections</h3>
+			<ul class="dh-list">
+				{#each data.collections as card (card.id)}
+					{@render dhCard(card)}
+				{/each}
+			</ul>
+			<h3 class="rail-label dh-group">Apps</h3>
+			<ul class="dh-list dh-list--apps">
+				{#each data.apps as card (card.id)}
+					{@render dhCard(card)}
+				{/each}
+			</ul>
+			<p class="home-cta">
+				<Button href={resolve('/digital-humanities')} variant="outline-secondary" size="base">
+					View all projects and apps <span aria-hidden="true">→</span>
+				</Button>
+			</p>
+		</section>
 	</div>
+
+	<ActivityFeed log={data.activityLog} />
+
+	<OutputRecordChart record={data.record} />
 </div>
 
 <style>
-	/* The record rail, shared. This page is the site's other prose-beside-a-rail
-	 * surface, so it is set on exactly the shell `RecordLayout` gives every
-	 * detail route — `--container-lg`, centred — rather than on a width of its
-	 * own. It used to be a 58rem block flush to the container's left edge: at
-	 * 1440 that put the front page at 89–1017 while every other page ran
-	 * 137–1289, so arriving from a section index moved the whole page left and
-	 * narrowed it, and left 320px of dead paper down the right margin.
-	 *
-	 * A cap, not a second container: the shell must never carry `.container`
-	 * itself — nested inside the layout's own it takes a second 16px gutter.
-	 * The trade the centring makes is deliberate: the hero nameplate no longer
-	 * starts on the masthead wordmark's edge, because on this site no page's
-	 * content does. Agreeing with the other twenty pages is worth more than
-	 * agreeing with the wordmark alone. */
+	/* The record shell every detail route uses: `--container-lg`, centred. A
+	 * cap, not a second `.container` (the One Rail Rule). */
 	.home-shell {
 		max-width: var(--container-lg);
 		margin-inline: auto;
+		padding-block: var(--space-xl) var(--space-3xl);
 	}
 
-	/* Asymmetric editorial grid: prose + sections in the wide column, the
-	 * portrait plate and the latest-activities ledger in the rail. On mobile the
-	 * source order (portrait → prose → activities) puts the photo up top, right
-	 * above the intro; on desktop it moves into the right rail via grid placement. */
-	.home-grid {
+	/* ---- Lede ---------------------------------------------------------- */
+
+	/* A masthead in three bands: the dateline across the page, the name and
+	 * thesis beside the portrait, then the Now ledger across the page again. */
+	.home-lede {
 		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-xl);
-		margin-top: var(--space-2xl);
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas: 'dateline' 'portrait' 'main' 'now';
+		row-gap: var(--space-lg);
+		padding-bottom: var(--space-xl);
 	}
 
-	/* Tablet keeps the two columns but on a narrower rail. The rail was a flat
-	 * 22rem from --md up, which at a 768px container left the reading column
-	 * 320px — narrower than the sidebar beside it, and about 44 characters of
-	 * prose. The rail is never wider than the record it points at. */
-	@media (--md) {
-		.home-grid {
-			grid-template-columns: minmax(0, 1fr) 18rem;
-			grid-template-rows: auto 1fr;
-			column-gap: var(--space-xl);
-			row-gap: var(--space-xl);
-			align-items: start;
-		}
-
-		.home-main {
-			grid-column: 1;
-			grid-row: 1 / 3;
-		}
-
-		.home-portrait {
-			grid-column: 2;
-			grid-row: 1;
-		}
-
-		.home-rail {
-			grid-column: 2;
-			grid-row: 2;
-		}
+	.lede-dateline {
+		grid-area: dateline;
 	}
 
-	/* From --lg the grid is the record grid, value for value: a flexible reading
-	 * column, a --space-3xl gutter and the same 380px rail every record page
-	 * carries its metadata in. At 1024 that resolves to 580 / 64 / 380, so the
-	 * portrait plate and the activities ledger line up across the site. */
-	@media (--lg) {
-		.home-grid {
-			grid-template-columns: minmax(0, 1fr) 380px;
-			column-gap: var(--space-3xl);
-		}
+	.lede-main {
+		grid-area: main;
 	}
 
-	/* The section's trailing control. A paragraph, so it keeps the prose
-	 * rhythm around it; the control inside is the same outline button the
-	 * activities rail closes with. */
-	.home-main :global(.home-section-cta) {
-		margin-top: var(--space-lg);
+	.now-ledger {
+		grid-area: now;
 	}
 
-	/* The prose sits directly on the paper, so ContentBody's inset is pure
-	 * indent — and it pushed each section rule 32px in from the nameplate rule
-	 * above it, so the two tiers of the same rule system started at different
-	 * places. Zeroed: the rules stack flush, which is the whole point of drawing
-	 * hierarchy in them. */
-	/* One edge for rule and text alike. The Measured Line Rule used to be set on
-	 * the paragraphs alone — `.content-body` never carried a measure, only
-	 * `.prose` did, so this column was the last uncapped long-form text on the
-	 * site, and the one a peer lands on first. On the record rail the reading
-	 * column is wider than the body measure, so the cap belongs on the block
-	 * instead: the 3px rule above each section head then stops where the prose
-	 * stops rather than running on into the gutter. Hierarchy drawn in rules
-	 * only reads if the rule is the width of the thing it opens. */
-	.home-main :global(.home-prose) {
-		padding: 0;
-		max-width: var(--measure-prose);
-	}
-
-	/* Lead paragraph — the standfirst tier (Newsreader, one step above body).
-	 * It was set at --font-size-xl, which is the Title step: a Newsreader
-	 * paragraph at record-title size. */
-	.home-main :global(.home-prose > p:first-of-type) {
-		font-size: var(--font-size-prose-lead);
-		line-height: var(--line-height-normal);
-		color: var(--color-text-emphasis);
-	}
-
-	/* Body copy at the Body step. It ran at --font-size-lg — the Standfirst
-	 * tier — for 1,100 words, which is what put the measure at ~98 characters:
-	 * the type was a step too large for a column this wide, in both directions. */
-	.home-main :global(.home-prose > p) {
-		font-size: var(--font-size-prose);
-		line-height: var(--line-height-relaxed);
-	}
-
-	/* Each content section opens with a 3px ink rule above the Archivo title —
-	 * hierarchy drawn in rules, so the page scans as a set of sections. The
-	 * interval below the rule is --rule-gap like every other ruled module; it
-	 * was --space-md here, a drift the pairing guard could not see because the
-	 * padding is declared above the border. */
-	.home-main :global(.home-prose > h2) {
-		margin-top: var(--space-2xl);
-		padding-top: var(--rule-gap);
-		border-top: var(--rule-section) solid var(--color-primary);
-	}
-
+	/* On a phone the portrait is the lead plate under the dateline: the full
+	 * width of the column, cropped to a landscape frame that never stands
+	 * taller than 22rem, so it neither floats beside empty ground nor pushes
+	 * the name below the fold. */
 	.home-portrait {
+		grid-area: portrait;
 		margin: 0;
 	}
 
 	.home-portrait .plate {
 		width: 100%;
-		aspect-ratio: 854 / 742;
+		aspect-ratio: 3 / 2;
+		max-height: 22rem;
 		object-fit: cover;
+		object-position: 50% 25%;
 	}
 
-	/* Cap the portrait on mobile so the hero photo reads as a plate, not a
-	 * full-bleed banner, while still sitting right above the intro. */
-	@media (--sm-down) {
+	.lede-dateline {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: var(--space-2xs) var(--space-md);
+		margin: 0;
+		padding-bottom: var(--space-sm);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
+	}
+
+	.home-name {
+		margin: 0 0 var(--space-sm);
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-nameplate);
+		font-weight: 850;
+		font-size: var(--font-size-xl);
+		line-height: 1.05;
+		text-transform: uppercase;
+		color: var(--color-text-emphasis);
+	}
+
+	.home-thesis {
+		margin: 0;
+		max-width: 30ch;
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-2xl);
+		line-height: var(--line-height-snug);
+		letter-spacing: var(--tracking-title);
+		color: var(--color-text-emphasis);
+	}
+
+	/* What is happening now, as a ledger: key, entry, date. */
+	.now-ledger {
+		margin: var(--space-sm) 0 0;
+		border-top: var(--rule-hairline) solid var(--color-hairline);
+	}
+
+	.now-row {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: var(--space-2xs) var(--space-md);
+		align-items: baseline;
+		padding: var(--space-sm) 0;
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
+	}
+
+	.now-row dt {
+		grid-column: 1 / -1;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-text-light);
+	}
+
+	.now-row dd {
+		margin: 0;
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		line-height: var(--line-height-snug);
+	}
+
+	.now-row .now-when {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-xs);
+		letter-spacing: var(--tracking-figures);
+		color: var(--color-text);
+		white-space: nowrap;
+	}
+
+	/* The next talk is the current thing: its key and date take the accent. */
+	.now-row--next dt,
+	.now-row--next .now-when {
+		color: var(--color-accent);
+	}
+
+	@media (--md) {
+		.home-lede {
+			grid-template-columns: minmax(0, 1fr) 15rem;
+			grid-template-areas: 'dateline dateline' 'main portrait' 'now now';
+			column-gap: var(--space-2xl);
+			padding-top: var(--space-md);
+		}
+
+		/* The portrait stands as tall as the name and thesis beside it, cropped
+		 * rather than stretched, and never taller than a portrait plate. */
 		.home-portrait {
-			max-width: 22rem;
+			--portrait-max: 21rem;
+			display: flex;
+			max-height: var(--portrait-max);
+		}
+
+		.home-portrait .plate {
+			height: 100%;
+			max-height: none;
+			aspect-ratio: auto;
+		}
+
+		.home-name {
+			font-size: var(--font-size-2xl);
+		}
+
+		.now-row {
+			grid-template-columns: 7.5rem minmax(0, 1fr) auto;
+			column-gap: var(--space-lg);
+		}
+
+		.now-row dt {
+			grid-column: auto;
+		}
+	}
+
+	@media (--lg) {
+		.home-lede {
+			grid-template-columns: minmax(0, 1fr) 18.75rem;
+			column-gap: var(--space-3xl);
+		}
+
+		.home-portrait {
+			--portrait-max: 26rem;
+		}
+
+		.home-thesis {
+			font-size: var(--font-size-3xl);
+		}
+	}
+
+	/* ---- Publications | Digital humanities ----------------------------- */
+
+	.home-columns {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.home-col-title {
+		margin-bottom: var(--space-lg);
+	}
+
+	/* Side by side from --lg, a hairline down the gutter. Each column keeps the
+	 * 3px rule that opens it, so the rule runs the full width across both. */
+	@media (--lg) {
+		.home-columns {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.home-col + .home-col {
+			margin-top: 0;
+			padding-left: var(--space-xl);
+			border-left: var(--rule-hairline) solid var(--color-hairline);
+		}
+
+		.home-col:first-child {
+			padding-right: var(--space-xl);
+		}
+	}
+
+	.covers {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--space-md);
+		list-style: none;
+		margin: 0 0 var(--space-lg);
+		padding: 0;
+	}
+
+	.cover {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2xs);
+		color: var(--color-text-emphasis);
+		text-decoration: none;
+	}
+
+	.cover:focus-visible {
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
+	}
+
+	.cover-plate {
+		aspect-ratio: 2 / 3;
+		margin-bottom: var(--space-2xs);
+		border-color: var(--color-primary);
+	}
+
+	.cover-year {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-text-light);
+	}
+
+	.cover-title {
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-caption);
+	}
+
+	.cover:hover .cover-title,
+	.writing-row:hover .writing-title,
+	.dh-title a:hover {
+		text-decoration: underline;
+		text-decoration-color: var(--color-accent);
+		text-underline-offset: 0.2em;
+	}
+
+	/* The ledger rows here are links: no hanging key wider than a year, unless
+	 * a forthcoming work is listed, when every key widens to hold the word on
+	 * one line and the titles stay aligned. */
+	.writing {
+		--ledger-key-w: 3.5rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
+	}
+
+	.writing--forthcoming {
+		--ledger-key-w: 6.5rem;
+	}
+
+	.writing-row {
+		padding-block: var(--space-sm);
+		color: var(--color-text-emphasis);
+		text-decoration: none;
+	}
+
+	.writing-row:focus-visible {
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-inset);
+	}
+
+	.writing .ledger-key {
+		font-size: var(--font-size-xs);
+	}
+
+	.writing-title {
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-base);
+		line-height: var(--line-height-snug);
+	}
+
+	.writing-venue {
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-sm);
+		color: var(--color-text-soft);
+	}
+
+	.home-cta {
+		margin: var(--space-lg) 0 0;
+	}
+
+	.dh-group {
+		margin: 0 0 var(--space-md);
+		padding-bottom: var(--space-2xs);
+		border-bottom: var(--rule-hairline) solid var(--color-hairline);
+	}
+
+	.dh-list {
+		display: grid;
+		gap: var(--space-lg);
+		list-style: none;
+		margin: 0 0 var(--space-xl);
+		padding: 0;
+	}
+
+	.dh-card {
+		display: grid;
+		grid-template-columns: 8rem minmax(0, 1fr);
+		gap: var(--space-md);
+		align-items: start;
+	}
+
+	.dh-list--apps .dh-card {
+		grid-template-columns: 7rem minmax(0, 1fr);
+	}
+
+	@media (--md) {
+		.dh-card {
+			grid-template-columns: 12rem minmax(0, 1fr);
+		}
+
+		.dh-list--apps .dh-card {
+			grid-template-columns: 8rem minmax(0, 1fr);
+		}
+	}
+
+	.dh-plate {
+		aspect-ratio: 16 / 10;
+		object-position: top left;
+		border-color: var(--color-primary);
+	}
+
+	.dh-title {
+		margin: 0 0 var(--space-2xs);
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-headline);
+		font-weight: 750;
+		font-size: var(--font-size-lg);
+		line-height: 1.1;
+		letter-spacing: var(--tracking-display-sm);
+	}
+
+	.dh-title a {
+		color: var(--color-text-emphasis);
+		text-decoration: none;
+	}
+
+	.dh-blurb {
+		margin: 0;
+		font-family: var(--font-family-serif);
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-snug);
+		color: var(--color-text-soft);
+	}
+
+	.dh-stats {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-xs) var(--space-lg);
+		margin: var(--space-sm) 0 0;
+	}
+
+	/* Value above label, as the eye reads a figure; the markup keeps dt first. */
+	.dh-stats div {
+		display: flex;
+		flex-direction: column-reverse;
+	}
+
+	.dh-stat-value {
+		margin: 0;
+		font-family: var(--font-family-display);
+		font-variation-settings: var(--font-variation-display);
+		font-weight: 850;
+		font-size: var(--font-size-xl);
+		line-height: 1;
+		font-variant-numeric: tabular-nums;
+		color: var(--color-text-emphasis);
+	}
+
+	.dh-stat-label,
+	.dh-meta {
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-text-light);
+	}
+
+	/* Platform, then where to get it: the store is a real link, with the
+	 * store's mark, because installing is what a reader does next. */
+	.dh-meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2xs) var(--space-xs);
+		margin: var(--space-xs) 0 0;
+	}
+
+	.dh-store {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2xs);
+		color: var(--color-text-emphasis);
+		text-decoration: underline;
+		text-decoration-color: var(--color-accent);
+		text-underline-offset: 0.25em;
+		transition: color 150ms ease;
+	}
+
+	.dh-store:hover {
+		color: var(--color-accent);
+	}
+
+	.dh-store:focus-visible {
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
+	}
+
+	@media (--reduced-motion) {
+		.dh-store {
+			transition: none;
+		}
+	}
+
+	/* ---- About ----------------------------------------------------------- */
+
+	/* The heading sits above the prose, like every other section on the page.
+	 * From --md the prose fills the rail in two columns ruled like the
+	 * publications and digital-humanities columns above it; a column is never
+	 * narrower than 20rem, so a rail too narrow for two sets one, full width.
+	 * A paragraph never breaks across the columns. */
+	.home-about .section-title {
+		margin-bottom: var(--space-lg);
+	}
+
+	.home-about :global(.home-prose) {
+		padding: 0;
+		max-width: var(--measure-prose);
+	}
+
+	.home-about :global(.home-prose > p) {
+		font-size: var(--font-size-prose);
+		line-height: var(--line-height-relaxed);
+	}
+
+	@media (--md) {
+		.home-about :global(.home-prose) {
+			max-width: none;
+			columns: 2 20rem;
+			column-gap: var(--space-xl);
+			column-rule: var(--rule-hairline) solid var(--color-hairline);
+		}
+
+		.home-about :global(.home-prose > p) {
+			break-inside: avoid-column;
+			margin-top: 0;
+		}
+	}
+
+	@media (--lg) {
+		.home-about :global(.home-prose) {
+			column-gap: var(--space-2xl);
+		}
+	}
+
+	@media print {
+		.home-portrait {
+			max-width: 10rem;
 		}
 	}
 </style>
