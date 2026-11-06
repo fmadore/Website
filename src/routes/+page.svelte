@@ -166,23 +166,22 @@
 					</dd>
 				</div>
 			{/if}
-			<div class="now-row">
-				<dt>Project</dt>
+			<!-- One key, two entries: the key hangs once, as an author does over
+			     their works in a bibliography; each project keeps its own date. -->
+			<div class="now-row now-row--group">
+				<dt>Projects</dt>
 				<dd>
 					<a href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
 						><em>Islam’s ‘Peripheries’</em></a
 					>, Co-PI, Volkswagen Foundation
 				</dd>
 				<dd class="now-when">2026–2028</dd>
-			</div>
-			<div class="now-row">
-				<dt>Project</dt>
-				<dd>
+				<dd class="now-also">
 					<a href={resolve('/research/dh-ai-african-studies')}
 						><em>Digital Humanities and Artificial Intelligence in African Studies</em></a
 					>, Volkswagen Foundation and DFG Point Sud
 				</dd>
-				<dd class="now-when">2025–2027</dd>
+				<dd class="now-when now-also">2025–2027</dd>
 			</div>
 			<div class="now-row">
 				<dt>Role</dt>
@@ -457,6 +456,12 @@
 		white-space: nowrap;
 	}
 
+	/* A grouped key's later entries sit a step below the first, with no
+	 * hairline between: the entries belong to one key. */
+	.now-row .now-also {
+		padding-top: var(--space-xs);
+	}
+
 	/* The next talk is the current thing: its key and date take the accent. */
 	.now-row--next dt,
 	.now-row--next .now-when {
@@ -496,6 +501,11 @@
 
 		.now-row dt {
 			grid-column: auto;
+		}
+
+		/* The key hangs beside every entry it heads. */
+		.now-row--group dt {
+			grid-row: span 2;
 		}
 	}
 
