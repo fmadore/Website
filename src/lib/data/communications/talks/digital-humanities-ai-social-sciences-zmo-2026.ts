@@ -4,7 +4,12 @@ import type { Communication } from '#lib/types/communication.ts';
 export const talkDigitalHumanitiesAiSocialSciencesZmo2026: Communication = {
 	id: 'digital-humanities-ai-social-sciences-zmo-2026',
 	title: 'Digital Humanities and AI in the Social Sciences: Datafication in Practice',
-	authors: ['Frédérick Madore'],
+	authors: [
+		'Frédérick Madore',
+		{ name: 'Abdoulaye Sounaye', personId: 'abdoulaye-sounaye' },
+		{ name: 'Sonja Hegasy', personId: 'sonja-hegasy' },
+		{ name: 'Max Kramer', personId: 'max-kramer' }
+	],
 	date: '12 November 2026',
 	dateISO: '2026-11-12',
 	year: 2026,

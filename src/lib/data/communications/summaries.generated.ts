@@ -3032,7 +3032,19 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"id": "digital-humanities-ai-social-sciences-zmo-2026",
 		"title": "Digital Humanities and AI in the Social Sciences: Datafication in Practice",
 		"authors": [
-			"Frédérick Madore"
+			"Frédérick Madore",
+			{
+				"name": "Abdoulaye Sounaye",
+				"personId": "abdoulaye-sounaye"
+			},
+			{
+				"name": "Sonja Hegasy",
+				"personId": "sonja-hegasy"
+			},
+			{
+				"name": "Max Kramer",
+				"personId": "max-kramer"
+			}
 		],
 		"date": "12 November 2026",
 		"dateISO": "2026-11-12",

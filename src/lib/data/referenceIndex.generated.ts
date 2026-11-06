@@ -440,7 +440,10 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"itemType": "communication",
 		"title": "Digital Humanities and AI in the Social Sciences: Datafication in Practice",
 		"authors": [
-			"Frédérick Madore"
+			"Frédérick Madore",
+			"Abdoulaye Sounaye",
+			"Sonja Hegasy",
+			"Max Kramer"
 		],
 		"type": "seminar",
 		"date": "12 November 2026",

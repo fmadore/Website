@@ -50,6 +50,22 @@ export const person: Person = {
 			institutionId: 'leibniz-zentrum-moderner-orient',
 			reviewNote:
 				'Affiliation exists in an event record. Publisher verification and exact publication-year coverage remain unconfirmed; no employment interval inferred. DOI/publisher response redirects to a ZMO proof-of-work challenge despite HTTP200. Existing event affiliation is contextual and has not been verified against the 2023 chapter. Existing event affiliation is contextual and has not been verified against the 2023 publication. Existing website affiliation; independent event-year confirmation was not obtained.'
+		},
+		{
+			institution: 'Leibniz-Zentrum Moderner Orient',
+			years: [2026],
+			confidence: 'verified',
+			sources: [
+				{
+					url: 'https://www.frederickmadore.com/communications/digital-humanities-ai-social-sciences-zmo-2026',
+					label: 'Talk record (this site’s data)',
+					quote:
+						'Abdoulaye Sounaye (ZMO), co-presenter at the ZMO Projektversammlung, 12 November 2026'
+				}
+			],
+			institutionId: 'leibniz-zentrum-moderner-orient',
+			reviewNote:
+				'Affiliation stated by Frédérick Madore (ZMO colleague) when adding the co-presenters on 2026-11-06.'
 		}
 	]
 };
