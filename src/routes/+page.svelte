@@ -112,6 +112,7 @@
 					{#if card.platform}<span>{card.platform}</span>{/if}
 					{#if card.platform && card.store}<span aria-hidden="true">·</span>{/if}
 					{#if card.store}
+						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 						<a class="dh-store" href={card.store.url} target="_blank" rel="noopener noreferrer">
 							{#if card.store.label === 'Microsoft Store'}
 								<Icon icon="local:microsoft-store" width="14" height="14" aria-hidden="true" />
