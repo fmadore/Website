@@ -924,6 +924,31 @@ export const cvCommunications: CvCommunication[] = [
 		"type": "workshop"
 	},
 	{
+		"id": "introduction-research-data-management-bigsas-2026",
+		"title": "Introduction to Research Data Management",
+		"authors": [
+			"Frédérick Madore",
+			{
+				"name": "Anke Schürer-Ries",
+				"personId": "anke-schurer-ries"
+			},
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			}
+		],
+		"date": "5 November 2026",
+		"dateISO": "2026-11-05",
+		"conference": "Bayreuth International Graduate School of African Studies (BIGSAS)",
+		"location": "University of Bayreuth",
+		"type": "workshop",
+		"teaching": {
+			"institution": "Universität Bayreuth (Germany)",
+			"course": "Bayreuth International Graduate School of African Studies (BIGSAS)",
+			"level": "graduate"
+		}
+	},
+	{
 		"id": "islam-algorithms-ai",
 		"title": "Islam, Algorithms and AI",
 		"authors": [

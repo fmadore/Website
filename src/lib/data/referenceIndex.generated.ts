@@ -995,6 +995,23 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"book": "Religiosity on University Campuses in Africa: Trends and Experiences",
 		"publisher": "LIT Verlag"
 	},
+	"introduction-research-data-management-bigsas-2026": {
+		"id": "introduction-research-data-management-bigsas-2026",
+		"itemType": "communication",
+		"title": "Introduction to Research Data Management",
+		"authors": [
+			"Frédérick Madore",
+			"Anke Schürer-Ries",
+			"Neeraj Thandayan Viswajith"
+		],
+		"type": "workshop",
+		"date": "5 November 2026",
+		"dateISO": "2026-11-05",
+		"year": 2026,
+		"conference": "Bayreuth International Graduate School of African Studies (BIGSAS)",
+		"location": "University of Bayreuth",
+		"country": "Germany"
+	},
 	"islam-algorithms-ai": {
 		"id": "islam-algorithms-ai",
 		"itemType": "communication",
