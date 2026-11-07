@@ -46,6 +46,14 @@ Enfin, la dernière hypothèse postule que la maitrise du langage de l'État et 
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 	citedBy: [
 		{
+			wikidataId: 'Q142074894',
+			authors: ['Fatoumata Bamba Diarra', 'Affouminou Emmanuel Signaux'],
+			year: 2026,
+			title: "L'émergence des femmes dans le milieu islamique en Côte d'Ivoire de 1991 à 2020",
+			source: 'Akofena, no. HS 19 (2026): 299-306',
+			url: 'https://doi.org/10.48734/akofena.hs19.26.2026'
+		},
+		{
 			wikidataId: 'Q141080151',
 			authors: ['Sekou Traoré'],
 			year: 2025,

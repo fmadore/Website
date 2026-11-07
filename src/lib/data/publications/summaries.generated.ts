@@ -866,7 +866,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Á partir des cas ivoirien et burkinabé, cet article propose d'explorer les contenus de l'islam à l'ère du web et des réseaux sociaux, d'en présenter les conséquences sur l'identité, l'appartenance à la communauté, l'autor",
-		"citedByCount": 21,
+		"citedByCount": 22,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -1298,7 +1298,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "This article analyzes the career path of Aminata Kane Koné, a highly educated Ivorian Muslim woman, who has emerged as a female figure of success. A prominent activist of the Association des Élèves et Étudiants Musulmans ",
-		"citedByCount": 12,
+		"citedByCount": 13,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},
@@ -1938,7 +1938,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "À première vue, les récentes actions terroristes en Côte d'Ivoire et au Burkina Faso ont laissé croire à une radicalisation de l'islam dans ces deux pays. Cependant, la grande attention médiatique portée sur ces craintes ",
-		"citedByCount": 13,
+		"citedByCount": 14,
 		"tocAuthors": [],
 		"sourceDirType": "dissertations"
 	},
