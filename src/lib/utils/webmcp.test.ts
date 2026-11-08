@@ -470,6 +470,37 @@ describe('output schemas and cancellation', () => {
 		controller.abort(new Error('cancelled'));
 		await expect(pending).rejects.toThrow('cancelled');
 	});
+
+	it('never navigates for a call cancelled before its document arrives', async () => {
+		let deliver!: () => void;
+		const gate = new Promise<void>((resolve) => {
+			deliver = resolve;
+		});
+		const slow = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+			await gate;
+			return apiFetch(input, init);
+		}) as unknown as typeof fetch;
+		const navigate = vi.fn(async () => {});
+		const { tools } = register(undefined, { fetch: slow, navigate });
+		const controller = new AbortController();
+		const pending = tools.get('show_publications')!.execute({}, { signal: controller.signal });
+		controller.abort(new Error('cancelled'));
+		await expect(pending).rejects.toThrow('cancelled');
+		deliver();
+		await vi.waitFor(() => expect(slow).toHaveBeenCalled());
+		await new Promise((resolve) => setTimeout(resolve, 20));
+		expect(navigate).not.toHaveBeenCalled();
+	});
+
+	it('does not start a call cancelled before it was made', async () => {
+		const navigate = vi.fn(async () => {});
+		const { tools } = register(undefined, { fetch: apiFetch, navigate });
+		const pending = tools
+			.get('show_publications')!
+			.execute({}, { signal: AbortSignal.abort(new Error('too late')) });
+		await expect(pending).rejects.toThrow('too late');
+		expect(navigate).not.toHaveBeenCalled();
+	});
 });
 
 describe('published fields the tools reach', () => {

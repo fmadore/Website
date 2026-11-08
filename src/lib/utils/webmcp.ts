@@ -340,7 +340,8 @@ interface Definition {
 	inputSchema: InputSchema;
 	outputSchema: JsonSchema;
 	annotations?: ToolAnnotations;
-	run: (args: Args) => Promise<unknown>;
+	/** `signal` aborts when the agent cancels; a tool with a side effect checks it before acting. */
+	run: (args: Args, signal: AbortSignal | undefined) => Promise<unknown>;
 }
 
 /** Settles when `signal` aborts; never, when there is no signal. */
@@ -357,7 +358,8 @@ function aborted(signal: AbortSignal | undefined): Promise<never> {
  * Wrap a handler so every failure resolves to an `{ error }` the agent can act
  * on. A cancelled call settles at once rather than when its documents arrive;
  * the fetch itself carries on, because the loader shares it with every other
- * call reading the same document.
+ * call reading the same document. The handler is not started once cancelled,
+ * and receives the signal, so one that changes the page can stand down.
  */
 function tool({ run, annotations = READ_ONLY, ...definition }: Definition): WebMcpTool {
 	return {
@@ -365,7 +367,9 @@ function tool({ run, annotations = READ_ONLY, ...definition }: Definition): WebM
 		annotations,
 		async execute(input, options) {
 			try {
-				return await Promise.race([run(readInput(input)), aborted(options?.signal)]);
+				const signal = options?.signal;
+				signal?.throwIfAborted();
+				return await Promise.race([run(readInput(input), signal), aborted(signal)]);
 			} catch (error) {
 				if (options?.signal?.aborted) throw error;
 				return { error: error instanceof Error ? error.message : 'The tool failed; try again.' };
@@ -616,11 +620,14 @@ function buildTools({ navigate, fetch }: WebMcpOptions): WebMcpTool[] {
 				inputSchema: schema(PUBLICATION_FILTERS),
 				outputSchema: SHOW_OUTPUT,
 				annotations: { readOnlyHint: false, consequentialHint: false },
-				async run(args) {
+				async run(args, signal) {
 					const filters = publicationsView(args, await loadDataset('publications'));
 					const query = text(args, 'query') ?? '';
 					const qs = serializeFiltersToQuery(filters, query);
 					const path = `/publications${qs ? `?${qs}` : ''}`;
+					// Cancelled while the document loaded: the reader's page is
+					// no longer the agent's to change.
+					signal?.throwIfAborted();
 					await navigate(path);
 					return {
 						shown: `${website.url}${path}`,
