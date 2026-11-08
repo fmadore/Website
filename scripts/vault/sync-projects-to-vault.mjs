@@ -19,7 +19,9 @@
 // and writes the slug in, printing every match for review first.
 //
 // Field ownership, so a re-run can never eat the user's work:
-//   owned  — `title`, `website_url`, `website_slug`, and the marked block
+//   owned  — `title`, `website_url`, `website_slug`, `website_group` (a DH
+//            record's group on the site: `project`, or `software` for an
+//            application), and the marked block
 //   seeded — everything else, written once at creation and never again
 // Drift in seeded fields is reported at the end, not silently corrected.
 
@@ -27,6 +29,7 @@ import { readFileSync, writeFileSync, mkdirSync, globSync, existsSync } from 'no
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { getContributorNames } from '../../src/lib/utils/contributor.ts';
+import { applicationSummary, projectGroup } from '../../src/lib/utils/projectGroups.ts';
 import {
 	BEGIN,
 	END,
@@ -160,6 +163,14 @@ for (const file of globSync('src/routes/research/*/+page.svelte', { cwd: SITE_RO
 // vault note behind it still reads as prose instead of vanishing — and reads as
 // "(Madore, 2021)" rather than dropping a whole title mid-sentence.
 const refById = new Map();
+/** projectName → the publications and talks that name it, newest first. */
+const membersByProject = new Map();
+const addMember = (projectName, section, record) => {
+	if (!projectName) return;
+	if (!membersByProject.has(projectName))
+		membersByProject.set(projectName, { publications: [], communications: [] });
+	membersByProject.get(projectName)[section].push(record);
+};
 for (const [dir, section] of [
 	['communications', 'communications'],
 	['publications', 'publications']
@@ -185,7 +196,27 @@ for (const [dir, section] of [
 			title: record.title,
 			cite: who && year ? `${who}, ${year}` : null
 		});
+		addMember(record.project, section, record);
 	}
+}
+for (const members of membersByProject.values())
+	for (const list of Object.values(members))
+		list.sort((a, b) => String(b.dateISO || '').localeCompare(String(a.dateISO || '')));
+
+// Grants and fieldwork carry the same `project` label; neither has a vault note.
+const grantsByProject = new Map();
+for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data/grants'))) {
+	const grant = await loadModule(file);
+	if (!grant?.project) continue;
+	if (!grantsByProject.has(grant.project)) grantsByProject.set(grant.project, []);
+	grantsByProject.get(grant.project).push(grant);
+}
+const fieldworkByProject = new Map();
+for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data/fieldworks'))) {
+	const fieldwork = await loadModule(file);
+	if (!fieldwork?.project) continue;
+	if (!fieldworkByProject.has(fieldwork.project)) fieldworkByProject.set(fieldwork.project, []);
+	fieldworkByProject.get(fieldwork.project).push(fieldwork);
 }
 
 // ---- vault side ------------------------------------------------------------
@@ -231,7 +262,17 @@ function splitYears(years) {
 
 function renderDh(project) {
 	const L = [BEGIN, `# ${project.title}`, ''];
-	const info = [`> [!info] Digital humanities project · ${project.years}`];
+	const app = project.application;
+	// The site files a record carrying an `application` block under Software &
+	// applications (projectGroup); the note says the same.
+	const info = [
+		`> [!info] ${app ? 'Application' : 'Digital humanities project'} · ${project.years}`
+	];
+	if (app) {
+		info.push(`> ${applicationSummary(app)}`);
+		if (app.interfaceLanguages?.length)
+			info.push(`> Interface: ${app.interfaceLanguages.join(', ')}`);
+	}
 	if (project.award) info.push(`> Award: ${project.award}`);
 	for (const link of project.links || [])
 		info.push(`> ${(link.type || 'site').replace(/^\w/, (c) => c.toUpperCase())}: ${link.url}`);
@@ -286,6 +327,45 @@ function renderResearch(project) {
 	if (prose) L.push(proseToMarkdown(prose.markup, prose.file, refLink), '');
 	else L.push(decodeEntities(project.shortDescription), '');
 
+	// What belongs to the project, joined on its `projectName` as the site and
+	// the JSON API join it.
+	const members = membersByProject.get(project.projectName);
+	const dated = (record) => (record.year ? `${record.year} · ` : '');
+	if (members?.publications.length) {
+		L.push(`## Publications (${members.publications.length})`, '');
+		for (const pub of members.publications)
+			L.push(
+				`- ${dated(pub)}${itemNotes.has(pub.id) ? refLink(pub.id) : `[${pub.title}](${SITE}/publications/${pub.id})`}`
+			);
+		L.push('');
+	}
+	if (members?.communications.length) {
+		L.push(`## Talks (${members.communications.length})`, '');
+		for (const talk of members.communications)
+			L.push(
+				`- ${dated(talk)}${itemNotes.has(talk.id) ? refLink(talk.id) : `[${talk.title}](${SITE}/communications/${talk.id})`}`
+			);
+		L.push('');
+	}
+	const grants = grantsByProject.get(project.projectName) ?? [];
+	if (grants.length) {
+		L.push(`## Grants (${grants.length})`, '');
+		for (const grant of [...grants].sort((a, b) => b.startYear - a.startYear)) {
+			const amount = grant.amount
+				? `, ${grant.amount.toLocaleString('en-GB')} ${grant.currency ?? ''}`.trimEnd()
+				: '';
+			L.push(`- ${grant.dateRangeString} · ${grant.funder}: ${grant.title}${amount}`);
+		}
+		L.push('');
+	}
+	const fieldwork = fieldworkByProject.get(project.projectName) ?? [];
+	if (fieldwork.length) {
+		L.push(`## Fieldwork (${fieldwork.length})`, '');
+		for (const trip of [...fieldwork].sort((a, b) => b.year - a.year))
+			L.push(`- ${trip.date} · ${trip.city}, ${trip.country}`);
+		L.push('');
+	}
+
 	L.push(
 		`*Generated from the website record (\`${project.id}\`) and its route page. Edits below the marker are preserved on re-sync.*`,
 		END
@@ -302,6 +382,7 @@ function seedFrontmatter(project, kind) {
 
 	const lines = ['---', 'type: project'];
 	lines.push(`project_type: ${kind === 'dh' ? 'dh' : 'research'}`);
+	if (kind === 'dh') lines.push(`website_group: ${projectGroup(project)}`);
 	lines.push(`title: ${yamlStr(project.title)}`);
 	lines.push(`status: ${project.current === false ? 'completed' : 'active'}`);
 	lines.push(`date_start: ${start ?? ''}`);
@@ -406,13 +487,22 @@ for (const [kind, list] of [
 			content = setFrontmatterKeys(content, {
 				title: yamlStr(project.title),
 				website_url: url,
-				website_slug: slug
+				website_slug: slug,
+				...(kind === 'dh' ? { website_group: projectGroup(project) } : {})
 			});
 
 			const fm = readFrontmatter(existing);
-			const [start] = splitYears(project.years);
+			const [start, end] = splitYears(project.years);
 			if (fm.date_start && start && fm.date_start !== start)
 				drift.push(`${path.basename(full)}: date_start ${fm.date_start} ≠ site ${start}`);
+			if (fm.date_end && end && fm.date_end !== end)
+				drift.push(`${path.basename(full)}: date_end ${fm.date_end} ≠ site ${end}`);
+			// A research project the site has concluded (or reopened) since the note was written.
+			if (kind === 'research' && fm.status) {
+				const siteStatus = project.current === false ? 'completed' : 'active';
+				if (['active', 'completed'].includes(fm.status) && fm.status !== siteStatus)
+					drift.push(`${path.basename(full)}: status ${fm.status} ≠ site ${siteStatus}`);
+			}
 
 			if (content === existing) {
 				action = 'unchanged';

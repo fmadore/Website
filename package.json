@@ -58,6 +58,7 @@
 		"sync:publications": "node scripts/vault/sync-publications-to-vault.mjs",
 		"sync:vault": "npm run sync:publications -- --write && npm run sync:projects -- --write && npm run sync:sections -- --write && npm run sync:talks -- --write",
 		"sync:sections": "node scripts/vault/sync-sections-to-vault.mjs",
+		"audit:publications": "node scripts/vault/audit-publications.mjs",
 		"check:generated": "node scripts/generate/generate-reference-index.mjs --check && node scripts/generate/generate-summaries.mjs --check && node scripts/generate/generate-analysis-summaries.mjs --check && node scripts/generate/generate-research-prose.mjs --check",
 		"test:timezones": "node scripts/tools/test-timezones.mjs",
 		"test:lifecycle": "tsc --project tests-lifecycle/tsconfig.json --noEmit && vitest run --config vitest.lifecycle.config.ts --coverage",
