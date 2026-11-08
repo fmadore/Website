@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { findRecord, normalise, search, summariseStructured } from './apiSearch';
+import {
+	NO_MATCH_HINT,
+	SEARCH_DEFAULT_LIMIT,
+	findRecord,
+	normalise,
+	search,
+	summariseStructured
+} from './apiSearch';
 import type { ApiItem as Item } from '#lib/apiContract.ts';
 
 const items: Item[] = [
@@ -135,6 +142,16 @@ describe('search', () => {
 });
 
 describe('summariseStructured', () => {
+	it('says how to widen a search only when nothing matched', () => {
+		expect(summariseStructured([], 0).hint).toBe(NO_MATCH_HINT);
+		expect(summariseStructured([], 4, 10)).not.toHaveProperty('hint');
+	});
+
+	it('defaults a search to the shared page size', () => {
+		const many = Array.from({ length: SEARCH_DEFAULT_LIMIT + 5 }, (_, i) => ({ id: `r${i}` }));
+		expect(search(many, { fields: ['title'] }).hits).toHaveLength(SEARCH_DEFAULT_LIMIT);
+	});
+
 	it('keeps one compact row per hit and reports the next page', () => {
 		const page = summariseStructured(
 			[{ id: 'a', title: 'A', type: 'article', year: 2020, journal: 'J', url: 'https://x/a' }],

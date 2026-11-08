@@ -28,6 +28,17 @@ export const SEARCH_FIELDS = {
 /** Fields whose match counts double in every dataset. */
 export const WEIGHTED_FIELDS = ['title'] as const;
 
+/**
+ * Page size of the search tools, on both surfaces. Ten compact rows answer
+ * most questions; fifty is the most a page may hold before a caller should
+ * narrow the query instead.
+ */
+export const SEARCH_DEFAULT_LIMIT = 10;
+export const SEARCH_MAX_LIMIT = 50;
+
+/** What an empty page says, so the caller knows how to widen the search. */
+export const NO_MATCH_HINT = 'No matches. Try fewer words, drop a filter, or widen the years.';
+
 /** Flatten any nested value into searchable text. */
 function textOf(value: unknown): string {
 	if (typeof value === 'string') return value;
@@ -89,7 +100,7 @@ export function search(items: Item[], options: SearchOptions): SearchResult {
 		exact = {},
 		yearFrom,
 		yearTo,
-		limit = 25,
+		limit = SEARCH_DEFAULT_LIMIT,
 		offset = 0
 	} = options;
 	const terms = searchTerms(query ?? '');
@@ -174,6 +185,8 @@ export interface StructuredSearchResult {
 	items: StructuredSummary[];
 	has_more: boolean;
 	next_offset?: number;
+	/** Present on an empty result: how to widen the search. */
+	hint?: string;
 }
 
 export function summariseStructured(
@@ -200,7 +213,8 @@ export function summariseStructured(
 		offset,
 		items: summaries,
 		has_more: nextOffset < total,
-		...(nextOffset < total ? { next_offset: nextOffset } : {})
+		...(nextOffset < total ? { next_offset: nextOffset } : {}),
+		...(total === 0 ? { hint: NO_MATCH_HINT } : {})
 	};
 }
 

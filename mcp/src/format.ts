@@ -1,4 +1,5 @@
 import type { Item } from './datasets.js';
+import { NO_MATCH_HINT } from '#lib/utils/apiSearch.ts';
 
 /**
  * Text rendering of tool results.
@@ -29,7 +30,7 @@ export function summarise(item: Item): string {
 }
 
 export function summariseAll(items: Item[], total: number, offset = 0): string {
-	if (items.length === 0) return 'No matches.';
+	if (items.length === 0) return total === 0 ? NO_MATCH_HINT : 'No matches on this page.';
 	const shownThrough = offset + items.length;
 	const header =
 		total > shownThrough

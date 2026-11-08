@@ -106,6 +106,16 @@ async function exercise(entry) {
 			)
 		);
 		check(
+			'every tool is annotated closed-world',
+			tools.every((tool) => tool.annotations?.openWorldHint === false)
+		);
+		check(
+			'type filters are closed vocabularies',
+			['search_publications', 'search_communications'].every((name) =>
+				Array.isArray(tools.find((tool) => tool.name === name)?.inputSchema.properties.type?.enum)
+			)
+		);
+		check(
 			'modern tool list advertises a public cache policy',
 			toolList.ttlMs === 3_600_000 && toolList.cacheScope === 'public'
 		);
@@ -116,6 +126,18 @@ async function exercise(entry) {
 			'modern resource list advertises a public cache policy',
 			resourceList.ttlMs === 3_600_000 && resourceList.cacheScope === 'public'
 		);
+		const templates = await client.listResourceTemplates();
+		check(
+			'every dataset has a per-record resource template',
+			templates.resourceTemplates.length === 5 &&
+				templates.resourceTemplates.some((t) => t.uriTemplate === 'website://publications/{id}')
+		);
+		const bookResource = await client.readResource({ uri: `website://publications/${book.id}` });
+		check(
+			'a record resource reads the full record',
+			JSON.parse(bookResource.contents[0].text).id === book.id
+		);
+
 		const dhResource = await client.readResource({ uri: 'website://api/digital-humanities' });
 		const dhPayload = JSON.parse(dhResource.contents[0].text);
 		check(
@@ -137,6 +159,31 @@ async function exercise(entry) {
 			byQuery.structuredContent?.count > 0 &&
 				typeof byQuery.structuredContent?.has_more === 'boolean'
 		);
+		const links = byQuery.content.filter((part) => part.type === 'resource_link');
+		check(
+			'search links every hit as a record resource',
+			links.length === byQuery.structuredContent.count &&
+				links.every((link) => link.uri.startsWith('website://publications/'))
+		);
+		const linked = await client.readResource({ uri: links[0].uri });
+		check(
+			'a search result link resolves to its record',
+			JSON.parse(linked.contents[0].text).id === byQuery.structuredContent.items[0].id
+		);
+
+		const nothing = await client.callTool({
+			name: 'search_publications',
+			arguments: { query: 'zzzz-no-such-term' }
+		});
+		check(
+			'an empty search says how to widen it',
+			typeof nothing.structuredContent?.hint === 'string' && /fewer words/.test(text(nothing))
+		);
+		const badType = await client.callTool({
+			name: 'search_publications',
+			arguments: { type: 'thesis' }
+		});
+		check('an unknown publication type is refused, not silently empty', badType.isError === true);
 
 		// The corpus is francophone; a query without diacritics must still reach it.
 		const accentless = await client.callTool({
@@ -162,7 +209,11 @@ async function exercise(entry) {
 		);
 
 		const projects = await client.callTool({ name: 'list_research_projects', arguments: {} });
-		const parsed = JSON.parse(text(projects));
+		const parsed = JSON.parse(text(projects)).items;
+		check(
+			'list_research_projects returns { count, items }',
+			projects.structuredContent?.count === parsed.length
+		);
 		check(
 			'research projects cross-reference publications',
 			parsed.some((project) => project.publications?.length)
@@ -183,6 +234,18 @@ async function exercise(entry) {
 		const grants = JSON.parse(text(cv)).entries;
 		check('get_cv returns grant records', grants.length > 0 && Boolean(grants[0].funder));
 
+		const overview = (await client.callTool({ name: 'get_cv', arguments: {} })).structuredContent;
+		check(
+			'get_cv without a section gives the person and section sizes',
+			Boolean(overview?.person?.name) && overview?.sections?.consulting > 0
+		);
+		const teaching = (await client.callTool({ name: 'get_cv', arguments: { section: 'teaching' } }))
+			.structuredContent;
+		check(
+			'get_cv returns courses and guest lectures',
+			teaching?.entries?.courses?.length > 0 && teaching?.entries?.guestLectures?.length > 0
+		);
+
 		const bibtex = await client.callTool({
 			name: 'get_citation',
 			arguments: { id: book.id, style: 'bibtex' }
@@ -193,6 +256,10 @@ async function exercise(entry) {
 			text(bibtex).slice(0, 80)
 		);
 		check('bibtex carries the title', text(bibtex).includes('title'));
+		check(
+			'citation structured output names the record and style',
+			bibtex.structuredContent?.id === book.id && bibtex.structuredContent?.style === 'bibtex'
+		);
 
 		const reference = await client.callTool({
 			name: 'get_citation',
@@ -216,8 +283,16 @@ async function exercise(entry) {
 			'get_publication returns the abstract',
 			(JSON.parse(text(fullPublication)).abstract ?? '').length > 200
 		);
+		const quoted = publications.items.find((item) => item.citationContexts);
+		const withContexts = JSON.parse(
+			text(await client.callTool({ name: 'get_publication', arguments: { id: quoted.id } }))
+		);
+		check(
+			'get_publication carries the passages quoting it',
+			withContexts.citedBy.some((entry) => entry.context?.passages?.length)
+		);
 
-		const talkId = JSON.parse(text(projects))[0].communications?.[0];
+		const talkId = parsed[0].communications?.[0];
 		const fullTalk = await client.callTool({
 			name: 'get_communication',
 			arguments: { id: talkId }
@@ -251,16 +326,26 @@ async function exercise(entry) {
 			`${(JSON.parse(text(fullProject)).body ?? '').length} chars`
 		);
 
+		// The listings stay listings: descriptions are fetched, not broadcast.
 		const dhProjects = await client.callTool({ name: 'list_dh_projects', arguments: {} });
+		const dhItems = dhProjects.structuredContent.items;
 		check(
-			'digital humanities projects carry their descriptions',
-			JSON.parse(text(dhProjects)).every((dh) => (dh.description ?? '').length > 200)
+			'list_dh_projects omits descriptions and embeds',
+			dhItems.every((dh) => dh.description === undefined && dh.embeddableContent === undefined) &&
+				text(dhProjects).length < 40_000,
+			`${text(dhProjects).length} chars`
 		);
-
-		// The listing stays a listing: narratives are fetched, not broadcast.
+		const fullDh = await client.callTool({
+			name: 'get_dh_project',
+			arguments: { id: dhItems[0].id }
+		});
+		check(
+			'get_dh_project returns the description',
+			(JSON.parse(text(fullDh)).description ?? '').length > 200
+		);
 		check(
 			'list_research_projects omits the narratives',
-			JSON.parse(text(projects)).every((project) => project.body === undefined)
+			parsed.every((project) => project.body === undefined)
 		);
 
 		const missing = await client.callTool({

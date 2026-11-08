@@ -53,7 +53,7 @@ export const GET: RequestHandler = async () => {
 				name: 'publications',
 				url: `${SITE}/api/publications.json`,
 				description:
-					'Books, journal articles, chapters, edited volumes, reports, encyclopedia entries, theses and working papers, with identifiers, abstracts, citing works and reviews.',
+					'Books, journal articles, chapters, edited volumes, reports, encyclopedia entries, theses and working papers, with identifiers (DOI, ISBN, ISSN, Wikidata, OpenAlex), open-access status, abstracts, reviews, and the works that cite each — with, where the citing work was read, the passages quoting it.',
 				count: allPublications.length,
 				years: yearRange(publicationsByDate)
 			}),
@@ -61,7 +61,7 @@ export const GET: RequestHandler = async () => {
 				name: 'communications',
 				url: `${SITE}/api/communications.json`,
 				description:
-					'Conference papers, invited lectures, seminars, workshops, panels, posters and podcasts, with venue, coordinates and programme details.',
+					'Conference papers, invited lectures, seminars, workshops, panels, posters and podcasts, with venue, coordinates and programme details; a talk given as teaching names its host institution, course and level.',
 				count: allCommunications.length,
 				years: yearRange(communicationsByDate)
 			}),
@@ -76,14 +76,14 @@ export const GET: RequestHandler = async () => {
 				name: 'digital-humanities',
 				url: `${SITE}/api/digital-humanities.json`,
 				description:
-					'Digital archives, datasets and tools, including the Islam West Africa Collection (IWAC), with skills, awards and reviews.',
+					'Digital archives, datasets and tools, including the Islam West Africa Collection (IWAC), and standalone software applications, each named by its `group` (project or software), with skills, awards and reviews.',
 				count: allDhProjects.length
 			}),
 			compact({
 				name: 'cv',
 				url: `${SITE}/api/cv.json`,
 				description:
-					'Career record keyed by section: appointments, education, research roles, grants, awards, teaching, editorial memberships, peer reviews, affiliations, fieldwork, media appearances and languages.'
+					'Career record keyed by section: appointments, education, research roles, grants, awards, teaching (courses and guest lectures), editorial memberships, peer reviews, consulting, affiliations, fieldwork, media appearances, languages and computer skills.'
 			})
 		],
 		/** Other machine-readable views of the same content. */

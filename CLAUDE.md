@@ -417,13 +417,17 @@ origin (an embed, an API) needs its host added to the matching directive.
 `#lib/utils/webmcp.ts` registers the site's agent tools with `document.modelContext`;
 the root layout imports it only where that exists. The tools are the MCP server's
 twelve (same names, arguments and records: both read `/api/*.json` through the
-shared `utils/apiDocumentLoader.ts`, `apiSearch.ts` and `apiCitation.ts`) plus
-`show_publications`, which opens the publications index on a filtered view through
-`goto`. The list itself is `utils/webmcpToolNames.ts`, which is also what
-`check:agentic` expects Lighthouse to see. Two runtime rules: `execute` returns
-plain JSON-serialisable values, which the browser serialises; and a failure is
-_returned_ as `{ error }`, phrased as the way to recover, because a rejection
-reaches the agent only as a bare `UnknownError`.
+shared `utils/apiDocumentLoader.ts`, `apiSearch.ts`, `apiViews.ts` and
+`apiCitation.ts`) plus `show_publications`, which opens the publications index on a
+filtered view through `goto`. `apiViews.ts` is where a list or CV overview is cut
+from its document (no descriptions in `list_dh_projects`, section sizes from `get_cv`),
+so change a listing there, never in one surface. The list itself is
+`utils/webmcpToolNames.ts`, which is also what `check:agentic` expects Lighthouse to
+see. Three runtime rules: `execute` returns plain JSON-serialisable values, which
+the browser serialises; a failure is _returned_ as `{ error }`, phrased as the way
+to recover, because a rejection reaches the agent only as a bare `UnknownError`
+(each tool's `outputSchema` admits that shape beside its result); and a cancelled
+call (its `signal` aborted) settles at once, by rejecting.
 
 **Origin trial.** Stock Chrome exposes `document.modelContext` only to pages that
 carry the WebMCP origin-trial token (Chrome 149–156; an extension to 162 was

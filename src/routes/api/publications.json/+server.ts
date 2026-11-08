@@ -1,7 +1,10 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { getContributorNames } from '#lib/utils/contributor.ts';
 import { publicationsByDate } from '#lib/data/publications/index.ts';
-import type { Publication, TableOfContentsEntry } from '#lib/types/publication.ts';
+import { citationContextSets } from '#lib/data/citation-contexts/index.ts';
+import type { CitationContextSet } from '#lib/types/citationContext.ts';
+import type { CitingWork, Publication, TableOfContentsEntry } from '#lib/types/publication.ts';
+import { citingKey } from '#lib/utils/citationContexts.ts';
 import {
 	absoluteUrl,
 	buildLinks,
@@ -17,8 +20,35 @@ export const prerender = true;
 const tocEntry = (entry: string | TableOfContentsEntry) =>
 	typeof entry === 'string' ? { title: entry } : compact({ ...entry });
 
-const serialise = (pub: Publication) =>
-	compact({
+const contextSets = new Map(citationContextSets.map((set) => [set.id, set]));
+
+/**
+ * The `citedBy` list, each entry carrying — where the citing work has been
+ * read — how it cites the publication: the passages quoted from its text, or
+ * that it lists the work in its bibliography only. The same join
+ * `/publications/citations` prints (`citingKey`: the entry's QID, else its URL).
+ */
+function citedByWithContexts(pub: Publication, set: CitationContextSet | undefined) {
+	if (!pub.citedBy) return undefined;
+	const contexts = new Map(set?.contexts.map((context) => [context.citing, context]));
+	return pub.citedBy.map((work: CitingWork) => {
+		const key = citingKey(work);
+		const context = key ? contexts.get(key) : undefined;
+		if (!context) return work;
+		return {
+			...work,
+			context: compact({
+				status: context.status,
+				language: context.language,
+				passages: context.passages?.map((passage) => compact({ ...passage }))
+			})
+		};
+	});
+}
+
+const serialise = (pub: Publication) => {
+	const contextSet = contextSets.get(pub.id);
+	return compact({
 		id: pub.id,
 		url: absoluteUrl(`/publications/${pub.id}`),
 		type: pub.type,
@@ -34,6 +64,10 @@ const serialise = (pub: Publication) =>
 		doi: pub.doi,
 		isbn: pub.isbn,
 		issn: pub.issn,
+		wikidataId: pub.wikidataId,
+		openAlexId: pub.openAlexId,
+		/** True only when the full text is freely readable; authored per record, never derived. */
+		openAccess: pub.openAccess,
 
 		// Container: journal article, chapter, encyclopedia entry, proceedings
 		journal: pub.journal,
@@ -74,7 +108,11 @@ const serialise = (pub: Publication) =>
 		featured: pub.featured,
 
 		// Scholarly apparatus
-		citedBy: pub.citedBy,
+		citedBy: citedByWithContexts(pub, contextSet),
+		/** Who located the quoted citation passages, and when; present when any entry has a `context`. */
+		citationContexts: contextSet
+			? { model: contextSet.model, extracted: contextSet.extracted }
+			: undefined,
 		reviewedBy: pub.reviewedBy,
 
 		image: pub.image ? absoluteUrl(pub.image) : undefined,
@@ -94,6 +132,7 @@ const serialise = (pub: Publication) =>
 			pub.additionalUrls
 		)
 	});
+};
 
 export const GET: RequestHandler = async () =>
 	jsonResponse(datasetPayload('publications', publicationsByDate.map(serialise)));

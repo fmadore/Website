@@ -41,6 +41,11 @@ const serialise = (comm: Communication) =>
 		doi: comm.doi,
 		tags: comm.tags,
 		project: comm.project,
+		/**
+		 * A talk given as teaching (a guest lecture on record): host institution,
+		 * course and level. The CV lists it under Teaching, not Invited talks.
+		 */
+		teaching: comm.teaching ? compact({ ...comm.teaching }) : undefined,
 
 		image: comm.image ? absoluteUrl(comm.image) : undefined,
 		heroImage: comm.heroImage
