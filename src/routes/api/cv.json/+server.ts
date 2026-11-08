@@ -17,10 +17,12 @@ import { researchRolesByDate } from '#lib/data/research-roles/index.ts';
 import { affiliationsByStartDate } from '#lib/data/affiliations/index.ts';
 import { languagesByProficiency } from '#lib/data/languages/index.ts';
 import { computerSkills } from '#lib/data/computerSkills.ts';
+import { consulting } from '#lib/data/consulting.ts';
 import { fieldworksByDate } from '#lib/data/fieldworks/index.ts';
 import { mediaAppearancesByDate } from '#lib/data/media-appearances/index.ts';
 import teaching from '#lib/data/teaching/index.ts';
 import { allLectures } from '#lib/server/teachingLectures.ts';
+import { sortCoursesByYear } from '#lib/utils/cvSections.ts';
 import {
 	absoluteUrl,
 	API_VERSION,
@@ -81,7 +83,8 @@ export const GET: RequestHandler = async () => {
 				})
 			),
 			teaching: {
-				courses: teaching.map((course) =>
+				// Newest first, as the CV and /teaching order them.
+				courses: sortCoursesByYear(teaching).map((course) =>
 					compact({
 						...course,
 						syllabusUrl: course.syllabusUrl ? absoluteUrl(course.syllabusUrl) : undefined
@@ -98,6 +101,8 @@ export const GET: RequestHandler = async () => {
 			},
 			editorialMemberships: editorialMembershipsByDate.map((item) => compact({ ...item })),
 			peerReviews: peerReviewsByDate.map((item) => compact({ ...item })),
+			// Consulting and expert testimony, as the CV prints it.
+			consulting: consulting.map((engagement) => compact({ ...engagement })),
 			affiliations: affiliationsByStartDate.map((item) => compact({ ...item })),
 			fieldworks: fieldworksByDate.map((fieldwork) =>
 				compact({

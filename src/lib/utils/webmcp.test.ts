@@ -445,3 +445,101 @@ describe('show_publications', () => {
 		expect(navigate).not.toHaveBeenCalled();
 	});
 });
+
+describe('output schemas and cancellation', () => {
+	it('gives every tool an output schema that admits its result and an error', () => {
+		const { tools } = register();
+		for (const tool of tools.values()) {
+			const branches = (tool.outputSchema as { anyOf?: Array<Record<string, unknown>> }).anyOf;
+			expect(branches, tool.name).toHaveLength(2);
+			expect(branches?.[1], tool.name).toMatchObject({ required: ['error'] });
+		}
+	});
+
+	it('marks the publication record as carrying other authors’ words', () => {
+		const { tools } = register();
+		expect(tools.get('get_publication')?.annotations.untrustedContentHint).toBe(true);
+		expect(tools.get('search_publications')?.annotations.untrustedContentHint).toBeUndefined();
+	});
+
+	it('settles a cancelled call at once, by rejecting', async () => {
+		const never = vi.fn(() => new Promise<Response>(() => {})) as unknown as typeof fetch;
+		const { tools } = register(undefined, { fetch: never });
+		const controller = new AbortController();
+		const pending = tools.get('search_publications')!.execute({}, { signal: controller.signal });
+		controller.abort(new Error('cancelled'));
+		await expect(pending).rejects.toThrow('cancelled');
+	});
+
+	it('never navigates for a call cancelled before its document arrives', async () => {
+		let deliver!: () => void;
+		const gate = new Promise<void>((resolve) => {
+			deliver = resolve;
+		});
+		const slow = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+			await gate;
+			return apiFetch(input, init);
+		}) as unknown as typeof fetch;
+		const navigate = vi.fn(async () => {});
+		const { tools } = register(undefined, { fetch: slow, navigate });
+		const controller = new AbortController();
+		const pending = tools.get('show_publications')!.execute({}, { signal: controller.signal });
+		controller.abort(new Error('cancelled'));
+		await expect(pending).rejects.toThrow('cancelled');
+		deliver();
+		await vi.waitFor(() => expect(slow).toHaveBeenCalled());
+		await new Promise((resolve) => setTimeout(resolve, 20));
+		expect(navigate).not.toHaveBeenCalled();
+	});
+
+	it('does not start a call cancelled before it was made', async () => {
+		const navigate = vi.fn(async () => {});
+		const { tools } = register(undefined, { fetch: apiFetch, navigate });
+		const pending = tools
+			.get('show_publications')!
+			.execute({}, { signal: AbortSignal.abort(new Error('too late')) });
+		await expect(pending).rejects.toThrow('too late');
+		expect(navigate).not.toHaveBeenCalled();
+	});
+});
+
+describe('published fields the tools reach', () => {
+	it('publishes consulting as a CV section', async () => {
+		const { tools } = register();
+		const consulting = await ok<{ entries: Array<{ organization: string }> }>(tools, 'get_cv', {
+			section: 'consulting'
+		});
+		expect(consulting.entries).toEqual(docs.cv.sections.consulting);
+		expect(consulting.entries.length).toBeGreaterThan(0);
+	});
+
+	it('orders the courses newest first, as the CV does', () => {
+		const { courses } = docs.cv.sections.teaching as { courses: Array<{ year: string }> };
+		const starts = courses.map((course) => parseInt(course.year, 10));
+		expect(starts).toEqual([...starts].sort((a, b) => b - a));
+	});
+
+	it('carries open access, Wikidata and the quoted citation passages on publications', () => {
+		expect(docs.publications.some((item) => item.openAccess === true)).toBe(true);
+		expect(docs.publications.some((item) => /^Q\d+$/.test(String(item.wikidataId)))).toBe(true);
+		const withContexts = docs.publications.filter((item) => item.citationContexts);
+		expect(withContexts.length).toBeGreaterThan(0);
+		for (const item of withContexts) {
+			const cited = item.citedBy as Array<{ context?: { status: string; passages?: unknown[] } }>;
+			const read = cited.filter((entry) => entry.context);
+			expect(read.length, item.id).toBeGreaterThan(0);
+			for (const entry of read) {
+				expect(['quoted', 'bibliography-only', 'unread']).toContain(entry.context!.status);
+				if (entry.context!.status === 'quoted')
+					expect(entry.context!.passages?.length, item.id).toBeGreaterThan(0);
+			}
+		}
+	});
+
+	it('names the host, course and level of a talk given as teaching', () => {
+		const taught = docs.communications.filter((item) => item.teaching);
+		expect(taught.length).toBeGreaterThan(0);
+		for (const talk of taught)
+			expect((talk.teaching as { institution?: string }).institution, talk.id).toBeTruthy();
+	});
+});

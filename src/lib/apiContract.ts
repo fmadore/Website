@@ -13,6 +13,7 @@ export const CV_SECTIONS = [
 	'teaching',
 	'editorialMemberships',
 	'peerReviews',
+	'consulting',
 	'affiliations',
 	'fieldworks',
 	'mediaAppearances',

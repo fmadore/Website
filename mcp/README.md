@@ -63,37 +63,53 @@ claude mcp add frederickmadore -- node /absolute/path/to/Website/mcp/dist/index.
 
 ## Tools
 
-| Tool                     | What it does                                                                                                    |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| `search_publications`    | Search books, articles, chapters, reports, theses. Filter by type, tag, country, project, language, year range. |
-| `get_publication`        | One publication in full — abstract, DOI/ISBN/ISSN, table of contents, citing works, published reviews.          |
-| `search_communications`  | Search conference papers, lectures, seminars, workshops, panels, podcasts.                                      |
-| `get_communication`      | One talk in full, including panel programmes and participants.                                                  |
-| `search_activities`      | Search news and activity entries, matching against their full body text.                                        |
-| `get_activity`           | One activity in full, including its complete body text.                                                         |
-| `list_research_projects` | All research projects, each listing the ids of its publications, talks, grants and fieldwork.                   |
-| `get_research_project`   | One project in full: its complete narrative, span, regions, source languages, funding, cross-references.        |
-| `list_dh_projects`       | Digital archives, datasets, tools and applications. Optionally one `group`: `project` or `software`.            |
-| `get_dh_project`         | One digital humanities project or application in full.                                                          |
-| `get_cv`                 | The career record. Optionally one section (`grants`, `teaching`, `computerSkills`, …).                          |
-| `get_citation`           | BibTeX, or a plain-text reference.                                                                              |
+| Tool                     | What it does                                                                                                                     |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `search_publications`    | Search books, articles, chapters, reports, theses. Filter by type, tag, country, project, language, year range.                  |
+| `get_publication`        | One publication in full — abstract, DOI/ISBN/ISSN, Wikidata and OpenAlex ids, open access, contents, reviews, citing works.      |
+| `search_communications`  | Search conference papers, lectures, seminars, workshops, panels, podcasts.                                                       |
+| `get_communication`      | One talk in full, including panel programmes and participants, and the course of a talk given as teaching.                       |
+| `search_activities`      | Search news and activity entries, matching against their full body text.                                                         |
+| `get_activity`           | One activity in full, including its complete body text.                                                                          |
+| `list_research_projects` | All research projects, each listing the ids of its publications, talks, grants and fieldwork.                                    |
+| `get_research_project`   | One project in full: its complete narrative, span, regions, source languages, funding, cross-references.                         |
+| `list_dh_projects`       | Digital archives, datasets, tools and applications, without their descriptions. Optionally one `group`: `project` or `software`. |
+| `get_dh_project`         | One digital humanities project or application in full, description and embeds included.                                          |
+| `get_cv`                 | The person and the size of each CV section; or one section (`teaching`, `grants`, `consulting`, `computerSkills`, …).            |
+| `get_citation`           | BibTeX, or a plain-text reference.                                                                                               |
 
 Digital humanities projects and standalone applications share one dataset, so the tool
 names stay `*_dh_projects` / `*_dh_project`. Each record carries a `group` (`project` or
 `software`); an application also carries `application` (status, operating system,
 architectures, licence, interface languages) and lists where to install it among its links.
-Called without `group`, `list_dh_projects` returns every record as before, so existing
-clients need no change. The CV's computer skills are its `computerSkills` section.
 
-Search matches accent-insensitively, so `cote d'ivoire` reaches `Côte d'Ivoire`. `type` and
-`country` match a whole value (`Niger` does not reach `Nigeria`, nor `article` a
-`bulletin-article`); `tag`, `project` and `language` match any part of one.
-Search results are paginated with `limit` and `offset`, and every tool returns both a
-readable text block and schema-validated structured content.
+Every work that cites a publication is listed in its `citedBy`. Where the citing work has
+been read, the entry carries a `context`: `quoted` with the passages that cite the
+publication (page and how it is cited), `bibliography-only`, or `unread`; the record's
+`citationContexts` names who located the passages and when. These are the quotations
+[`/publications/citations`](https://www.frederickmadore.com/publications/citations) prints.
+
+Teaching is the CV's `teaching` section: the courses taught, with descriptions and syllabi,
+and the guest lectures, including the talks given as teaching (each linked to its talk).
+
+Search matches accent-insensitively, so `cote d'ivoire` reaches `Côte d'Ivoire`. `type` is
+a closed list (the schema enumerates it, so `thesis` is refused rather than silently
+matching nothing) and `country` matches a whole value (`Niger` does not reach `Nigeria`);
+`tag`, `project` and `language` match any part of one. Search results are paginated with
+`limit` (default 10, at most 50) and `offset`, say how to widen a search that matches
+nothing, and link every hit as a `resource_link` to its record resource. Every tool returns
+both a readable text block and schema-validated structured content; list tools return
+`{ count, items }`.
+
+The listings stay listings: `list_research_projects` omits the narratives and
+`list_dh_projects` the descriptions and embeds (it once returned 100,000 characters, past
+what MCP clients show a model inline), and `get_cv` without a section returns the person and
+the section sizes. The `get_*` tools and the resources below return the rest. Every tool is
+annotated read-only, idempotent and closed-world: it reads one curated corpus, nothing else.
 
 The site registers the same twelve tools in the browser for agents visiting it, through
 WebMCP (`src/lib/utils/webmcp.ts`). Both read the same API documents through the same
-loader, search and citation code in `src/lib/utils/api*.ts`, so the two cannot drift.
+loader, search, view and citation code in `src/lib/utils/api*.ts`, so the two cannot drift.
 
 Search returns headlines; the `get_*` tools return whole records. Every dataset carries its
 full text — publication and talk abstracts, activity bodies, project descriptions, and the
@@ -101,11 +117,15 @@ research narratives — so nothing on the site is searchable but unreadable.
 
 ## Resources
 
-The same seven API documents are also exposed as MCP resources under `website://api/`:
-the discovery manifest, research, publications, communications, activities, digital
-humanities projects and software, and the CV. Tools are the efficient path for filtered questions;
-resources are the complete, URI-addressable datasets for clients that want the data plane
-directly.
+The seven API documents are exposed as MCP resources under `website://api/`: the discovery
+manifest, research, publications, communications, activities, digital humanities projects
+and software, and the CV (whole, every section at once). Each record is also a resource,
+through one template per dataset — `website://publications/{id}`,
+`website://communications/{id}`, `website://activities/{id}`, `website://research/{id}`,
+`website://digital-humanities/{id}` — which is what search results link to. The templates
+have no listing (a few hundred records would swamp `resources/list`) but complete their ids.
+Tools are the efficient path for filtered questions; resources are the complete,
+URI-addressable data for clients that want the data plane directly.
 
 ## How it works
 
@@ -124,7 +144,7 @@ The server uses the stable TypeScript SDK v2. `serveStdio()` and `createMcpHandl
 both the stateless `2026-07-28` protocol and legacy 2025-era clients from the same server
 factory, so the tool and resource surfaces cannot diverge between transports. Modern
 `tools/list`, `resources/list`, and `resources/read` responses advertise a one-hour public
-cache hint.
+cache hint, as do the record templates.
 
 ### Streamable HTTP
 
@@ -185,7 +205,7 @@ there.
 Push a tag, or use Actions → **Release MCP bundle** → Run workflow:
 
 ```bash
-git tag mcp-v0.3.0 && git push origin mcp-v0.3.0
+git tag mcp-v0.4.0 && git push origin mcp-v0.4.0
 ```
 
 The workflow type-checks, builds the site, builds and smoke-tests the bundle against real
