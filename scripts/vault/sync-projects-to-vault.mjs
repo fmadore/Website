@@ -373,6 +373,12 @@ function renderResearch(project) {
 	return L.join('\n');
 }
 
+/**
+ * 'active' or 'completed', as the site reads `current`: a record that omits it
+ * is a past project (`pastResearchProjects` filters on `!project.current`).
+ */
+const researchStatus = (project) => (project.current ? 'active' : 'completed');
+
 /** Frontmatter for a note this script is creating from scratch. */
 function seedFrontmatter(project, kind) {
 	const [start, end] = splitYears(project.years);
@@ -384,7 +390,9 @@ function seedFrontmatter(project, kind) {
 	lines.push(`project_type: ${kind === 'dh' ? 'dh' : 'research'}`);
 	if (kind === 'dh') lines.push(`website_group: ${projectGroup(project)}`);
 	lines.push(`title: ${yamlStr(project.title)}`);
-	lines.push(`status: ${project.current === false ? 'completed' : 'active'}`);
+	// Only research projects carry `current`; a DH record has no such flag, so
+	// its note is seeded active, as it always was, and its status is the user's.
+	lines.push(`status: ${kind === 'research' ? researchStatus(project) : 'active'}`);
 	lines.push(`date_start: ${start ?? ''}`);
 	lines.push(`date_end: ${end ?? ''}`);
 	lines.push('collaborators: []');
@@ -495,11 +503,16 @@ for (const [kind, list] of [
 			const [start, end] = splitYears(project.years);
 			if (fm.date_start && start && fm.date_start !== start)
 				drift.push(`${path.basename(full)}: date_start ${fm.date_start} ≠ site ${start}`);
-			if (fm.date_end && end && fm.date_end !== end)
-				drift.push(`${path.basename(full)}: date_end ${fm.date_end} ≠ site ${end}`);
+			// An empty end on either side counts: a project the site has since closed
+			// (or reopened) is exactly the change worth reporting. A note with no
+			// `date_end` key at all is hand-made, and is not compared.
+			if (fm.date_end !== undefined && fm.date_end !== (end ?? ''))
+				drift.push(
+					`${path.basename(full)}: date_end ${fm.date_end || '(open)'} ≠ site ${end ?? '(open)'}`
+				);
 			// A research project the site has concluded (or reopened) since the note was written.
 			if (kind === 'research' && fm.status) {
-				const siteStatus = project.current === false ? 'completed' : 'active';
+				const siteStatus = researchStatus(project);
 				if (['active', 'completed'].includes(fm.status) && fm.status !== siteStatus)
 					drift.push(`${path.basename(full)}: status ${fm.status} ≠ site ${siteStatus}`);
 			}
