@@ -11,9 +11,11 @@
 // (Zotero `@citekey.md` notes) and the full texts (Publications/Textes/), so
 // duplicating either would be a third source of truth to keep in step. What a
 // record adds is what only the website knows — the project a publication belongs
-// to, who cites it, who reviewed it, its table of contents, and the id that
-// talks and research prose cross-reference — plus links out to the Zotero note
-// and the full text, so the three stay one click apart.
+// to, who cites it and how (the passages quoting it, where the citing work has
+// been read), who reviewed it, its table of contents, whether it is open
+// access, its Wikidata and OpenAlex ids, and the id that talks and research
+// prose cross-reference — plus links out to the Zotero note and the full text,
+// so the three stay one click apart.
 //
 // Ownership matches sync-projects-to-vault.mjs: the marked block and a small set
 // of frontmatter keys are rewritten every run, everything else is written once.
@@ -80,6 +82,20 @@ for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data/publications'))) 
 	if (record?.id && record.title) pubs.push(record);
 }
 pubs.sort((a, b) => (b.dateISO || '').localeCompare(a.dateISO || ''));
+
+/**
+ * Where citing works cite each publication (src/lib/data/citation-contexts/),
+ * keyed by publication id, then by the `citedBy` entry they answer: its
+ * Wikidata item, or its URL when it has none — the join /publications/citations
+ * makes (`citingKey` in #lib/utils/citationContexts.ts).
+ */
+const contextsByPub = new Map();
+for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data/citation-contexts'))) {
+	const set = await loadModule(file);
+	if (!set?.id || !Array.isArray(set.contexts)) continue;
+	contextsByPub.set(set.id, new Map(set.contexts.map((context) => [context.citing, context])));
+}
+const citingKey = (work) => work.wikidataId ?? work.url ?? null;
 
 // ---- vault indexes ---------------------------------------------------------
 
@@ -149,6 +165,14 @@ function render(p, matches) {
 	if (p.publisher && !where.includes(p.publisher)) info.push(`> ${p.publisher}`);
 	if (p.authors?.length) info.push(`> By: ${getContributorNames(p.authors).join(', ')}`);
 	if (p.language) info.push(`> Language: ${p.language}`);
+	if (p.openAccess) info.push('> Open access');
+	const ids = [];
+	if (p.isbn) ids.push(`ISBN ${p.isbn}`);
+	if (p.issn) ids.push(`ISSN ${p.issn}`);
+	if (p.wikidataId)
+		ids.push(`Wikidata [${p.wikidataId}](https://www.wikidata.org/wiki/${p.wikidataId})`);
+	if (p.openAlexId) ids.push(`OpenAlex [${p.openAlexId}](https://openalex.org/${p.openAlexId})`);
+	if (ids.length) info.push(`> ${ids.join(' · ')}`);
 	if (matches.project) info.push(`> Project: ${matches.project}`);
 	if (matches.zotero) info.push(`> Zotero: [[${matches.zotero}]]`);
 	if (matches.texte) info.push(`> Full text: [[${matches.texte}]]`);
@@ -176,17 +200,34 @@ function render(p, matches) {
 			L.push(
 				`- ${r.author} (${r.year}), *${r.title}*${where2 ? `, ${where2}` : ''}${link ? ` — ${link}` : ''}`
 			);
+			if (r.excerpt) L.push(`  > ${r.excerpt.trim().replace(/\s*\n\s*/g, ' ')}`);
 		}
 		L.push('');
 	}
 
 	if (p.citedBy?.length) {
+		const contexts = contextsByPub.get(p.id);
 		L.push(`## Cited by (${p.citedBy.length})`, '');
 		for (const c of p.citedBy) {
 			const link = c.url ? ` — ${c.url}` : '';
 			L.push(
 				`- ${c.authors.join(', ')} (${c.year}), *${c.title}*${c.source ? `, ${c.source}` : ''}${link}`
 			);
+			// How the work cites this one, where it has been read: the passages,
+			// each its own quoted sub-item (consecutive `>` lines would merge into
+			// one paragraph) with its page and the form of the citation, or that
+			// it lists the publication only in its bibliography.
+			const key = citingKey(c);
+			const context = key ? contexts?.get(key) : undefined;
+			if (context?.status === 'bibliography-only') L.push('  - *In the bibliography only.*');
+			for (const passage of context?.passages ?? []) {
+				const where3 = [passage.page ? `p. ${passage.page}` : '', passage.citedAs ?? '']
+					.filter(Boolean)
+					.join(', ');
+				L.push(
+					`  - > ${passage.text.trim().replace(/\s*\n\s*/g, ' ')}${where3 ? ` (${where3})` : ''}`
+				);
+			}
 		}
 		L.push('');
 	}
@@ -221,6 +262,10 @@ function seedFrontmatter(p, matches) {
 	if (p.publisher) lines.push(`publisher: ${yamlStr(p.publisher)}`);
 	if (p.language) lines.push(`language: ${yamlStr(p.language)}`);
 	if (p.doi) lines.push(`doi: ${yamlStr(p.doi)}`);
+	if (p.isbn) lines.push(`isbn: ${yamlStr(p.isbn)}`);
+	if (p.openAccess !== undefined) lines.push(`open_access: ${p.openAccess === true}`);
+	if (p.wikidataId) lines.push(`wikidata: ${p.wikidataId}`);
+	if (p.openAlexId) lines.push(`openalex: ${p.openAlexId}`);
 	if (p.country?.length) lines.push(`country: [${p.country.map((c) => yamlStr(c)).join(', ')}]`);
 	if (matches.project) lines.push(`project: ${yamlStr(matches.project)}`);
 	if (matches.zotero) lines.push(`zotero_note: ${yamlStr(`[[${matches.zotero}]]`)}`);
@@ -281,6 +326,10 @@ for (const p of pubs) {
 		if (project) owned.project = yamlStr(project);
 		owned.cited_by = String(p.citedBy?.length ?? 0);
 		owned.reviewed_by = String(p.reviewedBy?.length ?? 0);
+		// Recorded on the site after the note was created, so owned rather than seeded.
+		if (p.openAccess !== undefined) owned.open_access = String(p.openAccess === true);
+		if (p.wikidataId) owned.wikidata = p.wikidataId;
+		if (p.openAlexId) owned.openalex = p.openAlexId;
 		if (zotero) owned.zotero_note = yamlStr(`[[${zotero}]]`);
 		if (texte) owned.texte = yamlStr(`[[${texte}]]`);
 		content = setFrontmatterKeys(content, owned);
@@ -300,6 +349,13 @@ for (const p of pubs) {
 	if (action !== 'unchanged') console.log(`${action.padEnd(9)} ${path.relative(VAULT, full)}`);
 }
 
+// Records that claim a publication the site no longer has: a renamed id or a
+// retired record.
+const knownSlugs = new Set(pubs.map((p) => `publications/${p.id}`));
+const orphans = [...bySlug.entries()]
+	.filter(([slug]) => slug.startsWith('publications/') && !knownSlugs.has(slug))
+	.map(([slug, file]) => `${path.relative(VAULT, file)} → website_slug: ${slug}`);
+
 console.log('\n--- summary ---');
 console.log(`publications: ${pubs.length}`);
 console.log(`created: ${stats.created}  updated: ${stats.updated}  unchanged: ${stats.unchanged}`);
@@ -307,6 +363,10 @@ console.log(`matched to a Zotero note: ${pubs.length - noZotero.length}/${pubs.l
 if (noZotero.length) {
 	console.log('\nno Zotero literature note yet (generate via the Zotero connector):');
 	for (const n of noZotero) console.log(`  ${n}`);
+}
+if (orphans.length) {
+	console.log('\nvault notes pointing at a publication the site no longer has:');
+	for (const o of orphans) console.log(`  ${o}`);
 }
 if (noProject.length) {
 	console.log('\nproject named on the record but no vault note found:');

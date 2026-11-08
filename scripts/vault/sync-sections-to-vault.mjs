@@ -35,6 +35,7 @@ import {
 	spliceGenerated,
 	htmlToMarkdown
 } from '../lib/vault-sync-lib.mjs';
+import { applicationSummary, splitProjectGroups } from '../../src/lib/utils/projectGroups.ts';
 
 const SITE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const VAULT = vaultRoot();
@@ -59,19 +60,36 @@ const TYPE_LABEL = {
 const SECTIONS = [
 	{
 		id: 'digital-humanities',
-		title: 'Digital Humanities',
+		title: 'Digital Humanities & Software',
 		page: 'src/routes/digital-humanities/+page.svelte',
 		data: 'src/lib/data/digital-humanities',
 		note: 'Tâches et projets/Projects/DH/Digital Humanities.md',
-		// A full roster: the hand-made thematic index below the marker is
-		// curated, and curation falls behind. This one cannot.
+		// A full roster in the site's two groups (projectGroups.ts): the
+		// hand-made thematic index below the marker is curated, and curation
+		// falls behind. This one cannot.
 		index: (records, linkFor) => {
-			const lines = ['## All projects on the site', ''];
-			for (const r of [...records].sort((a, b) => a.title.localeCompare(b.title))) {
-				const desc = r.shortDescription ? ` — ${r.shortDescription}` : '';
-				lines.push(`- ${linkFor(`digital-humanities/${r.id}`, r.title)}${desc}`);
+			const byTitle = (a, b) => a.title.localeCompare(b.title);
+			const { projects, applications } = splitProjectGroups([...records].sort(byTitle));
+			const lines = [];
+			if (projects.length) {
+				lines.push(`## Digital humanities projects (${projects.length})`, '');
+				for (const r of projects) {
+					const desc = r.shortDescription ? ` — ${r.shortDescription}` : '';
+					lines.push(`- ${linkFor(`digital-humanities/${r.id}`, r.title)}${desc}`);
+				}
+				lines.push('');
 			}
-			return lines;
+			if (applications.length) {
+				lines.push(`## Software & applications (${applications.length})`, '');
+				for (const r of applications) {
+					const desc = r.shortDescription ? ` — ${r.shortDescription}` : '';
+					lines.push(
+						`- ${linkFor(`digital-humanities/${r.id}`, r.title)} (${applicationSummary(r.application)})${desc}`
+					);
+				}
+				lines.push('');
+			}
+			return lines.slice(0, -1);
 		}
 	},
 	{

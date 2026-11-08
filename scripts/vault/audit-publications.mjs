@@ -6,7 +6,7 @@
 //
 //   node scripts/vault/audit-publications.mjs
 
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { vaultRoot, walkData, loadModule, normTitle } from '../lib/vault-sync-lib.mjs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -63,6 +63,11 @@ function frontmatter(raw) {
 		if (m) fm[m[1]] = m[2].replace(/^["']|["']$/g, '').trim();
 	}
 	return fm;
+}
+
+if (!existsSync(ZOTERO_DIR)) {
+	console.error(`No Zotero folder at ${ZOTERO_DIR}: is OBSIDIAN_VAULT the vault root?`);
+	process.exit(1);
 }
 
 // ---- build Zotero index ----
