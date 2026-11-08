@@ -26,6 +26,14 @@ describe('markdownTwinPath', () => {
 		expect(
 			markdownTwinPath('/research/dh-ai-african-studies', '/research/dh-ai-african-studies')
 		).toBe('/research/dh-ai-african-studies.md');
+
+		// Static siblings of record routes that are content pages have their own.
+		expect(markdownTwinPath('/publications/citations', '/publications/citations')).toBe(
+			'/publications/citations.md'
+		);
+		expect(markdownTwinPath('/conference-activity/slides', '/conference-activity/slides')).toBe(
+			'/conference-activity/slides.md'
+		);
 	});
 
 	it('gives none to a page without one, even beside a record route', () => {
@@ -34,7 +42,7 @@ describe('markdownTwinPath', () => {
 		).toBeNull();
 		expect(markdownTwinPath('/activities/year/[year]', '/activities/year/2025')).toBeNull();
 		expect(
-			markdownTwinPath('/conference-activity/slides', '/conference-activity/slides')
+			markdownTwinPath('/conference-activity/visualisations', '/conference-activity/visualisations')
 		).toBeNull();
 		expect(markdownTwinPath('/cv/timeline', '/cv/timeline')).toBeNull();
 		expect(markdownTwinPath('/style-guide', '/style-guide')).toBeNull();

@@ -118,3 +118,30 @@ export function talksIndexMarkdown(talks: readonly Communication[]): string {
 		)
 	);
 }
+
+/** The talks a slides twin lists: those with a deck, as the gallery reads them. */
+export type DeckTalk = Pick<
+	Communication,
+	'id' | 'title' | 'type' | 'conference' | 'location' | 'date' | 'dateISO' | 'slidesUrl'
+>;
+
+/**
+ * `/conference-activity/slides.md`: every talk with a published slide deck,
+ * newest first, as the gallery lists them: the talk's date, its kind and
+ * venue, its Markdown record, and the deck itself.
+ */
+export function slidesMarkdown(talks: readonly DeckTalk[]): string {
+	return document(
+		'# Slides',
+		`Slide decks from ${author.name}'s talks and conference papers, newest first: ${entries(talks.length)}. The [web page](${pageUrl('/conference-activity/slides')}) shows each with its cover slide. Each title links to the talk's Markdown record; each deck opens in the browser.`,
+		bullets(
+			talks.map((talk) => {
+				const title = link(talk.title, markdownUrl(`/communications/${talk.id}`));
+				const kind = COMMUNICATION_TYPE_LIST_LABELS[talk.type ?? 'conference'] ?? 'Academic event';
+				const venue = [talk.conference, talk.location].filter(Boolean).join(', ');
+				const deck = talk.slidesUrl ? `\n${link('Open the slides', talk.slidesUrl)}` : '';
+				return `**${inline(talk.date)}** ${title}\n${inline([kind, venue].filter(Boolean).join(' · '))}${deck}`;
+			})
+		)
+	);
+}

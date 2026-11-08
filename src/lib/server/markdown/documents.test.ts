@@ -6,10 +6,14 @@ import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
 import { allResearchProjects } from '#lib/data/research/index.ts';
 import teaching from '#lib/data/teaching/index.ts';
 import { allLectures } from '#lib/server/teachingLectures.ts';
+import { citationContextSets } from '#lib/data/citation-contexts/index.ts';
+import { communicationSummariesWithSlides } from '#lib/data/communications/summaries.ts';
+import { buildCitationContextSections, buildCitingWorkRows } from '#lib/utils/citationContexts.ts';
+import { citationsMarkdown } from './citations';
 import { generateBibtex } from '#lib/utils/bibtexGenerator.ts';
 import { formatReferenceText } from '#lib/utils/citationFormatter.ts';
 import { activityMarkdown, activitiesIndexMarkdown } from './activities';
-import { communicationMarkdown, talksIndexMarkdown } from './communications';
+import { communicationMarkdown, slidesMarkdown, talksIndexMarkdown } from './communications';
 import { dhIndexMarkdown, dhProjectMarkdown } from './digitalHumanities';
 import { homeMarkdown } from './home';
 import { escapeMarkdownText } from './htmlToMarkdown';
@@ -24,8 +28,15 @@ const byId = <T extends { id: string }>(items: readonly T[], id: string): T => {
 	return item;
 };
 
+const citationSections = buildCitationContextSections(citationContextSets, allPublications);
+const citingWorks = buildCitingWorkRows(citationSections);
+const citations = citationsMarkdown(citationSections, citingWorks);
+const slides = slidesMarkdown(communicationSummariesWithSlides);
+
 /** Every document the `*.md` routes serve, generated once. */
 const documents: Array<[path: string, markdown: string]> = [
+	['/publications/citations.md', citations],
+	['/conference-activity/slides.md', slides],
 	['/index.md', homeMarkdown()],
 	['/publications.md', publicationsIndexMarkdown(publicationsByDate)],
 	['/conference-activity.md', talksIndexMarkdown(communicationsByDate)],
@@ -237,6 +248,44 @@ describe('teaching twins', () => {
 		expect(talks.length).toBeGreaterThan(0);
 		for (const talk of talks) {
 			expect(lectures).toContain(`(${markdownUrl(`/communications/${talk.talkId}`)})`);
+		}
+	});
+});
+
+describe('the citations twin', () => {
+	it('quotes every passage the page quotes, under the work that wrote it', () => {
+		for (const work of citingWorks) {
+			expect(citations).toContain(`(${work.year}).**`);
+			for (const group of work.groups) {
+				expect(citations).toContain(markdownUrl(`/publications/${group.publicationId}`));
+				for (const passage of group.passages)
+					expect(citations).toContain(
+						`> ${escapeMarkdownText(passage.text.replace(/\s+/g, ' ').trim())}`
+					);
+			}
+		}
+		const passages = citingWorks.reduce((sum, work) => sum + work.passageCount, 0);
+		expect(citations).toContain(`${citingWorks.length} entries, ${passages} passages`);
+	});
+
+	it('closes on the coverage of every publication read so far', () => {
+		const coverage = citations.slice(citations.indexOf('## Coverage'));
+		for (const section of citationSections) {
+			expect(coverage).toContain(markdownUrl(`/publications/${section.id}`));
+			expect(coverage).toContain(`${section.quoted.length} quoted`);
+		}
+	});
+});
+
+describe('the slides twin', () => {
+	it('lists every talk with a deck, newest first, with its record and the deck', () => {
+		expect(slides).toContain(`${communicationSummariesWithSlides.length} entries`);
+		let last = -1;
+		for (const talk of communicationSummariesWithSlides) {
+			const at = slides.indexOf(markdownUrl(`/communications/${talk.id}`));
+			expect(at, talk.id).toBeGreaterThan(last);
+			last = at;
+			expect(slides).toContain(`(${talk.slidesUrl})`);
 		}
 	});
 });

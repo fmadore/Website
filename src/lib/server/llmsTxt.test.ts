@@ -2,6 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { buildLlmsTxt, MCP_SERVER } from './llmsTxt';
 import { allResearchProjects } from '#lib/data/research/index.ts';
 import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
+import { allPublications } from '#lib/data/publications/index.ts';
+import { splitProjectGroups } from '#lib/utils/projectGroups.ts';
+import { WEBMCP_TOOL_NAMES } from '#lib/utils/webmcpToolNames.ts';
 import { TWIN_PAGE_PATHS, SITE } from './markdown/site';
 
 const text = buildLlmsTxt();
@@ -26,6 +29,7 @@ describe('llms.txt', () => {
 			'Sections',
 			'Research projects',
 			'Digital humanities projects',
+			'Software and applications',
 			'Tools for agents',
 			'Feeds and data',
 			'Contact and profiles',
@@ -61,7 +65,33 @@ describe('llms.txt', () => {
 		expect(text).toContain(`[MCP server](${MCP_SERVER.readme})`);
 		expect(text).toContain(MCP_SERVER.bundle);
 		expect(text).toContain(MCP_SERVER.releases);
-		expect(text).toMatch(/WebMCP/);
+		const webmcp = lines.find((line) => line.startsWith('- [WebMCP]'))!;
+		expect(webmcp).toContain(`${WEBMCP_TOOL_NAMES.length} WebMCP tools`);
+		// It once offered contact details, which no tool returns.
+		expect(webmcp).not.toMatch(/contact/i);
+	});
+
+	it('files each digital humanities record under its group, as the index does', () => {
+		const [, dh = '', software = ''] = text.split(
+			/^## (?:Digital humanities projects|Software and applications)$/m
+		);
+		const { projects, applications } = splitProjectGroups(allDhProjects);
+		for (const project of projects) expect(dh).toContain(`/${project.id}.md)`);
+		for (const app of applications) {
+			expect(software).toContain(`/${app.id}.md)`);
+			expect(dh).not.toContain(`/${app.id}.md)`);
+		}
+	});
+
+	it('counts the publication types off the records', () => {
+		const types = new Set(allPublications.map((pub) => pub.type));
+		const line = lines.find((l) => l.startsWith('- [Publications]'))!;
+		expect(line.match(/\(\d+\)/g)).toHaveLength(types.size);
+	});
+
+	it('links the citations and slides pages to their twins', () => {
+		expect(text).toContain(`(${SITE}/publications/citations.md)`);
+		expect(text).toContain(`(${SITE}/conference-activity/slides.md)`);
 	});
 
 	it('claims only the citation formats the site produces', () => {

@@ -4,7 +4,7 @@
  *
  * Links between twins point at twins, so an agent that starts at
  * `/llms.txt` can walk the whole record without parsing a line of HTML; a
- * page with no twin (the visualisations, the slides gallery) is linked as the
+ * page with no twin (the visualisations, the CV timeline) is linked as the
  * page itself. Every address is absolute on the production origin, like the
  * rest of the machine-readable surface (`/llms.txt`, `/api/*.json`), so a
  * twin quoted out of context still resolves.
@@ -24,7 +24,9 @@ const SITE_ORIGIN = new URL(SITE).origin;
 export const SECTION_TWIN_PATHS = [
 	'/',
 	'/publications',
+	'/publications/citations',
 	'/conference-activity',
+	'/conference-activity/slides',
 	'/activities',
 	'/research',
 	'/digital-humanities',

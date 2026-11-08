@@ -18,6 +18,9 @@ import { activitiesByDate } from '#lib/data/activities/index.ts';
 import { allDhProjects } from '#lib/data/digital-humanities/index.ts';
 import { allResearchProjects } from '#lib/data/research/index.ts';
 import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+import { applicationSummary, splitProjectGroups } from '#lib/utils/projectGroups.ts';
+import { PUBLICATION_TYPE_SEO_LABELS } from '#lib/utils/publicationTypeLabels.ts';
+import { WEBMCP_TOOL_NAMES } from '#lib/utils/webmcpToolNames.ts';
 import { entries } from '#lib/server/markdown/markdown.ts';
 import { markdownUrl, pageUrl } from '#lib/server/markdown/site.ts';
 
@@ -34,6 +37,24 @@ export const MCP_SERVER = {
 const oneLine = (value: string): string => value.replace(/\s+/g, ' ').trim();
 
 const count = (n: number, noun: string) => `${n} ${noun}${n === 1 ? '' : 's'}`;
+
+/**
+ * "Journal article (18), Book chapter (12), …": the publication types, most
+ * numerous first, counted off the records so the list cannot fall behind a
+ * new type. The labels are the publications twin's own, case and all, so
+ * "PhD dissertation" keeps its capitals.
+ */
+function publicationBreakdown(): string {
+	const counts = new Map<string, number>();
+	for (const pub of allPublications) {
+		const label = PUBLICATION_TYPE_SEO_LABELS[pub.type] ?? pub.type;
+		counts.set(label, (counts.get(label) ?? 0) + 1);
+	}
+	return [...counts]
+		.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+		.map(([label, n]) => `${label} (${n})`)
+		.join(', ');
+}
 
 export function buildLlmsTxt(): string {
 	const lines: string[] = [];
@@ -73,16 +94,16 @@ export function buildLlmsTxt(): string {
 	item(
 		'Publications',
 		markdownUrl('/publications'),
-		`Complete list of ${count(allPublications.length, 'publication')} (books, journal articles,
-		book chapters, edited volumes and special issues, reports, encyclopedia entries), newest first.
-		Each links to its record: full reference, abstract, DOI or ISBN, reviews, citing works, and
-		BibTeX.`
+		`Complete list of ${count(allPublications.length, 'publication')}, newest first (by type:
+		${publicationBreakdown()}). Each links to its record: full reference, abstract, DOI or ISBN,
+		open access, reviews, citing works, and BibTeX.`
 	);
 	item(
 		'Talks and events',
 		markdownUrl('/conference-activity'),
 		`Complete list of ${count(allCommunications.length, 'talk')}: conference papers, invited
-		lectures, seminars, workshops, panels, posters and podcasts, with abstracts and programmes.`
+		lectures, seminars, workshops, panels, posters, podcasts and events, with abstracts and
+		programmes.`
 	);
 	item(
 		'Activities',
@@ -103,7 +124,7 @@ export function buildLlmsTxt(): string {
 	item(
 		'CV',
 		markdownUrl('/cv'),
-		'Full curriculum vitae: appointments, education, publications, grants, awards, talks, teaching, service and languages.'
+		'Full curriculum vitae: appointments, education, publications, grants, awards, digital humanities projects and software, talks, teaching, research experience, service, consulting, media, languages, affiliations and computer skills.'
 	);
 	item(
 		'Teaching',
@@ -120,9 +141,22 @@ export function buildLlmsTxt(): string {
 		);
 	}
 
+	// The section's two groups, as the index and its twin file them (projectGroups.ts).
+	const { projects: dhProjects, applications } = splitProjectGroups(allDhProjects);
 	heading('Digital humanities projects');
-	for (const project of allDhProjects) {
+	for (const project of dhProjects) {
 		item(project.title, markdownUrl(`/digital-humanities/${project.id}`), project.shortDescription);
+	}
+
+	heading('Software and applications');
+	for (const project of applications) {
+		item(
+			project.title,
+			markdownUrl(`/digital-humanities/${project.id}`),
+			project.application
+				? `${applicationSummary(project.application)}. ${project.shortDescription}`
+				: project.shortDescription
+		);
 	}
 
 	heading('Tools for agents');
@@ -138,9 +172,11 @@ export function buildLlmsTxt(): string {
 	item(
 		'WebMCP',
 		'https://webmachinelearning.github.io/webmcp/',
-		`Every page registers read-only WebMCP tools (\`document.modelContext\`) when the browser
-		supports them, so an agent browsing the site can search publications and talks, read a record,
-		list research projects and get contact details without reading the page.`
+		`Every page registers ${WEBMCP_TOOL_NAMES.length} WebMCP tools (\`document.modelContext\`)
+		when the browser supports them: the MCP server's tools, which search and read publications,
+		talks and activities, list and read research and digital humanities projects, read the CV, and
+		cite a publication; plus one that opens the publications index on a filtered view. All but that
+		one only read.`
 	);
 
 	heading('Feeds and data');
@@ -152,12 +188,12 @@ export function buildLlmsTxt(): string {
 	item(
 		'Publications (JSON)',
 		`${SITE}/api/publications.json`,
-		'Full publication records with identifiers, abstracts, citing works and reviews.'
+		'Full publication records with identifiers (DOI, ISBN, ISSN, Wikidata, OpenAlex), open-access status, abstracts and reviews, and the works citing each, with the passages quoting it where read.'
 	);
 	item(
 		'Talks (JSON)',
 		`${SITE}/api/communications.json`,
-		'Full talk records with venue, coordinates and programme.'
+		'Full talk records with venue, coordinates and programme; a talk given as teaching names its course, institution and level.'
 	);
 	item(
 		'Activities (JSON)',
@@ -170,14 +206,14 @@ export function buildLlmsTxt(): string {
 		'Project records with their narrative and the ids of the publications, talks, grants and fieldwork that belong to each.'
 	);
 	item(
-		'Digital humanities projects (JSON)',
+		'Digital humanities projects and software (JSON)',
 		`${SITE}/api/digital-humanities.json`,
-		'Project records with skills, awards and reviews.'
+		'Project and application records with skills, awards and reviews; each names its group, and an application its platform, status and licence.'
 	);
 	item(
 		'CV (JSON)',
 		`${SITE}/api/cv.json`,
-		'Career record: appointments, education, grants, awards, teaching, service, fieldwork and languages.'
+		'Career record by section: appointments, education, research roles, grants, awards, teaching (courses and guest lectures), editorial and peer review service, consulting, affiliations, fieldwork, media appearances, languages and computer skills.'
 	);
 	item('Activities RSS feed', `${SITE}${website.rssPath}`, 'Latest activity entries.');
 	item('Publications RSS feed', `${SITE}/publications/rss.xml`, 'Latest publications.');
@@ -207,8 +243,8 @@ export function buildLlmsTxt(): string {
 	);
 	item(
 		'Citations in context',
-		pageUrl('/publications/citations'),
-		'Experimental: the sentences in which citing works cite the publications, located by a language model and quoted with their pages; a pilot, coverage partial (web page).'
+		markdownUrl('/publications/citations'),
+		'Experimental: the sentences in which citing works cite the publications, located by a language model and quoted with their pages, and how far each publication has been read; a pilot, coverage partial.'
 	);
 	item(
 		'Talk visualisations',
@@ -217,8 +253,8 @@ export function buildLlmsTxt(): string {
 	);
 	item(
 		'Slides',
-		pageUrl('/conference-activity/slides'),
-		'Gallery of presentation slide decks, each linked to its talk (web page).'
+		markdownUrl('/conference-activity/slides'),
+		'Every talk with a published slide deck, newest first, linked to its record and its deck.'
 	);
 
 	return `${lines.join('\n')}\n`;
