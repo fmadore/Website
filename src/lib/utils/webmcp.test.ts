@@ -241,9 +241,10 @@ describe('publication tools', () => {
 		// volume's title may be shared by, or be the main title of, a special
 		// issue, and then either may come first.
 		const titles = docs.publications.map((pub) => pub.title!.toLowerCase());
-		const target = docs.publications.find((pub, i) =>
-			titles.every((title, j) => j === i || !title.includes(titles[i]))
-		)!;
+		const target = docs.publications.find((pub, i) => {
+			const own = pub.title!.toLowerCase();
+			return titles.every((title, j) => j === i || !title.includes(own));
+		})!;
 		const page = await ok<SearchPage>(tools, 'search_publications', {
 			query: `  ${target.title!.toUpperCase()} `
 		});
