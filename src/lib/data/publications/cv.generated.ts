@@ -443,6 +443,18 @@ export const cvPublications: CvPublication[] = [
 		"url": "https://doi.org/10.4000/etudesafricaines.21880"
 	},
 	{
+		"id": "hadj-or-el-hadj-grounding-ai-answers-iwac-2026",
+		"type": "blogpost",
+		"title": "Hadj or El Hadj? Grounding AI Answers in a Digital Collection on Islam in West Africa",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"date": "Forthcoming",
+		"dateISO": "2026",
+		"year": 2026,
+		"publisher": "The Digital Orientalist"
+	},
+	{
 		"id": "imams-islamic-preachers-ouagadougou-2020",
 		"type": "chapter",
 		"title": "Imams, Islamic Preachers, and Public Space in Ouagadougou (Burkina Faso) since the 1990s: Toward New Intergenerational Relationships and a Muslim Public Sphere",

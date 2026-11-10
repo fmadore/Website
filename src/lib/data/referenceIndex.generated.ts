@@ -839,6 +839,19 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"journal": "Cahiers d'études africaines",
 		"publisher": "Éditions de l’École des Hautes Études en Sciences Sociales"
 	},
+	"hadj-or-el-hadj-grounding-ai-answers-iwac-2026": {
+		"id": "hadj-or-el-hadj-grounding-ai-answers-iwac-2026",
+		"itemType": "publication",
+		"title": "Hadj or El Hadj? Grounding AI Answers in a Digital Collection on Islam in West Africa",
+		"authors": [
+			"Frédérick Madore"
+		],
+		"type": "blogpost",
+		"date": "Forthcoming",
+		"dateISO": "2026",
+		"year": 2026,
+		"publisher": "The Digital Orientalist"
+	},
 	"hajj-organization-state-cote-divoire-2016": {
 		"id": "hajj-organization-state-cote-divoire-2016",
 		"itemType": "communication",
