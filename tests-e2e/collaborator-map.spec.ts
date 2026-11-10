@@ -102,11 +102,24 @@ for (const view of [
 		const response = await request.get(`/api/${view.dataset}.json`);
 		expect(response.ok()).toBe(true);
 		const { items }: { items: { id: string; year: number }[] } = await response.json();
-		const latestYear = Math.max(...items.map((item) => item.year));
-		await section.getByRole('combobox', { name: 'Collaboration year' }).selectOption({
-			label: String(latestYear)
-		});
+		// Affiliations are recorded per year and never carried forward, so the
+		// newest year (often forthcoming work) may map no one: take the latest
+		// year whose table lists at least one shared work.
+		const yearSelect = section.getByRole('combobox', { name: 'Collaboration year' });
 		const sharedWorks = table.locator('.work-list a');
+		const yearOptions = (await yearSelect.locator('option').allTextContents())
+			.filter((text) => /^\d{4}$/.test(text))
+			.map(Number)
+			.sort((a, b) => b - a);
+		let latestYear: number | undefined;
+		for (const candidate of yearOptions) {
+			await yearSelect.selectOption({ label: String(candidate) });
+			if ((await sharedWorks.count()) > 0) {
+				latestYear = candidate;
+				break;
+			}
+		}
+		expect(latestYear, 'a year with mapped collaborations').toBeDefined();
 		await expect(sharedWorks.first()).toBeVisible();
 		const allowed = new Set(
 			items.filter((item) => item.year === latestYear).map((item) => `/${view.dataset}/${item.id}`)
