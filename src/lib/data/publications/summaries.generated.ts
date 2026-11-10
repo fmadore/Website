@@ -227,6 +227,66 @@ export const publicationSummaries: PublicationSummary[] = [
 		"sourceDirType": "proceedings"
 	},
 	{
+		"id": "beyond-keywords-multilingual-research-metadata-cikm-2026",
+		"wikidataId": "Q142098283",
+		"type": "conference-proceedings",
+		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
+		"authors": [
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			"Frédérick Madore",
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
+		],
+		"date": "2026",
+		"dateISO": "2026-11-06",
+		"year": 2026,
+		"proceedingsTitle": "Proceedings of the 35th ACM International Conference on Information and Knowledge Management",
+		"conferenceName": "35th ACM International Conference on Information and Knowledge Management (CIKM ’26)",
+		"conferenceLocation": "Rome, Italy",
+		"placeOfPublication": "New York, NY",
+		"publisher": "Association for Computing Machinery",
+		"publisherLocation": "United States",
+		"pages": "8034-8039",
+		"language": "English",
+		"doi": "10.1145/3799682.3840034",
+		"tags": [
+			"Entity Linking",
+			"Entity Disambiguation",
+			"NIL Detection",
+			"Wikidata",
+			"Metadata",
+			"Large Language Models",
+			"Multilingualism",
+			"Digital Libraries",
+			"AMIRA",
+			"Africa Multiple"
+		],
+		"url": "https://doi.org/10.1145/3799682.3840034",
+		"openAccess": true,
+		"project": "Digital Research Environment (University of Bayreuth)",
+		"abstractExcerpt": "Research collections in the humanities and social sciences describe overlapping subjects under divergent cataloguing practices, so records that belong together stay unconnected across databases. Stable identifiers would m",
+		"citedByCount": 0,
+		"tocAuthors": [],
+		"sourceDirType": "proceedings"
+	},
+	{
 		"id": "charting-new-territory-digital-humanities-ki-african-studies-2026",
 		"wikidataId": "Q141695522",
 		"type": "blogpost",

@@ -1658,65 +1658,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"abstractExcerpt": "Over the past two years, AI has transformed the development of the Islam West Africa Collection (IWAC), an open-access database of over 14,500 documents covering Muslim public life in six West African countries. Built and"
 	},
 	{
-		"id": "beyond-keywords-entity-linking-cikm-2026",
-		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
-		"authors": [
-			{
-				"name": "Jiayu Yang",
-				"personId": "jiayu-yang"
-			},
-			{
-				"name": "Durgesh Nandini",
-				"personId": "durgesh-nandini"
-			},
-			{
-				"name": "Mirco Schönfeld",
-				"personId": "mirco-schonfeld"
-			},
-			"Frédérick Madore",
-			{
-				"name": "Neeraj Thandayan Viswajith",
-				"personId": "neeraj-thandayan-viswajith"
-			},
-			{
-				"name": "Oliver Baumann",
-				"personId": "oliver-baumann"
-			}
-		],
-		"date": "9 November 2026",
-		"dateISO": "2026-11-09",
-		"year": 2026,
-		"conference": "35th International ACM Conference on Knowledge and Information Management (CIKM 2026)",
-		"location": "Auditorium Parco della Musica, Rome",
-		"country": "Italy",
-		"type": "conference",
-		"language": "English",
-		"tags": [
-			"Entity Linking",
-			"Named Entity Recognition",
-			"Wikidata",
-			"Metadata",
-			"Knowledge Graph",
-			"Large Language Models",
-			"Multilingualism",
-			"AMIRA",
-			"Africa Multiple"
-		],
-		"url": "https://cikm2026.diag.uniroma1.it/",
-		"urlLabel": "Conference Website",
-		"image": "images/communications/cikm-2026.webp",
-		"heroImage": {
-			"src": "images/communications/cikm-2026-hero.webp",
-			"alt": "Logo of CIKM 2026 in Rome: the Colosseum, Trajan’s Column and the shell of the Auditorium Parco della Musica stand side by side beneath an arc of network nodes and edges in the green, white and red of the Italian flag, with the wordmark “CIKM 2026” set below in heavy black capitals."
-		},
-		"coordinates": {
-			"latitude": 41.9289,
-			"longitude": 12.4739
-		},
-		"project": "Digital Research Environment (University of Bayreuth)",
-		"abstractExcerpt": "Research databases accumulate rich metadata, including subject keywords, themes, geographic and cultural references, but much of this data remains largely isolated, making it difficult to retrieve and reuse across differe"
-	},
-	{
 		"id": "beyond-keywords-entity-linking-jcdl-2026",
 		"title": "Beyond Keywords: Training-Free Entity Linking for Research Metadata via Cross-Lingual Retrieval Consensus",
 		"authors": [
@@ -2664,6 +2605,65 @@ export const communicationSummaries: CommunicationSummary[] = [
 		},
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "Dr. Frédérick Madore, postdoctoral research fellow at ZMO Berlin, works at the intersection of African Studies, Islamic Studies, and the digital humanities. Building on fieldwork and archival research conducted since 2013"
+	},
+	{
+		"id": "beyond-keywords-entity-linking-cikm-2026",
+		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
+		"authors": [
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			"Frédérick Madore",
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
+		],
+		"date": "10 November 2026",
+		"dateISO": "2026-11-10",
+		"year": 2026,
+		"conference": "35th ACM International Conference on Information and Knowledge Management (CIKM 2026)",
+		"location": "Auditorium Parco della Musica, Rome",
+		"country": "Italy",
+		"type": "poster",
+		"language": "English",
+		"tags": [
+			"Entity Linking",
+			"Named Entity Recognition",
+			"Wikidata",
+			"Metadata",
+			"Knowledge Graph",
+			"Large Language Models",
+			"Multilingualism",
+			"AMIRA",
+			"Africa Multiple"
+		],
+		"url": "https://cikm2026.diag.uniroma1.it/",
+		"urlLabel": "Conference Website",
+		"image": "images/communications/cikm-2026.webp",
+		"heroImage": {
+			"src": "images/communications/cikm-2026-hero.webp",
+			"alt": "Logo of CIKM 2026 in Rome: the Colosseum, Trajan’s Column and the shell of the Auditorium Parco della Musica stand side by side beneath an arc of network nodes and edges in the green, white and red of the Italian flag, with the wordmark “CIKM 2026” set below in heavy black capitals."
+		},
+		"coordinates": {
+			"latitude": 41.9289,
+			"longitude": 12.4739
+		},
+		"project": "Digital Research Environment (University of Bayreuth)",
+		"abstractExcerpt": "Research collections in the humanities and social sciences describe overlapping subjects under divergent cataloguing practices, so records that belong together stay unconnected across databases. Stable identifiers would m"
 	},
 	{
 		"id": "responsible-ai-access-mcp-server-2026",

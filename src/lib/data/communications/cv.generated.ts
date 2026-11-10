@@ -246,39 +246,6 @@ export const cvCommunications: CvCommunication[] = [
 		"type": "conference"
 	},
 	{
-		"id": "beyond-keywords-entity-linking-cikm-2026",
-		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
-		"authors": [
-			{
-				"name": "Jiayu Yang",
-				"personId": "jiayu-yang"
-			},
-			{
-				"name": "Durgesh Nandini",
-				"personId": "durgesh-nandini"
-			},
-			{
-				"name": "Mirco Schönfeld",
-				"personId": "mirco-schonfeld"
-			},
-			"Frédérick Madore",
-			{
-				"name": "Neeraj Thandayan Viswajith",
-				"personId": "neeraj-thandayan-viswajith"
-			},
-			{
-				"name": "Oliver Baumann",
-				"personId": "oliver-baumann"
-			}
-		],
-		"date": "9 November 2026",
-		"dateISO": "2026-11-09",
-		"conference": "35th International ACM Conference on Knowledge and Information Management (CIKM 2026)",
-		"location": "Auditorium Parco della Musica, Rome",
-		"type": "conference",
-		"url": "https://cikm2026.diag.uniroma1.it/"
-	},
-	{
 		"id": "beyond-keywords-entity-linking-jcdl-2026",
 		"title": "Beyond Keywords: Training-Free Entity Linking for Research Metadata via Cross-Lingual Retrieval Consensus",
 		"authors": [
@@ -639,6 +606,39 @@ export const cvCommunications: CvCommunication[] = [
 		"location": "Leibniz-Zentrum Moderner Orient",
 		"type": "podcast",
 		"url": "https://www.zmo.de/en/kitchen-talks"
+	},
+	{
+		"id": "beyond-keywords-entity-linking-cikm-2026",
+		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
+		"authors": [
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			"Frédérick Madore",
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
+		],
+		"date": "10 November 2026",
+		"dateISO": "2026-11-10",
+		"conference": "35th ACM International Conference on Information and Knowledge Management (CIKM 2026)",
+		"location": "Auditorium Parco della Musica, Rome",
+		"type": "poster",
+		"url": "https://cikm2026.diag.uniroma1.it/"
 	},
 	{
 		"id": "responsible-ai-access-mcp-server-2026",

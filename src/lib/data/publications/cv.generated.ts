@@ -108,6 +108,43 @@ export const cvPublications: CvPublication[] = [
 		"url": "https://doi.org/10.1145/3805696.3846031"
 	},
 	{
+		"id": "beyond-keywords-multilingual-research-metadata-cikm-2026",
+		"type": "conference-proceedings",
+		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
+		"authors": [
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			"Frédérick Madore",
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
+		],
+		"date": "2026",
+		"dateISO": "2026-11-06",
+		"year": 2026,
+		"proceedingsTitle": "Proceedings of the 35th ACM International Conference on Information and Knowledge Management",
+		"placeOfPublication": "New York, NY",
+		"publisher": "Association for Computing Machinery",
+		"pages": "8034-8039",
+		"doi": "10.1145/3799682.3840034",
+		"url": "https://doi.org/10.1145/3799682.3840034"
+	},
+	{
 		"id": "charting-new-territory-digital-humanities-ki-african-studies-2026",
 		"type": "blogpost",
 		"title": "Charting New Territory: Digital Humanities und Künstliche Intelligenz in den African Studies",

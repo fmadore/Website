@@ -187,20 +187,20 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"authors": [
 			"Jiayu Yang",
 			"Durgesh Nandini",
-			"Mirco Schönfeld",
 			"Frédérick Madore",
 			"Neeraj Thandayan Viswajith",
-			"Oliver Baumann"
+			"Oliver Baumann",
+			"Mirco Schönfeld"
 		],
-		"type": "conference",
-		"date": "9 November 2026",
-		"dateISO": "2026-11-09",
+		"type": "poster",
+		"date": "10 November 2026",
+		"dateISO": "2026-11-10",
 		"year": 2026,
 		"image": "images/communications/cikm-2026.webp",
 		"heroImage": {
 			"src": "images/communications/cikm-2026-hero.webp"
 		},
-		"conference": "35th International ACM Conference on Knowledge and Information Management (CIKM 2026)",
+		"conference": "35th ACM International Conference on Information and Knowledge Management (CIKM 2026)",
 		"location": "Auditorium Parco della Musica, Rome",
 		"country": "Italy"
 	},
@@ -243,6 +243,24 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"type": "conference-proceedings",
 		"date": "2026",
 		"dateISO": "2026-10-13",
+		"year": 2026,
+		"publisher": "Association for Computing Machinery"
+	},
+	"beyond-keywords-multilingual-research-metadata-cikm-2026": {
+		"id": "beyond-keywords-multilingual-research-metadata-cikm-2026",
+		"itemType": "publication",
+		"title": "Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata",
+		"authors": [
+			"Jiayu Yang",
+			"Durgesh Nandini",
+			"Frédérick Madore",
+			"Neeraj Thandayan Viswajith",
+			"Oliver Baumann",
+			"Mirco Schönfeld"
+		],
+		"type": "conference-proceedings",
+		"date": "2026",
+		"dateISO": "2026-11-06",
 		"year": 2026,
 		"publisher": "Association for Computing Machinery"
 	},
