@@ -237,11 +237,12 @@ describe('publication tools', () => {
 
 	it('matches a query against the title', async () => {
 		const { tools } = register();
-		// The newest work whose title no other work shares: an edited volume and
-		// a special issue may carry the same title, and then either may come first.
-		const titles = docs.publications.map((pub) => pub.title);
-		const target = docs.publications.find(
-			(pub) => titles.indexOf(pub.title) === titles.lastIndexOf(pub.title)
+		// The newest work whose title no other work's title contains: an edited
+		// volume's title may be shared by, or be the main title of, a special
+		// issue, and then either may come first.
+		const titles = docs.publications.map((pub) => pub.title!.toLowerCase());
+		const target = docs.publications.find((pub, i) =>
+			titles.every((title, j) => j === i || !title.includes(titles[i]))
 		)!;
 		const page = await ok<SearchPage>(tools, 'search_publications', {
 			query: `  ${target.title!.toUpperCase()} `
