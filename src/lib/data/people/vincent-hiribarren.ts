@@ -92,6 +92,28 @@ export const person: Person = {
 			institutionId: 'kings-college-london',
 			reviewNote:
 				'Attested for the 2026 paper via its explicit link to participant affiliations. The DOI-resolved publisher post dated 2026-03-31 names Vincent Hiribarren with King’s College London in its description of the February 2026 workshop. This directly supports the March 2026 publication; it does not verify 2018 or 2025. The organiser’s public participant biography corroborates this institution in the 2026 workshop context. Do not transfer verification to earlier conference years or infer continuous employment. Affiliation explicitly listed by the 2026 workshop organizer; evidence supports 2026 only, not an open-ended appointment. Evidence is a same-year workshop biography, not this communication’s own program.'
+		},
+		{
+			institution: "King's College London",
+			years: [2027],
+			confidence: 'verified',
+			sources: [
+				{
+					url: 'https://www.frederickmadore.com/publications/dh-ai-african-studies-edited-volume',
+					label: 'Publication record (this site’s data)',
+					quote:
+						'Digital Humanities and Artificial Intelligence in African Studies, ed. Frédérick Madore and Vincent Hiribarren (Bielefeld University Press, forthcoming 2027)'
+				},
+				{
+					url: 'https://www.frederickmadore.com/publications/dh-ai-african-studies-dhasa',
+					label: 'Publication record (this site’s data)',
+					quote:
+						'Special issue of the Journal of the Digital Humanities Association of Southern Africa, ed. Frédérick Madore, Vincent Hiribarren, Emmanuel Ngue Um and Menno van Zaanen (forthcoming 2027)'
+				}
+			],
+			institutionId: 'kings-college-london',
+			reviewNote:
+				'Confirmed by Frédérick Madore, co-editor, on 2026-11-10: same affiliation as in 2026 for the forthcoming 2027 edition(s). Supports 2027 only.'
 		}
 	]
 };

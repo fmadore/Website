@@ -36,6 +36,22 @@ export const person: Person = {
 			institutionId: 'university-of-yaounde-i',
 			reviewNote:
 				'Attested for the 2026 paper via its explicit link to participant affiliations. Affiliation explicitly listed by the 2026 workshop organizer; evidence supports 2026 only, not an open-ended appointment.'
+		},
+		{
+			institution: 'University of Yaoundé I',
+			years: [2027],
+			confidence: 'verified',
+			sources: [
+				{
+					url: 'https://www.frederickmadore.com/publications/dh-ai-african-studies-dhasa',
+					label: 'Publication record (this site’s data)',
+					quote:
+						'Special issue of the Journal of the Digital Humanities Association of Southern Africa, ed. Frédérick Madore, Vincent Hiribarren, Emmanuel Ngue Um and Menno van Zaanen (forthcoming 2027)'
+				}
+			],
+			institutionId: 'university-of-yaounde-i',
+			reviewNote:
+				'Confirmed by Frédérick Madore, co-editor, on 2026-11-10: same affiliation as in 2026 for the forthcoming 2027 edition(s). Supports 2027 only.'
 		}
 	]
 };

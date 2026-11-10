@@ -79,6 +79,21 @@ export const person: Person = {
 			],
 			reviewNote:
 				'Affiliation explicitly listed by the 2026 workshop organizer; evidence supports 2026 only, not an open-ended appointment.'
+		},
+		{
+			institution: 'South African Centre for Digital Language Resources (SADiLaR)',
+			years: [2027],
+			confidence: 'verified',
+			sources: [
+				{
+					url: 'https://www.frederickmadore.com/publications/dh-ai-african-studies-dhasa',
+					label: 'Publication record (this site’s data)',
+					quote:
+						'Special issue of the Journal of the Digital Humanities Association of Southern Africa, ed. Frédérick Madore, Vincent Hiribarren, Emmanuel Ngue Um and Menno van Zaanen (forthcoming 2027)'
+				}
+			],
+			reviewNote:
+				'Confirmed by Frédérick Madore, co-editor, on 2026-11-10: same affiliation as in 2026 for the forthcoming 2027 edition(s). Supports 2027 only.'
 		}
 	]
 };
