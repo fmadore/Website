@@ -418,7 +418,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 	"dh-ai-african-studies-dhasa": {
 		"id": "dh-ai-african-studies-dhasa",
 		"itemType": "publication",
-		"title": "Digital Humanities and Artificial Intelligence in African Studies",
+		"title": "Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices",
 		"authors": [
 			"Frédérick Madore",
 			"Vincent Hiribarren",

@@ -3,7 +3,8 @@ import type { Publication } from '#lib/types/index.ts';
 export const dhAiAfricanStudiesDhasa: Publication = {
 	id: 'dh-ai-african-studies-dhasa',
 	type: 'special-issue',
-	title: 'Digital Humanities and Artificial Intelligence in African Studies',
+	title:
+		'Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices',
 	authors: [
 		'Frédérick Madore',
 		{ name: 'Vincent Hiribarren', personId: 'vincent-hiribarren' },

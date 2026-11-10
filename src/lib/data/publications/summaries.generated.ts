@@ -372,7 +372,7 @@ export const publicationSummaries: PublicationSummary[] = [
 	{
 		"id": "dh-ai-african-studies-dhasa",
 		"type": "special-issue",
-		"title": "Digital Humanities and Artificial Intelligence in African Studies",
+		"title": "Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices",
 		"authors": [
 			"Frédérick Madore",
 			{
