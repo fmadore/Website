@@ -83,6 +83,19 @@ describe('search', () => {
 		]);
 	});
 
+	it('ranks a whole-title phrase above a body that repeats its words', () => {
+		const items = [
+			{
+				id: 'paper',
+				title: 'A position paper',
+				abstract: 'Digital humanities, digital archives and humanities computing in digital form.'
+			},
+			{ id: 'volume', title: 'Digital Humanities' }
+		];
+		const hits = search(items, { fields, weighted: ['title'], query: 'digital  HUMANITIES' }).hits;
+		expect(hits.map((i) => i.id)).toEqual(['volume', 'paper']);
+	});
+
 	it('filters on a scalar field', () => {
 		expect(run({ filters: { type: 'book' } }).hits.map((i) => i.id)).toEqual(['campus-book']);
 	});

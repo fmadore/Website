@@ -415,6 +415,37 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "Prague",
 		"country": "Czech Republic"
 	},
+	"dh-ai-african-studies-dhasa": {
+		"id": "dh-ai-african-studies-dhasa",
+		"itemType": "publication",
+		"title": "Digital Humanities and Artificial Intelligence in African Studies",
+		"authors": [
+			"Frédérick Madore",
+			"Vincent Hiribarren",
+			"Emmanuel Ngue Um",
+			"Menno van Zaanen"
+		],
+		"type": "special-issue",
+		"date": "Forthcoming",
+		"dateISO": "2027",
+		"year": 2027,
+		"journal": "Journal of the Digital Humanities Association of Southern Africa",
+		"publisher": "Digital Humanities Association of Southern Africa"
+	},
+	"dh-ai-african-studies-edited-volume": {
+		"id": "dh-ai-african-studies-edited-volume",
+		"itemType": "publication",
+		"title": "Digital Humanities and Artificial Intelligence in African Studies",
+		"authors": [
+			"Frédérick Madore",
+			"Vincent Hiribarren"
+		],
+		"type": "book",
+		"date": "Forthcoming",
+		"dateISO": "2027",
+		"year": 2027,
+		"publisher": "Bielefeld University Press"
+	},
 	"digital-history-exe": {
 		"id": "digital-history-exe",
 		"itemType": "communication",
@@ -1026,6 +1057,10 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"date": "5 November 2026",
 		"dateISO": "2026-11-05",
 		"year": 2026,
+		"image": "images/communications/BIGSAS-logo.webp",
+		"heroImage": {
+			"src": "images/communications/BIGSAS-logo-hero.webp"
+		},
 		"conference": "Bayreuth International Graduate School of African Studies (BIGSAS)",
 		"location": "University of Bayreuth",
 		"country": "Germany"

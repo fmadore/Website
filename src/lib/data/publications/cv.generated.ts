@@ -184,6 +184,52 @@ export const cvPublications: CvPublication[] = [
 		"url": "https://doi.org/10.1163/1573-3912_ei3_com_27698"
 	},
 	{
+		"id": "dh-ai-african-studies-dhasa",
+		"type": "special-issue",
+		"title": "Digital Humanities and Artificial Intelligence in African Studies",
+		"authors": [
+			"Frédérick Madore",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
+			{
+				"name": "Emmanuel Ngue Um",
+				"personId": "emmanuel-ngue-um"
+			},
+			{
+				"name": "Menno van Zaanen",
+				"personId": "menno-van-zaanen"
+			}
+		],
+		"editors": "Frédérick Madore, Vincent Hiribarren, Emmanuel Ngue Um, Menno van Zaanen",
+		"date": "Forthcoming",
+		"dateISO": "2027",
+		"year": 2027,
+		"journal": "Journal of the Digital Humanities Association of Southern Africa",
+		"publisher": "Digital Humanities Association of Southern Africa"
+	},
+	{
+		"id": "dh-ai-african-studies-edited-volume",
+		"type": "book",
+		"title": "Digital Humanities and Artificial Intelligence in African Studies",
+		"authors": [
+			"Frédérick Madore",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			}
+		],
+		"editors": "Frédérick Madore, Vincent Hiribarren",
+		"date": "Forthcoming",
+		"dateISO": "2027",
+		"year": 2027,
+		"placeOfPublication": "Bielefeld",
+		"publisher": "Bielefeld University Press",
+		"series": "Digital Humanities Research",
+		"isEditedVolume": true
+	},
+	{
 		"id": "exister-contexte-autoritaire-lome-2023",
 		"type": "chapter",
 		"title": "Exister en contexte autoritaire : les associations étudiantes chrétiennes et islamiques à l'Université de Lomé sous Gnassingbé Eyadéma, 1970–2005",

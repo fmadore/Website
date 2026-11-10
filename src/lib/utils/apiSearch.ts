@@ -87,9 +87,12 @@ export interface SearchResult {
 }
 
 /**
- * Filter and rank. Items are scored by how often the query terms occur, with
- * hits in the weighted fields counted twice; ties keep the dataset's own order,
- * which is already newest-first.
+ * Filter and rank. When the query has more than one term, items whose weighted
+ * fields hold the whole query as a phrase come first: someone who types a title
+ * wants that work, not a longer record whose abstract repeats its words. Within
+ * each tier, items are scored by how often the query terms occur, with hits in
+ * the weighted fields counted twice; ties keep the dataset's own order, which is
+ * already newest-first.
  */
 export function search(items: Item[], options: SearchOptions): SearchResult {
 	const {
@@ -104,8 +107,9 @@ export function search(items: Item[], options: SearchOptions): SearchResult {
 		offset = 0
 	} = options;
 	const terms = searchTerms(query ?? '');
+	const phrase = terms.length > 1 ? terms.join(' ') : '';
 
-	const scored: Array<{ item: Item; score: number; index: number }> = [];
+	const scored: Array<{ item: Item; phrase: boolean; score: number; index: number }> = [];
 
 	items.forEach((item, index) => {
 		if (typeof item.year === 'number') {
@@ -125,7 +129,7 @@ export function search(items: Item[], options: SearchOptions): SearchResult {
 		}
 
 		if (terms.length === 0) {
-			scored.push({ item, score: 0, index });
+			scored.push({ item, phrase: false, score: 0, index });
 			return;
 		}
 
@@ -138,10 +142,13 @@ export function search(items: Item[], options: SearchOptions): SearchResult {
 			if (inBody === 0) return; // every term must appear
 			score += inBody + countOccurrences(title, term);
 		}
-		scored.push({ item, score, index });
+		const inTitle = phrase !== '' && title.replace(/\s+/g, ' ').includes(phrase);
+		scored.push({ item, phrase: inTitle, score, index });
 	});
 
-	scored.sort((a, b) => b.score - a.score || a.index - b.index);
+	scored.sort(
+		(a, b) => Number(b.phrase) - Number(a.phrase) || b.score - a.score || a.index - b.index
+	);
 	return {
 		hits: scored.slice(offset, offset + limit).map((entry) => entry.item),
 		total: scored.length

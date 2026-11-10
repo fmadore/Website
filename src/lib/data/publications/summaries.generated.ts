@@ -370,6 +370,75 @@ export const publicationSummaries: PublicationSummary[] = [
 		"sourceDirType": "encyclopedia"
 	},
 	{
+		"id": "dh-ai-african-studies-dhasa",
+		"type": "special-issue",
+		"title": "Digital Humanities and Artificial Intelligence in African Studies",
+		"authors": [
+			"Frédérick Madore",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			},
+			{
+				"name": "Emmanuel Ngue Um",
+				"personId": "emmanuel-ngue-um"
+			},
+			{
+				"name": "Menno van Zaanen",
+				"personId": "menno-van-zaanen"
+			}
+		],
+		"editors": "Frédérick Madore, Vincent Hiribarren, Emmanuel Ngue Um, Menno van Zaanen",
+		"date": "Forthcoming",
+		"dateISO": "2027",
+		"year": 2027,
+		"journal": "Journal of the Digital Humanities Association of Southern Africa",
+		"publisher": "Digital Humanities Association of Southern Africa",
+		"publisherLocation": "South Africa",
+		"language": "English, French",
+		"tags": [
+			"Digital Humanities",
+			"Artificial Intelligence",
+			"African Studies"
+		],
+		"isEditedWork": true,
+		"project": "Digital Humanities and AI in African Studies",
+		"citedByCount": 0,
+		"tocAuthors": [],
+		"sourceDirType": "specialIssues"
+	},
+	{
+		"id": "dh-ai-african-studies-edited-volume",
+		"type": "book",
+		"title": "Digital Humanities and Artificial Intelligence in African Studies",
+		"authors": [
+			"Frédérick Madore",
+			{
+				"name": "Vincent Hiribarren",
+				"personId": "vincent-hiribarren"
+			}
+		],
+		"editors": "Frédérick Madore, Vincent Hiribarren",
+		"date": "Forthcoming",
+		"dateISO": "2027",
+		"year": 2027,
+		"placeOfPublication": "Bielefeld",
+		"publisher": "Bielefeld University Press",
+		"publisherLocation": "Germany",
+		"series": "Digital Humanities Research",
+		"language": "English",
+		"tags": [
+			"Digital Humanities",
+			"Artificial Intelligence",
+			"African Studies"
+		],
+		"isEditedVolume": true,
+		"project": "Digital Humanities and AI in African Studies",
+		"citedByCount": 0,
+		"tocAuthors": [],
+		"sourceDirType": "books"
+	},
+	{
 		"id": "exister-contexte-autoritaire-lome-2023",
 		"wikidataId": "Q117818951",
 		"type": "chapter",
