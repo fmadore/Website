@@ -594,7 +594,10 @@ export const cvCommunications: CvCommunication[] = [
 		"title": "Soundscapes of Digital History - Frédérick Madore",
 		"authors": [
 			"Frédérick Madore",
-			"Aurel Daugs"
+			{
+				"name": "Aurel Daugs",
+				"personId": "aurel-daugs"
+			}
 		],
 		"date": "Forthcoming",
 		"dateISO": "2026",

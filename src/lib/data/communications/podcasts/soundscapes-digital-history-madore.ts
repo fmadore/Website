@@ -3,7 +3,7 @@ import type { Communication } from '#lib/types/communication.ts';
 export const soundscapesDigitalHistoryMadore: Communication = {
 	id: 'soundscapes-digital-history-madore',
 	title: 'Soundscapes of Digital History - Frédérick Madore',
-	authors: ['Frédérick Madore', 'Aurel Daugs'],
+	authors: ['Frédérick Madore', { name: 'Aurel Daugs', personId: 'aurel-daugs' }],
 	date: 'Forthcoming',
 	dateISO: '2026',
 	year: 2026,
