@@ -67,7 +67,11 @@ const text = (result) =>
 const publications = JSON.parse(
 	await readFile(new URL('api/publications.json', `file://${buildDir}`), 'utf8')
 );
-const book = publications.items.find((item) => item.type === 'book');
+// The newest book that has an abstract: a forthcoming volume is listed first
+// and may have none yet, which would fail the abstract check for want of data.
+const book = publications.items.find(
+	(item) => item.type === 'book' && (item.abstract ?? '').length > 200
+);
 
 async function exercise(entry) {
 	const client = new Client(
