@@ -87,11 +87,14 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 		const el = node as Element;
 
 		// Skip elements marked for PDF exclusion, screen-reader-only text and
-		// aria-hidden glyphs: none of them is part of the printed record.
+		// aria-hidden glyphs: none of them is part of the printed record. The
+		// exception is `data-pdf-keep`: a separator dot is hidden from speech
+		// and still belongs on paper, where without it a row of addresses runs
+		// together as one string.
 		if (
 			el.hasAttribute('data-pdf-hide') ||
 			el.classList.contains('sr-only') ||
-			el.getAttribute('aria-hidden') === 'true'
+			(el.getAttribute('aria-hidden') === 'true' && !el.hasAttribute('data-pdf-keep'))
 		)
 			return fragments;
 
@@ -103,6 +106,11 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 		if (tagName === 'STRONG' || tagName === 'B') style = 'bold';
 		// An entry's title (`.cv-title`, medium weight on screen) prints bold.
 		if (el.classList.contains('cv-title')) style = 'bold';
+		// An address row's key ("Site", "Code") is bold caps on screen, where the
+		// capitals come from CSS and so are not in the text.
+		if (el.classList.contains('dh-links-key')) {
+			return [{ text: (el.textContent || '').replace(/\s+/g, ' ').toUpperCase(), style: 'bold' }];
+		}
 
 		// Handle links
 		if (tagName === 'A') {
@@ -114,9 +122,13 @@ export const extractRichText = (node: Element | ChildNode): TextFragment[] => {
 			// Honor the title class on the <a> itself (grant and award titles
 			// render as <a class="cv-title">). Without this, linked entries
 			// render in regular weight while non-linked siblings bold.
+			// A reviewing journal (`a.review-link`) is italic by CSS on screen, so
+			// the italic that marks it as a title has to be restated here.
 			const linkStyle: TextFragment['style'] = el.classList.contains('cv-title')
 				? 'bold'
-				: 'normal';
+				: el.classList.contains('review-link')
+					? 'italic'
+					: 'normal';
 
 			// Handle special links logic (similar to originalPdfGenerator)
 			if (!linkText || el.classList.contains('doi-link')) {
@@ -178,6 +190,14 @@ export const trimFragments = (fragments: TextFragment[]): TextFragment[] => {
 
 	// Clone to avoid mutating original source if implicitly used elsewhere
 	const result = fragments.map((f) => ({ ...f }));
+
+	// One space between fragments, as the browser sets them. Each fragment has
+	// its own whitespace collapsed, but markup such as `(eds.), <em>…` yields
+	// neighbouring text nodes that each end or begin with a space, and the two
+	// were both drawn: "(eds.),  Title".
+	for (let i = 1; i < result.length; i++) {
+		if (/\s$/.test(result[i - 1]!.text)) result[i]!.text = result[i]!.text.trimStart();
+	}
 
 	// Trim Start
 	while (result.length > 0) {

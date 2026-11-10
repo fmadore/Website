@@ -206,11 +206,11 @@ export class CvPdfLayout {
 	 */
 	addSection(title: string): void {
 		const { pdf } = this;
-		// Check if we need a new page (need space for heading + some content).
-		// 60 prevents headers from appearing alone at the bottom of the page:
-		// section top spacing + rule + header + section bottom spacing
-		// + at least one content item.
-		this.checkPageBreak(60);
+		// Keep the head with what it opens: section top spacing + rule + head +
+		// section bottom spacing (19mm), a subsection label (7.5mm) and one
+		// three-line row (18mm). It reserved 60mm, a fifth of the sheet, and
+		// sent a section to the next page with room for five rows under it.
+		this.checkPageBreak(45);
 		this.y += SPACING.SECTION_TOP;
 
 		this.rule(RULE.SECTION, COLORS.PRIMARY);
@@ -238,15 +238,17 @@ export class CvPdfLayout {
 	 */
 	addSubsectionLabel(label: string): void {
 		const { pdf } = this;
-		// 50 prevents subheaders from appearing alone at the bottom.
-		this.checkPageBreak(50);
+		// Keep the label with its first row: the label (7.5mm) and one four-line
+		// row (22mm). It reserved 50mm, which ended most pages of Publications
+		// a quarter empty.
+		this.checkPageBreak(30);
 		this.y += SPACING.SUBSECTION_TOP;
 
 		pdf.setFontSize(FONT_SIZE.SUBSECTION);
 		pdf.setFont(this.voices.MONO, 'bold');
 		pdf.setTextColor(...COLORS.TEXT_LIGHT);
 		pdf.setCharSpace(LETTER_SPACING.LABEL);
-		pdf.text(label.toUpperCase(), this.margin + 2, this.y);
+		pdf.text(label.toUpperCase(), this.margin, this.y);
 		pdf.setCharSpace(LETTER_SPACING.NONE);
 		this.y += SPACING.SUBSECTION_BOTTOM;
 		pdf.setTextColor(...COLORS.TEXT);
@@ -317,8 +319,15 @@ export class CvPdfLayout {
 
 	/**
 	 * Render a ledger entry (year column + rich-text content with optional
-	 * italicised detail lines) — the shared shape between subsection entries
-	 * and top-level entries.
+	 * detail lines) — the shared shape between subsection entries and
+	 * top-level entries.
+	 *
+	 * A detail line is cast as the screen casts it. A `.cv-detail` is the
+	 * entry's own prose a step down, in ink; a `.cv-note` is the same in muted
+	 * ink; a `.dh-links` address row is apparatus and takes the DATA voice,
+	 * with its key in bold muted caps. All three used to be forced into muted
+	 * serif italic, which put addresses in the prose voice and cost every
+	 * journal and dissertation title the italic that marks it as a title.
 	 */
 	renderLedgerEntry(
 		year: string,
@@ -329,22 +338,30 @@ export class CvPdfLayout {
 		const { pdf, contentWidth } = this;
 		// Get main text and nested detail lines separately
 		const clone = contentDiv.cloneNode(true) as HTMLElement;
-		// Extract <p> and direct child <div> as detail lines
-		const nestedParagraphs = clone.querySelectorAll('p');
-		const nestedDivs = clone.querySelectorAll(':scope > div');
 
-		// Store detail line fragments
-		const paragraphFragments: TextFragment[][] = [];
-		nestedParagraphs.forEach((p) => {
-			const fragments = trimFragments(extractRichText(p));
-			if (fragments.length > 0) paragraphFragments.push(fragments);
-			p.remove();
+		// Detail lines, in document order: paragraphs, direct child blocks and
+		// the CV's own detail and note classes (a note may be a `<span>`).
+		const details: { fragments: TextFragment[]; mono: boolean; light: boolean }[] = [];
+		clone.querySelectorAll('p, :scope > div, .cv-detail, .cv-note').forEach((el) => {
+			// Already taken with an enclosing detail line.
+			if (!clone.contains(el)) return;
+			const mono = el.classList.contains('dh-links');
+			const fragments = trimFragments(extractRichText(el));
+			if (mono) {
+				// The mono face ships in two weights and no italic.
+				for (const f of fragments) {
+					if (f.style === 'italic') f.style = 'normal';
+					else if (f.style === 'bolditalic') f.style = 'bold';
+				}
+			}
+			if (fragments.length > 0) {
+				details.push({ fragments, mono, light: el.classList.contains('cv-note') });
+			}
+			el.remove();
 		});
-		nestedDivs.forEach((div) => {
-			const fragments = trimFragments(extractRichText(div));
-			if (fragments.length > 0) paragraphFragments.push(fragments);
-			div.remove();
-		});
+		const detailFont = (d: { mono: boolean }) => (d.mono ? this.voices.MONO : this.voices.SERIF);
+		const detailSize = (d: { mono: boolean }) =>
+			d.mono ? FONT_SIZE.ADDRESS : FONT_SIZE.BODY_SMALL;
 
 		// Get main fragments
 		const mainFragments = trimFragments(extractRichText(clone));
@@ -352,31 +369,33 @@ export class CvPdfLayout {
 		// Calculate height
 		let estimatedHeight = 0;
 		if (mainFragments.length > 0) {
-			estimatedHeight +=
-				measureRichTextHeight(
-					pdf,
-					mainFragments,
-					contentWidth - currentColumnWidth,
-					FONT_SIZE.BODY,
-					SPACING.LINE_HEIGHT_TIGHT
-				) + SPACING.LINE_HEIGHT;
+			estimatedHeight += measureRichTextHeight(
+				pdf,
+				mainFragments,
+				contentWidth - currentColumnWidth,
+				FONT_SIZE.BODY,
+				SPACING.LINE_HEIGHT_TIGHT
+			);
 		}
 
 		// Add height for nested paragraphs
-		paragraphFragments.forEach((frags) => {
+		details.forEach((detail) => {
 			estimatedHeight +=
 				measureRichTextHeight(
 					pdf,
-					frags,
+					detail.fragments,
 					contentWidth - currentColumnWidth,
-					FONT_SIZE.BODY_SMALL,
-					SPACING.LINE_HEIGHT_TIGHT
-				) + SPACING.LINE_HEIGHT_TIGHT;
+					detailSize(detail),
+					SPACING.LINE_HEIGHT_TIGHT,
+					detailFont(detail)
+				) + SPACING.PARAGRAPH_GAP;
 		});
 
 		// The hairline and the space between it and the row's first baseline are
-		// part of the row for page-break purposes.
-		estimatedHeight += SPACING.ENTRY_GAP + SPACING.ENTRY_PAD_TOP + SPACING.LINE_HEIGHT_TIGHT;
+		// part of the row for page-break purposes. The estimate is the row's real
+		// advance and no more: it used to add a spare line per block, so a row
+		// that fitted was sent to the next page and each sheet closed short.
+		estimatedHeight += SPACING.ENTRY_PAD_TOP + SPACING.LINE_HEIGHT_TIGHT;
 		this.checkPageBreak(estimatedHeight);
 
 		// The row's own hairline, drawn above it exactly as `.cv-entry`'s
@@ -390,13 +409,8 @@ export class CvPdfLayout {
 		// Year/Category column (wraps a multi-year key; shrinks only an
 		// unbreakable word like "Forthcoming"). Its last baseline holds the row
 		// open when the key runs longer than the content beside it.
-		const keyBottom = this.drawYearLabel(
-			year,
-			this.margin + 2,
-			this.y,
-			currentColumnWidth,
-			isCurrent
-		);
+		// The key hangs flush with the rules and heads, as it does on screen.
+		const keyBottom = this.drawYearLabel(year, this.margin, this.y, currentColumnWidth, isCurrent);
 
 		// Render main text
 		if (mainFragments.length > 0) {
@@ -412,31 +426,32 @@ export class CvPdfLayout {
 			// Tighter gap when detail lines follow. The trailing line that used
 			// to close a detail-free entry now lives above the next row's
 			// hairline instead, so the inter-row interval is unchanged.
-			this.y += paragraphFragments.length > 0 ? SPACING.PARAGRAPH_GAP : 0;
+			this.y += details.length > 0 ? SPACING.PARAGRAPH_GAP : 0;
 		}
 
-		// Render detail lines (reviews, amounts, co-applicants, etc.)
-		paragraphFragments.forEach((frags, idx) => {
-			pdf.setTextColor(...COLORS.TEXT_LIGHT);
-			frags.forEach((f: TextFragment) => {
-				if (f.style === 'normal') f.style = 'italic';
-				else if (f.style === 'bold') f.style = 'bolditalic';
-			});
+		// Render detail lines (reviews, amounts, co-applicants, addresses…)
+		details.forEach((detail, idx) => {
+			const colour = detail.light ? COLORS.TEXT_LIGHT : COLORS.TEXT;
+			pdf.setTextColor(...colour);
 
 			this.y = renderRichText(
 				pdf,
-				frags,
+				detail.fragments,
 				this.margin + currentColumnWidth,
 				this.y,
 				contentWidth - currentColumnWidth,
-				FONT_SIZE.BODY_SMALL,
-				SPACING.LINE_HEIGHT_TIGHT
+				detailSize(detail),
+				SPACING.LINE_HEIGHT_TIGHT,
+				detailFont(detail),
+				// An address row's key (SITE, CODE, DATA) is muted, as on screen.
+				detail.mono ? COLORS.TEXT_LIGHT : undefined,
+				[...colour]
 			);
 
 			pdf.setTextColor(...COLORS.TEXT);
 			// Tight gap between detail lines; the last one closes on the next
 			// row's hairline.
-			this.y += idx < paragraphFragments.length - 1 ? SPACING.PARAGRAPH_GAP : 0;
+			this.y += idx < details.length - 1 ? SPACING.PARAGRAPH_GAP : 0;
 		});
 
 		// A wrapped key may run past a one-line content column; the row ends

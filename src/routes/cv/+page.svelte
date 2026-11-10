@@ -227,6 +227,14 @@
 		border-bottom: var(--rule-hairline) solid var(--color-hairline);
 	}
 
+	/* One boundary, one mark: the label closes itself with a hairline and every
+	 * ledger row opens with one, so each subsection began with two 1px rules
+	 * four pixels apart. The label's rule is the boundary; the first row gives
+	 * its own up (the same pairing `.contents-ledger` takes in ink-signal.css). */
+	:global(#cv-content h4 + .ledger > .ledger-row:first-child) {
+		border-top: 0;
+	}
+
 	/*
 	 * The CV's own text vocabulary, shared by its section components the way the
 	 * heading rules above are. An entry names its work (`.cv-title`), qualifies it
@@ -345,6 +353,11 @@
 
 		:global(#cv-content .cv-entry) {
 			border-top: var(--rule-hairline) solid var(--color-hairline) !important;
+		}
+
+		/* The subsection label's own rule is the boundary, as on screen. */
+		:global(#cv-content h4 + .ledger > .cv-entry:first-child) {
+			border-top: 0 !important;
 		}
 
 		:global(#cv-content h4) {

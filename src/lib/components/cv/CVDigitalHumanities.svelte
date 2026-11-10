@@ -50,7 +50,8 @@
 					<!-- Non-breaking spaces, not plain ones: Svelte trims literal whitespace
 					     at element edges, and the PDF exporter reads these text nodes, so
 					     without them the export glues the dot to the preceding address. -->
-					{#if i > 0}<span class="dh-links-sep" aria-hidden="true">&nbsp;·&nbsp;</span>{/if}
+					{#if i > 0}<span class="dh-links-sep" aria-hidden="true" data-pdf-keep>&nbsp;·&nbsp;</span
+						>{/if}
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
 					<a href={link.url} target="_blank" rel="noopener noreferrer" class:link-url={!link.label}
 						>{projectLinkText(link)}<span class="sr-only"> (opens in new tab)</span></a
@@ -82,11 +83,10 @@
 </CVSection>
 
 <style>
-	/* A project's reviews, indented under its addresses. */
+	/* A project's reviews, under its addresses and on the same left edge and
+	 * measure as everything else in the row. */
 	.dh-link-list {
 		margin-top: var(--space-xs);
-		margin-left: var(--space-md);
-		max-width: var(--measure-prose);
 		font-size: var(--font-size-sm);
 	}
 

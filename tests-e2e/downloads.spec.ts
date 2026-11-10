@@ -69,6 +69,11 @@ for (const fontMode of ['loaded', 'failed', 'stalled'] as const) {
 			expect(exported).toContain('Religious Activism');
 			expect(exported).toMatch(/Teaching/i);
 			expect(exported).toContain('2026');
+			// A project's address rows keep their caps keys and the dots between
+			// addresses, both of which live outside the text on screen (CSS
+			// capitals, an `aria-hidden` separator).
+			expect(exported).toMatch(/\bSITE\b/);
+			expect(exported).toMatch(/\bCODE \S+ · \S+/);
 			expect(urls.some((url) => url.includes('frederickmadore.com'))).toBe(true);
 		} finally {
 			await loadingTask.destroy();

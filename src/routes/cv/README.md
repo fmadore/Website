@@ -49,8 +49,9 @@ src/lib/utils/
   so these hooks are load-bearing and must not be renamed casually:
   `#cv-content`, `section > h3`, `h4`, `div[data-cv-ledger]`, `.cv-entry`,
   `.cv-entry-year`, `.cv-entry-year--current` (prints the key in pine),
-  `.cv-entry--wide` (widens the export's key gutter), `.doi-link`, and
-  `data-pdf-hide` on anything the export should skip.
+  `.cv-entry--wide` (widens the export's key gutter), `.doi-link`,
+  `data-pdf-hide` on anything the export should skip, and `data-pdf-keep` on
+  an `aria-hidden` glyph the export should still print (a separator dot).
 - **Print/PDF**: print styles are centralized in `+page.svelte` via
   `:global()`; the downloadable PDF is generated separately by
   `pdfCvGenerator.ts` (not a print of the page). Both are the same document

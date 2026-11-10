@@ -74,8 +74,12 @@
 										pub.publisher
 									)}{/if}.
 							{:else if pub.type === 'blogpost'}
+								<!-- Guard on the formatted date, not on `dateISO`: a forthcoming
+								     post carries a date that formats to nothing, which printed
+								     "The Digital Orientalist, ." -->
+								{@const blogDate = formatBlogDate(pub.dateISO)}
 								{quoteTitle(pub.title)}{#if pub.publisher}. <em>{typesetQuotes(pub.publisher)}</em
-									>{/if}{#if pub.dateISO}, {formatBlogDate(pub.dateISO)}{/if}.
+									>{/if}{#if blogDate}, {blogDate}{/if}.
 							{:else if pub.type === 'conference-proceedings'}
 								In <em>{typesetQuotes(pub.proceedingsTitle)}</em>.
 							{:else}

@@ -105,7 +105,8 @@ export async function generateCvPdf(jsPDF: JsPdfConstructor): Promise<void> {
 	pdf.setCharSpace(LETTER_SPACING.EYEBROW);
 	pdf.text('CURRICULUM VITAE', margin, layout.y);
 	pdf.setCharSpace(LETTER_SPACING.NONE);
-	layout.y += 7;
+	// The name's caps stand 6mm above its baseline; at 7mm the label sat on them.
+	layout.y += 9.5;
 
 	// Name — large display headline, deep ink (the subject of the page)
 	pdf.setFontSize(FONT_SIZE.NAME);

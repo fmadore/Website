@@ -37,6 +37,7 @@ export const FONT_SIZE = {
 	SUBSECTION: 8, // Subsection labels (BOOKS, ARTICLES…) — mono uppercase
 	BODY: 9.5, // Body text — serif, comfortable reading
 	BODY_SMALL: 9, // Secondary body text (reviews, amounts…)
+	ADDRESS: 7.5, // Project address rows (SITE, CODE, DATA) — data voice (mono)
 	YEAR: 8.5, // Year / date keys — data voice (mono)
 	PAGE_NUMBER: 8, // Page numbers
 	FOOTER: 7.5 // Footer text
@@ -113,5 +114,7 @@ export const COLORS = {
 /** The ledger's hanging key column (mm). Two widths, matching the two the web
  * CV hangs: a date key (`--ledger-key-w` at the tight density) and the wide
  * classification key `.cv-entry--wide` uses for a skills category. */
-export const yearColumnWidth = 18 as const; // Compact date key
+// 22mm seats the longest date keys the sheet hangs ("FORTHCOMING",
+// "2026–PRESENT") at full size; at 18 they shrank to 6pt and ran into the entry.
+export const yearColumnWidth = 22 as const; // Date key
 export const wideColumnWidth = 55 as const; // Classification key

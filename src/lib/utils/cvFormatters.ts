@@ -206,18 +206,21 @@ export function groupPublicationsByType<T extends Pick<Publication, 'type'>>(pub
 		(pub) => pub.type !== 'phd-dissertation' && pub.type !== 'masters-thesis'
 	);
 
-	// Define the desired order of publication types
+	// The order the CV prints them in: peer-reviewed venues first, then the
+	// grey literature. Proceedings sit with the chapters they are the
+	// computer-science counterpart of (a CIKM or JCDL paper is refereed, full
+	// length and the field's venue of record), not after the blog posts.
 	const publicationTypeOrder: Publication['type'][] = [
 		'book',
 		'special-issue',
 		'article',
 		'chapter',
+		'conference-proceedings',
 		'working-paper',
 		'report',
 		'encyclopedia',
 		'bulletin-article',
-		'blogpost',
-		'conference-proceedings'
+		'blogpost'
 	];
 
 	// Group publications by type
