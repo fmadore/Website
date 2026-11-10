@@ -164,11 +164,17 @@ test('a talk that has happened since the build leaves the upcoming block after h
 	// Prerendered with the build's date, the page carries an "Upcoming" block
 	// while any talk lies ahead of the build. A reader whose today is past every
 	// talk must see it fold back into the record: no block, and the newest talk
-	// heading the chronological list.
+	// heading the chronological list. An undated "Forthcoming" entry has no date
+	// to pass, so it keeps the head of the list (sortUtils: forthcoming first,
+	// by title) and is what the reader sees first when one exists.
 	const { items } = (await (await request.get('/api/communications.json')).json()) as {
-		items: { title: string; dateISO?: string }[];
+		items: { title: string; date?: string; dateISO?: string }[];
 	};
-	const newest = items.reduce((a, b) => ((b.dateISO ?? '') > (a.dateISO ?? '') ? b : a));
+	const forthcoming = items
+		.filter((item) => /^(forthcoming|à paraître|a paraitre)$/i.test((item.date ?? '').trim()))
+		.sort((a, b) => a.title.localeCompare(b.title));
+	const newest =
+		forthcoming[0] ?? items.reduce((a, b) => ((b.dateISO ?? '') > (a.dateISO ?? '') ? b : a));
 	const plain = (text: string) => text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"');
 
 	await page.clock.setFixedTime(new Date('2100-01-01T12:00:00'));
