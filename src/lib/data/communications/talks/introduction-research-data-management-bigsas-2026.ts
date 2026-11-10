@@ -32,6 +32,11 @@ export const talkIntroductionResearchDataManagementBigsas2026: Communication = {
 		'Digital Research Environment',
 		'Training'
 	],
+	image: 'images/communications/BIGSAS-logo.webp',
+	heroImage: {
+		src: 'images/communications/BIGSAS-logo-hero.webp',
+		alt: 'Logo of the Bayreuth International Graduate School of African Studies (BIGSAS): a stylised eye over a yellow and ochre field, with “BIGSAS” in large capitals and the school’s full name beneath.'
+	},
 	coordinates: {
 		latitude: 49.9427,
 		longitude: 11.5674

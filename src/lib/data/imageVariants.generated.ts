@@ -42,6 +42,8 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'communications/ASA-Logo.svg': [303, 176],
 	'communications/associations-chretiennes-islamiques-campus-hero.webp': [900, 1200],
 	'communications/associations-chretiennes-islamiques-campus.webp': [600, 800],
+	'communications/BIGSAS-logo-hero.webp': [900, 900],
+	'communications/BIGSAS-logo.webp': [600, 600],
 	'communications/c2dh-hero.webp': [1280, 661],
 	'communications/c2dh.webp': [800, 413],
 	'communications/CAAS-logo-hero.webp': [900, 900],
