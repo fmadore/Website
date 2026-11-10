@@ -2212,6 +2212,22 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "Stellenbosch Institute for Advanced Study (STIAS), Stellenbosch",
 		"country": "South Africa"
 	},
+	"soundscapes-digital-history-madore": {
+		"id": "soundscapes-digital-history-madore",
+		"itemType": "communication",
+		"title": "Soundscapes of Digital History - Frédérick Madore",
+		"authors": [
+			"Frédérick Madore",
+			"Aurel Daugs"
+		],
+		"type": "podcast",
+		"date": "Forthcoming",
+		"dateISO": "2026",
+		"year": 2026,
+		"conference": "Soundscapes of Digital History",
+		"location": "H-Soz-Kult",
+		"country": "Germany"
+	},
 	"sphere-publique-musulmane": {
 		"id": "sphere-publique-musulmane",
 		"itemType": "publication",

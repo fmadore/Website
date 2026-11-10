@@ -590,6 +590,20 @@ export const cvCommunications: CvCommunication[] = [
 		"url": "https://fmadore.github.io/stias-dh-ai-workshop-2026/"
 	},
 	{
+		"id": "soundscapes-digital-history-madore",
+		"title": "Soundscapes of Digital History - Frédérick Madore",
+		"authors": [
+			"Frédérick Madore",
+			"Aurel Daugs"
+		],
+		"date": "Forthcoming",
+		"dateISO": "2026",
+		"conference": "Soundscapes of Digital History",
+		"location": "H-Soz-Kult",
+		"type": "podcast",
+		"url": "https://www.hsozkult.de/debate/id/fddebate-157316"
+	},
+	{
 		"id": "zmo-kitchen-talks-ai-islamic-african-studies",
 		"title": "Artificial Intelligence (AI) in African and Islamic Studies",
 		"authors": [
