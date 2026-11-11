@@ -1,5 +1,25 @@
 import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 
+// The works Wikidata files under Islam in each of the collection's six
+// countries (main subject, P921), opened and run in QLever. QLever rather than
+// the Wikidata Query Service: since the 2026 graph split, scholarly articles
+// sit outside the main graph, and QLever indexes both. It replaces the Scholia
+// topic profiles, whose panels no longer load.
+const WIKIDATA_WORKS_QUERY = `# Works on Islam in the six countries of the Islam West Africa Collection
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT ?topicLabel ?work ?title ?year WHERE {
+  VALUES ?topic { wd:Q3155361 wd:Q3081878 wd:Q4119820 wd:Q3087639 wd:Q2637700 wd:Q522809 }
+  ?work wdt:P921 ?topic .
+  ?topic rdfs:label ?topicLabel FILTER(LANG(?topicLabel) = "en")
+  OPTIONAL { ?work wdt:P1476 ?title }
+  OPTIONAL { ?work wdt:P577 ?date BIND(YEAR(?date) AS ?year) }
+}
+ORDER BY ?topicLabel DESC(?year)
+`;
+const wikidataWorksQueryUrl = `https://qlever.dev/wikidata/?query=${encodeURIComponent(WIKIDATA_WORKS_QUERY)}&exec=true`;
+
 export const iwac: DigitalHumanitiesProject = {
 	id: 'iwac',
 	title: 'Islam West Africa Collection',
@@ -41,6 +61,10 @@ export const iwac: DigitalHumanitiesProject = {
 		<h2>The collection as a dataset</h2>
 		<p>Omeka S is built for browsing a collection, not for computing over one. A Python pipeline therefore republishes IWAC on <a href="https://huggingface.co/datasets/fmadore/islam-west-africa-collection" target="_blank" rel="noopener noreferrer">Hugging Face<span class="sr-only"> (opens in new tab)</span></a> as seven citable tables, each loadable in a single line of code. They also carry what the archive itself does not: embeddings that capture meaning, topics, word counts, Islamic-calendar dates and the AI models' readings of tone. The dashboards read these same columns, so a figure on the site and a figure computed by an outside researcher rest on the same numbers.</p>
 		<p>Rights vary item by item, so the public dataset withholds the full text wherever the source is restricted. That leaves the text of a little under half the newspaper articles and most Islamic publications, while the computed columns are released for every public item. What is open tends to follow publisher and period, so counts from the dataset describe what can be shared rather than everything the collection holds.</p>
+
+		<h2>The bibliography on Wikidata</h2>
+		<p>Since 2023, in the spirit of open science and the <a href="https://meta.wikimedia.org/wiki/WikiCite" target="_blank" rel="noopener noreferrer">WikiCite<span class="sr-only"> (opens in new tab)</span></a> initiative, I have been publishing the collection's bibliography on <a href="https://www.wikidata.org/" target="_blank" rel="noopener noreferrer">Wikidata<span class="sr-only"> (opens in new tab)</span></a>, the free knowledge base behind Wikipedia. Of its 867 references, 846 now have a Wikidata item, and each IWAC record links to it.</p>
+		<p>There the references join a shared web of linked data, in which their authors, journals, publishers and subjects connect to everything else in the knowledge base. The bibliography can be found and reused beyond the archive, and asked questions a printed list cannot answer: who writes about Islam in Niger, with whom, and in which journals. A <a href="${wikidataWorksQueryUrl}" target="_blank" rel="noopener noreferrer">ready-made query<span class="sr-only"> (opens in new tab)</span></a> lists the works Wikidata files under Islam in each of the collection's six countries, and can be edited to ask others.</p>
 	`,
 	imageUrl: `/images/digital-humanities/IWAC.webp`,
 	featured: true,
@@ -64,7 +88,8 @@ export const iwac: DigitalHumanitiesProject = {
 			label: 'IWAC-Hugging-Face',
 			type: 'code'
 		},
-		{ url: 'https://huggingface.co/datasets/fmadore/islam-west-africa-collection', type: 'data' }
+		{ url: 'https://huggingface.co/datasets/fmadore/islam-west-africa-collection', type: 'data' },
+		{ url: wikidataWorksQueryUrl, label: 'Wikidata query', type: 'data' }
 	],
 	reviews: [
 		{
@@ -89,6 +114,9 @@ export const iwac: DigitalHumanitiesProject = {
 		'OpenRefine',
 		'Metadata Standards',
 		'Linked Data',
+		'Wikidata',
+		'WikiCite',
+		'SPARQL',
 		'IIIF',
 		'Docker',
 		'Linux',

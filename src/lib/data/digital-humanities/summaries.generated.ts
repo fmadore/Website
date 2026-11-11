@@ -370,62 +370,6 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		]
 	},
 	{
-		"id": "iwac-bibliographic-data-wikidata",
-		"title": "IWAC Bibliographic Data on Wikidata",
-		"years": "2023-",
-		"shortDescription": "The bibliography of the Islam West Africa Collection on Wikidata: nearly all of its 867 references, open to SPARQL queries and drawn as automatic Scholia profiles of the field.",
-		"imageUrl": "/images/digital-humanities/iwac-bibliographic-data-wikidata.svg",
-		"order": 8,
-		"links": [
-			{
-				"url": "https://qlever.scholia.wiki/topic/Q3155361",
-				"label": "Islam in Benin",
-				"type": "data"
-			},
-			{
-				"url": "https://qlever.scholia.wiki/topic/Q3081878",
-				"label": "Islam in Burkina Faso",
-				"type": "data"
-			},
-			{
-				"url": "https://qlever.scholia.wiki/topic/Q4119820",
-				"label": "Islam in Côte d'Ivoire",
-				"type": "data"
-			},
-			{
-				"url": "https://qlever.scholia.wiki/topic/Q3087639",
-				"label": "Islam in Niger",
-				"type": "data"
-			},
-			{
-				"url": "https://qlever.scholia.wiki/topic/Q522809",
-				"label": "Islam in Togo",
-				"type": "data"
-			}
-		],
-		"skills": [
-			"Wikidata",
-			"WikiCite",
-			"OpenRefine",
-			"Scholia",
-			"SPARQL",
-			"Linked Data",
-			"Metadata Standards"
-		],
-		"seoKeywords": [
-			"Wikidata",
-			"WikiCite",
-			"Scholia",
-			"SPARQL",
-			"linked open data",
-			"bibliography",
-			"open science",
-			"Islam West Africa",
-			"IWAC",
-			"digital humanities"
-		]
-	},
-	{
 		"id": "iwac-mcp-server",
 		"title": "IWAC MCP Server",
 		"years": "2026-",
@@ -558,6 +502,11 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			{
 				"url": "https://huggingface.co/datasets/fmadore/islam-west-africa-collection",
 				"type": "data"
+			},
+			{
+				"url": "https://qlever.dev/wikidata/?query=%23%20Works%20on%20Islam%20in%20the%20six%20countries%20of%20the%20Islam%20West%20Africa%20Collection%0APREFIX%20wd%3A%20%3Chttp%3A%2F%2Fwww.wikidata.org%2Fentity%2F%3E%0APREFIX%20wdt%3A%20%3Chttp%3A%2F%2Fwww.wikidata.org%2Fprop%2Fdirect%2F%3E%0APREFIX%20rdfs%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0ASELECT%20%3FtopicLabel%20%3Fwork%20%3Ftitle%20%3Fyear%20WHERE%20%7B%0A%20%20VALUES%20%3Ftopic%20%7B%20wd%3AQ3155361%20wd%3AQ3081878%20wd%3AQ4119820%20wd%3AQ3087639%20wd%3AQ2637700%20wd%3AQ522809%20%7D%0A%20%20%3Fwork%20wdt%3AP921%20%3Ftopic%20.%0A%20%20%3Ftopic%20rdfs%3Alabel%20%3FtopicLabel%20FILTER(LANG(%3FtopicLabel)%20%3D%20%22en%22)%0A%20%20OPTIONAL%20%7B%20%3Fwork%20wdt%3AP1476%20%3Ftitle%20%7D%0A%20%20OPTIONAL%20%7B%20%3Fwork%20wdt%3AP577%20%3Fdate%20BIND(YEAR(%3Fdate)%20AS%20%3Fyear)%20%7D%0A%7D%0AORDER%20BY%20%3FtopicLabel%20DESC(%3Fyear)%0A&exec=true",
+				"label": "Wikidata query",
+				"type": "data"
 			}
 		],
 		"reviews": [
@@ -582,6 +531,9 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"OpenRefine",
 			"Metadata Standards",
 			"Linked Data",
+			"Wikidata",
+			"WikiCite",
+			"SPARQL",
 			"IIIF",
 			"Docker",
 			"Linux",
