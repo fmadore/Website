@@ -7,7 +7,7 @@ export const kalamu: DigitalHumanitiesProject = {
 	shortDescription:
 		'A free, open-source Windows app for researchers: read scanned and handwritten documents, transcribe interviews and analyse texts with Gemini, OpenAI, Claude or Mistral, or offline with Whisper, and check every result against its source. In the Microsoft Store.',
 	description: `
-		<p>More and more colleagues ask me how to use AI to transcribe their recordings and read their documents. My <a href="/digital-humanities/zmo-ai-pipelines">Colab notebooks</a> and the <a href="/digital-humanities/iwac-ai-pipelines">Python pipelines</a> behind the Islam West Africa Collection already do this, but they assume some technical comfort: files uploaded to Colab and steps followed in order, or Python, a terminal and a configuration file. Kalamu packages the same workflows as an ordinary Windows app. Install it, paste an API key, pick a file or a folder and press Start.</p>
+		<p>More and more colleagues ask me how to use AI to transcribe their recordings and read their documents. The <a href="/digital-humanities/iwac-ai-pipelines">Python pipelines</a> behind the Islam West Africa Collection already do this, but they assume some technical comfort: Python, a terminal and a configuration file. Kalamu packages the same workflows as an ordinary Windows app. Install it, paste an API key, pick a file or a folder and press Start.</p>
 
 		<p><em>Kalamu</em> is Swahili for pen, from the Arabic <em>qalam</em>. It is in the <a href="https://apps.microsoft.com/detail/9MXT5555BZ1H" target="_blank" rel="noopener noreferrer">Microsoft Store</a> for Windows 11.</p>
 
