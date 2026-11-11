@@ -447,6 +447,39 @@ export const cvCommunications: CvCommunication[] = [
 		"type": "conference"
 	},
 	{
+		"id": "knowledge-gaps-mediated-access-hkadh-2027",
+		"title": "Knowledge Gaps and Mediated Access: AI Infrastructure and Practice for African Research Data",
+		"authors": [
+			"Frédérick Madore",
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
+		],
+		"date": "21 January 2027",
+		"dateISO": "2027-01-21",
+		"conference": "3rd Annual Conference of the Hong Kong Association for Digital Humanities (HKADH 2027), \"Model/Making: Toward Generative Humanities\"",
+		"location": "The Education University of Hong Kong, Tai Po Campus",
+		"type": "conference",
+		"url": "https://2027.hkadh.org/"
+	},
+	{
 		"id": "mediatisation-islam-ouagadougou-2013",
 		"title": "La médiatisation de l'islam à Ouagadougou depuis 1991: entre normalisation des discours et nouvelle agency des musulmans",
 		"authors": [

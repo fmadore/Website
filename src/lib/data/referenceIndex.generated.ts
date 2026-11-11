@@ -1250,6 +1250,30 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"book": "Religiosity on University Campuses in Africa: Trends and Experiences",
 		"publisher": "LIT Verlag"
 	},
+	"knowledge-gaps-mediated-access-hkadh-2027": {
+		"id": "knowledge-gaps-mediated-access-hkadh-2027",
+		"itemType": "communication",
+		"title": "Knowledge Gaps and Mediated Access: AI Infrastructure and Practice for African Research Data",
+		"authors": [
+			"Frédérick Madore",
+			"Jiayu Yang",
+			"Oliver Baumann",
+			"Neeraj Thandayan Viswajith",
+			"Durgesh Nandini",
+			"Mirco Schönfeld"
+		],
+		"type": "conference",
+		"date": "21 January 2027",
+		"dateISO": "2027-01-21",
+		"year": 2027,
+		"image": "images/communications/hkadh-2027.webp",
+		"heroImage": {
+			"src": "images/communications/hkadh-2027-hero.webp"
+		},
+		"conference": "3rd Annual Conference of the Hong Kong Association for Digital Humanities (HKADH 2027), \"Model/Making: Toward Generative Humanities\"",
+		"location": "The Education University of Hong Kong, Tai Po Campus",
+		"country": "Hong Kong"
+	},
 	"launch-islam-west-africa-collection": {
 		"id": "launch-islam-west-africa-collection",
 		"itemType": "communication",

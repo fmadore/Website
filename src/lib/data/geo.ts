@@ -38,7 +38,10 @@ export const COUNTRY_COORDINATES: Record<string, CountryCoordinates> = {
 	// Natural Earth has a United Kingdom boundary rather than a separate
 	// Scotland feature, so the choropleth joins Scotland to GBR while its marker
 	// remains anchored in Edinburgh.
-	Scotland: { lat: 55.9533, lng: -3.1883, iso3: 'GBR' }
+	Scotland: { lat: 55.9533, lng: -3.1883, iso3: 'GBR' },
+	// Likewise, the 110m boundaries have no Hong Kong feature, so the
+	// choropleth shades China while the marker stays in Hong Kong.
+	'Hong Kong': { lat: 22.3193, lng: 114.1694, iso3: 'CHN' }
 };
 
 /**

@@ -81,6 +81,8 @@ export const imageVariantManifest: Readonly<Record<string, ImageVariantManifestE
 	'communications/Gaston_Berger_University_logo.webp': [600, 590],
 	'communications/generations-imam-benin-2021-hero.webp': [900, 1271],
 	'communications/generations-imam-benin-2021.webp': [600, 847],
+	'communications/hkadh-2027-hero.webp': [900, 270],
+	'communications/hkadh-2027.webp': [600, 180],
 	'communications/humanistica-2025-hero.webp': [900, 198],
 	'communications/humanistica-2025.webp': [600, 132],
 	'communications/interfaith-coexistence-campuses.webp': [1280, 964],

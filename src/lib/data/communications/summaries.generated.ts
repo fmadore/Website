@@ -2164,6 +2164,66 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"abstractExcerpt": "In the 1970s, many Ivorian Muslim students had an 'inferiority complex' regarding their Islamic identity in a space dominated by secular and Christian ideologies. With the support of elders educated in arab countries, you"
 	},
 	{
+		"id": "knowledge-gaps-mediated-access-hkadh-2027",
+		"title": "Knowledge Gaps and Mediated Access: AI Infrastructure and Practice for African Research Data",
+		"authors": [
+			"Frédérick Madore",
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
+		],
+		"date": "21 January 2027",
+		"dateISO": "2027-01-21",
+		"year": 2027,
+		"conference": "3rd Annual Conference of the Hong Kong Association for Digital Humanities (HKADH 2027), \"Model/Making: Toward Generative Humanities\"",
+		"location": "The Education University of Hong Kong, Tai Po Campus",
+		"country": "Hong Kong",
+		"type": "conference",
+		"language": "English",
+		"tags": [
+			"AMIRA",
+			"Africa Multiple",
+			"Digital Humanities",
+			"AI",
+			"Large Language Models",
+			"AI Agents",
+			"MCP",
+			"Metadata",
+			"Wikidata",
+			"Data Sovereignty"
+		],
+		"url": "https://2027.hkadh.org/",
+		"urlLabel": "Conference Website",
+		"image": "images/communications/hkadh-2027.webp",
+		"heroImage": {
+			"src": "images/communications/hkadh-2027-hero.webp",
+			"alt": "Logo of HKADH 2027: the lowercase letters “hk” in white inside a solid blue circle, followed by “adh” in large blue lowercase letters and “2027” in smaller blue numerals, on a white ground."
+		},
+		"coordinates": {
+			"latitude": 22.4686,
+			"longitude": 114.1946
+		},
+		"project": "Digital Research Environment (University of Bayreuth)",
+		"abstractExcerpt": "This paper addresses a practical problem in AMIRA, the Africa Multiple Interactive Research Atlas, the research-data platform of the Africa Multiple Cluster of Excellence at the University of Bayreuth (Germany). Its catal"
+	},
+	{
 		"id": "mediatisation-islam-ouagadougou-2013",
 		"title": "La médiatisation de l'islam à Ouagadougou depuis 1991: entre normalisation des discours et nouvelle agency des musulmans",
 		"authors": [
