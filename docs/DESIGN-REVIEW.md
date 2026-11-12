@@ -119,8 +119,6 @@ its static JavaScript from 427 to 239 KiB.
 
 **Engineering**
 
-- `static/notebooklm/` ships about 44 MB of MP3; a re-encode needs ffmpeg on
-  a local machine.
 - Rare `buttons.css` variants and the pagination, key-terms and year-bar
   sections of `ink-signal.css` are global but used on few routes; moving them
   needs per-variant usage tracing. Long-form prose rules in `typography.css`

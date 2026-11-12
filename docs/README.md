@@ -10,6 +10,13 @@ What is here and why. The conventions themselves live in the root files
 - [`digital-humanities-and-software.md`](digital-humanities-and-software.md) —
   why the applications are a section of `/digital-humanities` rather than a
   page of their own, how a record is filed as software, and when to revisit.
+- [`collaborator-affiliations.md`](collaborator-affiliations.md) — how the
+  collaborator view on the visualisation pages loads the people and institution
+  registries, and how an affiliation is recorded.
+- [`wikidata-publications.md`](wikidata-publications.md) — the workflow that
+  reconciles publication records with Wikidata and writes QIDs back.
+- [`audits/2026-11-audit.md`](audits/2026-11-audit.md) — the open review; its
+  Status section says what has closed.
 - Audits are not kept here once they close. The 2026-08 and 2026-09 technical
   audits were removed on 2026-09-25 with every finding fixed or ruled on;
   `git show c0343ec:docs/audits/2026-09-audit.md` recovers the last one. A new
