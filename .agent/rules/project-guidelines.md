@@ -125,8 +125,7 @@ classes live in `src/styles/components/ink-signal.css` and are demonstrated on
 | Flat chip               | Facets and tags: 1px border, mono caps, count appended |
 | Plate                   | Photographs, covers, scans: 1px border, caption below  |
 
-**Never add** `backdrop-filter`, `box-shadow`, `border-radius`, gradients, or new
-`.glass-*` usages (the few legacy `.glass-*` names left render flat).
+**Never add** `backdrop-filter`, `box-shadow`, `border-radius`, or gradients.
 
 ## Motion
 
@@ -141,7 +140,7 @@ violations.
 1. **Styling Priority**: Component-scoped → Ink + Signal idioms → Utility classes → CSS variables
 2. **Accessibility**: ARIA labels, semantic HTML, keyboard nav, `prefers-reduced-motion`
 3. **TypeScript**: Strict mode, proper types, `import type` for type-only imports
-4. **File Paths**: Use `$lib` alias for imports
+4. **File Paths**: Import from `src/lib/` through `#lib`, with the file's extension (SvelteKit 3 dropped `$lib`)
 
 ## File Organization
 

@@ -238,7 +238,7 @@ fontTools + brotli); `npm run check:fonts` proves the committed files and the
 `unicode-range` declarations in `src/app.html` still match the script. Fonts are
 not part of `prebuild` — regenerate by hand when a face changes.
 
-**Analysis projections**: `data/analysis/` is 306 KiB of lemmatised word and
+**Analysis projections**: `data/analysis/` is about 480 KiB of lemmatised word and
 bigram frequencies. Two places read it and neither needs more than a sliver, so
 both read a committed projection instead: `keyTerms.generated.ts` (publication
 id → its top 28 terms) for `PublicationIndexRail`'s key-terms cloud, and
@@ -260,7 +260,7 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 - An `index.ts` that aggregates items using `import.meta.glob()` and exports precomputed collections (`publicationsByType`, `publicationsByYear`, `allTags`, etc.)
 - **Use `loadData()` from `#lib/utils/dataLoader.ts`** for new data categories — it handles module extraction, template filtering, and validation
 
-**Data categories** (18 total): publications, communications, activities, research, digital-humanities, appointments, awards, education, editorial-memberships, fieldworks, grants, languages, media-appearances, peer-reviews, research-roles, affiliations, teaching, analysis
+**Data categories** (20 total): publications, communications, activities, research, digital-humanities, appointments, awards, education, editorial-memberships, fieldworks, grants, languages, media-appearances, peer-reviews, research-roles, affiliations, teaching, analysis, people (the contributor registry that `personId` points at), citation-contexts
 
 **Navigation data**: `src/lib/data/navigation.ts` exports `navItems` used by the Header component.
 
@@ -272,7 +272,7 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 
 Components in `src/lib/components/` follow atomic design:
 
-- **atoms/**: Basic elements (Button, NetworkStatusIndicator, RangeSlider, TweenedCount). `Button` skins a control as `.btn`; pass `bare` for a control that is a button semantically but must not look like one (transport controls, close crosses) — it renders the zero-specificity `.btn-bare` primitive instead, so your own class styles it without `!important`.
+- **atoms/**: Basic elements (Button, NetworkStatusIndicator, RangeSlider). `Button` skins a control as `.btn`; pass `bare` for a control that is a button semantically but must not look like one (transport controls, close crosses) — it renders the zero-specificity `.btn-bare` primitive instead, so your own class styles it without `!important`.
 - **molecules/**: Simple compositions (BibliographyRow — the finding-aid ledger row shared by the publications, talks and activities indexes —, Breadcrumb, IframeRenderer, Pagination, RelatedItemCard, TagList, RecordLedger — the `.meta-ledger` catalogue entry of a record rail, …)
 - **organisms/**: Complex UI (RelatedItemsList)
 - **common/**: Shared layout (Footer, ContentBody, PageHeader, PageIntro, RecordLayout). `RecordLayout` is the record shell — editorial breadcrumb, masthead, reading column, sticky 380px metadata rail with `main`/`railPrimary`/`railSecondary`/`related`/`deck` snippets — used by every detail route (`/publications/[id]`, `/communications/[id]`, `/activities/[id]`, `/digital-humanities/[id]`) and composed by `research/ResearchProjectLayout` for the project pages. Each route supplies its own rail component (`PublicationRecordRail`, `CommunicationRecordRail`, `ActivityRecordRail`, `DhProjectRail`) built from the `.rail-*` / `.meta-ledger` idioms. There is no shared _index_ layout component: the index pages compose `entity-index.css` with `EntityFilterBar`/`EntityFacetGrid` directly.
@@ -300,7 +300,7 @@ Modular system in `src/styles/` with import order: Base → Layout → Component
   - Max-width: `--xs-down`, `--sm-down`, `--md-down`, `--lg-down`, `--xl-down`, `--2xl-down`
   - Interaction: `--can-hover`, `--touch`
   - Accessibility: `--reduced-motion`, `--high-contrast`, `--dark-mode`
-- **Ink + Signal idioms**: ruled sections, ledger rows, flat chips, plates — see `src/styles/components/ink-signal.css`. Legacy `.glass-*` class names survive in a few components but render as flat surfaces; do not add new usages.
+- **Ink + Signal idioms**: ruled sections, ledger rows, flat chips, plates — see `src/styles/components/ink-signal.css`. No `.glass-*` class survives; the flat surface utilities are `.surface-*` in `utilities/surfaces.css`.
 - See `src/styles/CSS-README.md` for comprehensive documentation
 
 ## Svelte 5 Patterns (Required)
