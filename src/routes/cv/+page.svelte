@@ -30,6 +30,7 @@
 	import CVLanguages from '#lib/components/cv/CVLanguages.svelte';
 	import CVAffiliations from '#lib/components/cv/CVAffiliations.svelte';
 	import CVComputerSkills from '#lib/components/cv/CVComputerSkills.svelte';
+	import CVGlyphs from '#lib/components/cv/CVGlyphs.svelte';
 
 	import { resolve } from '$app/paths';
 
@@ -50,6 +51,10 @@
      142, reachable only after every one of the sheet's 116 links. A control whose
      whole job is to skip a 23,000px document belongs before the document. -->
 <CVTableOfContents />
+
+<!-- The DOI and Publons marks, defined once for every `<use>` on the sheet.
+     Outside #cv-content, which the PDF generator walks. -->
+<CVGlyphs />
 
 <div id="cv-content" class="cv-container p-8 max-w-6xl mx-auto">
 	<!-- Action Buttons - positioned in top right corner of CV.
@@ -307,6 +312,20 @@
 		outline-offset: var(--focus-outline-offset);
 	}
 
+	/* A record title — every publication, talk and project on the sheet links
+	 * to its page. Quiet, as a bibliography row's title is (`.bib-title-link`):
+	 * the title keeps the colour of the citation it sits in and warms to pine
+	 * on hover only, so a sheet of ~140 titles does not become a wall of
+	 * links. Focus takes the ring every CV link takes, above. */
+	:global(:where(#cv-content) .cv-record-link) {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	:global(:where(#cv-content) .cv-record-link:hover) {
+		color: var(--color-accent);
+	}
+
 	:global(#cv-content a.review-link) {
 		font-style: italic;
 		text-decoration: none;
@@ -392,10 +411,18 @@
 			break-after: avoid;
 		}
 
-		/* Links — ink underline in print (accent reads muddy on paper). */
-		:global(#cv-content a) {
+		/* Links — ink underline in print (accent reads muddy on paper). A record
+		 * title is the exception: on paper it is a title, not an address, so it
+		 * prints as the plain text around it, and (being a relative href) gets
+		 * no URL suffix from the rule below either. */
+		:global(#cv-content a:not(.cv-record-link)) {
 			color: var(--color-print-ink) !important;
 			text-decoration: underline !important;
+		}
+
+		:global(#cv-content a.cv-record-link) {
+			color: inherit !important;
+			text-decoration: none !important;
 		}
 
 		/* Show URLs after external links for print (academic CV best practice).

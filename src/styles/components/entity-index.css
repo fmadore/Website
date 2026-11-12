@@ -22,7 +22,10 @@
 	padding-top: var(--rule-gap);
 }
 
-@media (--md) {
+/* Two columns from --lg, not --md: at 768–1023px the 320px strip and its gap
+ * left the h1 about 336px, and the masthead broke mid-word ("Publication|s").
+ * Below --lg the year bars run full width under the title instead. */
+@media (--lg) {
 	.index-hero {
 		grid-template-columns: minmax(0, 1fr) 320px;
 		gap: var(--space-2xl);

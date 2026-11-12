@@ -32,11 +32,13 @@ npm run check:bundle    # heavy libs stay dynamically imported; entry/route size
                         # no dataset in the app shell (entry + root layout); no route
                         # downloads a site module it never imports
 npm run check:prerender # every URL in sitemap.xml resolves to a page that shipped;
-                        # every Markdown twin is announced and shipped; llms.txt resolves
+                        # every Markdown twin is announced and shipped; llms.txt resolves;
+                        # every advertised page has an inbound link from another page
 npm run check:structured-data # every JSON-LD block parses; every URL in it is absolute
                         # on https://www.frederickmadore.com/ (or external); every
                         # date is valid ISO 8601; every Signposting describedby is
-                        # typed and ships, and every publication .bib is linked
+                        # typed and ships, and every publication .bib is linked;
+                        # no two pages share a <title>
 npm run check:lighthouse # Lighthouse (mobile, the PageSpeed Insights lab profile) on five
                         # representative pages, asserted against lighthouserc.yml — score
                         # floors, Core Web Vitals and resource budgets. Serves `build/` with

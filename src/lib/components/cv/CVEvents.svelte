@@ -3,6 +3,8 @@
 	import { formatCVAuthorList, terminalPeriod } from '#lib/utils/cvFormatters.ts';
 	import { cvEventDate, splitCvTalks } from '#lib/utils/cvSections.ts';
 	import { getYearFromISODate } from '#lib/utils/date-formatter.ts';
+	import { resolve } from '$app/paths';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVSection from './CVSection.svelte';
 
@@ -22,7 +24,11 @@
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 		{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 		{/if}
-		{quoteTitle(comm.title)}{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {dateDisplay}.
+		<a
+			href={resolve('/communications/[id]', { id: comm.id })}
+			lang={titleLangAttr(comm.language)}
+			class="cv-record-link">{quoteTitle(comm.title)}</a
+		>{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {dateDisplay}.
 		{#if comm.url}
 			<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 			<a

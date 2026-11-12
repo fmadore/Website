@@ -106,6 +106,61 @@ test('clicking a type chip narrows the list and syncs the URL; clearing restores
 	await expect(page.getByText(/\d+ entries/)).toBeVisible();
 });
 
+test('back from a record restores a filter set by a chip click', async ({ page }) => {
+	await page.goto('/publications');
+	await ready(page);
+	const items = page.locator(bibItems);
+	const booksChip = page.getByRole('button', { name: /^Books/ });
+	const expected = Number(await booksChip.locator('.chip-count').innerText());
+
+	// The chip writes `?type=book` with a shallow replaceState, which leaves the
+	// history entry's stored page URL on the plain index: Back must still read
+	// the address, not that stored URL.
+	await selectBooksChip(page, booksChip);
+	await expect(items).toHaveCount(expected);
+
+	await items.first().locator('.bib-title-link').click();
+	await expect(page).toHaveURL(/\/publications\/[^/?#]+$/);
+	await page.goBack();
+	await expect(page).toHaveURL(/\/publications\?type=book$/);
+	await expect(booksChip).toHaveAttribute('aria-pressed', 'true');
+	await expect(items).toHaveCount(expected);
+	await expect(page.getByText(/1 filter active/)).toBeVisible();
+
+	// And again after Forward and Back.
+	await page.goForward();
+	await expect(page).toHaveURL(/\/publications\/[^/?#]+$/);
+	await page.goBack();
+	await expect(page).toHaveURL(/\/publications\?type=book$/);
+	await expect(booksChip).toHaveAttribute('aria-pressed', 'true');
+	await expect(items).toHaveCount(expected);
+});
+
+test('Clear all hands focus to the search box rather than dropping it', async ({ page }) => {
+	await page.goto('/publications');
+	await ready(page);
+	await selectBooksChip(page, page.getByRole('button', { name: /^Books/ }));
+	const clearAll = page.getByRole('button', { name: /Clear all/ });
+	await clearAll.focus();
+	await page.keyboard.press('Enter');
+	await expect(page).toHaveURL(/\/publications$/);
+	await expect(clearAll).toHaveCount(0);
+	await expect(page.getByRole('searchbox')).toBeFocused();
+});
+
+test('a deep link folds case and repeats onto the vocabulary and ignores unknown values', async ({
+	page
+}) => {
+	await page.goto('/publications?type=BOOK&type=book&type=nonexistent');
+	await ready(page);
+	const booksChip = page.getByRole('button', { name: /^Books/ });
+	await expect(booksChip).toHaveAttribute('aria-pressed', 'true');
+	const expected = Number(await booksChip.locator('.chip-count').innerText());
+	await expect(page.locator(bibItems)).toHaveCount(expected);
+	await expect(page.getByText(/1 filter active/)).toBeVisible();
+	await expect(page.locator('.facet-summary-active')).not.toContainText(/nonexistent/i);
+});
+
 test('toggling the same chip off restores the list and URL', async ({ page }) => {
 	await page.goto('/publications');
 	await ready(page);

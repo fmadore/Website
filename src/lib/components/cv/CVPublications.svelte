@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
+	import { resolve } from '$app/paths';
 	import { cvPublicationsByDate as publicationsByDate } from '#lib/data/publications/cv.ts';
 	import type { CvPublication } from '#lib/types/index.ts';
 	import {
@@ -13,8 +13,10 @@
 	} from '#lib/utils/cvFormatters.ts';
 	import { isCvPublication } from '#lib/utils/cvSections.ts';
 	import { getPublicationTypeDisplayName } from '#lib/utils/publicationTypeLabels.ts';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
+	import { CV_GLYPH } from './CVGlyphs.svelte';
 
 	// Group publications using the utility function
 	const { publicationsByType, presentPublicationTypes, otherPublicationTypes } =
@@ -32,11 +34,19 @@
 					{#each publicationsByType[pubType] as pub (pub.id)}
 						{@const formattedAuthors = formatCVAuthorList(pub.authors)}
 						{@const authorStop = terminalPeriod(formattedAuthors)}
+						<!-- Every title links to its record page, and carries the work's
+						     language when that is one language other than English. -->
+						{@const href = resolve('/publications/[id]', { id: pub.id })}
+						{@const lang = titleLangAttr(pub.language)}
 						<CVEntry year={getCVDisplayYear(pub)}>
 							<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 							{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}{authorStop}{/if}
 							{/if}
-							{#if pub.type !== 'book' && pub.type !== 'blogpost'}{quoteTitle(pub.title)}.{/if}
+							{#if pub.type !== 'book' && pub.type !== 'blogpost'}<a
+									{href}
+									{lang}
+									class="cv-record-link">{quoteTitle(pub.title)}</a
+								>.{/if}
 							{#if (pub.type === 'article' || pub.type === 'bulletin-article') && pub.journal}
 								<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
 									pub.volume,
@@ -50,7 +60,9 @@
 									)}{@const publisher = typesetQuotes(pub.publisher)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}{/if}{#if pub.pages},
 									{pub.pages}{/if}.
 							{:else if pub.type === 'book'}
-								<em>{typesetQuotes(pub.title)}</em
+								<!-- The <em> wraps the link, not the reverse: the PDF export reads a
+								     link as one plain string, and italic only from an ancestor. -->
+								<em><a {href} {lang} class="cv-record-link">{typesetQuotes(pub.title)}</a></em
 								>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city = typesetQuotes(
 										pub.placeOfPublication
 									)}{@const publisher = typesetQuotes(pub.publisher)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}.{:else}.{/if}
@@ -78,8 +90,8 @@
 								     post carries a date that formats to nothing, which printed
 								     "The Digital Orientalist, ." -->
 								{@const blogDate = formatBlogDate(pub.dateISO)}
-								{quoteTitle(pub.title)}{#if pub.publisher}. <em>{typesetQuotes(pub.publisher)}</em
-									>{/if}{#if blogDate}, {blogDate}{/if}.
+								<a {href} {lang} class="cv-record-link">{quoteTitle(pub.title)}</a
+								>{#if pub.publisher}. <em>{typesetQuotes(pub.publisher)}</em>{/if}{#if blogDate}, {blogDate}{/if}.
 							{:else if pub.type === 'conference-proceedings'}
 								In <em>{typesetQuotes(pub.proceedingsTitle)}</em>.
 							{:else}
@@ -93,9 +105,11 @@
 									target="_blank"
 									rel="noopener noreferrer"
 									class="doi-link"
-									><Icon icon="academicons:doi" class="doi-link-icon" aria-hidden="true" /><span
-										class="doi-link-text">doi:{pub.doi}</span
-									><span class="sr-only"> (opens in new tab)</span></a
+									><svg class="doi-link-icon" aria-hidden="true" focusable="false"
+										><use href="#{CV_GLYPH.doi}" /></svg
+									><span class="doi-link-text">doi:{pub.doi}</span><span class="sr-only">
+										(opens in new tab)</span
+									></a
 								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.url && !pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
@@ -135,7 +149,11 @@
 					{#each publicationsByType[pubType as CvPublication['type']] as pub (pub.id)}
 						<CVEntry year={getCVDisplayYear(pub)}>
 							<!-- Simplified display for other types -->
-							<span class="cv-title">{typesetQuotes(pub.title)}</span>.
+							<a
+								href={resolve('/publications/[id]', { id: pub.id })}
+								lang={titleLangAttr(pub.language)}
+								class="cv-title cv-record-link">{typesetQuotes(pub.title)}</a
+							>.
 							{#if pub.type}<span class="pub-type-badge">{pub.type}</span>{/if}
 							{#if pub.url}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
@@ -189,10 +207,17 @@
 	 * stack's five, the ORCID mark). Sized absolutely rather than in `em`: the
 	 * identifier beside it is set at the 2xs mono step, so `1.25em` drew this
 	 * mark at 14px and made the DOI the one glyph on the page at its own size. */
-	.doi-link :global(.doi-link-icon) {
+	.doi-link-icon {
 		width: var(--space-4);
 		height: var(--space-4);
 		flex-shrink: 0;
+	}
+
+	/* A DOI is one unbroken token; at 320px the longest ran past the sheet's
+	 * edge. It may break anywhere once it no longer fits its line. */
+	.doi-link-text {
+		min-width: 0;
+		overflow-wrap: anywhere;
 	}
 
 	/* "Other" type tag — square, mono uppercase, hairline outline. */

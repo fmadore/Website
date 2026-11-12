@@ -165,39 +165,102 @@ export interface ProjectTimelineItem {
 	type: string;
 }
 
-export interface ProjectTimelineEntry {
-	name: string;
+/** A project's recorded period, as `parseProjectPeriod` returns it. */
+export interface ProjectTimelinePeriod {
 	startYear: number;
 	endYear: number;
-	publications: ProjectTimelineItem[];
+	/** Open-ended in the record; `endYear` is then the build year. */
+	ongoing: boolean;
+}
+
+export interface ProjectTimelineEntry {
+	name: string;
+	/**
+	 * The period the project ran, from its research record — what the bar
+	 * draws. `null` when no record names the project: the plate then draws its
+	 * markers with no bar, because a span inferred from the outputs would claim
+	 * a period nobody recorded.
+	 */
+	period: ProjectTimelinePeriod | null;
+	/** The first and last years an output carries (the marker span). */
+	firstItemYear: number;
+	lastItemYear: number;
+	/** Outputs, oldest first. */
+	items: ProjectTimelineItem[];
+	/** How many outputs fall before the period starts or after it ends. */
+	outsidePeriod: number;
 }
 
 /**
- * Build project-span timeline entries from pre-grouped items. Each group yields
- * one entry spanning its min→max year, with its items sorted chronologically.
- * Entries are sorted by start year ascending.
+ * Build project timeline entries from pre-grouped items. Each group yields one
+ * entry: its recorded period (from `periodOf`, keyed by the group name), and
+ * its outputs sorted chronologically. Outputs keep their own years, so work
+ * published before a project was funded or after it closed falls outside its
+ * bar rather than stretching it. Entries are ordered by the period's start, or
+ * the first output where there is no period, then by name.
  */
 export function buildProjectTimeline<T>(
 	groups: Record<string, T[]>,
-	toItem: (item: T) => ProjectTimelineItem
+	toItem: (item: T) => ProjectTimelineItem,
+	periodOf: (name: string) => ProjectTimelinePeriod | null | undefined = () => null
 ): ProjectTimelineEntry[] {
 	return Object.entries(groups)
-		.map(([name, items]) => {
-			const mapped = items.map(toItem).sort((a, b) => a.year - b.year);
-			const years = mapped.map((entry) => entry.year);
+		.map(([name, group]) => {
+			const items = group.map(toItem).sort((a, b) => a.year - b.year);
+			const years = items.map((entry) => entry.year);
+			const period = periodOf(name) ?? null;
 			return {
 				name,
-				startYear: Math.min(...years),
-				endYear: Math.max(...years),
-				publications: mapped
+				period,
+				firstItemYear: Math.min(...years),
+				lastItemYear: Math.max(...years),
+				items,
+				outsidePeriod: period
+					? items.filter((i) => i.year < period.startYear || i.year > period.endYear).length
+					: 0
 			};
 		})
-		.sort((a, b) => a.startYear - b.startYear);
+		.sort(
+			(a, b) =>
+				(a.period?.startYear ?? a.firstItemYear) - (b.period?.startYear ?? b.firstItemYear) ||
+				a.name.localeCompare(b.name)
+		);
+}
+
+/**
+ * Every year from the smallest to the largest in `years`, ascending. A year
+ * axis built from the years that carry data skips the empty ones, so a bar
+ * chart would set 2014 and 2016 side by side; this is the axis instead.
+ */
+export function yearRange(years: Iterable<number>): number[] {
+	let min = Infinity;
+	let max = -Infinity;
+	for (const year of years) {
+		if (!Number.isFinite(year)) continue;
+		if (year < min) min = year;
+		if (year > max) max = year;
+	}
+	if (min > max) return [];
+	return Array.from({ length: max - min + 1 }, (_, i) => min + i);
+}
+
+/**
+ * Per-year values with the empty years put back: one row per year from the
+ * first to the last, `value` 0 where `values` has none. The year tallies on
+ * the visualisation pages go through this, so their axes run without a gap
+ * as the home chart and the index year strips do.
+ */
+export function fillYearSeries(values: ReadonlyMap<number, number>): Array<{
+	year: number;
+	value: number;
+}> {
+	return yearRange(values.keys()).map((year) => ({ year, value: values.get(year) ?? 0 }));
 }
 
 /**
  * Build the rows of a "per year by type" stacked bar chart: one row per year
- * (ascending) with a column per type key, holding that year's count. Column
+ * from the first to the last (ascending, empty years included as zeros) with a
+ * column per type key, holding that year's count. Column
  * names go through `labelFor` so chart legends can show display labels while
  * counting on raw type keys. Items whose type is not in `typeKeys` are
  * ignored (they would have no column).
@@ -228,13 +291,31 @@ export function buildStackedByYear<T>(
 		counts[type] = (counts[type] || 0) + 1;
 	}
 
-	return [...yearly.entries()]
-		.map(([year, counts]) => {
-			const row: Record<string, number> = { year };
-			typeKeys.forEach((rawType) => {
-				row[labelFor(rawType)] = counts[rawType] || 0;
-			});
-			return row;
-		})
-		.sort((a, b) => (a.year ?? 0) - (b.year ?? 0));
+	return yearRange(yearly.keys()).map((year) => {
+		const counts = yearly.get(year);
+		const row: Record<string, number> = { year };
+		typeKeys.forEach((rawType) => {
+			row[labelFor(rawType)] = counts?.[rawType] || 0;
+		});
+		return row;
+	});
+}
+
+/**
+ * The data table behind a stacked plate: one row per year, a cell per column
+ * in `keys` order, and the year's total. Built from the rows the chart draws,
+ * so the table carries the stack as well as its totals.
+ */
+export function stackedTableRows(
+	rows: ReadonlyArray<Record<string, number>>,
+	keys: readonly string[]
+): Array<{ label: string; value: number; cells: number[] }> {
+	return rows.map((row) => {
+		const cells = keys.map((key) => row[key] ?? 0);
+		return {
+			label: String(row.year ?? ''),
+			value: cells.reduce((sum, n) => sum + n, 0),
+			cells
+		};
+	});
 }

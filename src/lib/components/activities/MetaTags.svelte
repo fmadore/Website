@@ -45,32 +45,11 @@
 	// Head tag field mapping — order here is emission order.
 	const metaTags = $derived.by(() =>
 		buildHeadTags([
-			// Basic Highwire Press tags for blog posts
-			{ name: 'citation_title', content: activity.title },
-			{ name: 'citation_genre', content: 'blogPost' },
-			// Author - always the site author for activities
-			{ name: 'citation_author', content: authorCitationName },
+			// No Highwire `citation_*` tags: Google Scholar and Zotero read any
+			// page that carries them as a paper, and an activity post is not one
+			// (every post once claimed `citation_journal_title` = the site
+			// owner's name). Dublin Core and COinS describe it as what it is.
 			{ name: 'DC.creator', content: authorCitationName },
-			// Publication info for blog posts - try multiple approaches
-			{ name: 'citation_journal_title', content: author.name },
-			{ name: 'citation_publication_title', content: author.name },
-			{ name: 'citation_publisher', content: author.name },
-			{ name: 'citation_date', content: activity.dateISO },
-			{ name: 'citation_publication_date', content: activity.dateISO },
-			{ name: 'citation_online_date', content: activity.dateISO },
-			{ name: 'citation_year', content: activity.year?.toString() },
-			{ name: 'citation_language', content: 'en' },
-			{ name: 'citation_keywords', content: activity.tags?.join('; ') },
-			// Abstract/Description
-			{ name: 'citation_abstract', content: activity.description },
-			// URLs
-			{ name: 'citation_public_url', content: currentUrl },
-			{ name: 'citation_abstract_html_url', content: currentUrl },
-			{ name: 'citation_fulltext_html_url', content: currentUrl },
-			{ name: 'citation_pdf_url', content: resolveUrl(activity.pdfPath) },
-			// Additional blog-specific URL — raw (unresolved) by long-standing
-			// behaviour, unlike citation_pdf_url above.
-			{ name: 'citation_reference_url', content: activity.url },
 			// Dublin Core tags for blog posts
 			{ name: 'DC.title', content: activity.title },
 			{ name: 'DC.type', content: 'Text' },

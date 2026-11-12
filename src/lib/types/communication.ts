@@ -1,5 +1,13 @@
 import type { Contributor } from '#lib/types/contributor.ts';
 
+/**
+ * The closed set of talk types. Every register keyed by a talk type
+ * (`typeUtils.ts`) is a `Record<CommunicationType, string>`, so a type added
+ * here fails the type-check until each register labels it.
+ */
+export type CommunicationType =
+	'conference' | 'workshop' | 'seminar' | 'lecture' | 'panel' | 'poster' | 'event' | 'podcast';
+
 export type Communication = {
 	id: string; // URL-friendly ID for routing
 	title: string; // Communication title
@@ -37,8 +45,7 @@ export type Communication = {
 		latitude: number; // Latitude
 		longitude: number; // Longitude
 	};
-	type?:
-		'conference' | 'workshop' | 'seminar' | 'lecture' | 'panel' | 'poster' | 'event' | 'podcast'; // Type of communication
+	type?: CommunicationType; // Type of communication
 	language?: string | string[]; // Language(s) of the communication - can be a single language or multiple languages
 	papers?: Array<{
 		// Papers presented at the panel
@@ -131,7 +138,9 @@ export type CvCommunicationField =
 	| 'doi'
 	| 'url'
 	// Talks given as teaching print under Teaching instead (CVTeaching).
-	| 'teaching';
+	| 'teaching'
+	// The title's `lang` attribute (WCAG 3.1.2), via `titleLangAttr`.
+	| 'language';
 
 /** A talk as the CV reads it. */
 export type CvCommunication = Pick<CommunicationSummary, CvCommunicationField>;

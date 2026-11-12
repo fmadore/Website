@@ -40,8 +40,10 @@
 		noindex?: boolean;
 		/**
 		 * The WebPage schema's `name`, when it should differ from the browser
-		 * title: a record page truncates its `<title>` and appends the site
-		 * name, but structured data wants the untruncated, unsuffixed title.
+		 * title: a record page caps its `<title>` and appends a qualifier and
+		 * the site name, but structured data wants the untruncated, unsuffixed
+		 * title. Open Graph and Twitter take it too: a card prints its own site
+		 * name (`og:site_name`), and Google ranks on the full text.
 		 */
 		schemaName?: string;
 		/**
@@ -77,6 +79,9 @@
 	 * dropped deliberately: a filtered list canonicalises to the plain page.
 	 */
 	const canonicalUrl = $derived(canonical || `${website.url}${page.url.pathname}`);
+
+	/** The full record title on a record page (see `schemaName`), else the page title. */
+	const socialTitle = $derived(schemaName ?? title);
 
 	/**
 	 * Open Graph and Twitter want an absolute image URL. Scrapers mostly resolve
@@ -179,7 +184,7 @@
 	<!-- Open Graph / Facebook -->
 	<meta property="og:type" content={type} />
 	<meta property="og:url" content={canonicalUrl} />
-	<meta property="og:title" content={title} />
+	<meta property="og:title" content={socialTitle} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={ogImageUrl} />
 	<meta property="og:site_name" content={author.name} />
@@ -188,7 +193,7 @@
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />
 	<meta property="twitter:url" content={canonicalUrl} />
-	<meta property="twitter:title" content={title} />
+	<meta property="twitter:title" content={socialTitle} />
 	<meta property="twitter:description" content={description} />
 	<meta property="twitter:image" content={ogImageUrl} />
 

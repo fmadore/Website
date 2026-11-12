@@ -185,6 +185,7 @@
 			id={listId}
 			class="facet-combobox-list"
 			role="listbox"
+			aria-multiselectable="true"
 			aria-label="Matching {label}"
 		>
 			<!-- Populated only while open: the closed list is an empty box the

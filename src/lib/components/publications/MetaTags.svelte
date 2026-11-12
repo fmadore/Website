@@ -18,6 +18,7 @@
 	import { getCitationGenre, getDcType } from '#lib/utils/publicationTypeLabels.ts';
 	import { stripHtml } from '#lib/utils/textUtils.ts';
 	import { publicationSignposts } from '#lib/utils/signposting.ts';
+	import { languageCodes } from '#lib/utils/languageUtils.ts';
 
 	let { publication, schemaType }: { publication: Publication; schemaType: string } = $props();
 
@@ -35,27 +36,32 @@
 	// never reach the baked head tags Zotero and crawlers consume.
 	const resolveUrl = (path: string | undefined) => getFullUrl(website.url, basePrefix(), path);
 
+	// BCP 47 codes ("fr", "en"), one tag per language of a bilingual work.
+	const languageEntries = (name: string): HeadTagEntry[] =>
+		languageCodes(publication.language).map((code) => ({ name, content: code }));
+
 	// Editor entries for the publication types that carry editors.
 	const editorEntries = (): HeadTagEntry[] => {
 		const entries: HeadTagEntry[] = [];
 
-		// Handle chapters with editors
+		// A chapter's editors edited the book, not the chapter: they are its
+		// contributors in Dublin Core, never its creators.
 		if (publication.type === 'chapter' && publication.editors) {
 			const editorNames = Array.isArray(publication.editors)
 				? publication.editors
 				: splitNames(publication.editors);
 			entries.push(...createAuthorTags(editorNames, 'citation_editor'));
-			entries.push(...createAuthorTags(editorNames, 'DC.creator'));
+			entries.push(...createAuthorTags(editorNames, 'DC.contributor'));
 		}
 
-		// Handle special issues and edited volumes
+		// Special issues and edited volumes: the credited names are the
+		// editors. Their DC.creator tags are already emitted from `authors`.
 		if (
 			(publication.type === 'special-issue' ||
 				(publication.type === 'book' && publication.isEditedVolume)) &&
 			Array.isArray(publication.authors)
 		) {
 			entries.push(...createAuthorTags(publication.authors, 'citation_editor'));
-			entries.push(...createAuthorTags(publication.authors, 'DC.creator'));
 		}
 
 		return entries;
@@ -67,7 +73,9 @@
 		const isPagedContent =
 			publication.type === 'article' ||
 			publication.type === 'chapter' ||
-			publication.type === 'bulletin-article';
+			publication.type === 'bulletin-article' ||
+			publication.type === 'conference-proceedings' ||
+			publication.type === 'encyclopedia';
 
 		if (!isPagedContent || !publication.pages) return entries;
 
@@ -120,6 +128,20 @@
 				['rft_val_fmt', 'info:ofi/fmt:kev:mtx:book'],
 				['rft.genre', 'bookitem'],
 				['rft.btitle', publication.book],
+				['rft.pub', publication.publisher]
+			);
+		} else if (publication.type === 'conference-proceedings') {
+			fields.push(
+				['rft_val_fmt', 'info:ofi/fmt:kev:mtx:book'],
+				['rft.genre', 'proceeding'],
+				['rft.btitle', publication.proceedingsTitle ?? publication.conferenceName],
+				['rft.pub', publication.publisher]
+			);
+		} else if (publication.type === 'encyclopedia') {
+			fields.push(
+				['rft_val_fmt', 'info:ofi/fmt:kev:mtx:book'],
+				['rft.genre', 'bookitem'],
+				['rft.btitle', publication.encyclopediaTitle],
 				['rft.pub', publication.publisher]
 			);
 		}
@@ -187,7 +209,7 @@
 			// Historical no-op kept verbatim: content is always undefined, so
 			// this tag never renders.
 			{ name: 'citation_eIssn', content: undefined },
-			{ name: 'citation_language', content: publication.language },
+			languageEntries('citation_language'),
 			{ name: 'citation_keywords', content: publication.tags?.join('; ') },
 			// URLs
 			{ name: 'citation_public_url', content: resolveUrl(publication.url) },
@@ -208,6 +230,24 @@
 				name: 'citation_book_title',
 				content: publication.title,
 				when: publication.type === 'book'
+			},
+			// An encyclopedia entry sits in its encyclopedia as a chapter in a book.
+			{
+				name: 'citation_inbook_title',
+				content: publication.encyclopediaTitle,
+				when: publication.type === 'encyclopedia'
+			},
+			{
+				name: 'citation_book_title',
+				content: publication.encyclopediaTitle,
+				when: publication.type === 'encyclopedia'
+			},
+			// A proceedings paper: Scholar reads the venue from the conference
+			// title, which is the proceedings volume where one is recorded.
+			{
+				name: 'citation_conference_title',
+				content: publication.proceedingsTitle ?? publication.conferenceName,
+				when: publication.type === 'conference-proceedings'
 			},
 			// Page tags
 			pageEntries(),
@@ -238,7 +278,7 @@
 				name: 'DC.identifier',
 				content: publication.doi ? `doi:${publication.doi}` : resolveUrl(publication.url)
 			},
-			{ name: 'DC.language', content: publication.language },
+			languageEntries('DC.language'),
 			// Subject tags from publication tags
 			(publication.tags ?? []).map((tag) => ({ name: 'DC.subject', content: tag }))
 		]);

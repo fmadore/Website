@@ -31,6 +31,7 @@ import {
 	type EntityIndexFilterOptions,
 	type EntityArrayDimension
 } from './entityFilterCore';
+import { canonicalizeFacetValues } from './filterSerialization';
 
 export {
 	ENTITY_ARRAY_FILTER_KEYS,
@@ -127,14 +128,24 @@ export class EntityFilterSystem<TItem> {
 		this.activeFilters.yearRange = null;
 	};
 
+	/**
+	 * Sets a dimension from values that came from outside the page (a URL):
+	 * each is mapped onto the dimension's option list, so a hand-typed or
+	 * differently-cased deep link selects the chip the page prints, and a value
+	 * the corpus does not hold is dropped instead of filtering to nothing.
+	 */
+	private setFromUrl = (key: EntityArrayFilterKey, values: string[]): void => {
+		this.setValues(key, canonicalizeFacetValues(values, this.filterOptions[key]));
+	};
+
 	/** Setter map in the shape the `urlFilterSync` action expects. */
 	readonly setters = {
-		setTypes: (v: string[]) => this.setValues('types', v),
-		setTags: (v: string[]) => this.setValues('tags', v),
-		setLanguages: (v: string[]) => this.setValues('languages', v),
-		setAuthors: (v: string[]) => this.setValues('authors', v),
-		setCountries: (v: string[]) => this.setValues('countries', v),
-		setProjects: (v: string[]) => this.setValues('projects', v),
+		setTypes: (v: string[]) => this.setFromUrl('types', v),
+		setTags: (v: string[]) => this.setFromUrl('tags', v),
+		setLanguages: (v: string[]) => this.setFromUrl('languages', v),
+		setAuthors: (v: string[]) => this.setFromUrl('authors', v),
+		setCountries: (v: string[]) => this.setFromUrl('countries', v),
+		setProjects: (v: string[]) => this.setFromUrl('projects', v),
 		setYearRange: (range: YearRange | null) => this.setYearRange(range)
 	};
 }

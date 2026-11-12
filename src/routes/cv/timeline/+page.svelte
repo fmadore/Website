@@ -7,11 +7,12 @@
 	} from '#lib/components/visualisations/CareerTimeline.svelte';
 	import SEO from '#lib/SEO.svelte';
 	import { pageTitle } from '#lib/utils/siteHelpers.ts';
-	import { getAllTimelineItems } from '#lib/utils/timelineData.ts';
 	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
 
-	// Get all timeline items
-	const items = getAllTimelineItems();
+	// Built at prerender time by the server load: the page receives the rows,
+	// never the datasets behind them.
+	let { data } = $props();
+	const items = $derived(data.items);
 
 	// The plate has a floor it will not draw below, so on a narrow column it
 	// overflows and the reader has to push it sideways to reach the earlier

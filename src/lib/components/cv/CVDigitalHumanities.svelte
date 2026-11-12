@@ -4,6 +4,7 @@
 	import { splitCvProjects } from '#lib/utils/cvSections.ts';
 	import { applicationSummary } from '#lib/utils/projectGroups.ts';
 	import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
+	import { resolve } from '$app/paths';
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 	import CVSection from './CVSection.svelte';
 
@@ -33,7 +34,10 @@
 		: 'No digital humanities projects listed.'}
 >
 	{#snippet entry(project)}
-		<span class="cv-title">{typesetQuotes(project.title)}</span>
+		<a
+			href={resolve('/digital-humanities/[id]', { id: project.id })}
+			class="cv-title cv-record-link">{typesetQuotes(project.title)}</a
+		>
 		{#if project.shortDescription}
 			<div class="cv-note">{typesetQuotes(project.shortDescription)}</div>
 		{/if}

@@ -8,6 +8,20 @@ import AxeBuilder from '@axe-core/playwright';
  * broken page, in whichever engine reports it.
  */
 export const test = base.extend({
+	/**
+	 * Analytics never loads under automation (`gtm.svelte.ts` returns early on
+	 * `navigator.webdriver` and on a local host), but should that guard regress
+	 * the suite must still not reach the production property. An aborted request
+	 * reports a network error, not a CSP violation, so the check below is
+	 * unaffected.
+	 */
+	context: async ({ context }, use) => {
+		await context.route(
+			/^https?:\/\/([^/]+\.)?(googletagmanager|google-analytics)\.com\//,
+			(route) => route.abort()
+		);
+		await use(context);
+	},
 	page: async ({ page }, use) => {
 		const errors: string[] = [];
 		const cspViolations: string[] = [];

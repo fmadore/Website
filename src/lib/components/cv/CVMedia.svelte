@@ -1,11 +1,13 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
 	import { mediaAppearancesByDate } from '#lib/data/media-appearances/index.ts';
 	import { cvCommunicationsByDate as communicationsByDate } from '#lib/data/communications/cv.ts';
 	import { splitCvTalks } from '#lib/utils/cvSections.ts';
 	import { formatDayMonth, getYearFromISODate } from '#lib/utils/date-formatter.ts';
+	import { resolve } from '$app/paths';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
+	import { CV_GLYPH } from './CVGlyphs.svelte';
 
 	const { podcasts } = splitCvTalks(communicationsByDate);
 </script>
@@ -19,19 +21,19 @@
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each podcasts as podcast (podcast.id)}
 				<CVEntry year={getYearFromISODate(podcast.dateISO)}>
-					{quoteTitle(podcast.title)}{#if podcast.conference}, <em
-							>{typesetQuotes(podcast.conference)}</em
+					<a
+						href={resolve('/communications/[id]', { id: podcast.id })}
+						lang={titleLangAttr(podcast.language)}
+						class="cv-record-link">{quoteTitle(podcast.title)}</a
+					>{#if podcast.conference}, <em>{typesetQuotes(podcast.conference)}</em
 						>{/if}{#if podcast.episode}, ep. {podcast.episode}{/if}.
 					{formatDayMonth(podcast.dateISO)}.
 					{#if podcast.doi}
 						<span class="cv-note"
-							><Icon
-								icon="academicons:doi"
-								width="1.2em"
-								height="1.2em"
-								inline
-								aria-hidden="true"
-							/> DOI:
+							><svg class="cv-doi-mark" aria-hidden="true" focusable="false"
+								><use href="#{CV_GLYPH.doi}" /></svg
+							>
+							DOI:
 							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 							<a href="https://doi.org/{podcast.doi}" target="_blank" rel="noopener noreferrer"
 								>{podcast.doi}<span class="sr-only"> (opens in new tab)</span></a
@@ -86,3 +88,13 @@
 		<p class="cv-empty">No media appearances or podcasts listed.</p>
 	{/if}
 </section>
+
+<style>
+	/* The DOI mark in a podcast's note, at the size and seat <Icon inline>
+	 * gave it: 1.2em, dropped onto the baseline. */
+	.cv-doi-mark {
+		width: 1.2em;
+		height: 1.2em;
+		vertical-align: -0.125em;
+	}
+</style>

@@ -12,6 +12,7 @@
 	import { buildSrcset, resolveImagePath } from '#lib/utils/imageVariants.ts';
 	import { resolveSlidePoster } from '#lib/utils/slidePoster.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 	import { COMMUNICATION_TYPE_LIST_LABELS } from '#lib/utils/typeUtils.ts';
 	import {
 		buildBreadcrumbJsonLd,
@@ -72,6 +73,7 @@
 			href: resolve('/communications/[id]', { id: communication.id }),
 			slidesUrl: communication.slidesUrl,
 			title: typesetQuotes(communication.title),
+			titleLang: titleLangAttr(communication.language),
 			venue: typesetQuotes(
 				[communication.conference, communication.location].filter(Boolean).join(' · ')
 			),
@@ -149,7 +151,7 @@
 						{/if}
 
 						<div class="ledger-content">
-							<h2 class="ledger-title deck-entry-title">
+							<h2 class="ledger-title deck-entry-title" lang={deck.titleLang}>
 								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved route -->
 								<a class="link-animated" href={deck.href} data-sveltekit-preload-code="tap"
 									>{deck.title}</a

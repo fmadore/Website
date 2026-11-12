@@ -27,7 +27,13 @@ import type {
 import { formatAuthor, formatAuthors, formatPlaces, formatJsonLdDate } from '#lib/types/jsonld.ts';
 import { author, address, website } from '#lib/data/siteConfig.ts';
 import { siteUrl } from '#lib/utils/siteHelpers.ts';
-import { recordEntityId, webPageId, wikidataPageUrl } from '#lib/utils/jsonLdSchemas.ts';
+import {
+	recordEntityId,
+	webPageId,
+	wikidataEntityUrl,
+	wikidataPageUrl
+} from '#lib/utils/jsonLdSchemas.ts';
+import { jsonLdLanguage } from '#lib/utils/languageUtils.ts';
 import { stripHtml } from '#lib/utils/textUtils.ts';
 import { splitNames } from '#lib/utils/nameUtils.ts';
 
@@ -88,37 +94,80 @@ function formatEditorString(editors: string): JsonLdAgent[] {
 	return formatPeopleWithSiteIdentity(splitNames(editors));
 }
 
+/**
+ * The source directories a publication can come from, as the data loader names
+ * them (`PUBLICATION_DIRECTORY_TYPES` in `dataMetadata.ts`, which is typed
+ * `Record<string, string>`; `entityJsonLd.test.ts` holds the two in step).
+ * The resolver below switches over this union exhaustively, so a new
+ * directory fails the type-check here instead of being published as a Book.
+ */
+export type PublicationDirectoryType =
+	| 'books'
+	| 'articles'
+	| 'bulletins'
+	| 'chapters'
+	| 'specialIssues'
+	| 'reports'
+	| 'encyclopedia'
+	| 'blogposts'
+	| 'dissertations'
+	| 'proceedings'
+	| 'workingPapers';
+
 /** Publication as enriched by the data loader (adds the source directory). */
 type PublicationWithSource = Publication & { sourceDirType: string };
 
 /**
- * Map a publication's source directory / type to its schema.org @type. Also
- * the record page's FAIR Signposting `type` link, so the two never disagree.
+ * Map a publication's source directory to its schema.org @type. Also the
+ * record page's FAIR Signposting `type` link, so the two never disagree.
+ *
+ * There is no default: `bulletins` and `proceedings` once fell to a `Book`
+ * fallback, which published five bulletin notes and four conference papers as
+ * books with no container and no pages. An unknown directory throws, which
+ * fails the prerender of that record rather than shipping it mistyped.
  */
 export function resolvePublicationJsonLdType(
 	publication: PublicationWithSource
 ): PublicationJsonLd['@type'] {
-	switch (publication.sourceDirType) {
+	const dir = publication.sourceDirType as PublicationDirectoryType;
+	switch (dir) {
 		case 'books':
 			return 'Book';
 		case 'articles':
-			return publication.type === 'bulletin-article' ? 'Article' : 'ScholarlyArticle';
-		case 'chapters':
-			return 'Article';
 		case 'specialIssues':
+		case 'proceedings':
 			return 'ScholarlyArticle';
+		case 'bulletins':
+		case 'chapters':
+		case 'encyclopedia':
+			return 'Article';
 		case 'reports':
 		case 'workingPapers':
 			return 'Report';
-		case 'encyclopedia':
-			return 'Article';
 		case 'blogposts':
 			return 'BlogPosting';
 		case 'dissertations':
 			return 'Thesis';
-		default:
-			return 'Book'; // Fallback
+		default: {
+			const unhandled: never = dir;
+			throw new Error(
+				`No schema.org type for publication directory "${String(unhandled)}" (${publication.id})`
+			);
+		}
 	}
+}
+
+/**
+ * The work's identity elsewhere, for schema.org `sameAs`: its DOI, Wikidata
+ * item and OpenAlex record, each where the record carries one.
+ */
+function publicationSameAs(publication: Publication): string[] | undefined {
+	const links = [
+		publication.doi ? `https://doi.org/${publication.doi}` : undefined,
+		publication.wikidataId ? wikidataEntityUrl(publication.wikidataId) : undefined,
+		publication.openAlexId ? `https://openalex.org/${publication.openAlexId}` : undefined
+	].filter((link): link is string => Boolean(link));
+	return links.length > 0 ? links : undefined;
 }
 
 /**
@@ -138,7 +187,8 @@ export function buildPublicationJsonLd(publication: PublicationWithSource): Publ
 		headline: publication.title,
 		description: plainAbstract(publication.abstract),
 		copyrightYear: publication.year,
-		inLanguage: publication.language,
+		inLanguage: jsonLdLanguage(publication.language),
+		sameAs: publicationSameAs(publication),
 		// Only asserted, never denied: a record without the flag is one whose
 		// access we have not recorded, not one we know to be paywalled.
 		isAccessibleForFree: publication.openAccess === true ? true : undefined
@@ -197,7 +247,8 @@ export function buildPublicationJsonLd(publication: PublicationWithSource): Publ
 		}
 		case 'ScholarlyArticle':
 		case 'Article': {
-			// Articles, chapters, encyclopedia entries
+			// Articles, bulletin notes, special issues, proceedings papers,
+			// chapters, encyclopedia entries
 			const articleData = jsonLdObject as Partial<ArticleJsonLd>;
 			if (publication.isEditedWork) {
 				articleData.editor = finalAuthors;
@@ -210,6 +261,7 @@ export function buildPublicationJsonLd(publication: PublicationWithSource): Publ
 
 			if (
 				publication.sourceDirType === 'articles' ||
+				publication.sourceDirType === 'bulletins' ||
 				publication.sourceDirType === 'specialIssues'
 			) {
 				if (publication.journal) {
@@ -227,6 +279,13 @@ export function buildPublicationJsonLd(publication: PublicationWithSource): Publ
 					editor: publication.editors ? formatEditorString(publication.editors) : undefined
 				};
 				articleData.publisher = publisherOrg;
+			} else if (publication.sourceDirType === 'proceedings') {
+				// The proceedings volume is the container; the conference name
+				// stands in when the volume's own title is not recorded.
+				const container = publication.proceedingsTitle ?? publication.conferenceName;
+				if (container) {
+					articleData.isPartOf = { '@type': 'Book', name: container };
+				}
 			} else if (publication.sourceDirType === 'encyclopedia' && publication.encyclopediaTitle) {
 				articleData.isPartOf = {
 					'@type': 'Book',
@@ -298,15 +357,29 @@ export function buildCommunicationJsonLd(communication: Communication): EventJso
 		const locationParts = [communication.location, communication.country]
 			.filter(Boolean)
 			.join(', ');
+		const { coordinates } = communication;
 		jsonLdObject.location = {
 			'@type': 'Place',
-			name: locationParts
+			name: locationParts,
+			...(communication.country
+				? { address: { '@type': 'PostalAddress', addressCountry: communication.country } }
+				: {}),
+			...(coordinates
+				? {
+						geo: {
+							'@type': 'GeoCoordinates',
+							latitude: coordinates.latitude,
+							longitude: coordinates.longitude
+						}
+					}
+				: {})
 		};
 	}
 
+	// The conference is the event the talk was part of, not its organiser.
 	if (communication.conference) {
-		jsonLdObject.organizer = {
-			'@type': 'Organization',
+		jsonLdObject.superEvent = {
+			'@type': 'Event',
 			name: communication.conference
 		};
 	}
@@ -324,11 +397,7 @@ export function buildCommunicationJsonLd(communication: Communication): EventJso
 		jsonLdObject.keywords = communication.tags.join(', ');
 	}
 
-	if (communication.language) {
-		jsonLdObject.inLanguage = Array.isArray(communication.language)
-			? communication.language[0]
-			: communication.language;
-	}
+	jsonLdObject.inLanguage = jsonLdLanguage(communication.language);
 
 	if (communication.poster) {
 		jsonLdObject.workFeatured = {

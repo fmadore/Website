@@ -58,8 +58,10 @@ const ENTRY_BUDGET_KIB = 140;
  * The heaviest route measured 698 KiB when this guard was written — mostly the
  * publication and communication datasets, not libraries. The budget is set
  * above that to catch a step change rather than to police ordinary growth.
+ * Lowered from 850 once /cv/timeline stopped shipping the datasets; the
+ * heaviest route is now /style-guide at 564 KiB.
  */
-const ROUTE_BUDGET_KIB = 850;
+const ROUTE_BUDGET_KIB = 700;
 
 /**
  * Signatures that identify a heavy library inside a minified chunk. Matched

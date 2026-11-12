@@ -20,7 +20,7 @@ export const islamsPeripheries: ResearchProject = {
 		'Experimenting with AI on two multilingual collections, West African and Central Asian Islam, to read them at a scale close reading cannot reach, and to find where the methods mislead.',
 	projectName:
 		"Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
-	programme: 'Open Up — New Research Spaces for the Humanities and Cultural Studies',
+	programme: 'Open Up – New Research Spaces for the Humanities and Cultural Studies',
 	regions: ['West Africa', 'Central Asia'],
 	sourceLanguages: [
 		'Russian',

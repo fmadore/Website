@@ -38,8 +38,12 @@
 		tallyBy,
 		buildCrossTab,
 		buildProjectTimeline,
-		buildStackedByYear
+		buildStackedByYear,
+		stackedTableRows
 	} from '#lib/utils/vizAggregation.ts';
+	import { allResearchProjects } from '#lib/data/research/index.ts';
+	import { parseProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 	// Shared page layout for the two visualisation routes.
 	import '#styles/components/viz-page.css';
 	import {
@@ -284,14 +288,36 @@
 			void loadAffiliations();
 	});
 
-	// 10. Research project timeline — project spans with communication markers.
+	/**
+	 * The year that has happened: the build's, so the prerendered page and the
+	 * hydrated one agree. Later columns hold forthcoming talks, drawn in outline.
+	 */
+	const buildYear = BUILT_AT.getUTCFullYear();
+
+	// 10. Research project timeline — each project over the period its research
+	// record gives, with the talks at the years they were given.
+	const projectYears = new Map(allResearchProjects.map((p) => [p.projectName, p.years]));
 	const projectTimelineData = $derived(
-		buildProjectTimeline(communicationsByProject, (comm) => ({
-			title: comm.title,
-			year: comm.year,
-			type: comm.type ?? 'other'
-		}))
+		buildProjectTimeline(
+			communicationsByProject,
+			(comm) => ({
+				title: comm.title,
+				year: comm.year,
+				type: comm.type ?? 'other'
+			}),
+			(name) => parseProjectPeriod(projectYears.get(name), buildYear)
+		)
 	);
+
+	/** `2013–2018`, `since 2026`, or `no recorded period`, for the table key. */
+	const periodLabel = (period: (typeof projectTimelineData)[number]['period']): string =>
+		!period
+			? 'no recorded period'
+			: period.ongoing
+				? `since ${period.startYear}`
+				: period.startYear === period.endYear
+					? String(period.startYear)
+					: `${period.startYear}–${period.endYear}`;
 
 	/*
 	 * The figures behind each plate.
@@ -303,18 +329,19 @@
 	 * it, and the two can never disagree.
 	 */
 	const perYearTableRows = $derived(
-		perYearStackedData.map((row) => ({
-			label: String(row.year ?? ''),
-			value: Object.entries(row).reduce(
-				(sum, [key, value]) => (key === 'year' ? sum : sum + value),
-				0
-			)
+		stackedTableRows(perYearStackedData, formattedTypes).map((row) => ({
+			...row,
+			label: Number(row.label) > buildYear ? `${row.label} (forthcoming)` : row.label
 		}))
 	);
 	const typeTableRows = $derived(typeDistribution.map((d) => ({ label: d.type, value: d.count })));
 	const countryTableRows = $derived(countryData.map((d) => ({ label: d.country, value: d.count })));
 	const projectTimelineTableRows = $derived(
-		projectTimelineData.map((entry) => ({ label: entry.name, value: entry.publications.length }))
+		projectTimelineData.map((entry) => ({
+			label: `${entry.name} (${periodLabel(entry.period)})`,
+			value: entry.items.length,
+			cells: [entry.outsidePeriod]
+		}))
 	);
 
 	/*
@@ -507,7 +534,7 @@
 
 	<VizSection
 		{...sections.perYear}
-		description="Every talk counted in the year it took place and stacked by type, from the date and type recorded on each entry."
+		description="Every talk counted in the year it took place and stacked by type, from the date and type recorded on each entry. Years after {buildYear} hold forthcoming talks, drawn in outline."
 		variant="stacked"
 		height="450px"
 		hasData={perYearStackedData.length > 0 && communicationTypes.length > 0}
@@ -520,13 +547,15 @@
 			measure="Talks per year by type"
 			itemSingular="talk"
 			itemPlural="talks"
+			forthcomingAfter={buildYear}
 		/>
 		{#snippet table()}
 			<VizDataTable
 				rows={perYearTableRows}
+				columns={formattedTypes}
 				keyLabel="Year"
-				valueLabel="Talks"
-				caption="Talks per year, all types combined."
+				valueLabel="Total"
+				caption="Talks per year by type, with the total for each year."
 			/>
 		{/snippet}
 	</VizSection>
@@ -777,19 +806,25 @@
 
 	<VizSection
 		{...sections.timeline}
-		description="Each research project drawn across the years it ran, with a marker for every talk delivered within it."
+		description="Each research project's bar is the period its project record gives, open-ended projects running to {buildYear}. Each marker is a year in which the project's talks were given, set at that year even when it falls before or after the period."
 		variant="gantt"
 		height="450px"
 		hasData={projectTimelineData.length > 0}
 		empty="No project data recorded."
 	>
-		<EChartsGanttChart data={projectTimelineData} itemSingular="talk" itemPlural="talks" />
+		<EChartsGanttChart
+			data={projectTimelineData}
+			typeLabel={formatTypeLabel}
+			itemSingular="talk"
+			itemPlural="talks"
+		/>
 		{#snippet table()}
 			<VizDataTable
 				rows={projectTimelineTableRows}
+				columns={['Outside the period']}
 				keyLabel="Project"
 				valueLabel="Talks"
-				caption="Talks delivered within each research project, over its span."
+				caption="Talks attached to each research project, and how many of them were given outside its recorded period."
 			/>
 		{/snippet}
 	</VizSection>

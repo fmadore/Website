@@ -3,7 +3,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 
 /** D3 packages only the lazily-loaded interactive charts need. */
 const D3_INTERACTIVE = [
@@ -104,8 +104,40 @@ const templateScriptHashes = [
 const svelteEventReplayHash =
 	`sha256-${createHash('sha256').update('this.__e=event').digest('base64')}` as const;
 
+/**
+ * jsPDF's optional dependencies, which it reaches only through `import()`:
+ * `html2canvas` and `dompurify` for `doc.html()`, `canvg` (with its core-js
+ * polyfills) for `addSvgAsImage()`. The PDF generators call neither, but a
+ * dynamic import is still a chunk, so the build emitted about 380 KiB that no
+ * page ever fetched. Each resolves to a stub instead; should a future generator
+ * start calling one of those methods, the stub throws a message naming this
+ * file rather than failing somewhere inside jsPDF.
+ */
+const JSPDF_UNUSED_OPTIONAL_DEPS = new Set(['html2canvas', 'canvg', 'dompurify']);
+const STUB_PREFIX = '\0unbundled-optional-dep:';
+
+function stubUnusedOptionalDeps(): Plugin {
+	return {
+		name: 'stub-unused-optional-deps',
+		enforce: 'pre',
+		resolveId(source, importer) {
+			if (!JSPDF_UNUSED_OPTIONAL_DEPS.has(source)) return null;
+			if (!importer || !/node_modules[\\/]jspdf[\\/]/.test(importer)) return null;
+			return STUB_PREFIX + source;
+		},
+		load(id) {
+			if (!id.startsWith(STUB_PREFIX)) return null;
+			const name = id.slice(STUB_PREFIX.length);
+			return `export default function unbundled() { throw new Error(${JSON.stringify(
+				`${name} is not bundled: see JSPDF_UNUSED_OPTIONAL_DEPS in vite.config.ts`
+			)}); }`;
+		}
+	};
+}
+
 export default defineConfig({
 	plugins: [
+		stubUnusedOptionalDeps(),
 		sveltekit({
 			preprocess: vitePreprocess(),
 			compilerOptions: {
@@ -171,8 +203,6 @@ export default defineConfig({
 						'https://*.google-analytics.com',
 						'https://*.analytics.google.com',
 						'https://*.googletagmanager.com',
-						'https://api.maptiler.com',
-						'https://zenodo.org',
 						'https://*.cartocdn.com'
 					],
 					'frame-src': [

@@ -17,6 +17,9 @@ export const items: Item[] = [
 	{ id: 'd', type: 'chapter', tags: ['Togo', 'Benin'], year: 2023 }
 ];
 
+/** A project name with a comma and apostrophes inside it, for the round trip. */
+export const PROJECT = "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis";
+
 const inert: EntityArrayDimension<Item> = { match: () => true, countExtractor: () => undefined };
 
 /** A two-dimension system over `items`, wired the way the index pages wire theirs. */
@@ -45,7 +48,7 @@ export function createSystem(): EntityFilterSystem<Item> {
 			languages: [],
 			authors: [],
 			countries: [],
-			projects: []
+			projects: [PROJECT]
 		}
 	});
 }

@@ -10,6 +10,8 @@ import {
 	toggleArrayValue,
 	normalizeYearRange,
 	clampYearRange,
+	yearRangeOverlaps,
+	yearRangeReadout,
 	truncateSearchTerm,
 	type EntityArrayDimension,
 	type EntityArrayFilterKey,
@@ -333,6 +335,51 @@ describe('clampYearRange', () => {
 			min: 2026,
 			max: 2013
 		});
+	});
+});
+
+describe('clampYearRange with open-ended bounds', () => {
+	it('clamps an infinite bound to the corpus', () => {
+		expect(clampYearRange({ min: 2018, max: Infinity }, 2013, 2026)).toEqual({
+			min: 2018,
+			max: 2026
+		});
+		expect(clampYearRange({ min: -Infinity, max: 2015 }, 2013, 2026)).toEqual({
+			min: 2013,
+			max: 2015
+		});
+	});
+});
+
+describe('yearRangeOverlaps', () => {
+	it('is true for a range touching the corpus and false for one beside it', () => {
+		expect(yearRangeOverlaps({ min: 2026, max: 2030 }, 2013, 2026)).toBe(true);
+		expect(yearRangeOverlaps({ min: 1900, max: 2013 }, 2013, 2026)).toBe(true);
+		expect(yearRangeOverlaps({ min: 2027, max: 2030 }, 2013, 2026)).toBe(false);
+		expect(yearRangeOverlaps({ min: -Infinity, max: 2012 }, 2013, 2026)).toBe(false);
+	});
+});
+
+describe('yearRangeReadout', () => {
+	it('prints the corpus span when no range is set', () => {
+		expect(yearRangeReadout(null, 2013, 2026)).toBe('All years · 2013–2026');
+	});
+
+	it('prints a range inside the corpus, and a single year once', () => {
+		expect(yearRangeReadout({ min: 2018, max: 2020 }, 2013, 2026)).toBe('2018–2020');
+		expect(yearRangeReadout({ min: 2018, max: 2018 }, 2013, 2026)).toBe('2018');
+	});
+
+	it('clamps a range that overlaps the corpus, as the predicate admits it', () => {
+		expect(yearRangeReadout({ min: 1900, max: 2015 }, 2013, 2026)).toBe('2013–2015');
+		expect(yearRangeReadout({ min: 2020, max: Infinity }, 2013, 2026)).toBe('2020–2026');
+	});
+
+	it('prints a range outside the corpus as given, never a boundary year that has entries', () => {
+		expect(yearRangeReadout({ min: 2027, max: 2030 }, 2013, 2026)).toBe('2027–2030');
+		expect(yearRangeReadout({ min: 2030, max: 2030 }, 2013, 2026)).toBe('2030');
+		expect(yearRangeReadout({ min: 2030, max: Infinity }, 2013, 2026)).toBe('2030 onwards');
+		expect(yearRangeReadout({ min: -Infinity, max: 2000 }, 2013, 2026)).toBe('Up to 2000');
 	});
 });
 

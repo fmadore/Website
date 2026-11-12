@@ -24,7 +24,7 @@ export const amiraLaunch2026: Activity = {
 	},
 	image: 'images/activities/amira-launch-2026.webp',
 	url: 'https://data.africamultiple.uni-bayreuth.de/',
-	urlLabel: 'Explore AMIRA',
+	urlLabel: 'Open AMIRA',
 	tags: [
 		'Digital Humanities',
 		'African Studies',

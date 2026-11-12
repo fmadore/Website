@@ -19,14 +19,21 @@
  * announced by that page, the sitemap must not list twins (it advertises web
  * pages), and every link `/llms.txt` makes into the site must resolve.
  *
+ * Last, it holds the link graph to the sitemap: every advertised URL but the
+ * home page must be the target of an `<a href>` on another advertised page
+ * (`check-prerender-links.mjs`). A page only the sitemap points at is an
+ * orphan: reachable by a crawler that trusts the sitemap, and by no reader.
+ *
  * Usage:
  *   node scripts/checks/check-prerender.mjs
  *
- * Exit code 1 when any advertised URL has no corresponding page.
+ * Exit code 1 when any advertised URL has no corresponding page, a twin and
+ * its page disagree, or an advertised page has no inbound link.
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { exit } from 'node:process';
 import { brokenLlmsLinks, checkMarkdownTwins } from '../lib/markdown-twins.mjs';
+import { findOrphans } from './check-prerender-links.mjs';
 
 const BUILD_DIR = 'build';
 const SITEMAP = `${BUILD_DIR}/sitemap.xml`;
@@ -139,3 +146,38 @@ if (problems.length) {
 }
 
 console.log('[prerender] OK — every twin is announced and shipped, and llms.txt resolves.');
+
+// ── Orphans ────────────────────────────────────────────────────────────────────
+
+const orphans = findOrphans({
+	urls: locs,
+	files,
+	read: (file) => readFileSync(`${BUILD_DIR}/${file}`, 'utf8'),
+	origin
+});
+
+console.log(
+	`[prerender] ${locs.length} advertised URLs, ${orphans.length} with no inbound link from another page`
+);
+
+if (orphans.length) {
+	const bySection = new Map();
+	for (const path of orphans) {
+		const section = path.split('/').filter(Boolean)[0] ?? '(root)';
+		if (!bySection.has(section)) bySection.set(section, []);
+		bySection.get(section).push(path);
+	}
+	console.error('\n[prerender] FAIL — the sitemap advertises pages that no page links to.\n');
+	for (const [section, paths] of [...bySection].sort((a, b) => b[1].length - a[1].length)) {
+		console.error(`  ${section} — ${paths.length} orphaned`);
+		for (const path of paths) console.error(`    ${path}`);
+	}
+	console.error(
+		'\nEvery advertised page needs one `<a href>` from another advertised page. Records are' +
+			'\nlinked from their CV entry and from the indexes; link the page from the place a' +
+			'\nreader would look for it rather than exempting it here.\n'
+	);
+	exit(1);
+}
+
+console.log('[prerender] OK — every advertised page has an inbound link.');

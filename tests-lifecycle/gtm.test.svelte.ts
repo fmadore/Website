@@ -18,6 +18,7 @@ beforeEach(() => {
 		createElement: () => ({})
 	});
 	stubWindow('www.frederickmadore.com');
+	vi.stubGlobal('navigator', { webdriver: false });
 });
 afterEach(() => {
 	stop?.();
@@ -99,13 +100,25 @@ it('tracks client-side page views only once loaded', () => {
 	expect(pageViews()).toHaveLength(2);
 });
 
-it('configures but never reports page views on localhost', () => {
-	stubWindow('localhost');
+it.each(['localhost', '127.0.0.1', '[::1]'])('loads nothing on %s', (hostname) => {
+	stubWindow(hostname);
 	const { trackPageView } = setup();
+	window.dispatchEvent(new Event('scroll'));
 	vi.advanceTimersByTime(5000);
-	expect(queued().map(([command]) => command)).toEqual(['js', 'config']);
+	expect(appendChild).not.toHaveBeenCalled();
+	expect(vi.getTimerCount()).toBe(0);
 	trackPageView();
-	expect(pageViews()).toHaveLength(0);
+	expect(window.dataLayer).toBeUndefined();
+});
+
+it('loads nothing under automation (navigator.webdriver)', () => {
+	vi.stubGlobal('navigator', { webdriver: true });
+	const { trackPageView } = setup();
+	window.dispatchEvent(new Event('mousemove'));
+	vi.advanceTimersByTime(5000);
+	expect(appendChild).not.toHaveBeenCalled();
+	trackPageView();
+	expect(window.dataLayer).toBeUndefined();
 });
 
 it('loads nothing once its owner is destroyed', () => {

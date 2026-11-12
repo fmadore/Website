@@ -2,7 +2,11 @@
 	import { tick } from 'svelte';
 	import NavLink from '#lib/components/menu/NavLink.svelte';
 	import DropdownMenu from '#lib/components/menu/DropdownMenu.svelte';
-	import type { NavItem } from '#lib/types/navigation.ts';
+	import type { SiteNavItem } from '#lib/data/navigation.ts';
+	import {
+		isNavItemCurrent,
+		normalizeNavPath as normalize
+	} from '#lib/components/menu/navMatch.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	let {
@@ -18,7 +22,7 @@
 		onClose,
 		onDropdownItemClick
 	}: {
-		item: NavItem;
+		item: SiteNavItem;
 		isActive?: boolean;
 		index: number;
 		currentPath?: string;
@@ -31,16 +35,10 @@
 		onDropdownItemClick: () => void;
 	} = $props();
 
-	// A nav link is "active" when the current route matches its path or is
-	// nested beneath it. Normalising trailing slashes and the root `/` avoids
-	// matching every route against the home link.
-	const normalize = (p: string) => (p.length > 1 ? p.replace(/\/$/, '') : p);
-	const isCurrent = $derived.by(() => {
-		const itemPath = normalize(item.path);
-		const current = normalize(currentPath);
-		if (itemPath === '/') return current === '/';
-		return current === itemPath || current.startsWith(`${itemPath}/`);
-	});
+	// A nav link is "active" when the current route matches its path, is
+	// nested beneath it, or falls under one of its `match` prefixes (talk
+	// records live at /communications/, not under /conference-activity/).
+	const isCurrent = $derived(isNavItemCurrent(item, currentPath));
 
 	const hasDropdown = $derived(!!item.dropdown?.length);
 	// Deterministic (SSR-stable) id so the trigger can point `aria-controls` at

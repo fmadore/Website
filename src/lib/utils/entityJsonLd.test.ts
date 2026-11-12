@@ -3,15 +3,21 @@ import {
 	buildPublicationJsonLd,
 	buildCommunicationJsonLd,
 	buildActivityJsonLd,
-	buildDhProjectJsonLd
+	buildDhProjectJsonLd,
+	resolvePublicationJsonLdType,
+	type PublicationDirectoryType
 } from './entityJsonLd';
+import { publicationsByDate } from '#lib/data/publications/index.ts';
+import { PUBLICATION_DIRECTORY_TYPES } from '#lib/dataMetadata.ts';
 import type { Publication } from '#lib/types/publication.ts';
 import type { Communication } from '#lib/types/communication.ts';
 import type { Activity } from '#lib/types/activity.ts';
 import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 import { website } from '#lib/data/siteConfig.ts';
 
-const pub = (over: Partial<Publication>): Publication & { sourceDirType: string } =>
+const pub = (
+	over: Partial<Publication & { sourceDirType: string }>
+): Publication & { sourceDirType: string } =>
 	({
 		id: 'pub-1',
 		type: 'book',
@@ -39,7 +45,73 @@ describe('buildPublicationJsonLd', () => {
 		expect(ld['@context']).toBe('https://schema.org');
 		expect(ld['@type']).toBe('Book');
 		expect(ld.url).toBe(`${website.url}/publications/pub-1`);
-		expect(ld.inLanguage).toBe('English');
+		expect(ld.inLanguage).toBe('en');
+	});
+
+	it('publishes the language as BCP 47, an array for a bilingual work', () => {
+		expect(buildPublicationJsonLd(pub({ language: 'French' })).inLanguage).toBe('fr');
+		expect(buildPublicationJsonLd(pub({ language: 'English, French' })).inLanguage).toEqual([
+			'en',
+			'fr'
+		]);
+	});
+
+	it('names the work elsewhere in sameAs: DOI, Wikidata, OpenAlex', () => {
+		expect(buildPublicationJsonLd(pub({})).sameAs).toBeUndefined();
+		const ld = buildPublicationJsonLd(
+			pub({ doi: '10.1000/x', wikidataId: 'Q42', openAlexId: 'W123' })
+		);
+		expect(ld.sameAs).toEqual([
+			'https://doi.org/10.1000/x',
+			'https://www.wikidata.org/entity/Q42',
+			'https://openalex.org/W123'
+		]);
+	});
+
+	it('types a bulletin note as an Article in its bulletin issue, with its pages', () => {
+		const ld = buildPublicationJsonLd(
+			pub({
+				type: 'bulletin-article',
+				sourceDirType: 'bulletins',
+				journal: 'ZMO Bulletin',
+				issue: '44',
+				pages: '9',
+				pageCount: 1
+			})
+		) as unknown as Record<string, unknown>;
+		expect(ld['@type']).toBe('Article');
+		expect(ld.isPartOf).toEqual({
+			'@type': 'PublicationIssue',
+			name: 'ZMO Bulletin',
+			volumeNumber: undefined,
+			issueNumber: '44'
+		});
+		expect(ld.pagination).toBe('9');
+		expect(ld.numberOfPages).toBeUndefined();
+	});
+
+	it('types a proceedings paper as a ScholarlyArticle in its proceedings volume', () => {
+		const ld = buildPublicationJsonLd(
+			pub({
+				type: 'conference-proceedings',
+				sourceDirType: 'proceedings',
+				proceedingsTitle: 'Proceedings of JCDL',
+				conferenceName: 'JCDL ’26',
+				pages: '1-12'
+			})
+		) as unknown as Record<string, unknown>;
+		expect(ld['@type']).toBe('ScholarlyArticle');
+		expect(ld.isPartOf).toEqual({ '@type': 'Book', name: 'Proceedings of JCDL' });
+		expect(ld.pagination).toBe('1-12');
+
+		const byConference = buildPublicationJsonLd(
+			pub({ sourceDirType: 'proceedings', conferenceName: 'JCDL ’26' })
+		) as unknown as Record<string, unknown>;
+		expect(byConference.isPartOf).toEqual({ '@type': 'Book', name: 'JCDL ’26' });
+	});
+
+	it('refuses a directory it has no type for rather than calling it a Book', () => {
+		expect(() => buildPublicationJsonLd(pub({ sourceDirType: 'unknown' }))).toThrow(/unknown/);
 	});
 
 	it('uses editor instead of author for an edited volume', () => {
@@ -93,6 +165,44 @@ describe('buildPublicationJsonLd', () => {
 	});
 });
 
+describe('resolvePublicationJsonLdType', () => {
+	it('knows exactly the directories the data loader names', () => {
+		const known: Record<PublicationDirectoryType, true> = {
+			books: true,
+			articles: true,
+			bulletins: true,
+			chapters: true,
+			specialIssues: true,
+			reports: true,
+			encyclopedia: true,
+			blogposts: true,
+			dissertations: true,
+			proceedings: true,
+			workingPapers: true
+		};
+		expect(Object.values(PUBLICATION_DIRECTORY_TYPES).sort()).toEqual(Object.keys(known).sort());
+	});
+
+	// The dataset is the oracle: nine records once fell through to `Book`.
+	it('types no record that is not a book as a Book', () => {
+		expect(publicationsByDate.length).toBeGreaterThan(40);
+		const mistyped = publicationsByDate
+			.filter((publication) => publication.type !== 'book')
+			.filter((publication) => resolvePublicationJsonLdType(publication) === 'Book')
+			.map((publication) => publication.id);
+		expect(mistyped).toEqual([]);
+	});
+
+	it('gives every paged, contained record its container and pages', () => {
+		for (const publication of publicationsByDate) {
+			if (!['bulletins', 'proceedings'].includes(publication.sourceDirType)) continue;
+			const ld = buildPublicationJsonLd(publication) as unknown as Record<string, unknown>;
+			expect(ld.isPartOf, publication.id).toBeDefined();
+			if (publication.pages) expect(ld.pagination, publication.id).toBe(publication.pages);
+		}
+	});
+});
+
 describe('buildCommunicationJsonLd', () => {
 	const comm = (over: Partial<Communication>): Communication =>
 		({
@@ -113,14 +223,32 @@ describe('buildCommunicationJsonLd', () => {
 		expect(ld.startDate).toBeTruthy();
 	});
 
-	it('composes a Place from location and country', () => {
-		const ld = buildCommunicationJsonLd(comm({ location: 'Lomé', country: 'Togo' }));
-		expect(ld.location).toMatchObject({ '@type': 'Place', name: 'Lomé, Togo' });
+	it('composes a Place from location and country, with its country and coordinates', () => {
+		const ld = buildCommunicationJsonLd(
+			comm({
+				location: 'Lomé',
+				country: 'Togo',
+				coordinates: { latitude: 6.13, longitude: 1.22 }
+			})
+		);
+		expect(ld.location).toEqual({
+			'@type': 'Place',
+			name: 'Lomé, Togo',
+			address: { '@type': 'PostalAddress', addressCountry: 'Togo' },
+			geo: { '@type': 'GeoCoordinates', latitude: 6.13, longitude: 1.22 }
+		});
 	});
 
-	it('takes the first language when given an array', () => {
+	it('places the talk in its conference as superEvent, not as organizer', () => {
+		const ld = buildCommunicationJsonLd(comm({ conference: 'ECAS 2025' }));
+		expect(ld.superEvent).toEqual({ '@type': 'Event', name: 'ECAS 2025' });
+		expect(ld.organizer).toBeUndefined();
+	});
+
+	it('publishes its language as BCP 47, every language of a bilingual talk', () => {
+		expect(buildCommunicationJsonLd(comm({ language: 'French' })).inLanguage).toBe('fr');
 		const ld = buildCommunicationJsonLd(comm({ language: ['French', 'English'] }));
-		expect(ld.inLanguage).toBe('French');
+		expect(ld.inLanguage).toEqual(['fr', 'en']);
 	});
 
 	it('credits an organisation as an Organization, not a Person', () => {

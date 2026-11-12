@@ -14,6 +14,21 @@ interface GtmState {
 	listener: () => void;
 }
 
+const LOCAL_HOSTNAMES = new Set(['localhost', '127.0.0.1', '[::1]']);
+
+/**
+ * Whether this page view may load analytics at all.
+ *
+ * No on a local host (dev server, `npm run preview`, the E2E suite's `serve`),
+ * no under automation (`navigator.webdriver`: Playwright, Lighthouse and the
+ * agentic check all set it), so none of them reaches the production property.
+ */
+export function analyticsAllowed(): boolean {
+	if (!browser) return false;
+	if (LOCAL_HOSTNAMES.has(window.location.hostname)) return false;
+	return globalThis.navigator?.webdriver !== true;
+}
+
 /**
  * Initializes GTM with lazy loading (on first interaction or after 5s fallback).
  * Returns a `trackPageView` function for use in afterNavigate.
@@ -50,9 +65,6 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- ephemeral Date for gtag
 		window.gtag!('js', new Date());
 
-		const isLocalhost =
-			window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
 		window.gtag!('config', gtmId, {
 			send_page_view: false,
 			allow_enhanced_conversions: true,
@@ -62,18 +74,16 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 			custom_map: {}
 		});
 
-		// Send initial page view (skip on localhost)
-		if (!isLocalhost) {
-			try {
-				window.gtag!('event', 'page_view', {
-					page_title: document.title,
-					page_location: window.location.href,
-					page_path: window.location.pathname
-				});
-			} catch (error) {
-				if (import.meta.env.DEV) {
-					console.warn('Failed to send initial page view to Google Analytics:', error);
-				}
+		// Send the initial page view by hand (gtag's own is disabled above)
+		try {
+			window.gtag!('event', 'page_view', {
+				page_title: document.title,
+				page_location: window.location.href,
+				page_path: window.location.pathname
+			});
+		} catch (error) {
+			if (import.meta.env.DEV) {
+				console.warn('Failed to send initial page view to Google Analytics:', error);
 			}
 		}
 
@@ -87,7 +97,7 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 
 	// Set up lazy loading via $effect
 	$effect(() => {
-		if (browser && !state.loaded) {
+		if (!state.loaded && analyticsAllowed()) {
 			const listenerOptions = { passive: true, once: true };
 			window.addEventListener('scroll', state.listener, listenerOptions);
 			window.addEventListener('mousemove', state.listener, listenerOptions);
@@ -109,20 +119,15 @@ export function useGtm(gtmId: string, isDebugMode = false) {
 	/** Call in afterNavigate to track SPA page views */
 	function trackPageView() {
 		if (browser && state.loaded && typeof window.gtag === 'function') {
-			const isLocalhost =
-				window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-
-			if (!isLocalhost) {
-				try {
-					window.gtag('event', 'page_view', {
-						page_title: document.title,
-						page_location: window.location.href,
-						page_path: window.location.pathname
-					});
-				} catch (error) {
-					if (import.meta.env.DEV) {
-						console.warn('Failed to send page view to Google Analytics:', error);
-					}
+			try {
+				window.gtag('event', 'page_view', {
+					page_title: document.title,
+					page_location: window.location.href,
+					page_path: window.location.pathname
+				});
+			} catch (error) {
+				if (import.meta.env.DEV) {
+					console.warn('Failed to send page view to Google Analytics:', error);
 				}
 			}
 		}

@@ -155,8 +155,9 @@ sw.addEventListener('fetch', (event) => {
 	// Which strategy applies is a pure decision, tested in
 	// service-worker-routes.test.ts. 'passthrough' means no respondWith() at all,
 	// which is the only way a request keeps its own cache headers and the
-	// browser's preload cache — the fonts and the version file both need that.
-	const strategy = chooseStrategy(url.pathname, request.destination);
+	// browser's preload cache — the fonts and the version file both need that —
+	// and the only way media and range requests stay out of the runtime cache.
+	const strategy = chooseStrategy(url.pathname, request.destination, request.headers.has('range'));
 
 	if (strategy === 'passthrough') return;
 	const { response, done } = handleRequest(request, strategy, event.preloadResponse);

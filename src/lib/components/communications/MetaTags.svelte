@@ -4,6 +4,7 @@
 	import { page } from '$app/state';
 	import {
 		type CoinsField,
+		type HeadTagEntry,
 		buildCoins,
 		buildHeadTags,
 		getFullUrl,
@@ -13,6 +14,7 @@
 	import BaseMetaTags from '#lib/components/common/BaseMetaTags.svelte';
 	import { author, website } from '#lib/data/siteConfig.ts';
 	import { stripHtml } from '#lib/utils/textUtils.ts';
+	import { languageCodes } from '#lib/utils/languageUtils.ts';
 
 	let { communication }: { communication: Communication } = $props();
 
@@ -49,13 +51,21 @@
 	// Canonical page URL (see resolveUrl note above).
 	const currentUrl = $derived(`${website.url}${page.url.pathname}`);
 
-	// Language: joined list or 'en' fallback.
-	const language = $derived(
-		communication.language
-			? Array.isArray(communication.language)
-				? communication.language.join(', ')
-				: communication.language
-			: 'en'
+	// BCP 47 codes, one tag per language of a bilingual talk; 'en' when unrecorded.
+	const languages = $derived.by(() => {
+		const codes = languageCodes(communication.language);
+		return codes.length > 0 ? codes : ['en'];
+	});
+
+	/**
+	 * Highwire `citation_*` tags tell Google Scholar and Zotero the page is a
+	 * paper. A talk is not one, so it carries them only when it ships its own
+	 * paper-like document on this site: a poster PDF. Every other talk keeps
+	 * Dublin Core and COinS, which describe an event without claiming a paper.
+	 * (`citation_pdf_url` once pointed at the event's website on 31 talks.)
+	 */
+	const posterPdfUrl = $derived(
+		communication.poster ? resolveUrl(communication.poster.pdf) : undefined
 	);
 
 	// COinS field mapping — presentations use the DC format.
@@ -73,18 +83,14 @@
 		['rft.date', communication.dateISO || communication.year?.toString()]
 	];
 
-	// Head tag field mapping — order here is emission order.
-	const metaTags = $derived.by(() => {
-		const place = `${communication.location}, ${communication.country}`;
-
-		return buildHeadTags([
-			// Basic Highwire Press tags for presentations
+	const highwireEntries = (place: string): HeadTagEntry[] => {
+		if (!posterPdfUrl) return [];
+		return [
 			{ name: 'citation_title', content: communication.title },
 			{ name: 'citation_genre', content: 'presentation' },
 			// Author/Presenter - always the site author for communications
 			{ name: 'citation_author', content: authorCitationName },
 			{ name: 'citation_presenter', content: authorCitationName },
-			{ name: 'DC.creator', content: authorCitationName },
 			// Conference/Meeting info for presentations
 			{ name: 'citation_conference_title', content: communication.conference },
 			{ name: 'citation_meeting_name', content: communication.conference },
@@ -93,33 +99,33 @@
 			{ name: 'citation_date', content: communication.dateISO },
 			{ name: 'citation_publication_date', content: communication.dateISO },
 			{ name: 'citation_year', content: communication.year?.toString() },
-			{ name: 'citation_language', content: language },
+			...languages.map((code) => ({ name: 'citation_language', content: code })),
 			{ name: 'citation_keywords', content: communication.tags?.join('; ') },
-			// Panel-specific information
 			{ name: 'citation_panel_title', content: communication.panelTitle },
-			// Abstract/Description
 			{ name: 'citation_abstract', content: plainAbstract },
-			// URLs
 			{ name: 'citation_public_url', content: currentUrl },
 			{ name: 'citation_abstract_html_url', content: currentUrl },
-			{ name: 'citation_fulltext_html_url', content: currentUrl },
-			// A poster is the one talk that ships its own PDF; any other talk keeps
-			// its long-standing primary URL here.
-			{
-				name: 'citation_pdf_url',
-				content: resolveUrl(communication.poster?.pdf ?? communication.url)
-			},
-			// Additional presentation-specific URL — raw (unresolved) by
-			// long-standing behaviour, unlike citation_pdf_url above.
-			{ name: 'citation_presentation_url', content: communication.url },
+			// The poster PDF, on this site — the one document Scholar can index.
+			{ name: 'citation_pdf_url', content: posterPdfUrl }
+		];
+	};
+
+	// Head tag field mapping — order here is emission order.
+	const metaTags = $derived.by(() => {
+		const place = `${communication.location}, ${communication.country}`;
+
+		return buildHeadTags([
+			// Highwire Press tags — only for a talk with its own poster PDF.
+			highwireEntries(place),
 			// Dublin Core tags for presentations
 			{ name: 'DC.title', content: communication.title },
+			{ name: 'DC.creator', content: authorCitationName },
 			{ name: 'DC.type', content: 'Event' },
 			{ name: 'DC.publisher', content: communication.conference },
 			{ name: 'DC.description', content: plainAbstract },
 			{ name: 'DC.date', content: communication.dateISO },
 			{ name: 'DC.coverage', content: place },
-			{ name: 'DC.language', content: language },
+			languages.map((code) => ({ name: 'DC.language', content: code })),
 			// Subject tags from communication tags
 			(communication.tags ?? []).map((tag) => ({ name: 'DC.subject', content: tag })),
 			// Open Graph tags for social media sharing

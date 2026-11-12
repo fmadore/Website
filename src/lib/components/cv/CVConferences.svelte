@@ -3,6 +3,8 @@
 	import { formatCVAuthorList, terminalPeriod } from '#lib/utils/cvFormatters.ts';
 	import { organisedPanelTitle, splitCvTalks } from '#lib/utils/cvSections.ts';
 	import { formatDayMonth, getYearFromISODate } from '#lib/utils/date-formatter.ts';
+	import { resolve } from '$app/paths';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 
@@ -27,8 +29,11 @@
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}
-						{quoteTitle(organisedPanelTitle(comm))}{#if comm.conference}, <em
-								>{typesetQuotes(comm.conference)}</em
+						<a
+							href={resolve('/communications/[id]', { id: comm.id })}
+							lang={titleLangAttr(comm.language)}
+							class="cv-record-link">{quoteTitle(organisedPanelTitle(comm))}</a
+						>{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
 							>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {formatDayMonth(
 							comm.dateISO
 						)}.
@@ -47,7 +52,11 @@
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}
-						{quoteTitle(comm.title)}{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
+						<a
+							href={resolve('/communications/[id]', { id: comm.id })}
+							lang={titleLangAttr(comm.language)}
+							class="cv-record-link">{quoteTitle(comm.title)}</a
+						>{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
 							>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},
 						{formatDayMonth(comm.dateISO)}.
 					</CVEntry>
@@ -65,7 +74,11 @@
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 						{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 						{/if}
-						{quoteTitle(comm.title)}{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
+						<a
+							href={resolve('/communications/[id]', { id: comm.id })}
+							lang={titleLangAttr(comm.language)}
+							class="cv-record-link">{quoteTitle(comm.title)}</a
+						>{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
 							>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},
 						{formatDayMonth(comm.dateISO)}.
 					</CVEntry>

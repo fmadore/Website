@@ -87,12 +87,15 @@
 		.sort((a, b) => a.span.start - b.span.start || a.span.end - b.span.end)
 		.map(({ id, span }) => {
 			const end = span.open ? AXIS_END : span.end;
+			// A single year is a point on the axis; the floor keeps it visible.
+			const width = Math.max(((end - span.start) / AXIS_SPAN) * 100, 3);
 			return {
 				id,
 				current: span.open,
-				left: ((span.start - AXIS_START) / AXIS_SPAN) * 100,
-				// A single year is a point on the axis; the floor keeps it visible.
-				width: Math.max(((end - span.start) / AXIS_SPAN) * 100, 3)
+				// A bar that starts on the last axis year would sit at 100% and run
+				// its floor width past the rail; it ends at the rail instead.
+				left: Math.min(((span.start - AXIS_START) / AXIS_SPAN) * 100, 100 - width),
+				width
 			};
 		});
 
@@ -550,7 +553,7 @@ own methods close the entry as apparatus.
 		--period-gap: var(--space-1);
 	}
 
-	@media (--md) {
+	@media (--lg) {
 		.dh-hero {
 			grid-template-columns: minmax(0, 1fr) 320px;
 			gap: var(--space-2xl);

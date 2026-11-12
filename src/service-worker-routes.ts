@@ -53,6 +53,20 @@ export const STALE_WHILE_REVALIDATE_ROUTES = ['/api/', '.json'];
 export const FONT_EXTENSIONS = ['.woff2', '.woff', '.ttf', '.otf'];
 
 /**
+ * Large media and downloads, passed straight to the browser.
+ *
+ * The NotebookLM audio overviews are about 7 MB each and the PDFs under
+ * `/files/` are downloads, not page assets: network-first would `cache.put` a
+ * whole file into the runtime cache on first play or open, and a media element
+ * asks for byte ranges (a `206` the Cache API refuses to store anyway). The
+ * host's HTTP cache already handles both.
+ */
+export const MEDIA_ROUTES = ['/notebooklm/', '/files/', '.mp3', '.mp4', '.m4a', '.webm', '.pdf'];
+
+/** Request destinations that are streamed media rather than page assets. */
+export const MEDIA_DESTINATIONS = ['audio', 'video', 'track'];
+
+/**
  * SvelteKit's freshness oracle, and so the one file that must never be answered
  * from a cache.
  *
@@ -75,15 +89,29 @@ export function matchesRoute(pathname: string, route: string): boolean {
 /**
  * Which strategy the worker should apply to `pathname`.
  *
- * Order is load-bearing: the two passthrough cases are decided before either
- * cache table is consulted, because both paths also match a cache-first entry
- * and the tables cannot express an exception.
+ * Order is load-bearing: the passthrough cases are decided before either
+ * cache table is consulted, because the fonts and the version file also match a
+ * cache-first entry and the tables cannot express an exception.
  *
- * `destination` is the request's own `destination`, which catches a font served
- * from a path whose extension says nothing.
+ * `destination` is the request's own `destination`, which catches a font or a
+ * media stream served from a path whose extension says nothing. `isRange` is
+ * whether the request carries a `Range` header: a partial response cannot be
+ * cached, so a range request is never intercepted, whatever its path.
  */
-export function chooseStrategy(pathname: string, destination?: string): SwStrategy {
+export function chooseStrategy(
+	pathname: string,
+	destination?: string,
+	isRange = false
+): SwStrategy {
 	if (destination === 'font' || FONT_EXTENSIONS.some((ext) => pathname.endsWith(ext))) {
+		return 'passthrough';
+	}
+
+	if (
+		isRange ||
+		(destination !== undefined && MEDIA_DESTINATIONS.includes(destination)) ||
+		MEDIA_ROUTES.some((route) => matchesRoute(pathname, route))
+	) {
 		return 'passthrough';
 	}
 

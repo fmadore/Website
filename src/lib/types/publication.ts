@@ -192,7 +192,9 @@ export type CvPublicationField =
 	| 'isEditedVolume'
 	| 'doi'
 	| 'url'
-	| 'reviewedBy';
+	| 'reviewedBy'
+	// The title's `lang` attribute (WCAG 3.1.2), via `titleLangAttr`.
+	| 'language';
 
 /** A publication as the CV reads it. */
 export type CvPublication = Pick<PublicationSummary, CvPublicationField>;

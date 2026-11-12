@@ -5,7 +5,10 @@ import {
 	buildCrossTab,
 	buildProjectTimeline,
 	buildLocationData,
-	buildStackedByYear
+	buildStackedByYear,
+	yearRange,
+	fillYearSeries,
+	stackedTableRows
 } from './vizAggregation';
 
 describe('tallyBy', () => {
@@ -115,22 +118,65 @@ describe('buildCrossTab', () => {
 });
 
 describe('buildProjectTimeline', () => {
-	it('spans min→max year, sorts items chronologically, sorts entries by start', () => {
-		const groups = {
-			Later: [
-				{ title: 'L2', year: 2020, type: 'x' },
-				{ title: 'L1', year: 2018, type: 'x' }
-			],
-			Earlier: [{ title: 'E1', year: 2010, type: 'y' }]
-		};
-		const result = buildProjectTimeline(groups, (i) => ({
-			title: i.title,
-			year: i.year,
-			type: i.type
-		}));
-		expect(result.map((e) => e.name)).toEqual(['Earlier', 'Later']);
-		expect(result[1]).toMatchObject({ startYear: 2018, endYear: 2020 });
-		expect(result[1]!.publications.map((p) => p.title)).toEqual(['L1', 'L2']);
+	const groups = {
+		Later: [
+			{ title: 'L2', year: 2020, type: 'x' },
+			{ title: 'L1', year: 2018, type: 'x' },
+			{ title: 'L3', year: 2024, type: 'x' }
+		],
+		Earlier: [{ title: 'E1', year: 2010, type: 'y' }]
+	};
+	const toItem = (i: { title: string; year: number; type: string }) => i;
+
+	it('draws the recorded period and keeps each output at its own year', () => {
+		const result = buildProjectTimeline(groups, toItem, (name) =>
+			name === 'Later' ? { startYear: 2015, endYear: 2019, ongoing: false } : undefined
+		);
+		const later = result.find((e) => e.name === 'Later')!;
+		expect(later.period).toEqual({ startYear: 2015, endYear: 2019, ongoing: false });
+		expect(later).toMatchObject({ firstItemYear: 2018, lastItemYear: 2024, outsidePeriod: 2 });
+		expect(later.items.map((p) => p.title)).toEqual(['L1', 'L2', 'L3']);
+	});
+
+	it('gives a project with no record no period, and counts nothing outside it', () => {
+		const result = buildProjectTimeline(groups, toItem);
+		expect(result.map((e) => e.period)).toEqual([null, null]);
+		expect(result.map((e) => e.outsidePeriod)).toEqual([0, 0]);
+	});
+
+	it('orders entries by the period start, else by the first output', () => {
+		const result = buildProjectTimeline(groups, toItem, (name) =>
+			name === 'Later' ? { startYear: 2005, endYear: 2025, ongoing: true } : undefined
+		);
+		expect(result.map((e) => e.name)).toEqual(['Later', 'Earlier']);
+		expect(buildProjectTimeline(groups, toItem).map((e) => e.name)).toEqual(['Earlier', 'Later']);
+	});
+});
+
+describe('yearRange', () => {
+	it('runs from the smallest to the largest year without a gap', () => {
+		expect(yearRange([2016, 2013, 2014])).toEqual([2013, 2014, 2015, 2016]);
+	});
+
+	it('is empty for no years', () => {
+		expect(yearRange([])).toEqual([]);
+	});
+});
+
+describe('fillYearSeries', () => {
+	it('puts the empty years back as zeros', () => {
+		expect(
+			fillYearSeries(
+				new Map([
+					[2016, 3],
+					[2014, 1]
+				])
+			)
+		).toEqual([
+			{ year: 2014, value: 1 },
+			{ year: 2015, value: 0 },
+			{ year: 2016, value: 3 }
+		]);
 	});
 });
 
@@ -169,7 +215,7 @@ describe('buildStackedByYear', () => {
 		{ year: 2022, type: 'book' }
 	];
 
-	it('builds one row per year with a column per type key, sorted by year', () => {
+	it('builds one row per year, empty years included, with a column per type key', () => {
 		const rows = buildStackedByYear(items, {
 			getYear: (i) => i.year,
 			getType: (i) => i.type,
@@ -177,6 +223,7 @@ describe('buildStackedByYear', () => {
 		});
 		expect(rows).toEqual([
 			{ year: 2020, article: 2, book: 1 },
+			{ year: 2021, article: 0, book: 0 },
 			{ year: 2022, article: 0, book: 1 }
 		]);
 	});
@@ -201,5 +248,22 @@ describe('buildStackedByYear', () => {
 		expect(buildStackedByYear([], { getYear: () => 0, getType: () => '', typeKeys: [] })).toEqual(
 			[]
 		);
+	});
+});
+
+describe('stackedTableRows', () => {
+	it('lays out a cell per key and the year total', () => {
+		expect(
+			stackedTableRows(
+				[
+					{ year: 2020, Article: 2, Book: 1 },
+					{ year: 2021, Article: 0, Book: 0 }
+				],
+				['Book', 'Article']
+			)
+		).toEqual([
+			{ label: '2020', value: 3, cells: [1, 2] },
+			{ label: '2021', value: 0, cells: [0, 0] }
+		]);
 	});
 });

@@ -18,6 +18,7 @@
 	import ReferenceLink from './ReferenceLink.svelte';
 	import ReferencePreviewCard from './ReferencePreviewCard.svelte';
 	import { portal } from '#lib/actions/portal.ts';
+	import { motionDuration } from '#lib/utils/motion.ts';
 	import {
 		getActiveReferenceId,
 		setActiveReferenceId
@@ -29,10 +30,12 @@
 	let { id, label }: { id: string; label?: string } = $props();
 
 	/* ────────────────────────── Cross‑fade setup ─────────────────────── */
+	// Both durations are read when the transition runs, so a reader who asks for
+	// reduced motion gets an instant change (motionDuration returns 0).
 	const [send, receive] = crossfade({
-		duration: 300,
+		duration: () => motionDuration(300),
 		easing: quintOut,
-		fallback: (node: Element) => fade(node, { duration: 200, easing: quintOut })
+		fallback: (node: Element) => fade(node, { duration: motionDuration(200), easing: quintOut })
 	}); /* ───────────────────────── Derived data ──────────────────────────── */
 	// Resolve the referenced item from the entries the page's server load passed
 	// (`#lib/server/references`): only the ones this page cites, never the whole

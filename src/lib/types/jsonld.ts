@@ -8,10 +8,23 @@ import { getContributorName, isPersonContributor } from '#lib/utils/contributor.
 
 // --- Primitive Schema Types ---
 
+export interface JsonLdPostalAddress {
+	'@type': 'PostalAddress';
+	addressLocality?: string;
+	addressCountry?: string;
+}
+
+export interface JsonLdGeoCoordinates {
+	'@type': 'GeoCoordinates';
+	latitude: number;
+	longitude: number;
+}
+
 export interface JsonLdPlace {
 	'@type': 'Place';
 	name: string;
-	address?: string;
+	address?: string | JsonLdPostalAddress;
+	geo?: JsonLdGeoCoordinates;
 }
 
 export interface JsonLdOrganization {
@@ -78,7 +91,10 @@ export interface BaseJsonLd {
 	mainEntityOfPage?: { '@id': string };
 	identifier?: string | JsonLdPropertyValue | (string | JsonLdPropertyValue)[];
 	copyrightYear?: number;
-	inLanguage?: string;
+	/** BCP 47 code(s), from `jsonLdLanguage()` — never a display name like "French". */
+	inLanguage?: string | string[];
+	/** The same work elsewhere: its DOI, Wikidata item, OpenAlex record. */
+	sameAs?: string[];
 	spatialCoverage?: JsonLdPlace[];
 	/** schema.org's open-access flag. Emitted only when the work is free to read. */
 	isAccessibleForFree?: boolean;
@@ -166,6 +182,8 @@ export interface EventJsonLd extends BaseJsonLd {
 	endDate?: string;
 	location?: JsonLdPlace | { '@type': 'VirtualLocation'; url?: string };
 	organizer?: JsonLdOrganization;
+	/** The conference or series the talk was given at. */
+	superEvent?: { '@type': 'Event'; name: string };
 	performer?: JsonLdAgent[];
 	eventAttendanceMode?: string;
 	/** A work exhibited at the event: a poster session's poster. */
