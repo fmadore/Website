@@ -15,11 +15,15 @@
  * every Signposting landing page has one; and every BibTeX record the build
  * ships is named by its page. Rules: scripts/lib/signposting.mjs.
  *
+ * And it holds every indexable page to a `<title>` of its own (the 404 and
+ * offline pages and redirect stubs excepted). Rules:
+ * scripts/checks/check-structured-data-titles.mjs.
+ *
  * Usage:
  *   node scripts/checks/check-structured-data.mjs
  *
- * Exit code 1 when any block fails to parse or carries a bad URL or date, or a
- * Signposting link and the files disagree.
+ * Exit code 1 when any block fails to parse or carries a bad URL or date, a
+ * Signposting link and the files disagree, or two pages share a `<title>`.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -30,6 +34,7 @@ import {
 	structuredDataProblems
 } from '../lib/structured-data.mjs';
 import { signpostingProblems } from '../lib/signposting.mjs';
+import { duplicateTitles } from './check-structured-data-titles.mjs';
 
 const BUILD_DIR = 'build';
 
@@ -58,10 +63,12 @@ const failures = new Map();
 const fail = (description, page) =>
 	failures.set(description, [...(failures.get(description) ?? []), page]);
 const described = new Set();
+const titled = [];
 let blocks = 0;
 
 for (const page of pages) {
 	const html = readFileSync(`${BUILD_DIR}${page}`, 'utf8');
+	titled.push({ path: page, html });
 	for (const body of extractJsonLdBlocks(html)) {
 		blocks += 1;
 		let data;
@@ -88,6 +95,12 @@ for (const path of shipped) {
 	}
 }
 
+// A search engine shows one result per title; a reader cannot tell them apart.
+const sharedTitles = duplicateTitles(titled);
+for (const [title, where] of sharedTitles) {
+	for (const page of where) fail(`<title> shared by ${where.length} pages: ${title}`, page);
+}
+
 console.log(
 	`[structured-data] ${blocks} JSON-LD blocks on ${pages.length} pages; ` +
 		`${described.size} metadata documents named by describedby`
@@ -106,12 +119,13 @@ if (failures.size > 0) {
 	console.error(
 		'\nBuild JSON-LD addresses with `siteUrl()` from #lib/utils/siteHelpers (never from' +
 			"\nKit's `base`, which is page-relative), and dates with `formatJsonLdDate()`." +
-			'\nSignposting links come from `publicationSignposts()` in #lib/utils/signposting.ts.\n'
+			'\nSignposting links come from `publicationSignposts()` in #lib/utils/signposting.ts.' +
+			'\nRecord page titles come from `recordPageTitle()` in #lib/utils/seoUtils.ts.\n'
 	);
 	exit(1);
 }
 
 console.log(
 	'[structured-data] OK — every URL is absolute, every date is ISO 8601, ' +
-		'and every Signposting link resolves.'
+		'every Signposting link resolves, and every page has a title of its own.'
 );

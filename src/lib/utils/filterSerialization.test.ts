@@ -3,6 +3,7 @@ import {
 	ARRAY_FILTER_PARAMS,
 	serializeFiltersToQuery,
 	parseArrayFilterParam,
+	canonicalizeFacetValues,
 	parseSearchParam,
 	parseYearRangeParams,
 	arrayValuesEqual,
@@ -104,6 +105,44 @@ describe('parseArrayFilterParam', () => {
 	it('drops empty entries (malformed ?tag=&tag=a)', () => {
 		expect(parseArrayFilterParam(new URLSearchParams('tag=&tag=a&tag='), 'tag')).toEqual(['a']);
 	});
+
+	it('drops repeated entries', () => {
+		const params = new URLSearchParams('tag=Islam&tag=Togo&tag=Islam');
+		expect(parseArrayFilterParam(params, 'tag')).toEqual(['Islam', 'Togo']);
+	});
+});
+
+describe('canonicalizeFacetValues', () => {
+	const vocabulary = ['Islam', 'Côte d’Ivoire', 'book', 'Data visualisation', 'Data Visualisation'];
+
+	it('keeps exact matches', () => {
+		expect(canonicalizeFacetValues(['Islam', 'book'], vocabulary)).toEqual(['Islam', 'book']);
+	});
+
+	it('folds case, accents and apostrophes onto the vocabulary spelling', () => {
+		expect(canonicalizeFacetValues(['islam'], vocabulary)).toEqual(['Islam']);
+		expect(canonicalizeFacetValues(['Book'], vocabulary)).toEqual(['book']);
+		expect(canonicalizeFacetValues(["cote d'ivoire"], vocabulary)).toEqual(['Côte d’Ivoire']);
+		expect(canonicalizeFacetValues(['Côte d’Ivoire'], vocabulary)).toEqual(['Côte d’Ivoire']);
+	});
+
+	it('drops values the vocabulary does not hold', () => {
+		expect(canonicalizeFacetValues(['NONEXISTENT', 'Islam'], vocabulary)).toEqual(['Islam']);
+		expect(canonicalizeFacetValues(['Islam'], [])).toEqual([]);
+	});
+
+	it('collapses values that fold to the same option', () => {
+		expect(canonicalizeFacetValues(['Islam', 'islam', 'ISLAM'], vocabulary)).toEqual(['Islam']);
+	});
+
+	it('lets each of two options that fold alike match itself exactly', () => {
+		expect(canonicalizeFacetValues(['Data Visualisation'], vocabulary)).toEqual([
+			'Data Visualisation'
+		]);
+		expect(canonicalizeFacetValues(['data visualisation'], vocabulary)).toEqual([
+			'Data visualisation'
+		]);
+	});
 });
 
 describe('parseSearchParam', () => {
@@ -129,16 +168,21 @@ describe('parseYearRangeParams', () => {
 		expect(parseYearRangeParams('2010', '2020')).toEqual({ min: 2010, max: 2020 });
 	});
 
-	it('returns null when either bound is missing or empty', () => {
+	it('returns null when both bounds are missing or empty', () => {
 		expect(parseYearRangeParams(null, null)).toBeNull();
-		expect(parseYearRangeParams('2010', null)).toBeNull();
-		expect(parseYearRangeParams(null, '2020')).toBeNull();
-		expect(parseYearRangeParams('', '2020')).toBeNull();
+		expect(parseYearRangeParams('', '')).toBeNull();
+		expect(parseYearRangeParams('abc', 'xyz')).toBeNull();
 	});
 
-	it('returns null on non-numeric bounds', () => {
-		expect(parseYearRangeParams('abc', '2020')).toBeNull();
-		expect(parseYearRangeParams('2010', 'xyz')).toBeNull();
+	it('reads a lone bound as an open-ended range', () => {
+		expect(parseYearRangeParams('2010', null)).toEqual({ min: 2010, max: Infinity });
+		expect(parseYearRangeParams(null, '2020')).toEqual({ min: -Infinity, max: 2020 });
+		expect(parseYearRangeParams('', '2020')).toEqual({ min: -Infinity, max: 2020 });
+	});
+
+	it('treats a non-numeric bound as absent', () => {
+		expect(parseYearRangeParams('abc', '2020')).toEqual({ min: -Infinity, max: 2020 });
+		expect(parseYearRangeParams('2010', 'xyz')).toEqual({ min: 2010, max: Infinity });
 	});
 
 	it('tolerates numeric strings with trailing junk like parseInt does', () => {
@@ -159,6 +203,16 @@ describe('round-trip serialization', () => {
 			yearRange: { min: 2005, max: 2024 }
 		};
 		expect(parseQuery(serializeFiltersToQuery(filters))).toEqual(filters);
+	});
+
+	it('an open-ended range goes back out as its one bound', () => {
+		expect(serializeFiltersToQuery({ yearRange: { min: 2018, max: Infinity } })).toBe(
+			'year_min=2018'
+		);
+		expect(serializeFiltersToQuery({ yearRange: { min: -Infinity, max: 2015 } })).toBe(
+			'year_max=2015'
+		);
+		expect(parseQuery('year_max=2015')).toEqual({ yearRange: { min: -Infinity, max: 2015 } });
 	});
 
 	it('empty filters round-trip to empty filters', () => {
@@ -201,5 +255,11 @@ describe('yearRangesEqual', () => {
 		expect(yearRangesEqual(null, undefined)).toBe(true);
 		expect(yearRangesEqual(null, null)).toBe(true);
 		expect(yearRangesEqual({ min: 1, max: 2 }, null)).toBe(false);
+	});
+
+	it('tells an open lower bound from an open upper one', () => {
+		expect(yearRangesEqual({ min: 1, max: Infinity }, { min: 1, max: Infinity })).toBe(true);
+		expect(yearRangesEqual({ min: -Infinity, max: 1 }, { min: 1, max: Infinity })).toBe(false);
+		expect(yearRangesEqual({ min: 1, max: Infinity }, { min: 1, max: 2 })).toBe(false);
 	});
 });

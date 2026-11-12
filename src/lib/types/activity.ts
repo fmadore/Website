@@ -1,3 +1,24 @@
+/**
+ * The closed set of activity types. Every register keyed by an activity type
+ * (`typeUtils.ts`) is a `Record<ActivityType, string>`, so a type added here
+ * fails the type-check until each register labels it, and
+ * `typeUtils.test.ts` fails when a record uses a type outside it.
+ */
+export type ActivityType =
+	| 'conference'
+	| 'workshop'
+	| 'seminar'
+	| 'lecture'
+	| 'panel'
+	| 'grant'
+	| 'publication'
+	| 'event'
+	| 'visit'
+	| 'news'
+	| 'presentation'
+	| 'podcast'
+	| 'career';
+
 export type Activity = {
 	id: string; // URL-friendly ID for routing
 	title: string; // Activity title
@@ -10,7 +31,11 @@ export type Activity = {
 	description: string; // Short description for list view
 	content?: string; // Full HTML content for detail page
 	tags?: string[]; // Optional tags for categorization
-	type?: string; // Activity type (conference, workshop, seminar, etc.)
+	// Activity type (conference, workshop, seminar, etc.). Kept `string` while
+	// `data/activities/filters.svelte.ts` narrows it with a string predicate;
+	// the label registers are keyed by `ActivityType` and read through
+	// `activityTypeLabel()`, which the corpus test holds to this set.
+	type?: string;
 	image?: string; // Optional image path
 	heroImage?: {
 		// Optional hero image configuration

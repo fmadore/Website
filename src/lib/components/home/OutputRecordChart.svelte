@@ -1,17 +1,25 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { OutputRecord, OutputYear } from '#lib/utils/homeDigest.ts';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 
 	/**
 	 * Publications above the year axis, talks below it, one column per year on
 	 * one shared scale, so the two series compare by length. The home page's
-	 * only ornament, and true: every bar is a count from the datasets. The
-	 * newest year is the current thing, so it alone takes the accent.
+	 * only ornament, and true: every bar is a count from the datasets.
+	 *
+	 * The current year — the build's, which the prerendered page and the
+	 * hydrated one share — is the current thing, so it alone takes the accent.
+	 * Not the last column: that can be next year, holding forthcoming work,
+	 * which is drawn in outline instead, because it has not appeared yet.
 	 */
 	let { record }: { record: OutputRecord } = $props();
 
+	const currentYear = BUILT_AT.getUTCFullYear();
+
 	const first = $derived(record.years[0]?.year);
 	const last = $derived(record.years.at(-1)?.year);
+	const hasForthcoming = $derived(record.years.some((row) => row.year > currentYear));
 
 	function busiest(key: 'publications' | 'talks'): OutputYear | undefined {
 		return record.years.reduce<OutputYear | undefined>(
@@ -29,7 +37,8 @@
 			`Publications and talks per year, ${first} to ${last}: ` +
 			`${record.publications} publications and ${record.talks} talks. ` +
 			`Busiest year for publications: ${pubs.year}, ${pubs.publications}. ` +
-			`Busiest year for talks: ${talks.year}, ${talks.talks}.`
+			`Busiest year for talks: ${talks.year}, ${talks.talks}.` +
+			(hasForthcoming ? ` Years after ${currentYear} count forthcoming work.` : '')
 		);
 	});
 </script>
@@ -38,7 +47,11 @@
 	<section class="section output-record" aria-labelledby="output-record-title">
 		<div class="output-head">
 			<h2 class="section-title" id="output-record-title">Publications and talks per year</h2>
-			<span class="dateline">{first}–{last}</span>
+			<span class="dateline"
+				>{first}–{last}{#if hasForthcoming}<span class="output-key"
+						><span class="output-key-swatch" aria-hidden="true"></span>forthcoming</span
+					>{/if}</span
+			>
 		</div>
 		<p class="sr-only">{summary}</p>
 
@@ -49,9 +62,17 @@
 			</a>
 			<div class="output-bars output-bars--up" aria-hidden="true">
 				{#each record.years as row (row.year)}
-					<span class="output-col" class:output-col--current={row.year === last}>
+					<span
+						class="output-col"
+						class:output-col--current={row.year === currentYear}
+						class:output-col--forthcoming={row.year > currentYear}
+					>
 						<span class="output-value">{row.publications || ''}</span>
-						<span class="output-bar" style="--n: {row.publications}"></span>
+						<span
+							class="output-bar"
+							class:output-bar--empty={row.publications === 0}
+							style="--n: {row.publications}"
+						></span>
 					</span>
 				{/each}
 			</div>
@@ -59,7 +80,7 @@
 			<span class="output-axis-key" aria-hidden="true"></span>
 			<div class="output-years" aria-hidden="true">
 				{#each record.years as row (row.year)}
-					<span class:output-year--current={row.year === last}>{row.year}</span>
+					<span class:output-year--current={row.year === currentYear}>{row.year}</span>
 				{/each}
 			</div>
 
@@ -69,8 +90,16 @@
 			</a>
 			<div class="output-bars output-bars--down" aria-hidden="true">
 				{#each record.years as row (row.year)}
-					<span class="output-col" class:output-col--current={row.year === last}>
-						<span class="output-bar" style="--n: {row.talks}"></span>
+					<span
+						class="output-col"
+						class:output-col--current={row.year === currentYear}
+						class:output-col--forthcoming={row.year > currentYear}
+					>
+						<span
+							class="output-bar"
+							class:output-bar--empty={row.talks === 0}
+							style="--n: {row.talks}"
+						></span>
 						<span class="output-value">{row.talks || ''}</span>
 					</span>
 				{/each}
@@ -174,6 +203,39 @@
 
 	.output-col--current .output-bar {
 		background: var(--color-accent);
+	}
+
+	/* Forthcoming work: the series' own ink as a hairline outline on the
+	 * ground, so it reads as counted but not yet out. An empty column draws no
+	 * outline (a zero-height box would still show its two border lines). */
+	.output-col--forthcoming .output-bar {
+		box-sizing: border-box;
+		background: transparent;
+		border: var(--border-width-thin) solid var(--color-primary);
+	}
+
+	.output-bars--down .output-col--forthcoming .output-bar {
+		background: transparent;
+		border-color: var(--color-text-light);
+	}
+
+	.output-col--forthcoming .output-bar--empty {
+		border: 0;
+	}
+
+	/* The key beside the span: the swatch is the forthcoming bar in miniature. */
+	.output-key {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2xs);
+		margin-left: var(--space-sm);
+	}
+
+	.output-key-swatch {
+		display: inline-block;
+		width: 0.625rem;
+		height: 0.75rem;
+		border: var(--border-width-thin) solid var(--color-primary);
 	}
 
 	.output-value {

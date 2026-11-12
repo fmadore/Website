@@ -4,7 +4,8 @@ import { getContributorName, getContributorNames } from '#lib/utils/contributor.
 import type { Activity } from '#lib/types/activity.ts';
 import { author } from '#lib/data/siteConfig.ts';
 import { smartTruncate, stripHtml } from '#lib/utils/textUtils.ts';
-import { COMMUNICATION_TYPE_SEO_LABELS, ACTIVITY_TYPE_SEO_LABELS } from '#lib/utils/typeUtils.ts';
+import { activityTypeSeoLabel, communicationTypeSeoLabel } from '#lib/utils/typeUtils.ts';
+import { pageTitle } from '#lib/utils/siteHelpers.ts';
 import { PUBLICATION_TYPE_SEO_LABELS } from '#lib/utils/publicationTypeLabels.ts';
 
 // JSON-LD schema construction (including `createSectionBreadcrumbs`, whose
@@ -162,7 +163,7 @@ function communicationLocationInfo({ conference, location, country, year }: Comm
 
 const COMMUNICATION_SEO_DESCRIPTION: SeoDescriptionConfig<Communication> = {
 	lead: ({ type, title }) => {
-		const typeLabel = (type && COMMUNICATION_TYPE_SEO_LABELS[type]) || 'Academic presentation';
+		const typeLabel = communicationTypeSeoLabel(type) ?? 'Academic presentation';
 		return type && title ? `${typeLabel}: ${title}` : (title ?? '');
 	},
 	segments: [
@@ -227,28 +228,89 @@ export function createCommunicationSEOKeywords(communication: Communication): st
 }
 
 /**
- * Helper to truncate titles for breadcrumbs and titles
- * Used to prevent overly long titles in page headers
+ * The longest record title a `<title>` carries before it is cut. Generous on
+ * purpose: search engines truncate by pixel width and rank on the full text,
+ * so the title is passed through whole except for the rare outlier.
  */
-export function truncateTitle(title: string, maxLength: number = 50): string {
+export const TITLE_MAX_LENGTH = 110;
+
+/**
+ * A record title for the `<title>` element: whole up to `maxLength`, otherwise
+ * cut at the last word boundary with a single `…`.
+ *
+ * It used to keep only the stem before the first colon of any title over 50
+ * characters, which gave 19 groups of pages one `<title>` between them
+ * ("Beyond Keywords… | Frédérick Madore" on five) and made a talk, its paper
+ * and its activity post indistinguishable. The subtitle is usually what
+ * distinguishes a work, so it stays.
+ */
+export function truncateTitle(title: string, maxLength: number = TITLE_MAX_LENGTH): string {
 	if (title.length <= maxLength) return title;
 
-	// A single ellipsis character, not three periods, and the stem is trimmed
-	// first: French titles space their colon ("Sécularisme : …"), which would
-	// otherwise leave the ellipsis floating a space away from the last word.
+	// The cut leaves room for the ellipsis, and the stem is trimmed of spaces
+	// and dangling punctuation first: French titles space their colon
+	// ("Sécularisme : …"), which would otherwise strand the ellipsis.
+	const room = maxLength - 1;
+	const head = title.substring(0, room + 1);
+	const lastSpace = head.lastIndexOf(' ');
+	const stem = lastSpace > room * 0.6 ? title.substring(0, lastSpace) : title.substring(0, room);
+	return stem.replace(/[\s:;,.\u2013\u2014-]+$/u, '') + '…';
+}
 
-	// Check for natural break points like colons
-	const colonIndex = title.indexOf(':');
-	if (colonIndex > 0 && colonIndex < maxLength) {
-		return title.substring(0, colonIndex).trimEnd() + '…';
+/**
+ * The record families whose titles collide: a talk, the paper it became and
+ * the activity post that announced it often share one title. Publications keep
+ * the bare `Title | Site` form; the other two carry a qualifier.
+ */
+export type RecordTitleFamily = 'publication' | 'talk' | 'activity';
+
+const MONTHS = [
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December'
+] as const;
+
+/** "March 2026" from `2026-03-04` or `2026-03`, "2026" from `2026`, undefined otherwise. */
+function monthYear(dateISO: string | undefined): string | undefined {
+	const match = dateISO?.match(/^(\d{4})(?:-(\d{2}))?/);
+	if (!match) return undefined;
+	const month = match[2] ? MONTHS[Number(match[2]) - 1] : undefined;
+	return month ? `${month} ${match[1]}` : match[1];
+}
+
+/**
+ * A record page's `<title>`: the title (see {@link truncateTitle}), a family
+ * qualifier where the family needs one, then the site name from siteConfig.
+ *
+ * - publication: `Title | Frédérick Madore`
+ * - talk: `Title | Talk, March 2026 | Frédérick Madore` — the month tells apart
+ *   the same talk given at two venues, which is how the corpus repeats titles
+ * - activity: `Title | Activity | Frédérick Madore`
+ *
+ * Open Graph and Twitter take the record's full title instead (`SEO.svelte`'s
+ * `schemaName`), with the site in `og:site_name`.
+ */
+export function recordPageTitle(
+	family: RecordTitleFamily,
+	title: string,
+	dateISO?: string
+): string {
+	const head = truncateTitle(title);
+	if (family === 'talk') {
+		const when = monthYear(dateISO);
+		return pageTitle(head, when ? `Talk, ${when}` : 'Talk');
 	}
-
-	// Otherwise truncate at word boundary
-	const truncated = title.substring(0, maxLength);
-	const lastSpace = truncated.lastIndexOf(' ');
-	return lastSpace > maxLength * 0.6
-		? title.substring(0, lastSpace).trimEnd() + '…'
-		: title.substring(0, maxLength - 3).trimEnd() + '…';
+	if (family === 'activity') return pageTitle(head, 'Activity');
+	return pageTitle(head);
 }
 
 // ============================================================================
@@ -357,8 +419,7 @@ export function createPublicationSEOKeywords(publication: Publication): string {
 // ============================================================================
 
 /** Get blog-friendly type label from centralized mapping */
-const getBlogTypeLabel = (type?: string): string =>
-	ACTIVITY_TYPE_SEO_LABELS[type || ''] || 'Academic update';
+const getBlogTypeLabel = (type?: string): string => activityTypeSeoLabel(type) ?? 'Academic update';
 
 const ACTIVITY_SEO_DESCRIPTION: SeoDescriptionConfig<Activity> = {
 	lead: ({ title, description, type, year }) => {

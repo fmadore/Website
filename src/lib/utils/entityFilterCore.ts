@@ -250,6 +250,44 @@ export function clampYearRange(
 }
 
 /**
+ * Whether a year range admits any year of the corpus span. A range wholly
+ * outside it (`?year_min=2030` on a corpus that ends in 2026) narrows the index
+ * to nothing, and clamping it would put a handle on a year that has entries.
+ */
+export function yearRangeOverlaps(range: YearRange, min: number, max: number): boolean {
+	return range.max >= min && range.min <= max;
+}
+
+/** One year, a span, or an open-ended bound, as the read-out prints it. */
+function formatYearSpan(lo: number, hi: number): string {
+	if (!Number.isFinite(lo) && !Number.isFinite(hi)) return 'All years';
+	if (!Number.isFinite(hi)) return `${lo} onwards`;
+	if (!Number.isFinite(lo)) return `Up to ${hi}`;
+	return lo === hi ? `${lo}` : `${lo}–${hi}`;
+}
+
+/**
+ * The year read-out: what the filter state means, in words. An absent range is
+ * the whole corpus span. A range that overlaps the corpus is printed clamped,
+ * as the slider shows it, which within the corpus is exactly what the predicate
+ * admits. A range that misses the corpus entirely is printed as given: clamped,
+ * it would name a boundary year that has entries beside a count of zero.
+ */
+export function yearRangeReadout(
+	range: YearRange | null | undefined,
+	min: number,
+	max: number
+): string {
+	if (!range) return `All years · ${min}–${max}`;
+	if (min <= max && !yearRangeOverlaps(range, min, max)) {
+		const ordered = normalizeYearRange(range.min, range.max);
+		return formatYearSpan(ordered.min, ordered.max);
+	}
+	const shown = clampYearRange(range, min, max);
+	return formatYearSpan(shown.min, shown.max);
+}
+
+/**
  * The reader's search term as it is quoted back in an empty state. Long terms
  * are cut at `maxLength` and closed with an ellipsis, so a pasted paragraph
  * cannot push the rest of the sentence off the line.

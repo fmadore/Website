@@ -1,6 +1,5 @@
 <script lang="ts">
 	import SEO from '#lib/SEO.svelte';
-	import { pageTitle } from '#lib/utils/siteHelpers.ts';
 	import { resolve } from '$app/paths';
 	import { assetHref, basePrefix, pageHref } from '#lib/utils/paths.ts';
 	import type { Communication } from '#lib/types/communication.ts';
@@ -14,11 +13,12 @@
 		createCommunicationSEODescription,
 		createCommunicationSEOKeywords,
 		recordEntityId,
-		truncateTitle
+		recordPageTitle
 	} from '#lib/utils/seoUtils.ts';
 	import { getCommunicationTypeBadge } from '#lib/utils/typeUtils.ts';
 	import { formatByline } from '#lib/utils/byline.ts';
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 	import MetaTags from '#lib/components/communications/MetaTags.svelte';
 	import { inView } from '#lib/actions/inView.ts';
 	import { plateFallback } from '#lib/actions/plateFallback.ts';
@@ -34,6 +34,9 @@
 	const seoKeywords = $derived(createCommunicationSEOKeywords(communication));
 
 	const displayTitle = $derived(typesetQuotes(communication.title));
+	// The talk's language, set on its title and abstract when it is a single
+	// language other than the page's English (WCAG 3.1.2).
+	const contentLang = $derived(titleLangAttr(communication.language));
 
 	// Define breadcrumb items (used for JSON-LD structured data)
 	// The trail feeds the BreadcrumbList structured data, where the name is a
@@ -175,7 +178,7 @@
 </script>
 
 <SEO
-	title={pageTitle(truncateTitle(communication.title))}
+	title={recordPageTitle('talk', communication.title, communication.dateISO)}
 	schemaName={communication.title}
 	description={seoDescription}
 	keywords={seoKeywords}
@@ -241,7 +244,7 @@
 			<div class="section-head">
 				<h2 id="comm-abstract-head" class="section-title">Abstract</h2>
 			</div>
-			<div class="comm-abstract">
+			<div class="comm-abstract" lang={contentLang}>
 				{#each abstractParagraphs as paragraph, index (index)}
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
 					<p class="comm-abstract-p" class:drop-cap={index === 0}>{@html paragraph}</p>
@@ -361,6 +364,7 @@
 	section={{ label: 'Talks & Events', href: resolve('/conference-activity') }}
 	{eyebrow}
 	title={displayTitle}
+	titleLang={contentLang}
 	{byline}
 	{breadcrumbItems}
 	jsonLdScriptId="communication-json-ld"

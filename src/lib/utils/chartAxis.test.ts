@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { niceTickInterval, tickBudgetForWidth } from './chartAxis';
+import { niceTickInterval, niceAxisMax, tickBudgetForWidth } from './chartAxis';
 
 describe('niceTickInterval', () => {
 	it('reproduces the ladder the bar chart used to hardcode', () => {
@@ -63,5 +63,21 @@ describe('tickBudgetForWidth', () => {
 		expect(tickBudgetForWidth(0)).toBe(10);
 		expect(tickBudgetForWidth(-5)).toBe(10);
 		expect(tickBudgetForWidth(Number.NaN)).toBe(10);
+	});
+});
+
+describe('niceAxisMax', () => {
+	it('rounds an off-ladder maximum up to the next tick', () => {
+		expect(niceAxisMax(210, 50)).toBe(250);
+		expect(niceAxisMax(7, 2)).toBe(8);
+	});
+
+	it('keeps a maximum that is already on the ladder', () => {
+		expect(niceAxisMax(200, 50)).toBe(200);
+	});
+
+	it('gives an empty or broken axis one interval', () => {
+		expect(niceAxisMax(0, 5)).toBe(5);
+		expect(niceAxisMax(Number.NaN, 0)).toBe(1);
 	});
 });

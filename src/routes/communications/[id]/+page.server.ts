@@ -3,6 +3,7 @@ import { researchProjectPath } from '#lib/data/research/index.ts';
 import { allCommunications } from '#lib/data/communications/index.ts';
 import { buildCommunicationJsonLd } from '#lib/utils/entityJsonLd.ts';
 import { loadEntityDetail } from '#lib/utils/entityPageLoader.ts';
+import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 import type { PageServerLoad } from './$types';
 
 /** Every communication gets a page — see the note in publications/[id]/+page.server.ts. */
@@ -19,7 +20,11 @@ export const load: PageServerLoad = ({ params }) => {
 	return {
 		communication,
 		jsonLdString,
-		relatedInProject: relatedItems(allCommunications, communication),
+		// Each card sets `lang` on a non-English title (WCAG 3.1.2).
+		relatedInProject: relatedItems(allCommunications, communication).map((item) => ({
+			...item,
+			titleLang: titleLangAttr(allCommunications.find((comm) => comm.id === item.id)?.language)
+		})),
 		projectPath: researchProjectPath(communication.project)
 	};
 };

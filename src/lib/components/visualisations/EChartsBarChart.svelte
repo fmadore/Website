@@ -31,7 +31,8 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		accentKey,
 		itemSingular = 'publication',
 		itemPlural = 'publications',
-		description = undefined
+		description = undefined,
+		forthcomingAfter = undefined
 	}: {
 		data?: DataItem[];
 		xAccessor: (d: DataItem) => string | number;
@@ -58,8 +59,10 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		barColor?: string;
 		/**
 		 * The one category drawn in pine — the Year-Bar Strip idiom, where the
-		 * newest year carries the accent and the rest are ink. Leave it unset
-		 * and no pine appears on the chart at all (the Scarcity Rule).
+		 * current year carries the accent and the rest are ink. Pass the build
+		 * year, never simply the last category: the last can be a forthcoming
+		 * year. Leave it unset and no pine appears on the chart at all (the
+		 * Scarcity Rule).
 		 */
 		accentKey?: string | number;
 		/**
@@ -70,6 +73,12 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 		itemPlural?: string;
 		/** Overrides the computed accessible description. */
 		description?: string;
+		/**
+		 * The last year that has happened (the build year). Bars for later
+		 * years count forthcoming work and are drawn in outline, the bar's ink
+		 * as a 1px border on the ground. Unset, every bar is filled.
+		 */
+		forthcomingAfter?: number;
 	} = $props();
 
 	/**
@@ -189,6 +198,13 @@ ECharts Bar Chart - A much simpler alternative to the custom D3 implementation
 					value: d.value,
 					itemStyle: {
 						color: d.name === accentName ? resolvedColors.accent : resolvedColors.barColor,
+						...(forthcomingAfter !== undefined && Number(d.name) > forthcomingAfter
+							? {
+									color: resolvedColors.ground,
+									borderColor: resolvedColors.barColor,
+									borderWidth: 1
+								}
+							: {}),
 						borderRadius: 0,
 						// Set on the item, not through `aria.decal`: that palette
 						// hatches the whole series at once, which over one ink

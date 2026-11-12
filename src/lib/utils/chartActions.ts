@@ -38,8 +38,6 @@ export function downloadChartAsImage(chart: echarts.ECharts, filename: string = 
 	link.click();
 }
 
-/** The data-voice font, inlined into exported SVGs so labels survive. */
-const EXPORT_FONT_URL = asset('fonts/web/spline-sans-mono-normal-latin.woff2');
 let exportFontFace: string | null | undefined;
 
 /**
@@ -52,7 +50,10 @@ let exportFontFace: string | null | undefined;
 async function getExportFontFace(): Promise<string | null> {
 	if (exportFontFace !== undefined) return exportFontFace;
 	try {
-		const response = await fetch(EXPORT_FONT_URL);
+		// The data-voice font, inlined into exported SVGs so labels survive.
+		// Resolved here rather than at module scope: `asset()` depends on the
+		// page being rendered, and an export only ever runs from a live page.
+		const response = await fetch(asset('fonts/web/spline-sans-mono-normal-latin.woff2'));
 		if (!response.ok) throw new Error(`HTTP ${response.status}`);
 		const buffer = await response.arrayBuffer();
 		let binary = '';

@@ -1,8 +1,17 @@
 import type { NavItem } from '#lib/types/navigation.ts';
 
+/** A top-level entry, plus the paths outside its own that it stands for. */
+export interface SiteNavItem extends NavItem {
+	/**
+	 * Further path prefixes that light this entry: records the section owns
+	 * but files under another path (`menu/navMatch.ts`).
+	 */
+	match?: readonly string[];
+}
+
 // Root pathnames: the site deploys at the domain root (no `paths.base`), and
 // these are read at module scope, where `resolve` has no page to be relative to.
-export const navItems: NavItem[] = [
+export const navItems: SiteNavItem[] = [
 	{
 		name: 'Research',
 		path: '/research',
@@ -60,6 +69,9 @@ export const navItems: NavItem[] = [
 	{
 		name: 'Talks & Events',
 		path: '/conference-activity',
+		// The index is `/conference-activity`; each talk's record is
+		// `/communications/[id]`.
+		match: ['/communications'],
 		dropdown: [
 			{ name: 'All Talks & Events', path: '/conference-activity' },
 			{ name: 'Slides', path: '/conference-activity/slides' },

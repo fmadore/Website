@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { NavItem } from '#lib/types/navigation.ts';
+	import type { SiteNavItem } from '#lib/data/navigation.ts';
 	import NavItemWithDropdown from '#lib/components/menu/NavItemWithDropdown.svelte';
 
 	let {
@@ -14,7 +14,7 @@
 		onClose,
 		onDropdownItemClick
 	}: {
-		navItems: NavItem[];
+		navItems: SiteNavItem[];
 		activeDropdown?: number | null;
 		currentPath?: string;
 		onMouseEnter: (index: number) => void;

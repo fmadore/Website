@@ -6,6 +6,7 @@
 	import VizDataTable from './VizDataTable.svelte';
 	import Pagination from '#lib/components/molecules/Pagination.svelte';
 	import { usePagination } from '#lib/utils/pagination.svelte.ts';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 	type YearCount = { year: number; count: number };
 	type AuthorCount = { author: string; count: number };
 	type Section = { id: string; no: string; title: string; count: string };
@@ -24,9 +25,17 @@
 	const pagination = usePagination(() => authors, perPage);
 	const pagedAuthors = $derived(pagination.items);
 	const maxCitationCount = $derived(Math.max(0, ...authors.map((row) => row.count)));
-	const latestCitationYear = $derived(years.at(-1)?.year);
+	// Pine marks the current year — the build's, never simply the last row,
+	// which can be a forthcoming year. Later years are drawn in outline.
+	const buildYear = BUILT_AT.getUTCFullYear();
+	const currentCitationYear = $derived(
+		years.some((row) => row.year === buildYear) ? buildYear : undefined
+	);
 	const citationsTableRows = $derived(
-		years.map((row) => ({ label: String(row.year), value: row.count }))
+		years.map((row) => ({
+			label: row.year > buildYear ? `${row.year} (forthcoming)` : String(row.year),
+			value: row.count
+		}))
 	);
 	const getYear = (row: YearCount) => row.year;
 	const getCitationCount = (row: YearCount) => row.count;
@@ -36,7 +45,7 @@
 
 <VizSection
 	{...yearSection}
-	description="Citations counted in the year the citing work appeared. They are swept from OpenAlex and from full-text searches of Google Books, HAL and Wikipedia, then recorded against the work cited, so this counts what the record holds rather than what an index estimates."
+	description="Citations counted in the year the citing work appeared. They are swept from OpenAlex and from full-text searches of Google Books, HAL and Wikipedia, then recorded against the work cited, so this counts what the record holds rather than what an index estimates. The current year is marked; a later year, cited by forthcoming work, is drawn in outline."
 	height="400px"
 	hasData={years.length > 0}
 	empty="No citations recorded."
@@ -45,7 +54,8 @@
 		data={years}
 		xAccessor={getYear}
 		yAccessor={getCitationCount}
-		accentKey={latestCitationYear}
+		accentKey={currentCitationYear}
+		forthcomingAfter={buildYear}
 		measure="Citations per year"
 		itemSingular="citation"
 		itemPlural="citations"

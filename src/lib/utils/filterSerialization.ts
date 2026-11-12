@@ -9,6 +9,7 @@
  */
 
 import type { YearRange } from '#lib/types/index.ts';
+import { normalizeSearchText } from '#lib/utils/searchText.ts';
 
 /** The subset of filter state that round-trips through the URL. */
 export interface UrlSyncableFilters {
@@ -55,9 +56,12 @@ export function serializeFiltersToQuery(filters: UrlSyncableFilters, searchTerm 
 		for (const v of values) urlParams.append(param, v);
 	}
 
+	// An open-ended range (a lone `year_min` or `year_max` deep link) holds an
+	// infinite bound; it goes back out as the one bound it came in with.
 	if (filters.yearRange) {
-		urlParams.set('year_min', filters.yearRange.min.toString());
-		urlParams.set('year_max', filters.yearRange.max.toString());
+		const { min, max } = filters.yearRange;
+		if (Number.isFinite(min)) urlParams.set('year_min', min.toString());
+		if (Number.isFinite(max)) urlParams.set('year_max', max.toString());
 	}
 
 	// An empty search is no search: `?q=` would survive `Clear all` and leave a
@@ -74,7 +78,8 @@ export function parseSearchParam(searchParams: Pick<URLSearchParams, 'get'>): st
 }
 
 /**
- * Reads all entries for an array filter parameter, dropping empty entries.
+ * Reads all entries for an array filter parameter, dropping empty and repeated
+ * entries (`?tag=Islam&tag=Islam` is one tag, not a filter counted twice).
  * One-entry-per-value (`?p=a&p=b`) is the canonical form; a single entry is
  * taken verbatim, so values containing commas (e.g. long project names)
  * survive the round trip.
@@ -83,25 +88,54 @@ export function parseArrayFilterParam(
 	searchParams: Pick<URLSearchParams, 'getAll'>,
 	paramName: string
 ): string[] {
-	return searchParams.getAll(paramName).filter(Boolean);
+	return [...new Set(searchParams.getAll(paramName).filter(Boolean))];
 }
 
 /**
- * Parses `year_min`/`year_max` strings into a range. Both bounds must be
- * present and numeric; otherwise the range is null (no year filtering).
+ * Maps facet values taken from a URL onto a dimension's vocabulary: each value
+ * is matched case-, accent- and apostrophe-insensitively (`normalizeSearchText`,
+ * the fold the search box and the WebMCP tools use), replaced by the
+ * vocabulary's own spelling, and dropped when the vocabulary does not hold it,
+ * so `?tag=islam` filters by `Islam` and `?tag=NONEXISTENT` is ignored rather
+ * than printed as a filter that matches nothing. Duplicates after folding
+ * collapse to one; order follows the URL.
+ */
+export function canonicalizeFacetValues(
+	values: readonly string[],
+	vocabulary: readonly string[]
+): string[] {
+	const byFold = new Map<string, string>();
+	for (const option of vocabulary) {
+		const fold = normalizeSearchText(option).trim();
+		// Two options that fold alike: the first listed wins the folded spelling;
+		// each still matches itself exactly below.
+		if (!byFold.has(fold)) byFold.set(fold, option);
+	}
+	const exact = new Set(vocabulary);
+	const result = new Set<string>();
+	for (const value of values) {
+		const canonical = exact.has(value) ? value : byFold.get(normalizeSearchText(value).trim());
+		if (canonical !== undefined) result.add(canonical);
+	}
+	return [...result];
+}
+
+/**
+ * Parses `year_min`/`year_max` strings into a range. A numeric bound on its
+ * own is an open-ended range (`year_min=2020` is 2020 onwards, an infinite
+ * `max`); with neither bound numeric the range is null (no year filtering).
  */
 export function parseYearRangeParams(
 	yearMinStr: string | null,
 	yearMaxStr: string | null
 ): YearRange | null {
-	if (yearMinStr && yearMaxStr) {
-		const min = parseInt(yearMinStr, 10);
-		const max = parseInt(yearMaxStr, 10);
-		if (!isNaN(min) && !isNaN(max)) {
-			return { min, max };
-		}
-	}
-	return null;
+	const min = yearMinStr ? parseInt(yearMinStr, 10) : NaN;
+	const max = yearMaxStr ? parseInt(yearMaxStr, 10) : NaN;
+	if (isNaN(min) && isNaN(max)) return null;
+	return {
+		min: isNaN(min) ? -Infinity : min,
+		max: isNaN(max) ? Infinity : max
+	};
 }
 
 /** Order-insensitive equality of two (possibly undefined) string arrays. */
@@ -117,5 +151,8 @@ export function yearRangesEqual(
 	a: YearRange | null | undefined,
 	b: YearRange | null | undefined
 ): boolean {
-	return JSON.stringify(a || null) === JSON.stringify(b || null);
+	// Compared by value, not through JSON: an open-ended bound is infinite, and
+	// JSON prints every infinity as `null`.
+	if (!a || !b) return !a && !b;
+	return a.min === b.min && a.max === b.max;
 }

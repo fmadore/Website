@@ -21,6 +21,7 @@ export const cvPublications: CvPublication[] = [
 		"journal": "Émulations",
 		"publisher": "Presses universitaires de Louvain",
 		"issue": "24",
+		"language": "French",
 		"url": "https://doi.org/10.14428/emulations.024",
 		"doi": "10.14428/emulations.024"
 	},
@@ -35,7 +36,8 @@ export const cvPublications: CvPublication[] = [
 		"dateISO": "2026",
 		"year": 2026,
 		"journal": "African Studies Review",
-		"publisher": "Cambridge University Press"
+		"publisher": "Cambridge University Press",
+		"language": "English"
 	},
 	{
 		"id": "ambition-federatrice-faitieres-islamiques-2026",
@@ -50,7 +52,8 @@ export const cvPublications: CvPublication[] = [
 		"book": "Vie associative et pratiques organisationnelles en Afrique de l'Ouest : saisir les associations par leur architecture bureaucratique",
 		"editors": "André Chappatte, Bourahima Diomandé",
 		"placeOfPublication": "Paris",
-		"publisher": "Africae"
+		"publisher": "Africae",
+		"language": "French"
 	},
 	{
 		"id": "beninese-imam-election-2022",
@@ -67,6 +70,7 @@ export const cvPublications: CvPublication[] = [
 		"volume": "13",
 		"issue": "1",
 		"pages": "1-26",
+		"language": "English",
 		"doi": "10.1163/21540993-01202004",
 		"url": "https://doi.org/10.1163/21540993-01202004"
 	},
@@ -104,6 +108,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "New York, NY",
 		"publisher": "Association for Computing Machinery",
 		"pages": "1-12",
+		"language": "English",
 		"doi": "10.1145/3805696.3846031",
 		"url": "https://doi.org/10.1145/3805696.3846031"
 	},
@@ -141,6 +146,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "New York, NY",
 		"publisher": "Association for Computing Machinery",
 		"pages": "8034-8039",
+		"language": "English",
 		"doi": "10.1145/3799682.3840034",
 		"url": "https://doi.org/10.1145/3799682.3840034"
 	},
@@ -159,6 +165,7 @@ export const cvPublications: CvPublication[] = [
 		"dateISO": "2026-03-31",
 		"year": 2026,
 		"publisher": "Digital History Bielefeld",
+		"language": "German",
 		"doi": "10.58079/15z9p"
 	},
 	{
@@ -180,6 +187,7 @@ export const cvPublications: CvPublication[] = [
 		"editors": "Kate Fleet, Gudrun Krämer, Denis Matringe, John Nawas, Everett Rowson",
 		"placeOfPublication": "Leiden",
 		"pages": "66-67",
+		"language": "English",
 		"doi": "10.1163/1573-3912_ei3_com_27698",
 		"url": "https://doi.org/10.1163/1573-3912_ei3_com_27698"
 	},
@@ -207,7 +215,8 @@ export const cvPublications: CvPublication[] = [
 		"dateISO": "2027",
 		"year": 2027,
 		"journal": "Journal of the Digital Humanities Association of Southern Africa",
-		"publisher": "Digital Humanities Association of Southern Africa"
+		"publisher": "Digital Humanities Association of Southern Africa",
+		"language": "English, French"
 	},
 	{
 		"id": "dh-ai-african-studies-edited-volume",
@@ -227,6 +236,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Bielefeld",
 		"publisher": "Bielefeld University Press",
 		"series": "Digital Humanities Research",
+		"language": "English",
 		"isEditedVolume": true
 	},
 	{
@@ -244,6 +254,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Berlin",
 		"publisher": "LIT Verlag",
 		"pages": "51-83",
+		"language": "French",
 		"doi": "10.58144/20241107-000",
 		"url": "https://doi.org/10.58144/20241107-000"
 	},
@@ -357,6 +368,7 @@ export const cvPublications: CvPublication[] = [
 		"issue": "16",
 		"publisher": "Leibniz-Zentrum Moderner Orient",
 		"placeOfPublication": "Berlin",
+		"language": "English",
 		"doi": "10.58144/20260827-000",
 		"url": "https://doi.org/10.58144/20260827-000"
 	},
@@ -375,6 +387,7 @@ export const cvPublications: CvPublication[] = [
 		"volume": "90",
 		"issue": "3",
 		"pages": "625-646",
+		"language": "English",
 		"doi": "10.1017/S0001972020000108",
 		"url": "https://doi.org/10.1017/S0001972020000108"
 	},
@@ -393,6 +406,7 @@ export const cvPublications: CvPublication[] = [
 		"volume": "59",
 		"issue": "2",
 		"pages": "197-217",
+		"language": "English",
 		"doi": "10.1017/S0022278X21000094",
 		"url": "https://doi.org/10.1017/S0022278X21000094"
 	},
@@ -418,6 +432,7 @@ export const cvPublications: CvPublication[] = [
 		"publisher": "Presses universitaires de Louvain",
 		"issue": "24",
 		"pages": "125-133",
+		"language": "English",
 		"doi": "10.14428/emulations.024.008",
 		"url": "https://doi.org/10.14428/emulations.024.008"
 	},
@@ -439,6 +454,7 @@ export const cvPublications: CvPublication[] = [
 		"publisher": "Éditions de l’École des Hautes Études en Sciences Sociales",
 		"issue": "229",
 		"pages": "179-208",
+		"language": "French",
 		"doi": "10.4000/etudesafricaines.21880",
 		"url": "https://doi.org/10.4000/etudesafricaines.21880"
 	},
@@ -452,7 +468,8 @@ export const cvPublications: CvPublication[] = [
 		"date": "Forthcoming",
 		"dateISO": "2026",
 		"year": 2026,
-		"publisher": "The Digital Orientalist"
+		"publisher": "The Digital Orientalist",
+		"language": "English"
 	},
 	{
 		"id": "imams-islamic-preachers-ouagadougou-2020",
@@ -469,6 +486,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Durham, NC",
 		"publisher": "Carolina Academic Press",
 		"pages": "183-213",
+		"language": "English",
 		"url": "https://cap-press.com/books/isbn/9781531007317/Perspectives-on-Religious-Landscape-in-Africa"
 	},
 	{
@@ -486,6 +504,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Quebec City",
 		"publisher": "Artefact",
 		"pages": "233-252",
+		"language": "French",
 		"url": "https://www.erudit.org/en/books/actes-des-colloques-dartefact/actes-12e-colloque-international-etudiant-departement-dhistoire-luniversite--978-2-9816015-1-3/004329co/"
 	},
 	{
@@ -507,6 +526,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Berlin",
 		"publisher": "LIT Verlag",
 		"pages": "3-21",
+		"language": "English",
 		"doi": "10.58144/20241107-000",
 		"url": "https://doi.org/10.58144/20241107-000"
 	},
@@ -522,6 +542,7 @@ export const cvPublications: CvPublication[] = [
 		"year": 2021,
 		"journal": "Revue d'Histoire Contemporaine de l'Afrique",
 		"publisher": "University of Geneva",
+		"language": "French",
 		"doi": "10.51185/journals/rhca.2021.e610",
 		"url": "https://doi.org/10.51185/journals/rhca.2021.e610"
 	},
@@ -539,6 +560,7 @@ export const cvPublications: CvPublication[] = [
 		"publisher": "Association Française des Anthropologues",
 		"issue": "146-147",
 		"pages": "151-178",
+		"language": "French",
 		"doi": "10.4000/jda.6525",
 		"url": "https://doi.org/10.4000/jda.6525"
 	},
@@ -557,6 +579,7 @@ export const cvPublications: CvPublication[] = [
 		"volume": "50",
 		"issue": "1",
 		"pages": "7-27",
+		"language": "French",
 		"doi": "10.1080/00083968.2015.1101008",
 		"url": "https://doi.org/10.1080/00083968.2015.1101008"
 	},
@@ -579,6 +602,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Berlin",
 		"publisher": "LIT Verlag",
 		"pages": "273-307",
+		"language": "English",
 		"doi": "10.58144/20241107-000",
 		"url": "https://doi.org/10.58144/20241107-000"
 	},
@@ -605,6 +629,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "London",
 		"publisher": "Pluto Press",
 		"pages": "105-123",
+		"language": "English",
 		"doi": "10.2307/j.ctt1gk0810.11",
 		"url": "https://doi.org/10.2307/j.ctt1gk0810.11"
 	},
@@ -622,6 +647,7 @@ export const cvPublications: CvPublication[] = [
 		"volume": "7",
 		"issue": "8",
 		"pages": "2-7",
+		"language": "French",
 		"url": "https://dandurand.uqam.ca/publication/lutte-contre-le-terrorisme-et-securitisation-du-salafisme-au-benin-et-au-togo-instrumentalisations-diverses-dune-menace-etrangere/"
 	},
 	{
@@ -637,6 +663,7 @@ export const cvPublications: CvPublication[] = [
 		"journal": "ZMO Bulletin",
 		"issue": "44",
 		"pages": "9",
+		"language": "English",
 		"doi": "10.58144/20240415-000",
 		"url": "https://doi.org/10.58144/20240415-000"
 	},
@@ -653,6 +680,7 @@ export const cvPublications: CvPublication[] = [
 		"journal": "ZMO Bulletin",
 		"issue": "46",
 		"pages": "7",
+		"language": "English",
 		"doi": "10.58144/20250401-000",
 		"url": "https://doi.org/10.58144/20250401-000"
 	},
@@ -669,6 +697,7 @@ export const cvPublications: CvPublication[] = [
 		"journal": "ZMO Bulletin",
 		"issue": "48",
 		"pages": "10",
+		"language": "English",
 		"doi": "10.58144/20260430-000"
 	},
 	{
@@ -684,6 +713,7 @@ export const cvPublications: CvPublication[] = [
 		"journal": "ZMO Bulletin",
 		"issue": "48",
 		"pages": "6-7",
+		"language": "English",
 		"doi": "10.58144/20260430-000",
 		"url": ""
 	},
@@ -700,6 +730,7 @@ export const cvPublications: CvPublication[] = [
 		"journal": "Shared World - People, Faiths, Ideas, Practices: New Directions in Research 2023-2025, Jahrbuch",
 		"publisher": "Leibniz-Zentrum Moderner Orient",
 		"pages": "113-120",
+		"language": "English",
 		"doi": "10.58144/20260302-000"
 	},
 	{
@@ -713,6 +744,7 @@ export const cvPublications: CvPublication[] = [
 		"dateISO": "2013",
 		"year": 2013,
 		"placeOfPublication": "Quebec City",
+		"language": "French",
 		"url": "https://corpus.ulaval.ca/jspui/handle/20.500.11794/24012"
 	},
 	{
@@ -730,6 +762,7 @@ export const cvPublications: CvPublication[] = [
 		"volume": "67",
 		"issue": "2-3",
 		"pages": "17-38",
+		"language": "English",
 		"doi": "10.2979/africatoday.67.2_3.02",
 		"url": "https://doi.org/10.2979/africatoday.67.2_3.02"
 	},
@@ -752,6 +785,7 @@ export const cvPublications: CvPublication[] = [
 		"publisher": "Brill",
 		"volume": "12",
 		"issue": "2",
+		"language": "English",
 		"url": "https://brill.com/view/journals/iafr/12/2/iafr.12.issue-2.xml"
 	},
 	{
@@ -773,6 +807,7 @@ export const cvPublications: CvPublication[] = [
 		"publisher": "Brill",
 		"volume": "13",
 		"issue": "1",
+		"language": "English",
 		"url": "https://brill.com/view/journals/iafr/13/1/iafr.13.issue-1.xml"
 	},
 	{
@@ -794,6 +829,7 @@ export const cvPublications: CvPublication[] = [
 		"volume": "7",
 		"issue": "2",
 		"pages": "185-209",
+		"language": "English",
 		"doi": "10.1163/21540993-00702001",
 		"url": "https://doi.org/10.1163/21540993-00702001"
 	},
@@ -815,6 +851,7 @@ export const cvPublications: CvPublication[] = [
 		"editors": "Florence Piron, Élisabeth Arsenault",
 		"placeOfPublication": "Québec",
 		"publisher": "Éditions science et bien commun",
+		"language": "French",
 		"url": "https://scienceetbiencommun.pressbooks.pub/projetthese/chapter/faire-une-table-des-matieres/"
 	},
 	{
@@ -836,6 +873,7 @@ export const cvPublications: CvPublication[] = [
 		"volume": "21",
 		"issue": "2",
 		"pages": "121-157",
+		"language": "French",
 		"doi": "10.7202/1028465ar",
 		"url": "https://doi.org/10.7202/1028465ar"
 	},
@@ -858,6 +896,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Dakar",
 		"publisher": "Amalion",
 		"pages": "269-296",
+		"language": "French",
 		"url": "https://www.amalion.net/catalogue/rencontres-religieuses-et-dynamiques-sociales-au-burkina-faso/"
 	},
 	{
@@ -879,6 +918,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Dakar",
 		"publisher": "Amalion",
 		"pages": "263-288",
+		"language": "English",
 		"doi": "10.62010/amal4/9782359261141.003.0016",
 		"url": "https://www.amalion.net/catalogue/religious-encounters-and-social-dynamics-in-burkina-faso/"
 	},
@@ -901,6 +941,7 @@ export const cvPublications: CvPublication[] = [
 		"dateISO": "2018-09-19",
 		"year": 2018,
 		"publisher": "Africa4. Regards croisés sur l'Afrique",
+		"language": "French",
 		"url": "https://www.liberation.fr/debats/2018/09/19/religions-numeriques-en-afrique_1816717/"
 	},
 	{
@@ -920,6 +961,7 @@ export const cvPublications: CvPublication[] = [
 		"year": 2023,
 		"placeOfPublication": "Berlin",
 		"publisher": "LIT Verlag",
+		"language": "English, French",
 		"series": "Afrikanische Studien/African Studies 64",
 		"doi": "10.58144/20241107-000",
 		"url": "https://doi.org/10.58144/20241107-000",
@@ -937,6 +979,7 @@ export const cvPublications: CvPublication[] = [
 		"year": 2025,
 		"placeOfPublication": "Berlin",
 		"publisher": "De Gruyter",
+		"language": "English",
 		"series": "ZMO-Studien 48",
 		"doi": "10.1515/9783111428895",
 		"url": "https://doi.org/10.1515/9783111428895",
@@ -1013,6 +1056,7 @@ export const cvPublications: CvPublication[] = [
 		"publisher": "Presses universitaires de Louvain",
 		"issue": "24",
 		"pages": "11-22",
+		"language": "French",
 		"doi": "10.14428/emulations.024.001",
 		"url": "https://doi.org/10.14428/emulations.024.001"
 	},
@@ -1035,6 +1079,7 @@ export const cvPublications: CvPublication[] = [
 		"placeOfPublication": "Paris",
 		"publisher": "Maisonneuve & Larose-Hémisphères éditions",
 		"pages": "25-48",
+		"language": "French",
 		"url": "https://www.hemisphereseditions.com/l-afrique-des-religions"
 	},
 	{
@@ -1048,6 +1093,7 @@ export const cvPublications: CvPublication[] = [
 		"dateISO": "2018",
 		"year": 2018,
 		"placeOfPublication": "Quebec City",
+		"language": "French",
 		"url": "http://hdl.handle.net/20.500.11794/33246"
 	},
 	{
@@ -1065,6 +1111,7 @@ export const cvPublications: CvPublication[] = [
 		"volume": "46",
 		"issue": "4",
 		"pages": "417-452",
+		"language": "English",
 		"doi": "10.1163/15700666-12340090",
 		"url": "https://doi.org/10.1163/15700666-12340090"
 	},
@@ -1079,6 +1126,7 @@ export const cvPublications: CvPublication[] = [
 		"dateISO": "2017",
 		"year": 2017,
 		"proceedingsTitle": "Les Actes du Dixième Congrès International de l'Association des Études Mandé. Aux carrefours des identités: cohabitation, conflit, et réconciliation en Afrique de l'Ouest et dans les diasporas",
+		"language": "French",
 		"url": "https://shs.hal.science/halshs-01691275"
 	},
 	{
@@ -1093,6 +1141,7 @@ export const cvPublications: CvPublication[] = [
 		"year": 2016,
 		"placeOfPublication": "Québec/Paris",
 		"publisher": "Presses de l'Université Laval/Hermann",
+		"language": "French",
 		"series": "Religions, cultures et sociétés",
 		"doi": "10.58144/20241205-000",
 		"url": "https://doi.org/10.58144/20241205-000",
@@ -1164,6 +1213,7 @@ export const cvPublications: CvPublication[] = [
 		"dateISO": "2022-04-07",
 		"year": 2022,
 		"publisher": "Remoboko blog",
+		"language": "English",
 		"doi": "10.58079/tldm",
 		"url": "https://doi.org/10.58079/tldm"
 	},
@@ -1180,6 +1230,7 @@ export const cvPublications: CvPublication[] = [
 		"journal": "Journal of West African History",
 		"publisher": "Michigan State University Press",
 		"volume": "12",
-		"issue": "2"
+		"issue": "2",
+		"language": "French"
 	}
 ];

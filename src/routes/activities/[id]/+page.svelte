@@ -31,12 +31,11 @@
 		createActivitySEODescription,
 		createActivitySEOKeywords,
 		recordEntityId,
-		truncateTitle
+		recordPageTitle
 	} from '#lib/utils/seoUtils.ts';
 	import { ACTIVITY_TYPE_BADGE_LABELS } from '#lib/utils/typeUtils.ts';
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 	import MetaTags from '#lib/components/activities/MetaTags.svelte';
-	import { author } from '#lib/data/siteConfig.ts';
 
 	// Get data from the load function
 	let { data }: { data: PageData } = $props();
@@ -170,7 +169,7 @@
 
 <!-- SEO Component with blog post optimizations -->
 <SEO
-	title="{truncateTitle(activity.title)} | {author.name}"
+	title={recordPageTitle('activity', activity.title)}
 	schemaName={activity.title}
 	description={seoDescription}
 	keywords={seoKeywords}

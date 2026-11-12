@@ -17,6 +17,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Table-ronde organisée par le Centre Interdisciplinaire de Recherche sur l'Afrique et le Moyen-Orient (CIRAM)",
 		"location": "Université Laval",
 		"type": "event",
+		"language": "French",
 		"url": "https://www.ciram.hei.ulaval.ca/evolutions-et-nouvelles-formes-de-lislam-en-afrique-de-louest-vers-une-radicalisation/"
 	},
 	{
@@ -30,6 +31,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Launch of the Islam West Africa Collection",
 		"location": "Media in Cooperation and Transition (MiCT)",
 		"type": "event",
+		"language": "English",
 		"url": "https://islam.zmo.de/s/westafrica/item/244"
 	},
 	{
@@ -55,6 +57,10 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices",
 		"location": "Stellenbosch Institute for Advanced Study (STIAS), Stellenbosch",
 		"type": "event",
+		"language": [
+			"English",
+			"French"
+		],
 		"url": "https://fmadore.github.io/stias-dh-ai-workshop-2026/"
 	},
 	{
@@ -72,6 +78,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "University Campuses in Africa and Beyond",
 		"location": "Leibniz-Zentrum Moderner Orient",
 		"type": "event",
+		"language": "English",
 		"url": "https://remoboko.hypotheses.org/4854"
 	},
 	{
@@ -89,6 +96,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Charting New Territory: Digital Humanities and AI in African Studies",
 		"location": "Xplanatorium Herrenhausen, Hanover",
 		"type": "event",
+		"language": "English",
 		"url": "https://fmadore.github.io/dh-ai-african-studies-2026/"
 	},
 	{
@@ -118,6 +126,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Religion in Higher Educational Institutions in Africa and Beyond: (Re)Conversion, Power, and Authority from a Comparative Perspective",
 		"location": "Leibniz-Zentrum Moderner Orient",
 		"type": "event",
+		"language": "English",
 		"url": "https://remoboko.hypotheses.org/activities/workshops/workshop-2021"
 	},
 	{
@@ -147,6 +156,10 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Religions on Campus: Coexisting Traditions, Reformulating the Secular and Life Projects",
 		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
 		"type": "event",
+		"language": [
+			"English",
+			"French"
+		],
 		"url": "https://remoboko.hypotheses.org/religions-on-campus-coexisting-traditions-reformulating-the-secular-and-life-projects"
 	},
 	{
@@ -159,7 +172,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2019-11-21",
 		"conference": "62nd Meeting of the African Studies Association (ASA)",
 		"location": "Boston",
-		"type": "panel"
+		"type": "panel",
+		"language": "English"
 	},
 	{
 		"id": "author-meets-critic-faith-activism-2024",
@@ -171,7 +185,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2024-12-12",
 		"conference": "67th Meeting of the African Studies Association (ASA)",
 		"location": "Chicago",
-		"type": "panel"
+		"type": "panel",
+		"language": "English"
 	},
 	{
 		"id": "dh-ai-african-studies-2025",
@@ -187,7 +202,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2025-06-26",
 		"conference": "10th European Conference of African Studies (ECAS)",
 		"location": "Prague",
-		"type": "panel"
+		"type": "panel",
+		"language": "English"
 	},
 	{
 		"id": "humanites-numeriques-dh-ia-etudes-africaines-reaf-2026",
@@ -204,6 +220,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "9èmes Rencontres des études africaines en France (REAF)",
 		"location": "Paris",
 		"type": "panel",
+		"language": "French",
 		"url": "https://reaf2026.sciencesconf.org/data/pages/A33.pdf"
 	},
 	{
@@ -217,7 +234,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Colloque annuel Humanistica 2025",
 		"panelTitle": "Archives et patrimoines",
 		"location": "Cheikh Anta Diop University",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "archives-algorithms-iwac-2025",
@@ -231,6 +249,7 @@ export const cvCommunications: CvCommunication[] = [
 		"panelTitle": "Global and Transregional Histories: Digitally Connected?",
 		"location": "Linnaeus University",
 		"type": "conference",
+		"language": "English",
 		"url": "https://eniugh.org/events/global-and-transregional-histories-digtally-connected/"
 	},
 	{
@@ -243,7 +262,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2026-06-15",
 		"conference": "Eighth Conference on Digital Humanities and Digital History",
 		"location": "University of Luxembourg",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "beyond-keywords-entity-linking-jcdl-2026",
@@ -277,6 +297,7 @@ export const cvCommunications: CvCommunication[] = [
 		"panelTitle": "Text and Language Processing",
 		"location": "Embassy Suites by Hilton Dallas Frisco Hotel & Convention Center, Frisco, Texas",
 		"type": "conference",
+		"language": "English",
 		"url": "https://2026.jcdl.org/program/#s=thu-p12"
 	},
 	{
@@ -290,7 +311,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "12th International Conference on Mande Studies",
 		"panelTitle": "Décoloniser l'organisation et les systèmes de connaissance",
 		"location": "Institut des Sciences Humaines",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "faith-based-student-organizations-2023",
@@ -303,7 +325,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "9th European Conference on African Studies (ECAS)",
 		"panelTitle": "Training for good life or a good society? Religious students' individual and collective aspirations in public universities in sub-Saharan Africa",
 		"location": "University of Cologne",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "generations-imam-benin-2021",
@@ -316,7 +339,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "11th International Conference of the Mande Studies Association (MANSA)",
 		"panelTitle": "Re-Inventing Islam: Muslims as Agents of Change in 20th & 21st Century West Africa",
 		"location": "Uppsala",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "good-muslim-bad-muslim-togo-2019",
@@ -329,7 +353,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "62nd Meeting of the African Studies Association (ASA)",
 		"panelTitle": "Muslim Minorities in Africa",
 		"location": "Boston",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "hajj-organization-state-cote-divoire-2016",
@@ -342,7 +367,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "59th Annual Meeting of the African Studies Association (ASA)",
 		"panelTitle": "New Voices in the Study of Islam in Africa I: The Production and Contestation of Muslim Institutions in Contemporary Africa",
 		"location": "Washington D.C.",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "historian-vs-ai-ecas-2025",
@@ -359,7 +385,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "10th European Conference of African Studies (ECAS)",
 		"panelTitle": "Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives",
 		"location": "Prague",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "imams-espace-public-ouagadougou-2012",
@@ -372,7 +399,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "42nd Annual Canadian Association of African Studies Conference (CAAS)",
 		"panelTitle": "Dynamiques religieuses, visions de l'Autre et relations intergénérationnelles",
 		"location": "Université Laval",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "imams-islamic-preachers-ouagadougou-2013",
@@ -385,7 +413,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "2013 Africa Conference",
 		"panelTitle": "Uses of Media in African Social Movements",
 		"location": "University of Texas at Austin",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "islam-burkina-faso-collection-omeka-2022",
@@ -398,7 +427,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "3rd Annual conference of the Africa Multiple Cluster of Excellence \"Medialities\"",
 		"panelTitle": "The Digital - a challenging solution or solvable challenge?",
 		"location": "University of Bayreuth",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "islam-ivoirien-burkinabe-numerique-2016",
@@ -411,7 +441,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "3ème rencontre des Jeunes Chercheur.e.s en Études Africaines",
 		"panelTitle": "Le religieux et ses réseaux",
 		"location": "Paris Diderot University",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "islam-peripheries-open-up-2026",
@@ -428,6 +459,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Kick-off 'Open Up'",
 		"location": "Xplanatorium Herrenhausen, Hanover",
 		"type": "conference",
+		"language": "English",
 		"url": "https://www.volkswagenstiftung.de/sites/default/files/documents/Entwurf%20Programm_KickOff%20OpenUp_2026.pdf"
 	},
 	{
@@ -444,7 +476,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2019-06-12",
 		"conference": "8th European Conference on African Studies (ECAS)",
 		"location": "University of Edinburgh",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "knowledge-gaps-mediated-access-hkadh-2027",
@@ -477,6 +510,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "3rd Annual Conference of the Hong Kong Association for Digital Humanities (HKADH 2027), \"Model/Making: Toward Generative Humanities\"",
 		"location": "The Education University of Hong Kong, Tai Po Campus",
 		"type": "conference",
+		"language": "English",
 		"url": "https://2027.hkadh.org/"
 	},
 	{
@@ -489,7 +523,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2013-05-03",
 		"conference": "43rd Annual Canadian Association of African Studies Conference (CAAS)",
 		"location": "University of Ottawa",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "militantisme-islamique-feminin-burkina-2019",
@@ -501,7 +536,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2019-08-27",
 		"conference": "IIe Congrès international de l'Institut du Genre",
 		"location": "University of Angers",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "nouveau-dynamisme-salafisme-cote-divoire-2017",
@@ -513,7 +549,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2017-08-03",
 		"conference": "10th International Conference of the Mande Studies Association (MANSA)",
 		"location": "International University of Grand-Bassam",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "precheurs-precheuses-burkina-faso-2013",
@@ -529,7 +566,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2013-05-07",
 		"conference": "81e Congrès de l'Association Francophone pour le Savoir (Acfas)",
 		"location": "Université Laval",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "publishing-islam-burkina-faso-collection-2022",
@@ -545,7 +583,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2022-09-15",
 		"conference": "34th Deutscher Orientalistentag (DOT)",
 		"location": "Free University of Berlin",
-		"type": "conference"
+		"type": "conference",
+		"language": "English"
 	},
 	{
 		"id": "reconfiguring-archive-amira-2026",
@@ -558,6 +597,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Reimagining the Archive in the Post-Truth Era: An International Interdisciplinary Conference",
 		"location": "Cory Library for Historical Research, Makhanda",
 		"type": "conference",
+		"language": "English",
 		"url": "https://ru.za.libguides.com/ilamcoryconf"
 	},
 	{
@@ -575,7 +615,8 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "9èmes Rencontres des études africaines en France (REAF)",
 		"panelTitle": "Humanités numériques (DH) et IA dans les études africaines",
 		"location": "Paris",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "rue-islam-associatif-enjeux-citoyens-2014",
@@ -595,7 +636,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2014-10-29",
 		"conference": "International Conference Le clos et l'ouvert. Acteurs religieux, acteurs sociaux et usages de la rue (Europe, Afrique, Asie, Amériques)",
 		"location": "Gaston Berger University",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "salafisme-securitisation-benin-togo-2022",
@@ -607,7 +649,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2022-06-02",
 		"conference": "Islamist Protest, Terrorism and (In)Security in Africa Conference",
 		"location": "University of Maroua",
-		"type": "conference"
+		"type": "conference",
+		"language": "French"
 	},
 	{
 		"id": "serveurs-mcp-glam-africains-stias-2026",
@@ -620,6 +663,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Humanités numériques et intelligence artificielle en études africaines : vers des pratiques durables et équitables",
 		"location": "Stellenbosch Institute for Advanced Study (STIAS), Stellenbosch",
 		"type": "workshop",
+		"language": "French",
 		"url": "https://fmadore.github.io/stias-dh-ai-workshop-2026/"
 	},
 	{
@@ -637,6 +681,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Soundscapes of Digital History",
 		"location": "H-Soz-Kult",
 		"type": "podcast",
+		"language": "English",
 		"url": "https://www.hsozkult.de/debate/id/fddebate-157316"
 	},
 	{
@@ -655,6 +700,7 @@ export const cvCommunications: CvCommunication[] = [
 		"episode": 14,
 		"location": "Leibniz-Zentrum Moderner Orient",
 		"type": "podcast",
+		"language": "English",
 		"url": "https://www.zmo.de/en/kitchen-talks"
 	},
 	{
@@ -688,6 +734,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "35th ACM International Conference on Information and Knowledge Management (CIKM 2026)",
 		"location": "Auditorium Parco della Musica, Rome",
 		"type": "poster",
+		"language": "English",
 		"url": "https://cikm2026.diag.uniroma1.it/"
 	},
 	{
@@ -721,6 +768,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "AI Day 2026, Research Center for AI in Science and Society (RAIS²)",
 		"location": "University of Bayreuth",
 		"type": "poster",
+		"language": "English",
 		"url": "https://www.rais2.uni-bayreuth.de/en/events/ai_day_2026/index.html"
 	},
 	{
@@ -735,6 +783,7 @@ export const cvCommunications: CvCommunication[] = [
 		"panelTitle": "Panel I: African History",
 		"location": "University of Kansas, Lawrence",
 		"type": "lecture",
+		"language": "English",
 		"url": "https://calendar.ku.edu/event/ai-and-africa-symposium"
 	},
 	{
@@ -747,7 +796,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2022-03-08",
 		"conference": "Laboratoire d'Analyse et de Recherche, Religions, Espaces et Développement (LARRED)",
 		"location": "Université d'Abomey-Calavi",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "French"
 	},
 	{
 		"id": "collection-islam-afrique-ouest",
@@ -759,7 +809,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2024-03-25",
 		"conference": "Enjeux éthiques et juridiques au diapason des données de la recherche en études aréales",
 		"location": "Aix-en-Provence, Maison méditerranéenne des sciences de l'Homme",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "French"
 	},
 	{
 		"id": "current-dynamics-islam-burkina-faso",
@@ -772,6 +823,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Sahel Seminars",
 		"location": "University of Florida",
 		"type": "lecture",
+		"language": "English",
 		"url": "https://sahelresearch.africa.ufl.edu/events-activities/sahel-seminars/"
 	},
 	{
@@ -784,7 +836,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2019-07-04",
 		"conference": "Debating Laïcité in the Sahel: What Future for Secularism?",
 		"location": "West African Research Center",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "French"
 	},
 	{
 		"id": "digital-history-exe",
@@ -801,6 +854,7 @@ export const cvCommunications: CvCommunication[] = [
 			"institution": "Leibniz Centre for Contemporary History Potsdam (Germany)",
 			"level": "graduate"
 		},
+		"language": "English",
 		"url": "https://web.archive.org/web/20250411145918/https://zzf-potsdam.de/forschung/doktorand_innen/master-class"
 	},
 	{
@@ -813,7 +867,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2026-04-16",
 		"conference": "Non-European Approaches in European Academia: Strategies for De-Europeanizing Research",
 		"location": "Tadeusz Manteuffel Institute of History, Polish Academy of Sciences, Warsaw",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "English"
 	},
 	{
 		"id": "digital-humanities-ai-social-sciences-zmo-2026",
@@ -837,7 +892,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2026-11-12",
 		"conference": "ZMO Projektversammlung",
 		"location": "Leibniz-Zentrum Moderner Orient",
-		"type": "seminar"
+		"type": "seminar",
+		"language": "English"
 	},
 	{
 		"id": "digital-humanities-islam-burkina-faso",
@@ -849,7 +905,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2022-09-16",
 		"conference": "Open Day at ZMO",
 		"location": "Leibniz-Zentrum Moderner Orient",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "English"
 	},
 	{
 		"id": "dormant-digital-collections-ai-triage-dga-2026",
@@ -863,6 +920,7 @@ export const cvCommunications: CvCommunication[] = [
 		"panelTitle": "DGA-Roundtable-Reihe Sommersemester 2026",
 		"location": "Leibniz-Zentrum Moderner Orient",
 		"type": "lecture",
+		"language": "English",
 		"url": "https://asienforschung.de/events/roundtable-2-digital-humanities-und-kuenstliche-intelligenz-in-den-regionalwissenschaften/"
 	},
 	{
@@ -876,6 +934,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Conférences midi du CIRAM",
 		"location": "Université Laval",
 		"type": "lecture",
+		"language": "French",
 		"url": "https://www.ciram.hei.ulaval.ca/les-elites-musulmanes-en-cote-divoire-et-au-burkina-faso-depuis-1990-des-mobilisations-politiques-contrastees/"
 	},
 	{
@@ -888,7 +947,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2022-03-22",
 		"conference": "Atelier international Femmes africaines dans une société d'hommes: espaces contraints, habilité sociale et formes d'émancipation",
 		"location": "Université de Kabala",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "French"
 	},
 	{
 		"id": "etablir-faitiere-islamique",
@@ -900,7 +960,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2025-03-04",
 		"conference": "Workshop Religiosités et vies associatives en Afrique: entre stratégies d'organisation et vies en mouvement",
 		"location": "Puidoux",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "French"
 	},
 	{
 		"id": "formation-recherche-en-ligne-niamey",
@@ -915,7 +976,8 @@ export const cvCommunications: CvCommunication[] = [
 		"type": "lecture",
 		"teaching": {
 			"institution": "Laboratoire d'Études et de Recherches sur les Dynamiques Sociales et le Développement Local (Niger)"
-		}
+		},
+		"language": "French"
 	},
 	{
 		"id": "formation-recherches-en-ligne-ouagadougou",
@@ -930,7 +992,8 @@ export const cvCommunications: CvCommunication[] = [
 		"type": "lecture",
 		"teaching": {
 			"institution": "Université Joseph Ki-Zerbo (Burkina Faso)"
-		}
+		},
+		"language": "French"
 	},
 	{
 		"id": "histoire-communautes-musulmanes-ouest-africaines-2025",
@@ -947,6 +1010,7 @@ export const cvCommunications: CvCommunication[] = [
 			"institution": "École des hautes études en sciences sociales (France)",
 			"level": "graduate"
 		},
+		"language": "French",
 		"url": "https://doi.org/10.58079/13pmz"
 	},
 	{
@@ -959,7 +1023,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2025-05-22",
 		"conference": "Work talk",
 		"location": "École nationale des chartes",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "French"
 	},
 	{
 		"id": "interfaith-coexistence-campuses",
@@ -971,7 +1036,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2023-06-06",
 		"conference": "Workshop Religion for Peace? Identifying Conditions and Mechanisms of Interfaith Peace",
 		"location": "Berlin, German Institute for Global and Area Studies (GIGA)",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "English"
 	},
 	{
 		"id": "introduction-research-data-management-bigsas-2026",
@@ -996,7 +1062,8 @@ export const cvCommunications: CvCommunication[] = [
 			"institution": "Universität Bayreuth (Germany)",
 			"course": "Bayreuth International Graduate School of African Studies (BIGSAS)",
 			"level": "graduate"
-		}
+		},
+		"language": "English"
 	},
 	{
 		"id": "islam-algorithms-ai",
@@ -1008,7 +1075,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2024-07-18",
 		"conference": "ZMO Sommerfest",
 		"location": "Leibniz-Zentrum Moderner Orient",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "English"
 	},
 	{
 		"id": "islam-burkina-cote-ivoire",
@@ -1020,7 +1088,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2017-02-13",
 		"conference": "76e conférence Archéopat",
 		"location": "Université du Québec à Rimouski",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "French"
 	},
 	{
 		"id": "islam-peripheries-dh-ai-west-africa-central-asia-2026",
@@ -1037,6 +1106,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Seminar series 'Digital History in/of Central Asia and the South Caucasus'",
 		"location": "Friedrich-Alexander-Universität Erlangen-Nürnberg",
 		"type": "lecture",
+		"language": "English",
 		"url": "https://www.osteuropa.phil.fau.de/digital-history-seminars/"
 	},
 	{
@@ -1049,7 +1119,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2018-09-08",
 		"conference": "Workshop Entrepreneuriat religieux et figures de la réussite en Afrique subsaharienne: terrains et concepts",
 		"location": "Université Laval",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "French"
 	},
 	{
 		"id": "militantisme-islamique-campus-lome",
@@ -1061,7 +1132,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2022-02-22",
 		"conference": "Chaire de recherche sur l'islam contemporain en Afrique de l'Ouest",
 		"location": "Université du Québec à Montréal",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "French"
 	},
 	{
 		"id": "militantisme-religieux-campus-benin-togo-2025",
@@ -1078,6 +1150,7 @@ export const cvCommunications: CvCommunication[] = [
 			"institution": "École des hautes études en sciences sociales (France)",
 			"level": "graduate"
 		},
+		"language": "French",
 		"url": "https://doi.org/10.58079/13pmz"
 	},
 	{
@@ -1090,7 +1163,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2020-10-01",
 		"conference": "Hamilton Lugar School of Global and International Studies",
 		"location": "Indiana University Bloomington",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "English"
 	},
 	{
 		"id": "point-de-passage-frontieres-religieuses",
@@ -1102,7 +1176,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2022-06-03",
 		"conference": "Workshop Point de passage et frontières religieuses",
 		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "French"
 	},
 	{
 		"id": "political-mobilizations-burkina-faso",
@@ -1114,7 +1189,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2020-11-27",
 		"conference": "Workshop Political mobilizations in Burkina Faso",
 		"location": "University of Ottawa",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "English"
 	},
 	{
 		"id": "presentation-discussion-religious-activism-campuses-ciram-2025",
@@ -1127,6 +1203,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Conférences midi du CIRAM",
 		"location": "Université Laval",
 		"type": "lecture",
+		"language": "French",
 		"url": "https://www.ciram.hei.ulaval.ca/activite/discussion-autour-du-livre-religious-activism-on-campuses-in-togo-and-benin/"
 	},
 	{
@@ -1139,7 +1216,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2020-01-24",
 		"conference": "Workshop Media and 'Public' Islam in Africa & Elsewhere",
 		"location": "University of Florida",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "English"
 	},
 	{
 		"id": "questions-islam-afrique-ouest-2025",
@@ -1156,6 +1234,7 @@ export const cvCommunications: CvCommunication[] = [
 			"institution": "École des hautes études en sciences sociales (France)",
 			"level": "graduate"
 		},
+		"language": "French",
 		"url": "https://doi.org/10.58079/13pmz"
 	},
 	{
@@ -1172,7 +1251,8 @@ export const cvCommunications: CvCommunication[] = [
 		"teaching": {
 			"institution": "Université Alassane Ouattara (Côte d'Ivoire)",
 			"course": "Séance de formation"
-		}
+		},
+		"language": "French"
 	},
 	{
 		"id": "rencontre-chretiens-musulmans-2025",
@@ -1189,6 +1269,7 @@ export const cvCommunications: CvCommunication[] = [
 			"institution": "École des hautes études en sciences sociales (France)",
 			"level": "graduate"
 		},
+		"language": "French",
 		"url": "https://doi.org/10.58079/13pmz"
 	},
 	{
@@ -1205,7 +1286,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2024-12-05",
 		"conference": "Workshop L'Afrique des religions à l'épreuve des chiffres et des catégorisations",
 		"location": "Université Paris Cité",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "French"
 	},
 	{
 		"id": "representations-islam-muslims-togo",
@@ -1217,7 +1299,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2020-10-09",
 		"conference": "Workshop Islam, Media, and Popular Culture in Africa and Elsewhere",
 		"location": "University of Florida",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "English"
 	},
 	{
 		"id": "salafisme-pentecotisme-campus-benin-togo",
@@ -1229,7 +1312,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2021-04-08",
 		"conference": "Conférences midi du CIRAM",
 		"location": "Université Laval",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "French"
 	},
 	{
 		"id": "same-name-different-country-alevi-archive-leipzig-2026",
@@ -1243,6 +1327,7 @@ export const cvCommunications: CvCommunication[] = [
 		"panelTitle": "Panel 1",
 		"location": "Sächsische Akademie der Wissenschaften zu Leipzig, Leipzig",
 		"type": "workshop",
+		"language": "English",
 		"url": "https://aleviarchive.saw-leipzig.de"
 	},
 	{
@@ -1255,7 +1340,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2024-12-02",
 		"conference": "Workshop Perspectives in Motion: Conceptual Fields from the Global South",
 		"location": "Leibniz-Zentrum Moderner Orient",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "English"
 	},
 	{
 		"id": "union-islamique-benin-elections",
@@ -1267,7 +1353,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2019-05-28",
 		"conference": "Université d'Abomey-Calavi",
 		"location": "Université d'Abomey-Calavi",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "French"
 	},
 	{
 		"id": "uppsala-university-2025",
@@ -1279,7 +1366,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2025-12-05",
 		"conference": "Work talk ALMEDA project",
 		"location": "Uppsala University",
-		"type": "lecture"
+		"type": "lecture",
+		"language": "English"
 	},
 	{
 		"id": "when-ai-meets-the-archive-2025",
@@ -1292,6 +1380,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "SADiLaR Digital Humanities colloquia",
 		"location": "North-West University",
 		"type": "lecture",
+		"language": "English",
 		"url": "https://sadilar.org/en/dh-colloquium/"
 	},
 	{
@@ -1304,7 +1393,8 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2018-10-19",
 		"conference": "Workshop Muslim Youth and Lived Islam in Africa & Beyond",
 		"location": "University of Florida",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "English"
 	},
 	{
 		"id": "yovo-historian-benin-togo",
@@ -1316,6 +1406,7 @@ export const cvCommunications: CvCommunication[] = [
 		"dateISO": "2022-06-14",
 		"conference": "Workshop Researching Religion, Morality and Boko in West Africa",
 		"location": "Martin-Luther-Universität Halle-Wittenberg",
-		"type": "workshop"
+		"type": "workshop",
+		"language": "English"
 	}
 ];

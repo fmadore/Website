@@ -1,6 +1,5 @@
 <script lang="ts">
 	import SEO from '#lib/SEO.svelte';
-	import { pageTitle } from '#lib/utils/siteHelpers.ts';
 	import { resolve } from '$app/paths';
 	import { assetHref, pageHref } from '#lib/utils/paths.ts';
 	import type { Publication } from '#lib/types/index.ts';
@@ -22,11 +21,12 @@
 		createPublicationSEODescription,
 		createPublicationSEOKeywords,
 		recordEntityId,
-		truncateTitle
+		recordPageTitle
 	} from '#lib/utils/seoUtils.ts';
 	import { getPublicationTypeBadge } from '#lib/utils/publicationTypeLabels.ts';
 	import { formatByline } from '#lib/utils/byline.ts';
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 
 	interface Props {
 		data: PageData;
@@ -41,6 +41,9 @@
 	const seoKeywords = $derived(createPublicationSEOKeywords(publication));
 
 	const displayTitle = $derived(typesetQuotes(publication.title));
+	// The record's language, set on its title and abstract when it is a single
+	// language other than the page's English (WCAG 3.1.2).
+	const contentLang = $derived(titleLangAttr(publication.language));
 
 	// Define breadcrumb items (used for JSON-LD structured data)
 	// The trail feeds the BreadcrumbList structured data, where the name is a
@@ -108,7 +111,7 @@
 </script>
 
 <SEO
-	title={pageTitle(truncateTitle(publication.title))}
+	title={recordPageTitle('publication', publication.title)}
 	schemaName={publication.title}
 	description={seoDescription}
 	keywords={seoKeywords}
@@ -132,7 +135,7 @@
 			<div class="section-head">
 				<h2 id="pub-abstract-head" class="section-title">Abstract</h2>
 			</div>
-			<div class="pub-abstract">
+			<div class="pub-abstract" lang={contentLang}>
 				{#each abstractParagraphs as paragraph, index (index)}
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
 					<p class="pub-abstract-p" class:drop-cap={index === 0}>{@html paragraph}</p>
@@ -171,6 +174,7 @@
 	section={{ label: 'Publications', href: resolve('/publications') }}
 	{eyebrow}
 	title={displayTitle}
+	titleLang={contentLang}
 	{byline}
 	{bylineSuffix}
 	{breadcrumbItems}

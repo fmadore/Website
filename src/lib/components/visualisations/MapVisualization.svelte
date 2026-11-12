@@ -14,6 +14,7 @@
 	import RecoveryActions from './RecoveryActions.svelte';
 	import { resolve } from '$app/paths';
 	import { assetHref } from '#lib/utils/paths.ts';
+	import { escapeMapText } from '#lib/utils/locationMapContent.ts';
 	import { getTheme } from '#lib/stores/themeStore.svelte.ts';
 	import {
 		getCSSVariableValueWithFallback,
@@ -105,14 +106,14 @@
 	function createPopupContent(item: MarkerData): string {
 		const linkUrl = resolve('/communications/[id]', { id: item.id });
 		const imageHtml = item.image
-			? `<img src="${assetHref(item.image)}" alt="${item.title}" class="map-popup-image">`
+			? `<img src="${escapeMapText(assetHref(item.image))}" alt="${escapeMapText(item.title)}" class="map-popup-image">`
 			: '';
 
 		return `
 			<a href="${linkUrl}" target="_self" class="map-popup-link">
 				${imageHtml}
 				<div class="map-popup-content-text">
-					<strong>${item.title}</strong>
+					<strong>${escapeMapText(item.title)}</strong>
 					${item.year ? `<br><span class="map-popup-year">(${item.year})</span>` : ''}
 				</div>
 			</a>

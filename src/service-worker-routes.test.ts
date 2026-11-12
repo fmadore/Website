@@ -87,3 +87,36 @@ describe('the remaining strategies', () => {
 		expect(chooseStrategy('/assets/inline-face')).toBe('network-first');
 	});
 });
+
+describe('media and downloads are never cached by the worker', () => {
+	/* The 7 MB NotebookLM overviews and the PDFs under /files/ used to fall
+	 * through to network-first, which put each whole file into the runtime
+	 * cache on first play or open. */
+	it.each([
+		'/notebooklm/religious_activism_campus.mp3',
+		'/Website/notebooklm/religious_activism_campus.mp3',
+		'/files/syllabus-francophone-west-africa.pdf',
+		'/files/some-download',
+		'/media/talk.mp4'
+	])('passes %s through', (pathname) => {
+		expect(chooseStrategy(pathname)).toBe('passthrough');
+	});
+
+	it.each(['audio', 'video', 'track'])(
+		'passes a %s request through whatever its path',
+		(destination) => {
+			expect(chooseStrategy('/stream/episode', destination)).toBe('passthrough');
+		}
+	);
+
+	it('passes any range request through, even on a cacheable path', () => {
+		expect(chooseStrategy('/images/hero.webp', '', true)).toBe('passthrough');
+		expect(chooseStrategy('/publications', 'document', true)).toBe('passthrough');
+		expect(chooseStrategy('/images/hero.webp', '', false)).toBe('cache-first');
+	});
+
+	it('leaves pages and images on their own strategies', () => {
+		expect(chooseStrategy('/publications', 'document')).toBe('network-first');
+		expect(chooseStrategy('/images/hero.webp', 'image')).toBe('cache-first');
+	});
+});

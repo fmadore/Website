@@ -68,22 +68,81 @@ export function describeSeries(measure: string, data: LabelledValue[], noun: Nou
 }
 
 /**
- * A stacked series: category totals plus how many layers are stacked.
+ * A stacked series: category totals, how many layers are stacked, and the
+ * largest of them — the stack itself, which a total alone does not describe.
  *
- * `Publications per year by type, 2013 to 2026, in 8 types. Busiest year: 2016, 6 publications.`
+ * `Publications per year by type, 2013 to 2026, in 8 types. Largest: Journal
+ * article, 30; Book chapter, 21; Blog post, 12. Busiest year: 2016, 6 publications.`
+ *
+ * @param series one entry per stacked layer, its value the layer's total over
+ *   every category; the three largest are named, in order.
  */
 export function describeStack(
 	measure: string,
 	totals: LabelledValue[],
-	seriesCount: number,
+	series: LabelledValue[],
 	noun: Noun,
 	seriesNoun: Noun = { singular: 'type', plural: 'types' }
 ): string {
 	if (totals.length === 0) return `${measure}: no data recorded.`;
 	const { highest } = extremes(totals);
+	const largest = series
+		.filter((layer) => layer.value > 0)
+		.sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
+		.slice(0, 3)
+		.map((layer) => `${layer.label}, ${layer.value}`);
 	return (
-		`${measure}, ${spanOf(totals)}, in ${countOf(seriesCount, seriesNoun)}.` +
+		`${measure}, ${spanOf(totals)}, in ${countOf(series.length, seriesNoun)}.` +
+		(largest.length > 0 ? ` Largest: ${largest.join('; ')}.` : '') +
 		` Busiest ${totals.length === 1 ? 'category' : 'year'}: ${highest.label}, ${countOf(highest.value, noun)}.`
+	);
+}
+
+/** One row of the project timeline, as `buildProjectTimeline` returns it. */
+export interface ProjectTimelineRow {
+	name: string;
+	period: { startYear: number; endYear: number; ongoing: boolean } | null;
+	firstItemYear: number;
+	lastItemYear: number;
+	items: unknown[];
+	outsidePeriod: number;
+}
+
+/** `from 2013 to 2018`, `since 2026`, or `in 2020`. */
+function periodPhrase(period: NonNullable<ProjectTimelineRow['period']>): string {
+	if (period.ongoing) return `since ${period.startYear}`;
+	return period.startYear === period.endYear
+		? `in ${period.startYear}`
+		: `from ${period.startYear} to ${period.endYear}`;
+}
+
+/**
+ * The project timeline: each project's recorded period, its output count, and
+ * how many of those outputs fall outside the period. A project with no
+ * recorded period is said to have none, with the span of its outputs instead.
+ *
+ * `Research projects and their recorded periods, 2 projects. Alpha: ran from
+ * 2013 to 2018, 39 publications, 21 outside that period. Beta: no recorded
+ * period, 3 publications from 2019 to 2021.`
+ */
+export function describeProjectTimeline(rows: ProjectTimelineRow[], noun: Noun): string {
+	if (rows.length === 0) return 'Research projects and their recorded periods: no data recorded.';
+	const parts = rows.map((row) => {
+		const count = countOf(row.items.length, noun);
+		if (!row.period) {
+			const span =
+				row.firstItemYear === row.lastItemYear
+					? `in ${row.firstItemYear}`
+					: `from ${row.firstItemYear} to ${row.lastItemYear}`;
+			return `${row.name}: no recorded period, ${count} ${span}.`;
+		}
+		const verb = row.period.ongoing ? 'running' : 'ran';
+		const outside = row.outsidePeriod > 0 ? `, ${row.outsidePeriod} outside that period` : '';
+		return `${row.name}: ${verb} ${periodPhrase(row.period)}, ${count}${outside}.`;
+	});
+	return (
+		`Research projects and their recorded periods, ${countOf(rows.length, { singular: 'project', plural: 'projects' })}. ` +
+		parts.join(' ')
 	);
 }
 

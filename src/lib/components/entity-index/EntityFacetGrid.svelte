@@ -17,7 +17,8 @@
 	// Facet *labels* are typeset; the raw value stays the toggle key and the URL
 	// parameter, so filtering and deep links keep matching the data.
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { clampYearRange } from '#lib/utils/entityFilterCore.ts';
+	import { tick } from 'svelte';
+	import { clampYearRange, yearRangeReadout } from '#lib/utils/entityFilterCore.ts';
 
 	interface Props {
 		filters: EntityFilterSystem<TItem>;
@@ -85,16 +86,36 @@
 	const displayedYears = $derived(clampYearRange(af.yearRange, minYear, maxYear));
 	const yearRangeValues = $derived<[number, number]>([displayedYears.min, displayedYears.max]);
 
-	// The read-out: what the two handles currently mean, in words, live. A pair
-	// of handles on a bare track states the window nowhere, and the bounds
-	// printed either side of it are the corpus, not the selection.
-	const yearReadout = $derived(
-		!af.yearRange
-			? `All years · ${minYear}–${maxYear}`
-			: displayedYears.min === displayedYears.max
-				? `${displayedYears.min}`
-				: `${displayedYears.min}–${displayedYears.max}`
-	);
+	// The read-out: what the filter state currently means, in words, live. A
+	// pair of handles on a bare track states the window nowhere, and the bounds
+	// printed either side of it are the corpus, not the selection. A deep-linked
+	// window wholly outside the corpus is printed as given rather than clamped,
+	// so it never names a year that has entries beside a count of zero.
+	const yearReadout = $derived(yearRangeReadout(af.yearRange, minYear, maxYear));
+
+	/* `Clear all` is the last thing narrowing the list, so clearing unmounts
+	 * it, and focus would fall to <body> — the top of the page for a keyboard
+	 * or screen-reader user. Land it on the page's search box (the start of the
+	 * filter apparatus), or failing that on the result count, which reads out
+	 * the restored total — always the count on a touch screen, where focusing
+	 * a text field would throw up the on-screen keyboard. Only when focus was
+	 * actually lost: a click that left focus elsewhere is left alone. */
+	let summaryEl: HTMLDivElement | undefined = $state();
+	let statEl: HTMLSpanElement | undefined = $state();
+
+	async function clearAll() {
+		onclearall();
+		await tick();
+		const active = document.activeElement;
+		if (active && active !== document.body) return;
+		const touch = window.matchMedia?.('(pointer: coarse)').matches;
+		const search = touch
+			? null
+			: summaryEl
+					?.closest('.entity-index')
+					?.querySelector<HTMLInputElement>('input[type="search"]');
+		(search ?? statEl)?.focus();
+	}
 
 	function handleYearChange(event: CustomEvent<{ values: [number, number] }>) {
 		const [min, max] = event.detail.values;
@@ -282,7 +303,7 @@
      Advanced-filters toggle, which used to take the match count and the
      "Clear all" affordance down with it on exactly the viewport where the
      reader most needs to know how many records are left. -->
-<div class="facet-summary">
+<div class="facet-summary" bind:this={summaryEl}>
 	{#if activeFilterLabels.length > 0}
 		<span class="facet-summary-active">
 			<span class="filter-note-label">Filtered by</span>
@@ -290,7 +311,7 @@
 		</span>
 	{/if}
 	<!-- Announce filter-result changes to screen readers -->
-	<span class="facet-summary-stat" aria-live="polite">
+	<span class="facet-summary-stat" aria-live="polite" tabindex="-1" bind:this={statEl}>
 		{#if activeFilterCount > 0}
 			<span class="facet-summary-count">{activeFilterCount}</span>
 			{activeFilterCount === 1 ? 'filter' : 'filters'} active ·
@@ -303,7 +324,7 @@
 		{/if}
 	</span>
 	{#if anyNarrowing}
-		<button type="button" class="mono-action" onclick={onclearall}>
+		<button type="button" class="mono-action" onclick={clearAll}>
 			Clear all <span aria-hidden="true">✕</span>
 		</button>
 	{/if}

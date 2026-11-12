@@ -17,7 +17,7 @@ ECharts Horizontal Bar Chart component
 	import ChartStatus from './ChartStatus.svelte';
 	import { getAriaConfig } from '#lib/utils/chartActions.ts';
 	import { describeRanked } from '#lib/utils/chartDescriptions.ts';
-	import { niceTickInterval, tickBudgetForWidth } from '#lib/utils/chartAxis.ts';
+	import { niceTickInterval, niceAxisMax, tickBudgetForWidth } from '#lib/utils/chartAxis.ts';
 
 	// Props - keeping the same interface as your D3 component for easy replacement
 	type DataItem = $$Generic;
@@ -257,11 +257,12 @@ ECharts Horizontal Bar Chart component
 	 * own width and the interval from the 1–2–5 ladder, so a phone gets four
 	 * intervals on round numbers rather than ten on top of each other.
 	 */
-	const xAxisInterval = $derived.by(() => {
-		const values = chartData.map((d) => d.value);
-		const maxVal = maxValue ?? Math.max(...values, 1);
-		return niceTickInterval(maxVal, tickBudgetForWidth(containerWidth - gridLeft - 24));
-	});
+	const xAxisMaxData = $derived(maxValue ?? Math.max(...chartData.map((d) => d.value), 1));
+	const xAxisInterval = $derived(
+		niceTickInterval(xAxisMaxData, tickBudgetForWidth(containerWidth - gridLeft - 24))
+	);
+	// The axis ends on a tick, so no off-ladder maximum is printed beside the last.
+	const xAxisMax = $derived(niceAxisMax(xAxisMaxData, xAxisInterval));
 	// Chart options - reactive to all dependencies
 	const chartOption = $derived({
 		tooltip: {
@@ -295,7 +296,7 @@ ECharts Horizontal Bar Chart component
 			},
 			interval: xAxisInterval,
 			minInterval: 1,
-			max: maxValue,
+			max: xAxisMax,
 			axisLine: getEChartsAxisLineStyle(resolvedColors),
 			axisTick: getEChartsAxisLineStyle(resolvedColors),
 			splitLine: getEChartsSplitLineStyle(resolvedColors)

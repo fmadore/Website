@@ -48,3 +48,20 @@ export function tickBudgetForWidth(plotWidth: number): number {
 	if (!Number.isFinite(plotWidth) || plotWidth <= 0) return 10;
 	return Math.max(4, Math.min(10, Math.floor(plotWidth / 70)));
 }
+
+/**
+ * The axis maximum, rounded up to the next tick on the ladder.
+ *
+ * Given an explicit maximum that is not a multiple of the interval, ECharts
+ * draws the ladder up to it and then prints the maximum as one more label
+ * crowded against the last ("200 210"). Ending the axis on a tick keeps every
+ * label on the ladder and the largest bar inside it.
+ *
+ * @param maxValue the largest value the axis must hold
+ * @param interval the tick interval, as `niceTickInterval` returns it
+ */
+export function niceAxisMax(maxValue: number, interval: number): number {
+	const step = Number.isFinite(interval) && interval > 0 ? interval : 1;
+	const max = Number.isFinite(maxValue) && maxValue > 0 ? maxValue : step;
+	return Math.ceil(max / step) * step;
+}

@@ -17,15 +17,23 @@ in the accessibility tree, and a closed `<details>` is not.
 		rows,
 		keyLabel,
 		valueLabel,
-		caption
+		caption,
+		columns = []
 	}: {
-		rows: LabelledValue[];
+		/** One row per category; `cells` holds one figure per entry of `columns`. */
+		rows: Array<LabelledValue & { cells?: number[] }>;
 		/** Column head for the category: "Year", "Venue", "Country". */
 		keyLabel: string;
 		/** Column head for the figure: "Publications", "Talks", "Citations". */
 		valueLabel: string;
 		/** Table caption, read out before the rows. */
 		caption: string;
+		/**
+		 * Heads for a breakdown printed before the figure column — a stacked
+		 * plate's layers, one column per type — so the table carries the stack
+		 * and not only its totals. The figure column is then the row's total.
+		 */
+		columns?: string[];
 	} = $props();
 </script>
 
@@ -35,6 +43,9 @@ in the accessibility tree, and a closed `<details>` is not.
 		<thead>
 			<tr>
 				<th scope="col" class="chart-table-key">{keyLabel}</th>
+				{#each columns as column (column)}
+					<th scope="col" class="chart-table-figure">{column}</th>
+				{/each}
 				<th scope="col" class="chart-table-figure">{valueLabel}</th>
 			</tr>
 		</thead>
@@ -42,6 +53,9 @@ in the accessibility tree, and a closed `<details>` is not.
 			{#each rows as row (row.label)}
 				<tr>
 					<th scope="row" class="chart-table-key">{row.label}</th>
+					{#each columns as column, i (column)}
+						<td class="chart-table-figure">{row.cells?.[i] ?? 0}</td>
+					{/each}
 					<td class="chart-table-figure">{row.value}</td>
 				</tr>
 			{/each}

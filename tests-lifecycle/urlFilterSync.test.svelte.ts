@@ -3,7 +3,7 @@ import { flushSync } from 'svelte';
 import { urlFilterSync } from '../src/lib/actions/urlFilterSync.svelte';
 import { page } from './app-state.svelte';
 import { replaced } from './app-navigation';
-import { createSystem, ids } from './filterFixture';
+import { createSystem, ids, PROJECT } from './filterFixture';
 
 let stop: (() => void) | undefined;
 beforeEach(() => {
@@ -14,11 +14,27 @@ afterEach(() => {
 	stop = undefined;
 });
 
-const at = (path: string) => (page.url = new URL(path, 'https://www.frederickmadore.com'));
+const ORIGIN = 'https://www.frederickmadore.com';
 
-/** Mount the action on a page at `path`, as an index page does. */
-function mount(path: string) {
-	at(path);
+/** A navigation: Kit assigns a fresh `page.url` and clears `page.shallow`. */
+function at(path: string) {
+	page.shallow = null;
+	page.url = new URL(path, ORIGIN);
+}
+
+/**
+ * A popstate onto a history entry the filter writer last edited: Kit restores
+ * the address the page was loaded at as `page.url` and puts the real one on
+ * `page.shallow.url`, in one synchronous update.
+ */
+function popTo(loadedAt: string, realAddress: string) {
+	page.shallow = { url: new URL(realAddress, ORIGIN) };
+	page.url = new URL(loadedAt, ORIGIN);
+}
+
+/** Mount the action on a page, as an index page does, after `arrive` has set the address. */
+function mount(path: string, arrive: () => void = () => at(path)) {
+	arrive();
 	const system = createSystem();
 	let term = $state('');
 	const search = {
@@ -89,14 +105,88 @@ it('follows a navigation to another query without echoing it', () => {
 	expect(replaced).toEqual(['/publications?tag=Benin&tag=Islam&year_min=2020&year_max=2025']);
 });
 
-it('keeps a comma inside one value', () => {
-	const project = "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis";
+it('restores a filter written by a chip click when Back returns to the index', () => {
+	// /publications → click Books → open a record (the index unmounts).
+	const first = mount('/publications');
+	first.system.toggle('types', 'book');
+	flushSync();
+	expect(replaced).toEqual(['/publications?type=book']);
+	stop?.();
+
+	// Back: the index mounts again. The entry's stored page URL is the plain
+	// index; the address is not.
+	replaced.length = 0;
+	const { system } = mount('/publications', () =>
+		popTo('/publications', '/publications?type=book')
+	);
+	expect(system.activeFilters.types).toEqual(['book']);
+	expect(ids(system.filteredItems)).toEqual(['a']);
+	expect(replaced).toEqual([]);
+});
+
+it('follows Back and Forward between two filtered entries of one index', () => {
 	const { system } = mount('/publications');
-	system.setters.setProjects([project]);
+	system.toggle('types', 'book');
 	flushSync();
-	const written = new URL(replaced.at(-1)!, 'https://www.frederickmadore.com');
-	at(`${written.pathname}${written.search}`);
-	system.setters.setProjects([]);
+	// A link on the page to another filtered view of the same index: a navigation.
+	at('/publications?tag=Benin');
 	flushSync();
+	expect(system.activeFilters.types).toEqual([]);
+	expect(system.activeFilters.tags).toEqual(['Benin']);
+
+	popTo('/publications', '/publications?type=book');
+	flushSync();
+	expect(system.activeFilters.types).toEqual(['book']);
+	expect(system.activeFilters.tags).toEqual([]);
+
+	at('/publications?tag=Benin'); // Forward: an entry no shallow edit touched
+	flushSync();
+	expect(system.activeFilters.tags).toEqual(['Benin']);
+	expect(system.activeFilters.types).toEqual([]);
+});
+
+it('clears the filters on a real navigation to the plain index', () => {
+	const { system } = mount('/publications');
+	system.toggle('types', 'book');
+	flushSync();
+	expect(page.shallow?.url.search).toBe('?type=book');
+	at('/publications');
+	flushSync();
+	expect(system.activeFilters.types).toEqual([]);
+	expect(ids(system.filteredItems)).toHaveLength(4);
+});
+
+it('does not replay its own shallow edit over a later click', () => {
+	const { system } = mount('/publications');
+	system.toggle('types', 'book');
+	system.toggle('types', 'article');
+	flushSync();
+	// The first, slower replaceState lands after the second click.
+	page.shallow = { url: new URL('/publications?type=book', ORIGIN) };
+	flushSync();
+	expect(system.activeFilters.types).toEqual(['book', 'article']);
+});
+
+it('reads a mixed-case, repeated deep link onto the chips the page prints', () => {
+	const { system } = mount('/publications?tag=islam&tag=Islam&tag=NONEXISTENT&year_min=2020');
+	expect(system.activeFilters.tags).toEqual(['Islam']);
+	expect(system.activeFilters.yearRange).toEqual({ min: 2020, max: Infinity });
+	expect(ids(system.filteredItems)).toEqual([]);
+	system.setters.setTags([]);
+	flushSync();
+	expect(ids(system.filteredItems)).toEqual(['c', 'd']);
+	expect(replaced.at(-1)).toBe('/publications?year_min=2020');
+});
+
+it('keeps a comma inside one value', () => {
+	const project = PROJECT;
+	const first = mount('/publications');
+	first.system.setters.setProjects([project]);
+	flushSync();
+	const written = new URL(replaced.at(-1)!, ORIGIN);
+	stop?.();
+
+	// A shared link to the written address, opened afresh.
+	const { system } = mount(`${written.pathname}${written.search}`);
 	expect(system.activeFilters.projects).toEqual([project]);
 });

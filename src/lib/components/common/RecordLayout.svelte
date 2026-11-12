@@ -69,6 +69,14 @@ Usage:
 		eyebrow?: EyebrowToken[];
 		/** Record title — already typeset. */
 		title: string;
+		/**
+		 * BCP-47 language of the title when it is not the page's English
+		 * (`titleLangAttr(record.language)`): screen readers switch voice
+		 * (WCAG 3.1.2) and the title hyphenates by its own language's rules.
+		 * Omit for English and for bilingual records, whose title language is
+		 * not known.
+		 */
+		titleLang?: string;
 		/** Formatted byline ("A, B and C"); omit for an unattributed record. */
 		byline?: string;
 		/**
@@ -105,6 +113,7 @@ Usage:
 		section,
 		eyebrow = [],
 		title,
+		titleLang,
 		byline,
 		bylineSuffix,
 		deck,
@@ -170,7 +179,7 @@ Usage:
 					</p>
 				{/if}
 
-				<h1 class="record-title">{title}</h1>
+				<h1 class="record-title" lang={titleLang}>{title}</h1>
 
 				{#if byline}
 					<p class="record-byline">
@@ -410,6 +419,15 @@ Usage:
 		color: var(--color-text-emphasis);
 		margin: 0;
 		text-wrap: balance;
+	}
+
+	/* A title whose language is declared hyphenates by that language's
+	 * dictionary: long French words ("institutionnalisation") then break at a
+	 * syllable with a hyphen instead of mid-word with none. Scoped to `[lang]`
+	 * because an English title carries no attribute, and English display type
+	 * is better left unhyphenated. */
+	.record-title[lang] {
+		hyphens: auto;
 	}
 
 	/* --font-size-4xl barely scales down (clamp floor ~47px), which a long

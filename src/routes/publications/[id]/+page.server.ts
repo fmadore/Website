@@ -3,6 +3,7 @@ import { researchProjectPath } from '#lib/data/research/index.ts';
 import { allPublications } from '#lib/data/publications/index.ts';
 import { buildPublicationJsonLd, resolvePublicationJsonLdType } from '#lib/utils/entityJsonLd.ts';
 import { loadEntityDetail } from '#lib/utils/entityPageLoader.ts';
+import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 import type { PageServerLoad } from './$types';
 
 /**
@@ -29,7 +30,11 @@ export const load: PageServerLoad = ({ params }) => {
 		jsonLdString,
 		// The JSON-LD @type, which the FAIR Signposting `type` link repeats.
 		schemaType: resolvePublicationJsonLdType(publication),
-		relatedInProject: relatedItems(allPublications, publication),
+		// Each card sets `lang` on a non-English title (WCAG 3.1.2).
+		relatedInProject: relatedItems(allPublications, publication).map((item) => ({
+			...item,
+			titleLang: titleLangAttr(allPublications.find((p) => p.id === item.id)?.language)
+		})),
 		projectPath: researchProjectPath(publication.project)
 	};
 };

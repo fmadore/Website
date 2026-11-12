@@ -35,9 +35,10 @@ describe('buildPublicationJsonLd', () => {
 		expect(result.url).toBe(`${website.url}/publications/sample`);
 	});
 
-	it('treats bulletin-articles as Article but other articles as ScholarlyArticle', () => {
+	// Bulletin notes live in their own directory; the type follows the directory.
+	it('treats bulletin notes as Article and journal articles as ScholarlyArticle', () => {
 		expect(
-			buildPublicationJsonLd(pub({ sourceDirType: 'articles', type: 'bulletin-article' }))['@type']
+			buildPublicationJsonLd(pub({ sourceDirType: 'bulletins', type: 'bulletin-article' }))['@type']
 		).toBe('Article');
 		expect(
 			buildPublicationJsonLd(pub({ sourceDirType: 'articles', type: 'article' }))['@type']
@@ -154,9 +155,9 @@ describe('buildCommunicationJsonLd', () => {
 		});
 	});
 
-	it('picks the first language from an array', () => {
+	it('publishes every language of an array as BCP 47', () => {
 		const result = buildCommunicationJsonLd(comm({ language: ['French', 'English'] as never }));
-		expect(result.inLanguage).toBe('French');
+		expect(result.inLanguage).toEqual(['fr', 'en']);
 	});
 });
 

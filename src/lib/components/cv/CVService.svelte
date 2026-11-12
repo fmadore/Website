@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Icon from '@iconify/svelte';
 	import { peerReviewsByDate } from '#lib/data/peer-reviews/index.ts';
 	import { editorialMembershipsByDate } from '#lib/data/editorial-memberships/index.ts';
 	import { realEditorialMemberships, realPeerReviews } from '#lib/utils/cvSections.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
+	import { CV_GLYPH } from './CVGlyphs.svelte';
 
 	// The datasets minus their template records.
 	const peerReviews = realPeerReviews(peerReviewsByDate);
@@ -50,7 +50,9 @@
 							class="verification-badge"
 							data-pdf-hide
 						>
-							<Icon icon="academicons:publons" width="16" height="16" aria-hidden="true" />
+							<svg width="16" height="16" aria-hidden="true" focusable="false"
+								><use href="#{CV_GLYPH.publons}" /></svg
+							>
 							<span>Verified on Web of Science</span>
 							<span class="sr-only"> (opens in new tab)</span></a
 						>

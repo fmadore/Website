@@ -6,6 +6,8 @@ import {
 	createCommunicationSEOKeywords,
 	createActivitySEODescription,
 	createActivitySEOKeywords,
+	recordPageTitle,
+	TITLE_MAX_LENGTH,
 	truncateTitle
 } from './seoUtils';
 import { author } from '#lib/data/siteConfig.ts';
@@ -179,9 +181,17 @@ describe('createCommunicationSEODescription', () => {
 		expect(locationEqualsConference).toBe('Conference paper: A Talk Presented at RSA Panel, 2020.');
 	});
 
-	it('labels unknown types as "Academic presentation"', () => {
+	// Podcast was missing from the untyped register and fell to the fallback.
+	it('labels a podcast as a podcast episode', () => {
 		const result = createCommunicationSEODescription(
 			comm({ type: 'podcast', title: 'On Archives', year: 2022 })
+		);
+		expect(result).toBe('Podcast episode: On Archives Presented at 2022.');
+	});
+
+	it('labels unknown types as "Academic presentation"', () => {
+		const result = createCommunicationSEODescription(
+			comm({ type: 'unknown' as Communication['type'], title: 'On Archives', year: 2022 })
 		);
 		expect(result).toBe('Academic presentation: On Archives Presented at 2022.');
 	});
@@ -235,30 +245,74 @@ describe('truncateTitle', () => {
 		expect(truncateTitle('Islam in Benin')).toBe('Islam in Benin');
 	});
 
-	it('breaks at a colon when one occurs before the limit', () => {
-		expect(
-			truncateTitle('Religious Activism: Muslim Students and State Politics in Togo and Benin')
-		).toBe('Religious Activism…');
+	// The colon cut gave 19 groups of pages one <title> between them.
+	it('keeps the subtitle of a title within the cap', () => {
+		const title = 'Religious Activism: Muslim Students and State Politics in Togo and Benin';
+		expect(truncateTitle(title)).toBe(title);
+		const french = 'Sécularisme et islam : les associations musulmanes du Burkina Faso';
+		expect(truncateTitle(french)).toBe(french);
 	});
 
-	it('trims the space a French colon leaves behind the stem', () => {
-		expect(
-			truncateTitle('Sécularisme et islam : les associations musulmanes du Burkina Faso')
-		).toBe('Sécularisme et islam…');
+	it('lets a title through whole up to TITLE_MAX_LENGTH', () => {
+		const title = 'x'.repeat(TITLE_MAX_LENGTH);
+		expect(truncateTitle(title)).toBe(title);
 	});
 
-	it('truncates at a word boundary when there is no colon', () => {
-		expect(truncateTitle('The Politics of Islamic Associations in Contemporary Burkina Faso')).toBe(
-			'The Politics of Islamic Associations in…'
+	it('cuts an outlier at a word boundary with one ellipsis, within the cap', () => {
+		const title =
+			'Beyond Keywords: Training-Free Entity Linking for Research Metadata via Cross-Lingual Retrieval Consensus and Many More Words';
+		const cut = truncateTitle(title);
+		expect(cut.length).toBeLessThanOrEqual(TITLE_MAX_LENGTH);
+		expect(cut).toBe(
+			'Beyond Keywords: Training-Free Entity Linking for Research Metadata via Cross-Lingual Retrieval Consensus and…'
+		);
+		expect(cut.match(/…/g)).toHaveLength(1);
+	});
+
+	it('strands no space or punctuation before the ellipsis', () => {
+		expect(truncateTitle('Sécularisme et islam : les associations', 22)).toBe(
+			'Sécularisme et islam…'
 		);
 	});
 
 	it('hard-truncates when no acceptable word boundary exists', () => {
-		expect(truncateTitle('A'.repeat(60))).toBe('A'.repeat(47) + '…');
+		expect(truncateTitle('A'.repeat(60), 50)).toBe('A'.repeat(49) + '…');
 	});
 
 	it('honours a custom maxLength', () => {
 		expect(truncateTitle('one two three four', 10)).toBe('one two…');
+	});
+});
+
+describe('recordPageTitle', () => {
+	const title = 'Beyond Keywords: Training-Free Entity Linking for Multilingual Research Metadata';
+
+	it('gives a publication the bare title and the site name', () => {
+		expect(recordPageTitle('publication', title)).toBe(`${title} | ${author.name}`);
+	});
+
+	it('qualifies a talk by family and month, so the same talk given twice differs', () => {
+		expect(recordPageTitle('talk', title, '2026-03-04')).toBe(
+			`${title} | Talk, March 2026 | ${author.name}`
+		);
+		expect(recordPageTitle('talk', title, '2026-06-29')).toBe(
+			`${title} | Talk, June 2026 | ${author.name}`
+		);
+		expect(recordPageTitle('talk', title, '2026')).toBe(`${title} | Talk, 2026 | ${author.name}`);
+		expect(recordPageTitle('talk', title)).toBe(`${title} | Talk | ${author.name}`);
+	});
+
+	it('qualifies an activity post', () => {
+		expect(recordPageTitle('activity', title)).toBe(`${title} | Activity | ${author.name}`);
+	});
+
+	it('gives a talk, its paper and its activity post three different titles', () => {
+		const titles = new Set([
+			recordPageTitle('publication', title),
+			recordPageTitle('talk', title, '2026-11-06'),
+			recordPageTitle('activity', title)
+		]);
+		expect(titles.size).toBe(3);
 	});
 });
 
@@ -292,6 +346,15 @@ describe('createActivitySEODescription', () => {
 	it('falls back to "Academic update" for unknown types', () => {
 		const result = createActivitySEODescription(act({ type: 'something-else' }));
 		expect(result).toBe('Academic update (2024): Sample Activity');
+	});
+
+	// The three types the untyped register lacked fell to "Academic update".
+	it.each([
+		['career', 'Career news (2024): Sample Activity'],
+		['presentation', 'Presentation (2024): Sample Activity'],
+		['podcast', 'Podcast episode (2024): Sample Activity']
+	])('labels a %s activity from the register', (type, expected) => {
+		expect(createActivitySEODescription(act({ type }))).toBe(expected);
 	});
 
 	it('appends up to two subject-matter tags as "Topics:" when they fit', () => {

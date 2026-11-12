@@ -34,8 +34,13 @@
 		tallyBy,
 		groupByKey,
 		buildProjectTimeline,
-		buildStackedByYear
+		buildStackedByYear,
+		fillYearSeries,
+		stackedTableRows
 	} from '#lib/utils/vizAggregation.ts';
+	import { allResearchProjects } from '#lib/data/research/index.ts';
+	import { parseProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 	// Shared page layout for the two visualisation routes.
 	import '#styles/components/viz-page.css';
 	import {
@@ -43,7 +48,10 @@
 		buildCooccurrenceNetwork
 	} from '#lib/utils/networkAggregation.ts';
 	import type { NetworkEdgeKind } from '#lib/utils/networkAggregation.ts';
-	import { PUBLICATION_TYPE_CHART_LABELS } from '#lib/utils/publicationTypeLabels.ts';
+	import {
+		PUBLICATION_TYPE_CHART_LABELS,
+		PUBLICATION_TYPE_GANTT_LABELS
+	} from '#lib/utils/publicationTypeLabels.ts';
 	import NetworkControls from '#lib/components/visualisations/NetworkControls.svelte';
 	import { buildVenueLedger } from '#lib/utils/venueLedger.ts';
 	import { author } from '#lib/data/siteConfig.ts';
@@ -57,16 +65,25 @@
 	type CitedAuthorData = { author: string; count: number };
 	type LanguageData = { language: string; count: number };
 
-	// Calculate data reactively using $derived - optimized for performance
+	/**
+	 * The year that has happened: the build's, so the prerendered page and the
+	 * hydrated one agree. It alone takes the pine "current" accent on a year
+	 * axis; later years hold forthcoming work and are drawn in outline.
+	 */
+	const buildYear = BUILT_AT.getUTCFullYear();
+
+	// Citations per year, every year from the first to the last (empty ones as
+	// zero), so the axis never sets two distant years side by side.
 	const citationsPerYearData = $derived<CitationYearData[]>(
-		tallyBy(
-			allPublications,
-			(pub) =>
-				pub.citedBy
-					?.filter((citation) => typeof citation.year === 'number')
-					.map((citation) => String(citation.year)),
-			{ sort: 'key-asc' }
-		).map(({ key, count }) => ({ year: parseInt(key), count }))
+		fillYearSeries(
+			new Map(
+				tallyBy(allPublications, (pub) =>
+					pub.citedBy
+						?.filter((citation) => typeof citation.year === 'number')
+						.map((citation) => String(citation.year))
+				).map(({ key, count }) => [parseInt(key), count])
+			)
+		).map(({ year, value }) => ({ year, count: value }))
 	);
 
 	const citedAuthorsData = $derived<CitedAuthorData[]>(
@@ -163,9 +180,9 @@
 				}
 			});
 
-			return Object.entries(yearlyPageCounts)
-				.map(([year, pages]) => ({ year: parseInt(year), pages }))
-				.sort((a, b) => a.year - b.year);
+			return fillYearSeries(
+				new Map(Object.entries(yearlyPageCounts).map(([year, pages]) => [parseInt(year), pages]))
+			).map(({ year, value }) => ({ year, pages: value }));
 		})()
 	);
 
@@ -176,9 +193,11 @@
 		citationsPerYearData.reduce((sum: number, item: CitationYearData) => sum + item.count, 0)
 	);
 
-	// The newest bar on a year axis takes pine — the Year-Bar Strip idiom. Every
-	// other bar on the page is ink.
-	const latestPagesYear = $derived(pagesPerYearData.at(-1)?.year);
+	// The current year's bar takes pine — the Year-Bar Strip idiom — when it has
+	// one; a later, forthcoming year never does. Every other bar is ink.
+	const currentPagesYear = $derived(
+		pagesPerYearData.some((d) => d.year === buildYear) ? buildYear : undefined
+	);
 
 	// Author collaboration network (nodes + weighted edges), built by the shared
 	// tested aggregator. `collaborators` counts the non-centre nodes for the heading.
@@ -231,13 +250,26 @@
 	// venue ranked by the works it carries (see utils/venueLedger.ts).
 	const venueLedger = $derived(buildVenueLedger(allPublications));
 
-	// Calculate research projects timeline data (group by project, then build spans)
+	// Research projects: each drawn over the period its research record gives,
+	// with the publications at the years they appeared (inside it or not).
+	const projectYears = new Map(allResearchProjects.map((p) => [p.projectName, p.years]));
 	const projectTimelineData = $derived(
 		buildProjectTimeline(
 			groupByKey(allPublications, (pub) => pub.project),
-			(pub) => ({ title: pub.title, year: pub.year, type: pub.type })
+			(pub) => ({ title: pub.title, year: pub.year, type: pub.type }),
+			(name) => parseProjectPeriod(projectYears.get(name), buildYear)
 		)
 	);
+	const formatGanttType = (type: string): string => PUBLICATION_TYPE_GANTT_LABELS[type] || type;
+	/** `2013–2018`, `since 2026`, or `no recorded period`, for the table key. */
+	const periodLabel = (period: (typeof projectTimelineData)[number]['period']): string =>
+		!period
+			? 'no recorded period'
+			: period.ongoing
+				? `since ${period.startYear}`
+				: period.startYear === period.endYear
+					? String(period.startYear)
+					: `${period.startYear}–${period.endYear}`;
 
 	// Calculate publisher location data for map visualization
 	const publisherLocationData: LocationDatum[] = $derived(
@@ -311,20 +343,23 @@
 	 * a reader who wants the number for 2019 reads it rather than hovering for
 	 * it, and the two can never disagree.
 	 */
+	/** A year key for a table, marked when it holds forthcoming work. */
+	const yearKey = (year: number) => (year > buildYear ? `${year} (forthcoming)` : String(year));
 	const perYearTableRows = $derived(
-		publicationsPerYearStackedData.map((row) => ({
-			label: String(row.year ?? ''),
-			value: Object.entries(row).reduce(
-				(sum, [key, value]) => (key === 'year' ? sum : sum + value),
-				0
-			)
+		stackedTableRows(publicationsPerYearStackedData, formattedPublicationTypes).map((row) => ({
+			...row,
+			label: yearKey(Number(row.label))
 		}))
 	);
 	const pagesTableRows = $derived(
-		pagesPerYearData.map((d) => ({ label: String(d.year), value: d.pages }))
+		pagesPerYearData.map((d) => ({ label: yearKey(d.year), value: d.pages }))
 	);
 	const projectTableRows = $derived(
-		projectTimelineData.map((entry) => ({ label: entry.name, value: entry.publications.length }))
+		projectTimelineData.map((entry) => ({
+			label: `${entry.name} (${periodLabel(entry.period)})`,
+			value: entry.items.length,
+			cells: [entry.outsidePeriod]
+		}))
 	);
 	/*
 	 * The map plate, loaded when it is about to be read.
@@ -564,7 +599,7 @@
 
 	<VizSection
 		{...sections.perYear}
-		description="Every publication counted in the year it appeared and stacked by type, from the year and type recorded on each work."
+		description="Every publication counted in the year it appeared and stacked by type, from the year and type recorded on each work. Years after {buildYear} hold forthcoming work, drawn in outline."
 		variant="stacked"
 		height="450px"
 		hasData={publicationsPerYearStackedData.length > 0 && publicationTypesForStack.length > 0}
@@ -577,20 +612,22 @@
 			measure="Publications per year by type"
 			itemSingular="publication"
 			itemPlural="publications"
+			forthcomingAfter={buildYear}
 		/>
 		{#snippet table()}
 			<VizDataTable
 				rows={perYearTableRows}
+				columns={formattedPublicationTypes}
 				keyLabel="Year"
-				valueLabel="Publications"
-				caption="Publications per year, all types combined."
+				valueLabel="Total"
+				caption="Publications per year by type, with the total for each year."
 			/>
 		{/snippet}
 	</VizSection>
 
 	<VizSection
 		{...sections.pages}
-		description="Pages published each year, counting only the works whose record carries a page count; the newest year is marked."
+		description="Pages published each year, counting only the works whose record carries a page count; the current year is marked, and later years, which hold forthcoming work, are drawn in outline."
 		height="400px"
 		hasData={pagesPerYearData.length > 0}
 		empty="No page counts recorded."
@@ -599,7 +636,8 @@
 			data={pagesPerYearData}
 			xAccessor={getPagesYear}
 			yAccessor={getPagesCount}
-			accentKey={latestPagesYear}
+			accentKey={currentPagesYear}
+			forthcomingAfter={buildYear}
 			measure="Pages published per year"
 			itemSingular="page"
 			itemPlural="pages"
@@ -833,19 +871,20 @@
 
 	<VizSection
 		{...sections.projects}
-		description="Each research project drawn across the years it ran, with a marker for every publication produced within it."
+		description="Each research project's bar is the period its project record gives, open-ended projects running to {buildYear}. Each marker is a year in which the project's publications appeared, set at that year even when it falls before or after the period."
 		variant="gantt"
 		height="450px"
 		hasData={projectTimelineData.length > 0}
 		empty="No project data recorded."
 	>
-		<EChartsGanttChart data={projectTimelineData} />
+		<EChartsGanttChart data={projectTimelineData} typeLabel={formatGanttType} />
 		{#snippet table()}
 			<VizDataTable
 				rows={projectTableRows}
+				columns={['Outside the period']}
 				keyLabel="Project"
 				valueLabel="Publications"
-				caption="Publications produced within each research project."
+				caption="Publications attached to each research project, and how many of them appeared outside its recorded period."
 			/>
 		{/snippet}
 	</VizSection>

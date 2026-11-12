@@ -4,7 +4,9 @@
 
 	let {
 		tags = [],
-		baseUrl = '/search?tag=', // Default base URL, can be overridden
+		// The publications index, which reads `?tag=` as a facet deep link. (The
+		// old default, `/search?tag=`, named a route that does not exist.)
+		baseUrl = '/publications?tag=',
 		sectionTitle = 'Tags',
 		showTitle = true
 	}: {

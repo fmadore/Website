@@ -79,7 +79,7 @@
 
 	{#each byInstitution as group, i (group.institution)}
 		<section class="section {i === 0 ? 'section--flush' : ''}">
-			<div class="section-head">
+			<div class="section-head lecture-head">
 				<h2 class="section-title">{group.institution}</h2>
 				<span class="dateline">
 					{group.lectures.length}
@@ -134,6 +134,21 @@
 	 * closes the gap between itself and the first rule. */
 	.lecture-tally {
 		margin: 0 0 var(--space-xl);
+	}
+
+	/* A long institution ("…Dynamiques Sociales et le Développement Local")
+	 * and its tally do not fit one 320px line: the head's flex row cannot
+	 * shrink a heading below its longest word, so the tally ran past the edge.
+	 * The tally wraps under the heading instead, and the heading's own words
+	 * may break before they overflow. */
+	.lecture-head {
+		flex-wrap: wrap;
+		row-gap: var(--space-1);
+	}
+
+	.lecture-head .section-title {
+		min-width: 0;
+		overflow-wrap: break-word;
 	}
 
 	/* Course line — serif prose, title of the host course set in italic, with

@@ -3,6 +3,8 @@
 	import { formatCVAuthorList, terminalPeriod } from '#lib/utils/cvFormatters.ts';
 	import { invitedTalkVenue as venue, splitCvTalks } from '#lib/utils/cvSections.ts';
 	import { formatDayMonth, getYearFromISODate } from '#lib/utils/date-formatter.ts';
+	import { resolve } from '$app/paths';
+	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
 	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVSection from './CVSection.svelte';
 
@@ -23,8 +25,13 @@
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 		{#if formattedAuthors}{@html formattedAuthors}{terminalPeriod(formattedAuthors)}
 		{/if}
-		{quoteTitle(comm.title)}{#if venue(comm)}, <em>{typesetQuotes(venue(comm))}</em
-			>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},
+		<a
+			href={resolve('/communications/[id]', { id: comm.id })}
+			lang={titleLangAttr(comm.language)}
+			class="cv-record-link">{quoteTitle(comm.title)}</a
+		>{#if venue(comm)}, <em>{typesetQuotes(venue(comm))}</em>{/if}{#if comm.location}, {typesetQuotes(
+				comm.location
+			)}{/if},
 		{formatDayMonth(comm.dateISO)}.
 	{/snippet}
 </CVSection>

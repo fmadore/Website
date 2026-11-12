@@ -10,6 +10,7 @@
 		teachingLectures,
 		teachingLevelLabel
 	} from '#lib/utils/cvSections.ts';
+	import { resolve } from '$app/paths';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 
@@ -45,7 +46,14 @@
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each lectures as lecture (lecture.title + lecture.dateISO)}
 				<CVEntry year={lecture.year}>
-					<strong>{typesetQuotes(lecture.title)}</strong>, <em>{typesetQuotes(lecture.course)}</em>,
+					<!-- A lecture that is a talk on record links to its page; the
+					     <strong> wraps the link so the PDF export keeps the weight. -->
+					<strong
+						>{#if lecture.talkId}<a
+								href={resolve('/communications/[id]', { id: lecture.talkId })}
+								class="cv-record-link">{typesetQuotes(lecture.title)}</a
+							>{:else}{typesetQuotes(lecture.title)}{/if}</strong
+					>, <em>{typesetQuotes(lecture.course)}</em>,
 					{#if lecture.format}{lecture.format},{/if}
 					{typesetQuotes(lectureHostAndLevel(lecture))}.
 				</CVEntry>

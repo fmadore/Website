@@ -28,6 +28,7 @@ its share — so the step is a convenience, not the only route.
 	import JsonLd from '#lib/components/common/JsonLd.svelte';
 	import { buildBreadcrumbJsonLd } from '#lib/utils/breadcrumbJsonLd.ts';
 	import { formatShortDateMono } from '#lib/utils/date-formatter.ts';
+	import { author } from '#lib/data/siteConfig.ts';
 
 	// Get the year parameter from the URL - reactive to route changes
 	let year = $derived(parseInt(page.params.year || ''));
@@ -69,6 +70,28 @@ its share — so the step is a convenience, not the only route.
 		return iso ? formatShortDateMono(iso) : '';
 	});
 
+	// The page's own description, from the year's entries: the count, and the
+	// three tags filed most often that year.
+	const seoDescription = $derived.by(() => {
+		const count = filteredActivities.length;
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- local tally, discarded on return
+		const tally = new Map<string, number>();
+		for (const activity of filteredActivities) {
+			for (const tag of activity.tags ?? []) tally.set(tag, (tally.get(tag) ?? 0) + 1);
+		}
+		const topTags = [...tally.entries()]
+			.sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+			.slice(0, 3)
+			.map(([tag]) => tag);
+		const topics =
+			topTags.length > 1
+				? ` Topics include ${topTags.slice(0, -1).join(', ')} and ${topTags.at(-1)}.`
+				: topTags.length === 1
+					? ` Topics include ${topTags[0]}.`
+					: '';
+		return `${author.name}'s activity log for ${year}: ${count} ${count === 1 ? 'entry' : 'entries'}, most recent first.${topics}`;
+	});
+
 	// Define breadcrumb items - reactive to year changes
 	let breadcrumbItems = $derived([
 		{ label: 'Activities', href: resolve('/activities'), path: '/activities' },
@@ -83,7 +106,7 @@ its share — so the step is a convenience, not the only route.
 	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
 </script>
 
-<SEO title={pageTitle(`Activities (${year})`)} />
+<SEO title={pageTitle(`Activities (${year})`)} description={seoDescription} />
 
 <JsonLd id="breadcrumb-json-ld-activities-year" json={breadcrumbJsonLd} />
 <div class="container py-8">

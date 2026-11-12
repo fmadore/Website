@@ -2,7 +2,11 @@
 	// One entry of the mobile menu contents — the mono section label plus its
 	// optional sub-index of record titles. Split out of MobileMenu.svelte, which
 	// keeps the container and the masthead strip.
-	import type { NavItem } from '#lib/types/navigation.ts';
+	import type { SiteNavItem } from '#lib/data/navigation.ts';
+	import {
+		isNavItemCurrent,
+		normalizeNavPath as normalize
+	} from '#lib/components/menu/navMatch.ts';
 	import { page } from '$app/state';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
@@ -10,26 +14,13 @@
 		item,
 		onnavigate
 	}: {
-		item: NavItem;
+		item: SiteNavItem;
 		onnavigate: () => void;
 	} = $props();
 
 	// Current pathname, used for highlighting the active nav entry — mirrors the
 	// desktop NavLink active treatment (pine text + accent marker).
 	const currentPath = $derived(page.url.pathname);
-
-	// A nav entry is "current" when the route matches its path or is nested
-	// beneath it. Normalising trailing slashes and the root `/` keeps every
-	// route from matching the home link. Same logic as NavItemWithDropdown.
-	const normalize = (p: string) => (p.length > 1 ? p.replace(/\/$/, '') : p);
-	function isCurrent(path: string): boolean {
-		// External links (dropdown children) are never "current".
-		if (path.startsWith('http')) return false;
-		const itemPath = normalize(path);
-		const current = normalize(currentPath);
-		if (itemPath === '/') return current === '/';
-		return current === itemPath || current.startsWith(`${itemPath}/`);
-	}
 
 	// Sub-entries mark an exact match only, and never one that merely repeats
 	// the parent's own path ("All Publications" under "Publications"): that row
@@ -41,7 +32,10 @@
 		return normalize(path) === normalize(currentPath);
 	}
 
-	const current = $derived(isCurrent(item.path));
+	// A nav entry is "current" when the route matches its path, is nested
+	// beneath it, or falls under one of its `match` prefixes (`navMatch.ts`,
+	// shared with NavItemWithDropdown).
+	const current = $derived(isNavItemCurrent(item, currentPath));
 </script>
 
 <li class="mobile-nav-item">

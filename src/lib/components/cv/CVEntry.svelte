@@ -39,29 +39,36 @@
 </div>
 
 <style>
+	/* Every selector here is `:global`, keyed by the row's own `cv-entry*`
+	 * hooks (which no other component uses) and doubled to the two-class weight
+	 * a scoped selector carried. Scoped, Svelte stamped its hash class on all
+	 * three elements of every row — ~700 attributes on /cv, a page that sits
+	 * against its Lighthouse document budget — to guard names that were never
+	 * at risk of collision. */
+
 	/* A classification key ("Data analysis & visualisation") needs more column
 	 * than a year does. The narrow-measure collapse still applies: below
 	 * `--sm-down` the idiom stacks and the width is moot. */
-	.cv-entry--wide {
+	:global(.cv-entry.cv-entry--wide) {
 		--ledger-key-w: 15rem;
 	}
 
 	/* Tabular figures keep year columns aligned down a 250-row sheet; the
 	 * idiom's key does not assume numerals. */
-	.cv-entry-year {
+	:global(.cv-entry > .cv-entry-year) {
 		font-variant-numeric: tabular-nums;
 	}
 
 	/* Current/ongoing record — accent, the site's scarce signal colour. Two
 	 * keys on the whole page carry it: the standing appointment and the
 	 * running affiliation. */
-	.cv-entry-year--current {
+	:global(.cv-entry-year.cv-entry-year--current) {
 		color: var(--color-accent);
 		font-weight: var(--font-weight-semibold);
 	}
 
 	/* Content — DOCUMENT voice inherits the site's serif body. */
-	.cv-entry-content {
+	:global(.cv-entry > .cv-entry-content) {
 		min-width: 0;
 		line-height: var(--line-height-relaxed);
 	}
@@ -76,7 +83,7 @@
 	/* The row's own padding closes it. A trailing `<p class="cv-detail">` would
 	 * otherwise add the paragraph margin on top, making rows that end in a
 	 * detail line taller at the foot than rows that do not. */
-	.cv-entry-content > :global(:last-child) {
+	:global(.cv-entry > .cv-entry-content > :last-child) {
 		margin-bottom: 0;
 	}
 </style>

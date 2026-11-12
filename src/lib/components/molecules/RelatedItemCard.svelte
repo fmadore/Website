@@ -18,6 +18,8 @@
 			date?: string;
 			title?: string;
 			authors?: string[];
+			/** BCP-47 `lang` for a non-English title (`titleLangAttr`); omitted for English. */
+			titleLang?: string;
 			// Add other potential fields if needed, though unused in this display
 		};
 		itemUrl: string;
@@ -35,7 +37,7 @@
 		<div class={dateClass}>{item.date}</div>
 	{/if}
 	{#if item.title}
-		<h3 class={titleClass}>{typesetQuotes(item.title)}</h3>
+		<h3 class={titleClass} lang={item.titleLang}>{typesetQuotes(item.title)}</h3>
 	{/if}
 	{#if item.authors && item.authors.length > 0}
 		<div class={authorsClass}>{typesetQuotes(item.authors.join(', '))}</div>

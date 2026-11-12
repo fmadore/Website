@@ -98,7 +98,8 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		// serializes as year_min/year_max.
 		const queryString = serializeFiltersToQuery(filters, search?.value ?? '');
 		const basePath = page.url.pathname;
-		const targetUrl = `${basePath}${queryString ? `?${queryString}` : ''}${page.url.hash || ''}`;
+		const hash = untrack(() => currentAddress().hash);
+		const targetUrl = `${basePath}${queryString ? `?${queryString}` : ''}${hash}`;
 
 		// Shallow replaceState, not goto(). goto() runs a full client-side
 		// navigation for what is only a query-string edit: it re-runs the load
@@ -106,7 +107,7 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		// SvelteKit's #svelte-announcer speak the page title on every chip click,
 		// so a screen-reader user narrowing by three tags heard "Publications |
 		// Frédérick Madore" three times and the facet summary's own live region
-		// never got a word in. replaceState edits the address bar and page.url
+		// never got a word in. replaceState edits the address bar and page.shallow
 		// without a navigation, which is exactly the amount of work a filter
 		// change is. Still replace and not push, so Back/Forward leaves the page
 		// rather than stepping through filter states.
@@ -120,17 +121,38 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 	});
 
 	// --- Sync URL to filters ---
+	// Where the address actually is. A shallow `replaceState` (the writer
+	// above) leaves `page.url` on the address the page was loaded at and puts
+	// the new one on `page.shallow.url`; SvelteKit also stores that loaded
+	// address in the history entry (`pageUrl`) and, when a popstate returns to
+	// the entry — Back from a record to a filtered index — restores it as
+	// `page.url` with the real address once more on `page.shallow.url`. Reading
+	// `page.url` alone is what made Back land on `?type=book` with an
+	// unfiltered list. A real navigation resets `page.shallow` to null, so the
+	// plain index link clears the filters as it should. (Verified against
+	// `@sveltejs/kit` 3.1 `update_state`, the popstate listener and
+	// `navigate`.)
+	function currentAddress(): {
+		readonly hash: string;
+		readonly searchParams: Pick<URLSearchParams, 'get' | 'getAll'>;
+	} {
+		const shallow = page.shallow?.url;
+		return shallow && shallow.pathname === page.url.pathname ? shallow : page.url;
+	}
+
 	// `page.url` is the ONLY tracked read here. Everything else is untracked on
-	// purpose: this effect answers "the URL changed, catch the filters up", and
-	// a version of it that also depended on the filters ran a second time on
-	// every chip click and helpfully reset the state the click had just set.
-	// (That was survivable while the writer used `goto()`, whose navigation
-	// eventually pushed the new URL back through here; `replaceState` updates
-	// the address bar and `page.state` but deliberately leaves `page.url` alone,
-	// so nothing would have undone the undo.)
+	// purpose: this effect answers "the page arrived at an address, catch the
+	// filters up", and a version of it that also depended on the filters ran a
+	// second time on every chip click and helpfully reset the state the click
+	// had just set. `page.shallow` is read untracked for the same reason: the
+	// writer's own `replaceState` changes it (and only it), asynchronously, so
+	// tracking it would replay a stale address over a faster second click.
+	// Every arrival that matters — a navigation, a popstate onto a shallow
+	// entry or a different one — assigns a fresh `page.url`, and Kit assigns
+	// `page.shallow` in the same synchronous update, so it is current here.
 	$effect(() => {
-		const searchParams = page.url.searchParams;
-		untrack(() => syncFromUrl(searchParams));
+		void page.url;
+		untrack(() => syncFromUrl(currentAddress().searchParams));
 	});
 
 	function syncFromUrl(searchParams: Pick<URLSearchParams, 'get' | 'getAll'>) {

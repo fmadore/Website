@@ -10,18 +10,6 @@
 	"scope": "/",
 	"lang": "en",
 	"categories": ["academia", "research", "personal"],
-	"screenshots": [
-		{
-			"src": "/images/screenshot-wide.png",
-			"sizes": "1280x720",
-			"type": "image/png"
-		},
-		{
-			"src": "/images/screenshot-narrow.png",
-			"sizes": "750x1334",
-			"type": "image/png"
-		}
-	],
 	"icons": [
 		{
 			"src": "/icons/favicon.png",

@@ -74,6 +74,24 @@ it('clears in place, so references captured by pages and actions stay live', () 
 	expect(system.activeFilterCount).toBe(0);
 });
 
+it('maps URL values onto the option lists, dropping what the corpus lacks', () => {
+	const system = createSystem();
+	system.setters.setTags(['islam', 'ISLAM', 'Nonexistent', 'Togo']);
+	system.setters.setTypes(['Book']);
+	expect(system.activeFilters.tags).toEqual(['Islam', 'Togo']);
+	expect(system.activeFilters.types).toEqual(['book']);
+	expect(system.activeFilterCount).toBe(3);
+	expect(ids(system.filteredItems)).toEqual(['a']);
+});
+
+it('takes an open-ended year range from the URL', () => {
+	const system = createSystem();
+	system.setters.setYearRange({ min: 2020, max: Infinity });
+	expect(ids(system.filteredItems)).toEqual(['c', 'd']);
+	system.setters.setYearRange({ min: -Infinity, max: 2016 });
+	expect(ids(system.filteredItems)).toEqual(['a']);
+});
+
 it('re-runs a subscribed effect when a filter changes', () => {
 	const system = createSystem();
 	const seen: string[] = [];

@@ -29,6 +29,12 @@
 		return formatter.format(amount);
 	}
 
+	// The records hold the range with a hyphen ('2025-2026'); DESIGN.md's
+	// Punctuation Rule prints a year range with a closed-up en dash.
+	function formatDateRange(range: string): string {
+		return range.replace(/(\d{4})\s*-\s*/, '$1–');
+	}
+
 	// Get status class
 	function getStatusClass(status: string | undefined): string {
 		if (!status) return '';
@@ -48,7 +54,7 @@
 					{/if}
 				</div>
 				<div class="grant-meta">
-					<span class="grant-date">{grant.dateRangeString}</span>
+					<span class="grant-date">{formatDateRange(grant.dateRangeString)}</span>
 					{#if grant.amount}
 						<span class="grant-amount">{formatAmount(grant.amount, grant.currency)}</span>
 					{/if}

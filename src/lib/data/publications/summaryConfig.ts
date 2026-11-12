@@ -59,7 +59,8 @@ export const CV_PUBLICATION_FIELDS = [
 	'isEditedVolume',
 	'doi',
 	'url',
-	'reviewedBy'
+	'reviewedBy',
+	'language'
 ] as const satisfies readonly CvPublicationField[];
 
 // Fails to compile if the list above omits a member of the union.

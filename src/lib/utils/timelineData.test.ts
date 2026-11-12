@@ -14,8 +14,10 @@ import {
 	communicationToTimelineItem,
 	awardToTimelineItem,
 	fieldworkToTimelineItem,
+	fieldworkStartDate,
 	getAllTimelineItems
 } from './timelineData';
+import { allFieldworks } from '#lib/data/fieldworks/index.ts';
 
 describe('timeline data transformations', () => {
 	it('represents ongoing appointments and grants without an end date', () => {
@@ -148,6 +150,38 @@ describe('timeline data transformations', () => {
 			title: 'Lomé, Togo',
 			subtitle: 'Project'
 		});
+	});
+});
+
+describe('fieldworkStartDate', () => {
+	const iso = (date: Date) => date.toISOString().slice(0, 10);
+
+	it('takes the first month and the first year written after it', () => {
+		expect(iso(fieldworkStartDate({ date: 'November 2014 - April 2015', year: 2015 }))).toBe(
+			'2014-11-01'
+		);
+		expect(iso(fieldworkStartDate({ date: 'August - September 2024', year: 2024 }))).toBe(
+			'2024-08-01'
+		);
+		expect(iso(fieldworkStartDate({ date: 'June 2024', year: 2024 }))).toBe('2024-06-01');
+	});
+
+	it('falls back to 1 January of the filing year', () => {
+		expect(iso(fieldworkStartDate({ date: '2019', year: 2019 }))).toBe('2019-01-01');
+		expect(iso(fieldworkStartDate({ date: 'March', year: 2021 }))).toBe('2021-03-01');
+	});
+
+	it('places every recorded fieldwork on a month of its own record', () => {
+		for (const fieldwork of allFieldworks) {
+			const month = fieldworkStartDate(fieldwork).toLocaleString('en-GB', {
+				month: 'long',
+				timeZone: 'UTC'
+			});
+			expect(fieldwork.date.toLowerCase(), fieldwork.id).toContain(month.toLowerCase());
+		}
+		const starts = allFieldworks.map((fieldwork) => iso(fieldworkStartDate(fieldwork)));
+		// Two seasons in the same year no longer share a single point.
+		expect(new Set(starts).size).toBeGreaterThan(new Set(allFieldworks.map((f) => f.year)).size);
 	});
 });
 

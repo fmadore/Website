@@ -33,7 +33,8 @@ ECharts Stacked Bar Chart component
 		colorMap,
 		itemSingular = 'publication',
 		itemPlural = 'publications',
-		description = undefined
+		description = undefined,
+		forthcomingAfter = undefined
 	}: {
 		data?: DataItem[];
 		keys?: string[];
@@ -70,6 +71,13 @@ ECharts Stacked Bar Chart component
 		itemPlural?: string;
 		/** Overrides the computed accessible description. */
 		description?: string;
+		/**
+		 * The last year that has happened (the build year). Columns for later
+		 * years hold forthcoming work, so their segments are drawn in outline —
+		 * the series' own hue as a 1px border on the ground — rather than as
+		 * fills that would state the work had appeared. Unset, nothing is.
+		 */
+		forthcomingAfter?: number;
 	} = $props();
 
 	// Container reference
@@ -169,7 +177,10 @@ ECharts Stacked Bar Chart component
 					label: chartCategories[i]!,
 					value: keys.reduce((sum, key) => sum + valueOf(d, key), 0)
 				})),
-				keys.length,
+				keys.map((key) => ({
+					label: key,
+					value: data.reduce((sum, d) => sum + valueOf(d, key), 0)
+				})),
 				{ singular: itemSingular, plural: itemPlural }
 			)
 	);
@@ -180,13 +191,37 @@ ECharts Stacked Bar Chart component
 		borderRadius: 0
 	});
 
+	/** Which columns hold forthcoming work, by index. */
+	const isForthcoming = $derived(
+		chartCategories.map(
+			(category) => forthcomingAfter !== undefined && Number(category) > forthcomingAfter
+		)
+	);
+
+	/**
+	 * One series' values, the forthcoming columns outlined in its colour: the
+	 * hue stays (it names the type), the fill goes (the work has not appeared).
+	 */
+	const seriesValues = (values: number[], color: string) =>
+		values.map((value, i) =>
+			isForthcoming[i]
+				? {
+						value,
+						itemStyle: { color: resolvedColors.background, borderColor: color, borderWidth: 1 }
+					}
+				: value
+		);
+
 	const seriesData = $derived([
 		...seriesPlan.hued.map((key, index) => ({
 			name: key,
 			type: 'bar',
 			stack: 'total',
 			barMaxWidth: 28,
-			data: data.map((d) => valueOf(d, key)),
+			data: seriesValues(
+				data.map((d) => valueOf(d, key)),
+				resolvedColors.huedSeriesColors[index]!
+			),
 			itemStyle: {
 				color: resolvedColors.huedSeriesColors[index]!,
 				...segmentStyle
@@ -202,7 +237,10 @@ ECharts Stacked Bar Chart component
 						type: 'bar',
 						stack: 'total',
 						barMaxWidth: 28,
-						data: data.map((d) => seriesPlan.folded.reduce((sum, key) => sum + valueOf(d, key), 0)),
+						data: seriesValues(
+							data.map((d) => seriesPlan.folded.reduce((sum, key) => sum + valueOf(d, key), 0)),
+							resolvedColors.textLight
+						),
 						itemStyle: {
 							// Quiet ink, not an eighth hue: the fold is "everything else",
 							// which is the absence of a category rather than one more.
@@ -302,7 +340,9 @@ ECharts Stacked Bar Chart component
 					return `${paramsArray[0]?.name ?? ''}<br/>No ${itemPlural}`;
 				}
 
-				let result = `${nonZeroParams[0]!.name}<br/>`;
+				const name = nonZeroParams[0]!.name;
+				const forthcoming = forthcomingAfter !== undefined && Number(name) > forthcomingAfter;
+				let result = `${name}${forthcoming ? ' (forthcoming)' : ''}<br/>`;
 
 				// Calculate total for the year
 				const total = nonZeroParams.reduce(
