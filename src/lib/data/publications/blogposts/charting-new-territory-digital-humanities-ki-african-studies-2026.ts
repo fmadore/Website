@@ -27,7 +27,7 @@ export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication 
 		'Multilingualism',
 		'Open Access',
 		'Workshop',
-		'VolkswagenStiftung',
+		'Volkswagen Foundation',
 		'West Africa',
 		'South Africa'
 	],

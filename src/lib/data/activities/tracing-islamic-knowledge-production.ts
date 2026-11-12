@@ -25,12 +25,10 @@ export const activity: Activity = {
 		'Togo',
 		'IWAC'
 	],
-	image: '',
 	panelType: 'workshop',
 	heroImage: {
 		src: 'images/activities/tracing-islamic-knowledge-production.webp',
-		alt: "Bar chart of 204 articles mentioning intégrisme by country and year (1979-2019), peaking in Côte d'Ivoire in the early 1990s.",
-		caption: ''
+		alt: "Bar chart of 204 articles mentioning intégrisme by country and year (1979-2019), peaking in Côte d'Ivoire in the early 1990s."
 	},
 	pdfPath: 'files/perspectives-in-motion-programme.pdf',
 	pdfTitle: 'Workshop programme',

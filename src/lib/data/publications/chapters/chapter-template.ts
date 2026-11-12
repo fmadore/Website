@@ -17,12 +17,12 @@ export const chapterTemplate: Publication = {
 	pages: '100-120', // Page range of the chapter
 	pageCount: 0, // Total number of pages
 	language: 'English',
-	doi: '', // Add DOI if available
+	// doi: '', // Omit when empty. Add DOI if available
 	abstract:
 		"A comprehensive description of the chapter's content, methodology, findings, and significance. This abstract will be used in list views and as a preview of the publication.",
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
-	url: '', // URL to the publication if available
-	image: '', // Optional: path to image (e.g., "images/publications/chapter-image.jpg")
+	// url: '', // Omit when empty. URL to the publication if available
+	// image: '', // Omit when empty. Optional: path to image (e.g., "images/publications/chapter-image.jpg")
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/publications/chapter-hero.jpg',
@@ -31,6 +31,6 @@ export const chapterTemplate: Publication = {
 	},
 	// New fields
 	country: ['Country Name'], // Countries covered in the publication
-	project: '', // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 	citedBy: [] // Optional: List of works citing this publication
 };

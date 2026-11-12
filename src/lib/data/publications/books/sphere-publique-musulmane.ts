@@ -9,7 +9,7 @@ export const spherePubliqueMusulmane: Publication = {
 	date: '2016',
 	dateISO: '2016-01-22',
 	year: 2016,
-	placeOfPublication: 'Québec/Paris',
+	placeOfPublication: 'Quebec City/Paris',
 	publisher: "Presses de l'Université Laval/Hermann",
 	publisherLocation: 'Canada',
 	pageCount: 220,

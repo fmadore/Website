@@ -3,8 +3,8 @@
  *
  * Split out of seoUtils.ts: this module owns generic site/page schema
  * construction (WebSite, Person, breadcrumbs, WebPage, grants, @graph
- * combination); seoUtils.ts owns SEO description/keyword generation and
- * re-exports everything here for backward-compatible imports. Per-entity
+ * combination); seoUtils.ts owns SEO description/keyword generation and does
+ * not re-export this module, so each symbol has one import path. Per-entity
  * detail-page builders live in `#lib/utils/entityJsonLd.ts`.
  *
  * `SEO.svelte` imports this module on every page, so it must stay free of

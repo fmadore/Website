@@ -72,11 +72,13 @@ export default defineConfig({
 			reporter: ['text', 'html'],
 			// A ratchet, not an aspirational target: new work may raise these
 			// floors, but must not silently reduce the verified pure-logic surface.
+			// Set about two points under the measured level (November 2026:
+			// 81.4 / 74.7 / 90.2 / 82.8).
 			thresholds: {
-				statements: 70,
-				branches: 63,
-				functions: 80,
-				lines: 71
+				statements: 79,
+				branches: 72,
+				functions: 88,
+				lines: 80
 			}
 		}
 	}

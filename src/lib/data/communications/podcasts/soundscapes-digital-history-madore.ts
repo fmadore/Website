@@ -14,7 +14,14 @@ export const soundscapesDigitalHistoryMadore: Communication = {
 	language: 'English',
 	abstract:
 		'An interview for Soundscapes of Digital History, the H-Soz-Kult forum, edited with the Data Culture task area of the NFDI4Memory consortium, that collects conversations with historians working in digital history about how they came to the field, how it has changed, and what digitality and large language models mean for historical research and teaching.',
-	tags: ['Podcast', 'Digital History', 'Digital Humanities', 'AI', 'H-Soz-Kult', 'NFDI4Memory'],
+	tags: [
+		'Podcast',
+		'Digital History',
+		'Digital Humanities',
+		'Artificial Intelligence',
+		'H-Soz-Kult',
+		'NFDI4Memory'
+	],
 	url: 'https://www.hsozkult.de/debate/id/fddebate-157316',
 	coordinates: {
 		latitude: 52.51766,

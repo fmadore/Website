@@ -59,12 +59,24 @@
 	/** The map plate says what it is loading; every other plate is a chart. */
 	const pendingLabel = $derived(variant === 'map' ? 'Loading map…' : 'Loading chart…');
 
+	/**
+	 * The arc ledger is as tall as its rows, so its `height` is a cap, not a
+	 * size: a fixed box clipped the last row at 375px once the legend wrapped
+	 * to three lines, while the page's formula assumed one. Past the cap the
+	 * drawing area scrolls, as before.
+	 */
+	const fitsContent = $derived(variant === 'arc');
 	let revealed = $state(false);
 	const showChildren = $derived(!deferred || revealed);
 </script>
 
 {#if hasData}
-	<div class={wrapperClass} style:height use:inView={() => (revealed = true)}>
+	<div
+		class={wrapperClass}
+		style:height={fitsContent ? undefined : height}
+		style:max-height={fitsContent ? height : undefined}
+		use:inView={() => (revealed = true)}
+	>
 		{#if showChildren}
 			{@render children?.()}
 		{:else}
@@ -138,6 +150,16 @@
 	   prop, so it must not be `contain: strict` (which would fix the size). */
 	.arc-chart {
 		contain: layout style;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* The plate takes its content's height up to the card's cap, then gives
+	 * the overflow to its drawing area (`.viz-plate-area` scrolls). */
+	.arc-chart > :global(.viz-plate) {
+		height: auto;
+		min-height: 0;
+		flex: 0 1 auto;
 	}
 
 	/* The matrix is square: its height comes from the row count via the `height`

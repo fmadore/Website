@@ -28,7 +28,7 @@ export const lutteTerrorismeSalafismeBeninTogo: Publication = {
 		'Benin',
 		'Togo',
 		'Terrorism',
-		'Securitization',
+		'Securitisation',
 		'Salafism',
 		'Authoritarianism',
 		'Islam',

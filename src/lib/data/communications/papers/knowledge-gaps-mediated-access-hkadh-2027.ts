@@ -34,7 +34,7 @@ In relation to Model/Making, the paper examines how AI-generated descriptions sh
 		'AMIRA',
 		'Africa Multiple',
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'Large Language Models',
 		'AI Agents',
 		'MCP',

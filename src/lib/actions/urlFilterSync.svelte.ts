@@ -8,6 +8,7 @@ import {
 	serializeFiltersToQuery,
 	parseArrayFilterParam,
 	parseSearchParam,
+	parseSortParam,
 	parseYearRangeParams,
 	arrayValuesEqual,
 	yearRangesEqual,
@@ -37,6 +38,18 @@ export interface SearchTermAccessor {
 	set value(next: string);
 }
 
+/**
+ * Read/write access to a page's sort order, synced as `sort`. The default
+ * order is written as no parameter; a `?sort=` the page does not offer is read
+ * as the default.
+ */
+export interface SortAccessor {
+	get value(): string;
+	set value(next: string);
+	readonly options: readonly string[];
+	readonly fallback: string;
+}
+
 interface UrlFilterSyncParams {
 	/** Reactive filters object (using $state runes) */
 	filters: ActiveFilters;
@@ -44,6 +57,8 @@ interface UrlFilterSyncParams {
 	setters: FilterSetters;
 	/** Optional free-text search, synced as `q`. */
 	search?: SearchTermAccessor;
+	/** Optional sort order, synced as `sort` when it is not the default. */
+	sort?: SortAccessor;
 }
 
 /** Setter name for each array-valued filter key. */
@@ -74,12 +89,15 @@ const ARRAY_FILTER_SETTERS = {
  * ```
  */
 export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, params) => {
-	const { filters, setters, search } = params;
+	const { filters, setters, search, sort } = params;
 	let initialUrlApplied = false;
 	let lastFiltersString = '';
 
 	/** The whole URL-syncable state as one comparable string. */
-	const stateSignature = () => JSON.stringify({ f: filters, q: search?.value ?? '' });
+	const stateSignature = () =>
+		JSON.stringify({ f: filters, q: search?.value ?? '', s: sort?.value ?? '' });
+	/** The sort as the URL carries it: nothing for the default order. */
+	const sortParam = () => (sort && sort.value !== sort.fallback ? sort.value : '');
 
 	// --- Sync filters to URL ---
 	$effect(() => {
@@ -96,7 +114,7 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		// contain commas (e.g. project names like "Islam's 'Peripheries':
 		// Digital Humanities, Algorithmic Analysis, ..."); the year range
 		// serializes as year_min/year_max.
-		const queryString = serializeFiltersToQuery(filters, search?.value ?? '');
+		const queryString = serializeFiltersToQuery(filters, search?.value ?? '', sortParam());
 		const basePath = page.url.pathname;
 		const hash = untrack(() => currentAddress().hash);
 		const targetUrl = `${basePath}${queryString ? `?${queryString}` : ''}${hash}`;
@@ -176,6 +194,15 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 			const termFromUrl = parseSearchParam(searchParams);
 			if (termFromUrl !== search.value.trim()) {
 				search.value = termFromUrl;
+				filtersChanged = true;
+			}
+		}
+
+		// Sync the sort order
+		if (sort) {
+			const sortFromUrl = parseSortParam(searchParams, sort.options, sort.fallback);
+			if (sortFromUrl !== sort.value) {
+				sort.value = sortFromUrl;
 				filtersChanged = true;
 			}
 		}

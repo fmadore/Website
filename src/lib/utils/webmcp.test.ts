@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { CV_SECTIONS, DH_PROJECT_GROUPS, type ApiItem, type CvPayload } from '#lib/apiContract.ts';
-import { website } from '#lib/data/siteConfig.ts';
+import { author, website } from '#lib/data/siteConfig.ts';
 import { citationFor } from '#lib/utils/apiCitation.ts';
 import { WEBMCP_TOOL_NAMES, WEBMCP_UI_TOOLS } from '#lib/utils/webmcpToolNames.ts';
 import { GET as activitiesApi } from '../../routes/api/activities.json/+server';
@@ -441,6 +441,30 @@ describe('show_publications', () => {
 		const { tools } = register(undefined, { fetch: apiFetch, navigate });
 		await ok(tools, 'show_publications');
 		expect(navigate).toHaveBeenCalledWith('/publications');
+	});
+
+	it('takes a co-author and a sort, as the index does', async () => {
+		const navigate = vi.fn(async () => {});
+		const { tools } = register(undefined, { fetch: apiFetch, navigate });
+		const coAuthored = docs.publications.find(
+			(item) =>
+				Array.isArray(item.authors) &&
+				(item.authors as string[]).some((name) => name !== author.name)
+		)!;
+		const name = (coAuthored.authors as string[]).find((n) => n !== author.name)!;
+		const result = await ok<{ shown: string; filters: Record<string, unknown> }>(
+			tools,
+			'show_publications',
+			{ author: name.toUpperCase(), sort: 'citations' }
+		);
+		const expected = new URLSearchParams({ author: name, sort: 'citations' });
+		expect(navigate).toHaveBeenCalledWith(`/publications?${expected}`);
+		expect(result.filters).toMatchObject({ authors: [name], sort: 'citations' });
+
+		await ok(tools, 'show_publications', { sort: 'date' });
+		expect(navigate).toHaveBeenLastCalledWith('/publications');
+		expect(await fails(tools, 'show_publications', { sort: 'popularity' })).toContain('citations');
+		expect(await fails(tools, 'show_publications', { author: author.name })).toContain('co-author');
 	});
 
 	it('names the values that exist instead of opening an empty view', async () => {

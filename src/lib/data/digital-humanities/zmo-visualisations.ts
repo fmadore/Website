@@ -44,12 +44,12 @@ export const zmoVisualisations: DigitalHumanitiesProject = {
 	],
 	skills: [
 		'Python',
-		'Web scraping',
+		'Web Scraping',
 		'NLP',
 		'NLTK',
 		'D3.js',
 		'Data Visualisation',
-		'Network graphs',
+		'Network Graphs',
 		'JSON',
 		'GitHub Actions'
 	],

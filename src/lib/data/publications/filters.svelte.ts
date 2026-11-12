@@ -15,7 +15,12 @@ import {
 	publicationSummaryTags
 } from './summaries';
 import { EntityFilterSystem } from '#lib/utils/entityFilterSystem.svelte.ts';
-import { PUBLICATION_TYPE_FILTER_LABELS as typeLabels } from '#lib/utils/publicationTypeLabels.ts';
+import {
+	PUBLICATION_TYPE_BADGE_LABELS,
+	PUBLICATION_TYPE_CHIP_LABELS,
+	PUBLICATION_TYPE_FILTER_LABELS as typeLabels
+} from '#lib/utils/publicationTypeLabels.ts';
+import { isForthcoming } from '#lib/utils/date-formatter.ts';
 import { splitNames } from '#lib/utils/nameUtils.ts';
 import { getContributorNames } from '#lib/utils/contributor.ts';
 import { author } from '#lib/data/siteConfig.ts';
@@ -71,9 +76,7 @@ export const allAuthors = Array.from(new Set(allPublications.flatMap(publication
 	.filter((name: string) => name !== author.name)
 	.sort();
 
-const allCountries = Array.from(
-	new Set(allPublications.flatMap((pub) => pub.country || []))
-).sort();
+const allCountries = Array.from(new Set(allPublications.flatMap((pub) => pub.country || [])));
 
 const allProjects = Array.from(
 	new Set(allPublications.map((pub) => pub.project).filter(Boolean) as string[])
@@ -88,11 +91,51 @@ const uniqueLanguages = Array.from(new Set(allPublications.flatMap(publicationLa
 
 const tagFrequency = countOccurrences(allPublications.map((pub) => pub.tags ?? []));
 const authorFrequency = countOccurrences(allPublications.map(publicationAuthorNames));
+// Countries too: alphabetical and cut at eight, the list hid busy countries
+// behind the combobox while printing ones studied once.
+const countryFrequency = countOccurrences(allPublications.map((pub) => pub.country ?? []));
+
+// --- Free-text search ---
+
+/**
+ * What the search box reads: everything a row prints, so a word the reader
+ * can see on the page finds its row. That is the title, year and date (which
+ * carries "Forthcoming"), the credited names, the venue, the tags, the opening
+ * of the abstract the row shows, the type in each of the forms the page prints
+ * it, the countries studied and the project.
+ */
+export function publicationSearchFields(pub: Pub): string[] {
+	return [
+		pub.title,
+		String(pub.year ?? ''),
+		pub.date ?? '',
+		isForthcoming(pub) ? 'Forthcoming' : '',
+		...getContributorNames(pub.authors),
+		...extractEditors(pub),
+		pub.journal ?? '',
+		pub.book ?? '',
+		pub.publisher ?? '',
+		pub.encyclopediaTitle ?? '',
+		pub.proceedingsTitle ?? '',
+		pub.series ?? '',
+		...(pub.tags ?? []),
+		pub.abstractExcerpt ?? '',
+		PUBLICATION_TYPE_BADGE_LABELS[pub.type] ?? '',
+		typeLabels[pub.type] ?? '',
+		PUBLICATION_TYPE_CHIP_LABELS[pub.type] ?? '',
+		...(pub.country ?? []),
+		pub.project ?? ''
+	];
+}
 
 // --- Filter System ---
 
 export const publicationFilters = new EntityFilterSystem<Pub>({
 	items: allPublications,
+	searchFields: publicationSearchFields,
+	// The countries a work is about, not where it appeared: on the talks index
+	// the same parameter means where a talk was held, and each heading says so.
+	labels: { countries: 'Countries studied' },
 	matchesYearRange: (pub: Pub, range: YearRange) => pub.year >= range.min && pub.year <= range.max,
 	dimensions: {
 		types: {
@@ -135,7 +178,7 @@ export const publicationFilters = new EntityFilterSystem<Pub>({
 		tags: byFrequencyThenAlpha(publicationSummaryTags, tagFrequency),
 		languages: uniqueLanguages,
 		authors: byFrequencyThenAlpha(allAuthors, authorFrequency),
-		countries: allCountries,
+		countries: byFrequencyThenAlpha(allCountries, countryFrequency),
 		projects: allProjects
 	}
 });

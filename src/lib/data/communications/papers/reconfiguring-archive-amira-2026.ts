@@ -25,7 +25,7 @@ These ambitions also expose where the work is hardest. An atlas built on relatio
 		'Digital Humanities',
 		'Archives',
 		'Metadata',
-		'Linked Data',
+		'Linked Open Data',
 		'Wikidata',
 		'Omeka S'
 	],

@@ -714,8 +714,7 @@ export const cvPublications: CvPublication[] = [
 		"issue": "48",
 		"pages": "6-7",
 		"language": "English",
-		"doi": "10.58144/20260430-000",
-		"url": ""
+		"doi": "10.58144/20260430-000"
 	},
 	{
 		"id": "madore-2026-iwac-private-database-public-resource",
@@ -849,7 +848,7 @@ export const cvPublications: CvPublication[] = [
 		"year": 2021,
 		"book": "Guide décolonisé et pluriversel de formation à la recherche en sciences sociales et humaines",
 		"editors": "Florence Piron, Élisabeth Arsenault",
-		"placeOfPublication": "Québec",
+		"placeOfPublication": "Quebec City",
 		"publisher": "Éditions science et bien commun",
 		"language": "French",
 		"url": "https://scienceetbiencommun.pressbooks.pub/projetthese/chapter/faire-une-table-des-matieres/"
@@ -1139,7 +1138,7 @@ export const cvPublications: CvPublication[] = [
 		"date": "2016",
 		"dateISO": "2016-01-22",
 		"year": 2016,
-		"placeOfPublication": "Québec/Paris",
+		"placeOfPublication": "Quebec City/Paris",
 		"publisher": "Presses de l'Université Laval/Hermann",
 		"language": "French",
 		"series": "Religions, cultures et sociétés",

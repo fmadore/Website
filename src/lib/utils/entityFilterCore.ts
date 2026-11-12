@@ -51,6 +51,13 @@ export interface EntityArrayDimension<TItem> {
 }
 
 /**
+ * A narrowing that is not a facet: the index's free-text search. It applies to
+ * the list and to every facet's counts alike, so a chip never promises what
+ * the search has already taken away. Absent, nothing is narrowed.
+ */
+export type EntityItemPredicate<TItem> = (item: TItem) => boolean;
+
+/**
  * Items matching every active dimension (AND across dimensions; each
  * dimension's `match` decides its own within-dimension semantics).
  * A dimension with no active values does not narrow.
@@ -59,9 +66,11 @@ export function filterEntityItems<TItem>(
 	items: TItem[],
 	filters: EntityIndexFilters,
 	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
-	matchesYearRange: (item: TItem, range: YearRange) => boolean
+	matchesYearRange: (item: TItem, range: YearRange) => boolean,
+	predicate?: EntityItemPredicate<TItem>
 ): TItem[] {
 	return items.filter((item) => {
+		if (predicate && !predicate(item)) return false;
 		if (filters.yearRange && !matchesYearRange(item, filters.yearRange)) return false;
 		for (const key of ENTITY_ARRAY_FILTER_KEYS) {
 			const active = filters[key];
@@ -109,9 +118,11 @@ function eligibleItemsForDimension<TItem>(
 	items: TItem[],
 	filters: EntityIndexFilters,
 	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
-	matchesYearRange: (item: TItem, range: YearRange) => boolean
+	matchesYearRange: (item: TItem, range: YearRange) => boolean,
+	predicate?: EntityItemPredicate<TItem>
 ): TItem[] {
 	return items.filter((item) => {
+		if (predicate && !predicate(item)) return false;
 		if (filters.yearRange && !matchesYearRange(item, filters.yearRange)) return false;
 		for (const key of ENTITY_ARRAY_FILTER_KEYS) {
 			if (key === countedKey) continue;
@@ -134,12 +145,16 @@ function eligibleItemsForDimension<TItem>(
  * item (languages, tags, countries) double-counts in that sum, and one whose
  * value can be absent under-counts. Both are the same defect — an "All" that
  * asserts a total the click does not produce.
+ *
+ * `predicate` (the search) narrows every count and total: it is not a facet
+ * the "All" option clears, so what clicking "All" produces still has it.
  */
 export function computeDisjunctiveFacets<TItem>(
 	items: TItem[],
 	filters: EntityIndexFilters,
 	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
-	matchesYearRange: (item: TItem, range: YearRange) => boolean
+	matchesYearRange: (item: TItem, range: YearRange) => boolean,
+	predicate?: EntityItemPredicate<TItem>
 ): {
 	counts: Record<EntityArrayFilterKey, Record<string, number>>;
 	totals: Record<EntityArrayFilterKey, number>;
@@ -152,7 +167,8 @@ export function computeDisjunctiveFacets<TItem>(
 			items,
 			filters,
 			dimensions,
-			matchesYearRange
+			matchesYearRange,
+			predicate
 		);
 		counts[countedKey] = countDimension(eligibleItems, dimensions[countedKey].countExtractor);
 		totals[countedKey] = eligibleItems.length;
@@ -170,6 +186,87 @@ export function countActiveFilters(filters: EntityIndexFilters): number {
 	let count = filters.yearRange ? 1 : 0;
 	for (const key of ENTITY_ARRAY_FILTER_KEYS) count += filters[key].length;
 	return count;
+}
+
+/**
+ * The facets laid out in the `More filters` grid rather than in the filter
+ * bar. The grid is closed by default, so a filter on one of these (a deep
+ * link, Back to a filtered view) is what opens it: an active filter is never
+ * left behind a closed disclosure.
+ */
+export const GRID_FILTER_KEYS = ['projects', 'authors', 'countries', 'tags'] as const;
+
+/** Whether any facet inside the `More filters` grid, or the year range, is set. */
+export function hasGridFilters(filters: EntityIndexFilters): boolean {
+	return !!filters.yearRange || GRID_FILTER_KEYS.some((key) => filters[key].length > 0);
+}
+
+/** The heading each facet prints, in the grid and in the "Filtered by" line. */
+export type EntityFacetLabels = Record<EntityArrayFilterKey, string>;
+
+export const DEFAULT_FACET_LABELS: EntityFacetLabels = {
+	types: 'Type',
+	languages: 'Language',
+	projects: 'Projects',
+	authors: 'Co-authors',
+	countries: 'Countries',
+	tags: 'Tags'
+};
+
+/** One facet's part of the "Filtered by" line: its heading and its values. */
+export interface ActiveFilterGroup {
+	key: EntityArrayFilterKey | 'yearRange' | 'search';
+	label: string;
+	/** Joined with "or" when printed: values within one facet widen (OR). */
+	values: string[];
+}
+
+/** The order the line reads in: the bar's controls, then the grid's columns. */
+const DESCRIBED_KEYS: EntityArrayFilterKey[] = [
+	'types',
+	'languages',
+	'projects',
+	'authors',
+	'countries',
+	'tags'
+];
+
+/**
+ * What is narrowing the list, grouped by facet. A bare run of values ("ISLAM ·
+ * TOGO") could not say that a country and a tag both read "Togo", nor that two
+ * tags widen the list (OR) while a tag and a country narrow it (AND); grouped
+ * under their headings the line states the rule: `Tags: Islam or Togo ·
+ * Countries: Togo`. The search leads, quoted, since it narrows like a facet and
+ * the tally counts it as one.
+ */
+export function describeActiveFilters(
+	filters: EntityIndexFilters,
+	options: {
+		labels?: Partial<EntityFacetLabels>;
+		/** Display form of a value (type codes → labels, typeset quotes). */
+		valueLabel?: (key: EntityArrayFilterKey, value: string) => string;
+		/** The year read-out, printed when a range is set. */
+		yearReadout?: string;
+		searchTerm?: string;
+	} = {}
+): ActiveFilterGroup[] {
+	const groups: ActiveFilterGroup[] = [];
+	const term = options.searchTerm?.trim();
+	if (term)
+		groups.push({ key: 'search', label: 'Search', values: [`“${truncateSearchTerm(term)}”`] });
+	for (const key of DESCRIBED_KEYS) {
+		const values = filters[key];
+		if (values.length === 0) continue;
+		groups.push({
+			key,
+			label: options.labels?.[key] ?? DEFAULT_FACET_LABELS[key],
+			values: values.map((value) => options.valueLabel?.(key, value) ?? value)
+		});
+	}
+	if (filters.yearRange && options.yearReadout) {
+		groups.push({ key: 'yearRange', label: 'Years', values: [options.yearReadout] });
+	}
+	return groups;
 }
 
 /**

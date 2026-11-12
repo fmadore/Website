@@ -43,7 +43,7 @@ export const raisPublications: DigitalHumanitiesProject = {
 		'Python',
 		'Embeddings',
 		'UMAP',
-		'Network graphs',
+		'Network Graphs',
 		'ECharts',
 		'MapLibre GL',
 		'Data Visualisation',

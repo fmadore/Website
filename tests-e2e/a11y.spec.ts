@@ -30,8 +30,26 @@ const pages: { name: string; path: string }[] = [
 	// focusable nodes, sliders, chips and a datalist-backed search field.
 	{ name: 'publication visualisations', path: '/publications/visualisations' },
 	// Quotations in four languages, each blockquote carrying its own `lang`.
-	{ name: 'citations in context', path: '/publications/citations' }
+	{ name: 'citations in context', path: '/publications/citations' },
+	// A talk record with a slide deck: the deck facade and its rail.
+	{ name: 'talk record with slides', path: '/communications/ai-africa-symposium-kansas-2026' },
+	// An activity record: an HTML body from the data, with its own rail.
+	{ name: 'activity record', path: '/activities/zmo-farewell-bayreuth-2025' },
+	{ name: 'activities year', path: '/activities/year/2025' },
+	{ name: 'research index', path: '/research' },
+	// A project page carrying the audio player (transport, progress, volume).
+	{ name: 'research project', path: '/research/religious-activism-campuses-togo-benin' },
+	{ name: 'teaching', path: '/teaching' },
+	{ name: 'guest lectures', path: '/teaching/guest-lectures' },
+	// The career timeline: SVG lanes, a tooltip and a detail card.
+	{ name: 'CV timeline', path: '/cv/timeline' },
+	{ name: 'slides gallery', path: '/conference-activity/slides' },
+	{ name: 'talk visualisations', path: '/conference-activity/visualisations' }
 ];
+
+/** Chart and timeline pages hydrate heavier chrome before they settle. */
+const timeoutFor = (path: string) =>
+	path.includes('visualisations') || path.includes('timeline') ? 60_000 : 30_000;
 
 /**
  * Midnight is a designed pass, not an inversion, so it is scanned as its own
@@ -43,12 +61,17 @@ const pages: { name: string; path: string }[] = [
 const darkPages: { name: string; path: string }[] = [
 	{ name: 'home', path: '/' },
 	{ name: 'publication detail', path: '/publications/beninese-imam-election-2022' },
-	{ name: 'publications list', path: '/publications' }
+	{ name: 'publications list', path: '/publications' },
+	{ name: 'CV', path: '/cv' },
+	{ name: 'talk record with slides', path: '/communications/ai-africa-symposium-kansas-2026' },
+	{ name: 'publication visualisations', path: '/publications/visualisations' },
+	{ name: 'digital humanities and software', path: '/digital-humanities' },
+	{ name: 'talks index', path: '/conference-activity' }
 ];
 
 for (const { name, path } of pages) {
 	test(`${name} has no WCAG A/AA violations`, async ({ page }) => {
-		test.setTimeout(path.includes('visualisations') ? 60_000 : 30_000);
+		test.setTimeout(timeoutFor(path));
 		await page.goto(path);
 		await ready(page);
 		// Readiness above proves hydration; the heading establishes the page being scanned.
@@ -65,6 +88,7 @@ for (const { name, path } of pages) {
 
 for (const { name, path } of darkPages) {
 	test(`${name} has no WCAG A/AA violations in dark mode`, async ({ page }) => {
+		test.setTimeout(timeoutFor(path));
 		await page.emulateMedia({ colorScheme: 'dark' });
 		await page.goto(path);
 		await ready(page);

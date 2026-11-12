@@ -392,6 +392,8 @@ test('citations in context quotes each citing work and filters by cited publicat
 
 	// The cited-publication facet narrows the rows to the works quoting it, and
 	// each row then shows only the passages that cite it.
+	// The facet grid is closed until asked for.
+	await page.getByRole('button', { name: /^More filters/ }).click();
 	await page
 		.getByRole('button', { name: /^Rivalités et collaborations/ })
 		.first()

@@ -1,0 +1,197 @@
+/*
+ * Map chrome — the MapLibre controls and attribution, printed on-register.
+ *
+ * Shared by `MapVisualization` and `LocationMap`, which put `.map-chrome` on
+ * their map container. MapLibre's own sheet draws its controls as white
+ * 29px tiles with a 4px radius and a drop shadow, its attribution as a white
+ * Helvetica pill, and its icons as dark-grey background SVGs that vanish on
+ * the midnight film. Here a control group is a flat plate (the surface step,
+ * a 1px box edge, square, no shadow), the stacked buttons are divided by
+ * that edge carried inward, and the attribution is a line of the data voice on the page
+ * ground. The attribution text itself is a licence requirement (CARTO,
+ * OpenStreetMap) and is never hidden.
+ *
+ * `!important` is not needed: MapLibre's sheet is loaded after this one (it is
+ * imported with the library, at run time), so every selector here out-ranks
+ * the library's by one class rather than relying on source order.
+ *
+ * Icons. The library's glyphs are re-cut as masks (the same path data, with
+ * the fill reduced to an alpha channel; the compass's south half kept at 40%),
+ * painted with `currentColor`, so they take the ink in daylight and the cream
+ * in midnight with no inversion filter and no second set of literals. The
+ * enabled globe takes pine: it marks the current projection.
+ */
+
+.map-chrome {
+	--map-icon-zoom-in: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29' fill='black'%3E %3Cpath d='M14.5 8.5c-.75 0-1.5.75-1.5 1.5v3h-3c-.75 0-1.5.75-1.5 1.5S9.25 16 10 16h3v3c0 .75.75 1.5 1.5 1.5S16 19.75 16 19v-3h3c.75 0 1.5-.75 1.5-1.5S19.75 13 19 13h-3v-3c0-.75-.75-1.5-1.5-1.5'/%3E %3C/svg%3E");
+	--map-icon-zoom-out: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29' fill='black'%3E %3Cpath d='M10 13c-.75 0-1.5.75-1.5 1.5S9.25 16 10 16h9c.75 0 1.5-.75 1.5-1.5S19.75 13 19 13z'/%3E %3C/svg%3E");
+	--map-icon-fullscreen: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29' fill='black'%3E %3Cpath d='M24 16v5.5c0 1.75-.75 2.5-2.5 2.5H16v-1l3-1.5-4-5.5 1-1 5.5 4 1.5-3zM6 16l1.5 3 5.5-4 1 1-4 5.5 3 1.5v1H7.5C5.75 24 5 23.25 5 21.5V16zm7-11v1l-3 1.5 4 5.5-1 1-5.5-4L6 13H5V7.5C5 5.75 5.75 5 7.5 5zm11 2.5c0-1.75-.75-2.5-2.5-2.5H16v1l3 1.5-4 5.5 1 1 5.5-4 1.5 3h1z'/%3E %3C/svg%3E");
+	--map-icon-shrink: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29'%3E %3Cpath d='M18.5 16c-1.75 0-2.5.75-2.5 2.5V24h1l1.5-3 5.5 4 1-1-4-5.5 3-1.5v-1zM13 18.5c0-1.75-.75-2.5-2.5-2.5H5v1l3 1.5L4 24l1 1 5.5-4 1.5 3h1zm3-8c0 1.75.75 2.5 2.5 2.5H24v-1l-3-1.5L25 5l-1-1-5.5 4L17 5h-1zM10.5 13c1.75 0 2.5-.75 2.5-2.5V5h-1l-1.5 3L5 4 4 5l4 5.5L5 12v1z'/%3E %3C/svg%3E");
+	--map-icon-compass: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' viewBox='0 0 29 29' fill='black'%3E %3Cpath d='m10.5 14 4-8 4 8z'/%3E %3Cpath fill-opacity='.4' d='m10.5 16 4 8 4-8z'/%3E %3C/svg%3E");
+	--map-icon-globe: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='none' viewBox='0 0 22 22' stroke='black'%3E %3Ccircle cx='11' cy='11' r='8.5'/%3E %3Cpath d='M17.5 11c0 4.819-3.02 8.5-6.5 8.5S4.5 15.819 4.5 11 7.52 2.5 11 2.5s6.5 3.681 6.5 8.5Z'/%3E %3Cpath d='M13.5 11c0 2.447-.331 4.64-.853 6.206-.262.785-.562 1.384-.872 1.777-.314.399-.58.517-.775.517-.195 0-.461-.118-.775-.517-.31-.393-.61-.992-.872-1.777C8.831 15.64 8.5 13.446 8.5 11c0-2.447.331-4.64.853-6.206.262-.785.562-1.384.872-1.777.314-.399.58-.517.775-.517.195 0 .461.118.775.517.31.393.61.992.872 1.777.522 1.565.853 3.76.853 6.206Z'/%3E %3Cpath d='M11 7.5c-1.909 0-3.622-.166-4.845-.428-.616-.132-1.08-.283-1.379-.434a1.333 1.333 0 0 1-.224-.138c.047-.038.12-.085.224-.138.299-.151.763-.302 1.379-.434C7.378 5.666 9.091 5.5 11 5.5c1.909 0 3.622.166 4.845.428.616.132 1.08.283 1.379.434.105.053.177.1.224.138-.047.038-.12.085-.224.138-.299.151-.763.302-1.379.434-1.223.262-2.936.428-4.845.428ZM4.486 6.436ZM11 16.5c-1.909 0-3.622-.166-4.845-.428-.616-.132-1.08-.283-1.379-.434a1.33 1.33 0 0 1-.224-.138 1.33 1.33 0 0 1 .224-.138c.299-.151.763-.302 1.379-.434C7.378 14.666 9.091 14.5 11 14.5c1.909 0 3.622.166 4.845.428.616.132 1.08.283 1.379.434.105.053.177.1.224.138a1.33 1.33 0 0 1-.224.138c-.299.151-.763.302-1.379.434-1.223.262-2.936.428-4.845.428Zm-6.514-1.064ZM11 12.5c-2.46 0-4.672-.222-6.255-.574-.796-.177-1.406-.38-1.805-.59a1.465 1.465 0 0 1-.39-.272.293.293 0 0 1-.047-.064.293.293 0 0 1 .048-.064c.066-.073.189-.167.389-.272.399-.21 1.009-.413 1.805-.59C6.328 9.722 8.54 9.5 11 9.5s4.672.222 6.256.574c.795.177 1.405.38 1.804.59.2.105.323.2.39.272a.33.33 0 0 1 .047.064.293.293 0 0 1-.048.064 1.435 1.435 0 0 1-.389.272c-.399.21-1.009.413-1.804.59-1.584.352-3.796.574-6.256.574Zm-8.501-1.51v.002-.002Zm0 .018v.002-.002Zm17.002.002v-.002.002Zm0-.018v-.002.002Z'/%3E %3C/svg%3E");
+	--map-icon-attrib: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill-rule='evenodd' viewBox='0 0 20 20'%3E %3Cpath d='M4 10a6 6 0 1 0 12 0 6 6 0 1 0-12 0m5-3a1 1 0 1 0 2 0 1 1 0 1 0-2 0m0 3a1 1 0 1 1 2 0v3a1 1 0 1 1-2 0'/%3E %3C/svg%3E");
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group {
+	background: var(--color-surface);
+	border: var(--border-width-thin) solid var(--color-border);
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button {
+	color: var(--color-text);
+	background-color: transparent;
+	border-radius: 0;
+	transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button + button {
+	/* A segmented control: the division is the group's box edge carried
+	 * inward, so it keeps the edge's ink (DESIGN.md, The Hairline Pairing
+	 * Rule; allowlisted in hairlinePairing.test.ts). */
+	border-top: var(--border-width-thin) solid var(--color-border);
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button:not(:disabled):hover,
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button:not(:disabled):active {
+	background-color: var(--color-surface-alt);
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button:focus:focus-visible {
+	box-shadow: none;
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-inset);
+	border-radius: 0;
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button:focus {
+	border-radius: 0;
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+	background-image: none;
+	background-color: currentColor;
+	mask-repeat: no-repeat;
+	mask-position: center;
+	mask-size: 29px 29px;
+}
+
+.map-chrome .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-in .maplibregl-ctrl-icon {
+	mask-image: var(--map-icon-zoom-in);
+}
+
+.map-chrome .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-out .maplibregl-ctrl-icon {
+	mask-image: var(--map-icon-zoom-out);
+}
+
+.map-chrome .maplibregl-ctrl-group button.maplibregl-ctrl-compass .maplibregl-ctrl-icon {
+	mask-image: var(--map-icon-compass);
+}
+
+.map-chrome .maplibregl-ctrl-group button.maplibregl-ctrl-fullscreen .maplibregl-ctrl-icon {
+	mask-image: var(--map-icon-fullscreen);
+}
+
+.map-chrome .maplibregl-ctrl-group button.maplibregl-ctrl-shrink .maplibregl-ctrl-icon {
+	mask-image: var(--map-icon-shrink);
+}
+
+/* The globe glyph is drawn on a 22px box, not 29px. */
+.map-chrome
+	.maplibregl-ctrl.maplibregl-ctrl-group
+	button.maplibregl-ctrl-globe
+	.maplibregl-ctrl-icon,
+.map-chrome
+	.maplibregl-ctrl.maplibregl-ctrl-group
+	button.maplibregl-ctrl-globe-enabled
+	.maplibregl-ctrl-icon {
+	mask-image: var(--map-icon-globe);
+	mask-size: 22px 22px;
+}
+
+.map-chrome .maplibregl-ctrl-group button.maplibregl-ctrl-globe-enabled {
+	color: var(--color-accent);
+}
+
+/* A disabled control (zoom at its limit) keeps the library's dimming. */
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button:disabled .maplibregl-ctrl-icon {
+	opacity: 0.35;
+}
+
+/* Attribution: a line of the data voice on the page ground, no pill. The
+ * compact variant (an "i" that unfolds the credits) is styled the same way in
+ * case a map asks for it; both maps here keep the credits open. */
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-attrib,
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-attrib.maplibregl-compact {
+	margin: 0;
+	padding: var(--space-3xs) var(--space-2xs);
+	min-height: 0;
+	background-color: var(--color-background);
+	color: var(--color-text-muted);
+	border-radius: 0;
+	box-shadow: none;
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	letter-spacing: var(--tracking-figures);
+	line-height: var(--line-height-normal);
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-attrib.maplibregl-compact-show {
+	padding-inline-end: calc(var(--space-6) + var(--space-2xs));
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-attrib a {
+	color: var(--color-text-muted);
+	text-decoration: none;
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-attrib a:hover,
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-attrib a:focus-visible {
+	color: var(--color-text);
+	text-decoration: underline;
+	text-decoration-color: var(--color-accent);
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-attrib a:focus-visible {
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-attrib .maplibregl-ctrl-attrib-button {
+	background-image: none;
+	background-color: currentColor;
+	mask-image: var(--map-icon-attrib);
+	mask-repeat: no-repeat;
+	mask-position: center;
+	border-radius: 0;
+}
+
+.map-chrome .maplibregl-ctrl.maplibregl-ctrl-attrib .maplibregl-ctrl-attrib-button:focus-visible {
+	box-shadow: none;
+	outline: var(--focus-outline);
+	outline-offset: var(--focus-outline-offset);
+}
+
+/* The Touch Floor Rule: the map's own controls take 44px under a coarse
+ * pointer (DESIGN.md). Keyed to the input method, never the viewport. */
+@media (--touch) {
+	.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button {
+		width: var(--space-11);
+		height: var(--space-11);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.map-chrome .maplibregl-ctrl.maplibregl-ctrl-group button {
+		transition: none;
+	}
+}
+
+/* Controls are for the screen: the printed plate keeps the map and its
+ * caption, and the credits, which a licence asks to travel with the map. */
+@media print {
+	.map-chrome .maplibregl-ctrl-group {
+		display: none;
+	}
+}

@@ -134,9 +134,13 @@ no two channels carry the same value.
 		cooccurrence: 0.28
 	};
 
+	// Width follows the tie (`strength` when the builder shared a large event's
+	// unit out among its pairs, else the count; `edgeTie` in networkLayout.ts,
+	// which this module cannot import statically without pulling d3-force).
 	function edgeWidth(edge: NetworkEdge): number {
 		const scale = edge.kind === 'direct' ? 1.2 : 1;
-		return Math.max(0.75, Math.min(5, Math.log1p(edge.weight) * 1.9 * scale));
+		const tie = edge.strength ?? edge.weight;
+		return Math.max(0.75, Math.min(5, Math.log1p(tie) * 1.9 * scale));
 	}
 
 	// --- Selection (drives the layout) -------------------------------------
@@ -272,6 +276,7 @@ no two channels carry the same value.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- d3-zoom's zoomIdentity
 	let zoomIdentity: any = null;
 	let loadError = $state(false);
+	let zoomControlsEl = $state<HTMLDivElement | undefined>(undefined);
 
 	$effect(() => {
 		if (!svgEl) return;
@@ -307,7 +312,16 @@ no two channels carry the same value.
 	/** Push the layout's fit transform into d3-zoom as the new baseline. */
 	function applyFit() {
 		if (!layout || !layoutModule) return;
-		const fit = layoutModule.fitTransform(layout.bounds, containerWidth, containerHeight);
+		// The zoom column floats over the plate's left edge; reserve its width so
+		// no label is fitted underneath it.
+		const zoomInset = zoomControlsEl ? zoomControlsEl.offsetLeft + zoomControlsEl.offsetWidth : 0;
+		const fit = layoutModule.fitTransform(
+			layout.bounds,
+			containerWidth,
+			containerHeight,
+			12,
+			zoomInset
+		);
 		transform = fit;
 		if (zoomSelection && zoomBehavior && zoomIdentity) {
 			zoomSelection.call(zoomBehavior.transform, zoomIdentity.translate(fit.x, fit.y).scale(fit.k));
@@ -531,7 +545,7 @@ no two channels carry the same value.
 		fullscreenTarget={outerContainer}
 		{filename}
 	/>
-	<div class="viz-zoom-controls">
+	<div class="viz-zoom-controls" bind:this={zoomControlsEl}>
 		<button
 			class="viz-zoom-btn"
 			onclick={() => zoomBy(1.25)}
@@ -570,7 +584,7 @@ no two channels carry the same value.
 			class="network-svg"
 			width="100%"
 			height="100%"
-			role="img"
+			role="group"
 			aria-label={effectiveAriaDescription}
 			onpointerleave={clearHover}
 		>

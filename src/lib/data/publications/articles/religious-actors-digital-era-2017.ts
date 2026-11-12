@@ -25,7 +25,7 @@ export const religiousActorsDigitalEra: Publication = {
 		'Digital Media',
 		'Christianity',
 		'Islam',
-		'Research Methodology'
+		'Research Methods'
 	],
 	url: 'https://doi.org/10.14428/emulations.024.001',
 	openAccess: true,

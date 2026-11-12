@@ -6,7 +6,7 @@
 		createPersonSchema,
 		combineSchemas,
 		type BreadcrumbItem
-	} from '#lib/utils/seoUtils.ts';
+	} from '#lib/utils/jsonLdSchemas.ts';
 	import { page } from '$app/state';
 	import { getDefaultDescription, author, website } from '#lib/utils/siteHelpers.ts';
 	import JsonLd from '#lib/components/common/JsonLd.svelte';

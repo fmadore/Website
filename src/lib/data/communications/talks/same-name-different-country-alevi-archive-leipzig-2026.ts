@@ -18,7 +18,7 @@ export const talkSameNameDifferentCountryAleviArchiveLeipzig2026: Communication 
 	abstract:
 		"The Islam West Africa Collection (IWAC), curated by one person, holds more than 20,000 items and over 32 million words. Its press articles, Islamic publications and scholarly references are linked to a single set of more than 6,000 authority records for persons, organisations, places, events and subjects across six countries: Benin, Burkina Faso, Côte d'Ivoire, Niger, Nigeria and Togo. This authority file is the collection's model of identity: each record asserts that one entity exists, under one preferred name, with a type and a country. The same name often belongs to different people or bodies in different countries, and a script that matches names merges them. This talk discusses an AI-assisted workflow in which a language model extracts the names, deterministic scripts match them against the authority records, and AI agents reread each article to decide which country and which record every name refers to, or leave it unlinked, while the curator writes the rules the agents follow and approves every new record, merge or split. Cases where the workflow went wrong or could not decide show the modelling decisions it forced, such as putting the country into a record's title and accepting an unlinked mention as an outcome, and raise wider questions: how to keep a mention distinct from an identity, how to record who or what made a link, and what human oversight means at this scale.",
 	tags: [
-		'AI',
+		'Artificial Intelligence',
 		'AI Agents',
 		'Digital Humanities',
 		'IWAC',

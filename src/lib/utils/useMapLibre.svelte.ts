@@ -24,6 +24,10 @@
  * ```
  *
  * Contract:
+ * - Every style CARTO serves is repainted from the design tokens
+ *   (`applyBasemapPaint`) before `onStyleReady` runs, so the basemap is
+ *   printed in the page's ground, hairlines and faint-ink labels in both
+ *   themes.
  * - `onStyleReady` runs after the initial `load` event and again after every
  *   theme-driven `setStyle` finishes loading (sources/layers/markers are
  *   cleared by `setStyle`, so re-register everything there).
@@ -44,6 +48,7 @@ import {
 	waitForContainerLayout,
 	type MapLibreModule
 } from '#lib/utils/maplibre.ts';
+import { applyBasemapPaint } from '#lib/utils/basemapTheme.ts';
 
 export const MAP_STYLE_TIMEOUT_MS = 15000;
 
@@ -180,6 +185,7 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 					clearTimeout(styleTimer);
 					importError = null;
 					isMapLoaded = true;
+					applyBasemapPaint(mapInstance);
 					untrack(() => onStyleReady(mapInstance, gl));
 				});
 
@@ -220,6 +226,7 @@ export function useMapLibre(options: UseMapLibreOptions): UseMapLibreReturn {
 		currentThemeIsDark = dark;
 		m.setStyle(dark ? MAP_STYLES.dark : MAP_STYLES.light);
 		const ready = () => {
+			applyBasemapPaint(m);
 			untrack(() => onStyleReady(m, gl));
 		};
 		m.once('style.load', ready);

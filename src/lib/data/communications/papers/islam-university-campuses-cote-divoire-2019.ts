@@ -9,8 +9,8 @@ export const islamUniversityCampusesCoteDIvoire: Communication = {
 	dateISO: '2019-06-12',
 	year: 2019,
 	conference: '8th European Conference on African Studies (ECAS)',
-	location: 'University of Edinburgh',
-	country: 'Scotland',
+	location: 'University of Edinburgh, Edinburgh',
+	country: 'United Kingdom',
 	type: 'conference',
 	language: 'English',
 	abstract:

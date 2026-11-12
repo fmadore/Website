@@ -158,6 +158,14 @@
 	margin-bottom: var(--space-md);
 }
 
+/* A section head never ends a printed page: the bare-heading rule in
+ * typography.css reaches the h2 inside, not the ruled head around it. */
+@media print {
+	.section-head {
+		break-after: avoid;
+	}
+}
+
 /* Section marker — quiet mono (a § number, or the podcast ♪ glyph). Ink, not
  * pine: a page of sections printed the marker once per head (13 on the
  * visualisations page, 9 on the style guide), which is the opposite of an
@@ -660,6 +668,33 @@
 	}
 }
 
+/* On paper the rail keeps what a reader can act on there — the plate, the
+ * catalogue entry, the printed reference — and drops its controls (the Paper
+ * Rule): the access stack and the copy/export buttons are errands for a
+ * screen. Every record rail draws its controls through these two idioms, so
+ * this one rule covers the publication, talk, activity, project and research
+ * rails. The catalogue entry is short and is read as one block, so it never
+ * breaks across a page, and its label never ends one. */
+@media print {
+	.rail-cta,
+	.cite-actions {
+		display: none;
+	}
+
+	.cite-reference {
+		margin-bottom: 0;
+	}
+
+	.rail-label {
+		break-after: avoid;
+	}
+
+	.record-meta,
+	.meta-ledger {
+		break-inside: avoid;
+	}
+}
+
 /* ===========================================================================
  * CHIPS — flat, square, mono caps, count appended
  * =========================================================================== */
@@ -949,6 +984,17 @@
 
 .year-bar--current {
 	background: var(--color-accent);
+}
+
+/* The bars are drawn in background colour, which browsers drop on paper by
+ * default — the strip printed as an empty box. These marks are the data, not
+ * a tint, so they ask to be printed as drawn. */
+@media print {
+	.year-bar,
+	.period-bar,
+	.hbar {
+		print-color-adjust: exact;
+	}
 }
 
 .year-bars-legend {

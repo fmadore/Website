@@ -20,7 +20,7 @@ export const islamPeripheriesOpenUp: Communication = {
 		'Large Language Models',
 		'Digital Humanities',
 		'Volkswagen Foundation',
-		'AI',
+		'Artificial Intelligence',
 		'West Africa',
 		'Central Asia',
 		'IWAC',

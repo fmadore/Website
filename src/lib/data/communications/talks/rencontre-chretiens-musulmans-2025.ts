@@ -24,7 +24,7 @@ export const talkRencontreChretiensMusulmans2025: Communication = {
 	tags: [
 		'Christianity',
 		'Islam',
-		'Interreligious Relations',
+		'Interfaith Relations',
 		'West Africa',
 		'Togo',
 		'Benin',

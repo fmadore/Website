@@ -17,7 +17,7 @@ const volkswagenFoundationGrantIslamsPeripheries: Activity = {
 	tags: [
 		'Grant',
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'West Africa',
 		'Central Asia',
 		'Volkswagen Foundation',

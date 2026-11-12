@@ -240,7 +240,7 @@ The utilities are not a design vocabulary. Records are set in the idioms (`.ledg
 
 ### Spacing (`utilities/spacing.css`)
 
-`.mx-auto`, `.mt-2/-4/-12`, `.mb-1/-8`, `.p-4/-8`, `.px-4`, `.py-8`, used by the route shells and the related-items card. Values map to the semantic tokens.
+`.mx-auto`, `.mt-4`, `.mb-8`, `.p-8`, `.px-4`, `.py-8`, used by the route shells. Values map to the semantic tokens.
 
 ### Layout (`utilities/layout.css`)
 
@@ -267,7 +267,7 @@ There is no z-index utility sheet; layer with the `--z-*` tokens (`--z-dropdown`
 ## Class Naming Convention
 
 - **Component**: `.component-name`; **element**: `.component-name-element`; **modifier**: `.component-name--modifier`
-- **Utility**: `.utility-value` (e.g., `.text-center`, `.p-4`)
+- **Utility**: `.utility-value` (e.g., `.text-center`, `.p-8`)
 - **Responsive**: `.breakpoint:utility-value` (e.g., `.md:text-lg`)
 
 ## Responsive Approach

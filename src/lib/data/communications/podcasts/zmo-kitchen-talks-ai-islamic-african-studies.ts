@@ -17,7 +17,7 @@ export const zmoKitchenTalksAiIslamicAfricanStudies: Communication = {
 		'Dr. Frédérick Madore, postdoctoral research fellow at ZMO Berlin, works at the intersection of African Studies, Islamic Studies, and the digital humanities. Building on fieldwork and archival research conducted since 2013, he is developing the Islam West Africa Collection—an open-access digital archive of more than 14,500 documents on Islamic print culture and Muslim life in West Africa. In this episode, we explore how artificial intelligence is transforming research practices: How can AI support historical and anthropological research—and where are its limits? And how might AI change the future of the humanities—opening up new possibilities while also raising pressing questions about language equity, digitisation gaps, and academic responsibility?',
 	tags: [
 		'Podcast',
-		'AI',
+		'Artificial Intelligence',
 		'African Studies',
 		'Islamic Studies',
 		'Digital Humanities',

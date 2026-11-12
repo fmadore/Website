@@ -8,10 +8,8 @@ import { activityTypeSeoLabel, communicationTypeSeoLabel } from '#lib/utils/type
 import { pageTitle } from '#lib/utils/siteHelpers.ts';
 import { PUBLICATION_TYPE_SEO_LABELS } from '#lib/utils/publicationTypeLabels.ts';
 
-// JSON-LD schema construction (including `createSectionBreadcrumbs`, whose
-// canonical definition lives in jsonLdSchemas.ts) is re-exported here so
-// existing `#lib/utils/seoUtils` imports keep working unchanged.
-export * from '#lib/utils/jsonLdSchemas.ts';
+// JSON-LD schema construction lives in `#lib/utils/jsonLdSchemas.ts`; import
+// it from there (this module no longer re-exports it).
 
 // ============================================================================
 // SEO DESCRIPTION GENERATORS

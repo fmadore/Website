@@ -155,13 +155,11 @@
 		/* Enhanced typography */
 		line-height: 1;
 
-		/* Subtle reveal animation */
-		opacity: 0.8;
-		transition: opacity var(--duration-normal) var(--ease-out);
+		/* No resting dim: at 0.8 the figures fell to 4.06:1 on the surface. */
+		transition: color var(--duration-normal) var(--ease-out);
 	}
 
 	.progress-container:hover .time-display {
-		opacity: 1;
 		color: var(--color-text);
 	}
 

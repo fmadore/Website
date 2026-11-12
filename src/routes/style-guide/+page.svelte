@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SEO from '#lib/SEO.svelte';
-	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/jsonLdSchemas.ts';
 	import { resolve } from '$app/paths';
 	import { assetHref } from '#lib/utils/paths.ts';
 	import PageHeader from '#lib/components/common/PageHeader.svelte';

@@ -128,6 +128,49 @@ background texture is now the whole subject of the chart.
 	const axisX = $derived(gutter + 8);
 
 	const rowY = (i: number) => padTop + i * rowHeight + rowHeight / 2;
+
+	// --- Ledger columns ------------------------------------------------------
+	// Rank, name, then the count beside the name with a rank bar (the `.hbar`
+	// proportion meter, drawn in SVG): the count used to be flush right, ~950px
+	// from the name it belongs to at 1440. Names are measured with the real
+	// font so the bar column starts after the longest one; when the plate is
+	// too narrow for a bar, the count goes back to the right edge and a long
+	// name is shortened at a word boundary so the two never collide.
+	const nameX = $derived(axisX + 42);
+	const countGap = 8;
+	let measureCtx: CanvasRenderingContext2D | null = null;
+	function measure(text: string): number {
+		if (typeof document === 'undefined') return text.length * fontSize * 0.6;
+		measureCtx ??= document.createElement('canvas').getContext('2d');
+		if (!measureCtx) return text.length * fontSize * 0.6;
+		measureCtx.font = `${fontSize}px ${colors.fontFamily}`;
+		return measureCtx.measureText(text).width;
+	}
+	const countWidth = $derived(measure(String(maxRowWeight)));
+	const longestName = $derived(rows.reduce((m, r) => Math.max(m, measure(r.id)), 0));
+	/** The longest bar; 0 means the plate is too narrow for the bar column. */
+	const barMax = $derived.by(() => {
+		const room = areaWidth - 12 - countWidth - countGap - (nameX + longestName + 16);
+		return room >= 48 ? Math.min(140, room) : 0;
+	});
+	const barX = $derived(nameX + longestName + 16);
+	const barLength = (weight: number) =>
+		Math.max(2, barMax * (Math.max(0, weight) / Math.max(1, maxRowWeight)));
+	/** Room for a name when the count sits at the right edge. */
+	const nameRoom = $derived(areaWidth - 12 - countWidth - countGap - nameX);
+
+	function fitName(name: string): string {
+		if (barMax > 0 || measure(name) <= nameRoom) return name;
+		const words = name.split(' ');
+		while (words.length > 1) {
+			words.pop();
+			const head = `${words.join(' ').replace(/[\s,;:–-]+$/u, '')}…`;
+			if (measure(head) <= nameRoom) return head;
+		}
+		let cut = name;
+		while (cut.length > 1 && measure(`${cut}…`) > nameRoom) cut = cut.slice(0, -1);
+		return `${cut}…`;
+	}
 	const dotRadius = (weight: number) =>
 		3 + 4 * Math.sqrt(Math.max(0, weight) / Math.max(1, maxRowWeight));
 
@@ -308,7 +351,7 @@ background texture is now the whole subject of the chart.
 			height={svgHeight}
 			viewBox="0 0 {areaWidth} {svgHeight}"
 			preserveAspectRatio="xMinYMin meet"
-			role="img"
+			role="group"
 			aria-label={effectiveAriaDescription}
 			onpointerleave={clearHover}
 		>
@@ -416,18 +459,28 @@ background texture is now the whole subject of the chart.
 						>
 						<text
 							class="arc-name"
-							x={axisX + 42}
+							x={nameX}
 							{y}
 							dominant-baseline="middle"
 							fill={colors.text}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{typesetQuotes(row.id)}</text
+							font-size={fontSize}>{typesetQuotes(fitName(row.id))}</text
 						>
+						{#if barMax > 0}
+							<rect
+								class="arc-bar"
+								x={barX}
+								y={y - 4}
+								width={barLength(row.weight)}
+								height="8"
+								fill={colors.primary}
+							/>
+						{/if}
 						<text
 							class="arc-count"
-							x={areaWidth - 12}
+							x={barMax > 0 ? barX + barLength(row.weight) + 6 : areaWidth - 12}
 							{y}
-							text-anchor="end"
+							text-anchor={barMax > 0 ? 'start' : 'end'}
 							dominant-baseline="middle"
 							fill={colors.textLight}
 							font-family={colors.fontFamily}
@@ -516,8 +569,16 @@ background texture is now the whole subject of the chart.
 
 	.arc-name,
 	.arc-rank,
-	.arc-count {
+	.arc-count,
+	.arc-bar {
 		pointer-events: none;
+	}
+
+	/* A rank bar is a data mark: keep its ink when printed (as `.hbar`). */
+	@media print {
+		.arc-bar {
+			print-color-adjust: exact;
+		}
 	}
 
 	.arc-count {

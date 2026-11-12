@@ -26,7 +26,7 @@ export const activity: Activity = {
         
         <p>See below for the full call for chapters.</p>
     `,
-	tags: ['Digital Humanities', 'AI', 'African Studies', 'Call for Papers'],
+	tags: ['Digital Humanities', 'Artificial Intelligence', 'African Studies', 'Call for Papers'],
 	type: 'publication',
 	pdfPath: 'files/CfC-DH-and-AI-in-African-Studies.pdf',
 	pdfTitle: 'Call for Chapters',

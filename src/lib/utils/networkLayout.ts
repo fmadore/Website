@@ -34,11 +34,12 @@ import {
 	type SimulationLinkDatum,
 	type SimulationNodeDatum
 } from 'd3-force';
-import type {
-	NetworkEdge,
-	NetworkEdgeKind,
-	NetworkNode,
-	SelectedGraph
+import {
+	truncateLabel,
+	type NetworkEdge,
+	type NetworkEdgeKind,
+	type NetworkNode,
+	type SelectedGraph
 } from '#lib/utils/networkAggregation.ts';
 
 /** A node kept by `selectGraph`, with the radius the layout will draw it at. */
@@ -131,7 +132,15 @@ export interface LayoutOptions {
 }
 
 type SimNode = SimulationNodeDatum & { id: string; r: number; kind: NetworkNode['kind'] };
-type SimLink = SimulationLinkDatum<SimNode> & { kind: NetworkEdgeKind; weight: number };
+type SimLink = SimulationLinkDatum<SimNode> & { kind: NetworkEdgeKind; tie: number };
+
+/**
+ * The tie an edge pulls with: its `strength` when the builder shared large
+ * items out (see `NetworkEdge.strength`), else its count.
+ */
+export function edgeTie(edge: Pick<NetworkEdge, 'weight' | 'strength'>): number {
+	return edge.strength ?? edge.weight;
+}
 
 /**
  * Run the force layout to convergence and place the labels.
@@ -172,7 +181,7 @@ export function computeNetworkLayout(
 	// guard anyway — forceLink throws on an unresolvable node id.
 	const simLinks: SimLink[] = edges
 		.filter((e) => byId.has(e.source) && byId.has(e.target))
-		.map((e) => ({ source: e.source, target: e.target, kind: e.kind, weight: e.weight }));
+		.map((e) => ({ source: e.source, target: e.target, kind: e.kind, tie: edgeTie(e) }));
 
 	const center = simNodes.find((n) => n.kind === 'center');
 	if (center) {
@@ -190,9 +199,11 @@ export function computeNetworkLayout(
 			forceLink<SimNode, SimLink>(simLinks)
 				.id((d) => d.id)
 				// Heavier ties sit closer together — the distance encodes the
-				// weight, so the edge width isn't carrying it alone.
-				.distance((l) => base / (1 + Math.log1p(l.weight) * 0.45))
-				.strength((l) => (l.kind === 'direct' ? 0.35 : 0.12))
+				// weight, so the edge width isn't carrying it alone. A tie below
+				// one (a pair from a large shared event) pulls in proportion, so
+				// one workshop's clique cannot collapse the plate around itself.
+				.distance((l) => base / (1 + Math.log1p(l.tie) * 0.45))
+				.strength((l) => (l.kind === 'direct' ? 0.35 : 0.12) * Math.min(1, l.tie))
 		)
 		.force('charge', forceManyBody<SimNode>().strength(isMobile ? -260 : -420))
 		// Centring is split into two axes with the horizontal pull weakened by
@@ -351,9 +362,7 @@ function placeLabels(
 		// `maxLabelChars` is a hard cap on what is drawn, not a fallback: a long
 		// name is shortened even when it happens to have room, so label width
 		// stays bounded and the fit transform can't be dragged out by one entry.
-		const full = p.node.id;
-		const text =
-			full.length > maxLabelChars ? full.slice(0, Math.max(1, maxLabelChars - 1)) + '…' : full;
+		const text = truncateLabel(p.node.id, maxLabelChars);
 		const isCenter = p.node.kind === 'center';
 
 		let placed: PlacedLabel | null = null;
@@ -448,23 +457,28 @@ export interface FitTransform {
  * The transform that sits `bounds` inside a `width`×`height` box with `padding`
  * to spare. Capped at k = 1 so a sparse graph is never blown up past its
  * nominal type size — it only ever shrinks to fit.
+ *
+ * `insetLeft` reserves a strip on the left for chrome drawn over the plate
+ * (the zoom column), so the fitted view never puts a label under a button.
  */
 export function fitTransform(
 	bounds: Bounds,
 	width: number,
 	height: number,
-	padding: number = 12
+	padding: number = 12,
+	insetLeft: number = 0
 ): FitTransform {
+	const inset = Math.max(0, Math.min(insetLeft, width / 2));
 	const contentWidth = Math.max(1, bounds.maxX - bounds.minX);
 	const contentHeight = Math.max(1, bounds.maxY - bounds.minY);
 	const k = Math.min(
 		1,
-		(width - padding * 2) / contentWidth,
+		(width - inset - padding * 2) / contentWidth,
 		(height - padding * 2) / contentHeight
 	);
 	return {
 		k,
-		x: width / 2 - ((bounds.minX + bounds.maxX) / 2) * k,
+		x: inset + (width - inset) / 2 - ((bounds.minX + bounds.maxX) / 2) * k,
 		y: height / 2 - ((bounds.minY + bounds.maxY) / 2) * k
 	};
 }

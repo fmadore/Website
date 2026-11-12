@@ -253,11 +253,117 @@ test('the activities log "All" chips print what clearing their row returns', asy
 	// narrowed log, not the whole of it.
 	await types.getByRole('button').nth(1).click();
 	await expect(types.getByRole('button').nth(1)).toHaveAttribute('aria-pressed', 'true');
-	const readout = page.locator('.filter-note-count');
+	const readout = page.locator('.facet-summary-stat');
 	await expect(readout).toContainText('active');
 	const shown = Number(/(\d+)\s+of\s+\d+/i.exec(await readout.innerText())?.[1]);
 	expect(shown).toBeGreaterThan(0);
 	const allTags = tags.getByRole('button', { name: /^All \d+$/ });
 	await expect(allTags).toHaveAttribute('aria-pressed', 'true');
 	expect(await countOf(allTags)).toBe(shown);
+});
+
+test('the chip counts and "All" narrow with the search, and the tally says so', async ({
+	page
+}) => {
+	await page.goto('/publications');
+	await ready(page);
+	const typeAll = page.getByRole('group', { name: 'Type' }).getByRole('button', { name: /^All/ });
+	const corpus = Number(await typeAll.locator('.chip-count').innerText());
+	await page.getByRole('searchbox').fill('togo');
+	await expect(page).toHaveURL(/q=togo/);
+	const stat = page.locator('.facet-summary-stat');
+	await expect(stat).toContainText('1 filter active');
+	const shown = Number(/(\d+)\s+of\s+\d+/i.exec(await stat.innerText())?.[1]);
+	expect(shown).toBeGreaterThan(0);
+	expect(shown).toBeLessThan(corpus);
+	// "All" prints exactly what clicking it produces: the searched list.
+	await expect(typeAll.locator('.chip-count')).toHaveText(String(shown));
+	await expect(stat).toBeInViewport();
+	await expect(page.locator('.facet-summary-active')).toContainText(/Search: “togo”/i);
+});
+
+test('a search-only empty state offers exactly one clear control', async ({ page }) => {
+	await page.goto('/publications');
+	await ready(page);
+	await page.getByRole('searchbox').fill('zzzzqqxx');
+	await expect(page.getByText(/No entries match/)).toBeVisible();
+	await expect(page.getByRole('button', { name: /^Clear/ })).toHaveCount(1);
+	await page.getByRole('button', { name: 'Clear search' }).click();
+	await expect(page).toHaveURL(/\/publications$/);
+	await expect(page.getByRole('searchbox')).toHaveValue('');
+});
+
+test('the facet grid is closed by default and opens for a deep link into it', async ({ page }) => {
+	await page.goto('/publications');
+	await ready(page);
+	const toggle = page.getByRole('button', { name: /^More filters/ });
+	const grid = page.getByRole('region', { name: 'More filters' });
+	await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+	await expect(grid).toBeHidden();
+	await expect(page.locator(bibItems).first()).toBeInViewport();
+	await toggle.click();
+	await expect(grid).toBeVisible();
+
+	await page.goto('/publications?tag=Islam&country=togo');
+	await ready(page);
+	await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+	await expect(grid).toBeVisible();
+	await expect(grid.getByRole('button', { name: /^Islam/ })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
+	await expect(page.locator('.facet-summary-active')).toContainText(/Countries studied: Togo/i);
+});
+
+test('an old tag spelling in a shared link selects the renamed tag', async ({ page }) => {
+	await page.goto('/publications?tag=AI');
+	await ready(page);
+	await expect(page.locator('.facet-summary-active')).toContainText(/Artificial Intelligence/i);
+	await expect(page.locator('.facet-summary-stat')).toContainText('1 filter active');
+});
+
+test('the sort rides in the URL and Back from a record returns to the same page', async ({
+	page
+}) => {
+	await page.goto('/publications');
+	await ready(page);
+	await expect(async () => {
+		if (!page.url().includes('sort=citations'))
+			await page.getByRole('button', { name: /^Cited/ }).click();
+		await expect(page).toHaveURL(/\?sort=citations$/, { timeout: 1000 });
+	}).toPass({ timeout: 15_000 });
+	await expect(page.getByRole('button', { name: /^Cited/ })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
+
+	await page.getByRole('button', { name: 'Page 2', exact: true }).click();
+	const first = page.locator(bibItems).first().locator('.bib-title-link');
+	const title = await first.innerText();
+	await first.click();
+	await expect(page).toHaveURL(/\/publications\/[^/?#]+$/);
+	await page.goBack();
+	await expect(page).toHaveURL(/\/publications\?sort=citations$/);
+	await expect(page.getByRole('button', { name: 'Page 2', exact: true })).toHaveAttribute(
+		'aria-current',
+		'page'
+	);
+	await expect(page.locator(bibItems).first().locator('.bib-title-link')).toHaveText(title);
+
+	// A deep link with the sort applies it; the default order writes no parameter.
+	await page.goto('/publications?sort=title');
+	await ready(page);
+	await expect(page.getByRole('button', { name: 'A–Z' })).toHaveAttribute('aria-pressed', 'true');
+	await page.getByRole('button', { name: /^Date/ }).click();
+	await expect(page).toHaveURL(/\/publications$/);
+});
+
+test('the activities log searches through ?q= like the sibling indexes', async ({ page }) => {
+	await page.goto('/activities?q=workshop');
+	await ready(page);
+	await expect(page.getByRole('searchbox', { name: 'Filter activities' })).toHaveValue('workshop');
+	await expect(page.locator('.facet-summary-stat')).toContainText('1 filter active');
+	await page.getByRole('searchbox', { name: 'Filter activities' }).fill('zzzzqqxx');
+	await expect(page).toHaveURL(/q=zzzzqqxx/);
+	await expect(page.getByRole('button', { name: /^Clear/ })).toHaveCount(1);
 });

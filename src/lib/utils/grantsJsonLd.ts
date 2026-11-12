@@ -23,7 +23,7 @@
  */
 
 import { allGrants } from '#lib/data/grants/index.ts';
-import { createMonetaryGrantSchemas, combineSchemas } from '#lib/utils/seoUtils.ts';
+import { createMonetaryGrantSchemas, combineSchemas } from '#lib/utils/jsonLdSchemas.ts';
 
 export const GRANTS_SCRIPT_ID = 'grants-json-ld';
 

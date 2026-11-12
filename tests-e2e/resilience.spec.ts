@@ -47,6 +47,8 @@ test('a failed chart chunk leaves readable data and a recovery action', async ({
 test('facet combobox supports keyboard selection and accessible open state', async ({ page }) => {
 	await page.goto('/publications');
 	await ready(page);
+	// The facet grid is closed until asked for.
+	await page.getByRole('button', { name: /^More filters/ }).click();
 	const field = page.getByRole('combobox', { name: /tags/ });
 	await field.fill('Islam');
 	await field.press('ArrowDown');

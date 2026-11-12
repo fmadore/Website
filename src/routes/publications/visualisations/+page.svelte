@@ -229,9 +229,11 @@
 	let collabTopN = $state(20);
 	let collabVisibleKinds = $state<NetworkEdgeKind[]>(['peer', 'contributor']);
 	let collabSearch = $state('');
-	// A ledger is as tall as its rows; past ~30 the plate scrolls instead.
+	// A cap, not a size (VizChartCard): the ledger is as tall as its rows, plus
+	// room for the toolbar and a legend that wraps on a phone; past ~30 rows the
+	// plate scrolls instead.
 	const collabArcHeight = $derived(
-		Math.round(Math.min(Math.min(collabTopN, collaboratorCount) * 24 + 150, 940))
+		Math.round(Math.min(Math.min(collabTopN, collaboratorCount) * 24 + 260, 1050))
 	);
 
 	// Keyword co-occurrence network: tags linked when they appear on the same
@@ -403,7 +405,7 @@
 				? 'The countries of the publishers and journals, taken from the place of publication recorded on each work.'
 				: 'The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications.'
 	);
-	// Full-text language filter, shared by the term cloud and the bigrams chart.
+	// Full-text language filter for the term cloud (the phrases plate has its own).
 	type CorpusLanguage = 'all' | 'en' | 'fr';
 	let corpusLanguage = $state<CorpusLanguage>('all');
 
@@ -424,8 +426,18 @@
 	// Lemmatised full-text terms, scaled for the key-terms cloud.
 	const fullTextTerms = $derived(scaleKeyTerms(corpusSummary.wordCloud[corpusLanguage]));
 
-	// Get bigrams data for selected language
-	const bigramsData = $derived<NgramFrequency[]>(corpusSummary.bigrams[corpusLanguage]);
+	// The phrases plate keeps its own language and opens on one, never on the
+	// merged list: a phrase is a sequence in one language, and "All" interleaved
+	// "communauté musulman" with "muslim community" as if they were rivals. It
+	// opens on the language with more analysed works.
+	let bigramLanguage = $state<CorpusLanguage>(
+		languageToggleOptions(corpusSummary.analysed.en, corpusSummary.analysed.fr).length > 1
+			? corpusSummary.analysed.fr > corpusSummary.analysed.en
+				? 'fr'
+				: 'en'
+			: 'all'
+	);
+	const bigramsData = $derived<NgramFrequency[]>(corpusSummary.bigrams[bigramLanguage]);
 
 	// Accessor functions for bigrams chart
 	const getBigramName = (d: NgramFrequency) => d.ngram;
@@ -775,7 +787,7 @@
 
 	<VizSection
 		{...sections.bigrams}
-		description="The most frequent two-word phrases in the same full-text corpus, counted after lemmatisation."
+		description="The most frequent two-word phrases in the same full-text corpus, one language at a time. Phrases are counted and printed as lemmas (dictionary forms), so “communauté musulmane” in the text reads “communauté musulman” here, and two names that often stand together count as a phrase."
 		variant="bigrams"
 		height="{Math.max(400, bigramsData.length * 28 + 70)}px"
 		placeholderHeight="400px"
@@ -784,7 +796,7 @@
 		{#snippet controls()}
 			{#if showLanguageToggle}
 				<LanguageToggle
-					bind:current={corpusLanguage}
+					bind:current={bigramLanguage}
 					enCount={corpusSummary.analysed.en}
 					frCount={corpusSummary.analysed.fr}
 				/>
@@ -797,7 +809,7 @@
 					{#if corpusSummary.publicationCount === 0}
 						No full-text analysis is available for this visualisation.
 					{:else}
-						No phrase data is available for {languageLabel(corpusLanguage)} publications.
+						No phrase data is available for {languageLabel(bigramLanguage)} publications.
 					{/if}
 				</p>
 			</div>

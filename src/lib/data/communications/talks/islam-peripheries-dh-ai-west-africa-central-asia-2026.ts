@@ -17,7 +17,7 @@ export const talkIslamPeripheriesDhAiWestAfricaCentralAsia2026: Communication = 
 	abstract:
 		'In Islamic studies, sub-Saharan Africa and Central Asia are often treated as marginal, yet these regions may share underexplored parallels around modernity, governance, secularism, and Islamic intellectual production that this project seeks to examine. This presentation introduces a new VolkswagenStiftung-funded project that will use AI to unlock two unique multilingual collections at the Leibniz-Zentrum Moderner Orient (ZMO): the Islam West Africa Collection (14,500+ items, six countries, 1960s–present) and the Reinhard Eisener Collection (1,546 documents on the Emirate of Bukhara, early Soviet governance, and the Tajik civil war). Together, these ~16,000 documents in over ten languages remain largely inaccessible due to their volume, linguistic diversity, and partial cataloguing. We outline three planned approaches: (1) multimodal large language models for text extraction, transcription, metadata attribution, and named entity extraction across low-resource languages and scripts; (2) a cross-regional chatbot enabling semantic queries across both collections; and (3) open-source, replicable AI-powered workflows with human-in-the-loop validation. The pipeline is designed to be modular and replicable for other multilingual, under-resourced archival collections.',
 	tags: [
-		'AI',
+		'Artificial Intelligence',
 		'Digital Humanities',
 		'IWAC',
 		'Large Language Models',
@@ -25,7 +25,7 @@ export const talkIslamPeripheriesDhAiWestAfricaCentralAsia2026: Communication = 
 		'West Africa',
 		'Central Asia',
 		'Archives',
-		'NLP'
+		'Natural Language Processing'
 	],
 	url: 'https://www.osteuropa.phil.fau.de/digital-history-seminars/',
 	urlLabel: 'Seminar Series Website',

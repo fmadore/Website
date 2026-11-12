@@ -26,18 +26,16 @@ export const activity: Activity = {
 	tags: [
 		'ECAS',
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'African Studies',
 		'Conference',
 		'Call for Papers',
 		'Panel'
 	],
-	image: '',
 	panelType: 'conference',
 	heroImage: {
 		src: 'images/activities/ECAS-2025.webp',
-		alt: 'ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025.',
-		caption: ''
+		alt: 'ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025.'
 	},
 	type: 'conference'
 };

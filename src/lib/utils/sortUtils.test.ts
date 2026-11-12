@@ -45,6 +45,25 @@ describe('sortItems', () => {
 		expect(result.map(({ id }) => id)).toEqual(['two', 'one', 'none']);
 	});
 
+	it('breaks citation ties in date order, newest first', () => {
+		const cite = { authors: ['A'], year: 2024, title: 'One' };
+		const result = sortItems(
+			[
+				publication('old-uncited', { date: '2016', dateISO: '2016-01-01' }),
+				publication('cited', { citedBy: [cite] }),
+				publication('new-uncited', { date: '2025', dateISO: '2025-03-01' }),
+				publication('mid-uncited', { date: '2020', dateISO: '2020-01-01' })
+			],
+			'citations'
+		);
+		expect(result.map(({ id }) => id)).toEqual([
+			'cited',
+			'new-uncited',
+			'mid-uncited',
+			'old-uncited'
+		]);
+	});
+
 	it('places forthcoming work first, alphabetically, then dates newest first', () => {
 		const result = sortItems(
 			[

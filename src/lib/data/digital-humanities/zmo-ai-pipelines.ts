@@ -43,7 +43,7 @@ export const zmoAiPipelines: DigitalHumanitiesProject = {
 		'Prompt Engineering',
 		'OCR',
 		'HTR',
-		'Audio transcription',
+		'Audio Transcription',
 		'NLP',
 		'Reproducible Research'
 	],

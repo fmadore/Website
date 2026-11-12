@@ -236,4 +236,12 @@
 			transition: none;
 		}
 	}
+
+	/* Controls do not print (the Paper Rule): a page of results on paper is
+	 * the page it is, and its buttons cannot be pressed. */
+	@media print {
+		.pagination {
+			display: none;
+		}
+	}
 </style>

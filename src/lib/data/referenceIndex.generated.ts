@@ -1228,8 +1228,8 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 			"src": "images/communications/islam-university-campuses-cote-divoire-2019-hero.webp"
 		},
 		"conference": "8th European Conference on African Studies (ECAS)",
-		"location": "University of Edinburgh",
-		"country": "Scotland"
+		"location": "University of Edinburgh, Edinburgh",
+		"country": "United Kingdom"
 	},
 	"islam-university-campuses-cote-divoire-2023": {
 		"id": "islam-university-campuses-cote-divoire-2023",

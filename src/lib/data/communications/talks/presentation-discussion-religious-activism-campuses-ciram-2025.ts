@@ -19,7 +19,7 @@ export const presentationDiscussionReligiousActivismCampusCiram2025: Communicati
 		'Universities',
 		'Togo',
 		'Benin',
-		'Student Organisations',
+		'Student Associations',
 		'Book Presentation',
 		'CIRAM',
 		'Islam',

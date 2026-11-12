@@ -34,6 +34,7 @@ jobs:
   quality:
     name: Lint, type-check, unit tests & build
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -100,33 +101,30 @@ jobs:
       - name: Svelte lifecycle tests and coverage floor
         run: npm run test:lifecycle
 
-      - name: Reference index freshness
-        run: node scripts/generate/generate-reference-index.mjs --check
-
-      # Every page but a record's own renders a committed projection of its
-      # dataset without the heavy fields (publications, talks, activities,
-      # digital humanities); a data edit has to be regenerated into them.
-      - name: Record summaries freshness
-        run: node scripts/generate/generate-summaries.mjs --check
+      # The committed projections (reference index, record summaries, analysis
+      # projections, research prose) must match their generators: a data or
+      # prose edit has to be regenerated into them. One npm script, so this
+      # gate, `npm run verify` and a contributor's shell run the same check.
+      - name: Generated data freshness
+        run: npm run check:generated
 
       # The latin-ext and vietnamese font subsets are cut to fixed Unicode
-      # blocks by scripts/generate/subset-fonts.py; the check proves the committed files
-      # and the unicode-range declarations in app.html still match the script.
+      # blocks by scripts/generate/subset-fonts.py; the check proves the
+      # committed files and the unicode-range declarations in app.html still
+      # match the script. fontTools and brotli are pinned in
+      # scripts/requirements.txt, so a new release cannot change the bytes
+      # under an unrelated PR.
+      - name: Setup Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: scripts/requirements.txt
+
       - name: Font subsets freshness
         run: |
-          python -m pip install --quiet fonttools brotli
-          python scripts/generate/subset-fonts.py --check
-
-      # The record rails and the visualisations page read committed projections
-      # of the full-text analysis corpus rather than the corpus itself; a new or
-      # re-run analysis has to be regenerated into them.
-      - name: Analysis projections freshness
-        run: node scripts/generate/generate-analysis-summaries.mjs --check
-
-      # The research narratives are authored in the route pages and projected
-      # into a committed module, so an edit to the prose has to be regenerated.
-      - name: Research prose freshness
-        run: node scripts/generate/generate-research-prose.mjs --check
+          python -m pip install --quiet -r scripts/requirements.txt
+          npm run check:fonts
 
       - name: Build
         run: npm run build
@@ -153,8 +151,7 @@ jobs:
           path: mcp/dist/*.mcpb
           retention-days: 30
 
-      - name: Create .nojekyll file
-        run: touch build/.nojekyll
+      # No .nojekyll step: static/.nojekyll is copied into build/ by the build.
 
       # sourcemap: 'hidden' still writes .map files; they only serve local
       # debugging. Stripping them before either upload keeps the Pages artifact
@@ -183,6 +180,7 @@ jobs:
   audit:
     name: Dependency audit
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -202,6 +200,7 @@ jobs:
   e2e:
     name: E2E smoke tests (Playwright)
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     needs: quality
     steps:
       - name: Checkout
@@ -253,6 +252,7 @@ jobs:
   lighthouse:
     name: Lighthouse budgets (PageSpeed lab audit)
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     needs: quality
     steps:
       - name: Checkout
@@ -305,6 +305,7 @@ jobs:
     needs: [quality, e2e]
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       pages: write

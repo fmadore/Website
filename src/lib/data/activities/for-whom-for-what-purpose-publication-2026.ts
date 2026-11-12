@@ -20,7 +20,13 @@ export const activity: Activity = {
 		<p>Many thanks to my co-authors for making this such a rewarding collective experience:</p>
 		<p>Agata Błoch, Albrecht Hofheinz, Ashleigh Harris, Augustin Ndione, Britta Frede, Cassandra Mark-Thiesen, Duncan Money, Emmanuel Ngue Um, Érika Melek Delgado, Fallou Ngom, Fu’ad Lawal, Irene Mwendwa, James Yékú, Janeth David Nzenga, Johannes Sibeko, Karen Byera Ijumba, Kólá Túbọ̀sún, Leah Junck, Menno van Zaanen, Nuraddin Aman, Oumou Sidibé, Susan Elizabeth Gagliardi, Thompson Gyedu Kwarkye</p>
 	`,
-	tags: ['Digital Humanities', 'AI', 'African Studies', 'Publication', 'Volkswagen Foundation'],
+	tags: [
+		'Digital Humanities',
+		'Artificial Intelligence',
+		'African Studies',
+		'Publication',
+		'Volkswagen Foundation'
+	],
 	type: 'publication',
 	panelType: 'publication',
 	url: 'https://doi.org/10.58144/20260827-000',

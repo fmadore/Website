@@ -27,7 +27,7 @@ export const beyondKeywordsAiIwacMcp2026: Communication = {
 		'\n\n' +
 		'This architecture offers an ethical framework for connecting commercial LLMs to open-access digital collections. Whereas initiatives such as "Small Models for GLAM" pursue specialised models fine-tuned on cultural heritage data, MCP offers a complementary path: a standardised interface that lets any LLM — commercial or open-source — query a collection without retraining. Rather than surrendering data to extractive training pipelines, MCP keeps the collection on its own infrastructure while the AI queries it through defined tools, and the skill layer makes every assumption transparent. For African digital collections, historically subject to extractive knowledge practices, this preserves sovereignty while enabling AI-enhanced access. The planned next step is a conversational assistant on the IWAC website, powered by an open-source LLM and these same tools. The paper speaks to Topic 1 (methods for analysing historical sources) and Topic 2 (transforming everyday research workflows).',
 	tags: [
-		'AI',
+		'Artificial Intelligence',
 		'Digital Humanities',
 		'IWAC',
 		'MCP',

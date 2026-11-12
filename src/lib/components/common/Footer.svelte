@@ -1,8 +1,23 @@
+<script module lang="ts">
+	import { socialGroups } from '#lib/data/siteConfig.ts';
+
+	/**
+	 * The marks the colophon draws, each defined once by the footer's sprite.
+	 * The footer is in the root layout, so every page carries these symbols, and
+	 * a page that draws one of them elsewhere (the CV's letterhead) references
+	 * it rather than defining it again.
+	 */
+	export const FOOTER_GLYPHS: readonly string[] = [
+		...new Set(socialGroups.flatMap((group) => group.links.map((link) => link.icon)))
+	];
+</script>
+
 <script lang="ts">
-	import Icon from '@iconify/svelte';
 	import { resolve } from '$app/paths';
-	import { socialGroups, author, address } from '#lib/data/siteConfig.ts';
+	import { author, address } from '#lib/data/siteConfig.ts';
 	import { BUILT_AT } from '#lib/utils/buildDate.ts';
+	import GlyphSprite from './GlyphSprite.svelte';
+	import { glyphId } from './glyphPath.ts';
 
 	const currentYear = BUILT_AT.getUTCFullYear();
 </script>
@@ -39,7 +54,9 @@
 									rel={isExternal ? 'external noopener noreferrer' : undefined}
 								>
 									<span class="footer-link-icon" aria-hidden="true">
-										<Icon icon={link.icon} width="15" height="15" />
+										<svg width="15" height="15" focusable="false"
+											><use href="#{glyphId(link.icon)}" /></svg
+										>
 									</span>
 									<span class="footer-link-name">{link.name}</span>
 									{#if isExternal}<span class="sr-only"> (opens in new tab)</span>{/if}
@@ -82,6 +99,9 @@
 			Set in Archivo, Newsreader &amp; Spline Sans Mono.
 		</a>
 	</div>
+
+	<!-- The colophon's marks, each defined once (GitHub is drawn twice). -->
+	<GlyphSprite icons={FOOTER_GLYPHS} />
 </footer>
 
 <style>

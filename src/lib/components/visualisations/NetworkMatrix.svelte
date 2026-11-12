@@ -20,9 +20,9 @@ ledger — ruled, gridded, set in the data voice.
 	import ChartToolbar from './ChartToolbar.svelte';
 	import NetworkTooltip from './NetworkTooltip.svelte';
 	import type { TooltipContent } from './NetworkTooltip.svelte';
-	import { selectGraph } from '#lib/utils/networkAggregation.ts';
+	import { selectGraph, truncateLabel } from '#lib/utils/networkAggregation.ts';
 	import type { NetworkEdge, NetworkNode } from '#lib/utils/networkAggregation.ts';
-	import { buildMatrix } from '#lib/utils/networkMatrix.ts';
+	import { buildMatrix, legibleMatrixSize } from '#lib/utils/networkMatrix.ts';
 	import type { NodeOrder } from '#lib/utils/seriation.ts';
 	import '#styles/components/network-viz.css';
 
@@ -74,24 +74,44 @@ ledger — ruled, gridded, set in the data voice.
 	const isMobile = $derived((innerWidth.current ?? 1024) < 768);
 	const colors = $derived(getResolvedChartColors());
 
-	// --- Model -------------------------------------------------------------
-	const selection = $derived(selectGraph(nodes, edges, { maxNodes }));
-	const matrix = $derived(buildMatrix(selection, { order }));
-	const n = $derived(matrix.nodes.length);
-
-	// --- Geometry ----------------------------------------------------------
+	// --- Geometry (the parts the model depends on) ---------------------------
 	// Drawn at a natural size and scaled to the plate through the viewBox, so
 	// the grid always fits its width and the cells stay square.
 	const fontSize = $derived(isMobile ? 9 : 11);
 	const cell = 22;
 	/** Room for the row labels; the column labels reuse it, rotated. */
 	const labelSpace = $derived(Math.min(220, Math.max(90, areaWidth * 0.22)));
-	const gridSize = $derived(n * cell);
-	const viewWidth = $derived(labelSpace + gridSize + 8);
-	const viewHeight = $derived(labelSpace + gridSize + 8);
 
 	/** Cap on the drawn side, so a large top-N cannot swallow the page. */
 	const MAX_SIDE = 820;
+
+	/**
+	 * A narrow plate draws the strongest terms only, as many as keep the labels
+	 * at a readable size (`legibleMatrixSize`), rather than all of them as an
+	 * unlabelled heatmap: at 375px, 25 rows scaled the type to under 5px and
+	 * every label was dropped. The legend says when the cap applies.
+	 */
+	const legibleN = $derived(
+		legibleMatrixSize({
+			plateWidth: Math.min(areaWidth, MAX_SIDE),
+			fontSize,
+			labelSpace,
+			cell
+		})
+	);
+	const drawnMax = $derived(Math.min(maxNodes, legibleN));
+
+	// --- Model -------------------------------------------------------------
+	const selection = $derived(selectGraph(nodes, edges, { maxNodes: drawnMax }));
+	const matrix = $derived(buildMatrix(selection, { order }));
+	const n = $derived(matrix.nodes.length);
+	/** Terms the reader asked for that this width leaves out. */
+	const cappedFrom = $derived(
+		Math.min(maxNodes, nodes.filter((node) => node.kind !== 'center').length)
+	);
+	const gridSize = $derived(n * cell);
+	const viewWidth = $derived(labelSpace + gridSize + 8);
+	const viewHeight = $derived(labelSpace + gridSize + 8);
 
 	/**
 	 * The grid is square, so it is sized from its own aspect rather than a
@@ -104,10 +124,9 @@ ledger — ruled, gridded, set in the data voice.
 	const renderScale = $derived(viewWidth > 0 ? Math.min(areaWidth, MAX_SIDE) / viewWidth : 1);
 	const showLabels = $derived(n > 0 && fontSize * renderScale >= 8);
 
-	function truncate(text: string, max: number): string {
-		return text.length > max ? text.slice(0, Math.max(1, max - 1)) + '…' : text;
-	}
-	const maxLabelChars = $derived(Math.floor(labelSpace / (fontSize * 0.6)));
+	// Labels end 6 units short of the grid, so that gap is not label room; the
+	// advance is Spline Sans Mono's ~0.6em with a little slack for the ellipsis.
+	const maxLabelChars = $derived(Math.floor((labelSpace - 8) / (fontSize * 0.62)));
 
 	// --- Highlight ---------------------------------------------------------
 	function fold(value: string): string {
@@ -219,7 +238,8 @@ ledger — ruled, gridded, set in the data voice.
 		return `Co-occurrence matrix of ${n} ${copy.entityNode.toLowerCase()}, ordered so related entries sit together. Strongest pairs: ${strongest}.`;
 	});
 
-	/** Ink ramp: pale wash at weight 1, solid ink at the heaviest pair. */
+	/** Ink ramp over the square-root intensity (`matrixIntensity`): a pale wash
+	 * at none, solid ink at the heaviest pair. */
 	function cellFill(intensity: number): string {
 		return colorWithOpacity(colors.primary, 0.12 + intensity * 0.78);
 	}
@@ -253,7 +273,7 @@ ledger — ruled, gridded, set in the data voice.
 			class="matrix-svg"
 			viewBox="0 0 {viewWidth} {viewHeight}"
 			preserveAspectRatio="xMidYMid meet"
-			role="img"
+			role="group"
 			aria-label={effectiveAriaDescription}
 			onpointerleave={clearHover}
 		>
@@ -271,7 +291,7 @@ ledger — ruled, gridded, set in the data voice.
 							dominant-baseline="middle"
 							fill={colors.text}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{typesetQuotes(truncate(node.id, maxLabelChars))}</text
+							font-size={fontSize}>{typesetQuotes(truncateLabel(node.id, maxLabelChars))}</text
 						>
 					{/each}
 
@@ -287,7 +307,7 @@ ledger — ruled, gridded, set in the data voice.
 							dominant-baseline="middle"
 							fill={colors.text}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{typesetQuotes(truncate(node.id, maxLabelChars))}</text
+							font-size={fontSize}>{typesetQuotes(truncateLabel(node.id, maxLabelChars))}</text
 						>
 					{/each}
 				</g>
@@ -390,9 +410,12 @@ ledger — ruled, gridded, set in the data voice.
 				class="viz-legend-ramp"
 				style="background: linear-gradient(to right, {cellFill(0)}, {cellFill(1)})"
 			></span>
-			1 – {matrix.maxWeight}
-			{copy.sharedLabel.toLowerCase()}
+			1–{matrix.maxWeight}
+			{copy.itemPlural.toLowerCase()} sharing both, square-root scale
 		</span>
+		{#if n < cappedFrom}
+			<span class="viz-legend-entry">Strongest {n} of {cappedFrom} at this width</span>
+		{/if}
 		<span class="viz-legend-entry">Ordered so related entries sit together</span>
 	</div>
 

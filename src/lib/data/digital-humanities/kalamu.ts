@@ -62,10 +62,10 @@ export const kalamu: DigitalHumanitiesProject = {
 		'Prompt Engineering',
 		'OCR',
 		'HTR',
-		'Audio transcription',
+		'Audio Transcription',
 		'Whisper',
 		'NER',
-		'Sentiment analysis',
+		'Sentiment Analysis',
 		'Reproducible Research'
 	],
 	seoKeywords: [

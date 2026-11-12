@@ -573,6 +573,55 @@ th {
  * ~1.6:1, i.e. a blank colophon. What survives onto paper is what a reader can
  * act on there: the wordmark as a masthead, the document, the imprint. */
 @media print {
+	/* Paper is never a negative. The reset above (body, bare headings) reached
+	 * only what it named: every class-level rule — the record title, rail
+	 * labels, `.meta-value`, section heads, the CV — still resolved the
+	 * midnight tokens, so a page printed from midnight came out cream on white
+	 * (the record h1 at 1.23:1). Re-pointing the semantic tokens at the
+	 * daylight anchors carries every one of those rules with it, the way
+	 * `Footer.svelte` re-points its own `--color-footer-*`. The grounds take
+	 * the print ground, so a surface tint never prints a film-black slab when
+	 * background graphics are on. The weights return to the daylight scale:
+	 * the microfilm compensation answers light type spreading into a dark
+	 * ground, which paper does not have. The `--sys-viz-*` series are left as
+	 * midnight stepped them: they hold 3:1 on either ground. */
+	html.dark {
+		color-scheme: light;
+
+		--color-primary: var(--sys-color-ink);
+		--color-primary-dark: var(--sys-color-ink-deep);
+		--color-primary-light: var(--sys-color-ink-soft);
+		--color-secondary: var(--sys-color-ink-muted);
+		--color-accent: var(--sys-color-pine);
+		--color-accent-dark: var(--sys-color-pine-deep);
+		--color-highlight: var(--sys-color-pine);
+		--color-success: var(--sys-color-success);
+		--color-danger: var(--sys-color-danger);
+		--color-danger-dark: var(--sys-color-danger-deep);
+
+		--color-background: var(--color-print-ground);
+		--color-background-muted: var(--color-print-ground);
+		--color-surface: var(--color-print-ground);
+		--color-surface-alt: var(--color-print-ground);
+		--color-surface-elevated: var(--color-print-ground);
+		--color-code-bg: var(--color-print-ground);
+
+		--color-text: var(--sys-color-ink);
+		--color-text-soft: var(--sys-color-ink-soft);
+		--color-text-light: var(--sys-color-ink-muted);
+		--color-text-muted: var(--sys-color-ink-faint);
+		--color-text-emphasis: var(--sys-color-ink);
+		--color-text-inverted: var(--sys-color-paper);
+
+		--color-hairline: var(--sys-color-paper-hairline);
+		--color-border: var(--sys-color-paper-border);
+		--color-border-dark: var(--sys-color-paper-border-strong);
+
+		--font-weight-medium: 500;
+		--font-weight-semibold: 600;
+		--font-weight-bold: 700;
+	}
+
 	body {
 		font-size: 12pt;
 		line-height: var(--line-height-snug);
@@ -616,6 +665,12 @@ th {
  *   MobileMenu.svelte            — hidden
  *   NetworkStatusIndicator.svelte — hidden
  *   Footer.svelte                — endpaper re-pointed at the print ground
+ *   RecordLayout.svelte          — no back-link; plate beside the Record ledger
+ *   ink-signal.css               — rail controls hidden; ledger and section
+ *                                  heads kept whole; data bars printed as drawn
+ *   RelatedItemsList.svelte      — rows only, no index link
+ *   SlideDeckEmbed.svelte        — the cover slide as a plate, with its address
+ *   DhProjectRail.svelte         — the one address printed when its button is not
  */
 
 /* Responsive typography utilities */

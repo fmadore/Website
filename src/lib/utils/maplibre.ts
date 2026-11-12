@@ -71,7 +71,9 @@ const loadModule = retryableLoader(async () => {
 });
 
 /**
- * CartoCDN basemap styles chosen to match the site's light/dark themes.
+ * CartoCDN basemap styles: the geometry and labels of the light/dark themes.
+ * Their colours are CARTO's, so `applyBasemapPaint` (`basemapTheme.ts`) repaints them from the
+ * design tokens once each style has loaded.
  */
 export const MAP_STYLES = Object.freeze({
 	light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',

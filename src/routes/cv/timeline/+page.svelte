@@ -6,8 +6,9 @@
 		TIMELINE_MIN_PLATE_WIDTH
 	} from '#lib/components/visualisations/CareerTimeline.svelte';
 	import SEO from '#lib/SEO.svelte';
+	import { onMount } from 'svelte';
 	import { pageTitle } from '#lib/utils/siteHelpers.ts';
-	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/jsonLdSchemas.ts';
 
 	// Built at prerender time by the server load: the page receives the rows,
 	// never the datasets behind them.
@@ -20,6 +21,18 @@
 	// promise a scroll on a viewport where the plate already fits.
 	let containerWidth = $state(0);
 	const overflows = $derived(containerWidth > 0 && containerWidth < TIMELINE_MIN_PLATE_WIDTH);
+
+	// Where the plate overflows, it opens on the recent years rather than on the
+	// empty stretch before the first record: the reader came for the present.
+	// Instant, not smooth (the register is print), and once, so a reader who
+	// scrolls back is never pulled forward again. The lane key is pinned, so the
+	// lanes stay named.
+	let scroller = $state<HTMLDivElement | undefined>(undefined);
+	onMount(() => {
+		if (scroller && scroller.scrollWidth > scroller.clientWidth) {
+			scroller.scrollLeft = scroller.scrollWidth;
+		}
+	});
 
 	// Breadcrumbs
 	const breadcrumbs = createSectionBreadcrumbs('CV', '/cv', {
@@ -58,7 +71,7 @@
 
 		     This container is also the timeline's ONE horizontal scroller: the
 		     chart no longer hides a scroller of its own inside this one. -->
-		<div class="timeline-container" bind:clientWidth={containerWidth}>
+		<div class="timeline-container" bind:this={scroller} bind:clientWidth={containerWidth}>
 			<CareerTimeline {items} height={0} />
 		</div>
 		<!-- At 375 the plate is 776px in a 263px column, so nearly 60% of the axis
@@ -68,7 +81,9 @@
 		     plate caption (serif italic), not in the data voice, which is for
 		     what the machine indexes. -->
 		{#if overflows}
-			<p class="plate-caption timeline-scroll-note">The plate scrolls sideways.</p>
+			<p class="plate-caption timeline-scroll-note">
+				The plate opens on the recent years and scrolls sideways to the earlier ones.
+			</p>
 		{/if}
 	</ContentBody>
 </div>

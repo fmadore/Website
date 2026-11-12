@@ -43,8 +43,8 @@
 						{#if review.url}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 							<a href={review.url} target="_blank" rel="noopener" class="review-link">
-								{review.author}<span class="review-cite-arrow"> ↗</span>
-								<span class="sr-only"> (opens in new tab)</span></a
+								{review.author}<span class="review-cite-arrow" aria-hidden="true">&nbsp;↗</span
+								><span class="sr-only"> (opens in new tab)</span></a
 							>
 						{:else}
 							<span>{review.author}</span>
@@ -61,11 +61,9 @@
 								target="_blank"
 								rel="noopener"
 								class="review-doi"
-								><Icon icon="academicons:doi" class="review-doi-icon" aria-hidden="true" />DOI ↗<span
-									class="sr-only"
-								>
-									(opens in new tab)</span
-								></a
+								><Icon icon="academicons:doi" class="review-doi-icon" aria-hidden="true" />DOI<span
+									aria-hidden="true">&nbsp;↗</span
+								><span class="sr-only"> (opens in new tab)</span></a
 							>
 						{/if}
 					</p>
@@ -237,6 +235,29 @@
 	.review-ref-link:focus-visible {
 		outline: var(--focus-outline);
 		outline-offset: var(--focus-outline-offset);
+	}
+
+	/* The author and DOI links are controls set beside the stamp's text, not
+	 * links inside a line of prose, so a coarse pointer gets the 44px floor
+	 * (the Touch Floor Rule): at rest they are 16px of mono caps. The title
+	 * link below is the whole reference line, and takes it too. */
+	@media (--touch) {
+		.review-attribution {
+			align-items: center;
+		}
+
+		.review-link,
+		.review-doi {
+			display: inline-flex;
+			align-items: center;
+			min-height: 44px;
+		}
+
+		.review-ref-link {
+			display: inline-block;
+			min-height: 44px;
+			padding-block: var(--space-2-5);
+		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {

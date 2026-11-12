@@ -32,15 +32,13 @@ export const activity: Activity = {
 		'Grant',
 		'Workshop',
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'African Studies'
 	],
 	panelType: 'grant',
-	image: '',
 	heroImage: {
 		src: 'images/activities/VolkswagenStiftung-logo.webp',
-		alt: 'VolkswagenStiftung logo',
-		caption: ''
+		alt: 'VolkswagenStiftung logo'
 	},
 	type: 'grant'
 };

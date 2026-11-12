@@ -21,7 +21,7 @@ export const hadjOrElHadjGroundingAiAnswersIwac2026: Publication = {
 		'Collections as Data',
 		'Digital Archives',
 		'Digital Humanities',
-		'Historical Source Criticism',
+		'Source Criticism',
 		'Data Sovereignty',
 		'Hajj',
 		'Pilgrimage',

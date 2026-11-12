@@ -29,7 +29,7 @@ export const workshopReligionInHigherEducationalInstitutions2021: Communication 
 		'Power',
 		'Authority',
 		'Conversion',
-		'University',
+		'Universities',
 		'Religion',
 		'Workshop',
 		'ZMO'

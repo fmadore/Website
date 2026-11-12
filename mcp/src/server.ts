@@ -20,6 +20,8 @@ import {
 	dhProjectList,
 	researchProjectList
 } from '#lib/utils/apiViews.ts';
+import { author } from '#lib/data/siteConfig.ts';
+import pkg from '../package.json' with { type: 'json' };
 import { detail, summariseAll } from './format.js';
 
 /**
@@ -158,26 +160,33 @@ const offset = z
 	.default(0)
 	.describe('Number of matching records to skip for pagination.');
 
-const yearFrom = z
-	.number()
-	.int()
-	.min(1900)
-	.max(2200)
-	.optional()
-	.describe('Earliest year, inclusive.');
-const yearTo = z.number().int().min(1900).max(2200).optional().describe('Latest year, inclusive.');
+/**
+ * The argument bounds every tool shares. The WebMCP tools (`#lib/utils/webmcp.ts`)
+ * declare the same ones, and `src/lib/utils/toolCatalogueParity.test.ts` holds
+ * the two catalogues to the same names, parameters, enums, bounds and defaults.
+ */
+export const YEAR_MIN = 1900;
+export const YEAR_MAX = 2200;
+export const QUERY_MAX_LENGTH = 500;
+export const ID_MAX_LENGTH = 300;
+
+const year = () => z.number().int().min(YEAR_MIN).max(YEAR_MAX).optional();
+const yearFrom = year().describe('Earliest year, inclusive.');
+const yearTo = year().describe('Latest year, inclusive.');
+const query = () => z.string().max(QUERY_MAX_LENGTH).optional();
+const recordId = () => z.string().min(1).max(ID_MAX_LENGTH);
 
 export function createWebsiteServer(): McpServer {
 	const server = new McpServer(
 		{
 			name: 'frederickmadore-website',
-			version: '0.4.0',
-			description:
-				"Read-only access to Frédérick Madore's publications, talks, research projects, digital humanities work, activities, and CV."
+			// Read from the package at build time (esbuild inlines the JSON), so a
+			// release bumps one number.
+			version: pkg.version,
+			description: `Read-only access to ${author.name}'s publications, talks, research projects, digital humanities work, activities, and CV.`
 		},
 		{
-			instructions:
-				"Use this server for questions about Frédérick Madore's own scholarship and career. Use the separate IWAC server for documents in the Islam West Africa Collection. Search before calling a get tool when you do not already have an id. Search results link each hit as a resource (website://<dataset>/<id>) that reads the full record.",
+			instructions: `Use this server for questions about ${author.name}'s own scholarship and career. Use the separate IWAC server for documents in the Islam West Africa Collection. Search before calling a get tool when you do not already have an id. Search results link each hit as a resource (website://<dataset>/<id>) that reads the full record.`,
 			cacheHints: {
 				'server/discover': { ttlMs: CACHE_TTL_MS, cacheScope: 'public' },
 				'tools/list': { ttlMs: CACHE_TTL_MS, cacheScope: 'public' },
@@ -193,15 +202,10 @@ export function createWebsiteServer(): McpServer {
 		'search_publications',
 		{
 			title: 'Search publications',
-			description:
-				"Search Frédérick Madore's own publications — books, journal articles, chapters, edited volumes, special issues, reports, encyclopedia entries, theses, working papers. Searches titles, abstracts, authors, tags and venues. All arguments are optional; omit everything to list the most recent. Returns one compact row per match (id, title, type, year, venue, url); pass an id to get_publication for the full record, or to get_citation to cite it.",
+			description: `Search ${author.name}'s own publications — books, journal articles, chapters, edited volumes, special issues, reports, encyclopedia entries, theses, working papers. Searches titles, abstracts, authors, tags and venues. All arguments are optional; omit everything to list the most recent. Returns one compact row per match (id, title, type, year, venue, url); pass an id to get_publication for the full record, or to get_citation to cite it.`,
 			inputSchema: z
 				.object({
-					query: z
-						.string()
-						.max(500)
-						.optional()
-						.describe('Free text; every word must appear somewhere.'),
+					query: query().describe('Free text; every word must appear somewhere.'),
 					type: z.enum(PUBLICATION_TYPES).optional().describe('Publication type.'),
 					tag: z.string().optional(),
 					country: z.string().optional().describe("Country covered, e.g. 'Benin'."),
@@ -237,11 +241,7 @@ export function createWebsiteServer(): McpServer {
 				'Full record for one publication: abstract, authors and editors, venue and imprint, identifiers (DOI, ISBN, ISSN, Wikidata, OpenAlex), whether it is open access, table of contents, published reviews, and the works that cite it — each with, where the citing work was read, the passages that quote it.',
 			inputSchema: z
 				.object({
-					id: z
-						.string()
-						.min(1)
-						.max(300)
-						.describe('Publication id, as returned by search_publications.')
+					id: recordId().describe('Publication id, as returned by search_publications.')
 				})
 				.strict(),
 			outputSchema: recordSchema,
@@ -260,7 +260,7 @@ export function createWebsiteServer(): McpServer {
 				'Search conference papers, invited lectures, seminars, workshops, panels, posters and podcast appearances. Searches titles, abstracts, authors, conference names, panels and locations. Returns one compact row per match; pass an id to get_communication for the full record.',
 			inputSchema: z
 				.object({
-					query: z.string().max(500).optional(),
+					query: query(),
 					type: z.enum(COMMUNICATION_TYPES).optional().describe('Kind of talk or event.'),
 					country: z.string().optional().describe('Country the event took place in.'),
 					project: z.string().optional(),
@@ -293,7 +293,7 @@ export function createWebsiteServer(): McpServer {
 			title: 'Get a talk or event',
 			description:
 				'Full record for one talk or event: abstract, date, venue, location and coordinates, language, project, slides and poster links; for a panel, the papers presented and their participants; for a talk given as teaching, the host institution, course and level.',
-			inputSchema: z.object({ id: z.string().min(1).max(300) }).strict(),
+			inputSchema: z.object({ id: recordId() }).strict(),
 			outputSchema: recordSchema,
 			annotations: READ_ONLY
 		},
@@ -310,7 +310,7 @@ export function createWebsiteServer(): McpServer {
 				'Search news and scholarly activity entries. Unlike the other datasets these carry their full body text, so this is the tool for "what has he been doing lately".',
 			inputSchema: z
 				.object({
-					query: z.string().max(500).optional(),
+					query: query(),
 					type: z.string().optional().describe("Activity type, e.g. 'workshop' or 'publication'."),
 					tag: z.string().optional(),
 					year_from: yearFrom,
@@ -343,7 +343,7 @@ export function createWebsiteServer(): McpServer {
 				'Full record for one activity, including its complete body text. Search only returns headlines, so this is how the writing itself is read.',
 			inputSchema: z
 				.object({
-					id: z.string().min(1).max(300).describe('Activity id, as returned by search_activities.')
+					id: recordId().describe('Activity id, as returned by search_activities.')
 				})
 				.strict(),
 			outputSchema: recordSchema,
@@ -373,7 +373,7 @@ export function createWebsiteServer(): McpServer {
 			title: 'Get a research project',
 			description:
 				"One research project in full: its complete narrative, span, regions, source languages, funding, and the cross-referenced ids of everything that belongs to it. This is where a project's substantive description lives.",
-			inputSchema: z.object({ id: z.string().min(1).max(300) }).strict(),
+			inputSchema: z.object({ id: recordId() }).strict(),
 			outputSchema: recordSchema,
 			annotations: READ_ONLY
 		},
@@ -386,8 +386,7 @@ export function createWebsiteServer(): McpServer {
 		'list_dh_projects',
 		{
 			title: 'List digital humanities projects and software',
-			description:
-				"Digital archives, datasets, tools and standalone applications built by Madore, including the Islam West Africa Collection (IWAC) and open-source desktop applications for researchers, with skills, awards, the article describing each and its published reviews. Each record's `group` is 'project' (a digital humanities project) or 'software' (an application, which also carries `application`: status, operating system, architectures, licence); pass `group` to list one of them. Descriptions and embeds are omitted here; use get_dh_project for those.",
+			description: `Digital archives, datasets, tools and standalone applications built by ${author.name}, including the Islam West Africa Collection (IWAC) and open-source desktop applications for researchers, with skills, awards, the article describing each and its published reviews. Each record's \`group\` is 'project' (a digital humanities project) or 'software' (an application, which also carries \`application\`: status, operating system, architectures, licence); pass \`group\` to list one of them. Descriptions and embeds are omitted here; use get_dh_project for those.`,
 			inputSchema: z
 				.object({
 					group: z
@@ -410,7 +409,7 @@ export function createWebsiteServer(): McpServer {
 			title: 'Get a digital humanities project or application',
 			description:
 				'Full record for one digital humanities project or software application, including its description, links and, for an application, its status and platform.',
-			inputSchema: z.object({ id: z.string().min(1).max(300) }).strict(),
+			inputSchema: z.object({ id: recordId() }).strict(),
 			outputSchema: recordSchema,
 			annotations: READ_ONLY
 		},
@@ -452,7 +451,7 @@ export function createWebsiteServer(): McpServer {
 				"Cite one publication. 'bibtex' returns the BibTeX entry the site's download button produces; 'reference' returns the plain-text reference its Copy reference button copies. (The site has no APA/MLA/Chicago generator yet, so those are not offered rather than being improvised here.)",
 			inputSchema: z
 				.object({
-					id: z.string().min(1).max(300).describe('Publication id.'),
+					id: recordId().describe('Publication id.'),
 					style: z.enum(CITATION_STYLES).default('bibtex')
 				})
 				.strict(),

@@ -1,6 +1,7 @@
 import {
 	EntityFilterSystem,
-	type EntityArrayDimension
+	type EntityArrayDimension,
+	type EntityFilterConfig
 } from '../src/lib/utils/entityFilterSystem.svelte';
 
 export interface Item {
@@ -23,8 +24,11 @@ export const PROJECT = "Islam's 'Peripheries': Digital Humanities, Algorithmic A
 const inert: EntityArrayDimension<Item> = { match: () => true, countExtractor: () => undefined };
 
 /** A two-dimension system over `items`, wired the way the index pages wire theirs. */
-export function createSystem(): EntityFilterSystem<Item> {
+export function createSystem(
+	extra: Pick<EntityFilterConfig<Item>, 'searchFields' | 'labels'> = {}
+): EntityFilterSystem<Item> {
 	return new EntityFilterSystem<Item>({
+		...extra,
 		items,
 		matchesYearRange: (item, range) => item.year >= range.min && item.year <= range.max,
 		dimensions: {

@@ -81,7 +81,7 @@ export const iwac: DigitalHumanitiesProject = {
 		'TypeScript',
 		'Svelte 5',
 		'Typesense',
-		'Semantic search',
+		'Semantic Search',
 		'ECharts',
 		'D3.js',
 		'MapLibre GL',
@@ -99,6 +99,6 @@ export const iwac: DigitalHumanitiesProject = {
 		'Hugging Face',
 		'Embeddings',
 		'Topic Modelling',
-		'Web scraping'
+		'Web Scraping'
 	]
 };

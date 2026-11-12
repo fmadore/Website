@@ -15,7 +15,7 @@ export const islamAlgorithmsAi: Communication = {
 	tags: [
 		'Islam',
 		'Algorithms',
-		'AI',
+		'Artificial Intelligence',
 		'Digital Religion',
 		'Technology',
 		'Digital Humanities',

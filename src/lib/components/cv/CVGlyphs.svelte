@@ -1,58 +1,32 @@
 <script module lang="ts">
-	import doi from '@iconify-icons/academicons/doi';
-	import publons from '@iconify-icons/academicons/publons';
+	import { glyphId } from '#lib/components/common/glyphPath.ts';
 
-	/** The `id` of each glyph's `<symbol>`; a mark references it with `<use href="#…">`. */
+	/** The `id` of each repeated mark's `<symbol>`; a mark references it with `<use href="#…">`. */
 	export const CV_GLYPH = {
-		doi: 'cv-glyph-doi',
-		publons: 'cv-glyph-publons'
+		doi: glyphId('academicons:doi'),
+		publons: glyphId('academicons:publons')
 	} as const;
+</script>
 
-	/** The `d` of every path in an Iconify body (both glyphs are single-path marks). */
-	function paths(icon: typeof doi): string[] {
-		return [...icon.body.matchAll(/<path[^>]*\sd="([^"]+)"/g)].map((match) => match[1] ?? '');
-	}
+<script lang="ts">
+	import GlyphSprite from '#lib/components/common/GlyphSprite.svelte';
+	import { FOOTER_GLYPHS } from '#lib/components/common/Footer.svelte';
+	import { CV_HEADER_GLYPHS } from './CVHeader.svelte';
 
-	const SYMBOLS = [
-		{ id: CV_GLYPH.doi, icon: doi },
-		{ id: CV_GLYPH.publons, icon: publons }
-	].map(({ id, icon }) => ({
-		id,
-		viewBox: `0 0 ${icon.width ?? 16} ${icon.height ?? 16}`,
-		paths: paths(icon)
-	}));
+	// The footer's sprite is on every page, so a letterhead mark it already
+	// defines (email, LinkedIn, GitHub, ORCID) is referenced, not defined twice.
+	const icons = [
+		...new Set(['academicons:doi', 'academicons:publons', ...CV_HEADER_GLYPHS])
+	].filter((name) => !FOOTER_GLYPHS.includes(name));
 </script>
 
 <!--
-	The CV's repeated marks, defined once. The DOI mark sits beside every DOI on
-	the sheet and the Publons mark on every verified review, and drawn inline by
+	The CV's marks, defined once. The DOI mark sits beside every DOI on the
+	sheet and the Publons mark on every verified review, and drawn inline by
 	<Icon> each copy carried its full path data: 33 DOI marks were 54 KB of the
 	page's HTML, against a Lighthouse document budget with almost no headroom.
-	Each mark now references its symbol with a same-document `<use href="#…">`,
-	which the CSP does not govern. The path data comes from the same
-	`@iconify-icons` modules `icons.ts` registers, so the glyphs cannot drift
-	from the rest of the site's.
-
-	Decorative throughout: the definitions are hidden, and every `<use>` sits
-	in an `aria-hidden` mark whose link text names the target.
+	Each mark now references its symbol with a same-document `<use href="#…">`
+	(see `GlyphSprite`). The path data comes from the icons `icons.ts`
+	registers, so the glyphs cannot drift from the rest of the site's.
 -->
-<svg class="cv-glyphs" aria-hidden="true" focusable="false">
-	{#each SYMBOLS as symbol (symbol.id)}
-		<symbol id={symbol.id} viewBox={symbol.viewBox}>
-			{#each symbol.paths as d, index (index)}
-				<path fill="currentColor" {d} />
-			{/each}
-		</symbol>
-	{/each}
-</svg>
-
-<style>
-	/* Out of the flow without `display: none`, which some engines also apply to
-	 * the symbols' rendering through `<use>`. */
-	.cv-glyphs {
-		position: absolute;
-		width: 0;
-		height: 0;
-		overflow: hidden;
-	}
-</style>
+<GlyphSprite {icons} />

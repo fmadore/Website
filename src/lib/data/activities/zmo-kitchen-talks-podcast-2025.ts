@@ -25,7 +25,7 @@ export const zmoKitchenTalksPodcast2025: Activity = {
     `,
 	tags: [
 		'Podcast',
-		'AI',
+		'Artificial Intelligence',
 		'African Studies',
 		'Islamic Studies',
 		'Digital Humanities',

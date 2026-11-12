@@ -65,9 +65,9 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"MapLibre GL",
 			"Linked Open Data",
 			"Wikidata",
-			"Semantic search",
+			"Semantic Search",
 			"Model Context Protocol",
-			"Data visualisation"
+			"Data Visualisation"
 		]
 	},
 	{
@@ -100,7 +100,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			}
 		],
 		"skills": [
-			"Digital exhibitions",
+			"Digital Exhibitions",
 			"Timeline JS",
 			"Omeka S",
 			"Data Visualisation",
@@ -153,7 +153,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Zotero",
 			"Metadata Standards",
 			"Data Visualisation",
-			"Network graphs"
+			"Network Graphs"
 		],
 		"seoKeywords": [
 			"digital humanities",
@@ -209,7 +209,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"MapLibre GL",
 			"Data Visualisation",
 			"LLM",
-			"Open-weight models",
+			"Open-weight Models",
 			"vLLM",
 			"Embeddings",
 			"GitHub Actions"
@@ -254,9 +254,9 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"TypeScript",
 			"MapLibre GL",
 			"WebGL",
-			"Interactive mapping",
+			"Interactive Mapping",
 			"Prosopography",
-			"Data visualisation"
+			"Data Visualisation"
 		]
 	},
 	{
@@ -337,14 +337,14 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"skills": [
 			"Python",
 			"LLM",
-			"Open-weight models",
+			"Open-weight Models",
 			"Prompt Engineering",
 			"OCR",
 			"HTR",
 			"NER",
 			"NLP",
-			"Audio transcription",
-			"Sentiment analysis",
+			"Audio Transcription",
+			"Sentiment Analysis",
 			"Omeka S API",
 			"Docker"
 		],
@@ -451,11 +451,11 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Model Context Protocol",
 			"LLM",
 			"Prompt Engineering",
-			"Agent skills",
+			"Agent Skills",
 			"DuckDB",
 			"Hugging Face",
 			"Embeddings",
-			"Semantic search",
+			"Semantic Search",
 			"Docker"
 		],
 		"seoKeywords": [
@@ -506,8 +506,8 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Data Visualisation",
 			"LLM",
 			"Prompt Engineering",
-			"Sentiment analysis",
-			"Inter-rater agreement"
+			"Sentiment Analysis",
+			"Inter-rater Agreement"
 		]
 	},
 	{
@@ -574,7 +574,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"TypeScript",
 			"Svelte 5",
 			"Typesense",
-			"Semantic search",
+			"Semantic Search",
 			"ECharts",
 			"D3.js",
 			"MapLibre GL",
@@ -592,7 +592,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Hugging Face",
 			"Embeddings",
 			"Topic Modelling",
-			"Web scraping"
+			"Web Scraping"
 		]
 	},
 	{
@@ -641,10 +641,10 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Prompt Engineering",
 			"OCR",
 			"HTR",
-			"Audio transcription",
+			"Audio Transcription",
 			"Whisper",
 			"NER",
-			"Sentiment analysis",
+			"Sentiment Analysis",
 			"Reproducible Research"
 		],
 		"seoKeywords": [
@@ -824,7 +824,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Python",
 			"Embeddings",
 			"UMAP",
-			"Network graphs",
+			"Network Graphs",
 			"ECharts",
 			"MapLibre GL",
 			"Data Visualisation",
@@ -880,7 +880,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"NLTK",
 			"D3.js",
 			"MapLibre GL",
-			"Interactive mapping"
+			"Interactive Mapping"
 		]
 	},
 	{
@@ -904,7 +904,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Prompt Engineering",
 			"OCR",
 			"HTR",
-			"Audio transcription",
+			"Audio Transcription",
 			"NLP",
 			"Reproducible Research"
 		],
@@ -952,12 +952,12 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		],
 		"skills": [
 			"Python",
-			"Web scraping",
+			"Web Scraping",
 			"NLP",
 			"NLTK",
 			"D3.js",
 			"Data Visualisation",
-			"Network graphs",
+			"Network Graphs",
 			"JSON",
 			"GitHub Actions"
 		],

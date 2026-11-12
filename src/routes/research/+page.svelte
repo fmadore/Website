@@ -6,7 +6,7 @@
 	import PageIntro from '#lib/components/common/PageIntro.svelte';
 	import SEO from '#lib/SEO.svelte';
 	import { pageTitle } from '#lib/utils/siteHelpers.ts';
-	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/jsonLdSchemas.ts';
 	import { allResearchProjects } from '#lib/data/research/index.ts';
 	import { buildSrcset } from '#lib/utils/imageVariants.ts';
 	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';

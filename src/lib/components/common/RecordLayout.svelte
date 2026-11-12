@@ -61,6 +61,8 @@ Usage:
 		BREADCRUMB_SCRIPT_ID,
 		type BreadcrumbTrailItem
 	} from '#lib/utils/breadcrumbJsonLd.ts';
+	import { titleLength, titleSegments } from '#lib/utils/recordTitle.ts';
+	import type { CitationDateline } from '#lib/utils/citationDateline.ts';
 
 	interface Props {
 		/** Section this record belongs to — the breadcrumb's back-link. */
@@ -77,6 +79,12 @@ Usage:
 		 * not known.
 		 */
 		titleLang?: string;
+		/**
+		 * Citation dateline printed directly under the title — container,
+		 * volume(issue), date, pages, DOI (`citationDateline`). Omit for a record
+		 * that is not a citable work.
+		 */
+		dateline?: CitationDateline;
 		/** Formatted byline ("A, B and C"); omit for an unattributed record. */
 		byline?: string;
 		/**
@@ -114,6 +122,7 @@ Usage:
 		eyebrow = [],
 		title,
 		titleLang,
+		dateline,
 		byline,
 		bylineSuffix,
 		deck,
@@ -127,6 +136,9 @@ Usage:
 	}: Props = $props();
 
 	const breadcrumbJsonLd = $derived(buildBreadcrumbJsonLd(breadcrumbItems));
+	const titleSize = $derived(titleLength(title));
+	const titleRuns = $derived(titleSegments(title));
+	const hasDateline = $derived(Boolean(dateline && (dateline.parts.length > 0 || dateline.doi)));
 	const hasRail = $derived(Boolean(railPrimary || railSecondary));
 	/** Blocks in the reading column — masthead, document, sibling work — one grid row each. */
 	const columnRows = $derived(1 + (main ? 1 : 0) + (related ? 1 : 0));
@@ -147,7 +159,7 @@ Usage:
 		<nav class="record-breadcrumb" aria-label="Breadcrumb">
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed path -->
 			<a href={section.href} class="record-breadcrumb-link"
-				><span aria-hidden="true">← </span>{section.label}</a
+				><span aria-hidden="true">←&nbsp;</span>{section.label}</a
 			>
 		</nav>
 
@@ -179,7 +191,36 @@ Usage:
 					</p>
 				{/if}
 
-				<h1 class="record-title" lang={titleLang}>{title}</h1>
+				<!-- A year range is its own unbreakable run, so a balanced title never
+				     sets "1970–" at a line end with "2023" under it. Text nodes only. -->
+				<h1 class="record-title" lang={titleLang} data-length={titleSize}>
+					{#each titleRuns as run, index (index)}{#if run.nowrap}<span class="record-title-nowrap"
+								>{run.text}</span
+							>{:else}{run.text}{/if}{/each}
+				</h1>
+
+				{#if dateline && hasDateline}
+					<!-- The citable facts, in citation order, where the eye already is.
+					     The DOI is the one link: the identifier a citation needs. -->
+					<p class="dateline record-dateline">
+						{#each dateline.parts as part, index (index)}{#if index > 0}<span
+									class="record-dateline-sep"
+									aria-hidden="true">&nbsp;·</span
+								><wbr />
+							{/if}<span class="record-dateline-part">{part}</span
+							>{/each}{#if dateline.doi}{#if dateline.parts.length > 0}<span
+									class="record-dateline-sep"
+									aria-hidden="true">&nbsp;·</span
+								><wbr />
+							{/if}<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external DOI resolver --><a
+								class="record-dateline-doi"
+								href="https://doi.org/{dateline.doi}"
+								target="_blank"
+								rel="noopener noreferrer"
+								>doi:{dateline.doi}<span class="sr-only"> (opens in new tab)</span></a
+							>{/if}
+					</p>
+				{/if}
 
 				{#if byline}
 					<p class="record-byline">
@@ -430,14 +471,83 @@ Usage:
 		hyphens: auto;
 	}
 
+	/* A year range never breaks at its dash. */
+	.record-title-nowrap {
+		white-space: nowrap;
+	}
+
+	/* Length steps the title down the heading scale. At the display size the
+	   median record title set six lines at 1440 and the longest thirteen — the
+	   whole first screen, with the Cite block 1300px down. Over ~90 characters
+	   the title takes the h2 step, over ~150 the h3 step (`titleLength`). It
+	   stays Archivo at its masthead weight: what marks it as the masthead is the
+	   face and the position, not the size. */
+	.record-title[data-length='long'] {
+		font-size: var(--font-size-heading-2);
+		line-height: 1.05;
+	}
+
+	.record-title[data-length='xlong'] {
+		font-size: var(--font-size-heading-3);
+		line-height: 1.08;
+	}
+
 	/* --font-size-4xl barely scales down (clamp floor ~47px), which a long
 	   bibliographic title turns into a screen and a half of headline before the
-	   plate. One step down in the narrow column; no further, since the section
-	   heads sit at --font-size-2xl and the masthead must stay above them. */
+	   plate. One step down in the narrow column, and one more for a long title;
+	   no further, since the section heads sit at --font-size-2xl and the
+	   masthead must stay above them. Declared after the length steps: same
+	   specificity for the bare title, so this wins by source order. */
 	@media (--md-down) {
 		.record-title {
-			font-size: var(--font-size-3xl);
+			font-size: var(--font-size-heading-2);
 		}
+
+		.record-title[data-length='long'],
+		.record-title[data-length='xlong'] {
+			font-size: var(--font-size-heading-3);
+		}
+	}
+
+	/* Citation dateline — the data voice, set as written rather than in caps: a
+	   journal name and a DOI are strings a reader copies, and a DOI in capitals
+	   is not the DOI they were given. One step up from the eyebrow, because
+	   this line is read rather than glanced at. */
+	.record-dateline {
+		margin: var(--space-md) 0 0;
+		font-size: var(--font-size-xs);
+		letter-spacing: var(--tracking-figures);
+		text-transform: none;
+		line-height: var(--line-height-snug);
+	}
+
+	/* The space after the dot is a margin and the break a <wbr>: Svelte trims
+	   the whitespace a block boundary leaves, which ran the parts together. */
+	.record-dateline-sep {
+		margin-inline-end: 0.6ch;
+		color: var(--color-text-muted);
+	}
+
+	/* The prose-link idiom: ink at rest over a pine underline, pine under the
+	   pointer. The eyebrow above already spends the accent; a second pine
+	   string a line below it would not be scarce. */
+	.record-dateline-doi {
+		color: inherit;
+		text-decoration: underline;
+		text-decoration-color: var(--color-accent);
+		text-decoration-thickness: var(--rule-hairline);
+		text-underline-offset: 0.2em;
+		overflow-wrap: anywhere;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	.record-dateline-doi:hover {
+		color: var(--color-accent);
+	}
+
+	.record-dateline-doi:focus-visible {
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	/* Byline — the document voice, serif italic. */
@@ -451,8 +561,54 @@ Usage:
 		max-width: var(--measure-standfirst);
 	}
 
+	/* ── Paper ──────────────────────────────────────────────────────────────
+	   A printed record is a catalogue card followed by its document: title and
+	   dateline, then the plate beside the Record ledger, then the abstract. The
+	   page is narrower than --lg, so the screen's single-column choreography
+	   applies, and on its own it set the title alone on page one (the cover,
+	   full column width, could not fit under it) and broke the ledger across a
+	   page. The back-link is a control and does not print (the Paper Rule). */
+	@media print {
+		.record-breadcrumb {
+			display: none;
+		}
+
+		.record-grid {
+			gap: var(--space-lg);
+		}
+
+		.record-header {
+			break-after: avoid;
+		}
+
+		.record-title {
+			break-after: avoid;
+		}
+
+		/* Plate in a narrow left column, the rest of the identification block —
+		   Record ledger, citation — beside it. Only when there is a plate: a
+		   record without one keeps the plain column. */
+		.record-rail-primary:has(> :global(.rail-plate)) {
+			display: grid;
+			grid-template-columns: minmax(0, 30%) minmax(0, 1fr);
+			align-items: start;
+			gap: var(--space-md) var(--space-lg);
+		}
+
+		.record-rail-primary:has(> :global(.rail-plate)) > :global(*) {
+			grid-column: 2;
+		}
+
+		.record-rail-primary:has(> :global(.rail-plate)) > :global(.rail-plate) {
+			grid-column: 1;
+			grid-row: 1 / span 4;
+			break-inside: avoid;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.record-breadcrumb-link {
+		.record-breadcrumb-link,
+		.record-dateline-doi {
 			transition: none;
 		}
 	}

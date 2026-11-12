@@ -475,7 +475,7 @@ export const cvCommunications: CvCommunication[] = [
 		"date": "12 June 2019",
 		"dateISO": "2019-06-12",
 		"conference": "8th European Conference on African Studies (ECAS)",
-		"location": "University of Edinburgh",
+		"location": "University of Edinburgh, Edinburgh",
 		"type": "conference",
 		"language": "English"
 	},

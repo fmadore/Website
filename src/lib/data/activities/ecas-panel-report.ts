@@ -44,13 +44,19 @@ export const activity: Activity = {
 
 <p>Success demands radical metric shifts. Rather than celebrating technological sophistication, we must measure our tools' effectiveness in fostering more just and inclusive understandings of African histories and cultures. Progress requires collaborative development, sustained critical engagement with technology, and unwavering commitment to building equitable knowledge infrastructures—infrastructures that serve African communities rather than extract from them.</p>
 	`,
-	tags: ['ECAS', 'Digital Humanities', 'AI', 'African Studies', 'Conference', 'Panel', 'IWAC'],
-	image: '',
+	tags: [
+		'ECAS',
+		'Digital Humanities',
+		'Artificial Intelligence',
+		'African Studies',
+		'Conference',
+		'Panel',
+		'IWAC'
+	],
 	panelType: 'conference',
 	heroImage: {
 		src: 'images/activities/ECAS-2025.webp',
-		alt: 'ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025.',
-		caption: ''
+		alt: 'ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025.'
 	},
 	type: 'conference'
 };

@@ -5,10 +5,13 @@
 
 <script lang="ts" generics="TItem">
 	// Facet grid (finding-aid apparatus) of the entity-index pages:
-	// projects · co-authors · countries · year slider · tags, with the narrowing
-	// summary ruled off beneath the grid.
-	// Previously byte-identical markup duplicated across /publications and
-	// /conference-activity; now parameterized by the runed EntityFilterSystem.
+	// projects · co-authors · countries · year slider · tags. Closed behind the
+	// filter bar's `More filters` at every width, so the list starts in the
+	// first viewport; the bar opens it when one of its facets is set. The tally
+	// that states the narrowing is the bar's (`EntityFilterSummary`), directly
+	// under the search, not this grid's. Headings come from the system's
+	// `labels`, so a dimension that means something specific on one index (the
+	// countries a work studies, the country a talk was held in) says so.
 	// Styled by entity-index.css (imported by the page).
 	import RangeSlider from '#lib/components/atoms/RangeSlider.svelte';
 	import FacetCombobox from './FacetCombobox.svelte';
@@ -17,50 +20,21 @@
 	// Facet *labels* are typeset; the raw value stays the toggle key and the URL
 	// parameter, so filtering and deep links keep matching the data.
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { tick } from 'svelte';
 	import { clampYearRange, yearRangeReadout } from '#lib/utils/entityFilterCore.ts';
 
 	interface Props {
 		filters: EntityFilterSystem<TItem>;
-		/** Mobile: the whole apparatus collapses behind the filter-bar toggle. */
+		/** The grid is laid out only while the filter bar's toggle has it open. */
 		open: boolean;
 		minYear: number;
 		maxYear: number;
-		totalEntries: number;
-		/** Visible matches after every narrowing (filters + search). */
-		matchCount: number;
-		/** Active dimensions incl. the page's free-text search. */
-		activeFilterCount: number;
-		/** Any narrowing at all — shows the "Clear all" affordance. */
-		anyNarrowing: boolean;
-		/** Clears the system's filters plus page-local narrowing (search). */
-		onclearall: () => void;
-		/** Display labels for the type codes, so the summary never prints one. */
-		typeLabels?: Record<string, string>;
-		/**
-		 * Facet headings, for a page whose dimensions carry other things: the
-		 * citations page files the cited publication under `projects` and the
-		 * citing authors under `authors`.
-		 */
-		labels?: { projects?: string; authors?: string };
 	}
 
-	let {
-		filters,
-		open,
-		minYear,
-		maxYear,
-		totalEntries,
-		matchCount,
-		activeFilterCount,
-		anyNarrowing,
-		onclearall,
-		typeLabels,
-		labels
-	}: Props = $props();
+	let { filters, open, minYear, maxYear }: Props = $props();
 
 	const af = $derived(filters.activeFilters);
 	const options = $derived(filters.filterOptions);
+	const labels = $derived(filters.labels);
 
 	// Every long facet takes one rule (`facetSearch.ts`): print the whole list
 	// while it is at most one value over the limit, otherwise print the
@@ -93,49 +67,10 @@
 	// so it never names a year that has entries beside a count of zero.
 	const yearReadout = $derived(yearRangeReadout(af.yearRange, minYear, maxYear));
 
-	/* `Clear all` is the last thing narrowing the list, so clearing unmounts
-	 * it, and focus would fall to <body> — the top of the page for a keyboard
-	 * or screen-reader user. Land it on the page's search box (the start of the
-	 * filter apparatus), or failing that on the result count, which reads out
-	 * the restored total — always the count on a touch screen, where focusing
-	 * a text field would throw up the on-screen keyboard. Only when focus was
-	 * actually lost: a click that left focus elsewhere is left alone. */
-	let summaryEl: HTMLDivElement | undefined = $state();
-	let statEl: HTMLSpanElement | undefined = $state();
-
-	async function clearAll() {
-		onclearall();
-		await tick();
-		const active = document.activeElement;
-		if (active && active !== document.body) return;
-		const touch = window.matchMedia?.('(pointer: coarse)').matches;
-		const search = touch
-			? null
-			: summaryEl
-					?.closest('.entity-index')
-					?.querySelector<HTMLInputElement>('input[type="search"]');
-		(search ?? statEl)?.focus();
-	}
-
 	function handleYearChange(event: CustomEvent<{ values: [number, number] }>) {
 		const [min, max] = event.detail.values;
 		filters.updateYearRange(min, max);
 	}
-
-	/* What is narrowing the list, in the reader's own words. The stat says how
-	 * much survived; without the values beside it the reader has to go back up
-	 * to the facets to find out what they clicked — and below --lg those facets
-	 * are collapsed behind a toggle. Type codes go through the page's labels;
-	 * everything else is the authored value, typeset. */
-	const activeFilterLabels = $derived([
-		...af.types.map((type) => typeLabels?.[type] ?? type),
-		...af.languages,
-		...af.projects.map(typesetQuotes),
-		...af.authors.map(typesetQuotes),
-		...af.countries.map(typesetQuotes),
-		...af.tags.map(typesetQuotes),
-		...(af.yearRange ? [yearReadout] : [])
-	]);
 </script>
 
 <section
@@ -147,7 +82,7 @@
 	<!-- PROJECTS -->
 	{#if options.projects.length > 0}
 		<div class="facet-col">
-			<h2 class="facet-label">{labels?.projects ?? 'Projects'}</h2>
+			<h2 class="facet-label">{labels.projects}</h2>
 			<ul class="facet-list">
 				{#each options.projects as project (project)}
 					{@const active = af.projects.includes(project)}
@@ -172,7 +107,7 @@
 	<!-- CO-AUTHORS -->
 	{#if options.authors.length > 0}
 		<div class="facet-col">
-			<h2 class="facet-label">{labels?.authors ?? 'Co-authors'}</h2>
+			<h2 class="facet-label">{labels.authors}</h2>
 			<ul class="facet-list">
 				{#each visibleAuthors as author (author)}
 					<li>
@@ -195,7 +130,7 @@
 					options={options.authors}
 					counts={filters.counts.authors}
 					selected={af.authors}
-					label={(labels?.authors ?? 'Co-authors').toLowerCase()}
+					label={labels.authors.toLowerCase()}
 					ontoggle={(value) => filters.toggle('authors', value)}
 				/>
 			{/if}
@@ -205,7 +140,7 @@
 	<!-- COUNTRIES + YEARS -->
 	<div class="facet-col">
 		{#if options.countries.length > 0}
-			<h2 class="facet-label">Countries</h2>
+			<h2 class="facet-label">{labels.countries}</h2>
 			<ul class="facet-list">
 				{#each visibleCountries as country (country)}
 					<li>
@@ -269,7 +204,7 @@
 	<!-- TAGS -->
 	{#if options.tags.length > 0}
 		<div class="facet-col">
-			<h2 class="facet-label">Tags</h2>
+			<h2 class="facet-label">{labels.tags}</h2>
 			<div class="chip-row facet-tags">
 				{#each visibleTags as tag (tag)}
 					<button
@@ -297,35 +232,12 @@
 	{/if}
 </section>
 
-<!-- SUMMARY — a statement about the whole narrowing, not about tags, so it
-     rules off the apparatus instead of hanging under the fourth column. Outside
-     the grid deliberately: below --lg the grid collapses behind the
-     Advanced-filters toggle, which used to take the match count and the
-     "Clear all" affordance down with it on exactly the viewport where the
-     reader most needs to know how many records are left. -->
-<div class="facet-summary" bind:this={summaryEl}>
-	{#if activeFilterLabels.length > 0}
-		<span class="facet-summary-active">
-			<span class="filter-note-label">Filtered by</span>
-			<span class="filter-note-value">{activeFilterLabels.join(' · ')}</span>
-		</span>
-	{/if}
-	<!-- Announce filter-result changes to screen readers -->
-	<span class="facet-summary-stat" aria-live="polite" tabindex="-1" bind:this={statEl}>
-		{#if activeFilterCount > 0}
-			<span class="facet-summary-count">{activeFilterCount}</span>
-			{activeFilterCount === 1 ? 'filter' : 'filters'} active ·
-			<span class="facet-summary-count">{matchCount}</span>
-			of {totalEntries}
-			{totalEntries === 1 ? 'entry' : 'entries'}
-		{:else}
-			{totalEntries}
-			{totalEntries === 1 ? 'entry' : 'entries'}
-		{/if}
-	</span>
-	{#if anyNarrowing}
-		<button type="button" class="mono-action" onclick={clearAll}>
-			Clear all <span aria-hidden="true">✕</span>
-		</button>
-	{/if}
-</div>
+<style>
+	/* Controls do not print (the Paper Rule): every row of the grid is a
+	 * button, and the tally above already states what they have set. */
+	@media print {
+		.facet-grid {
+			display: none;
+		}
+	}
+</style>

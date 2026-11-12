@@ -25,7 +25,7 @@ export const responsibleAiAccessMcpServer2026: Communication = {
 		'AMIRA',
 		'Africa Multiple',
 		'Large Language Models',
-		'AI',
+		'Artificial Intelligence',
 		'Data Sovereignty',
 		'Metadata',
 		'Digital Humanities',

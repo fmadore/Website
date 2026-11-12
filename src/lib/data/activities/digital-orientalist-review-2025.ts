@@ -14,7 +14,7 @@ export const activity: Activity = {
         
         <p>This recognition comes at a fitting moment, as the website has recently undergone a major visual update and new content exploring digital humanities and AI has been added.</p>
             `,
-	tags: ['Digital Humanities', 'IWAC', 'Review', 'AI', 'West Africa', 'Islam'],
+	tags: ['Digital Humanities', 'IWAC', 'Review', 'Artificial Intelligence', 'West Africa', 'Islam'],
 	panelType: 'publication',
 	image: 'images/activities/The-Digital-Orientalist.webp',
 	heroImage: {

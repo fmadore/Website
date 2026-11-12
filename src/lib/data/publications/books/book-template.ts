@@ -6,7 +6,7 @@ export const bookTemplate: Publication = {
 	type: 'book',
 	title: 'Book Title',
 	authors: ['Author Name'], // Add all authors in the array
-	prefacedBy: '', // Optional: author of the preface
+	// prefacedBy: '', // Omit when empty. Optional: author of the preface
 	date: '2025', // Publication year
 	dateISO: '2025', // Same as date for books
 	year: 2025,
@@ -16,12 +16,12 @@ export const bookTemplate: Publication = {
 	pageCount: 300,
 	language: 'English',
 	isbn: '978-0-000000-00-0',
-	doi: '', // Add DOI if available
+	// doi: '', // Omit when empty. Add DOI if available
 	abstract:
 		"A comprehensive description of the book's content, main arguments, and significance. This abstract will be used in list views and as a preview of the publication.",
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
-	url: '', // Optional: external URL if applicable
-	image: '', // Optional: path to cover image (e.g., "images/publications/book-cover.jpg")
+	// url: '', // Omit when empty. Optional: external URL if applicable
+	// image: '', // Omit when empty. Optional: path to cover image (e.g., "images/publications/book-cover.jpg")
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/publications/book-hero.jpg',
@@ -30,7 +30,7 @@ export const bookTemplate: Publication = {
 	},
 	// New fields
 	country: ['Country Name'], // Countries covered in the publication
-	project: '', // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 	citedBy: [], // Optional: List of works citing this publication
 	reviewedBy: [], // Optional: List of reviews of this publication
 	tableOfContents: [
@@ -54,7 +54,7 @@ export const editedVolumeTemplate: Publication = {
 	title: 'Edited Volume Title',
 	authors: ['Editor Name', 'Second Editor Name'], // Add all editors in the array
 	editors: 'Editor Name, Second Editor Name', // Format: "Editor 1, Editor 2"
-	prefacedBy: '', // Optional: author of the preface
+	// prefacedBy: '', // Omit when empty. Optional: author of the preface
 	date: '2025', // Publication year
 	dateISO: '2025', // Same as date for books
 	year: 2025,
@@ -63,13 +63,13 @@ export const editedVolumeTemplate: Publication = {
 	publisherLocation: 'Country', // Country where the publisher is based (used for Publisher Locations map)
 	language: 'English',
 	isbn: '978-0-000000-00-0',
-	doi: '', // Add DOI if available
+	// doi: '', // Omit when empty. Add DOI if available
 	series: 'Series Name 00', // Optional: series name and number
 	abstract:
 		"A comprehensive description of the edited volume's content, themes, and significance. This abstract will be used in list views and as a preview of the publication.",
 	tags: ['edited volume', 'tag1', 'tag2'], // Add relevant tags for categorization
-	url: '', // Optional: external URL if applicable
-	image: '', // Optional: path to cover image (e.g., "images/publications/book-cover.jpg")
+	// url: '', // Omit when empty. Optional: external URL if applicable
+	// image: '', // Omit when empty. Optional: path to cover image (e.g., "images/publications/book-cover.jpg")
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/publications/edited-volume-hero.jpg',
@@ -79,7 +79,7 @@ export const editedVolumeTemplate: Publication = {
 	isEditedVolume: true,
 	// New fields
 	country: ['Country Name'], // Countries covered in the publication
-	project: '', // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 	citedBy: [], // Optional: List of works citing this publication
 	reviewedBy: [], // Optional: List of reviews of this publication
 	tableOfContents: [

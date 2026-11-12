@@ -10,7 +10,7 @@ export const banting2018: Grant = {
 	project: 'Muslim Minorities in Southern Cities of Benin and Togo',
 	startYear: 2018,
 	endYear: 2020,
-	dateRangeString: '2018-2020',
+	dateRangeString: '2018–2020',
 	dateISOStart: '2018-10-01',
 	dateISOEnd: '2020-09-30',
 	amount: 140000,

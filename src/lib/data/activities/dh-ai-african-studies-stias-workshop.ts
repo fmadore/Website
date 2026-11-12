@@ -31,10 +31,16 @@ export const activity: Activity = {
 	`,
 	heroImage: {
 		src: 'images/communications/point-sud-logo.svg',
-		alt: 'DFG Point Sud programme logo',
-		caption: ''
+		alt: 'DFG Point Sud programme logo'
 	},
-	tags: ['Digital Humanities', 'AI', 'African Studies', 'Call for Papers', 'Workshop', 'DFG'],
+	tags: [
+		'Digital Humanities',
+		'Artificial Intelligence',
+		'African Studies',
+		'Call for Papers',
+		'Workshop',
+		'DFG'
+	],
 	type: 'workshop',
 	panelType: 'workshop'
 };

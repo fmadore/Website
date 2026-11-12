@@ -102,7 +102,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"tags": [
 			"IWAC",
 			"West Africa",
-			"Collection",
+			"Digital Collections",
 			"Launch",
 			"Islam",
 			"Digital Humanities",
@@ -183,7 +183,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Sustainability",
 			"Equity",
@@ -411,8 +411,8 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "English",
 		"tags": [
 			"Remoboko",
-			"University",
-			"Campus",
+			"Universities",
+			"University Campuses",
 			"Africa",
 			"Education",
 			"Politics",
@@ -618,7 +618,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "English",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Decolonisation",
 			"Workshop",
@@ -827,7 +827,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Power",
 			"Authority",
 			"Conversion",
-			"University",
+			"Universities",
 			"Religion",
 			"Workshop",
 			"ZMO"
@@ -1039,9 +1039,9 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"tags": [
 			"Remoboko",
 			"Religion",
-			"Campus",
+			"University Campuses",
 			"Secularism",
-			"University",
+			"Universities",
 			"Workshop",
 			"Niger"
 		],
@@ -1254,7 +1254,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Faith",
 			"Togo",
 			"Benin",
-			"University",
+			"Universities",
 			"Religion",
 			"Islam",
 			"Christianity",
@@ -1326,9 +1326,9 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"tags": [
 			"ECAS",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
-			"Decolonial",
+			"Decoloniality",
 			"Linked Open Data",
 			"Metadata"
 		],
@@ -1462,10 +1462,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "French",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"REAF",
-			"Methodology"
+			"Research Methods"
 		],
 		"url": "https://reaf2026.sciencesconf.org/data/pages/A33.pdf",
 		"image": "images/communications/reaf-2026.webp",
@@ -1563,7 +1563,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"type": "conference",
 		"language": "French",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"Islam",
 			"IWAC",
@@ -1636,7 +1636,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "English",
 		"slidesUrl": "https://slides.frederickmadore.com/talks/2026-06-15-luxembourg-beyond-keywords/",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"IWAC",
 			"MCP",
@@ -1769,7 +1769,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"tags": [
 			"ECAS",
 			"Religious Activism",
-			"Student Organisations",
+			"Student Associations",
 			"Togo",
 			"Benin",
 			"Youth",
@@ -1912,7 +1912,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "English",
 		"tags": [
 			"ECAS",
-			"AI",
+			"Artificial Intelligence",
 			"Archives",
 			"Digital Humanities",
 			"History",
@@ -2103,7 +2103,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Large Language Models",
 			"Digital Humanities",
 			"Volkswagen Foundation",
-			"AI",
+			"Artificial Intelligence",
 			"West Africa",
 			"Central Asia",
 			"IWAC",
@@ -2136,8 +2136,8 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"dateISO": "2019-06-12",
 		"year": 2019,
 		"conference": "8th European Conference on African Studies (ECAS)",
-		"location": "University of Edinburgh",
-		"country": "Scotland",
+		"location": "University of Edinburgh, Edinburgh",
+		"country": "United Kingdom",
 		"type": "conference",
 		"language": "English",
 		"tags": [
@@ -2201,7 +2201,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"AMIRA",
 			"Africa Multiple",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"Large Language Models",
 			"AI Agents",
 			"MCP",
@@ -2239,11 +2239,11 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "French",
 		"tags": [
 			"CAAS",
-			"Mediatization",
+			"Mediatisation",
 			"Islam",
 			"Burkina Faso",
 			"Ouagadougou",
-			"Democratization",
+			"Democratisation",
 			"West Africa",
 			"Media"
 		],
@@ -2425,7 +2425,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Digital Humanities",
 			"Archives",
 			"Metadata",
-			"Linked Data",
+			"Linked Open Data",
 			"Wikidata",
 			"Omeka S"
 		],
@@ -2466,7 +2466,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"slidesUrl": "https://slides.frederickmadore.com/talks/2026-06-30-paris-reaf-dh-ia-afrique/",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"REAF",
 			"Volkswagen Foundation"
@@ -2541,7 +2541,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "French",
 		"tags": [
 			"Salafism",
-			"Securitization",
+			"Securitisation",
 			"Benin",
 			"Togo",
 			"Political Islam",
@@ -2576,7 +2576,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "French",
 		"tags": [
 			"MCP",
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"GLAM",
 			"IWAC",
@@ -2623,7 +2623,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Podcast",
 			"Digital History",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"H-Soz-Kult",
 			"NFDI4Memory"
 		],
@@ -2656,7 +2656,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "English",
 		"tags": [
 			"Podcast",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Islamic Studies",
 			"Digital Humanities",
@@ -2798,7 +2798,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"AMIRA",
 			"Africa Multiple",
 			"Large Language Models",
-			"AI",
+			"Artificial Intelligence",
 			"Data Sovereignty",
 			"Metadata",
 			"Digital Humanities",
@@ -2840,7 +2840,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"type": "lecture",
 		"language": "English",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"African Studies",
 			"African History",
@@ -3071,7 +3071,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Archives",
 			"Digital Humanities",
 			"Historical Research",
-			"AI"
+			"Artificial Intelligence"
 		],
 		"url": "https://web.archive.org/web/20250411145918/https://zzf-potsdam.de/forschung/doktorand_innen/master-class",
 		"image": "images/communications/zzf-logo.webp",
@@ -3101,12 +3101,12 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "English",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"AI Agents",
 			"West Africa",
 			"Archives",
 			"IWAC",
-			"OCR",
+			"Optical Character Recognition",
 			"Large Language Models",
 			"Sentiment Analysis"
 		],
@@ -3149,7 +3149,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"type": "seminar",
 		"language": "English",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"Datafication",
 			"Large Language Models",
@@ -3184,7 +3184,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Islam",
 			"Burkina Faso",
 			"Digital Humanities",
-			"Collections",
+			"Digital Collections",
 			"West Africa",
 			"IWAC"
 		],
@@ -3216,11 +3216,11 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"type": "lecture",
 		"language": "English",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"IWAC",
 			"Large Language Models",
-			"OCR",
+			"Optical Character Recognition",
 			"Named Entity Recognition",
 			"Sentiment Analysis",
 			"West Africa",
@@ -3467,7 +3467,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "French",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"IWAC",
 			"Islam",
 			"West Africa",
@@ -3585,7 +3585,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"tags": [
 			"Islam",
 			"Algorithms",
-			"AI",
+			"Artificial Intelligence",
 			"Digital Religion",
 			"Technology",
 			"Digital Humanities",
@@ -3656,7 +3656,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"type": "lecture",
 		"language": "English",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"IWAC",
 			"Large Language Models",
@@ -3664,7 +3664,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa",
 			"Central Asia",
 			"Archives",
-			"NLP"
+			"Natural Language Processing"
 		],
 		"url": "https://www.osteuropa.phil.fau.de/digital-history-seminars/",
 		"urlLabel": "Seminar Series Website",
@@ -3896,7 +3896,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Universities",
 			"Togo",
 			"Benin",
-			"Student Organisations",
+			"Student Associations",
 			"Book Presentation",
 			"CIRAM",
 			"Islam",
@@ -4046,7 +4046,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"tags": [
 			"Christianity",
 			"Islam",
-			"Interreligious Relations",
+			"Interfaith Relations",
 			"West Africa",
 			"Togo",
 			"Benin",
@@ -4190,7 +4190,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"type": "workshop",
 		"language": "English",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"AI Agents",
 			"Digital Humanities",
 			"IWAC",
@@ -4295,7 +4295,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"language": "English",
 		"tags": [
 			"IWAC",
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"West Africa",
 			"Islam",
@@ -4326,7 +4326,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"type": "lecture",
 		"language": "English",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"IWAC",
 			"Large Language Models",
@@ -4406,7 +4406,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Fieldwork",
 			"Benin",
 			"Togo",
-			"Research Methodology",
+			"Research Methods",
 			"Pandemic",
 			"West Africa"
 		],

@@ -25,6 +25,7 @@
 	import { useMapLibre } from '#lib/utils/useMapLibre.svelte.ts';
 	import { createContainedPopup } from '#lib/utils/mapPopups.ts';
 	import type { GeoJSONSource, Popup } from 'maplibre-gl';
+	import '#styles/components/map-chrome.css';
 
 	// Map configuration props with defaults using Svelte 5 $props() rune
 	let {
@@ -368,7 +369,10 @@
 			center: [initialView[1] ?? 0, initialView[0] ?? 20],
 			zoom: initialZoom ?? 2,
 			maxZoom: maxZoom ?? 19,
-			minZoom: 1
+			minZoom: 1,
+			// The credits stay open as a line of text rather than folding into
+			// an "i" on narrow plates: they are a licence requirement.
+			attributionControl: { compact: false }
 		}),
 		isDark: () => darkModeDetected,
 		onStyleReady: () => {
@@ -388,7 +392,7 @@
 	const importError = $derived(ml.importError);
 </script>
 
-<div bind:this={mapContainer} class="map-container">
+<div bind:this={mapContainer} class="map-container map-chrome">
 	{#if importError}
 		<div class="state-note map-state-note" role="status">
 			<span class="dateline">Map unavailable</span>
@@ -444,15 +448,8 @@
 		z-index: calc(var(--z-above) + 6) !important;
 	}
 
-	/* MapLibre draws its controls as 29px squares; on a coarse pointer they take
-	 * the site's 44px floor. The container selector out-ranks the library's own
-	 * rule, so no !important is needed. */
-	@media (--touch) {
-		.map-container :global(.maplibregl-ctrl-group button) {
-			width: var(--space-11);
-			height: var(--space-11);
-		}
-	}
+	/* Control and attribution chrome (flat plate, masked icons, 44px touch
+	 * floor, no print) is the shared `map-chrome.css`. */
 
 	:global(.maplibregl-ctrl-top-right),
 	:global(.maplibregl-ctrl-top-left),
@@ -636,29 +633,6 @@
 		font-size: 0.9em;
 		opacity: 0.85;
 		color: var(--color-text-light);
-	}
-
-	/* Navigation control styling */
-	:global(.maplibregl-ctrl-group button) {
-		background-color: var(--color-background);
-		color: var(--color-text);
-		border: var(--border-width-thin) solid var(--color-border);
-		transition: background-color var(--duration-fast) var(--ease-out);
-	}
-
-	:global(.maplibregl-ctrl-group button:hover) {
-		background-color: var(--color-surface);
-	}
-
-	:global(.maplibregl-ctrl-group button + button) {
-		border-top: var(--border-width-thin) solid var(--color-border);
-	}
-
-	/* Attribution styling */
-	:global(.maplibregl-ctrl-attrib) {
-		background-color: color-mix(in srgb, var(--color-background) 80%, transparent);
-		font-size: var(--font-size-xs);
-		padding: var(--space-1) var(--space-2);
 	}
 
 	/* Dark mode adjustments for popup tip */

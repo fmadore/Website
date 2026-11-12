@@ -140,8 +140,11 @@ reader checks before installing anything.
 
 <RecordLedger rows={applicationRows} label="Application" />
 
-{#if linkGroups.length > 0 && !ledgerIsTheCta}
-	<div>
+<!-- When the one address is the button, the ledger is withheld on screen but
+     printed on paper, where the button does not print and the address is the
+     only way to the project (the Paper Rule). -->
+{#if linkGroups.length > 0}
+	<div class:addresses--print-only={ledgerIsTheCta}>
 		<h2 class="rail-label">Addresses</h2>
 		<dl class="meta-ledger">
 			{#each linkGroups as group (group.type)}
@@ -186,6 +189,16 @@ reader checks before installing anything.
 {/if}
 
 <style>
+	.addresses--print-only {
+		display: none;
+	}
+
+	@media print {
+		.addresses--print-only {
+			display: block;
+		}
+	}
+
 	/* Several addresses of one kind stack down the value column rather than
 	 * running together: each is a whole string a reader may copy, and the mono
 	 * value already breaks long words across lines. */

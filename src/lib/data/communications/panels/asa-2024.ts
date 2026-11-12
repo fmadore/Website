@@ -21,7 +21,7 @@ export const asa2024Panel: Communication = {
 		'Faith',
 		'Togo',
 		'Benin',
-		'University',
+		'Universities',
 		'Religion',
 		'Islam',
 		'Christianity',
