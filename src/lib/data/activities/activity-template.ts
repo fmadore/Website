@@ -19,20 +19,20 @@ export const activityTemplate: Activity = {
     `,
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	type: 'conference', // Optional: activity type (conference, workshop, seminar, lecture, grant, etc.)
-	url: '', // Optional: external URL if applicable
+	// url: '', // Omit when empty. Optional: external URL if applicable
 	additionalUrls: [
 		{ label: 'Video Recording', url: 'https://example.com/video' },
 		{ label: 'Presentation Slides', url: 'https://example.com/slides' },
 		{ label: 'Event Website', url: 'https://example.com/event' }
 	],
-	image: '', // Optional: path to a small image (e.g., "images/activities/small-image.jpg")
+	// image: '', // Omit when empty. Optional: path to a small image (e.g., "images/activities/small-image.jpg")
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/activities/hero-image.jpg',
 		alt: 'Descriptive alt text for the hero image',
 		caption: 'Optional caption for the hero image'
 	},
-	pdfPath: '', // Optional: path to a PDF file (e.g., "pdfs/activities/my-activity.pdf")
-	pdfTitle: '', // Optional: title for the PDF section (defaults to "Associated PDF Document")
+	// pdfPath: '', // Omit when empty. Optional: path to a PDF file (e.g., "pdfs/activities/my-activity.pdf")
+	// pdfTitle: '', // Omit when empty. Optional: title for the PDF section (defaults to "Associated PDF Document")
 	panelType: 'conference' // NEW: e.g., 'conference', 'workshop', 'lecture', 'event', 'publication', etc.
 };

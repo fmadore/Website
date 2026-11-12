@@ -3,18 +3,16 @@
 	import { resolve } from '$app/paths';
 	import { assetHref, basePrefix, pageHref } from '#lib/utils/paths.ts';
 	import type { Communication } from '#lib/types/communication.ts';
-	import type { ComponentType } from 'svelte';
 	import RecordLayout, { type EyebrowToken } from '#lib/components/common/RecordLayout.svelte';
 	import CommunicationRecordRail from '#lib/components/communications/CommunicationRecordRail.svelte';
 	import SlideDeckEmbed from '#lib/components/communications/SlideDeckEmbed.svelte';
 	import RelatedItemsList from '#lib/components/organisms/RelatedItemsList.svelte';
-	import RelatedItemCard from '#lib/components/molecules/RelatedItemCard.svelte';
 	import {
 		createCommunicationSEODescription,
 		createCommunicationSEOKeywords,
-		recordEntityId,
 		recordPageTitle
 	} from '#lib/utils/seoUtils.ts';
+	import { recordEntityId } from '#lib/utils/jsonLdSchemas.ts';
 	import { getCommunicationTypeBadge } from '#lib/utils/typeUtils.ts';
 	import { formatByline } from '#lib/utils/byline.ts';
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
@@ -346,17 +344,12 @@
 
 {#snippet relatedBlock()}
 	<RelatedItemsList
-		allItems={relatedInProject}
-		currentItemId={communication.id}
-		filterKey="project"
-		filterValue={communication.project}
+		items={relatedInProject}
 		title="More in this project"
-		itemComponent={RelatedItemCard as unknown as ComponentType}
+		headingId="comm-related-head"
 		baseItemUrl={pageHref('/communications/')}
 		viewAllUrl={resolve('/conference-activity')}
-		maxItems={3}
-		sectionClass="comm-related section section--flush"
-		titleClass="comm-related-title section-title"
+		project={communication.project}
 	/>
 {/snippet}
 
@@ -470,5 +463,13 @@
 	.comm-map :global(.state-note) {
 		width: 100%;
 		height: 100%;
+	}
+
+	/* A WebGL canvas prints as an empty frame, and the venue is already named
+	   in the Record ledger, so the map stays on screen (the Paper Rule). */
+	@media print {
+		.comm-location {
+			display: none;
+		}
 	}
 </style>

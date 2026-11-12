@@ -36,18 +36,30 @@ export const ARRAY_FILTER_PARAMS = [
 export const SEARCH_PARAM = 'q';
 
 /**
+ * URL query parameter carrying a non-default sort. The order is part of the
+ * view a reader shares ("most cited first"), so it rides in the link; the
+ * default order is written as no parameter, so the plain index keeps one URL.
+ */
+export const SORT_PARAM = 'sort';
+
+/**
  * Serializes active filters into a URL query string (no leading `?`; empty
  * string when nothing is active). Array filters use one entry per value
  * (`?tag=a&tag=b`) so individual values can safely contain commas; the year
  * range serializes as `year_min`/`year_max`; the free-text search serializes as
- * `q`, and only when it holds something.
+ * `q`, and only when it holds something; a sort other than the default as
+ * `sort` (pass an empty string for the default).
  *
  * The page number is deliberately absent. It is a position in a list the
  * filters define, not a narrowing of the corpus, and every narrowing resets it
  * to 1 — so a `?page=` in a shared link would be honoured by nothing and would
  * only make two URLs for the same view.
  */
-export function serializeFiltersToQuery(filters: UrlSyncableFilters, searchTerm = ''): string {
+export function serializeFiltersToQuery(
+	filters: UrlSyncableFilters,
+	searchTerm = '',
+	sort = ''
+): string {
 	const urlParams = new URLSearchParams();
 
 	for (const [param, key] of ARRAY_FILTER_PARAMS) {
@@ -69,7 +81,23 @@ export function serializeFiltersToQuery(filters: UrlSyncableFilters, searchTerm 
 	const trimmed = searchTerm.trim();
 	if (trimmed) urlParams.set(SEARCH_PARAM, trimmed);
 
+	if (sort) urlParams.set(SORT_PARAM, sort);
+
 	return urlParams.toString();
+}
+
+/**
+ * Reads the sort back out of a URL: one of `options`, matched case-
+ * insensitively, else `fallback` (the default order). An unknown `?sort=` is
+ * ignored rather than honoured as an order the page cannot draw.
+ */
+export function parseSortParam<T extends string>(
+	searchParams: Pick<URLSearchParams, 'get'>,
+	options: readonly T[],
+	fallback: T
+): T {
+	const wanted = searchParams.get(SORT_PARAM)?.trim().toLowerCase();
+	return options.find((option) => option.toLowerCase() === wanted) ?? fallback;
 }
 
 /** Reads the free-text search back out of a URL; absent means empty. */
@@ -102,7 +130,13 @@ export function parseArrayFilterParam(
  */
 export function canonicalizeFacetValues(
 	values: readonly string[],
-	vocabulary: readonly string[]
+	vocabulary: readonly string[],
+	/**
+	 * Maps a retired spelling onto its current one before matching (`AI` →
+	 * `Artificial Intelligence`), so a link shared before a vocabulary rename
+	 * still selects the value it meant.
+	 */
+	alias: (value: string) => string = (value) => value
 ): string[] {
 	const byFold = new Map<string, string>();
 	for (const option of vocabulary) {
@@ -113,11 +147,32 @@ export function canonicalizeFacetValues(
 	}
 	const exact = new Set(vocabulary);
 	const result = new Set<string>();
-	for (const value of values) {
+	for (const raw of values) {
+		const value = alias(raw);
 		const canonical = exact.has(value) ? value : byFold.get(normalizeSearchText(value).trim());
 		if (canonical !== undefined) result.add(canonical);
 	}
 	return [...result];
+}
+
+/**
+ * An alias function from an alias table (retired spelling → current), matched
+ * exactly and then case-, accent- and apostrophe-insensitively, so `?tag=ai`
+ * reaches `Artificial Intelligence` as `?tag=AI` does. A value the table does
+ * not hold passes through unchanged.
+ */
+export function foldedAliasLookup(
+	aliases: Readonly<Record<string, string>>
+): (value: string) => string {
+	const byFold = new Map<string, string>();
+	for (const [from, to] of Object.entries(aliases)) {
+		const fold = normalizeSearchText(from).trim();
+		if (!byFold.has(fold)) byFold.set(fold, to);
+	}
+	return (value) =>
+		(Object.hasOwn(aliases, value) ? aliases[value] : undefined) ??
+		byFold.get(normalizeSearchText(value).trim()) ??
+		value;
 }
 
 /**

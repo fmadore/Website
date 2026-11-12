@@ -17,7 +17,7 @@ export const aiAfricaSymposiumKansas2026: Activity = {
         <p>17 September, on Zoom. Looking forward to the discussion!</p>
     `,
 	tags: [
-		'AI',
+		'Artificial Intelligence',
 		'Digital Humanities',
 		'African Studies',
 		'African History',

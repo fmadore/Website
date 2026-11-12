@@ -58,7 +58,7 @@ export const genocideAtTheSecurityCouncil: DigitalHumanitiesProject = {
 		'MapLibre GL',
 		'Data Visualisation',
 		'LLM',
-		'Open-weight models',
+		'Open-weight Models',
 		'vLLM',
 		'Embeddings',
 		'GitHub Actions'

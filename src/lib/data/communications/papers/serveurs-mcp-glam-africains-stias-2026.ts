@@ -22,7 +22,7 @@ Au-delà de la recherche, ces outils exposent la structure de la base de donnée
 Reste la question que l'atelier doit poser. Une telle médiation protège-t-elle la souveraineté des collections africaines ou déplace-t-elle la dépendance vers quelques fournisseurs de modèles ?`,
 	tags: [
 		'MCP',
-		'AI',
+		'Artificial Intelligence',
 		'Digital Humanities',
 		'GLAM',
 		'IWAC',

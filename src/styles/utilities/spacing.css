@@ -7,28 +7,16 @@
 }
 
 /* Margin Top - Essential values */
-.mt-2 {
-	margin-top: var(--space-xs);
-}
 .mt-4 {
 	margin-top: var(--space-md);
 }
-.mt-12 {
-	margin-top: var(--space-2xl);
-}
 
 /* Margin Bottom - Most used values */
-.mb-1 {
-	margin-bottom: var(--space-2xs);
-}
 .mb-8 {
 	margin-bottom: var(--space-xl);
 }
 
 /* Base padding */
-.p-4 {
-	padding: var(--space-md);
-}
 .p-8 {
 	padding: var(--space-xl);
 }

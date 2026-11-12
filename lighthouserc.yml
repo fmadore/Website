@@ -42,9 +42,12 @@ ci:
         - robots-txt
   assert:
     # A matrix rather than one assertion set: every entry whose pattern matches
-    # a URL applies to it, so the one metric with a page-specific budget (LCP
-    # on /cv) is asserted by two mutually exclusive patterns and everything
-    # else by `.*`.
+    # a URL applies to it, and LHCI evaluates each matching entry on its own
+    # and reports every failure (@lhci/utils 0.15.1, assertions.js: no merging,
+    # no override). A per-page budget therefore cannot sit under `.*` and be
+    # relaxed further down: /cv would still fail the `.*` value. The two
+    # metrics with a page-specific budget (LCP and document size on /cv) are
+    # asserted by two mutually exclusive patterns, everything else by `.*`.
     assertMatrix:
       - matchingUrlPattern: '.*'
         assertions:
@@ -76,21 +79,25 @@ ci:
           # silently fell below it once and every page render-blocked for
           # 150 ms, which is why the stylesheet budget is 1: the only sheet
           # request left is the 1 KB error-page sheet) on top of 21–25 KB of
-          # page, so ≤36 KB — except /cv, which prerenders all seventeen
-          # sections since 5.1 and measures 52 KB; the document budget is set
-          # for it. Raise a budget only with the regression named in the commit.
+          # page. The document budget is per page, below.
+          # Raise a budget only with the regression named in the commit.
           resource-summary:font:count: [error, { maxNumericValue: 5 }]
           resource-summary:font:size: [error, { maxNumericValue: 360000 }]
           resource-summary:stylesheet:count: [error, { maxNumericValue: 1 }]
           resource-summary:script:size: [error, { maxNumericValue: 250000 }]
-          resource-summary:document:size: [error, { maxNumericValue: 60000 }]
           resource-summary:total:count: [error, { maxNumericValue: 70 }]
 
-      # LCP on every page but the CV: measured 3.5–4.1 s (best of three).
+      # Every page but the CV.
       - matchingUrlPattern: '^(?!.*/cv$).*'
         assertions:
+          # LCP: measured 3.5–4.1 s (best of three).
           largest-contentful-paint:
             [error, { maxNumericValue: 4500, aggregationMethod: optimistic }]
+          # Document: 33–37 KB (2026-11-12, after the footer's glyph sprite),
+          # of which ~27 KB is the shell every page shares. A fixed cap is right
+          # for these pages: their prerendered content does not grow with the
+          # record (the indexes prerender one page of rows).
+          resource-summary:document:size: [error, { maxNumericValue: 60000 }]
 
       # The CV prerenders its whole record (seventeen sections, ~360 KB of
       # HTML, and the section components in the hydration graph) since 5.1
@@ -101,3 +108,17 @@ ci:
         assertions:
           largest-contentful-paint:
             [error, { maxNumericValue: 5000, aggregationMethod: optimistic }]
+          # The CV's document grows with the record, about 95 bytes of gzip
+          # per entry (≈675 raw), at 30–47 entries a year in 2025–26, so a
+          # fixed cap tight enough to be a tripwire fails, sooner or later, a
+          # PR that only recorded a talk. The tripwire is
+          # `npm run check:documents` (scripts/checks/check-documents.mjs, in
+          # check:build): it budgets what must not grow with the content —
+          # the shell outside #cv-content in bytes, and the markup inside it
+          # per byte of text — and names which grew. This ceiling is the
+          # backstop for a step change the ratio cannot see (a section
+          # duplicated, a dataset serialised into the page). Measured
+          # 59.2 KB on 2026-11-12 and ~55 KB after the glyph sprites; 75 KB
+          # leaves room for ~200 more entries, four to five years. When it
+          # is reached, check that the growth is entries, then raise it.
+          resource-summary:document:size: [error, { maxNumericValue: 75000 }]

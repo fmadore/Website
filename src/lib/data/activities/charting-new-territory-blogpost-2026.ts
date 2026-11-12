@@ -8,9 +8,9 @@ export const activity: Activity = {
 	date: formatDisplayDate('2026-03-31'),
 	year: 2026,
 	description:
-		'Blog post co-authored with Vincent Hiribarren for Digital History Bielefeld, reflecting on the Hannover workshop on Digital Humanities and AI in African Studies.',
+		'Blog post co-authored with Vincent Hiribarren for Digital History Bielefeld, reflecting on the Hanover workshop on Digital Humanities and AI in African Studies.',
 	content: `
-		<p><a href="https://www.kcl.ac.uk/people/vincent-hiribarren" target="_blank" rel="noopener noreferrer">Vincent Hiribarren</a> and I published a blog post on <a href="https://digihistbie.hypotheses.org/1117" target="_blank" rel="noopener noreferrer">Digital History Bielefeld</a> reflecting on our workshop "<a href="https://fmadore.github.io/dh-ai-african-studies-2026/" target="_blank" rel="noopener noreferrer">Charting New Territory: Digital Humanities and AI in African Studies</a>," held in February 2026 at Schloss Herrenhausen in Hannover.</p>
+		<p><a href="https://www.kcl.ac.uk/people/vincent-hiribarren" target="_blank" rel="noopener noreferrer">Vincent Hiribarren</a> and I published a blog post on <a href="https://digihistbie.hypotheses.org/1117" target="_blank" rel="noopener noreferrer">Digital History Bielefeld</a> reflecting on our workshop "<a href="https://fmadore.github.io/dh-ai-african-studies-2026/" target="_blank" rel="noopener noreferrer">Charting New Territory: Digital Humanities and AI in African Studies</a>," held in February 2026 at Schloss Herrenhausen in Hanover.</p>
 
 		<p>The post recounts how 26 researchers from 16 countries spent three days working in thematic groups on language technologies, archives, infrastructure, and epistemologies, with no traditional presentations. Instead, the workshop combined plenary sessions, poster presentations, World Café rounds, and collaborative writing. By the end of the second day, the group was already drafting a co-authored position paper together.</p>
 
@@ -20,7 +20,7 @@ export const activity: Activity = {
 	`,
 	tags: [
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'African Studies',
 		'Workshop',
 		'Blog Post',

@@ -124,7 +124,7 @@ describe('the hairline pairing', () => {
 			// edge continued inward, and meets it, so it is drawn in the same ink
 			// rather than dropping to the rule tier halfway along.
 			'lib/components/visualisations/LocationMap.svelte — border-inline-end: var(--border-width-thin) solid var(--color-border);',
-			'lib/components/visualisations/MapVisualization.svelte — border-top: var(--border-width-thin) solid var(--color-border);'
+			'styles/components/map-chrome.css — border-top: var(--border-width-thin) solid var(--color-border);'
 		];
 
 		const crossed = findDeclarations(

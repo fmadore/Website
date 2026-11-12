@@ -2,29 +2,30 @@
 	import SEO from '#lib/SEO.svelte';
 	import { pageTitle } from '#lib/utils/siteHelpers.ts';
 	import '#styles/components/entity-index.css';
-	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/jsonLdSchemas.ts';
 	import { publicationFilters } from '#lib/data/publications/filters.svelte.ts';
 	import PublicationItem from '#lib/components/publications/PublicationItem.svelte';
 	import { usePagination } from '#lib/utils/pagination.svelte.ts';
 	import Pagination from '#lib/components/molecules/Pagination.svelte';
-	import EntityFilterBar from '#lib/components/entity-index/EntityFilterBar.svelte';
+	import EntityFilterBar, {
+		DEFAULT_SORT_OPTIONS,
+		type SortOption
+	} from '#lib/components/entity-index/EntityFilterBar.svelte';
 	import EntityFacetGrid from '#lib/components/entity-index/EntityFacetGrid.svelte';
+	import EntityEmptyState from '#lib/components/entity-index/EntityEmptyState.svelte';
 	import { urlFilterSync } from '#lib/actions/urlFilterSync.svelte.ts';
-	import { sortItems } from '#lib/utils/sortUtils.ts';
-	import {
-		matchesSearchTerms,
-		summariseYears,
-		truncateSearchTerm
-	} from '#lib/utils/entityFilterCore.ts';
-	import { getAuthorsArray } from '#lib/utils/citationFormatter.ts';
+	import { snapshot } from '$app/navigation';
+	import { sortItems, type SortKey } from '#lib/utils/sortUtils.ts';
+	import { summariseYears } from '#lib/utils/entityFilterCore.ts';
 	import { allPublicationSummaries as allPublications } from '#lib/data/publications/summaries.ts';
 	import {
 		PUBLICATION_TYPE_FILTER_LABELS as typeLabels,
 		PUBLICATION_TYPE_CHIP_LABELS as typeChipLabels
 	} from '#lib/utils/publicationTypeLabels.ts';
 
-	// The runed filter system: `af` is the stable deep-reactive filter state.
-	// No store prefixes, no casts.
+	// The runed filter system: `af` is the stable deep-reactive filter state,
+	// and the system also holds the free-text search, so the facet counts
+	// narrow with it. No store prefixes, no casts.
 	const filters = publicationFilters;
 	const af = filters.activeFilters;
 
@@ -37,26 +38,28 @@
 	const totalEntries = allPublications.length;
 	const { minYear, maxYear, bars: yearBars } = summariseYears(allPublications.map((p) => p.year));
 
-	// ── Local presentation state (does NOT touch the filter store) ──────────────
-	// Free-text filter over title / co-authors / tags / venue / year, applied on
-	// top of the store's filteredPublications. Purely client-side and additive.
-	let searchTerm = $state('');
-
-	// The search box is page-local state, so `urlFilterSync` reaches it through
-	// an accessor pair rather than through the filter system. It syncs as `q`,
-	// which is what makes a searched view shareable.
-	const search = {
-		get value() {
-			return searchTerm;
+	// ── Local presentation state (does NOT touch the filter system) ──────────
+	// The sort is page-local, synced as `sort` (omitted for the default) so a
+	// "most cited first" view is shareable.
+	const SORT_OPTIONS: readonly SortOption[] = [
+		...DEFAULT_SORT_OPTIONS,
+		{ value: 'citations', label: 'Cited', glyph: '↓' }
+	];
+	let activeSort = $state<SortKey>('date');
+	const sort = {
+		get value(): string {
+			return activeSort;
 		},
 		set value(next: string) {
-			searchTerm = next;
-		}
+			activeSort = next as SortKey;
+		},
+		options: SORT_OPTIONS.map((option) => option.value),
+		fallback: 'date'
 	};
-	let activeSort = $state<'date' | 'title'>('date');
 	const PER_PAGE = 12;
 
-	// Mobile: the whole facet apparatus collapses behind a toggle.
+	// The facet grid is closed behind `More filters` at every width; the filter
+	// bar opens it when one of its facets is set.
 	let facetsOpen = $state(false);
 
 	// One live region for the whole list. Each row's Cite button changes its own
@@ -72,52 +75,33 @@
 	}
 	$effect(() => () => clearTimeout(announcementTimer));
 
-	// Clears the system's filters plus the page-local free-text search.
-	function clearAllNarrowing() {
-		filters.clearAllFilters();
-		searchTerm = '';
-	}
-
-	// The fields a scholar scans by, for the free-text search.
-	function searchFields(pub: (typeof allPublications)[number]): string[] {
-		const parts: string[] = [pub.title, String(pub.year ?? '')];
-		if (pub.authors) parts.push(...getAuthorsArray(pub.authors));
-		if (typeof pub.editors === 'string') parts.push(pub.editors);
-		if (pub.tags) parts.push(...pub.tags);
-		if (pub.journal) parts.push(pub.journal);
-		if (pub.book) parts.push(pub.book);
-		if (pub.publisher) parts.push(pub.publisher);
-		return parts;
-	}
-
-	// The system's filtered list, narrowed by the free-text search, then sorted.
-	const searchedPublications = $derived(
-		filters.filteredItems.filter((pub) => matchesSearchTerms(searchFields(pub), searchTerm))
-	);
-	const sortedPublications = $derived(sortItems(searchedPublications, activeSort));
+	// The system's filtered list (facets and search), sorted.
+	const sortedPublications = $derived(sortItems(filters.filteredItems, activeSort));
 	const matchCount = $derived(sortedPublications.length);
-
-	// Any narrowing at all — system filters OR the text search.
-	const anyNarrowing = $derived(filters.activeFilterCount > 0 || searchTerm.trim().length > 0);
-
-	// The search is the only thing narrowing: the empty state's way out then
-	// names the search rather than promising to clear filters that are not set.
-	const searchOnlyNarrowing = $derived(
-		searchTerm.trim().length > 0 && filters.activeFilterCount === 0
-	);
-
-	// Count of active filter dimensions, for the "N FILTERS ACTIVE" readout.
-	const activeFilterCount = $derived(filters.activeFilterCount + (searchTerm.trim() ? 1 : 0));
+	const anyNarrowing = $derived(filters.narrowingCount > 0);
 
 	const pagination = usePagination(() => sortedPublications, PER_PAGE);
 	const pagePublications = $derived(pagination.items);
 
+	// The page of results belongs to the history entry, not to the link: Back
+	// from a record returns to page 3, while a shared URL never carries one
+	// (`serializeFiltersToQuery`). Kit restores it after the arrival's filter
+	// sync has settled, so the reset to page 1 that sync causes cannot undo it.
+	snapshot({
+		id: 'publications-index-page',
+		capture: () => pagination.page,
+		restore: (value: number) => (pagination.page = value)
+	});
+
 	// Bibliography rows carry a hanging year, printed only when the year changes
-	// down the (date-sorted) list. Also flag the single newest entry as the lead.
+	// down a date-sorted list. Sorted by title or citations the years no longer
+	// run in order, and a year on nearly every row is noise, so each row prints
+	// its own year as a plain key instead of a group head. Also flag the single
+	// newest entry as the lead.
 	const bibRows = $derived.by(() => {
 		let lastYear: number | null = null;
 		return pagePublications.map((pub, i) => {
-			const showYear = pub.year !== lastYear;
+			const showYear = activeSort !== 'date' || pub.year !== lastYear;
 			lastYear = pub.year;
 			// The featured lead: first row of page 1 when sorted by date and
 			// nothing is being filtered — the newest record, given the plate.
@@ -135,7 +119,10 @@
 	pageType="CollectionPage"
 />
 
-<div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters, search }}>
+<div
+	class="entity-index"
+	use:urlFilterSync={{ filters: af, setters: filters.setters, search: filters.search, sort }}
+>
 	<!-- ═══ INDEX HERO ═══ -->
 	<header class="index-hero index-masthead">
 		<div class="index-hero-lede">
@@ -175,27 +162,20 @@
 		{typeLabels}
 		{typeChipLabels}
 		ariaLabel="Filter publications"
-		searchPlaceholder="Title, co-author, tag, venue, year…"
+		searchPlaceholder="Title, author, tag, abstract…"
 		searchAriaLabel="Filter publications"
 		sortAriaLabel="Sort publications"
-		bind:searchTerm
+		{totalEntries}
+		{minYear}
+		{maxYear}
+		empty={matchCount === 0}
+		sortOptions={SORT_OPTIONS}
 		bind:facetsOpen
 		bind:activeSort
 	/>
 
 	<!-- ═══ FACET GRID (finding-aid) ═══ -->
-	<EntityFacetGrid
-		{filters}
-		open={facetsOpen}
-		{minYear}
-		{maxYear}
-		{totalEntries}
-		{matchCount}
-		{activeFilterCount}
-		{anyNarrowing}
-		{typeLabels}
-		onclearall={clearAllNarrowing}
-	/>
+	<EntityFacetGrid {filters} open={facetsOpen} {minYear} {maxYear} />
 
 	<!-- ═══ BIBLIOGRAPHY ═══ -->
 	<section class="bibliography rule-section" id="bibliography" aria-labelledby="bibliography-head">
@@ -230,27 +210,7 @@
 				scrollTargetId="bibliography"
 			/>
 		{:else}
-			<div class="bib-empty">
-				<p class="bib-empty-line">
-					{#if searchTerm.trim()}
-						No entries match &ldquo;{truncateSearchTerm(searchTerm)}&rdquo;.
-					{:else}
-						No entries match.
-					{/if}
-				</p>
-				<p class="dateline bib-empty-note">
-					The index holds {totalEntries} entries, {minYear}–{maxYear}.
-				</p>
-				<!-- The way out, repeated where the reader is looking. The summary's
-				     `Clear all` is the same control and the same function, but it sits
-				     above a 48px section rule and off the screen the empty block fills. -->
-				{#if anyNarrowing}
-					<button type="button" class="mono-action" onclick={clearAllNarrowing}>
-						{searchOnlyNarrowing ? 'Clear search' : 'Clear all'}
-						<span aria-hidden="true">✕</span>
-					</button>
-				{/if}
-			</div>
+			<EntityEmptyState {filters} {totalEntries} {minYear} {maxYear} />
 		{/if}
 	</section>
 </div>

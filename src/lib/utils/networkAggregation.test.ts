@@ -5,7 +5,10 @@ import {
 	buildPublicationCollaborationNetwork,
 	buildCommunicationCoPresenterNetwork,
 	buildCooccurrenceNetwork,
-	buildInstitutionNetwork
+	buildInstitutionNetwork,
+	englishRegionNames,
+	institutionKey,
+	isInstitutionalAffiliation
 } from './networkAggregation';
 import type { NetworkData } from './networkAggregation';
 import type { Publication } from '#lib/types/publication.ts';
@@ -436,5 +439,112 @@ describe('buildInstitutionNetwork', () => {
 		expect(edge(network, 'Uni A', 'Uni B', 'cooccurrence')).toBeDefined();
 		// Missing affiliations never become nodes.
 		expect(network.nodes.map((n) => n.id)).not.toContain('');
+	});
+
+	function talk(id: string, affiliations: string[]): Communication {
+		return {
+			id,
+			title: `Talk ${id}`,
+			authors: [CENTER],
+			date: '2024',
+			dateISO: '2024-01-01',
+			year: 2024,
+			conference: 'Conf',
+			location: 'City',
+			country: 'Country',
+			participants: affiliations.map((affiliation, i) => ({ name: `P${i}`, affiliation }))
+		} as Communication;
+	}
+
+	it('keeps role descriptions out of the institution nodes', () => {
+		const network = buildInstitutionNetwork([
+			talk('t1', [
+				'University of Bayreuth',
+				'Author of The Shipikisha Club',
+				'Author of Don’t Answer When They Call Your Name',
+				'Founder, Archivi.ng',
+				'Translator and Editor at Ituĩka',
+				'Open Restitution'
+			])
+		]);
+		expect(network.nodes.map((n) => n.id).sort()).toEqual([
+			'Open Restitution',
+			'University of Bayreuth'
+		]);
+	});
+
+	it('folds a trailing country into the institution it qualifies', () => {
+		const network = buildInstitutionNetwork([
+			talk('t1', ['University of Ibadan, Nigeria', 'University of Bayreuth']),
+			talk('t2', ['University of Ibadan', 'University of Bayreuth, Germany'])
+		]);
+		expect(network.nodes.map((n) => n.id).sort()).toEqual([
+			'University of Bayreuth',
+			'University of Ibadan'
+		]);
+		expect(node(network, 'University of Ibadan')?.weight).toBe(2);
+		expect(edge(network, 'University of Ibadan', 'University of Bayreuth')?.weight).toBe(2);
+	});
+
+	it('shares one unit of tie strength across a large event', () => {
+		const big = Array.from({ length: 9 }, (_, i) => `Inst ${i}`);
+		const network = buildInstitutionNetwork([
+			talk('workshop', big),
+			talk('panel', ['Inst 0', 'Inst 1'])
+		]);
+		const repeated = edge(network, 'Inst 0', 'Inst 1')!;
+		const once = edge(network, 'Inst 2', 'Inst 3')!;
+		// Counts stay counts: the tooltip reports shared events.
+		expect(repeated.weight).toBe(2);
+		expect(once.weight).toBe(1);
+		// 1/(9−1) from the workshop, plus 1 from the two-institution panel.
+		expect(repeated.strength).toBeCloseTo(1 + 1 / 8);
+		expect(once.strength).toBeCloseTo(1 / 8);
+	});
+});
+
+describe('isInstitutionalAffiliation', () => {
+	it('accepts names of bodies and rejects role descriptions', () => {
+		for (const name of [
+			'Leibniz-Zentrum Moderner Orient',
+			'LASDEL, Niger',
+			'Institut des Mondes Africains (IMAF)',
+			'Indian Institute of Science'
+		])
+			expect(isInstitutionalAffiliation(name)).toBe(true);
+		for (const role of [
+			'Author of The Shipikisha Club',
+			'Founder, Archivi.ng',
+			'Translator and Editor at Ituĩka',
+			'Unaffiliated scholar',
+			'Independent researcher',
+			''
+		])
+			expect(isInstitutionalAffiliation(role)).toBe(false);
+	});
+});
+
+describe('institutionKey', () => {
+	const countries = new Set(['Nigeria', 'Niger', "Côte d'Ivoire"]);
+	it('drops only a final segment that is a country', () => {
+		expect(institutionKey('University of Ibadan, Nigeria', countries)).toBe('University of Ibadan');
+		expect(institutionKey("Université Alassane Ouattara, Côte d'Ivoire", countries)).toBe(
+			'Université Alassane Ouattara'
+		);
+		expect(institutionKey('LLACAN, Centre national de la recherche scientifique', countries)).toBe(
+			'LLACAN, Centre national de la recherche scientifique'
+		);
+		expect(institutionKey('Quaid-i-Azam University, Islamabad, Pakistan', countries)).toBe(
+			'Quaid-i-Azam University, Islamabad, Pakistan'
+		);
+	});
+});
+
+describe('englishRegionNames', () => {
+	it('knows the countries the affiliations name, apostrophes folded', () => {
+		const names = englishRegionNames();
+		for (const country of ['Nigeria', 'Niger', 'Germany', 'Pakistan', "Côte d'Ivoire", 'Canada'])
+			expect(names.has(country)).toBe(true);
+		expect(names.has('Islamabad')).toBe(false);
 	});
 });

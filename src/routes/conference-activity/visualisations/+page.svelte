@@ -196,9 +196,11 @@
 	let copresenterTopN = $state(20);
 	let copresenterVisibleKinds = $state<NetworkEdgeKind[]>(['peer']);
 	let copresenterSearch = $state('');
-	// A ledger is as tall as its rows; past ~30 the plate scrolls instead.
+	// A cap, not a size (VizChartCard): the ledger is as tall as its rows, plus
+	// room for the toolbar and a legend that wraps on a phone; past ~30 rows the
+	// plate scrolls instead.
 	const copresenterArcHeight = $derived(
-		Math.round(Math.min(Math.min(copresenterTopN, copresenterCount) * 24 + 150, 940))
+		Math.round(Math.min(Math.min(copresenterTopN, copresenterCount) * 24 + 260, 1050))
 	);
 
 	// Institution network: institutions linked when their members appeared in the

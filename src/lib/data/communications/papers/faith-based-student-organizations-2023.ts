@@ -20,7 +20,7 @@ export const faithBasedStudentOrganizations: Communication = {
 	tags: [
 		'ECAS',
 		'Religious Activism',
-		'Student Organisations',
+		'Student Associations',
 		'Togo',
 		'Benin',
 		'Youth',

@@ -13,6 +13,8 @@ import {
 	yearRangeOverlaps,
 	yearRangeReadout,
 	truncateSearchTerm,
+	hasGridFilters,
+	describeActiveFilters,
 	type EntityArrayDimension,
 	type EntityArrayFilterKey,
 	type EntityIndexFilters
@@ -505,5 +507,88 @@ describe('summariseYears', () => {
 			maxYear: thisYear,
 			bars: [{ year: thisYear, count: 0, pct: 6 }]
 		});
+	});
+});
+
+describe('the search as an external predicate', () => {
+	const inFrench = (item: TestItem) => !!item.language?.includes('French');
+
+	it('narrows the list alongside the facets', () => {
+		const result = filterEntityItems(
+			items,
+			{ ...emptyFilters(), types: ['article'] },
+			dimensions,
+			matchesYearRange,
+			inFrench
+		);
+		expect(ids(result)).toEqual(['p3']);
+	});
+
+	it('narrows every count and every "All" total, including the counted facet', () => {
+		const { counts, totals } = computeDisjunctiveFacets(
+			items,
+			{ ...emptyFilters(), types: ['article'] },
+			dimensions,
+			matchesYearRange,
+			inFrench
+		);
+		// The type row ignores its own selection but never the search.
+		expect(counts.types).toEqual({ book: 1, article: 1 });
+		expect(totals.types).toBe(2);
+		// Every other row counts under the type selection and the search.
+		expect(totals.tags).toBe(1);
+		expect(counts.authors).toEqual({ Alice: 1, Bob: 1 });
+	});
+
+	it('changes nothing when absent', () => {
+		const filters = { ...emptyFilters(), tags: ['Islam'] };
+		expect(computeDisjunctiveFacets(items, filters, dimensions, matchesYearRange)).toEqual(
+			computeDisjunctiveFacets(items, filters, dimensions, matchesYearRange, () => true)
+		);
+	});
+});
+
+describe('hasGridFilters', () => {
+	it('is set by a grid facet or a year range, never by the bar’s type or language', () => {
+		expect(hasGridFilters(emptyFilters())).toBe(false);
+		expect(hasGridFilters({ ...emptyFilters(), types: ['book'], languages: ['French'] })).toBe(
+			false
+		);
+		expect(hasGridFilters({ ...emptyFilters(), tags: ['Islam'] })).toBe(true);
+		expect(hasGridFilters({ ...emptyFilters(), countries: ['Togo'] })).toBe(true);
+		expect(hasGridFilters({ ...emptyFilters(), authors: ['Bob'] })).toBe(true);
+		expect(hasGridFilters({ ...emptyFilters(), projects: ['P1'] })).toBe(true);
+		expect(hasGridFilters({ ...emptyFilters(), yearRange: { min: 2015, max: 2020 } })).toBe(true);
+	});
+});
+
+describe('describeActiveFilters', () => {
+	it('groups values under their facet heading, search first and years last', () => {
+		const groups = describeActiveFilters(
+			{
+				...emptyFilters(),
+				tags: ['Islam', 'Togo'],
+				countries: ['Togo'],
+				types: ['book'],
+				yearRange: { min: 2015, max: 2020 }
+			},
+			{
+				labels: { countries: 'Countries studied' },
+				valueLabel: (key, value) => (key === 'types' ? 'Books' : value),
+				yearReadout: '2015–2020',
+				searchTerm: '  salafism '
+			}
+		);
+		expect(groups).toEqual([
+			{ key: 'search', label: 'Search', values: ['“salafism”'] },
+			{ key: 'types', label: 'Type', values: ['Books'] },
+			{ key: 'countries', label: 'Countries studied', values: ['Togo'] },
+			{ key: 'tags', label: 'Tags', values: ['Islam', 'Togo'] },
+			{ key: 'yearRange', label: 'Years', values: ['2015–2020'] }
+		]);
+	});
+
+	it('is empty when nothing narrows', () => {
+		expect(describeActiveFilters(emptyFilters(), { searchTerm: '  ' })).toEqual([]);
 	});
 });

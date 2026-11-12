@@ -8,6 +8,7 @@
 	import IframeRenderer from '#lib/components/molecules/IframeRenderer.svelte';
 	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
+	import { addNewTabHints } from '#lib/utils/newTabHint.ts';
 
 	import { resolve } from '$app/paths';
 	import { assetHref } from '#lib/utils/paths.ts';
@@ -111,8 +112,11 @@
 	     `.record-prose` idiom and opened by a drop cap. Markup-bearing prose,
 	     so typesetQuotesInHtml, never typesetQuotes. -->
 	<!-- Safe: project.description is trusted data in src/lib/data/digital-humanities/ -->
-	<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-	<div class="record-prose drop-cap">{@html typesetQuotesInHtml(project.description)}</div>
+	<!-- eslint-disable svelte/no-at-html-tags -->
+	<div class="record-prose drop-cap">
+		{@html addNewTabHints(typesetQuotesInHtml(project.description))}
+	</div>
+	<!-- eslint-enable svelte/no-at-html-tags -->
 
 	<!-- ═══ EMBEDDED WORK ═══
 	     The project shown rather than described: a live visualisation, a
@@ -170,8 +174,11 @@
 						</p>
 						{#if item.description}
 							<!-- Safe: item.description is trusted project data -->
-							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-							<div class="embed-desc">{@html typesetQuotesInHtml(item.description)}</div>
+							<!-- eslint-disable svelte/no-at-html-tags -->
+							<div class="embed-desc">
+								{@html addNewTabHints(typesetQuotesInHtml(item.description))}
+							</div>
+							<!-- eslint-enable svelte/no-at-html-tags -->
 						{/if}
 					</figcaption>
 				</figure>
@@ -188,7 +195,7 @@
 			</div>
 			<!-- Safe: project.award is trusted project data -->
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-			<p class="apparatus-text">{@html typesetQuotesInHtml(project.award)}</p>
+			<p class="apparatus-text">{@html addNewTabHints(typesetQuotesInHtml(project.award))}</p>
 		</section>
 	{/if}
 

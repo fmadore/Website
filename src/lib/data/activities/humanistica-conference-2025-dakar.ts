@@ -18,19 +18,17 @@ export const humanisticaConference2025Dakar: Activity = {
     `,
 	tags: [
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'IWAC',
 		'Conference',
 		'Humanistica',
 		'African Studies',
 		'West Africa'
 	],
-	url: '',
 	image: 'images/activities/humanistica-2025-dakar.webp',
 	heroImage: {
 		src: 'images/activities/humanistica-2025-dakar-hero.webp',
-		alt: 'Humanistica 2025 conference in Dakar',
-		caption: ''
+		alt: 'Humanistica 2025 conference in Dakar'
 	},
 	type: 'conference'
 };

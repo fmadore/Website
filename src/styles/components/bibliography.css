@@ -448,3 +448,11 @@
 		transition: none;
 	}
 }
+
+/* Paper: the row's controls (Cite, the external actions) do not print; the
+ * citation count is a fact about the entry and stays. */
+@media print {
+	.bib-action {
+		display: none;
+	}
+}

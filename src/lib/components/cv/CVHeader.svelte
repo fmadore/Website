@@ -1,12 +1,7 @@
-<script lang="ts">
-	import Icon from '@iconify/svelte';
-	import { address, contact, website, socialLinks, author } from '#lib/data/siteConfig.ts';
-	import { BUILT_AT } from '#lib/utils/buildDate.ts';
-	import { formatCvEditionDate } from '#lib/utils/cvSections.ts';
+<script module lang="ts">
+	import { contact, website, socialLinks } from '#lib/data/siteConfig.ts';
 
-	// "As of" the build: the CV prints the records as they stood when the site
-	// was built, and the prerendered page and its hydration agree on the date.
-	const today = formatCvEditionDate(BUILT_AT);
+	const ADDRESS_GLYPH = 'mdi:map-marker';
 
 	// CV contact links configuration
 	const cvLinks = [
@@ -16,6 +11,20 @@
 		{ ...socialLinks.github, displayUrl: 'GitHub' },
 		{ ...socialLinks.orcid, displayUrl: 'ORCID' }
 	];
+
+	/** The letterhead's marks, for `CVGlyphs` to define (or leave to the footer's sprite). */
+	export const CV_HEADER_GLYPHS: readonly string[] = [ADDRESS_GLYPH, ...cvLinks.map((l) => l.icon)];
+</script>
+
+<script lang="ts">
+	import { address, author } from '#lib/data/siteConfig.ts';
+	import { BUILT_AT } from '#lib/utils/buildDate.ts';
+	import { formatCvEditionDate } from '#lib/utils/cvSections.ts';
+	import { glyphId } from '#lib/components/common/glyphPath.ts';
+
+	// "As of" the build: the CV prints the records as they stood when the site
+	// was built, and the prerendered page and its hydration agree on the date.
+	const today = formatCvEditionDate(BUILT_AT);
 </script>
 
 <header class="cv-header">
@@ -31,7 +40,9 @@
 <section class="cv-contact-section">
 	<!-- Address -->
 	<div class="cv-contact-group">
-		<Icon icon="mdi:map-marker" class="cv-contact-icon" width="16" height="16" />
+		<svg class="cv-contact-icon" width="16" height="16" aria-hidden="true" focusable="false"
+			><use href="#{glyphId(ADDRESS_GLYPH)}" /></svg
+		>
 		<div>
 			{address.institution}<br />
 			{#if address.department}
@@ -51,7 +62,9 @@
 	<div class="cv-links-group">
 		{#each cvLinks as link (link.url)}
 			<div class="cv-link-item">
-				<Icon icon={link.icon} class="cv-contact-icon" width="16" height="16" />
+				<svg class="cv-contact-icon" width="16" height="16" aria-hidden="true" focusable="false"
+					><use href="#{glyphId(link.icon)}" /></svg
+				>
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 				<a href={link.url} target="_blank" rel="noopener noreferrer"
 					>{link.displayUrl}<span class="sr-only"> (opens in new tab)</span></a
@@ -151,7 +164,7 @@
 
 	/* The glyphs take the section's ink by inheritance; they only need to hold
 	 * their 16px box when a long handle wraps beside them. */
-	.cv-contact-section :global(.cv-contact-icon) {
+	.cv-contact-icon {
 		flex-shrink: 0;
 	}
 

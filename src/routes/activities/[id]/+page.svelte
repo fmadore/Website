@@ -30,11 +30,12 @@
 	import {
 		createActivitySEODescription,
 		createActivitySEOKeywords,
-		recordEntityId,
 		recordPageTitle
 	} from '#lib/utils/seoUtils.ts';
+	import { recordEntityId } from '#lib/utils/jsonLdSchemas.ts';
 	import { ACTIVITY_TYPE_BADGE_LABELS } from '#lib/utils/typeUtils.ts';
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
+	import { addNewTabHints } from '#lib/utils/newTabHint.ts';
 	import MetaTags from '#lib/components/activities/MetaTags.svelte';
 
 	// Get data from the load function
@@ -132,7 +133,9 @@
 						if (match.index > lastIndex) {
 							segments.push({
 								type: 'html',
-								value: typesetQuotesInHtml(rawContent.substring(lastIndex, match.index))
+								value: addNewTabHints(
+									typesetQuotesInHtml(rawContent.substring(lastIndex, match.index))
+								)
 							});
 						}
 						segments.push({ type: 'ItemReference', id: match[1] });
@@ -141,7 +144,7 @@
 					if (lastIndex < rawContent.length) {
 						segments.push({
 							type: 'html',
-							value: typesetQuotesInHtml(rawContent.substring(lastIndex))
+							value: addNewTabHints(typesetQuotesInHtml(rawContent.substring(lastIndex)))
 						});
 					}
 					return segments;

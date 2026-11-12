@@ -23,7 +23,7 @@ export const islamBurkinaCollection: Publication = {
 		'Islam',
 		'Archives',
 		'Open Access',
-		'Research Methodology',
+		'Research Methods',
 		'West Africa',
 		'IWAC'
 	],

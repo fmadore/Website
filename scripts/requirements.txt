@@ -1,0 +1,7 @@
+# Python tools for the font subsets (scripts/generate/subset-fonts.py,
+# `npm run check:fonts`). Pinned exactly: a fontTools or brotli release that
+# changes the subset bytes would otherwise fail an unrelated pull request.
+# Dependabot (pip ecosystem) proposes bumps; regenerate the subsets with the
+# new versions in the same PR if `check:fonts` then fails.
+fonttools==4.68.0
+brotli==1.2.1

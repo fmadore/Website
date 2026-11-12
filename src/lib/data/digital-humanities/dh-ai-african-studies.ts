@@ -56,7 +56,7 @@ export const dhAiAfricanStudies: DigitalHumanitiesProject = {
 		'Zotero',
 		'Metadata Standards',
 		'Data Visualisation',
-		'Network graphs'
+		'Network Graphs'
 	],
 	seoKeywords: [
 		'digital humanities',

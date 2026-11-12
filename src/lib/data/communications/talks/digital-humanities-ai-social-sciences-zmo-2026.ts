@@ -27,7 +27,7 @@ export const talkDigitalHumanitiesAiSocialSciencesZmo2026: Communication = {
 		'\n\n' +
 		'Along the way, the talk asks who digitises what in the Global South and who gains access, and weighs what datafication helps, damages and endangers. It closes with open questions of method, ethics and epistemology for discussion.',
 	tags: [
-		'AI',
+		'Artificial Intelligence',
 		'Digital Humanities',
 		'Datafication',
 		'Large Language Models',

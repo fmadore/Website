@@ -12,7 +12,7 @@ export const planBrouillonStructurerIdees: Publication = {
 	year: 2021,
 	book: 'Guide décolonisé et pluriversel de formation à la recherche en sciences sociales et humaines',
 	editors: 'Florence Piron, Élisabeth Arsenault',
-	placeOfPublication: 'Québec',
+	placeOfPublication: 'Quebec City',
 	publisher: 'Éditions science et bien commun',
 	publisherLocation: 'Canada',
 	language: 'French',
@@ -20,11 +20,11 @@ export const planBrouillonStructurerIdees: Publication = {
 	abstract:
 		'Ce chapitre fournit quelques conseils afin de vous préparer adéquatement à la rédaction du brouillon à travers trois étapes : la planification avec l’élaboration d’un plan structuré et détaillé contenant les idées principales de l’argumentation et les références soutenant les affirmations; la rédaction d’une première version du texte (le brouillon); et enfin, la révision du texte afin de produire une version remaniée plus aboutie.',
 	tags: [
-		'Research Methodology',
+		'Research Methods',
 		'Academic Writing',
 		"Writer's Block",
 		'Research Planning',
-		'Decolonial Approach'
+		'Decoloniality'
 	],
 	url: 'https://scienceetbiencommun.pressbooks.pub/projetthese/chapter/faire-une-table-des-matieres/',
 	openAccess: true,

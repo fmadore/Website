@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { getContributorNames } from '#lib/utils/contributor.ts';
 	import SEO from '#lib/SEO.svelte';
 	import { pageTitle } from '#lib/utils/siteHelpers.ts';
 	import '#styles/components/entity-index.css';
-	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/jsonLdSchemas.ts';
 	import { communicationFilters } from '#lib/data/communications/filters.svelte.ts';
 	import CommunicationItem from '#lib/components/communications/CommunicationItem.svelte';
 	import UpcomingCommunications from '#lib/components/communications/UpcomingCommunications.svelte';
@@ -11,20 +10,18 @@
 	import Pagination from '#lib/components/molecules/Pagination.svelte';
 	import EntityFilterBar from '#lib/components/entity-index/EntityFilterBar.svelte';
 	import EntityFacetGrid from '#lib/components/entity-index/EntityFacetGrid.svelte';
+	import EntityEmptyState from '#lib/components/entity-index/EntityEmptyState.svelte';
 	import { onMount } from 'svelte';
+	import { snapshot } from '$app/navigation';
 	import { urlFilterSync } from '#lib/actions/urlFilterSync.svelte.ts';
 	import { BUILT_DATE } from '#lib/utils/buildDate.ts';
 	import { localISODate } from '#lib/utils/date-formatter.ts';
-	import { sortItems } from '#lib/utils/sortUtils.ts';
+	import { sortItems, type SortKey } from '#lib/utils/sortUtils.ts';
 	import {
 		COMMUNICATION_TYPE_LIST_LABELS,
 		COMMUNICATION_TYPE_CHIP_LABELS
 	} from '#lib/utils/typeUtils.ts';
-	import {
-		matchesSearchTerms,
-		summariseYears,
-		truncateSearchTerm
-	} from '#lib/utils/entityFilterCore.ts';
+	import { summariseYears } from '#lib/utils/entityFilterCore.ts';
 	// The index lists talks, it never opens one: the committed projection
 	// (no abstracts) is what the rows, the facets and the map markers need.
 	import { allCommunicationSummaries as allCommunications } from '#lib/data/communications/summaries.ts';
@@ -45,31 +42,24 @@
 	const totalEntries = allCommunications.length;
 	const { minYear, maxYear, bars: yearBars } = summariseYears(allCommunications.map((c) => c.year));
 
-	// ── Local presentation state (does NOT touch the filter store) ──────────────
-	let searchTerm = $state('');
-
-	// The search box is page-local state, so `urlFilterSync` reaches it through
-	// an accessor pair rather than through the filter system. It syncs as `q`,
-	// which is what makes a searched view shareable.
-	const search = {
-		get value() {
-			return searchTerm;
+	// ── Local presentation state (does NOT touch the filter system) ──────────
+	// The sort is page-local, synced as `sort` (omitted for the default).
+	let activeSort = $state<SortKey>('date');
+	const sort = {
+		get value(): string {
+			return activeSort;
 		},
 		set value(next: string) {
-			searchTerm = next;
-		}
+			activeSort = next as SortKey;
+		},
+		options: ['date', 'title'],
+		fallback: 'date'
 	};
-	let activeSort = $state<'date' | 'title'>('date');
 	const PER_PAGE = 15;
 
-	// Mobile: the whole facet apparatus collapses behind a toggle.
+	// The facet grid is closed behind `More filters` at every width; the filter
+	// bar opens it when one of its facets is set.
 	let facetsOpen = $state(false);
-
-	// Clears the system's filters plus the page-local free-text search.
-	function clearAllNarrowing() {
-		filters.clearAllFilters();
-		searchTerm = '';
-	}
 
 	// ── Map (lazy — maplibre-gl is only fetched when the reader asks for it) ─────
 	let MapVisualization:
@@ -94,17 +84,6 @@
 		if (showMap) loadMapComponent();
 	}
 
-	// The fields a scholar scans by, for the free-text search.
-	function searchFields(comm: CommunicationSummary): string[] {
-		const parts: string[] = [comm.title, String(comm.year ?? '')];
-		if (comm.authors) parts.push(...getContributorNames(comm.authors));
-		if (comm.tags) parts.push(...comm.tags);
-		if (comm.conference) parts.push(comm.conference);
-		if (comm.location) parts.push(comm.location);
-		if (comm.country) parts.push(comm.country);
-		return parts;
-	}
-
 	// Today (YYYY-MM-DD, local) for the upcoming/past split. The page is
 	// prerendered, so it hydrates with the build's date — the split the HTML was
 	// rendered with — and moves to the reader's own day once mounted, when a
@@ -114,13 +93,11 @@
 		today = localISODate(new Date());
 	});
 
-	// The system's filtered list, narrowed by the free-text search.
-	const searchedCommunications = $derived(
-		filters.filteredItems.filter((comm) => matchesSearchTerms(searchFields(comm), searchTerm))
-	);
+	// The system's filtered list: facets and the free-text search.
+	const searchedCommunications = $derived(filters.filteredItems);
 
-	// Any narrowing at all — system filters OR the text search.
-	const anyNarrowing = $derived(filters.activeFilterCount > 0 || searchTerm.trim().length > 0);
+	// Any narrowing at all — facets, years or the search.
+	const anyNarrowing = $derived(filters.narrowingCount > 0);
 
 	// Upcoming talks surface as their own block only when nothing is narrowing the
 	// list; otherwise they fold back into the main chronological record.
@@ -141,9 +118,6 @@
 	const sortedCommunications = $derived(sortItems(mainListBase, activeSort));
 	const matchCount = $derived(sortedCommunications.length);
 
-	// Count of active filter dimensions, for the "N FILTERS ACTIVE" readout.
-	const activeFilterCount = $derived(filters.activeFilterCount + (searchTerm.trim() ? 1 : 0));
-
 	// Map markers from the filtered set (independent of the upcoming/past split).
 	const mapMarkers = $derived(
 		searchedCommunications
@@ -161,13 +135,22 @@
 	const pagination = usePagination(() => sortedCommunications, PER_PAGE);
 	const pageCommunications = $derived(pagination.items);
 
+	// The page of results belongs to the history entry, not to the link: Back
+	// from a talk returns to the page it was opened from (see /publications).
+	snapshot({
+		id: 'talks-index-page',
+		capture: () => pagination.page,
+		restore: (value: number) => (pagination.page = value)
+	});
+
 	// Bibliography rows carry a hanging year, printed only when the year changes.
 	// The single newest past entry is the lead — but only when the upcoming block
 	// is not already carrying the "current" signal above it.
 	const bibRows = $derived.by(() => {
 		let lastYear: number | null = null;
 		return pageCommunications.map((comm, i) => {
-			const showYear = comm.year !== lastYear;
+			// Sorted A–Z the years no longer run in order: each row keys its own.
+			const showYear = activeSort !== 'date' || comm.year !== lastYear;
 			lastYear = comm.year;
 			const isLead =
 				i === 0 &&
@@ -194,7 +177,10 @@
 
 <JsonLd id="organised-workshops-json-ld" json={organisedWorkshopsJsonLd} />
 
-<div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters, search }}>
+<div
+	class="entity-index"
+	use:urlFilterSync={{ filters: af, setters: filters.setters, search: filters.search, sort }}
+>
 	<!-- ═══ INDEX HERO ═══ -->
 	<header class="index-hero index-masthead">
 		<div class="index-hero-lede">
@@ -234,10 +220,13 @@
 		{typeLabels}
 		{typeChipLabels}
 		ariaLabel="Filter talks and events"
-		searchPlaceholder="Title, venue, city, co-author, tag, year…"
+		searchPlaceholder="Title, venue, city, author, tag…"
 		searchAriaLabel="Filter talks and events"
 		sortAriaLabel="Sort talks"
-		bind:searchTerm
+		{totalEntries}
+		{minYear}
+		{maxYear}
+		empty={matchCount === 0}
 		bind:facetsOpen
 		bind:activeSort
 	>
@@ -255,18 +244,7 @@
 	</EntityFilterBar>
 
 	<!-- ═══ FACET GRID (finding-aid) ═══ -->
-	<EntityFacetGrid
-		{filters}
-		open={facetsOpen}
-		{minYear}
-		{maxYear}
-		{totalEntries}
-		{matchCount}
-		{activeFilterCount}
-		{anyNarrowing}
-		{typeLabels}
-		onclearall={clearAllNarrowing}
-	/>
+	<EntityFacetGrid {filters} open={facetsOpen} {minYear} {maxYear} />
 
 	<!-- ═══ MAP (lazy, toggled from the filter bar) ═══ -->
 	{#if showMap && MapVisualization}
@@ -325,18 +303,7 @@
 				scrollTargetId="bibliography"
 			/>
 		{:else}
-			<div class="bib-empty">
-				<p class="bib-empty-line">
-					{#if searchTerm.trim()}
-						No entries match &ldquo;{truncateSearchTerm(searchTerm)}&rdquo;.
-					{:else}
-						No entries match.
-					{/if}
-				</p>
-				<p class="bib-empty-line">
-					The index holds {totalEntries} entries, {minYear}–{maxYear}.
-				</p>
-			</div>
+			<EntityEmptyState {filters} {totalEntries} {minYear} {maxYear} />
 		{/if}
 	</section>
 </div>
@@ -423,6 +390,15 @@
 	@media (prefers-reduced-motion: reduce) {
 		.map-toggle {
 			transition: none;
+		}
+	}
+
+	/* The map is a control surface (zoom, markers, attribution buttons) drawn
+	 * on a canvas: it does not print (the Paper Rule). The list below holds
+	 * the same records. */
+	@media print {
+		.map-section {
+			display: none;
 		}
 	}
 </style>

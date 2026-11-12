@@ -2,7 +2,7 @@
 	import { getCvDescription, pageTitle } from '#lib/utils/siteHelpers.ts';
 	import Icon from '@iconify/svelte';
 	import SEO from '#lib/SEO.svelte';
-	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/jsonLdSchemas.ts';
 	import PdfGenerator from '#lib/components/cv/PdfGenerator.svelte';
 	import CVHeader from '#lib/components/cv/CVHeader.svelte';
 	import CVEducation from '#lib/components/cv/CVEducation.svelte';

@@ -47,3 +47,27 @@ describe.each(systems)('%s', (_, system) => {
 		system.clearAllFilters();
 	});
 });
+
+describe('a link shared before a tag rename', () => {
+	it.each(systems)('%s reads ?tag=AI as the renamed tag when it holds it', (_, system) => {
+		system.clearAllFilters();
+		if (!system.filterOptions.tags.includes('Artificial Intelligence')) return;
+		system.setters.setTags(['AI', 'ai']);
+		expect(system.activeFilters.tags).toEqual(['Artificial Intelligence']);
+		system.clearAllFilters();
+	});
+});
+
+describe.each(systems)('%s search', (_, system) => {
+	it('finds every entry by its own title, and narrows the counts with it', () => {
+		system.clearAll();
+		const everything = [...system.filteredItems] as { title: string }[];
+		for (const item of everything) {
+			system.searchTerm = `"${item.title}"`;
+			expect(system.filteredItems, item.title).toContain(item);
+			expect(system.totals.types, item.title).toBe(system.filteredItems.length);
+		}
+		system.clearAll();
+		expect(system.filteredItems).toHaveLength(everything.length);
+	});
+});

@@ -10,7 +10,7 @@ export const volkswagenOpenUp2026: Grant = {
 		"Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 	startYear: 2026,
 	endYear: 2028,
-	dateRangeString: '2026-2028',
+	dateRangeString: '2026–2028',
 	dateISOStart: '2026-10-01',
 	dateISOEnd: '2028-09-30',
 	amount: 332390,

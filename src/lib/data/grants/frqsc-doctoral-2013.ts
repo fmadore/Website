@@ -10,7 +10,7 @@ export const frqscDoctoral2013: Grant = {
 	funder: 'Fonds Québécois de la Recherche sur la Société et la Culture (FRQSC)',
 	startYear: 2013,
 	endYear: 2015,
-	dateRangeString: '2013-2015',
+	dateRangeString: '2013–2015',
 	dateISOStart: '2013-09-01',
 	dateISOEnd: '2015-08-31',
 	amount: 80000,

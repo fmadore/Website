@@ -20,7 +20,7 @@ export const whenAIMeetsTheArchiveSadilar2025: Activity = {
             `,
 	tags: [
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'IWAC',
 		'Large Language Models',
 		'Talk',

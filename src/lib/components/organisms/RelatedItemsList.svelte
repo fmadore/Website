@@ -1,133 +1,150 @@
+<!--
+RelatedItemsList — "More in this project", the sibling work that closes a record.
+
+A list of dated records, so it is a ledger (DESIGN.md, principle 3): the date
+hangs in the mono key column, the title is the serif content and the link, the
+byline sits under it. It used to be a grid of bordered tiles, three across,
+where a long title ran to eight lines in a third of the column.
+
+The rows arrive cut and capped: `relatedItems()` in `#lib/server/relatedItems.ts`
+filters to the project, drops the current record and keeps three, so nothing is
+filtered here. Rows render at once — no entrance transition (the motion rule).
+-->
+<script module lang="ts">
+	/** One sibling record, as the server load projects it. */
+	export interface RelatedRecord {
+		id: string;
+		title?: string;
+		date?: string;
+		authors?: string[];
+		/** BCP-47 `lang` for a non-English title (`titleLangAttr`); omitted for English. */
+		titleLang?: string;
+	}
+</script>
+
 <script lang="ts">
-	import type { ComponentType } from 'svelte';
-	import { fade } from 'svelte/transition';
-	import { cubicOut } from 'svelte/easing';
-	import { motionDuration } from '#lib/utils/motion.ts';
-	import Button from '#lib/components/atoms/Button.svelte';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
-	const FADE_DURATION = 220;
-
-	interface RelatedListItem {
-		id: string | number;
-		[key: string]: unknown;
+	interface Props {
+		items: RelatedRecord[];
+		/** Section heading. */
+		title: string;
+		/** Id for the heading, which names the section. */
+		headingId: string;
+		/** Record URL prefix, base-prefixed by the caller (`pageHref('/publications/')`). */
+		baseItemUrl: string;
+		/** The index page; with `project`, filtered to it. */
+		viewAllUrl?: string;
+		/** Project name the index link filters on. */
+		project?: string;
 	}
 
-	// Props
-	let {
-		allItems = [],
-		currentItemId,
-		filterKey,
-		filterValue,
-		title,
-		itemComponent,
-		baseItemUrl,
-		viewAllUrl,
-		maxItems = 3,
-		sectionClass = 'related-items-section mt-12',
-		titleClass = 'editorial-section-title',
-		gridClass = 'related-items-grid'
-	}: {
-		allItems?: RelatedListItem[];
-		currentItemId: string | number;
-		filterKey: string;
-		filterValue: string | number | undefined;
-		title: string;
-		itemComponent: ComponentType;
-		baseItemUrl: string;
-		viewAllUrl?: string;
-		maxItems?: number;
-		sectionClass?: string;
-		titleClass?: string;
-		gridClass?: string;
-	} = $props();
+	let { items, title, headingId, baseItemUrl, viewAllUrl, project }: Props = $props();
 
-	// Reactive calculation for related items
-	let relatedItems = $derived(
-		allItems
-			.filter(
-				(item) =>
-					item.id !== currentItemId && // Exclude current item
-					item[filterKey] === filterValue // Match filter criteria
-			)
-			.slice(0, maxItems) // Limit number of items
-	);
-
-	// Construct the view all URL with filter if viewAllUrl is provided
 	const viewAllLink = $derived(
-		viewAllUrl && filterValue
-			? `${viewAllUrl}?${filterKey}=${encodeURIComponent(filterValue)}`
-			: viewAllUrl
+		viewAllUrl && project ? `${viewAllUrl}?project=${encodeURIComponent(project)}` : viewAllUrl
 	);
 </script>
 
-{#if relatedItems.length > 0}
-	<section class="{sectionClass} ">
-		<h2 class={titleClass}>{title}</h2>
-		<div class="{gridClass} ">
-			{#each relatedItems as item (item.id)}
-				{@const ItemComponent = itemComponent}
-				<div in:fade={{ duration: motionDuration(FADE_DURATION), easing: cubicOut }}>
-					<ItemComponent {item} itemUrl={`${baseItemUrl}${item.id}`} />
-				</div>
-			{/each}
+{#if items.length > 0}
+	<section class="section section--flush related" aria-labelledby={headingId}>
+		<div class="section-head">
+			<h2 id={headingId} class="section-title">{title}</h2>
 		</div>
+		<ul class="ledger ledger--ruled related-ledger">
+			{#each items as item (item.id)}
+				<li class="ledger-row">
+					<span class="ledger-key">{item.date ?? ''}</span>
+					<span class="ledger-content">
+						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed by the caller -->
+						<a class="ledger-title related-item" href="{baseItemUrl}{item.id}" lang={item.titleLang}
+							>{typesetQuotes(item.title ?? item.id)}</a
+						>
+						{#if item.authors && item.authors.length > 0}
+							<span class="related-authors">{typesetQuotes(item.authors.join(', '))}</span>
+						{/if}
+					</span>
+				</li>
+			{/each}
+		</ul>
 
 		{#if viewAllLink}
-			<div class="view-all-container">
-				<Button
-					href={viewAllLink}
-					rel={filterValue ? 'nofollow' : undefined}
-					variant="outline-secondary"
-					size="base">All work in this project<span aria-hidden="true">&nbsp;→</span></Button
-				>
-			</div>
+			<!-- eslint-disable svelte/no-navigation-without-resolve -- base-prefixed by the caller -->
+			<a
+				class="ledger-action ledger-action--standalone related-all"
+				href={viewAllLink}
+				rel={project ? 'nofollow' : undefined}
+				>All work in this project<span aria-hidden="true">&nbsp;→</span></a
+			>
+			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		{/if}
 	</section>
 {/if}
 
 <style>
-	/* Content-on-paper section; related-item cards carry their own chrome. */
-	.related-items-section {
-		margin-top: var(--space-2xl);
+	/* A list reset only: the ledger idiom draws the rows. */
+	.related-ledger {
+		list-style: none;
+		margin: 0;
+		padding: 0;
 	}
 
-	/* Section title uses the shared .editorial-section-title utility
-	 * (typography.css) so this section's heading matches Reviews, Cited By, and
-	 * the other detail-page sections — the previous bespoke .related-items-title
-	 * added a second short accent rule that read as disconnected. */
-
-	.related-items-grid {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-md);
+	/* The title is the row's link. Quiet ink at rest with the pine underline
+	   only under the pointer, as the contents ledger sets its links: three
+	   stacked accent underlines would stripe the block in pine. One step under
+	   the ledger's xl, because this is sibling work closing the page, not the
+	   record itself. */
+	.related-item {
+		font-size: var(--font-size-lg);
+		text-decoration: none;
+		overflow-wrap: break-word;
+		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	/* Hairline-ruled footer row; formerly split with the global panels.css
-	 * .view-all-container rule (now route-scoped to the panel components). */
-	.view-all-container {
-		margin-top: var(--space-lg);
-		padding-top: var(--space-lg);
-		border-top: var(--rule-hairline) solid var(--color-hairline);
-		text-align: left;
+	.related-item:hover {
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-decoration-thickness: var(--rule-hairline);
+		text-underline-offset: 0.2em;
 	}
 
-	.view-all-container :global(.btn) {
-		display: flex;
-		width: 100%;
-		justify-content: center;
-		white-space: normal;
-		text-align: center;
+	.related-item:focus-visible {
+		outline: var(--focus-outline);
+		outline-offset: var(--focus-outline-offset);
 	}
 
-	/* Responsive adjustments */
-	@media (--md) {
-		.related-items-grid {
-			grid-template-columns: repeat(2, 1fr);
+	/* A title link is a standalone control, not a link inside running text, so
+	   under a coarse pointer it takes the 44px floor (the Touch Floor Rule).
+	   A title of two lines or more is taller than that already. */
+	@media (--touch) {
+		.related-item {
+			display: block;
+			min-height: 44px;
 		}
 	}
-	@media (--lg) {
-		.related-items-grid {
-			grid-template-columns: repeat(3, 1fr);
+
+	.related-authors {
+		font-family: var(--font-family-serif);
+		font-style: italic;
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-normal);
+		color: var(--color-text-light);
+	}
+
+	/* The index link is a control; on paper the rows stand alone. */
+	@media print {
+		.related-all {
+			display: none;
+		}
+
+		.related-ledger .ledger-row {
+			break-inside: avoid;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.related-item {
+			transition: none;
 		}
 	}
 </style>

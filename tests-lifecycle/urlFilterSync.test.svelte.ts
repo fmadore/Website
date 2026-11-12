@@ -190,3 +190,59 @@ it('keeps a comma inside one value', () => {
 	const { system } = mount(`${written.pathname}${written.search}`);
 	expect(system.activeFilters.projects).toEqual([project]);
 });
+
+/** Mount with the system's own search accessor and a page-local sort, as the index pages do. */
+function mountWithSort(path: string, arrive: () => void = () => at(path)) {
+	arrive();
+	const system = createSystem();
+	let order = $state('date');
+	const sort = {
+		get value() {
+			return order;
+		},
+		set value(next: string) {
+			order = next;
+		},
+		options: ['date', 'title', 'citations'],
+		fallback: 'date'
+	};
+	stop = $effect.root(() => {
+		urlFilterSync({} as HTMLElement, {
+			filters: system.activeFilters,
+			setters: system.setters,
+			search: system.search,
+			sort
+		});
+	});
+	flushSync();
+	return { system, sort };
+}
+
+it('writes a non-default sort and drops the parameter for the default', () => {
+	const { system, sort } = mountWithSort('/publications');
+	sort.value = 'citations';
+	flushSync();
+	expect(replaced.at(-1)).toBe('/publications?sort=citations');
+	system.searchTerm = 'islam';
+	flushSync();
+	expect(replaced.at(-1)).toBe('/publications?q=islam&sort=citations');
+	sort.value = 'date';
+	system.clearAll();
+	flushSync();
+	expect(replaced.at(-1)).toBe('/publications');
+});
+
+it('reads the sort from a deep link and from Back, ignoring an unknown order', () => {
+	const { sort, system } = mountWithSort('/publications?sort=Title&q=campus');
+	expect(sort.value).toBe('title');
+	expect(system.searchTerm).toBe('campus');
+	expect(replaced).toEqual([]);
+
+	at('/publications?sort=popularity');
+	flushSync();
+	expect(sort.value).toBe('date');
+
+	popTo('/publications', '/publications?sort=citations');
+	flushSync();
+	expect(sort.value).toBe('citations');
+});

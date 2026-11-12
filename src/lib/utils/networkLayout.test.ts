@@ -2,11 +2,12 @@ import { describe, expect, it } from 'vitest';
 import {
 	approximateTextWidth,
 	computeNetworkLayout,
+	edgeTie,
 	fitTransform,
 	nodeRadius,
 	seededRandom
 } from './networkLayout';
-import { selectGraph } from './networkAggregation';
+import { selectGraph, truncateLabel } from './networkAggregation';
 import type { NetworkEdge, NetworkNode, SelectedGraph } from './networkAggregation';
 
 function node(id: string, weight: number, kind: NetworkNode['kind'] = 'entity'): NetworkNode {
@@ -382,6 +383,14 @@ describe('label placement', () => {
 });
 
 describe('fitTransform', () => {
+	it('keeps the fitted content clear of a reserved left strip', () => {
+		const bounds = { minX: 0, minY: 0, maxX: 1000, maxY: 100 };
+		const fit = fitTransform(bounds, 800, 500, 12, 60);
+		// The leftmost content lands right of the strip plus padding.
+		expect(fit.x + bounds.minX * fit.k).toBeGreaterThanOrEqual(60 + 12 - 1e-9);
+		expect(fit.x + bounds.maxX * fit.k).toBeLessThanOrEqual(800 - 12 + 1e-9);
+	});
+
 	it('centres content that is smaller than the box without magnifying it', () => {
 		const fit = fitTransform({ minX: 0, minY: 0, maxX: 100, maxY: 100 }, 800, 500);
 		expect(fit.k).toBe(1);
@@ -410,5 +419,72 @@ describe('fitTransform', () => {
 		expect(Number.isFinite(fit.k)).toBe(true);
 		expect(Number.isFinite(fit.x)).toBe(true);
 		expect(Number.isFinite(fit.y)).toBe(true);
+	});
+});
+
+describe('truncateLabel', () => {
+	it('leaves a label that fits untouched', () => {
+		expect(truncateLabel('Leiden University', 28)).toBe('Leiden University');
+	});
+
+	it('drops a comma qualifier before cutting words, never mid-country', () => {
+		expect(truncateLabel('University of Ibadan, Nigeria', 26)).toBe('University of Ibadan…');
+		expect(truncateLabel('Université Abdou Moumouni, Niger', 28)).toBe(
+			'Université Abdou Moumouni…'
+		);
+		// The mid-word cut this replaced printed "University of Ibadan, Niger…".
+		expect(truncateLabel('University of Ibadan, Nigeria', 28)).not.toMatch(/Niger…$/);
+	});
+
+	it('cuts at a word boundary, and mid-word only for one long word', () => {
+		expect(truncateLabel('South African Centre for Digital Language Resources', 18)).toBe(
+			'South African…'
+		);
+		expect(truncateLabel('Leibniz-Zentrum-Moderner-Orient', 12)).toBe('Leibniz-Zen…');
+		for (const max of [6, 10, 18, 28]) {
+			expect(
+				truncateLabel('Kwame Nkrumah University of Science & Technology, Ghana', max).length
+			).toBeLessThanOrEqual(max);
+		}
+	});
+});
+
+describe('edge ties', () => {
+	it('pulls with the shared strength when the builder set one', () => {
+		expect(edgeTie({ weight: 3 })).toBe(3);
+		expect(edgeTie({ weight: 1, strength: 0.125 })).toBe(0.125);
+	});
+
+	it('keeps a large event loose: a weak clique does not pull its members together', () => {
+		const ids = Array.from({ length: 8 }, (_, i) => `W${i}`);
+		const nodes = ids.map((id) => node(id, 1));
+		const clique = (strength?: number) =>
+			ids.flatMap((a, i) =>
+				ids.slice(i + 1).map((b) => ({ ...edge(a, b, 1), ...(strength ? { strength } : {}) }))
+			);
+		const spread = (edges: NetworkEdge[]) => {
+			const layout = computeNetworkLayout(selectGraph(nodes, edges, { maxNodes: 8 }), {
+				...BOX,
+				seed: 7
+			});
+			const xs = layout.nodes.map((n) => n.x);
+			const ys = layout.nodes.map((n) => n.y);
+			return Math.max(...xs) - Math.min(...xs) + Math.max(...ys) - Math.min(...ys);
+		};
+		expect(spread(clique(1 / 7))).toBeGreaterThan(spread(clique()));
+	});
+
+	it('stays deterministic with shared strengths', () => {
+		const nodes = [node('A', 2), node('B', 1), node('C', 1)];
+		const edges = [
+			{ ...edge('A', 'B', 2), strength: 1.5 },
+			{ ...edge('B', 'C', 1), strength: 0.5 }
+		];
+		const run = () =>
+			computeNetworkLayout(selectGraph(nodes, edges, { maxNodes: 3 }), {
+				...BOX,
+				seed: 3
+			}).nodes.map((n) => [n.x, n.y]);
+		expect(run()).toEqual(run());
 	});
 });

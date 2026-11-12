@@ -16,7 +16,7 @@ export const workingPaperTemplate: Publication = {
 	issue: '1', // Number within the series
 	publisher: 'Issuing Institution', // Omit when identical to the series title
 	publisherLocation: 'Country', // Country where the publisher is based (used for Publisher Locations map)
-	placeOfPublication: '', // City of publication if applicable
+	// placeOfPublication: '', // Omit when empty. City of publication if applicable
 	pageCount: 0, // Total number of pages
 	language: 'English',
 	doi: '10.0000/00000', // Add DOI when available
@@ -24,8 +24,8 @@ export const workingPaperTemplate: Publication = {
 		"A description of the paper's argument, scope, and contribution. This abstract is used in list views and as a preview of the publication.",
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://example.org/working-paper', // URL to the publication
-	image: '', // Optional: path to image (e.g., "images/publications/working-paper-image.webp")
+	// image: '', // Omit when empty. Optional: path to image (e.g., "images/publications/working-paper-image.webp")
 	// New fields
-	country: ['Country Name'], // Countries covered in the publication
-	project: '' // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	country: ['Country Name'] // Countries covered in the publication
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 };

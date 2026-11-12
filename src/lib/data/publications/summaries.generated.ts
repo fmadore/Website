@@ -75,9 +75,9 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Large Language Models",
 			"Digital Humanities",
 			"Optical Character Recognition",
-			"Named-Entity Recognition",
+			"Named Entity Recognition",
 			"Sentiment Analysis",
-			"Historical Source Criticism"
+			"Source Criticism"
 		],
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "The Islam West Africa Collection (IWAC) illustrates how large language models can automate labor-intensive archival workflows involving optical character recognition and named-entity recognition. Drawing on predominantly ",
@@ -318,7 +318,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Multilingualism",
 			"Open Access",
 			"Workshop",
-			"VolkswagenStiftung",
+			"Volkswagen Foundation",
 			"West Africa",
 			"South Africa"
 		],
@@ -687,7 +687,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Sociopolitical Crisis",
 			"Identity Construction",
 			"Authoritarianism",
-			"Securitization",
+			"Securitisation",
 			"Islam",
 			"West Africa"
 		],
@@ -736,7 +736,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Islam",
 			"Religion",
 			"Interview",
-			"Research Methodology"
+			"Research Methods"
 		],
 		"url": "https://doi.org/10.14428/emulations.024.008",
 		"openAccess": true,
@@ -773,7 +773,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Côte d'Ivoire",
 			"Hajj",
 			"Muslim Communities",
-			"Religious Organisation",
+			"Religious Organisations",
 			"Pilgrimage",
 			"State-Religion Relations",
 			"Islam",
@@ -814,7 +814,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Collections as Data",
 			"Digital Archives",
 			"Digital Humanities",
-			"Historical Source Criticism",
+			"Source Criticism",
 			"Data Sovereignty",
 			"Hajj",
 			"Pilgrimage",
@@ -987,7 +987,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Islam",
 			"Archives",
 			"Open Access",
-			"Research Methodology",
+			"Research Methods",
 			"West Africa",
 			"IWAC"
 		],
@@ -1207,7 +1207,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Benin",
 			"Togo",
 			"Terrorism",
-			"Securitization",
+			"Securitisation",
 			"Salafism",
 			"Authoritarianism",
 			"Islam",
@@ -1281,12 +1281,11 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Global South",
 			"Conceptual Fields",
 			"Epistemology",
-			"Decolonial Approach"
+			"Decoloniality"
 		],
 		"url": "https://doi.org/10.58144/20250401-000",
 		"openAccess": true,
 		"image": "images/publications/zmo-bulletin-46.webp",
-		"project": "",
 		"abstractExcerpt": "The workshop organised by the Religion and Intellectual Culture unit at ZMO explored how non-Western epistemologies hallenge and enrich dominant paradigms in decolonial knowledge production. Opening remarks by Arpan Roy, ",
 		"citedByCount": 0,
 		"tocAuthors": [],
@@ -1349,10 +1348,8 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Epistemology",
 			"Religion"
 		],
-		"url": "",
 		"openAccess": true,
 		"image": "images/publications/zmo-bulletin-48-decentering.webp",
-		"project": "",
 		"abstractExcerpt": "The cross-regional workshop, organised by the Religion and Intellectual Culture unit, convened scholars from Indonesia, the United States, South Africa, the Netherlands, Senegal and Germany. The participants examined how ",
 		"citedByCount": 0,
 		"tocAuthors": [],
@@ -1630,17 +1627,17 @@ export const publicationSummaries: PublicationSummary[] = [
 		"year": 2021,
 		"book": "Guide décolonisé et pluriversel de formation à la recherche en sciences sociales et humaines",
 		"editors": "Florence Piron, Élisabeth Arsenault",
-		"placeOfPublication": "Québec",
+		"placeOfPublication": "Quebec City",
 		"publisher": "Éditions science et bien commun",
 		"publisherLocation": "Canada",
 		"language": "French",
 		"openAlexId": "W6990632226",
 		"tags": [
-			"Research Methodology",
+			"Research Methods",
 			"Academic Writing",
 			"Writer's Block",
 			"Research Planning",
-			"Decolonial Approach"
+			"Decoloniality"
 		],
 		"url": "https://scienceetbiencommun.pressbooks.pub/projetthese/chapter/faire-une-table-des-matieres/",
 		"openAccess": true,
@@ -1676,7 +1673,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"doi": "10.7202/1028465ar",
 		"tags": [
 			"Burkina Faso",
-			"Muslim Preachers",
+			"Islamic Preachers",
 			"Communication Strategies",
 			"Gender",
 			"Media",
@@ -2019,7 +2016,7 @@ export const publicationSummaries: PublicationSummary[] = [
 			"Digital Media",
 			"Christianity",
 			"Islam",
-			"Research Methodology"
+			"Research Methods"
 		],
 		"url": "https://doi.org/10.14428/emulations.024.001",
 		"openAccess": true,
@@ -2203,7 +2200,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"date": "2016",
 		"dateISO": "2016-01-22",
 		"year": 2016,
-		"placeOfPublication": "Québec/Paris",
+		"placeOfPublication": "Quebec City/Paris",
 		"publisher": "Presses de l'Université Laval/Hermann",
 		"publisherLocation": "Canada",
 		"pageCount": 220,

@@ -42,14 +42,14 @@ export const iwacAiPipelines: DigitalHumanitiesProject = {
 	skills: [
 		'Python',
 		'LLM',
-		'Open-weight models',
+		'Open-weight Models',
 		'Prompt Engineering',
 		'OCR',
 		'HTR',
 		'NER',
 		'NLP',
-		'Audio transcription',
-		'Sentiment analysis',
+		'Audio Transcription',
+		'Sentiment Analysis',
 		'Omeka S API',
 		'Docker'
 	],

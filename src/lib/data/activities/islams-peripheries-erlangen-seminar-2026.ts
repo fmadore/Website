@@ -23,7 +23,7 @@ export const islamsPeripheriesErlangenSeminar2026: Activity = {
 	tags: [
 		'Volkswagen Foundation',
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'Large Language Models',
 		'IWAC',
 		'Islam',

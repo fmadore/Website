@@ -18,7 +18,7 @@ export const ecoleNationaleDesChartesVisit2025: Activity = {
 		'École nationale des chartes',
 		'Talk',
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'Computational Methods',
 		'IWAC',
 		'West Africa',

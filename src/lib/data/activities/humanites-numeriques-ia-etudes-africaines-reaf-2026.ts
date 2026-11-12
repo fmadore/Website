@@ -49,8 +49,8 @@ export const activity: Activity = {
 	tags: [
 		'REAF',
 		'Digital Humanities',
-		'AI',
-		'Methodology',
+		'Artificial Intelligence',
+		'Research Methods',
 		'Panel',
 		'Call for Papers',
 		'African Studies',

@@ -3,7 +3,6 @@
 	import { resolve } from '$app/paths';
 	import { assetHref, pageHref } from '#lib/utils/paths.ts';
 	import type { Publication } from '#lib/types/index.ts';
-	import type { ComponentType } from 'svelte';
 	import type { PageData } from './$types';
 	import MetaTags from '#lib/components/publications/MetaTags.svelte';
 	import RecordLayout, { type EyebrowToken } from '#lib/components/common/RecordLayout.svelte';
@@ -16,17 +15,17 @@
 	} from '#lib/components/publications/PublicationIndexRail.svelte';
 	import PublicationToc, { hasToc } from '#lib/components/publications/PublicationToc.svelte';
 	import RelatedItemsList from '#lib/components/organisms/RelatedItemsList.svelte';
-	import RelatedItemCard from '#lib/components/molecules/RelatedItemCard.svelte';
 	import {
 		createPublicationSEODescription,
 		createPublicationSEOKeywords,
-		recordEntityId,
 		recordPageTitle
 	} from '#lib/utils/seoUtils.ts';
+	import { recordEntityId } from '#lib/utils/jsonLdSchemas.ts';
 	import { getPublicationTypeBadge } from '#lib/utils/publicationTypeLabels.ts';
 	import { formatByline } from '#lib/utils/byline.ts';
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
+	import { citationDateline } from '#lib/utils/citationDateline.ts';
 
 	interface Props {
 		data: PageData;
@@ -64,13 +63,20 @@
 	// most bare URLs point at a publisher's catalogue page, which is a paywall.
 	const isOpenAccess = $derived(publication.openAccess === true);
 
+	// The date is not an eyebrow token here: it prints in the citation
+	// dateline under the title, in its place among the citable facts, and
+	// printing it in both would set it twice within three lines.
 	const eyebrow = $derived.by((): EyebrowToken[] => {
-		const tokens: EyebrowToken[] = [{ label: typeLabel }, { label: publication.date }];
+		const tokens: EyebrowToken[] = [{ label: typeLabel }];
 		if (isOpenAccess) {
 			tokens.push({ label: 'Open Access', icon: 'academicons:open-access' });
 		}
 		return tokens;
 	});
+
+	// Container, volume(issue), date, pages and DOI, under the title: the
+	// citable facts above the fold even where the rail's Cite block is not.
+	const dateline = $derived(citationDateline(publication));
 
 	// Internal research page for this publication's project, resolved from the
 	// research dataset so a new project links itself.
@@ -156,17 +162,12 @@
 
 {#snippet relatedBlock()}
 	<RelatedItemsList
-		allItems={relatedInProject}
-		currentItemId={publication.id}
-		filterKey="project"
-		filterValue={publication.project}
+		items={relatedInProject}
 		title="More in this project"
-		itemComponent={RelatedItemCard as unknown as ComponentType}
+		headingId="pub-related-head"
 		baseItemUrl={pageHref('/publications/')}
 		viewAllUrl={resolve('/publications')}
-		maxItems={3}
-		sectionClass="pub-related section section--flush"
-		titleClass="pub-related-title section-title"
+		project={publication.project}
 	/>
 {/snippet}
 
@@ -175,6 +176,7 @@
 	{eyebrow}
 	title={displayTitle}
 	titleLang={contentLang}
+	{dateline}
 	{byline}
 	{bylineSuffix}
 	{breadcrumbItems}

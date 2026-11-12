@@ -8,7 +8,7 @@ export const volkswagen2025: Grant = {
 	project: 'Digital Humanities and AI in African Studies',
 	startYear: 2025,
 	endYear: 2026,
-	dateRangeString: '2025-2026',
+	dateRangeString: '2025–2026',
 	dateISOStart: '2025-09-01',
 	dateISOEnd: '2026-09-30',
 	amount: 53670,

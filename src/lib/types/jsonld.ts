@@ -197,27 +197,7 @@ export interface EventJsonLd extends BaseJsonLd {
 	};
 }
 
-export interface PresentationDigitalDocumentJsonLd extends BaseJsonLd {
-	'@type': 'PresentationDigitalDocument';
-	author?: JsonLdAgent[];
-	datePublished?: string;
-	publisher?: JsonLdOrganization;
-}
-
 // --- DH Project Types ---
-
-export interface SoftwareApplicationJsonLd extends BaseJsonLd {
-	'@type': 'SoftwareApplication' | 'WebApplication';
-	author?: JsonLdAgent[];
-	datePublished?: string;
-	applicationCategory?: string;
-	operatingSystem?: string;
-	offers?: {
-		'@type': 'Offer';
-		price: string;
-		priceCurrency: string;
-	};
-}
 
 export interface CreativeWorkJsonLd extends BaseJsonLd {
 	'@type': 'CreativeWork' | 'WebSite' | 'Dataset' | 'SoftwareApplication';

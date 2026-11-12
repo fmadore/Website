@@ -47,10 +47,25 @@ const inertDimension: EntityArrayDimension<ActivitySummary> = {
 	countExtractor: () => undefined
 };
 
+// --- Free-text search ---
+
+/** What the log's search reads: what a row prints (title, date, description, tags, type). */
+export function activitySearchFields(activity: ActivitySummary): string[] {
+	return [
+		activity.title,
+		String(activity.year ?? ''),
+		activity.date ?? '',
+		activity.description ?? '',
+		...(activity.tags ?? []),
+		activity.type ? (ACTIVITY_TYPE_BADGE_LABELS[activity.type] ?? activity.type) : ''
+	];
+}
+
 // --- Filter System ---
 
 export const activityFilters = new EntityFilterSystem<ActivitySummary>({
 	items: activitiesByDate,
+	searchFields: activitySearchFields,
 	matchesYearRange: (activity: ActivitySummary, range: YearRange) =>
 		activity.year >= range.min && activity.year <= range.max,
 	dimensions: {

@@ -23,7 +23,6 @@ updates:
           - 'svelte'
           - 'svelte-check'
           - 'vite'
-          - 'mdsvex'
         update-types:
           - 'minor'
           - 'patch'
@@ -66,6 +65,24 @@ updates:
         update-types:
           - 'minor'
           - 'patch'
+
+  # The Python tools the font-subset check runs (scripts/requirements.txt),
+  # pinned exactly so a release cannot change subset bytes under an unrelated
+  # PR. A bump that fails `check:fonts` needs the subsets regenerated with it.
+  - package-ecosystem: 'pip'
+    directory: '/scripts'
+    schedule:
+      interval: 'monthly'
+    reviewers:
+      - 'fmadore'
+    labels:
+      - 'dependencies'
+    commit-message:
+      prefix: 'chore(deps)'
+    groups:
+      font-tools:
+        patterns:
+          - '*'
 
   - package-ecosystem: 'github-actions'
     directory: '/'

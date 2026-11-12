@@ -58,6 +58,7 @@ import {
 	type UrlSyncableFilters
 } from '#lib/utils/filterSerialization.ts';
 import type { WebMcpToolName } from '#lib/utils/webmcpToolNames.ts';
+import { splitNames } from '#lib/utils/nameUtils.ts';
 
 // ---------------------------------------------------------------------------
 // Typings for the parts of the (still experimental) WebMCP API used here.
@@ -243,6 +244,30 @@ const PUBLICATION_FILTERS = {
 	language: { type: 'string', description: 'Language of publication, e.g. "English" or "French".' },
 	year_from: YEAR_FROM,
 	year_to: YEAR_TO
+};
+
+/** The orders the publications index offers, as its sort row names them. */
+const PUBLICATION_SORTS = ['date', 'title', 'citations'] as const;
+
+/**
+ * `show_publications` takes the search filters plus the two the index adds:
+ * a co-author (its `Co-authors` facet) and the sort row. Kept apart from
+ * PUBLICATION_FILTERS, which `search_publications` shares with the MCP server.
+ */
+const SHOW_PUBLICATION_FILTERS = {
+	...PUBLICATION_FILTERS,
+	author: {
+		type: 'string',
+		description:
+			'A co-author, editor or contributor, as the index\'s Co-authors facet lists them, e.g. "Muriel Gomez-Perez".'
+	},
+	sort: {
+		type: 'string',
+		enum: [...PUBLICATION_SORTS],
+		default: 'date',
+		description:
+			"'date' (newest first, the default), 'title' (A–Z) or 'citations' (most cited first, ties newest first)."
+	}
 };
 
 // ---------------------------------------------------------------------------
@@ -616,14 +641,16 @@ function buildTools({ navigate, fetch }: WebMcpOptions): WebMcpTool[] {
 				name: 'show_publications',
 				title: 'Show publications on screen',
 				description:
-					'Open the publications index in this tab on a filtered view, so the reader sees and can share the list the site draws. Takes the filters of search_publications; tag, country, project and language are matched to the index facets, ignoring case and accents. Use search_publications to read results yourself.',
-				inputSchema: schema(PUBLICATION_FILTERS),
+					'Open the publications index in this tab on a filtered view, so the reader sees and can share the list the site draws. Takes the filters of search_publications plus a co-author and a sort order; tag, country, project, language and author are matched to the index facets, ignoring case and accents. Use search_publications to read results yourself.',
+				inputSchema: schema(SHOW_PUBLICATION_FILTERS),
 				outputSchema: SHOW_OUTPUT,
 				annotations: { readOnlyHint: false, consequentialHint: false },
 				async run(args, signal) {
 					const filters = publicationsView(args, await loadDataset('publications'));
 					const query = text(args, 'query') ?? '';
-					const qs = serializeFiltersToQuery(filters, query);
+					const sort = choice(args, 'sort', PUBLICATION_SORTS) ?? 'date';
+					// The default order is no parameter, as the index writes it.
+					const qs = serializeFiltersToQuery(filters, query, sort === 'date' ? '' : sort);
 					const path = `/publications${qs ? `?${qs}` : ''}`;
 					// Cancelled while the document loaded: the reader's page is
 					// no longer the agent's to change.
@@ -631,7 +658,11 @@ function buildTools({ navigate, fetch }: WebMcpOptions): WebMcpTool[] {
 					await navigate(path);
 					return {
 						shown: `${website.url}${path}`,
-						filters: { ...(query ? { query } : {}), ...filters }
+						filters: {
+							...(query ? { query } : {}),
+							...filters,
+							...(sort === 'date' ? {} : { sort })
+						}
 					};
 				}
 			})
@@ -674,6 +705,27 @@ function facetValue(
 	);
 }
 
+/**
+ * Everyone the index's Co-authors facet credits with a publication, read from
+ * the API record: authors, editors (unless they edited the host volume), the
+ * preface's author and the table of contents' contributors, less the site's
+ * own author, whom the facet never lists.
+ */
+function creditedNames(item: ApiItem): string[] {
+	const editors =
+		item.type === 'chapter' || item.type === 'encyclopedia'
+			? []
+			: values(item.editors).flatMap(splitNames);
+	const toc = Array.isArray(item.tableOfContents)
+		? item.tableOfContents.flatMap((entry) =>
+				entry && typeof entry === 'object' ? values((entry as { authors?: unknown }).authors) : []
+			)
+		: [];
+	return [...values(item.authors), ...editors, ...values(item.prefacedBy), ...toc].filter(
+		(name) => name !== author.name
+	);
+}
+
 function publicationsView(args: Args, items: ApiItem[]): UrlSyncableFilters {
 	const vocabulary = (pick: (item: ApiItem) => string[]) =>
 		[...new Set(items.flatMap(pick))].sort((a, b) => a.localeCompare(b));
@@ -708,6 +760,7 @@ function publicationsView(args: Args, items: ApiItem[]): UrlSyncableFilters {
 			'language',
 			vocabulary((item) => values(item.language).flatMap((l) => l.split(',').map((s) => s.trim())))
 		),
+		authors: facetValue(args, 'author', 'co-author', vocabulary(creditedNames)),
 		// The index takes a closed range; an open end is the corpus's own bound.
 		...(yearFrom !== undefined || yearTo !== undefined
 			? {

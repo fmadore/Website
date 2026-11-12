@@ -16,12 +16,12 @@ export const specialIssueTemplate: Publication = {
 	volume: '1',
 	issue: '2',
 	language: 'English',
-	doi: '', // Add DOI if available
+	// doi: '', // Omit when empty. Add DOI if available
 	abstract:
 		"A comprehensive description of the special issue's focus, themes, and significance. This abstract will be used in list views and as a preview of the publication.",
 	tags: ['special issue', 'tag1', 'tag2'], // Add relevant tags for categorization
-	url: '', // URL to the special issue
-	image: '', // Optional: path to cover image (e.g., "images/publications/special-issue-cover.jpg")
+	// url: '', // Omit when empty. URL to the special issue
+	// image: '', // Omit when empty. Optional: path to cover image (e.g., "images/publications/special-issue-cover.jpg")
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/publications/special-issue-hero.webp',
@@ -31,7 +31,7 @@ export const specialIssueTemplate: Publication = {
 	isEditedWork: true,
 	// New fields
 	country: ['Country Name'], // Countries covered in the publication
-	project: '', // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 	tableOfContents: [
 		// Optional: Add article titles or section headings
 		'Introduction by Editors',

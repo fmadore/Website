@@ -8,13 +8,13 @@ export const fieldworkTemplate: Fieldwork = {
 	date: 'Month - Month Year', // Format: "Month Year" or "Month – Month Year"
 	year: 2024, // Year of fieldwork
 	description: 'Optional description of research activities and outcomes during this fieldwork.',
-	project: '', // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", etc.
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", etc.
 	coordinates: {
 		// Optional: GPS coordinates for the primary location
 		latitude: 0.0,
 		longitude: 0.0
 	},
-	image: '', // Optional: path to related image (e.g., "images/fieldworks/location.jpg")
+	// image: '', // Omit when empty. Optional: path to related image (e.g., "images/fieldworks/location.jpg")
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/fieldworks/location-hero.jpg',

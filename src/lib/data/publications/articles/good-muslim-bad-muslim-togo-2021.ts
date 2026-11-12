@@ -28,7 +28,7 @@ export const goodMuslimBadMuslimTogo: Publication = {
 		'Sociopolitical Crisis',
 		'Identity Construction',
 		'Authoritarianism',
-		'Securitization',
+		'Securitisation',
 		'Islam',
 		'West Africa'
 	],

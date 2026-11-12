@@ -20,7 +20,7 @@ export interface MatrixCell {
 	col: number;
 	/** Shared-item count for the pair. */
 	weight: number;
-	/** `weight / maxWeight`, for the ink ramp. */
+	/** Position on the ink ramp, 0–1 (`matrixIntensity`: square-root scale). */
 	intensity: number;
 	edge: NetworkEdge;
 }
@@ -34,6 +34,50 @@ export interface NetworkMatrix {
 	maxWeight: number;
 	/** Index lookup for the hover cross and the sr-only table. */
 	indexById: Map<string, number>;
+}
+
+/**
+ * Where a pair sits on the ink ramp: `√(weight / maxWeight)`.
+ *
+ * A linear ramp let one pair decide the whole plate. In the keyword matrix
+ * Islam × West Africa shares 31 publications and nearly every other pair 1–5,
+ * so on `weight / max` they all sat in the palest sixth of the ramp and the
+ * block structure the seriation finds was invisible. The square root keeps the
+ * order and the top of the scale, and spreads the low counts where most of the
+ * data is: 1 of 31 lands at 0.18 rather than 0.03, 4 of 31 at 0.36 rather than
+ * 0.13. The legend says so.
+ */
+export function matrixIntensity(weight: number, maxWeight: number): number {
+	if (maxWeight <= 0 || weight <= 0) return 0;
+	return Math.min(1, Math.sqrt(weight / maxWeight));
+}
+
+/**
+ * The most rows a plate can draw with its labels still legible: the grid is
+ * scaled to the plate, and below `minRenderedFont` px of rendered type the
+ * labels stop being readable. Never fewer than `floor` rows.
+ */
+export function legibleMatrixSize(options: {
+	plateWidth: number;
+	fontSize: number;
+	labelSpace: number;
+	cell: number;
+	minRenderedFont?: number;
+	floor?: number;
+	/** Extra margin in the viewBox beyond labels and grid. */
+	margin?: number;
+}): number {
+	const {
+		plateWidth,
+		fontSize,
+		labelSpace,
+		cell,
+		minRenderedFont = 8,
+		floor = 6,
+		margin = 8
+	} = options;
+	const widestView = (plateWidth * fontSize) / minRenderedFont;
+	return Math.max(floor, Math.floor((widestView - labelSpace - margin) / cell));
 }
 
 /**
@@ -68,7 +112,7 @@ export function buildMatrix(
 		const i = indexById.get(edge.source)!;
 		const j = indexById.get(edge.target)!;
 		if (i === j) continue;
-		const intensity = edge.weight / maxWeight;
+		const intensity = matrixIntensity(edge.weight, maxWeight);
 		cells.push({ row: i, col: j, weight: edge.weight, intensity, edge });
 		cells.push({ row: j, col: i, weight: edge.weight, intensity, edge });
 	}

@@ -54,7 +54,7 @@ export const remoboko: DigitalHumanitiesProject = {
 		'NLTK',
 		'D3.js',
 		'MapLibre GL',
-		'Interactive mapping'
+		'Interactive Mapping'
 	],
 	embeddableContent: [
 		{

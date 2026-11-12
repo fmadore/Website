@@ -25,7 +25,7 @@ export const dhDigitalHistoryLuxembourg2026: Activity = {
 	tags: [
 		'Digital Humanities',
 		'Digital History',
-		'AI',
+		'Artificial Intelligence',
 		'Large Language Models',
 		'IWAC',
 		'MCP',

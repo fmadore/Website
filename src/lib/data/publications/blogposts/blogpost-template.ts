@@ -11,12 +11,12 @@ export const blogpostTemplate: Publication = {
 	year: 2025,
 	publisher: 'Blog Name', // The name of the blog
 	language: 'English',
-	doi: '', // Add DOI when available (if applicable)
+	// doi: '', // Omit when empty. Add DOI when available (if applicable)
 	abstract: "A brief description of the blog post's content and significance.",
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://example.com/blog-post', // URL to the blog post
-	image: '', // Optional: path to image
+	// image: '', // Omit when empty. Optional: path to image
 	additionalUrls: [{ label: 'Blog Homepage', url: 'https://example.com/blog' }],
-	country: ['Country Name'], // Countries covered in the publication
-	project: '' // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	country: ['Country Name'] // Countries covered in the publication
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 };

@@ -39,6 +39,9 @@ npm run check:structured-data # every JSON-LD block parses; every URL in it is a
                         # date is valid ISO 8601; every Signposting describedby is
                         # typed and ships, and every publication .bib is linked;
                         # no two pages share a <title>
+npm run check:documents # long, growing documents (/cv, the indexes, the visualisation pages):
+                        # the shell outside the content container (bytes), markup per byte
+                        # of visible text, JSON-LD (bytes); names what grew vs the baseline
 npm run check:lighthouse # Lighthouse (mobile, the PageSpeed Insights lab profile) on five
                         # representative pages, asserted against lighthouserc.yml — score
                         # floors, Core Web Vitals and resource budgets. Serves `build/` with
@@ -95,9 +98,17 @@ npm run gen:posters -- --check  # report stale/missing posters, write nothing
 > the same file. The resource budgets (font/stylesheet counts, script bytes,
 > request count) are the sensitive tripwires — a category score moves a few
 > points for a webfont or a render-blocking stylesheet, a budget fails outright.
-> Raise a budget only with the regression named in the commit. Icons are
+> Raise a budget only with the regression named in the commit. The document
+> budget is per page: a fixed 60 KB for pages whose content does not grow, and
+> a 75 KB backstop on `/cv`, whose content does. The `/cv` tripwire is
+> `check:documents`, which budgets the markup around the content rather than
+> the total, so an added entry never fails it. LHCI evaluates every matching
+> `assertMatrix` entry separately, so a per-page budget lives in mutually
+> exclusive patterns, never under `.*`. Icons are
 > per-glyph path data from `@iconify-icons/*` registered in `src/lib/icons.ts`
-> (never an icon font): a few hundred bytes each, prerendered into the HTML.
+> (never an icon font): a few hundred bytes each, prerendered into the HTML. A
+> mark drawn more than once on a page, or on every page (the footer), goes
+> through `GlyphSprite` (`<symbol>` + same-document `<use>`) instead of `<Icon>`.
 >
 > **Scheduled workflows**: `link-check.yml` (weekly), `slides-check.yml`
 > (daily) and `citation-watch.yml` (monthly) each maintain a single long-lived
@@ -273,8 +284,8 @@ All academic content is stored as TypeScript files in `src/lib/data/`. Each cont
 Components in `src/lib/components/` follow atomic design:
 
 - **atoms/**: Basic elements (Button, NetworkStatusIndicator, RangeSlider). `Button` skins a control as `.btn`; pass `bare` for a control that is a button semantically but must not look like one (transport controls, close crosses) — it renders the zero-specificity `.btn-bare` primitive instead, so your own class styles it without `!important`.
-- **molecules/**: Simple compositions (BibliographyRow — the finding-aid ledger row shared by the publications, talks and activities indexes —, Breadcrumb, IframeRenderer, Pagination, RelatedItemCard, TagList, RecordLedger — the `.meta-ledger` catalogue entry of a record rail, …)
-- **organisms/**: Complex UI (RelatedItemsList)
+- **molecules/**: Simple compositions (BibliographyRow — the finding-aid ledger row shared by the publications, talks and activities indexes —, Breadcrumb, IframeRenderer, Pagination, TagList, RecordLedger — the `.meta-ledger` catalogue entry of a record rail, …)
+- **organisms/**: Complex UI (RelatedItemsList — the typed related-work ledger of a record page)
 - **common/**: Shared layout (Footer, ContentBody, PageHeader, PageIntro, RecordLayout). `RecordLayout` is the record shell — editorial breadcrumb, masthead, reading column, sticky 380px metadata rail with `main`/`railPrimary`/`railSecondary`/`related`/`deck` snippets — used by every detail route (`/publications/[id]`, `/communications/[id]`, `/activities/[id]`, `/digital-humanities/[id]`) and composed by `research/ResearchProjectLayout` for the project pages. Each route supplies its own rail component (`PublicationRecordRail`, `CommunicationRecordRail`, `ActivityRecordRail`, `DhProjectRail`) built from the `.rail-*` / `.meta-ledger` idioms. There is no shared _index_ layout component: the index pages compose `entity-index.css` with `EntityFilterBar`/`EntityFacetGrid` directly.
 - **entity-index/**: The live filter UI (EntityFilterBar, EntityFacetGrid, FacetCombobox — the WAI-ARIA combobox that replaces "All N ↓" expansion on the long facets; its pure matching/ranking lives in `facetSearch.ts`)
 - **Feature-specific**: publications/, communications/, activities/, cv/, menu/ (Header, NavLink, …), panels/, media/, visualisations/, reference/, research/, digital-humanities/, home/ (ActivityFeed, OutputRecordChart — the home page reads a digest of the datasets from its server load, `utils/homeDigest.ts`, never the datasets themselves)
@@ -344,7 +355,7 @@ Always use runes - never legacy reactive syntax:
 
 ### Animation System (CSS-only)
 
-Motion is near-zero by design (print register). Page navigation is one short opacity transition in the root layout; component-scoped transitions animate colour and border only, at 150ms, for direct state feedback (opening navigation, media controls), and each component owns its `prefers-reduced-motion` rule. The only `@keyframes` in the codebase are loading spinners (`Button`, `PdfGenerator`, `MediaPlayer`). There is no `animations.css`, no entrance or scroll-reveal utility, and no resting `will-change`; do not add any. Transforms on hover (scale, slide, nudge) are violations, not polish.
+Motion is near-zero by design (print register). Page navigation is one short opacity transition in the root layout; component-scoped transitions animate colour and border only, at 150ms, for direct state feedback (opening navigation, media controls), and each component owns its `prefers-reduced-motion` rule. The only `@keyframes` in the codebase are loading spinners (`Button`, `PdfGenerator`, `MediaPlayer`). There is no `animations.css`, no entrance or scroll-reveal utility, and no resting `will-change`; do not add any. Transforms on hover (scale, slide, nudge) are violations, not polish. `src/styles/printRegister.test.ts` enforces these rules and the no-shadow, no-radius, no-gradient ones, with a named allowlist.
 
 ### File Organization
 
@@ -387,7 +398,7 @@ For non-critical `catch` blocks (analytics, PWA, fullscreen), use empty catch wi
 
 ### Author/Affiliation Data
 
-Always import author info from `#lib/data/siteConfig` (`author`, `address`, `website`). Never hardcode name, position, or institution strings in JSON-LD or SEO metadata.
+Always import author info from `#lib/data/siteConfig` (`author`, `address`, `website`). Never hardcode name, position, or institution strings in JSON-LD or SEO metadata. `authorName.test.ts` lists the files that still spell the name, with counts: it fails on a new one, and when a fixed one is not lowered.
 
 ### Interface Copy
 
@@ -431,6 +442,10 @@ to recover, because a rejection reaches the agent only as a bare `UnknownError`
 (each tool's `outputSchema` admits that shape beside its result); and a cancelled
 call (its `signal` aborted) settles at once, by rejecting.
 
+`toolCatalogueParity.test.ts` compares the two catalogues over the protocol (names,
+parameters, enums, bounds, defaults, required sets; descriptions may differ), and
+`originTrial.test.ts` starts failing 30 days before the token expires.
+
 **Origin trial.** Stock Chrome exposes `document.modelContext` only to pages that
 carry the WebMCP origin-trial token (Chrome 149–156; an extension to 162 was
 proposed on 2026-09-29). The token goes in the `<head>` of `src/app.html` as
@@ -467,7 +482,7 @@ There is no APA/MLA/Chicago generator. Adding one belongs here, where the site a
 ### SEO
 
 - `SEO.svelte` component for page metadata, and the page's WebPage schema
-- `seoUtils.ts` generates SEO descriptions and keywords, and re-exports `jsonLdSchemas.ts`
+- `seoUtils.ts` generates SEO descriptions, keywords and page titles (`recordPageTitle`); JSON-LD factories are imported from `jsonLdSchemas.ts` only
 - JSON-LD: `jsonLdSchemas.ts` (site and page factories: WebSite, Person, WebPage,
   grants), `entityJsonLd.ts` (one builder per record type, run in each `[id]`
   route's server load), `breadcrumbJsonLd.ts` (BreadcrumbList, from route paths,

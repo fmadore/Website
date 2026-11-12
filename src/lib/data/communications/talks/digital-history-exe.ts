@@ -24,7 +24,7 @@ export const digitalHistoryExe: Communication = {
 		'Archives',
 		'Digital Humanities',
 		'Historical Research',
-		'AI'
+		'Artificial Intelligence'
 	],
 	url: 'https://web.archive.org/web/20250411145918/https://zzf-potsdam.de/forschung/doktorand_innen/master-class',
 	image: 'images/communications/zzf-logo.webp',

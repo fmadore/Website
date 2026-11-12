@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildMatrix } from './networkMatrix';
+import { buildMatrix, legibleMatrixSize, matrixIntensity } from './networkMatrix';
 import { selectGraph } from './networkAggregation';
 import type { NetworkEdge, NetworkNode, SelectedGraph } from './networkAggregation';
 
@@ -30,7 +30,7 @@ describe('buildMatrix', () => {
 		expect(coords).toEqual(['0,1', '1,0']);
 	});
 
-	it('normalises intensity against the heaviest pair', () => {
+	it('places intensity on a square-root ramp against the heaviest pair', () => {
 		const m = buildMatrix(
 			selected([node('a', 5), node('b', 5), node('c', 5)], [edge('a', 'b', 8), edge('b', 'c', 2)]),
 			{ order: 'name' }
@@ -39,7 +39,8 @@ describe('buildMatrix', () => {
 		const strong = m.cells.find((c) => c.weight === 8)!;
 		const weak = m.cells.find((c) => c.weight === 2)!;
 		expect(strong.intensity).toBe(1);
-		expect(weak.intensity).toBeCloseTo(0.25, 6);
+		// √(2/8): a linear ramp would have put it at 0.25.
+		expect(weak.intensity).toBeCloseTo(0.5, 6);
 	});
 
 	it('drops the centre node of an egocentric network', () => {
@@ -144,5 +145,41 @@ describe('buildMatrix', () => {
 		const a = buildMatrix(selected(nodes, edges));
 		const b = buildMatrix(selected(nodes, edges));
 		expect(a.nodes.map((n) => n.id)).toEqual(b.nodes.map((n) => n.id));
+	});
+});
+
+describe('matrixIntensity', () => {
+	it('keeps the order and the top of the scale', () => {
+		expect(matrixIntensity(31, 31)).toBe(1);
+		expect(matrixIntensity(0, 31)).toBe(0);
+		const ramp = [1, 2, 4, 8, 16, 31].map((w) => matrixIntensity(w, 31));
+		for (let i = 1; i < ramp.length; i++) expect(ramp[i]!).toBeGreaterThan(ramp[i - 1]!);
+	});
+
+	it('lifts the low counts off the palest end when one pair saturates', () => {
+		// The keyword matrix: Islam × West Africa at 31, nearly everything else 1–5.
+		expect(matrixIntensity(1, 31)).toBeCloseTo(0.18, 2);
+		expect(matrixIntensity(4, 31)).toBeCloseTo(0.36, 2);
+		expect(matrixIntensity(4, 31)).toBeGreaterThan(2 * (4 / 31));
+	});
+});
+
+describe('legibleMatrixSize', () => {
+	it('keeps labels at 8px or more by drawing fewer rows on a narrow plate', () => {
+		const phone = legibleMatrixSize({ plateWidth: 343, fontSize: 9, labelSpace: 90, cell: 22 });
+		expect(phone).toBe(13);
+		// Check: the grid that many rows makes renders its type at ≥ 8px.
+		const view = 90 + phone * 22 + 8;
+		expect((343 / view) * 9).toBeGreaterThanOrEqual(8);
+	});
+
+	it('does not cap a desktop plate below the usual 25', () => {
+		expect(
+			legibleMatrixSize({ plateWidth: 820, fontSize: 11, labelSpace: 198, cell: 22 })
+		).toBeGreaterThanOrEqual(25);
+	});
+
+	it('never goes below its floor', () => {
+		expect(legibleMatrixSize({ plateWidth: 50, fontSize: 9, labelSpace: 90, cell: 22 })).toBe(6);
 	});
 });

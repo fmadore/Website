@@ -18,9 +18,9 @@ export const ecas2025Panel: Communication = {
 	tags: [
 		'ECAS',
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'African Studies',
-		'Decolonial',
+		'Decoloniality',
 		'Linked Open Data',
 		'Metadata'
 	],

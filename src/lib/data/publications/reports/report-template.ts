@@ -19,7 +19,7 @@ export const reportTemplate: Publication = {
 		"A comprehensive description of the report's content, methodology, findings, and significance. This abstract will be used in list views and as a preview of the publication.",
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://example.org/report', // URL to the publication
-	image: '', // Optional: path to image (e.g., "images/publications/report-image.jpg")
+	// image: '', // Omit when empty. Optional: path to image (e.g., "images/publications/report-image.jpg")
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/publications/report-hero.jpg',
@@ -27,11 +27,11 @@ export const reportTemplate: Publication = {
 		caption: 'Optional caption for the report image'
 	},
 	// Fields often used for reports
-	volume: '', // Volume number if applicable
-	issue: '', // Issue number if applicable
-	placeOfPublication: '', // Place of publication if applicable
+	// volume: '', // Omit when empty. Volume number if applicable
+	// issue: '', // Omit when empty. Issue number if applicable
+	// placeOfPublication: '', // Omit when empty. Place of publication if applicable
 	// New fields
 	country: ['Country Name'], // Countries covered in the publication
-	project: '', // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 	citedBy: [] // Optional: List of works citing this publication
 };

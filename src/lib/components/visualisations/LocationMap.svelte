@@ -35,6 +35,7 @@ shown as markers while preserving the reader's country-shading preference.
 	} from '#lib/utils/locationMapContent.ts';
 	import { onMount } from 'svelte';
 	import type { Map as MapLibreMap, MapLayerMouseEvent, Popup } from 'maplibre-gl';
+	import '#styles/components/map-chrome.css';
 
 	type MapViewMode = 'markers' | 'choropleth';
 	type ChoroplethStatus = 'idle' | 'loading' | 'ready' | 'error';
@@ -509,7 +510,7 @@ shown as markers while preserving the reader's country-shading preference.
 		}),
 		isDark: () => darkModeDetected,
 		onInit: (m, gl) => {
-			m.addControl(new gl.AttributionControl({ compact: true }), 'bottom-right');
+			m.addControl(new gl.AttributionControl({ compact: false }), 'bottom-right');
 			// The basemap credits are the one set of new-tab links on the site the
 			// markup does not author: MapLibre builds them from the style's own
 			// attribution string. Annotate them wherever the control rewrites
@@ -569,7 +570,7 @@ shown as markers while preserving the reader's country-shading preference.
 			</div>
 		</div>
 	{/if}
-	<div bind:this={mapContainer} class="map-container">
+	<div bind:this={mapContainer} class="map-container map-chrome">
 		{#if data.length > 0 && !failed}
 			{#if activeViewMode === 'choropleth' && choroplethStatus === 'ready' && choroplethBins.length > 0}
 				<div class="choropleth-legend" aria-label={legendTitle}>
@@ -676,21 +677,17 @@ shown as markers while preserving the reader's country-shading preference.
 		.map-mode-toggle button {
 			min-height: var(--space-11);
 		}
-
-		/* MapLibre's own 29px controls, as in MapVisualization. */
-		.map-container :global(.maplibregl-ctrl-group button) {
-			width: var(--space-11);
-			height: var(--space-11);
-		}
 	}
 
 	.map-mode-toggle button:hover {
 		color: var(--color-text);
-		background: color-mix(in srgb, var(--color-accent) 10%, var(--color-surface-elevated));
+		background: var(--color-surface-alt);
 	}
 
+	/* The selected-chip idiom, as on the dataset toggle above the plate: one
+	 * way of saying "current" per plate, and pine is not it (DESIGN.md). */
 	.map-mode-toggle button.active {
-		background: var(--color-accent);
+		background: var(--color-primary);
 		color: var(--color-surface);
 	}
 
@@ -1007,6 +1004,14 @@ shown as markers while preserving the reader's country-shading preference.
 			inset-inline-start: var(--space-xs);
 			inset-block-end: var(--space-xs);
 			width: calc(100% - var(--space-md));
+		}
+	}
+
+	/* The mode control is for the screen; the printed plate keeps the map,
+	 * its legend and the unmapped note. */
+	@media print {
+		.map-mode-panel {
+			display: none;
 		}
 	}
 

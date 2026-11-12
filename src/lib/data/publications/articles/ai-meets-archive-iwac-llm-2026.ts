@@ -22,9 +22,9 @@ export const aiMeetsArchiveIwacLlm2026: Publication = {
 		'Large Language Models',
 		'Digital Humanities',
 		'Optical Character Recognition',
-		'Named-Entity Recognition',
+		'Named Entity Recognition',
 		'Sentiment Analysis',
-		'Historical Source Criticism'
+		'Source Criticism'
 	],
 	project: 'Digital Humanities and AI in African Studies'
 };

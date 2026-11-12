@@ -16,6 +16,11 @@ import {
 import { author as siteAuthor } from '#lib/data/siteConfig.ts';
 import { EntityFilterSystem } from '#lib/utils/entityFilterSystem.svelte.ts';
 import { getContributorNames } from '#lib/utils/contributor.ts';
+import {
+	COMMUNICATION_TYPE_BADGE_LABELS,
+	COMMUNICATION_TYPE_CHIP_LABELS,
+	COMMUNICATION_TYPE_LIST_LABELS
+} from '#lib/utils/typeUtils.ts';
 
 // --- Computed unique values ---
 
@@ -35,7 +40,7 @@ const allLanguages = Array.from(
 	)
 ).sort();
 
-const allCountries = Object.keys(communicationsByCountry || {}).sort();
+const allCountries = Object.keys(communicationsByCountry || {});
 
 const allProjects = Array.from(
 	new Set(allCommunications.filter((comm) => comm.project).map((comm) => comm.project as string))
@@ -52,10 +57,53 @@ const coAuthorFrequency = countOccurrences(
 	)
 );
 
+// Countries by how many talks were held there: alphabetical and cut at eight,
+// the list hid the United States (12) while printing Cameroon (1).
+const countryFrequency = countOccurrences(
+	allCommunications.map((comm) => (comm.country ? [comm.country] : []))
+);
+
+// --- Free-text search ---
+
+/**
+ * What the search box reads: everything a row prints, so a word the reader
+ * can see finds its row. Title, year, date, credited names, the venue (event,
+ * city, country), the panel and its participants, the tags, the opening of
+ * the abstract, the type in each form the page prints it, and the project.
+ */
+export function communicationSearchFields(comm: CommunicationSummary): string[] {
+	const type = comm.type ?? '';
+	return [
+		comm.title,
+		String(comm.year ?? ''),
+		comm.date ?? '',
+		...getContributorNames(comm.authors),
+		comm.conference ?? '',
+		comm.panelTitle ?? '',
+		comm.location ?? '',
+		comm.country ?? '',
+		...(comm.participants ?? []).map((participant) => participant.name),
+		...(comm.papers ?? []).flatMap((paper) => [
+			paper.title,
+			...paper.authors.map((paperAuthor) => paperAuthor.name)
+		]),
+		...(comm.tags ?? []),
+		comm.abstractExcerpt ?? '',
+		COMMUNICATION_TYPE_BADGE_LABELS[type] ?? '',
+		COMMUNICATION_TYPE_LIST_LABELS[type] ?? '',
+		COMMUNICATION_TYPE_CHIP_LABELS[type] ?? '',
+		comm.project ?? ''
+	];
+}
+
 // --- Filter System ---
 
 export const communicationFilters = new EntityFilterSystem<CommunicationSummary>({
 	items: allCommunications,
+	searchFields: communicationSearchFields,
+	// Where the talk was given, not what it was about: the publications index
+	// reads the same parameter as the countries a work studies.
+	labels: { countries: 'Held in' },
 	matchesYearRange: (comm: CommunicationSummary, range: YearRange) =>
 		!!comm.year && comm.year >= range.min && comm.year <= range.max,
 	dimensions: {
@@ -112,7 +160,7 @@ export const communicationFilters = new EntityFilterSystem<CommunicationSummary>
 		tags: byFrequencyThenAlpha(allTags || [], tagFrequency),
 		languages: allLanguages,
 		authors: byFrequencyThenAlpha(allCoAuthors, coAuthorFrequency),
-		countries: allCountries,
+		countries: byFrequencyThenAlpha(allCountries, countryFrequency),
 		projects: allProjects
 	}
 });

@@ -13,7 +13,14 @@ export const uppsalaUniversity2025: Communication = {
 	country: 'Sweden',
 	type: 'lecture',
 	language: 'English',
-	tags: ['IWAC', 'AI', 'Digital Humanities', 'West Africa', 'Islam', 'Archives'],
+	tags: [
+		'IWAC',
+		'Artificial Intelligence',
+		'Digital Humanities',
+		'West Africa',
+		'Islam',
+		'Archives'
+	],
 	image: 'images/communications/ALMEDA-logo.webp',
 	heroImage: {
 		src: 'images/communications/ALMEDA-logo-hero.webp',

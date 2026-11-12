@@ -41,11 +41,11 @@ export const iwacMcpServer: DigitalHumanitiesProject = {
 		'Model Context Protocol',
 		'LLM',
 		'Prompt Engineering',
-		'Agent skills',
+		'Agent Skills',
 		'DuckDB',
 		'Hugging Face',
 		'Embeddings',
-		'Semantic search',
+		'Semantic Search',
 		'Docker'
 	],
 	seoKeywords: [

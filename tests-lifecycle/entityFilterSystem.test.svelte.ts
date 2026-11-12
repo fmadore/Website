@@ -107,3 +107,45 @@ it('re-runs a subscribed effect when a filter changes', () => {
 	flushSync();
 	expect(seen).toEqual(['abcd/2', 'cd/2', 'd/0']);
 });
+
+it('narrows the list, every count and every total by the search', () => {
+	const system = createSystem({ searchFields: (item) => [item.id, ...item.tags] });
+	system.searchTerm = 'islam';
+	expect(ids(system.filteredItems)).toEqual(['a', 'b']);
+	expect(system.counts.types).toEqual({ book: 1, article: 1 });
+	expect(system.totals.types).toBe(2);
+	expect(system.counts.tags).toEqual({ Islam: 2, Togo: 1 });
+	expect(system.hasSearch).toBe(true);
+	expect(system.activeFilterCount).toBe(0);
+	expect(system.narrowingCount).toBe(1);
+
+	system.toggle('types', 'book');
+	expect(ids(system.filteredItems)).toEqual(['a']);
+	// The type row ignores its own selection, never the search.
+	expect(system.totals.types).toBe(2);
+	expect(system.narrowingCount).toBe(2);
+
+	// A quoted phrase is one needle; the accessor is what `urlFilterSync` drives.
+	system.clearAllFilters();
+	system.search.value = '"islam togo"';
+	expect(ids(system.filteredItems)).toEqual([]);
+	expect(system.search.value).toBe('"islam togo"');
+
+	system.clearAll();
+	expect(system.searchTerm).toBe('');
+	expect(system.narrowingCount).toBe(0);
+	expect(ids(system.filteredItems)).toHaveLength(4);
+});
+
+it('ignores the search when it is given no fields to read', () => {
+	const system = createSystem();
+	system.searchTerm = 'nothing matches this';
+	expect(ids(system.filteredItems)).toHaveLength(4);
+	expect(system.labels.tags).toBe('Tags');
+});
+
+it('takes facet headings from its config over the defaults', () => {
+	const system = createSystem({ labels: { countries: 'Held in' } });
+	expect(system.labels.countries).toBe('Held in');
+	expect(system.labels.types).toBe('Type');
+});

@@ -131,6 +131,10 @@ for (const theme of ['light', 'dark'] as const) {
 			await page.emulateMedia({ colorScheme: theme, reducedMotion: 'reduce' });
 			await page.goto(path);
 			await ready(page);
+			// The facet grid is closed until asked for; open it so its chips and
+			// rows stay in the sweep.
+			const moreFilters = page.getByRole('button', { name: /^More filters/ });
+			if (await moreFilters.count()) await moreFilters.first().click();
 			await expect(page.locator('html')).toHaveClass(new RegExp(`\\b${theme}\\b`));
 			// Read the settled hover colour, not a frame of its transition.
 			await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important }' });

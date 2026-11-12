@@ -4,11 +4,14 @@
 	import { resolve } from '$app/paths';
 	import SEO from '#lib/SEO.svelte';
 	import { pageTitle } from '#lib/utils/siteHelpers.ts';
-	import { createSectionBreadcrumbs } from '#lib/utils/seoUtils.ts';
+	import { createSectionBreadcrumbs } from '#lib/utils/jsonLdSchemas.ts';
 	import ActivityItem from '#lib/components/activities/ActivityItem.svelte';
 	import Pagination from '#lib/components/molecules/Pagination.svelte';
 	import { activityFilters } from '#lib/data/activities/filters.svelte.ts';
 	import FacetCombobox from '#lib/components/entity-index/FacetCombobox.svelte';
+	import EntityFilterSummary from '#lib/components/entity-index/EntityFilterSummary.svelte';
+	import EntityEmptyState from '#lib/components/entity-index/EntityEmptyState.svelte';
+	import { snapshot } from '$app/navigation';
 	import {
 		needsFacetCombobox,
 		visibleFacetOptions
@@ -21,6 +24,9 @@
 	// Page-specific CSS relocated from the global app.css (this page renders the
 	// activities log, the browse-by-year meter, and the tag facet).
 	import '#styles/components/activity-list.css';
+	// The search field, the tally and the empty state are the sibling indexes'
+	// own, so the log takes their sheet rather than a copy of it.
+	import '#styles/components/entity-index.css';
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Activities', '/activities');
@@ -50,28 +56,17 @@
 	const filters = activityFilters;
 	const af = filters.activeFilters;
 
-	// The filtered record set.
+	// The filtered record set: type, tags and the free-text search (`?q=`),
+	// which the system applies to the chip counts as well.
 	let filtered = $derived(filters.filteredItems);
-	const anyFiltering = $derived(filters.activeFilterCount > 0);
-
-	// Count of active filter dimensions, for the "N filters active" readout the
-	// three indexes share.
-	const activeFilterCount = $derived(af.types.length + af.tags.length);
-
-	// Human-readable list of the active filters for the log's filter note. Tag
-	// values are authored strings and carry apostrophes, so they are typeset
-	// here exactly as the chips that switch them off are.
-	const activeFilterLabels = $derived(
-		[...af.types.map((t) => ACTIVITY_TYPE_BADGE_LABELS[t] ?? t), ...af.tags].map(typesetQuotes)
-	);
 
 	// --- Hero apparatus: total count + year span across ALL activities. ---
 	const totalCount = $derived(activities.length);
 	const allYears = $derived(
 		[...new Set(activities.map((a: ActivitySummary) => a.year))].sort((a, b) => a - b)
 	);
-	const minYear = $derived(allYears[0]);
-	const maxYear = $derived(allYears[allYears.length - 1]);
+	const minYear = $derived(allYears[0] ?? new Date().getFullYear());
+	const maxYear = $derived(allYears.at(-1) ?? minYear);
 
 	// --- Browse-by-year meter (aside): counts over the FILTERED set so the
 	// sidebar reflects the current view; newest year carries the lone accent. ---
@@ -114,6 +109,16 @@
 	$effect(() => {
 		void filtered;
 		currentPage = 1;
+	});
+	// The page belongs to the history entry: Back from an activity returns to
+	// it (see /publications); a shared link never carries one.
+	snapshot({
+		id: 'activities-log-page',
+		capture: () => currentPage,
+		restore: (value: number) => {
+			const pages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+			currentPage = Math.min(Math.max(1, Math.trunc(value) || 1), pages);
+		}
 	});
 	const pageStart = $derived((currentPage - 1) * PER_PAGE);
 	const paged = $derived(filtered.slice(pageStart, pageStart + PER_PAGE));
@@ -160,7 +165,8 @@
 	class="container py-8"
 	use:urlFilterSync={{
 		filters: af,
-		setters: { setTags: filters.setters.setTags, setTypes: filters.setters.setTypes }
+		setters: { setTags: filters.setters.setTags, setTypes: filters.setters.setTypes },
+		search: filters.search
 	}}
 >
 	<div class="max-w-6xl mx-auto activities-page">
@@ -304,37 +310,33 @@
 			     route, and a second (nested) main is invalid and leaves the document
 			     with two main landmarks for a screen reader to choose between. -->
 			<div class="activities-log" id="activities-log">
-				<!-- The narrowing, stated: what is filtering, how much of the log
-				     survives it, and the way out. The count is the half that was
-				     missing — a filtered log that reports no match figure leaves the
-				     reader to count the rows themselves. -->
-				{#if anyFiltering}
-					<p class="filter-note">
-						<span class="filter-note-label">Filtered by</span>
-						<span class="filter-note-value">{activeFilterLabels.join(' · ')}</span>
-						<!-- The count alone is the live region: with the button inside it, every
-						     narrowing re-announced the control along with the figure. -->
-						<span class="filter-note-count" aria-live="polite">
-							{activeFilterCount}
-							{activeFilterCount === 1 ? 'filter' : 'filters'} active · {filtered.length} of {totalCount}
-							{totalCount === 1 ? 'entry' : 'entries'}
-						</span>
-						<button type="button" class="mono-action" onclick={filters.clearAllFilters}>
-							Clear all <span aria-hidden="true">✕</span>
-						</button>
-					</p>
-				{/if}
+				<!-- The search and the narrowing, stated: what is filtering, how much
+				     of the log survives it, and the way out, in the same tally the
+				     sibling indexes print. Mounted permanently, so its count is a live
+				     region a screen reader has already met before the first change. -->
+				<div class="log-search">
+					<div class="pub-search">
+						<span class="pub-search-icon" aria-hidden="true">⌕</span>
+						<input
+							type="search"
+							class="pub-search-input"
+							placeholder="Title, description, tag, year…"
+							aria-label="Filter activities"
+							bind:value={filters.searchTerm}
+						/>
+					</div>
+					<EntityFilterSummary
+						{filters}
+						totalEntries={totalCount}
+						{minYear}
+						{maxYear}
+						typeLabels={ACTIVITY_TYPE_BADGE_LABELS}
+						empty={filtered.length === 0}
+					/>
+				</div>
 
 				{#if filtered.length === 0}
-					<!-- Empty state: name the corpus that is still there, and carry the
-					     control back to it. The filter note above also clears, but it is
-					     scrolled past on a phone, where the log is the whole column. -->
-					<div class="log-empty">
-						<p class="log-empty-line">No activities match.</p>
-						<p class="log-empty-note">
-							The log holds {totalCount} entries, {minYear}–{maxYear}.
-						</p>
-					</div>
+					<EntityEmptyState {filters} totalEntries={totalCount} {minYear} {maxYear} corpus="log" />
 				{:else}
 					{#each pageGroups as group, groupIndex (group.year)}
 						<section class="year-group" aria-label="Activities from {group.year}">
@@ -383,3 +385,25 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	/* The log's search sits at the head of its column, the tally under it, as
+	 * on the sibling indexes; the first year group follows. */
+	.log-search {
+		margin-bottom: var(--space-lg);
+	}
+
+	.log-search :global(.facet-summary) {
+		margin-top: var(--space-sm);
+	}
+
+	/* Controls do not print (the Paper Rule): the search field, the disclosure
+	 * and the browse aside are all things to act on. The tally stays. */
+	@media print {
+		.log-search .pub-search,
+		.activities-aside,
+		.facet-toggle {
+			display: none;
+		}
+	}
+</style>

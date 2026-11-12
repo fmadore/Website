@@ -113,7 +113,7 @@
 	</span>
 {/snippet}
 
-<figure class="deck-embed" class:is-active={activated}>
+<figure class="deck-embed" class:is-active={activated} class:has-poster={Boolean(posterSrc)}>
 	<div class="deck-chrome">
 		<span class="deck-chrome-host">
 			<Icon icon="lucide:presentation" width="13" height="13" aria-hidden="true" />
@@ -159,23 +159,27 @@
 				</span>
 			</div>
 		{:else}
-			<button
-				type="button"
-				class="deck-facade"
-				onclick={activate}
-				aria-label="View slides: {title}"
-			>
+			<!-- Named by its own visible text, with the talk's title appended for
+			     context: an `aria-label` that replaced the strip's words failed
+			     label-in-name (WCAG 2.5.3), since a voice user says what they see. -->
+			<button type="button" class="deck-facade" onclick={activate}>
 				{@render posterPlate()}
 				<!-- Caption strip, the plate idiom: the affordance sits below the
 				     image on its own ground rather than washing over it. -->
 				<span class="deck-facade-bar">
-					<span class="deck-facade-play"><Icon icon="lucide:play" width="16" height="16" /></span>
+					<span class="deck-facade-play"
+						><Icon icon="lucide:play" width="16" height="16" aria-hidden="true" /></span
+					>
 					<span class="deck-facade-label">View slides</span>
-					<span class="deck-facade-hint">Loads the interactive deck</span>
+					<span class="deck-facade-hint">Loads the interactive deck</span><span class="sr-only"
+						>: {title}</span
+					>
 				</span>
 			</button>
 		{/if}
 	</div>
+	<!-- Paper cannot run a deck, so the printed plate carries its address. -->
+	<figcaption class="plate-caption deck-print-caption">Slides: {src}</figcaption>
 </figure>
 
 <style>
@@ -368,13 +372,74 @@
 		font-size: var(--font-size-2xs);
 		text-transform: uppercase;
 		letter-spacing: var(--tracking-label);
-		color: var(--color-text-muted);
+		/* Light, not muted ink: muted measured 4.37:1 (daylight) and 4.24:1
+		   (midnight) on the strip's hover tint, under AA for 11px text. */
+		color: var(--color-text-light);
 	}
 
 	/* The hint is a nicety; the label carries the meaning. */
 	@media (--sm-down) {
 		.deck-facade-hint {
 			display: none;
+		}
+	}
+
+	/* The chrome actions are 22px mono chips; a coarse pointer gets the 44px
+	   floor every other control takes (the Touch Floor Rule). */
+	@media (--touch) {
+		.deck-chrome-btn {
+			min-height: 44px;
+		}
+	}
+
+	/* The address caption exists for paper only. */
+	.deck-print-caption {
+		display: none;
+	}
+
+	/* On paper the deck is a plate: its cover slide, then its address. The
+	   chrome bar and the facade's strip are controls (the Paper Rule), and a
+	   loaded frame or a deck with no mirrored cover has no plate to print, so
+	   only the caption remains. */
+	@media print {
+		.deck-embed {
+			border: 0;
+			background: none;
+			overflow: visible;
+			break-inside: avoid;
+		}
+
+		.deck-chrome,
+		.deck-facade-bar {
+			display: none;
+		}
+
+		.deck-embed.is-active .deck-stage,
+		.deck-embed:not(.has-poster) .deck-stage {
+			display: none;
+		}
+
+		.deck-facade {
+			position: static;
+			display: block;
+		}
+
+		.deck-facade-plate {
+			display: block;
+			border: var(--border-width-thin) solid var(--color-border);
+		}
+
+		.deck-stage {
+			aspect-ratio: auto;
+		}
+
+		.deck-poster {
+			height: auto;
+		}
+
+		.deck-print-caption {
+			display: block;
+			overflow-wrap: anywhere;
 		}
 	}
 

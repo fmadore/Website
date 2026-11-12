@@ -41,6 +41,15 @@ export interface NetworkEdge {
 	target: string;
 	/** Number of unique items shared by the two endpoints. */
 	weight: number;
+	/**
+	 * Tie strength when it differs from the count: set only by networks built
+	 * with `shareLargeItems`, where an item with k keys gives each of its pairs
+	 * 1/(k−1) rather than 1 (Newman's collaboration weighting). A 24-institution
+	 * workshop then draws its 276 pairs as hairlines that barely pull in the
+	 * layout, instead of a clique that dominates the plate. `weight` stays the
+	 * plain count, which is what the tooltip and the table report.
+	 */
+	strength?: number;
 	items: string[];
 	kind: NetworkEdgeKind;
 }
@@ -106,6 +115,36 @@ export function selectGraph(
 }
 
 /**
+ * Shorten a label to at most `maxChars`, at a boundary a reader can trust.
+ *
+ * A comma-separated qualifier goes first ("University of Ibadan, Nigeria" →
+ * "University of Ibadan…"), then whole words; a word is cut only when the
+ * first one alone is too long. Cutting mid-word is how "Nigeria" came to read
+ * "Niger…" on the institution network: a different country.
+ */
+export function truncateLabel(full: string, maxChars: number): string {
+	if (full.length <= maxChars) return full;
+	const room = Math.max(1, maxChars - 1);
+	const trim = (text: string) => text.replace(/[\s,;:–-]+$/u, '');
+	// Longest comma-prefix that fits.
+	for (
+		let comma = full.lastIndexOf(',', room);
+		comma > 0;
+		comma = full.lastIndexOf(',', comma - 1)
+	) {
+		const head = trim(full.slice(0, comma));
+		if (head.length > 0 && head.length <= room) return `${head}…`;
+	}
+	// Otherwise the longest whole-word prefix.
+	const space = full.lastIndexOf(' ', room);
+	if (space > 0) {
+		const head = trim(full.slice(0, space));
+		if (head.length > 0) return `${head}…`;
+	}
+	return `${full.slice(0, room)}…`;
+}
+
+/**
  * Split a "Jane Doe, John Smith and Alice Roe" name list into individual
  * names. Splits on commas, the word "and", and ampersands — with word
  * boundaries, so names *containing* "and" ("Alexander", "Randall") survive
@@ -134,6 +173,8 @@ interface PairAccumulator {
 	target: string;
 	items: Set<string>;
 	kind: NetworkEdgeKind;
+	/** Σ of the per-item shares, when the builder weights by item size. */
+	strength?: number;
 }
 
 /** Record one shared item on the undirected a–b edge (O(1) via Map). */
@@ -142,7 +183,8 @@ function addPair(
 	a: string,
 	b: string,
 	title: string,
-	kind: NetworkEdgeKind
+	kind: NetworkEdgeKind,
+	share?: number
 ): void {
 	if (a === b) return;
 	const key = pairKey(a, b);
@@ -151,6 +193,7 @@ function addPair(
 		pair = { source: a, target: b, items: new Set(), kind };
 		pairs.set(key, pair);
 	}
+	if (share !== undefined && !pair.items.has(title)) pair.strength = (pair.strength ?? 0) + share;
 	pair.items.add(title);
 }
 
@@ -159,6 +202,7 @@ function pairsToEdges(pairs: Map<string, PairAccumulator>): NetworkEdge[] {
 		source: pair.source,
 		target: pair.target,
 		weight: pair.items.size,
+		...(pair.strength === undefined ? {} : { strength: pair.strength }),
 		items: Array.from(pair.items),
 		kind: pair.kind
 	}));
@@ -343,6 +387,12 @@ export interface CooccurrenceOptions<T> {
 	minEdgeWeight?: number;
 	/** Drop nodes left without any edge after filtering. Default true. */
 	dropIsolatedNodes?: boolean;
+	/**
+	 * Give each pair from an item with k keys a tie strength of 1/(k−1)
+	 * (`NetworkEdge.strength`) instead of 1, so one large item cannot dominate
+	 * the layout as a clique. Counts (`weight`) are unchanged. Default false.
+	 */
+	shareLargeItems?: boolean;
 }
 
 /**
@@ -360,7 +410,8 @@ export function buildCooccurrenceNetwork<T>(
 		getTitle,
 		minNodeWeight = 2,
 		minEdgeWeight = 2,
-		dropIsolatedNodes = true
+		dropIsolatedNodes = true,
+		shareLargeItems = false
 	} = options;
 
 	const entities = new Map<string, Set<string>>();
@@ -381,9 +432,10 @@ export function buildCooccurrenceNetwork<T>(
 			}
 			titles.add(title);
 		}
+		const share = shareLargeItems ? 1 / Math.max(1, keys.length - 1) : undefined;
 		for (let i = 0; i < keys.length; i++) {
 			for (let j = i + 1; j < keys.length; j++) {
-				addPair(pairs, keys[i]!, keys[j]!, title, 'cooccurrence');
+				addPair(pairs, keys[i]!, keys[j]!, title, 'cooccurrence', share);
 			}
 		}
 	}
@@ -418,24 +470,104 @@ export function buildCooccurrenceNetwork<T>(
 }
 
 /**
+ * Words that open a description of a person's role rather than the name of a
+ * body. An institution is named by what it is ("University of …", "Leibniz-
+ * Zentrum …", "LASDEL"); a credit line that begins "Author of", "Founder,",
+ * "Translator and Editor at" or "Unaffiliated" describes the speaker, and
+ * linking it to other institutions would draw a person as an organisation.
+ */
+const ROLE_OPENING =
+	/^(?:author|co-?founder|founder|translator|editor|writer|novelist|poet|artist|filmmaker|journalist|curator|director|consultant|freelance|independent|unaffiliated|retired|ph\.?d\.? candidate)\b/i;
+
+/** False for a credit line that describes a role (see `ROLE_OPENING`), true otherwise. */
+export function isInstitutionalAffiliation(affiliation: string): boolean {
+	const value = affiliation.trim();
+	return value.length > 0 && !ROLE_OPENING.test(value);
+}
+
+/** Typographic and straight apostrophes compare equal ("Côte d’Ivoire"). */
+function foldApostrophes(value: string): string {
+	return value.replace(/[’‘ʼ]/gu, "'");
+}
+
+let regionNames: ReadonlySet<string> | undefined;
+
+/**
+ * Every English country and region name the runtime's CLDR data knows
+ * (`Intl.DisplayNames` over the two-letter ISO 3166 codes), apostrophes
+ * folded. The site's own country list (`geo.ts`) holds only the countries
+ * with a mapped record, so it missed Nigeria; the standard list does not.
+ */
+export function englishRegionNames(): ReadonlySet<string> {
+	if (regionNames) return regionNames;
+	const names = new Set<string>();
+	try {
+		const display = new Intl.DisplayNames(['en'], { type: 'region', fallback: 'none' });
+		const A = 'A'.charCodeAt(0);
+		for (let i = 0; i < 26; i++) {
+			for (let j = 0; j < 26; j++) {
+				const code = String.fromCharCode(A + i, A + j);
+				const name = display.of(code);
+				if (name && name !== code) names.add(foldApostrophes(name));
+			}
+		}
+	} catch {
+		// No Intl region data: fall back to the names the caller passes.
+	}
+	regionNames = names;
+	return names;
+}
+
+/**
+ * The institution an affiliation names, with a trailing ", <country>" removed
+ * when the country is one of `countries`: "University of Ibadan, Nigeria" and
+ * "University of Ibadan" are one node, and a long label is never cut to
+ * "Niger…". Only a final segment that is a known country name is removed, so
+ * "LLACAN, Centre national de la recherche scientifique" keeps its second half.
+ */
+export function institutionKey(affiliation: string, countries: ReadonlySet<string>): string {
+	const value = affiliation.trim();
+	const comma = value.lastIndexOf(',');
+	if (comma <= 0) return value;
+	const tail = foldApostrophes(value.slice(comma + 1).trim());
+	return countries.has(tail) ? value.slice(0, comma).trim() : value;
+}
+
+/**
  * Institution network across communications: two institutions are linked when
  * people affiliated with them appeared in the same panel, workshop, or event.
  * Thresholds default to 1/1 — the affiliation corpus is small, and the page
  * can tighten them once real density is known.
+ *
+ * Three corrections on the raw credit lines, each a rule rather than a list:
+ * role descriptions are not institutions (`isInstitutionalAffiliation`); a
+ * trailing country is folded into the institution it qualifies
+ * (`institutionKey`, against `englishRegionNames` plus any `countries`
+ * passed); and an event's pairs
+ * share one unit of tie strength (`shareLargeItems`), so a workshop with two
+ * dozen institutions is drawn as the loose group it is rather than a clique.
  */
 export function buildInstitutionNetwork(
 	comms: Communication[],
-	options: { minNodeWeight?: number; minEdgeWeight?: number } = {}
+	options: { minNodeWeight?: number; minEdgeWeight?: number; countries?: Iterable<string> } = {}
 ): NetworkData {
+	const countries = new Set([
+		...englishRegionNames(),
+		...[...(options.countries ?? [])].map(foldApostrophes)
+	]);
 	return buildCooccurrenceNetwork(comms, {
-		getKeys: (comm) => [
-			...(comm.participants ?? []).map((p) => p.affiliation ?? ''),
-			...(comm.papers ?? []).flatMap((paper) =>
-				(paper.authors ?? []).map((a) => a.affiliation ?? '')
-			)
-		],
+		getKeys: (comm) =>
+			[
+				...(comm.participants ?? []).map((p) => p.affiliation ?? ''),
+				...(comm.papers ?? []).flatMap((paper) =>
+					(paper.authors ?? []).map((a) => a.affiliation ?? '')
+				)
+			]
+				.filter(isInstitutionalAffiliation)
+				.map((affiliation) => institutionKey(affiliation, countries)),
 		getTitle: (comm) => comm.title,
 		minNodeWeight: options.minNodeWeight ?? 1,
-		minEdgeWeight: options.minEdgeWeight ?? 1
+		minEdgeWeight: options.minEdgeWeight ?? 1,
+		shareLargeItems: true
 	});
 }

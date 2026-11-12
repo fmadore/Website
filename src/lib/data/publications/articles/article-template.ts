@@ -22,7 +22,7 @@ export const articleTemplate: Publication = {
 		"A comprehensive description of the article's content, methodology, findings, and significance. This abstract will be used in list views and as a preview of the publication.",
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
 	url: 'https://doi.org/10.0000/00000', // URL to the publication
-	image: '', // Optional: path to image (e.g., "images/publications/article-image.jpg")
+	// image: '', // Omit when empty. Optional: path to image (e.g., "images/publications/article-image.jpg")
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/publications/article-hero.jpg',
@@ -31,6 +31,6 @@ export const articleTemplate: Publication = {
 	},
 	// New fields
 	country: ['Country Name'], // Countries covered in the publication
-	project: '', // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 	citedBy: [] // Optional: List of works citing this publication
 };

@@ -4,7 +4,7 @@
 	// alone. The plate draws at 1:1 (the viewBox matches the pixel size), so
 	// SVG user units are CSS pixels and the label column keeps its typographic
 	// size whatever the viewport.
-	const margin = { top: 40, right: 32, bottom: 8, left: 124 };
+	const margin = { top: 40, right: 32, bottom: 26, left: 124 };
 	const MIN_PLOT_WIDTH = 620;
 	const LANE_HEIGHT = 52;
 
@@ -15,6 +15,25 @@
 	 * figure from here rather than guessing a breakpoint for its scroll caption.
 	 */
 	export const TIMELINE_MIN_PLATE_WIDTH = margin.left + MIN_PLOT_WIDTH + margin.right;
+
+	/**
+	 * Characters per line in the lane key: the column is 124px and the label is
+	 * mono 2xs caps at the label tracking, about 7.8px a character, less a gap
+	 * before the key rule. "PUBLICATIONS & THESES" ran 160px across the rule.
+	 */
+	const KEY_CHARS = 14;
+
+	/** A lane label broken into lines of at most `KEY_CHARS`, at word boundaries. */
+	export function laneKeyLines(label: string, maxChars: number = KEY_CHARS): string[] {
+		const lines: string[] = [];
+		for (const word of label.toUpperCase().split(/\s+/)) {
+			const last = lines.at(-1);
+			if (last !== undefined && `${last} ${word}`.length <= maxChars)
+				lines[lines.length - 1] = `${last} ${word}`;
+			else lines.push(word);
+		}
+		return lines;
+	}
 </script>
 
 <script lang="ts">
@@ -93,6 +112,13 @@
 
 	const xScale = $derived(scaleUtc().domain(yearDomain).range([0, innerWidth]));
 
+	/**
+	 * The present, drawn once: a 1px pine rule at the date ongoing bars run to
+	 * (the build's date in the prerendered HTML, the reader's once mounted),
+	 * labelled under the plate. Pine is "the current thing", and this is it.
+	 */
+	const presentX = $derived(xScale(now));
+
 	// Generate x-axis ticks
 	const xTicks = $derived.by(() => {
 		const [minDate, maxDate] = yearDomain;
@@ -127,6 +153,7 @@
 				index,
 				top: index * LANE_HEIGHT,
 				centre: index * LANE_HEIGHT + LANE_HEIGHT / 2,
+				keyLines: laneKeyLines(category.label),
 				count: laneItems.length,
 				items: laneItems
 			};
@@ -326,102 +353,161 @@
 			press Enter or Space to open one.
 		</p>
 
-		<svg
-			class="timeline-svg"
-			width={chartWidth}
-			height={chartHeight}
-			viewBox="0 0 {chartWidth} {chartHeight}"
-		>
-			<g transform="translate({margin.left}, {margin.top})">
-				<!-- Year axis (top) -->
-				<g class="x-axis">
-					<line x1={-margin.left} y1="0" x2={innerWidth} y2="0" class="axis-line" />
-					{#each xTicks as tick (tick.getTime())}
-						{@const x = xScale(tick)}
-						{#if x >= 0 && x <= innerWidth}
-							<g transform="translate({x}, 0)">
-								<line y1="0" y2="-6" class="tick-line" />
-								<text y="-12" text-anchor="middle" class="tick-label">
-									{tick.getUTCFullYear()}
-								</text>
-							</g>
-						{/if}
-					{/each}
-				</g>
-
-				<!-- Lane key column: the ledger's hanging mono key, one per lane -->
-				<g class="lanes">
-					<line class="key-rule" x1="0" y1="0" x2="0" y2={innerHeight} />
+		<!-- The plate row: the lane key is its own SVG, pinned to the left edge of
+		     the route's scroller, so the lanes stay named when the plate opens on
+		     the recent years (or is pushed sideways) on a narrow screen. The plot
+		     SVG underlaps it by the key's width, so the geometry is unchanged. -->
+		<div class="plate-row">
+			<svg
+				class="lane-keys"
+				width={margin.left}
+				height={chartHeight}
+				viewBox="0 0 {margin.left} {chartHeight}"
+				aria-hidden="true"
+			>
+				<rect class="lane-keys-ground" x="0" y="0" width={margin.left} height={chartHeight} />
+				<g transform="translate(0, {margin.top})">
+					<line x1="0" y1="0" x2={margin.left} y2="0" class="axis-line" />
 					{#each lanes as lane (lane.id)}
+						{@const lineCount = lane.keyLines.length}
 						{#if lane.index > 0}
-							<line
-								class="lane-rule"
-								x1={-margin.left}
-								y1={lane.top}
-								x2={innerWidth}
-								y2={lane.top}
-							/>
+							<line class="lane-rule" x1="0" y1={lane.top} x2={margin.left} y2={lane.top} />
 						{/if}
-						<text class="lane-label" x={-margin.left} y={lane.centre - 2}>
-							{lane.label.toUpperCase()}
-						</text>
-						<text class="lane-count" x={-margin.left} y={lane.centre + 13}>
+						{#each lane.keyLines as line, li (li)}
+							<text class="lane-label" x="0" y={lane.centre - 2 - (lineCount - 1 - li) * 12}>
+								{line}
+							</text>
+						{/each}
+						<text class="lane-count" x="0" y={lane.centre + 13}>
 							{lane.count} records
 						</text>
 					{/each}
+					<line class="lane-rule" x1="0" y1={innerHeight} x2={margin.left} y2={innerHeight} />
 					<line
-						class="lane-rule"
-						x1={-margin.left}
-						y1={innerHeight}
-						x2={innerWidth}
+						class="key-rule"
+						x1={margin.left - 0.5}
+						y1="0"
+						x2={margin.left - 0.5}
 						y2={innerHeight}
 					/>
 				</g>
-
-				<!-- Records -->
-				<g class="marks">
-					{#each marks as mark, index (`${mark.item.category}:${mark.item.id}:${index}`)}
-						{@const hitWidth = Math.max(24, mark.width)}
-						{@const hitX = mark.duration
-							? mark.x - Math.max(0, (24 - mark.width) / 2)
-							: mark.x - 12}
-						<g
-							class="mark"
-							class:selected={selectedIndex === index}
-							data-mark={index}
-							style="--_mark-colour: {mark.colour};"
-							role="button"
-							tabindex={index === rovingIndex ? 0 : -1}
-							aria-label={mark.name}
-							aria-pressed={selectedIndex === index}
-							onpointermove={(e) => showTooltip(e, mark.item)}
-							onpointerleave={hideTooltip}
-							onclick={() => selectMark(index)}
-							onkeydown={(e) => onMarkKeydown(e, mark, index)}
-							onfocus={() => {
-								focusIndex = index;
-								showTooltipForMark(mark);
-							}}
-							onblur={hideTooltip}
-						>
-							<!-- 24px hit area (WCAG 2.5.8), and the focus ring -->
-							<rect class="mark-hit" x={hitX} y={mark.y - 12} width={hitWidth} height="24" />
-							{#if mark.duration}
-								<rect
-									class="timeline-bar"
-									x={mark.x}
-									y={mark.y - 9}
-									width={mark.width}
-									height="18"
-								/>
-							{:else}
-								<circle class="timeline-point" cx={mark.x} cy={mark.y} r="6" />
+			</svg>
+			<svg
+				class="timeline-svg"
+				width={chartWidth}
+				height={chartHeight}
+				viewBox="0 0 {chartWidth} {chartHeight}"
+				style:margin-inline-start="-{margin.left}px"
+			>
+				<g transform="translate({margin.left}, {margin.top})">
+					<!-- Year axis (top) -->
+					<g class="x-axis">
+						<line x1={-margin.left} y1="0" x2={innerWidth} y2="0" class="axis-line" />
+						{#each xTicks as tick (tick.getTime())}
+							{@const x = xScale(tick)}
+							{#if x >= 0 && x <= innerWidth}
+								<g transform="translate({x}, 0)">
+									<line y1="0" y2="-6" class="tick-line" />
+									<text y="-12" text-anchor="middle" class="tick-label">
+										{tick.getUTCFullYear()}
+									</text>
+								</g>
 							{/if}
+						{/each}
+					</g>
+
+					<!-- Lane key column: the ledger's hanging mono key, one per lane -->
+					<g class="lanes">
+						<line class="key-rule" x1="0" y1="0" x2="0" y2={innerHeight} />
+						{#each lanes as lane (lane.id)}
+							{#if lane.index > 0}
+								<line
+									class="lane-rule"
+									x1={-margin.left}
+									y1={lane.top}
+									x2={innerWidth}
+									y2={lane.top}
+								/>
+							{/if}
+							<!-- The key itself is the pinned SVG above; this text stays for the
+						     downloaded or printed plate, under the pinned copy on screen. -->
+							{#each lane.keyLines as line, li (li)}
+								<text
+									class="lane-label"
+									x={-margin.left}
+									y={lane.centre - 2 - (lane.keyLines.length - 1 - li) * 12}
+								>
+									{line}
+								</text>
+							{/each}
+							<text class="lane-count" x={-margin.left} y={lane.centre + 13}>
+								{lane.count} records
+							</text>
+						{/each}
+						<line
+							class="lane-rule"
+							x1={-margin.left}
+							y1={innerHeight}
+							x2={innerWidth}
+							y2={innerHeight}
+						/>
+					</g>
+
+					<!-- The present: one pine rule, labelled beneath the plate. -->
+					{#if presentX >= 0 && presentX <= innerWidth}
+						<g class="present" aria-hidden="true">
+							<line x1={presentX} y1="-6" x2={presentX} y2={innerHeight} class="present-rule" />
+							<text x={presentX} y={innerHeight + 17} text-anchor="middle" class="present-label">
+								PRESENT
+							</text>
 						</g>
-					{/each}
+					{/if}
+
+					<!-- Records -->
+					<g class="marks">
+						{#each marks as mark, index (`${mark.item.category}:${mark.item.id}:${index}`)}
+							{@const hitWidth = Math.max(24, mark.width)}
+							{@const hitX = mark.duration
+								? mark.x - Math.max(0, (24 - mark.width) / 2)
+								: mark.x - 12}
+							<g
+								class="mark"
+								class:selected={selectedIndex === index}
+								data-mark={index}
+								style="--_mark-colour: {mark.colour};"
+								role="button"
+								tabindex={index === rovingIndex ? 0 : -1}
+								aria-label={mark.name}
+								aria-pressed={selectedIndex === index}
+								onpointermove={(e) => showTooltip(e, mark.item)}
+								onpointerleave={hideTooltip}
+								onclick={() => selectMark(index)}
+								onkeydown={(e) => onMarkKeydown(e, mark, index)}
+								onfocus={() => {
+									focusIndex = index;
+									showTooltipForMark(mark);
+								}}
+								onblur={hideTooltip}
+							>
+								<!-- 24px hit area (WCAG 2.5.8), and the focus ring -->
+								<rect class="mark-hit" x={hitX} y={mark.y - 12} width={hitWidth} height="24" />
+								{#if mark.duration}
+									<rect
+										class="timeline-bar"
+										x={mark.x}
+										y={mark.y - 9}
+										width={mark.width}
+										height="18"
+									/>
+								{:else}
+									<circle class="timeline-point" cx={mark.x} cy={mark.y} r="6" />
+								{/if}
+							</g>
+						{/each}
+					</g>
 				</g>
-			</g>
-		</svg>
+			</svg>
+		</div>
 
 		<!-- Detail Card — only once the reader has opened a record. -->
 		{#if selectedMark && selectedIndex !== null}
@@ -471,10 +557,41 @@
 
 	/* The route container owns the one horizontal scroller; the plate draws at
 	   its natural width and lets that container scroll it. */
+	.plate-row {
+		display: flex;
+		align-items: flex-start;
+		align-self: start;
+	}
+
 	.timeline-svg {
 		display: block;
 		flex: none;
-		align-self: start;
+	}
+
+	/* Pinned over the plot's own key column: same text, opaque ground. */
+	.lane-keys {
+		display: block;
+		flex: none;
+		position: sticky;
+		left: 0;
+		z-index: 1;
+	}
+
+	.lane-keys-ground {
+		fill: var(--color-background);
+	}
+
+	.present-rule {
+		stroke: var(--color-accent);
+		stroke-width: var(--rule-hairline);
+	}
+
+	.present-label {
+		fill: var(--color-accent);
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: var(--tracking-label);
 	}
 
 	.axis-line,

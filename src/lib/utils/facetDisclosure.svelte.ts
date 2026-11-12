@@ -1,16 +1,18 @@
 /**
  * The facet disclosure's one piece of state.
  *
- * Three index pages collapse their filter apparatus behind a `More filters`
- * toggle below --lg: /publications and /conference-activity through
- * `EntityFilterBar`, and /activities over its browse aside. All three need the
- * same fact — *is the apparatus actually collapsed right now* — and for the same
- * reason: the toggle is `display: none` above the breakpoint, and a hidden
- * control that an assistive technology still reaches reported
- * `aria-expanded="false"` over a grid that was fully laid out. The attribute is
- * therefore rendered only while the control it describes is.
+ * /activities collapses its browse aside behind a `More filters` toggle below
+ * --lg, and needs to know *is the apparatus actually collapsed right now*: the
+ * toggle is `display: none` above the breakpoint, and a hidden control that an
+ * assistive technology still reaches reported `aria-expanded="false"` over an
+ * aside that was fully laid out. The attribute is therefore rendered only while
+ * the control it describes is.
  *
- * Kept here rather than in the components so the breakpoint is stated once.
+ * The entity indexes (/publications, /conference-activity, the citations page)
+ * no longer use it: their facet grid is closed behind `More filters` at every
+ * width, so `EntityFilterBar` renders its toggle, and `aria-expanded`, always.
+ *
+ * Kept here rather than in the component so the breakpoint is stated once.
  * `--lg-down` in `media.css` is the same boundary; a literal is unavoidable in
  * `matchMedia`, so this module is the single place it is written down.
  */

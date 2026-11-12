@@ -22,11 +22,9 @@ export const activity: Activity = {
 		'Islam'
 	],
 	panelType: 'publication',
-	image: '',
 	heroImage: {
 		src: 'images/publications/religiosity-university-campuses.webp',
-		alt: 'Book cover of Religiosity on University Campuses in Africa, edited by Abdoulaye Sounaye and Frédérick Madore.',
-		caption: ''
+		alt: 'Book cover of Religiosity on University Campuses in Africa, edited by Abdoulaye Sounaye and Frédérick Madore.'
 	},
 	type: 'publication'
 };

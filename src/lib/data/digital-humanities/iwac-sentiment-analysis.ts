@@ -59,8 +59,8 @@ export const iwacSentimentAnalysis: DigitalHumanitiesProject = {
 		'Data Visualisation',
 		'LLM',
 		'Prompt Engineering',
-		'Sentiment analysis',
-		'Inter-rater agreement'
+		'Sentiment Analysis',
+		'Inter-rater Agreement'
 	],
 	embeddableContent: [
 		{

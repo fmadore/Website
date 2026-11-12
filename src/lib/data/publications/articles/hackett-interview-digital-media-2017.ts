@@ -30,7 +30,7 @@ export const hackettInterviewDigitalMedia: Publication = {
 		'Islam',
 		'Religion',
 		'Interview',
-		'Research Methodology'
+		'Research Methods'
 	],
 	url: 'https://doi.org/10.14428/emulations.024.008',
 	openAccess: true,

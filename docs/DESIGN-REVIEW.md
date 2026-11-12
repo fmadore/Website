@@ -72,13 +72,22 @@ than waiting for a review:
   declared property (twice a dead token silently deleted a focus ring)
 - `src/styles/utilityClasses.test.ts` — no utility without a consumer, and no
   utility-shaped class in markup that no stylesheet defines
+- `src/styles/printRegister.test.ts` — the "never add" rules: no shadow,
+  glass, radius, gradient, `rgba`/`hsla` or raw hex, keyframes, resting
+  `will-change`, hover transform or `!important`, outside a named allowlist
+  that fails when an exception goes stale
+- `src/lib/utils/authorName.test.ts` — a shrinking ratchet of files that
+  still spell the author's name instead of `author.name`
+- `src/lib/utils/toolCatalogueParity.test.ts` and `originTrial.test.ts` — the
+  two agent tool catalogues agree, and the WebMCP token is not about to expire
 - `tests-e2e/hover-contrast.spec.ts` — every control on `/style-guide` and
   `/publications`, hovered, in both themes, clears AA: the state axe never
   enters
 - `tests-e2e/a11y.spec.ts` runs axe with Label in Name switched on, and
   `responsive.spec.ts` holds the visualisation chrome to the 44px touch floor
 - `lighthouserc.yml` — score floors, Core Web Vitals and resource budgets;
-  `npm run check:bundle` and `check:prerender` on the build output
+  `npm run check:bundle`, `check:prerender`, `check:structured-data` and
+  `check:documents` on the build output
 
 ## The pattern that worked
 

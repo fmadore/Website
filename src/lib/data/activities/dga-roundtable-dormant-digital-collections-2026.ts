@@ -19,7 +19,7 @@ export const dgaRoundtableDormantDigitalCollections2026: Activity = {
     `,
 	tags: [
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'IWAC',
 		'Talk',
 		'DGA',

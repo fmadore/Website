@@ -6,16 +6,14 @@
 	import JsonLd from '#lib/components/common/JsonLd.svelte';
 	import EntityFilterBar from '#lib/components/entity-index/EntityFilterBar.svelte';
 	import EntityFacetGrid from '#lib/components/entity-index/EntityFacetGrid.svelte';
+	import EntityEmptyState from '#lib/components/entity-index/EntityEmptyState.svelte';
+	import { snapshot } from '$app/navigation';
 	import { urlFilterSync } from '#lib/actions/urlFilterSync.svelte.ts';
 	import {
 		EntityFilterSystem,
 		type EntityArrayDimension
 	} from '#lib/utils/entityFilterSystem.svelte.ts';
-	import {
-		matchesSearchTerms,
-		summariseYears,
-		truncateSearchTerm
-	} from '#lib/utils/entityFilterCore.ts';
+	import { summariseYears } from '#lib/utils/entityFilterCore.ts';
 	import { byFrequencyThenAlpha, countOccurrences } from '#lib/utils/facetOrdering.ts';
 	import { CITING_WORK_KIND_LABELS, type CitingWorkRow } from '#lib/utils/citationContexts.ts';
 	import { resolve } from '$app/paths';
@@ -71,6 +69,20 @@
 
 	const filters = new EntityFilterSystem<CitingWorkRow>({
 		items: works,
+		searchFields: (work) => [
+			work.title,
+			work.source ?? '',
+			String(work.year),
+			typeLabels[work.kind] ?? '',
+			...work.authors,
+			...work.groups.flatMap((group) => [
+				group.publicationTitle,
+				...group.passages.map((passage) => passage.text)
+			])
+		],
+		// The page files the cited publication under `projects` and the citing
+		// authors under `authors`; the headings say what they hold.
+		labels: { projects: 'Cited publication', authors: 'Citing authors' },
 		dimensions: {
 			types: anyOf(kindOf),
 			languages: anyOf(languageOf),
@@ -93,39 +105,20 @@
 	});
 	const af = filters.activeFilters;
 
-	let searchTerm = $state('');
-	const search = {
-		get value() {
-			return searchTerm;
+	let activeSort = $state<'date' | 'title'>('date');
+	const sort = {
+		get value(): string {
+			return activeSort;
 		},
 		set value(next: string) {
-			searchTerm = next;
-		}
+			activeSort = next === 'title' ? 'title' : 'date';
+		},
+		options: ['date', 'title'],
+		fallback: 'date'
 	};
-	let activeSort = $state<'date' | 'title'>('date');
 	let facetsOpen = $state(false);
 
-	function clearAllNarrowing() {
-		filters.clearAllFilters();
-		searchTerm = '';
-	}
-
-	function searchFields(work: CitingWorkRow): string[] {
-		return [
-			work.title,
-			work.source ?? '',
-			String(work.year),
-			...work.authors,
-			...work.groups.flatMap((group) => [
-				group.publicationTitle,
-				...group.passages.map((passage) => passage.text)
-			])
-		];
-	}
-
-	const searched = $derived(
-		filters.filteredItems.filter((work) => matchesSearchTerms(searchFields(work), searchTerm))
-	);
+	const searched = $derived(filters.filteredItems);
 	const sorted = $derived(
 		activeSort === 'title' ? [...searched].sort((a, b) => a.title.localeCompare(b.title)) : searched
 	);
@@ -146,11 +139,11 @@
 	 * publications index's twelve. */
 	const PER_PAGE = 8;
 	const pagination = usePagination(() => visibleRows, PER_PAGE);
-	const anyNarrowing = $derived(filters.activeFilterCount > 0 || searchTerm.trim().length > 0);
-	const searchOnlyNarrowing = $derived(
-		searchTerm.trim().length > 0 && filters.activeFilterCount === 0
-	);
-	const activeFilterCount = $derived(filters.activeFilterCount + (searchTerm.trim() ? 1 : 0));
+	snapshot({
+		id: 'citations-index-page',
+		capture: () => pagination.page,
+		restore: (value: number) => (pagination.page = value)
+	});
 
 	const totalEntries = works.length;
 	const totalPassages = works.reduce((sum, work) => sum + work.passageCount, 0);
@@ -198,7 +191,10 @@
 
 <JsonLd id="breadcrumb-json-ld-publications-citations" json={breadcrumbJsonLd} />
 
-<div class="entity-index" use:urlFilterSync={{ filters: af, setters: filters.setters, search }}>
+<div
+	class="entity-index"
+	use:urlFilterSync={{ filters: af, setters: filters.setters, search: filters.search, sort }}
+>
 	<Breadcrumb items={breadcrumbItems} />
 
 	<header class="index-hero index-masthead">
@@ -230,30 +226,6 @@
 		</div>
 	</header>
 
-	<aside class="citations-about" aria-labelledby="citations-about-title">
-		<h2 id="citations-about-title" class="eyebrow eyebrow--ink">About this experiment</h2>
-		<p>
-			This page is an experiment, and a work in progress. It tests whether a language model can
-			recover, from the full texts of the works that cite mine, the sentences in which they do so.
-			The pilot read every work that cites one article, <cite
-				>The New Vitality of Salafism in Côte d’Ivoire</cite
-			> (2016), and recorded each of my publications those works cite. Works citing only my other publications
-			are still to be read; the coverage table at the foot of the page says how far each publication has
-			got.
-		</p>
-		<p>
-			{models}, a language model made by Anthropic, located each passage in the full text of the
-			citing work, and a script then checked it word for word against that text.
-			{#if fromPrint > 0}
-				{fromPrint === 1 ? 'One passage was' : `${fromPrint} passages were`} read from a printed copy
-				instead, and {fromPrint === 1 ? 'is' : 'are'} marked as such.
-			{/if}
-			The check confirms that each quotation is exact, not that it is attached to the right publication,
-			so errors remain possible. Note numbers are removed. The quotations remain the work of their authors,
-			and each entry links to its source.
-		</p>
-	</aside>
-
 	<EntityFilterBar
 		{filters}
 		{typeLabels}
@@ -262,24 +234,15 @@
 		searchPlaceholder="Word, author, title, year…"
 		searchAriaLabel="Filter citations"
 		sortAriaLabel="Sort citations"
-		bind:searchTerm
+		{totalEntries}
+		{minYear}
+		{maxYear}
+		empty={matchCount === 0}
 		bind:facetsOpen
 		bind:activeSort
 	/>
 
-	<EntityFacetGrid
-		{filters}
-		open={facetsOpen}
-		{minYear}
-		{maxYear}
-		{totalEntries}
-		{matchCount}
-		{activeFilterCount}
-		{anyNarrowing}
-		{typeLabels}
-		labels={{ projects: 'Cited publication', authors: 'Citing authors' }}
-		onclearall={clearAllNarrowing}
-	/>
+	<EntityFacetGrid {filters} open={facetsOpen} {minYear} {maxYear} />
 
 	<section class="rule-section citations-list" id="citations" aria-labelledby="citations-head">
 		<h2 class="sr-only" id="citations-head">Citations</h2>
@@ -357,25 +320,38 @@
 				scrollTargetId="citations"
 			/>
 		{:else}
-			<div class="bib-empty">
-				<p class="bib-empty-line">
-					{#if searchTerm.trim()}
-						No entries match &ldquo;{truncateSearchTerm(searchTerm)}&rdquo;.
-					{:else}
-						No entries match.
-					{/if}
-				</p>
-				<p class="dateline bib-empty-note">
-					The index holds {totalEntries} entries, {minYear}–{maxYear}.
-				</p>
-				{#if anyNarrowing}
-					<button type="button" class="mono-action" onclick={clearAllNarrowing}>
-						{searchOnlyNarrowing ? 'Clear search' : 'Clear all'}
-						<span aria-hidden="true">✕</span>
-					</button>
-				{/if}
-			</div>
+			<EntityEmptyState {filters} {totalEntries} {minYear} {maxYear} />
 		{/if}
+	</section>
+
+	<!-- The method note closes the page rather than opening it: the quotations
+	     are what a reader came for, and the note sat 2.4 screens of prose and
+	     apparatus ahead of the first one. The standfirst already says the page
+	     is an experiment; this section says how it was made. -->
+	<section class="section citations-about" aria-labelledby="citations-about-title">
+		<div class="section-head">
+			<h2 class="section-title" id="citations-about-title">About this experiment</h2>
+		</div>
+		<p>
+			This page is an experiment, and a work in progress. It tests whether a language model can
+			recover, from the full texts of the works that cite mine, the sentences in which they do so.
+			The pilot read every work that cites one article, <cite
+				>The New Vitality of Salafism in Côte d’Ivoire</cite
+			> (2016), and recorded each of my publications those works cite. Works citing only my other publications
+			are still to be read; the coverage table at the foot of the page says how far each publication has
+			got.
+		</p>
+		<p>
+			{models}, a language model made by Anthropic, located each passage in the full text of the
+			citing work, and a script then checked it word for word against that text.
+			{#if fromPrint > 0}
+				{fromPrint === 1 ? 'One passage was' : `${fromPrint} passages were`} read from a printed copy
+				instead, and {fromPrint === 1 ? 'is' : 'are'} marked as such.
+			{/if}
+			The check confirms that each quotation is exact, not that it is attached to the right publication,
+			so errors remain possible. Note numbers are removed. The quotations remain the work of their authors,
+			and each entry links to its source.
+		</p>
 	</section>
 
 	<section class="section citations-coverage" aria-labelledby="coverage-title">
@@ -421,11 +397,10 @@
 </div>
 
 <style>
-	/* The method note: prose, at reading measure, between the masthead and the
-	 * filter bar. */
+	/* The method note: a closing ruled section of prose, at reading measure,
+	 * between the list and the coverage table. */
 	.citations-about {
-		max-width: var(--measure-prose);
-		margin: var(--space-lg) 0 var(--space-xl);
+		margin-top: var(--space-3xl);
 		font-family: var(--font-family-serif);
 		font-size: var(--font-size-base);
 		line-height: var(--line-height-relaxed);
@@ -433,6 +408,7 @@
 	}
 
 	.citations-about p {
+		max-width: var(--measure-prose);
 		margin: 0 0 var(--space-sm);
 	}
 

@@ -17,7 +17,7 @@ export const volkswagenStiftungDHAIAfricanStudiesWorkshop2026: Communication = {
 		'This scoping workshop addresses the critical convergence of digital humanities (DH) and artificial intelligence (AI) within African studies. While this intersection offers transformative potential, it also poses pressing challenges in terms of equity, linguistic diversity and methodology. This three-day working meeting will provide a dedicated space for international experts from Africa, Europe, and other regions to assess the current state of the field and collaboratively shape its future. Through intensive exchange—prioritising discussion over presentations—participants will explore methodological integration, equitable North-South/South-South collaboration and ethical frameworks in structured work streams. The aim is to develop actionable strategies for the ethical and sustainable advancement of DH/AI in African studies. A key outcome to ensure lasting impact will be a co-authored position paper outlining key findings and strategic recommendations to guide future research, policy and funding and thereby consolidate this emerging field.',
 	tags: [
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'African Studies',
 		'Decolonisation',
 		'Workshop',

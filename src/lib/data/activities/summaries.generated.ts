@@ -11,7 +11,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"year": 2026,
 		"description": "Taking part in Panel I: African History at the University of Kansas AI and Africa Symposium, held on Zoom on 17 September 2026.",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"African Studies",
 			"African History",
@@ -112,7 +112,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"year": 2025,
 		"description": "Presentation to the ALMEDA team on AI pipelines for managing large-scale African digital collections.",
 		"tags": [
-			"AI",
+			"Artificial Intelligence",
 			"Digital Humanities",
 			"African Studies",
 			"IWAC",
@@ -134,10 +134,10 @@ export const activitySummaries: ActivitySummary[] = [
 		"dateISO": "2026-03-31",
 		"date": "31 March 2026",
 		"year": 2026,
-		"description": "Blog post co-authored with Vincent Hiribarren for Digital History Bielefeld, reflecting on the Hannover workshop on Digital Humanities and AI in African Studies.",
+		"description": "Blog post co-authored with Vincent Hiribarren for Digital History Bielefeld, reflecting on the Hanover workshop on Digital Humanities and AI in African Studies.",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Workshop",
 			"Blog Post",
@@ -154,19 +154,18 @@ export const activitySummaries: ActivitySummary[] = [
 	},
 	{
 		"id": "charting-new-territory-workshop-hannover",
-		"title": "Charting New Territory: Digital Humanities and AI in African Studies Workshop, Hannover",
+		"title": "Charting New Territory: Digital Humanities and AI in African Studies Workshop, Hanover",
 		"dateISO": "2026-02-16",
 		"date": "16 February 2026",
 		"year": 2026,
-		"description": "Three-day workshop in Hannover bringing together 25 researchers from 16 countries to explore digital humanities and AI in African Studies, co-organised with Vincent Hiribarren and funded by the VolkswagenStiftung.",
+		"description": "Three-day workshop in Hanover bringing together 25 researchers from 16 countries to explore digital humanities and AI in African Studies, co-organised with Vincent Hiribarren and funded by the VolkswagenStiftung.",
 		"heroImage": {
 			"src": "images/activities/charting-new-territory-workshop-hannover-hero.webp",
-			"alt": "Charting New Territory: Digital Humanities and AI in African Studies Workshop, Hannover",
-			"caption": ""
+			"alt": "Charting New Territory: Digital Humanities and AI in African Studies Workshop, Hanover"
 		},
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Workshop",
 			"Volkswagen Foundation"
@@ -208,7 +207,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "Invited talk for the Deutsche Gesellschaft für Asienforschung (DGA) roundtable on Digital Humanities and AI in regional studies, exploring how AI can turn scholars' dormant scan collections into active research instruments.",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"IWAC",
 			"Talk",
 			"DGA",
@@ -235,18 +234,16 @@ export const activitySummaries: ActivitySummary[] = [
 		"tags": [
 			"ECAS",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Conference",
 			"Call for Papers",
 			"Panel"
 		],
-		"image": "",
 		"panelType": "conference",
 		"heroImage": {
 			"src": "images/activities/ECAS-2025.webp",
-			"alt": "ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025.",
-			"caption": ""
+			"alt": "ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025."
 		},
 		"type": "conference"
 	},
@@ -259,7 +256,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "Call for chapter proposals for an edited volume on Digital Humanities and Artificial Intelligence in African Studies, to be published by Bielefeld University Press.",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Call for Papers"
 		],
@@ -277,12 +274,11 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "Call for papers for a four-day workshop at the Stellenbosch Institute for Advanced Study (STIAS) in South Africa, 21–24 September 2026, co-organised with Vincent Hiribarren, Emmanuel Ngué Um, and Menno van Zaanen, and funded by the DFG Point Sud programme.",
 		"heroImage": {
 			"src": "images/communications/point-sud-logo.svg",
-			"alt": "DFG Point Sud programme logo",
-			"caption": ""
+			"alt": "DFG Point Sud programme logo"
 		},
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Call for Papers",
 			"Workshop",
@@ -301,7 +297,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"tags": [
 			"Digital Humanities",
 			"Digital History",
-			"AI",
+			"Artificial Intelligence",
 			"Large Language Models",
 			"IWAC",
 			"MCP",
@@ -331,7 +327,7 @@ export const activitySummaries: ActivitySummary[] = [
 			"Digital Humanities",
 			"IWAC",
 			"Review",
-			"AI",
+			"Artificial Intelligence",
 			"West Africa",
 			"Islam"
 		],
@@ -353,18 +349,16 @@ export const activitySummaries: ActivitySummary[] = [
 		"tags": [
 			"ECAS",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Conference",
 			"Panel",
 			"IWAC"
 		],
-		"image": "",
 		"panelType": "conference",
 		"heroImage": {
 			"src": "images/activities/ECAS-2025.webp",
-			"alt": "ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025.",
-			"caption": ""
+			"alt": "ECAS 2025 logo with the theme “African, Afropean, Afropolitan,” held in Prague, June 25-28, 2025."
 		},
 		"type": "conference"
 	},
@@ -379,7 +373,7 @@ export const activitySummaries: ActivitySummary[] = [
 			"École nationale des chartes",
 			"Talk",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"Computational Methods",
 			"IWAC",
 			"West Africa",
@@ -457,7 +451,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "Our collective position paper on digital humanities and AI in African Studies is now freely available in the ZMO Programmatic Texts series.",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Publication",
 			"Volkswagen Foundation"
@@ -480,19 +474,17 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "Attending and presenting at the Humanistica 2025 conference in Dakar, focusing on Digital Humanities and AI.",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"IWAC",
 			"Conference",
 			"Humanistica",
 			"African Studies",
 			"West Africa"
 		],
-		"url": "",
 		"image": "images/activities/humanistica-2025-dakar.webp",
 		"heroImage": {
 			"src": "images/activities/humanistica-2025-dakar-hero.webp",
-			"alt": "Humanistica 2025 conference in Dakar",
-			"caption": ""
+			"alt": "Humanistica 2025 conference in Dakar"
 		},
 		"type": "conference"
 	},
@@ -506,8 +498,8 @@ export const activitySummaries: ActivitySummary[] = [
 		"tags": [
 			"REAF",
 			"Digital Humanities",
-			"AI",
-			"Methodology",
+			"Artificial Intelligence",
+			"Research Methods",
 			"Panel",
 			"Call for Papers",
 			"African Studies",
@@ -534,7 +526,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"tags": [
 			"Volkswagen Foundation",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"Large Language Models",
 			"IWAC",
 			"Islam",
@@ -575,11 +567,9 @@ export const activitySummaries: ActivitySummary[] = [
 			"Islam"
 		],
 		"panelType": "publication",
-		"image": "",
 		"heroImage": {
 			"src": "images/publications/religiosity-university-campuses.webp",
-			"alt": "Book cover of Religiosity on University Campuses in Africa, edited by Abdoulaye Sounaye and Frédérick Madore.",
-			"caption": ""
+			"alt": "Book cover of Religiosity on University Campuses in Africa, edited by Abdoulaye Sounaye and Frédérick Madore."
 		},
 		"type": "publication"
 	},
@@ -726,7 +716,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "The workshop \"Digital Humanities and Artificial Intelligence in African Studies: Towards Sustainable and Equitable Practices\" runs at the Stellenbosch Institute for Advanced Study from 21 to 24 September 2026. Presentations are streamed live on Teams with simultaneous French–English translation.",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Workshop",
 			"Sustainability",
@@ -741,8 +731,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/communications/point-sud-logo.svg",
 		"heroImage": {
 			"src": "images/communications/point-sud-logo.svg",
-			"alt": "DFG Point Sud programme logo",
-			"caption": ""
+			"alt": "DFG Point Sud programme logo"
 		}
 	},
 	{
@@ -764,12 +753,10 @@ export const activitySummaries: ActivitySummary[] = [
 			"Togo",
 			"IWAC"
 		],
-		"image": "",
 		"panelType": "workshop",
 		"heroImage": {
 			"src": "images/activities/tracing-islamic-knowledge-production.webp",
-			"alt": "Bar chart of 204 articles mentioning intégrisme by country and year (1979-2019), peaking in Côte d'Ivoire in the early 1990s.",
-			"caption": ""
+			"alt": "Bar chart of 204 articles mentioning intégrisme by country and year (1979-2019), peaking in Côte d'Ivoire in the early 1990s."
 		},
 		"pdfPath": "files/perspectives-in-motion-programme.pdf",
 		"pdfTitle": "Workshop programme",
@@ -790,7 +777,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"tags": [
 			"Grant",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"West Africa",
 			"Central Asia",
 			"Volkswagen Foundation",
@@ -812,15 +799,13 @@ export const activitySummaries: ActivitySummary[] = [
 			"Grant",
 			"Workshop",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies"
 		],
 		"panelType": "grant",
-		"image": "",
 		"heroImage": {
 			"src": "images/activities/VolkswagenStiftung-logo.webp",
-			"alt": "VolkswagenStiftung logo",
-			"caption": ""
+			"alt": "VolkswagenStiftung logo"
 		},
 		"type": "grant"
 	},
@@ -831,21 +816,21 @@ export const activitySummaries: ActivitySummary[] = [
 		"date": "5 March 2026",
 		"year": 2026,
 		"type": "presentation",
-		"description": "Aksana Ismailbekova and I presented our project \"Islam's 'Peripheries'\" at the VolkswagenStiftung \"Open Up\" kick-off event at Herrenhausen Palace in Hannover.",
+		"description": "Aksana Ismailbekova and I presented our project \"Islam's 'Peripheries'\" at the VolkswagenStiftung \"Open Up\" kick-off event at Herrenhausen Palace in Hanover.",
 		"tags": [
 			"Volkswagen Foundation",
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"West Africa",
 			"Central Asia",
 			"Islam",
 			"IWAC",
 			"Presentation",
-			"Hannover"
+			"Hanover"
 		],
 		"heroImage": {
 			"src": "images/activities/volkswagenstiftung-open-up-kickoff-2026-hero.webp",
-			"alt": "Frédérick Madore and Aksana Ismailbekova presenting their project at the VolkswagenStiftung \"Open Up\" kick-off event at Herrenhausen Palace in Hannover"
+			"alt": "Frédérick Madore and Aksana Ismailbekova presenting their project at the VolkswagenStiftung \"Open Up\" kick-off event at Herrenhausen Palace in Hanover"
 		}
 	},
 	{
@@ -857,7 +842,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "Invited lecture at the SADiLaR Digital Humanities colloquia exploring how large language models can transform vast archival collections into more navigable resources.",
 		"tags": [
 			"Digital Humanities",
-			"AI",
+			"Artificial Intelligence",
 			"IWAC",
 			"Large Language Models",
 			"Talk",
@@ -912,7 +897,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "Joined Elisa Nobel-Dilaty on the ZMO \"Kitchen Talks\" podcast to discuss the Islam in West Africa Collection and potential and pitfalls of AI in African and Islamic studies.",
 		"tags": [
 			"Podcast",
-			"AI",
+			"Artificial Intelligence",
 			"African Studies",
 			"Islamic Studies",
 			"Digital Humanities",

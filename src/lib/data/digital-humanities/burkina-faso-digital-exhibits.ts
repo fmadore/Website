@@ -37,7 +37,7 @@ export const burkinaFasoDigitalExhibits: DigitalHumanitiesProject = {
 		{ url: 'https://islam.zmo.de/s/westafrica/page/secularism', label: 'Secularism' }
 	],
 	skills: [
-		'Digital exhibitions',
+		'Digital Exhibitions',
 		'Timeline JS',
 		'Omeka S',
 		'Data Visualisation',

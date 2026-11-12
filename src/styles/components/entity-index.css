@@ -81,11 +81,30 @@
 	gap: var(--space-md);
 }
 
+/* From --lg the search and the type chips share a row and the tally runs
+ * under both; below it the three stack in source order (search, tally, type
+ * chips), so the count is the next thing under the field being typed in. */
 @media (--lg) {
 	.filter-bar-top {
-		flex-direction: row;
-		align-items: flex-start;
-		gap: var(--space-lg);
+		display: grid;
+		grid-template-columns: clamp(18rem, 26vw, 22rem) minmax(0, 1fr);
+		grid-template-areas:
+			'search chips'
+			'tally tally';
+		align-items: start;
+		gap: var(--space-md) var(--space-lg);
+	}
+
+	.filter-bar-top > .pub-search {
+		grid-area: search;
+	}
+
+	.filter-bar-top > .type-chips {
+		grid-area: chips;
+	}
+
+	.filter-bar-top > .facet-summary {
+		grid-area: tally;
 	}
 }
 
@@ -100,12 +119,6 @@
 	border: var(--border-width-thin) solid var(--color-border-dark);
 	background: var(--color-surface);
 	transition: border-color var(--duration-fast) var(--ease-out);
-}
-
-@media (--lg) {
-	.pub-search {
-		flex: 0 0 clamp(18rem, 26vw, 22rem);
-	}
 }
 
 .pub-search:focus-within {
@@ -142,6 +155,14 @@
 
 .pub-search-input:focus {
 	outline: none;
+}
+
+/* The browser's own clear cross is a second, unlabelled clear control beside
+ * the tally's `Clear search` (the Clearing Rule allows one), drawn in the
+ * platform's blue. Escape still empties the field. */
+.pub-search-input::-webkit-search-cancel-button {
+	-webkit-appearance: none;
+	appearance: none;
 }
 
 .type-chips {
@@ -203,11 +224,14 @@
 	flex-wrap: wrap;
 }
 
-/* `More filters` is `.facet-toggle`, which moved to ink-signal.css when
- * /activities adopted the same disclosure over the same kind of apparatus —
- * and does not load this sheet. Its inking is unchanged: ink at rest (it is a
- * permanent control of the narrow layout, not a current state), pine under the
- * pointer or on focus. */
+/* `More filters` is `.facet-toggle` (ink-signal.css), shared with the
+ * /activities aside: ink at rest, pine under the pointer or on focus. There it
+ * exists only below --lg; in the filter bar it is shown at every width,
+ * because the facet grid is closed by default at every width (the list starts
+ * in the first viewport). */
+.filter-bar .facet-toggle {
+	display: inline-flex;
+}
 
 .sort-control {
 	display: flex;
@@ -282,8 +306,8 @@
 
 	/* The facet ledger is a control family too: at rest its rows measure 23px on
 	 * a 23px pitch, and adjacent rows share an edge, so the SC 2.5.8 spacing
-	 * exception cannot rescue them. The grid is behind `More filters` below
-	 * --lg, so the extra leading costs the reader nothing. */
+	 * exception cannot rescue them. The grid is behind `More filters`, so the
+	 * extra leading costs the reader nothing. */
 	.facet-row {
 		padding: var(--space-2-5) 0;
 		min-height: 44px;
@@ -295,45 +319,32 @@
 }
 
 /* ═══ FACET GRID ═══ */
+/* Closed behind `More filters` at every width: laid out, it put the first
+ * entry 1,121px down a 900px desktop screen. The filter bar opens it when one
+ * of its facets is set, so an active filter is never hidden. */
 .facet-grid {
+	display: none;
 	margin-top: var(--space-lg);
 	padding-top: var(--rule-gap);
+}
+
+.facet-grid--open {
 	display: grid;
 	grid-template-columns: 1fr;
-	gap: var(--space-xl);
+	gap: var(--space-lg);
 }
 
 @media (--md) {
-	.facet-grid {
+	.facet-grid--open {
 		grid-template-columns: 1fr 1fr;
-		gap: var(--space-xl) var(--space-2xl);
+		gap: var(--space-lg) var(--space-2xl);
 	}
 }
 
 @media (--lg) {
-	.facet-grid {
+	.facet-grid--open {
 		grid-template-columns: 1.2fr 1fr 1fr 1.3fr;
 		gap: var(--space-2xl);
-	}
-}
-
-/* Below lg the whole apparatus collapses behind the Advanced-filters toggle. */
-@media (--lg-down) {
-	.facet-grid {
-		display: none;
-	}
-
-	.facet-grid--open {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-lg);
-	}
-}
-
-@media (--md) and (--lg-down) {
-	.facet-grid--open {
-		grid-template-columns: 1fr 1fr;
-		gap: var(--space-lg) var(--space-2xl);
 	}
 }
 
@@ -450,10 +461,12 @@
 	gap: var(--space-1-5);
 }
 
-/* Active-filter summary — the "N FILTERS ACTIVE · M MATCHES" ledger line. */
+/* The tally — "FILTERED BY TAGS: ISLAM OR TOGO · 2 FILTERS ACTIVE · 7 OF 51
+ * ENTRIES". It sits inside the filter bar, directly under the search and type
+ * row, so the count answers a keystroke in the first viewport; the bar's own
+ * gap spaces it, and its hairline rules it off from the row above. */
 .facet-summary {
-	margin-top: var(--space-md);
-	padding-top: var(--rule-gap);
+	padding-top: var(--space-sm);
 	border-top: var(--rule-hairline) solid var(--color-hairline);
 	display: flex;
 	flex-wrap: wrap;
@@ -482,6 +495,23 @@
 	flex-wrap: wrap;
 	align-items: baseline;
 	gap: var(--space-2);
+	margin: 0;
+}
+
+/* Each facet's heading inside the line, in the label's quieter ink, so the
+ * values read as the answer and the headings as the apparatus. */
+.facet-summary-facet,
+.facet-summary-sep {
+	font-weight: var(--font-weight-medium);
+	color: var(--color-text-light);
+}
+
+/* "or" between values of one facet: the rule (OR within, AND across) stated
+ * in the line itself, lower-case so it never reads as a value. */
+.facet-summary-or {
+	font-weight: var(--font-weight-medium);
+	text-transform: lowercase;
+	color: var(--color-text-light);
 }
 
 /* `Clear all` in the summary and `Clear years` under the slider are both

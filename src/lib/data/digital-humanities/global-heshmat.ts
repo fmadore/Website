@@ -46,9 +46,9 @@ export const globalHeshmat: DigitalHumanitiesProject = {
 		'TypeScript',
 		'MapLibre GL',
 		'WebGL',
-		'Interactive mapping',
+		'Interactive Mapping',
 		'Prosopography',
-		'Data visualisation'
+		'Data Visualisation'
 	],
 	embeddableContent: [
 		{

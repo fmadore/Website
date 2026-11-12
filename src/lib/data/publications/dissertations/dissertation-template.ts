@@ -14,7 +14,7 @@ export const dissertationTemplate: Publication = {
 	placeOfPublication: 'City, Country', // Location of the university
 	pageCount: 300, // Total number of pages
 	language: 'English',
-	doi: '', // Add DOI if available
+	// doi: '', // Omit when empty. Add DOI if available
 	abstract:
 		"A comprehensive description of the dissertation's content, methodology, findings, and significance.",
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
@@ -28,6 +28,6 @@ export const dissertationTemplate: Publication = {
 	},
 	advisors: ['Advisor Name'], // Optional: Dissertation advisors/supervisors
 	country: ['Country Name'], // Countries covered in the publication
-	project: '', // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 	citedBy: [] // Optional: List of works citing this publication
 };

@@ -95,8 +95,8 @@ export const amira: DigitalHumanitiesProject = {
 		'MapLibre GL',
 		'Linked Open Data',
 		'Wikidata',
-		'Semantic search',
+		'Semantic Search',
 		'Model Context Protocol',
-		'Data visualisation'
+		'Data Visualisation'
 	]
 };

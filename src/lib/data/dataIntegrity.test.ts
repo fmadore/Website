@@ -18,6 +18,8 @@ import { allResearchRoles } from '#lib/data/research-roles/index.ts';
 import { allAffiliations } from '#lib/data/affiliations/index.ts';
 import allTeaching from '#lib/data/teaching/index.ts';
 import { publicationAnalyses } from '#lib/data/analysis/publications/index.ts';
+import { allPeople } from '#lib/data/people/index.ts';
+import { TAG_ALIASES, SKILL_ALIASES, vocabularyFoldKey } from '#lib/data/tagVocabulary.ts';
 
 /**
  * Integrity checks over shipped datasets. The loader rejects malformed sources
@@ -163,5 +165,108 @@ describe('cross-dataset invariants', () => {
 			expect(title, `"${item.id}" is missing a title`).toBeTypeOf('string');
 			expect(title!.trim().length, `"${item.id}" has a blank title`).toBeGreaterThan(0);
 		}
+	});
+});
+
+/** Values that fold to one key under `vocabularyFoldKey` but are spelled differently. */
+function foldCollisions(values: Iterable<string>): string[][] {
+	const byKey = new Map<string, Set<string>>();
+	for (const value of values) {
+		const key = vocabularyFoldKey(value);
+		byKey.set(key, (byKey.get(key) ?? new Set()).add(value));
+	}
+	return [...byKey.values()].filter((spellings) => spellings.size > 1).map((s) => [...s].sort());
+}
+
+describe('controlled vocabulary (tagVocabulary.ts)', () => {
+	const tagged = [
+		...allPublications.map((item) => ({ dataset: 'publications', item })),
+		...allCommunications.map((item) => ({ dataset: 'communications', item })),
+		...allActivities.map((item) => ({ dataset: 'activities', item }))
+	] as { dataset: string; item: { id: string; tags?: string[] } }[];
+	const allTags = tagged.flatMap(({ item }) => item.tags ?? []);
+	const allSkills = allDhProjects.flatMap((project) => project.skills ?? []);
+
+	it('every tag is canonical (no record carries an alias)', () => {
+		const aliased = tagged.flatMap(({ dataset, item }) =>
+			(item.tags ?? [])
+				.filter((tag) => Object.hasOwn(TAG_ALIASES, tag))
+				.map((tag) => `${dataset}/${item.id}: "${tag}" → "${TAG_ALIASES[tag]}"`)
+		);
+		expect(aliased).toEqual([]);
+	});
+
+	it('no two tags fold to the same string (case, diacritics, punctuation)', () => {
+		expect(foldCollisions(allTags)).toEqual([]);
+	});
+
+	it('no record repeats a tag', () => {
+		const repeated = tagged
+			.filter(({ item }) => new Set(item.tags ?? []).size !== (item.tags ?? []).length)
+			.map(({ dataset, item }) => `${dataset}/${item.id}`);
+		expect(repeated).toEqual([]);
+	});
+
+	it('every DH skill is canonical and no two skills fold together', () => {
+		const aliased = allDhProjects.flatMap((project) =>
+			(project.skills ?? [])
+				.filter((skill) => Object.hasOwn(SKILL_ALIASES, skill))
+				.map((skill) => `${project.id}: "${skill}" → "${SKILL_ALIASES[skill]}"`)
+		);
+		expect(aliased).toEqual([]);
+		expect(foldCollisions(allSkills)).toEqual([]);
+	});
+});
+
+describe('record field hygiene', () => {
+	it('every non-empty project on publications and talks names a research project', () => {
+		const projectNames = new Set(allResearchProjects.map((project) => project.projectName));
+		const unknown = [...allPublications, ...allCommunications, ...allGrants, ...allFieldworks]
+			.map((item) => ({ id: item.id, project: (item as { project?: string }).project }))
+			.filter(({ project }) => project !== undefined && !projectNames.has(project))
+			.map(({ id, project }) => `${id}: "${project}"`);
+		expect(unknown).toEqual([]);
+	});
+
+	// An optional field is omitted, never set to ''. Several consumers test
+	// `field ?? fallback`, so an empty string silently defeats the fallback.
+	const hygieneDatasets = [
+		{ name: 'publications', items: allPublications },
+		{ name: 'communications', items: allCommunications },
+		{ name: 'activities', items: allActivities },
+		{ name: 'digital-humanities', items: allDhProjects },
+		{ name: 'grants', items: allGrants },
+		{ name: 'fieldworks', items: allFieldworks },
+		{ name: 'people', items: allPeople }
+	] as { name: string; items: { id: string }[] }[];
+
+	// A talk's `heroImage.caption: ''` is deliberate: the record rail prints
+	// `caption ?? location`, so an empty caption is how a talk opts out of the
+	// venue fallback under its plate.
+	const ALLOWED_EMPTY: Record<string, ReadonlySet<string>> = {
+		communications: new Set(['heroImage.caption'])
+	};
+
+	function emptyStringPaths(value: unknown, path: string, out: string[]): string[] {
+		if (typeof value === 'string') {
+			if (value.trim() === '') out.push(path);
+		} else if (Array.isArray(value)) {
+			value.forEach((entry, index) => emptyStringPaths(entry, `${path}[${index}]`, out));
+		} else if (value && typeof value === 'object') {
+			for (const [key, entry] of Object.entries(value)) {
+				emptyStringPaths(entry, path ? `${path}.${key}` : key, out);
+			}
+		}
+		return out;
+	}
+
+	it.each(hygieneDatasets)('$name: no empty-string fields', ({ name, items }) => {
+		const allowed = ALLOWED_EMPTY[name] ?? new Set<string>();
+		const empty = items.flatMap((item) =>
+			emptyStringPaths(item, '', [])
+				.filter((path) => !allowed.has(path))
+				.map((path) => `${item.id}: ${path}`)
+		);
+		expect(empty).toEqual([]);
 	});
 });

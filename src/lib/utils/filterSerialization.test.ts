@@ -8,6 +8,8 @@ import {
 	parseYearRangeParams,
 	arrayValuesEqual,
 	yearRangesEqual,
+	parseSortParam,
+	foldedAliasLookup,
 	type UrlSyncableFilters
 } from './filterSerialization';
 
@@ -261,5 +263,52 @@ describe('yearRangesEqual', () => {
 		expect(yearRangesEqual({ min: 1, max: Infinity }, { min: 1, max: Infinity })).toBe(true);
 		expect(yearRangesEqual({ min: -Infinity, max: 1 }, { min: 1, max: Infinity })).toBe(false);
 		expect(yearRangesEqual({ min: 1, max: Infinity }, { min: 1, max: 2 })).toBe(false);
+	});
+});
+
+describe('sort in the URL', () => {
+	it('serializes a non-default sort after the filters and the search', () => {
+		expect(serializeFiltersToQuery({ types: ['book'] }, 'islam', 'citations')).toBe(
+			'type=book&q=islam&sort=citations'
+		);
+		expect(serializeFiltersToQuery({}, '', 'title')).toBe('sort=title');
+		expect(serializeFiltersToQuery({}, '', '')).toBe('');
+	});
+
+	it('reads a known sort, folding case, and falls back on anything else', () => {
+		const options = ['date', 'title', 'citations'] as const;
+		const read = (query: string) => parseSortParam(new URLSearchParams(query), options, 'date');
+		expect(read('sort=citations')).toBe('citations');
+		expect(read('sort=Title')).toBe('title');
+		expect(read('sort=popularity')).toBe('date');
+		expect(read('sort=')).toBe('date');
+		expect(read('')).toBe('date');
+	});
+});
+
+describe('retired spellings in shared links', () => {
+	const alias = foldedAliasLookup({
+		AI: 'Artificial Intelligence',
+		OCR: 'Optical Character Recognition'
+	});
+	const vocabulary = ['Artificial Intelligence', 'Islam'];
+
+	it('maps an alias exactly and fold-insensitively, passing anything else through', () => {
+		expect(alias('AI')).toBe('Artificial Intelligence');
+		expect(alias('ai')).toBe('Artificial Intelligence');
+		expect(alias(' Ocr ')).toBe('Optical Character Recognition');
+		expect(alias('Islam')).toBe('Islam');
+		expect(alias('toString')).toBe('toString');
+	});
+
+	it('lets an old ?tag=AI link select the renamed value', () => {
+		expect(canonicalizeFacetValues(['AI', 'islam'], vocabulary, alias)).toEqual([
+			'Artificial Intelligence',
+			'Islam'
+		]);
+		expect(canonicalizeFacetValues(['ai', 'Artificial intelligence'], vocabulary, alias)).toEqual([
+			'Artificial Intelligence'
+		]);
+		expect(canonicalizeFacetValues(['AI'], vocabulary)).toEqual([]);
 	});
 });

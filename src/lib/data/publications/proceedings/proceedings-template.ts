@@ -16,11 +16,11 @@ export const proceedingsTemplate: Publication = {
 	publisher: 'Publisher Name', // Publisher of the proceedings (if applicable)
 	pages: '100-120', // Page range in the proceedings (if applicable)
 	language: 'English',
-	doi: '', // Add DOI if available
+	// doi: '', // Omit when empty. Add DOI if available
 	abstract:
 		"A comprehensive description of the paper's content, methodology, findings, and significance. This abstract will be used in list views and as a preview of the publication.",
 	tags: ['tag1', 'tag2', 'tag3'], // Add relevant tags for categorization
-	url: '', // URL to the publication if available
+	// url: '', // Omit when empty. URL to the publication if available
 	additionalUrls: [
 		// Optional: Additional links (e.g., presentation slides, video)
 		{
@@ -28,7 +28,7 @@ export const proceedingsTemplate: Publication = {
 			url: ''
 		}
 	],
-	image: '', // Optional: path to image (e.g., "images/publications/proceedings-image.jpg")
+	// image: '', // Omit when empty. Optional: path to image (e.g., "images/publications/proceedings-image.jpg")
 	heroImage: {
 		// Optional: hero image configuration
 		src: 'images/publications/proceedings-hero.jpg',
@@ -37,6 +37,6 @@ export const proceedingsTemplate: Publication = {
 	},
 	// New fields
 	country: ['Country Name'], // Countries covered in the publication
-	project: '', // Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)", "Other"
+	// project: '', // Optional: omit the field when there is no project (never leave it empty). Options: "Digital Humanities and AI in African Studies", "Religious Activism on Campuses in Togo and Benin", "Muslim Minorities in Southern Cities of Benin and Togo", "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso", "Digital Research Environment (University of Bayreuth)"
 	citedBy: [] // Optional: List of works citing this publication
 };

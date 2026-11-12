@@ -20,7 +20,7 @@ export const stiasDhAiWorkshop2026: Activity = {
 	`,
 	tags: [
 		'Digital Humanities',
-		'AI',
+		'Artificial Intelligence',
 		'African Studies',
 		'Workshop',
 		'Sustainability',
@@ -35,8 +35,7 @@ export const stiasDhAiWorkshop2026: Activity = {
 	image: 'images/communications/point-sud-logo.svg',
 	heroImage: {
 		src: 'images/communications/point-sud-logo.svg',
-		alt: 'DFG Point Sud programme logo',
-		caption: ''
+		alt: 'DFG Point Sud programme logo'
 	}
 };
 
