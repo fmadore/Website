@@ -95,7 +95,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"dateISO": "2023-11-09",
 		"year": 2023,
 		"conference": "Launch of the Islam West Africa Collection",
-		"location": "Media in Cooperation and Transition (MiCT)",
+		"location": "Media in Cooperation and Transition (MiCT), Berlin",
 		"country": "Germany",
 		"type": "event",
 		"language": "English",
@@ -1029,7 +1029,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"dateISO": "2022-10-31",
 		"year": 2022,
 		"conference": "Religions on Campus: Coexisting Traditions, Reformulating the Secular and Life Projects",
-		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
+		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL), Niamey",
 		"country": "Niger",
 		"type": "event",
 		"language": [
@@ -2627,7 +2627,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"H-Soz-Kult",
 			"NFDI4Memory"
 		],
-		"url": "https://www.hsozkult.de/debate/id/fddebate-157316",
 		"coordinates": {
 			"latitude": 52.51766,
 			"longitude": 13.39377
@@ -3829,7 +3828,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"dateISO": "2022-06-03",
 		"year": 2022,
 		"conference": "Workshop Point de passage et frontières religieuses",
-		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
+		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL), Niamey",
 		"country": "Niger",
 		"type": "workshop",
 		"language": "French",

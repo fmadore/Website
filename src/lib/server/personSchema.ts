@@ -39,12 +39,14 @@ const DEGREE_LEVELS: ReadonlyArray<readonly [prefix: string, level: string]> = [
  * hand-maintained:
  * - `alumniOf` — degree-granting institutions from `#lib/data/education`
  * - `hasCredential` — degrees from `#lib/data/education`
- * - `memberOf` — ongoing memberships from `#lib/data/affiliations`
+ * - `memberOf` — current memberships from `#lib/data/affiliations` (as of the build year)
  * - `knowsLanguage` — from `#lib/data/languages`
  * - `knowsAbout` — the curated `researchTopics` list in `#lib/data/siteConfig`
  *   (editorial, not derivable from data)
  */
-export function createFullPersonSchema(): PersonPageJsonLd {
+export function createFullPersonSchema(
+	asOfYear: number = new Date().getUTCFullYear()
+): PersonPageJsonLd {
 	const person = createPersonSchema();
 
 	// Degree-granting institutions, deduplicated by name (most recent first).
@@ -71,9 +73,10 @@ export function createFullPersonSchema(): PersonPageJsonLd {
 		};
 	});
 
-	// Ongoing memberships only (`period.end === null` means "to present").
+	// Current memberships only: `period.end === null` means "to present", and an
+	// end year runs to its 31 December, so a membership ending this year still holds.
 	const memberOf: JsonLdOrganization[] = allAffiliations
-		.filter((affiliation) => affiliation.period.end === null)
+		.filter(({ period }) => period.end === null || period.end >= asOfYear)
 		.sort((a, b) => a.name.localeCompare(b.name))
 		.map((affiliation) => ({
 			'@type': 'Organization',

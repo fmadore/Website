@@ -18,7 +18,7 @@ export const workshopReligionsOnCampus2022: Communication = {
 	conference:
 		'Religions on Campus: Coexisting Traditions, Reformulating the Secular and Life Projects',
 	location:
-		"Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
+		"Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL), Niamey",
 	country: 'Niger',
 	type: 'event',
 	language: ['English', 'French'],

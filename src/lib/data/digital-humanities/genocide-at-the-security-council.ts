@@ -5,9 +5,9 @@ export const genocideAtTheSecurityCouncil: DigitalHumanitiesProject = {
 	title: 'Genocide at the Security Council',
 	years: '2026-',
 	shortDescription:
-		'A reproducible pipeline and interactive dashboard tracing how the word genocide was used across 167,642 UN Security Council speeches, 1946–2024, with every figure traceable to the script that made it.',
+		'A reproducible pipeline and interactive dashboard tracing how the word genocide was used across 182,684 UN Security Council speeches, 1946–2026, with every figure traceable to the script that made it.',
 	description: `
-		<p>Between 1946 and 2024 the UN Security Council heard 167,642 speeches. Someone said the word <em>genocide</em>, or a form such as <em>genocidal</em>, in 4,136 of them, 2.47% of the corpus, 7,787 times in all. The material is <a href="https://doi.org/10.7910/DVN/CKPTRB" target="_blank" rel="noopener noreferrer">The UNSC Meetings and Speeches</a> corpus (Sakamoto &amp; Matsuoka, v5.0, CC0): 9,464 meetings, 86.8 million words, public domain. <a href="https://fmadore.github.io/genocide-at-the-security-council/" target="_blank" rel="noopener noreferrer">Genocide at the Security Council</a> asks who said it, about what, and what the word was doing there.</p>
+		<p>Between January 1946 and June 2026 the UN Security Council heard 182,684 speeches. Someone said the word <em>genocide</em>, or a form such as <em>genocidal</em>, in 4,576 of them, 2.50% of the corpus, 8,611 times in all. The material is <a href="https://doi.org/10.7910/DVN/CKPTRB" target="_blank" rel="noopener noreferrer">The UNSC Meetings and Speeches</a> corpus (Sakamoto &amp; Matsuoka, v6.0, CC0): 9,919 meetings, 92.5 million words, public domain. <a href="https://fmadore.github.io/genocide-at-the-security-council/" target="_blank" rel="noopener noreferrer">Genocide at the Security Council</a> asks who said it, about what, and what the word was doing there.</p>
 
 		<h2>Eight views</h2>
 		<ul>
@@ -25,7 +25,7 @@ export const genocideAtTheSecurityCouncil: DigitalHumanitiesProject = {
 
 		<h2>Reading with a language model</h2>
 
-		<p>The Usage and Semantic map views are experimental. An open-weight model, Qwen3.8 27B, run on project-controlled hardware, has classified 7,694 of the 7,787 mentions, and a second model, Gemma 4 31B, offers a second opinion. The human-coded sample that will test them has not yet been coded, so the dashboard presents these labels as a way into the passages, not as findings. The word counts elsewhere do not depend on them.</p>
+		<p>The Usage and Semantic map views are experimental. An open-weight model, Qwen3.8 27B, run on project-controlled hardware, has classified all 8,611 mentions, and a second model, Gemma 4 31B, offers a second opinion. The human-coded sample that will test them has not yet been coded, so the dashboard presents these labels as a way into the passages, not as findings. The word counts elsewhere do not depend on them.</p>
 
 		<h2>How it is built</h2>
 

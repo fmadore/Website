@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { mediaAppearancesByDate } from '#lib/data/media-appearances/index.ts';
 	import { cvCommunicationsByDate as communicationsByDate } from '#lib/data/communications/cv.ts';
-	import { splitCvTalks } from '#lib/utils/cvSections.ts';
+	import { cvPodcastDate, cvPodcastKey, splitCvTalks } from '#lib/utils/cvSections.ts';
 	import { formatDayMonth, getYearFromISODate } from '#lib/utils/date-formatter.ts';
 	import { resolve } from '$app/paths';
 	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
@@ -20,14 +20,14 @@
 		<h4>Podcasts</h4>
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each podcasts as podcast (podcast.id)}
-				<CVEntry year={getYearFromISODate(podcast.dateISO)}>
+				<CVEntry year={cvPodcastKey(podcast)}>
 					<a
 						href={resolve('/communications/[id]', { id: podcast.id })}
 						lang={titleLangAttr(podcast.language)}
 						class="cv-record-link">{quoteTitle(podcast.title)}</a
 					>{#if podcast.conference}, <em>{typesetQuotes(podcast.conference)}</em
 						>{/if}{#if podcast.episode}, ep. {podcast.episode}{/if}.
-					{formatDayMonth(podcast.dateISO)}.
+					{#if cvPodcastDate(podcast)}{cvPodcastDate(podcast)}.{/if}
 					{#if podcast.doi}
 						<span class="cv-note"
 							><svg class="cv-doi-mark" aria-hidden="true" focusable="false"

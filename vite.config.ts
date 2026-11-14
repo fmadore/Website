@@ -211,8 +211,7 @@ export default defineConfig({
 						'https://zmo-berlin.github.io',
 						'https://slides.frederickmadore.com',
 						'https://iwac.frederickmadore.com',
-						'https://heshmat.zmo.de',
-						'https://cdn.knightlab.com'
+						'https://heshmat.zmo.de'
 					],
 					'worker-src': ['self', 'blob:'],
 					'base-uri': ['self'],

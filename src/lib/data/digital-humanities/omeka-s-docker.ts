@@ -3,7 +3,7 @@ import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 export const omekaSDocker: DigitalHumanitiesProject = {
 	id: 'omeka-s-docker',
 	title: 'Omeka S Docker Template',
-	years: '2026',
+	years: '2026-',
 	shortDescription:
 		'A self-installing Docker template that lets research teams run their own Omeka S digital archive, secure, easy to update and backed up, without being system administrators.',
 	description: `
@@ -23,8 +23,18 @@ export const omekaSDocker: DigitalHumanitiesProject = {
 		<p>It is designed for research teams, librarians and digital humanists who want to run a digital archive without deep systems-administration expertise.</p>
 	`,
 	imageUrl: `/images/digital-humanities/omeka-s-docker.webp`,
-	order: 2,
+	order: 3,
+	application: {
+		status: 'released',
+		operatingSystem: 'Linux (Docker)',
+		licence: 'MIT'
+	},
 	links: [
+		{
+			url: 'https://github.com/AM-Digital-Research-Environment/omeka-s-docker/releases',
+			label: 'GitHub releases',
+			type: 'install'
+		},
 		{
 			url: 'https://github.com/AM-Digital-Research-Environment/omeka-s-docker',
 			label: 'omeka-s-docker',

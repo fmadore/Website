@@ -25,7 +25,7 @@ import type {
 	TeachingExperience,
 	TeachingLecture
 } from '#lib/types/teachingExperience.ts';
-import { formatDayMonth } from './date-formatter';
+import { formatDayMonth, getYearFromISODate, isForthcoming } from './date-formatter';
 import { splitProjectGroups } from './projectGroups.ts';
 
 // ── Header ───────────────────────────────────────────────────────────────────
@@ -155,6 +155,20 @@ export function cvEventDate(talk: Pick<CvCommunication, 'date' | 'dateISO'>): st
 	return talk.date.includes('-')
 		? talk.date.replace(/\s+\d{4}$/, '')
 		: formatDayMonth(talk.dateISO);
+}
+
+/**
+ * A podcast's year key and date line. A forthcoming episode has no release day
+ * yet, so it is keyed "Forthcoming" and prints no date rather than repeating
+ * the projected year ("2026 … 2026.").
+ */
+export function cvPodcastKey(talk: Pick<CvCommunication, 'date' | 'dateISO'>): string | number {
+	return isForthcoming(talk) ? talk.date.trim() : getYearFromISODate(talk.dateISO);
+}
+
+/** The podcast's day and month, or nothing when it is forthcoming. */
+export function cvPodcastDate(talk: Pick<CvCommunication, 'date' | 'dateISO'>): string {
+	return isForthcoming(talk) ? '' : formatDayMonth(talk.dateISO);
 }
 
 // ── Teaching ─────────────────────────────────────────────────────────────────

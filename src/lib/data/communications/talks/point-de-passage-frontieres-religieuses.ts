@@ -9,7 +9,7 @@ export const pointPassageFrontieresReligieuses: Communication = {
 	year: 2022,
 	conference: 'Workshop Point de passage et frontières religieuses',
 	location:
-		"Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
+		"Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL), Niamey",
 	country: 'Niger',
 	type: 'workshop',
 	language: 'French',

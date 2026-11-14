@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
 	cvEventDate,
+	cvPodcastDate,
+	cvPodcastKey,
 	formatCvEditionDate,
 	groupFieldworkByPlace,
 	invitedTalkVenue,
@@ -148,6 +150,15 @@ describe('talks', () => {
 	it('date an event: a range keeps its form without the year, a day is day and month', () => {
 		expect(cvEventDate({ date: '12-14 March 2026', dateISO: '2026-03-12' })).toBe('12-14 March');
 		expect(cvEventDate({ date: '23 September 2025', dateISO: '2025-09-23' })).toBe('23 September');
+	});
+
+	it('key a forthcoming podcast "Forthcoming" with no date, a released one by year and day', () => {
+		const forthcoming = { date: 'Forthcoming', dateISO: '2026' };
+		expect(cvPodcastKey(forthcoming)).toBe('Forthcoming');
+		expect(cvPodcastDate(forthcoming)).toBe('');
+		const released = { date: '4 June 2025', dateISO: '2025-06-04' };
+		expect(cvPodcastKey(released)).toBe(2025);
+		expect(cvPodcastDate(released)).toBe('4 June');
 	});
 });
 

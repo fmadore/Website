@@ -60,6 +60,8 @@ import {
 } from '#lib/utils/cvFormatters.ts';
 import {
 	cvEventDate,
+	cvPodcastDate,
+	cvPodcastKey,
 	formatCvEditionDate,
 	groupFieldworkByPlace,
 	invitedTalkVenue,
@@ -685,8 +687,8 @@ function media(): string {
 			bullets(
 				podcasts.map((podcast) =>
 					entry(
-						talkKey(podcast),
-						`${talkTitle(podcast)}${podcast.conference ? `, ${em(podcast.conference)}` : ''}${podcast.episode ? `, ep. ${inline(podcast.episode)}` : ''}. ${inline(formatDayMonth(podcast.dateISO))}.`,
+						cvPodcastKey(podcast),
+						`${talkTitle(podcast)}${podcast.conference ? `, ${em(podcast.conference)}` : ''}${podcast.episode ? `, ep. ${inline(podcast.episode)}` : ''}.${cvPodcastDate(podcast) ? ` ${inline(cvPodcastDate(podcast))}.` : ''}`,
 						[
 							podcast.doi && `DOI: ${link(podcast.doi, `https://doi.org/${podcast.doi}`)}`,
 							podcast.url && outLink('Listen', podcast.url)

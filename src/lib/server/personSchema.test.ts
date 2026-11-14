@@ -66,14 +66,17 @@ describe('createFullPersonSchema', () => {
 		expect(full.hasCredential?.length).toBe(3);
 	});
 
-	it('derives memberOf from ongoing affiliations only', () => {
-		const names = full.memberOf?.map((org) => org.name) ?? [];
+	it('derives memberOf from current affiliations only, an end year running to its close', () => {
+		const in2026 = createFullPersonSchema(2026);
+		const names = in2026.memberOf?.map((org) => org.name) ?? [];
 		expect(names).toContain('Islam in Africa Studies Group (IASG)');
-		const ongoing = allAffiliations.filter((a) => a.period.end === null);
-		expect(full.memberOf?.length).toBe(ongoing.length);
+		const current = allAffiliations.filter((a) => a.period.end === null || a.period.end >= 2026);
+		expect(in2026.memberOf?.length).toBe(current.length);
+		const in2027 = createFullPersonSchema(2027).memberOf?.map((org) => org.name) ?? [];
+		expect(in2027).not.toContain('Islam in Africa Studies Group (IASG)');
 		// Ended memberships (period.end set) must not appear
 		expect(names.some((n) => n.includes('Mande Studies Association'))).toBe(false);
-		const iasg = full.memberOf?.find((org) => org.name.includes('IASG'));
+		const iasg = in2026.memberOf?.find((org) => org.name.includes('IASG'));
 		expect(iasg?.url).toBe('https://iasg.hcommons.org/');
 	});
 

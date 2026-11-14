@@ -22,7 +22,6 @@ export const soundscapesDigitalHistoryMadore: Communication = {
 		'H-Soz-Kult',
 		'NFDI4Memory'
 	],
-	url: 'https://www.hsozkult.de/debate/id/fddebate-157316',
 	coordinates: {
 		latitude: 52.51766,
 		longitude: 13.39377

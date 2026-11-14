@@ -1290,7 +1290,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 			"src": "images/communications/poster-launch-IWAC-hero.webp"
 		},
 		"conference": "Launch of the Islam West Africa Collection",
-		"location": "Media in Cooperation and Transition (MiCT)",
+		"location": "Media in Cooperation and Transition (MiCT), Berlin",
 		"country": "Germany"
 	},
 	"leaders-muslim-ngos-burkina-faso-2016": {
@@ -1687,7 +1687,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 			"src": "images/communications/point-de-passage-frontieres-religieuses-hero.webp"
 		},
 		"conference": "Workshop Point de passage et frontières religieuses",
-		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
+		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL), Niamey",
 		"country": "Niger"
 	},
 	"political-mobilizations-burkina-faso": {
@@ -2489,7 +2489,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 			"src": "images/communications/workshop-religions-on-campus-2022-hero.webp"
 		},
 		"conference": "Religions on Campus: Coexisting Traditions, Reformulating the Secular and Life Projects",
-		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
+		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL), Niamey",
 		"country": "Niger"
 	},
 	"young-muslims-civic-engagement-burkina": {

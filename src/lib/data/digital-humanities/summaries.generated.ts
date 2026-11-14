@@ -73,8 +73,8 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 	{
 		"id": "burkina-faso-digital-exhibits",
 		"title": "Digital Exhibits on Islam in West Africa",
-		"years": "2021-2026",
-		"shortDescription": "Four digital exhibits that open thematic paths through the Islam West Africa Collection: the hajj and Muslim student activism in Burkina Faso, intégrisme in Côte d'Ivoire, and the debate over secularism across the region.",
+		"years": "2021-",
+		"shortDescription": "Five digital exhibits that open thematic paths through the Islam West Africa Collection: the hajj and Muslim student activism in Burkina Faso, intégrisme in Côte d'Ivoire, the debate over secularism across the region, and the sermons of Albani Zaria.",
 		"imageUrl": "/images/digital-humanities/burkina-faso-digital-exhibits.webp",
 		"order": 9,
 		"links": [
@@ -97,14 +97,24 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			{
 				"url": "https://islam.zmo.de/s/westafrica/page/secularism",
 				"label": "Secularism"
+			},
+			{
+				"url": "https://islam.zmo.de/s/westafrica/page/albani-zaria-sermons",
+				"label": "Albani Zaria's sermons"
+			},
+			{
+				"url": "https://github.com/fmadore/IwacVisualizations",
+				"label": "IwacVisualizations",
+				"type": "code"
 			}
 		],
 		"skills": [
 			"Digital Exhibitions",
-			"Timeline JS",
+			"ECharts",
 			"Omeka S",
 			"Data Visualisation",
-			"Corpus Linguistics"
+			"Corpus Linguistics",
+			"PHP"
 		],
 		"seoKeywords": [
 			"digital exhibitions",
@@ -115,6 +125,8 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"secularism",
 			"intégrisme",
 			"Muslim students",
+			"Albani Zaria",
+			"Hausa sermons",
 			"Islam West Africa",
 			"IWAC",
 			"digital humanities"
@@ -177,7 +189,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "genocide-at-the-security-council",
 		"title": "Genocide at the Security Council",
 		"years": "2026-",
-		"shortDescription": "A reproducible pipeline and interactive dashboard tracing how the word genocide was used across 167,642 UN Security Council speeches, 1946–2024, with every figure traceable to the script that made it.",
+		"shortDescription": "A reproducible pipeline and interactive dashboard tracing how the word genocide was used across 182,684 UN Security Council speeches, 1946–2026, with every figure traceable to the script that made it.",
 		"imageUrl": "/images/digital-humanities/genocide-at-the-security-council.webp",
 		"order": 0,
 		"links": [
@@ -551,19 +563,20 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "kalamu",
 		"title": "Kalamu",
 		"years": "2026-",
-		"shortDescription": "A free, open-source Windows app for researchers: read scanned and handwritten documents, transcribe interviews and analyse texts with Gemini, OpenAI, Claude or Mistral, or offline with Whisper, and check every result against its source. In the Microsoft Store.",
+		"shortDescription": "A free, open-source app for researchers on Windows and macOS: read scanned and handwritten documents, transcribe interviews and analyse texts with Gemini, OpenAI, Claude or Mistral, or offline with Whisper and local models, and check every result against its source. In the Microsoft Store and, for Mac, on GitHub.",
 		"imageUrl": "/images/digital-humanities/kalamu.webp",
 		"order": 1,
 		"application": {
 			"status": "released",
-			"operatingSystem": "Windows 11",
+			"operatingSystem": "Windows 11, macOS 14+",
 			"architectures": [
 				"x64",
 				"ARM64"
 			],
 			"licence": "MIT",
 			"interfaceLanguages": [
-				"English"
+				"English",
+				"French"
 			]
 		},
 		"links": [
@@ -616,6 +629,7 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Rust",
 			"Microsoft Store",
 			"Windows",
+			"macOS",
 			"digital humanities",
 			"African studies"
 		]
@@ -624,12 +638,12 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"id": "live-translation",
 		"title": "Live Translation and Subtitles",
 		"years": "2026-",
-		"shortDescription": "A Windows app that puts live captions and translations over meetings, video calls and slides, offline with Whisper or through Gemini, OpenAI and Mistral. Built for a bilingual workshop at STIAS, now in the Microsoft Store.",
+		"shortDescription": "An app for Windows and macOS that puts live captions and translations over meetings, video calls and slides, offline with Whisper or through Gemini, DeepL, OpenAI and Mistral. Built for a bilingual workshop at STIAS, now in the Microsoft Store.",
 		"imageUrl": "/images/digital-humanities/live-translation.webp",
 		"order": 2,
 		"application": {
 			"status": "released",
-			"operatingSystem": "Windows 11",
+			"operatingSystem": "Windows 11, macOS 15+",
 			"architectures": [
 				"x64",
 				"ARM64"
@@ -695,10 +709,12 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 			"Gemini",
 			"OpenAI",
 			"Mistral Voxtral",
+			"DeepL",
 			"Whisper",
 			"offline transcription",
 			"Microsoft Store",
 			"Windows",
+			"macOS",
 			"digital humanities",
 			"African studies"
 		]
@@ -706,11 +722,21 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 	{
 		"id": "omeka-s-docker",
 		"title": "Omeka S Docker Template",
-		"years": "2026",
+		"years": "2026-",
 		"shortDescription": "A self-installing Docker template that lets research teams run their own Omeka S digital archive, secure, easy to update and backed up, without being system administrators.",
 		"imageUrl": "/images/digital-humanities/omeka-s-docker.webp",
-		"order": 2,
+		"order": 3,
+		"application": {
+			"status": "released",
+			"operatingSystem": "Linux (Docker)",
+			"licence": "MIT"
+		},
 		"links": [
+			{
+				"url": "https://github.com/AM-Digital-Research-Environment/omeka-s-docker/releases",
+				"label": "GitHub releases",
+				"type": "install"
+			},
 			{
 				"url": "https://github.com/AM-Digital-Research-Environment/omeka-s-docker",
 				"label": "omeka-s-docker",

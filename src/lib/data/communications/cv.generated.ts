@@ -29,7 +29,7 @@ export const cvCommunications: CvCommunication[] = [
 		"date": "9 November 2023",
 		"dateISO": "2023-11-09",
 		"conference": "Launch of the Islam West Africa Collection",
-		"location": "Media in Cooperation and Transition (MiCT)",
+		"location": "Media in Cooperation and Transition (MiCT), Berlin",
 		"type": "event",
 		"language": "English",
 		"url": "https://islam.zmo.de/s/westafrica/item/244"
@@ -154,7 +154,7 @@ export const cvCommunications: CvCommunication[] = [
 		"date": "31 October - 4 November 2022",
 		"dateISO": "2022-10-31",
 		"conference": "Religions on Campus: Coexisting Traditions, Reformulating the Secular and Life Projects",
-		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
+		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL), Niamey",
 		"type": "event",
 		"language": [
 			"English",
@@ -681,8 +681,7 @@ export const cvCommunications: CvCommunication[] = [
 		"conference": "Soundscapes of Digital History",
 		"location": "H-Soz-Kult",
 		"type": "podcast",
-		"language": "English",
-		"url": "https://www.hsozkult.de/debate/id/fddebate-157316"
+		"language": "English"
 	},
 	{
 		"id": "zmo-kitchen-talks-ai-islamic-african-studies",
@@ -1175,7 +1174,7 @@ export const cvCommunications: CvCommunication[] = [
 		"date": "3 June 2022",
 		"dateISO": "2022-06-03",
 		"conference": "Workshop Point de passage et frontières religieuses",
-		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL)",
+		"location": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL), Niamey",
 		"type": "workshop",
 		"language": "French"
 	},
