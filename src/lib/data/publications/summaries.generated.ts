@@ -614,7 +614,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"project": "Digital Humanities and AI in African Studies",
 		"url": "https://doi.org/10.58144/20260827-000",
 		"abstractExcerpt": "African Studies scholars have been involved in Digital Humanities (DH) projects since the 2000s. Recent advances in artificial intelligence (AI), particularly large language models (LLMs), have expanded the possibilities ",
-		"citedByCount": 0,
+		"citedByCount": 1,
 		"tocAuthors": [],
 		"sourceDirType": "workingPapers"
 	},

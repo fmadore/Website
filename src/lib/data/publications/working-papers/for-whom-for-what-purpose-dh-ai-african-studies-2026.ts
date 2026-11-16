@@ -61,5 +61,16 @@ export const forWhomForWhatPurposeDhAiAfricanStudies2026: Publication = {
 		'Minimal Computing'
 	],
 	project: 'Digital Humanities and AI in African Studies',
-	url: 'https://doi.org/10.58144/20260827-000'
+	url: 'https://doi.org/10.58144/20260827-000',
+	citedBy: [
+		{
+			wikidataId: 'Q142183579',
+			authors: ['Maxine Huguet', 'Yanis Mokri'],
+			year: 2026,
+			title: 'Humanités numériques dans les études africaines, un retour sur les REAF 2026',
+			source:
+				'Carnet hypothèses du consortium Huma-Num distam+ (DIgital STudies Africa, Asia, Middle East), 11 November 2026',
+			url: 'https://doi.org/10.58079/173o1'
+		}
+	]
 };
