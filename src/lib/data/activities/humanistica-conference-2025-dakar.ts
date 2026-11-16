@@ -28,7 +28,7 @@ export const humanisticaConference2025Dakar: Activity = {
 	image: 'images/activities/humanistica-2025-dakar.webp',
 	heroImage: {
 		src: 'images/activities/humanistica-2025-dakar-hero.webp',
-		alt: 'Humanistica 2025 conference in Dakar'
+		alt: 'Hazy view across a bay of a city skyline of high-rise towers and cranes, with low coastal buildings, palm trees and small wooden boats on the water in the foreground.'
 	},
 	type: 'conference'
 };

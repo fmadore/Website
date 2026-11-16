@@ -26,7 +26,7 @@ export const ecoleNationaleDesChartesVisit2025: Activity = {
 	],
 	heroImage: {
 		src: 'images/activities/ecole-nationale-des-chartes.webp',
-		alt: 'École nationale des chartes'
+		alt: 'Façade of the École nationale des chartes: the red logo and the name in black letters on a pale stone wall, with a grey plaque, a notice board beside a barred door, and bicycles parked on the pavement.'
 	},
 	type: 'lecture'
 };

@@ -28,7 +28,7 @@ export const etablirFaitiereIslamique: Communication = {
 	image: 'images/communications/puidoux.webp',
 	heroImage: {
 		src: 'images/communications/puidoux-hero.webp',
-		alt: 'Puidoux'
+		alt: 'Group photo of about fourteen people standing on a paved courtyard outside a stone building with arched windows and a glass entrance.'
 	},
 	coordinates: {
 		latitude: 46.494026160672135,

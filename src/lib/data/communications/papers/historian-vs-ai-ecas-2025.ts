@@ -29,7 +29,7 @@ export const historianVsAiEcas2025: Communication = {
 	image: 'images/communications/ecas-2025.webp',
 	heroImage: {
 		src: 'images/communications/ecas-2025-hero.webp',
-		alt: '10th European Conference of African Studies (ECAS)'
+		alt: "Poster for the European Conference on African Studies, 'African, Afropean, Afropolitan', Prague, 25–28 June 2025, in orange on a purple ground, beside an orange Africa silhouette built from vertical bars."
 	},
 	coordinates: {
 		latitude: 50.08896481219099,

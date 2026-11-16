@@ -33,7 +33,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/evolutions-nouvelles-formes-islam-afrique-ouest.webp",
 		"heroImage": {
 			"src": "images/communications/evolutions-nouvelles-formes-islam-afrique-ouest-hero.webp",
-			"alt": "Évolutions et nouvelles formes de l'islam en Afrique de l'Ouest: vers une radicalisation?"
+			"alt": "Flyer for a CIRAM round table at Hautes études internationales, Université Laval, 'Évolutions et nouvelles formes de l'islam en Afrique de l'Ouest', on Thursday 24 March 2016, with photographs, a list of speakers and a small book cover."
 		},
 		"coordinates": {
 			"latitude": 46.7793,
@@ -196,8 +196,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/point-sud-logo.svg",
 		"heroImage": {
 			"src": "images/communications/point-sud-logo.svg",
-			"alt": "DFG Point Sud programme logo",
-			"caption": ""
+			"alt": "Point Sud logo: the black wordmark 'POINT SUD' with an orange dot above and an orange swoosh below."
 		},
 		"coordinates": {
 			"latitude": -33.9321,
@@ -422,6 +421,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://remoboko.hypotheses.org/4854",
 		"image": "images/communications/REMOBOKO-final-conference.webp",
+		"heroImage": {
+			"src": "images/communications/REMOBOKO-final-conference.webp",
+			"alt": "Group photo of about two dozen conference participants standing on steps in front of an arched red-brick building, with a wooden bench to the right."
+		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
 			"longitude": 13.202338657893593
@@ -627,6 +630,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"url": "https://fmadore.github.io/dh-ai-african-studies-2026/",
 		"urlLabel": "Workshop Website",
 		"image": "images/communications/VWST-logo.webp",
+		"heroImage": {
+			"src": "images/communications/VWST-logo.webp",
+			"alt": "VolkswagenStiftung logo: a grid of dark blue dots beside the wordmark 'VolkswagenStiftung'."
+		},
 		"coordinates": {
 			"latitude": 52.395,
 			"longitude": 9.7036
@@ -1174,6 +1181,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Muslim Minorities"
 		],
 		"image": "images/communications/ASA-Logo.svg",
+		"heroImage": {
+			"src": "images/communications/ASA-Logo.svg",
+			"alt": "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
+		},
 		"coordinates": {
 			"latitude": 42.346757140313436,
 			"longitude": -71.07895521140732
@@ -1261,6 +1272,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Religious Activism"
 		],
 		"image": "images/communications/ASA-Logo.svg",
+		"heroImage": {
+			"src": "images/communications/ASA-Logo.svg",
+			"alt": "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
+		},
 		"coordinates": {
 			"latitude": 41.892233577101,
 			"longitude": -87.62496755899927
@@ -1335,7 +1350,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/ecas-2025.webp",
 		"heroImage": {
 			"src": "images/communications/ecas-2025-hero.webp",
-			"alt": "Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives"
+			"alt": "Purple banner for the European Conference on African Studies, Prague, 25 to 28 June 2025, with the title 'African, Afropean, Afropolitan' and an orange skyline silhouette of Africa."
 		},
 		"coordinates": {
 			"latitude": 50.08896481219099,
@@ -1471,7 +1486,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/reaf-2026.webp",
 		"heroImage": {
 			"src": "images/communications/reaf-2026-hero.webp",
-			"alt": "9ème édition Rencontres des Études Africaines en France"
+			"alt": "Banner for the 9th Rencontres des Études Africaines en France, 29 June to 2 July 2026, Campus Condorcet Aubervilliers, with the CNRS, IRD and Études africaines en France logos over a blue and yellow painted collage."
 		},
 		"coordinates": {
 			"latitude": 48.911008116361714,
@@ -1574,7 +1589,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/humanistica-2025.webp",
 		"heroImage": {
 			"src": "images/communications/humanistica-2025-hero.webp",
-			"alt": "Intelligence artificielle et traitement des archives numériques : applications et enjeux dans la Collection Islam Afrique de l'Ouest"
+			"alt": "Banner for the Colloque Humanistica 2025, with a blue chevron mark and the French subtitle 'Colloque annuel de l'Association francophone des humanités numériques' in black on white."
 		},
 		"coordinates": {
 			"latitude": 14.6937,
@@ -1611,7 +1626,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/ENIUGH.webp",
 		"heroImage": {
 			"src": "images/communications/ENIUGH-hero.webp",
-			"alt": "ENIUGH Conference"
+			"alt": "Outdoor sandwich-board sign on a paved square, headed 'Linnéuniversitetet', holding a poster for the European Network on Universal and Global History (ENIUGH), 10–11 September, with yellow circles on a violet ground."
 		},
 		"coordinates": {
 			"latitude": 56.879,
@@ -1648,7 +1663,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/c2dh.webp",
 		"heroImage": {
 			"src": "images/communications/c2dh-hero.webp",
-			"alt": "AI through History, History through AI"
+			"alt": "Event page header for 'AI through History, History through AI', beside an illustration of a woman in a long skirt reaching toward a mosaic-like grid of dark and cream tiles, with orange binary digits streaming from it."
 		},
 		"coordinates": {
 			"latitude": 49.5018,
@@ -1707,7 +1722,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/jcdl-2026.webp",
 		"heroImage": {
 			"src": "images/communications/jcdl-2026.webp",
-			"alt": "Logo of ACM/IEEE JCDL 2026: a white line drawing of the Dallas skyline, its towers joined by network nodes and edges and trailed by strings of binary digits, above the words “ACM/IEEE JCDL 2026” on a dark ground."
+			"alt": "Square logo for ACM/IEEE JCDL 2026: a white line drawing of a city skyline with network nodes and binary digits above the text 'ACM/IEEE JCDL 2026' on a dark ground."
 		},
 		"coordinates": {
 			"latitude": 33.1003,
@@ -1742,7 +1757,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/MANSA-logo.webp",
 		"heroImage": {
 			"src": "images/communications/MANSA-logo-hero.webp",
-			"alt": "MANSA Logo"
+			"alt": "MANSA logo: a seated, crowned king holding an orb and a sceptre in orange and black, set against large orange columns, above the word 'MANSA' and the names Association des Etudes Mandé and Mande Studies Association."
 		},
 		"coordinates": {
 			"latitude": 12.65281204482263,
@@ -1780,7 +1795,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/ecas-2023.webp",
 		"heroImage": {
 			"src": "images/communications/ecas-2023-hero.webp",
-			"alt": "9th European Conference on African Studies (ECAS)"
+			"alt": "Logo of the European Conference on African Studies, 'African Futures, Cologne 2023', with a multicoloured line outline of the African continent."
 		},
 		"coordinates": {
 			"latitude": 50.928,
@@ -1820,7 +1835,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/generations-imam-benin-2021.webp",
 		"heroImage": {
 			"src": "images/communications/generations-imam-benin-2021-hero.webp",
-			"alt": "Generations at Odds: The Controversial Political Candidacy of an Imam in Benin (2019)"
+			"alt": "Poster for the 'Beyond Crisis and Insecurity' West Africa conference, 16–19 June 2021, with three partner logos (Uppsala Universitet, Forum for Africa Studies, MANSA), a photograph of a 'Place de la Liberté' street sign and the hashtag #MANSAUppsala2021."
 		},
 		"project": "Muslim Minorities in Southern Cities of Benin and Togo",
 		"abstractExcerpt": "With the alarming deterioration of the security situation in Burkina Faso, recent reports have warned about the risk of the spread of jihadism in coastal West Africa. The kidnapping of two French tourists and the killing "
@@ -1851,6 +1866,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/ASA-Logo.svg",
+		"heroImage": {
+			"src": "images/communications/ASA-Logo.svg",
+			"alt": "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
+		},
 		"coordinates": {
 			"latitude": 42.346757140313436,
 			"longitude": -71.07895521140732
@@ -1884,6 +1903,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/ASA-Logo.svg",
+		"heroImage": {
+			"src": "images/communications/ASA-Logo.svg",
+			"alt": "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
+		},
 		"coordinates": {
 			"latitude": 38.92446346750211,
 			"longitude": -77.05449990304827
@@ -1923,7 +1946,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/ecas-2025.webp",
 		"heroImage": {
 			"src": "images/communications/ecas-2025-hero.webp",
-			"alt": "10th European Conference of African Studies (ECAS)"
+			"alt": "Poster for the European Conference on African Studies, 'African, Afropean, Afropolitan', Prague, 25–28 June 2025, in orange on a purple ground, beside an orange Africa silhouette built from vertical bars."
 		},
 		"coordinates": {
 			"latitude": 50.08896481219099,
@@ -1960,7 +1983,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/CAAS-logo.webp",
 		"heroImage": {
 			"src": "images/communications/CAAS-logo-hero.webp",
-			"alt": "Canadian Association of African Studies Conference (CAAS)"
+			"alt": "Cropped logo of the Canadian Association of African Studies: an orange and black African mask in front of a dark Africa silhouette, with fragments of lettering on an orange band."
 		},
 		"coordinates": {
 			"latitude": 46.7793,
@@ -2038,7 +2061,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/islam-burkina-faso-collection-omeka-2022.webp",
 		"heroImage": {
 			"src": "images/communications/islam-burkina-faso-collection-omeka-2022-hero.webp",
-			"alt": "Islam Burkina Faso Collection Omeka 2022"
+			"alt": "Poster for the annual cluster conference of the Africa Multiple Cluster of Excellence, 'Medialities', 6–9 July 2022, above a photograph of a radiating arrangement of small rectangular pieces on dark blue fabric (artist credit: Wallen Mapondera)."
 		},
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "Despite the growing popularity of digital humanities, a limited number of initiatives related to Islam in Sub-Saharan Africa have attempted to mobilize digital tools to analyze and disseminate research data. Launched in 2"
@@ -2075,7 +2098,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/islam-ivoirien-burkinabe-numerique-2016.webp",
 		"heroImage": {
 			"src": "images/communications/islam-ivoirien-burkinabe-numerique-2016-hero.webp",
-			"alt": "L'islam ivoirien et burkinabé à l'ère du numérique: des communautés musulmanes 2.0?"
+			"alt": "Cover of the programme for the 3rd Rencontre des Jeunes Chercheur.e.s en Études Africaines, 14–16 January 2016, with the JCEA logo: an Africa outline behind a magnifying glass and the letters J, C, E, A."
 		},
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Plusieurs études ont récemment été publiées sur la médiatisation de l’islam subsaharien par le biais de cassettes audio, de la presse, de la radio et de la télévision. Ces travaux, essentiels pour comprendre les nouvelles"
@@ -2117,7 +2140,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/islam-peripheries-open-up-2026.webp",
 		"heroImage": {
 			"src": "images/communications/islam-peripheries-open-up-2026-hero.webp",
-			"alt": "VolkswagenStiftung Kick Off \"Open Up\" event poster, 4–5 March 2026"
+			"alt": "VolkswagenStiftung logo with a dotted mark above the kick-off title 'Kick Off „Open Up“' and the dates 4–5 March 2026, on a white ground."
 		},
 		"project": "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 		"abstractExcerpt": "This presentation introduced the project \"Islam's 'Peripheries'\" to the other funded projects at the VolkswagenStiftung \"Open Up\" kick-off event. In Islamic studies, sub-Saharan Africa and Central Asia are often treated a"
@@ -2158,7 +2181,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/islam-university-campuses-cote-divoire-2019.webp",
 		"heroImage": {
 			"src": "images/communications/islam-university-campuses-cote-divoire-2019-hero.webp",
-			"alt": "Islam on University Campuses in Côte d'Ivoire since the 1970s: 'Muslim Intellectuals' and Francophone Salafism"
+			"alt": "Poster for the 8th European Conference on African Studies (ECAS2019), 'Africa: Connections and Disruptions': a man in a checked garment wears a reflective visor against a red ground, beside a gold Africa outline patterned like a circuit board."
 		},
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "In the 1970s, many Ivorian Muslim students had an 'inferiority complex' regarding their Islamic identity in a space dominated by secular and Christian ideologies. With the support of elders educated in arab countries, you"
@@ -2250,7 +2273,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/CAAS-logo.webp",
 		"heroImage": {
 			"src": "images/communications/CAAS-logo-hero.webp",
-			"alt": "Canadian Association of African Studies Conference (CAAS)"
+			"alt": "Cropped logo of the Canadian Association of African Studies: an orange and black African mask in front of a dark Africa silhouette, with fragments of lettering on an orange band."
 		},
 		"coordinates": {
 			"latitude": 45.4231,
@@ -2288,7 +2311,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/militantisme-islamique-feminin-burkina-2019.webp",
 		"heroImage": {
 			"src": "images/communications/militantisme-islamique-feminin-burkina-2019-hero.webp",
-			"alt": "Militantisme islamique féminin au Burkina Faso: des processus sinueux d'émancipation religieuse"
+			"alt": "Poster for the 2nd international congress of the GIS Institut du Genre, 'Genre et émancipation', 27–30 August 2019, at the Université d'Angers, on a purple ground with ink blots and four partner logos."
 		},
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "L’engagement militant de différentes cohortes de musulmanes impliquées au sein de l’Association des Élèves et Étudiants Musulmans du Burkina (AEEMB) et du Cercle d’Études de Recherches et de Formation Islamiques (CERFI) d"
@@ -2319,7 +2342,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/MANSA-logo.webp",
 		"heroImage": {
 			"src": "images/communications/MANSA-logo-hero.webp",
-			"alt": "10th International Conference of the Mande Studies Association (MANSA)"
+			"alt": "MANSA logo: a seated, crowned king holding an orb and a sceptre in orange and black, above the word 'MANSA' and the names Association des Etudes Mandé and Mande Studies Association."
 		},
 		"coordinates": {
 			"latitude": 5.1998,
@@ -2361,6 +2384,10 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": -71.2825
 		},
 		"image": "images/communications/acfas_81e.webp",
+		"heroImage": {
+			"src": "images/communications/acfas_81e.webp",
+			"alt": "Poster for the 81st Acfas congress, 'Savoirs sans frontières', giving the dates 6 to 10 May 2013 and Université Laval, Québec City, on a purple and white ground."
+		},
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Depuis le tournant des années 1990, la visibilité accrue de l’islam dans l’espace public au Burkina Faso s’est manifestée entre autres par l’émergence de prêcheurs et prêcheuses de plus en plus médiatisés. La participatio"
 	},
@@ -2400,7 +2427,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/publishing-islam-burkina-faso-collection-2022.webp",
 		"heroImage": {
 			"src": "images/communications/publishing-islam-burkina-faso-collection-2022-hero.webp",
-			"alt": "Publishing the Islam Burkina Faso Collection: Collaboration for Digital Scholarship"
+			"alt": "Cover of the conference programme for the 34th Deutscher Orientalistentag (DOT 2022), with the blue and yellow DOT 2022 logo and the Freie Universität Berlin logo."
 		},
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "Despite the growing popularity of digital humanities, a limited number of initiatives related to Islam in Sub-Saharan Africa have attempted to mobilize digital tools to analyze and disseminate research data. Launched in 2"
@@ -2435,7 +2462,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/reconfiguring-archive-amira-2026.webp",
 		"heroImage": {
 			"src": "images/communications/reconfiguring-archive-amira-2026.webp",
-			"alt": "Vintage-style cover of the programme for the conference 'Reimagining the Archive in the Post-Truth Era: An International Interdisciplinary Conference,' hosted by Cory Library & Archives at Rhodes University, Makhanda, South Africa, from 29 June to 2 July 2026. The aged-paper design features ornamental borders and antique pointing-hand engravings, with the Rhodes University crest at top left and the International Library of African Music (ILAM) logo at top right."
+			"alt": "Cover of the conference programme 'Reimagining the Archive in the Post-Truth Era', Cory Library & Archives, Rhodes University, 29 June to 2 July 2026, on aged paper with pointing-hand engravings and the Rhodes and ILAM logos."
 		},
 		"coordinates": {
 			"latitude": -33.3131,
@@ -2478,7 +2505,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/reaf-2026.webp",
 		"heroImage": {
 			"src": "images/communications/reaf-2026-hero.webp",
-			"alt": "9ème édition Rencontres des Études Africaines en France"
+			"alt": "Banner for the 9th Rencontres des Études Africaines en France, 29 June to 2 July 2026, Campus Condorcet Aubervilliers, with the CNRS, IRD and Études africaines en France logos over a blue and yellow painted collage."
 		},
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "Dans ce papier, Frédérick Madore et Vincent Hiribarren analysent le contenu d'une note de synthèse préparée par une équipe de trente chercheur.es et praticien·nes en Humanités numériques sur le rapport entre Humanités num"
@@ -2555,7 +2582,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/salafisme-securitisation-benin-togo-2022.webp",
 		"heroImage": {
 			"src": "images/communications/salafisme-securitisation-benin-togo-2022-hero.webp",
-			"alt": "Salafisme et sécuritisation de l'islam au Bénin et au Togo: instrumentalisations diverses d'une 'menace étrangère'"
+			"alt": "Black event poster for Panel 4, 'Islam, Violence and Political Salafism', on 2 June 2022, with photographs and names of four speakers and their institutions."
 		},
 		"project": "Muslim Minorities in Southern Cities of Benin and Togo",
 		"abstractExcerpt": "Au cours des dernières années, la détérioration de la situation sécuritaire au Sahel a laissé craindre à une extension du djihadisme aux pays côtiers du Golfe de Guinée. L’arrestation d’une vingtaine de présumés djihadist"
@@ -2591,8 +2618,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/point-sud-logo.svg",
 		"heroImage": {
 			"src": "images/communications/point-sud-logo.svg",
-			"alt": "DFG Point Sud programme logo",
-			"caption": ""
+			"alt": "Point Sud logo: the black wordmark 'POINT SUD' with an orange dot above and an orange swoosh below."
 		},
 		"coordinates": {
 			"latitude": -33.9321,
@@ -2808,7 +2834,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"poster": {
 			"pdf": "files/responsible-ai-access-mcp-server-2026-poster.pdf",
 			"image": "images/communications/responsible-ai-access-mcp-server-2026-poster.webp",
-			"alt": "The poster, a portrait sheet set in black and green on white under the RAIS², University of Bayreuth and UBT AI Day logos. Two columns of text sections flank a flow diagram of how AMIRA mediates each tool call, from researcher to AI assistant to the AMIRA MCP server and the AMIRA / Omeka S repository. Below are a radial graph of what co-occurs with Islam, drawn with FindRelated, a table of evaluation results across four queries, and two QR codes for exploring AMIRA and installing the server.",
+			"alt": "Academic poster titled Responsible AI Access to Research Repositories, with the RAIS², University of Bayreuth and UBT AI Day logos. It has two text columns, a flow diagram of how AMIRA mediates each tool call, a radial graph of terms co-occurring with Islam, a table of evaluation results and two QR codes.",
 			"caption": "Poster as presented, A0 portrait (841 × 1189 mm)"
 		},
 		"image": "images/communications/ubt-ai-day-2026-logo.webp",
@@ -2852,7 +2878,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/ai-africa-symposium-kansas-2026.webp",
 		"heroImage": {
 			"src": "images/communications/ai-africa-symposium-kansas-2026-hero.webp",
-			"alt": "Flyer for the AI and Africa Symposium, held on Zoom on 17 September 2026 from 10am to 1pm, organised by AAAS | KASC and African Digital Humanities at the University of Kansas. Panel I: African History with Frédérick Madore, Karen Ijumba and Fu’ad Lawal, moderated by Dr. Rahina Muazu. Panel II: African Writers Discuss AI with Mubanga Kalimamukwento, Ukamaka Olisakwe and Munyao Kilolo, moderated by Dr. Martha Ndakalako."
+			"alt": "Flyer for the AI and Africa Symposium, a Zoom event on 17 September 2026 organised by the University of Kansas. Two panels are listed, each with three speaker portraits and a named moderator, under the AAAS | KASC and African Digital Humanities logos."
 		},
 		"coordinates": {
 			"latitude": 38.9543,
@@ -2935,7 +2961,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/associations-chretiennes-islamiques-campus.webp",
 		"heroImage": {
 			"src": "images/communications/associations-chretiennes-islamiques-campus-hero.webp",
-			"alt": "Associations Chrétiennes et Islamiques sur les Campus de l'Université d'Abomey-Calavi et de l'Université de Lomé depuis 1970: la laïcité à l'université face à l'activisme religieux"
+			"alt": "A man in a grey polo shirt speaks beside a wooden lectern in a hall, with a green banner for the LARRED doctoral programme of the Université d'Abomey-Calavi behind him. Audience members in African print cloth sit in the foreground."
 		},
 		"coordinates": {
 			"latitude": 6.414542574575833,
@@ -3004,7 +3030,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/current-dynamics-islam-burkina-faso.webp",
 		"heroImage": {
 			"src": "images/communications/current-dynamics-islam-burkina-faso-hero.webp",
-			"alt": "Current Dynamics of Islam in Burkina Faso"
+			"alt": "Two men in an office, one standing in a grey sweater beside a projector and laptop stacked on books, gesturing as he speaks; a seated man in a blue plaid shirt listens, and a woman is partly visible at the left."
 		},
 		"coordinates": {
 			"latitude": 29.649267030531483,
@@ -3038,7 +3064,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/workshop-Dakar-2019.webp",
 		"heroImage": {
 			"src": "images/communications/workshop-Dakar-2019-hero.webp",
-			"alt": "Debating Laïcité in the Sahel: What Future for Secularism?"
+			"alt": "Group photo of about eleven people standing under a blue canopy in front of a banner reading 'West African Research Center, Centre de Recherche Ouest Africain (WARC/CROA)', with a patterned cloth-covered table in front."
 		},
 		"coordinates": {
 			"latitude": 14.690999882866137,
@@ -3116,7 +3142,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/digital-hoarding-open-archives-warsaw-2026.webp",
 		"heroImage": {
 			"src": "images/communications/digital-hoarding-open-archives-warsaw-2026-hero.webp",
-			"alt": "Poster for the workshop \"Non-European Approaches in European Academia: Strategies for De-Europeanizing Research in Academia\""
+			"alt": "Poster for the workshop 'Non-European Approaches in European Academia', held on 16 April 2026, with a photograph of a group applauding in a library room above a brown panel listing six guest speakers and the venue in Warsaw."
 		},
 		"project": "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 		"abstractExcerpt": "Arlette Farge's celebrated model of archival research — the slow, tactile encounter with documents in a silent reading room — presupposes well-ordered European institutions. For historians of West Africa, the reality is d"
@@ -3190,7 +3216,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/DH-islam-burkina-faso.webp",
 		"heroImage": {
 			"src": "images/communications/DH-islam-burkina-faso-hero.webp",
-			"alt": "Digital Humanities in the Making: The Islam Burkina Faso Collection"
+			"alt": "Poster for the ZMO Open Day ('Tag der offenen Tür') on 16 September 2022, 13 to 17 hours. A brick building with a steep roof and arched entrance appears under a blue overlay, with the ZMO logo at top right."
 		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
@@ -3265,7 +3291,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/elites-musulmanes-cote-divoire-burkina-faso.webp",
 		"heroImage": {
 			"src": "images/communications/elites-musulmanes-cote-divoire-burkina-faso-hero.webp",
-			"alt": "Les élites musulmanes en Côte d'Ivoire et au Burkina Faso depuis 1990 : des mobilisations politiques contrastées"
+			"alt": "Flyer for a lunchtime lecture (Conférence - Midi) by Frédérick Madore at Université Laval on 25 September 2018, with the title in red, a French summary of the talk and the logos of Hautes études internationales and CIRAM."
 		},
 		"coordinates": {
 			"latitude": 46.7793,
@@ -3302,7 +3328,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/emancipation-feminine-militantisme-islamique.webp",
 		"heroImage": {
 			"src": "images/communications/emancipation-feminine-militantisme-islamique-hero.webp",
-			"alt": "Émancipation féminine et militantisme islamique en Afrique de l'Ouest depuis 1980: quelques enseignements du Burkina Faso, de la Côte d'Ivoire, du Togo et du Bénin"
+			"alt": "Poster for the international workshop 'Femmes africaines dans une société d'hommes' (21 to 22 March 2022). Below the title is a black-and-white photograph of a young woman in a beret and jumper in woodland, with a long strap, possibly a rifle, across one shoulder."
 		},
 		"coordinates": {
 			"latitude": 12.485158567864516,
@@ -3339,7 +3365,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/puidoux.webp",
 		"heroImage": {
 			"src": "images/communications/puidoux-hero.webp",
-			"alt": "Puidoux"
+			"alt": "Group photo of about fourteen people standing on a paved courtyard outside a stone building with arched windows and a glass entrance."
 		},
 		"coordinates": {
 			"latitude": 46.494026160672135,
@@ -3442,7 +3468,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/EHESS-2025.webp",
 		"heroImage": {
 			"src": "images/communications/EHESS-2025-hero.webp",
-			"alt": "Flyer announcing Frédérick Madore's lecture series at EHESS in May 2025"
+			"alt": "Flyer for Frédérick Madore's lecture programme as invited professor at the EHESS, listing four sessions from 12 to 28 May, including the 20 May talk on West African Muslim communities and digital humanities. A small portrait of the speaker sits at top left, with ZMO, IISMM, EHESS and CNRS logos."
 		},
 		"coordinates": {
 			"latitude": 48.9077666570092,
@@ -3475,7 +3501,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/activities/ecole-nationale-des-chartes.webp",
 		"heroImage": {
 			"src": "images/activities/ecole-nationale-des-chartes.webp",
-			"alt": "École nationale des chartes"
+			"alt": "Facade of the École nationale des chartes, with its red logo and the name in black letters on a pale stone wall. A notice board sits beneath the sign, and bicycles are parked along the pavement at right."
 		},
 		"coordinates": {
 			"latitude": 48.8489,
@@ -3511,7 +3537,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/interfaith-coexistence-campuses.webp",
 		"heroImage": {
 			"src": "images/communications/interfaith-coexistence-campuses.webp",
-			"alt": "Interfaith coexistence on the campuses of the University of Lomé (Togo) and the University of Abomey-Calavi (Benin) since the 1970s"
+			"alt": "Group photo of about twenty people posed in an office in front of a blue and white banner with the GIGA logo. Name cards stand on the table in the foreground."
 		},
 		"coordinates": {
 			"latitude": 52.507471922094396,
@@ -3594,7 +3620,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/islam-algorithms-ai.webp",
 		"heroImage": {
 			"src": "images/communications/islam-algorithms-ai-hero.webp",
-			"alt": "Islam, Algorithms and AI"
+			"alt": "Banner for the ZMO Sommerfest (summer party) on 18 July 2024 at 14:30, with the ZMO logo at top right. A photograph of guests talking on a lawn in front of a brick house fills the left side."
 		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
@@ -3627,7 +3653,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/islam-burkina-cote-ivoire.webp",
 		"heroImage": {
 			"src": "images/communications/islam-burkina-cote-ivoire-hero.webp",
-			"alt": "L'islam au Burkina Faso et en Côte d'Ivoire: éveil et radicalisation?"
+			"alt": "Poster for the 76th Archéopat conference, titled 'L'islam au Burkina Faso et en Côte d'Ivoire'. Over a photograph of a half-built mosque with domes and scaffolding on dry ground, a vertical green banner reads 'Archéopat'; the UQAR, PATER and laboratory logos sit along the bottom."
 		},
 		"coordinates": {
 			"latitude": 48.452593849017894,
@@ -3671,7 +3697,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026.webp",
 		"heroImage": {
 			"src": "images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026-hero.webp",
-			"alt": "Poster for the seminar series “Digital History in/of Central Asia and the South Caucasus,” advertising the talk “Islam's ‘Peripheries’: Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia” by Dr. Aksana Ismailbekova (Leibniz-Zentrum Moderner Orient, Berlin) and Dr. Frédérick Madore (University of Bayreuth) on 29 June at 14:00 CET. Portraits of the two speakers appear on the right, with the Max Weber Stiftung and Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU) logos along the top."
+			"alt": "Seminar poster for 'Digital History in/of Central Asia and the South Caucasus', announcing a talk on 'Islam's Peripheries' by Dr. Aksana Ismailbekova and Dr. Frédérick Madore on 29 June at 14:00 CET. Circular portraits of the two speakers sit at right, with Max Weber Stiftung and FAU logos at top."
 		},
 		"coordinates": {
 			"latitude": 49.598,
@@ -3736,7 +3762,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/militantisme-islamique-campus-lome.webp",
 		"heroImage": {
 			"src": "images/communications/militantisme-islamique-campus-lome-hero.webp",
-			"alt": "Militantisme islamique sur le campus de l'Université de Lomé (Togo) depuis les années 1980: être musulman en contexte minoritaire, laïc et (semi-)autoritaire"
+			"alt": "Orange flyer for a virtual conference by the UQAM Chair on Contemporary Islam in West Africa, with the talk title and a photograph of a smiling man with glasses in a striped blue shirt."
 		},
 		"coordinates": {
 			"latitude": 45.513161245085065,
@@ -3809,7 +3835,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/muslim-intellectuals-francophone-salafis.webp",
 		"heroImage": {
 			"src": "images/communications/muslim-intellectuals-francophone-salafis-hero.webp",
-			"alt": "'Muslim Intellectuals' and 'Francophone Salafis' in West Africa: New Religious Elites?"
+			"alt": "Event flyer with a photograph of a mosque with a green dome, a tall minaret and palm trees, a portrait of a smiling man in a light blue shirt, and the Hamilton Lugar School logos."
 		},
 		"coordinates": {
 			"latitude": 39.16823943506577,
@@ -3843,7 +3869,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/point-de-passage-frontieres-religieuses.webp",
 		"heroImage": {
 			"src": "images/communications/point-de-passage-frontieres-religieuses-hero.webp",
-			"alt": "Point de passage et frontières religieuses"
+			"alt": "Programme poster for the workshop Points de passage et frontières religieuses, with a small portrait beside each speaker's timetable slot and the LASDEL and KU Leuven logos."
 		},
 		"coordinates": {
 			"latitude": 13.51766342197132,
@@ -3941,7 +3967,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/public-islam-cote-ivoire-burkina-faso.webp",
 		"heroImage": {
 			"src": "images/communications/public-islam-cote-ivoire-burkina-faso-hero.webp",
-			"alt": "Public Islam in Côte d'Ivoire and Burkina Faso: a comparative overview of the use of media by Muslims since the 1970s"
+			"alt": "Workshop flyer on a dark blue ground, with a photograph of a man in a white robe behind a shop counter stacked with tapes, cases and printed material, and the speaker list below."
 		},
 		"coordinates": {
 			"latitude": 29.649267030531483,
@@ -4016,7 +4042,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/recherche-documentaire-zotero.webp",
 		"heroImage": {
 			"src": "images/communications/recherche-documentaire-zotero-hero.webp",
-			"alt": "La recherche documentaire en libre accès et la gestion de références bibliographiques avec Zotero"
+			"alt": "Conference flyer with a smiling portrait of a man with short hair, a blue-boxed theme line about open-access research and Zotero, and the date Friday 7 June 2019 in large blue lettering."
 		},
 		"coordinates": {
 			"latitude": 7.686428569920746,
@@ -4126,7 +4152,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/representations-islam-muslims-togo.webp",
 		"heroImage": {
 			"src": "images/communications/representations-islam-muslims-togo-hero.webp",
-			"alt": "Representations of Islam and Muslims in Togo's State-Owned Newspapers Since the 1960s: From Loyal Religious Minority to Potential Threat"
+			"alt": "Online workshop flyer on a green foliage background, with a hand holding a smartphone that shows two smiling people, beside a list of speakers and the University of Florida logo."
 		},
 		"coordinates": {
 			"latitude": 29.649267030531483,
@@ -4164,7 +4190,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/salafisme-pentecotisme-campus-benin-togo.webp",
 		"heroImage": {
 			"src": "images/communications/salafisme-pentecotisme-campus-benin-togo-hero.webp",
-			"alt": "Salafisme et pentecôtisme sur les campus au Bénin et au Togo: la laïcité à l'université face à l'activisme religieux"
+			"alt": "Dark blue CIRAM poster with the talk title, a teal summary paragraph, the date 8 April 2021 and the speaker's name, with the Université Laval logo at the foot."
 		},
 		"coordinates": {
 			"latitude": 46.7793,
@@ -4235,7 +4261,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/perspectives-in-motion.webp",
 		"heroImage": {
 			"src": "images/communications/perspectives-in-motion-hero.webp",
-			"alt": "Workshop poster"
+			"alt": "Cover of the programme for the Perspectives in Motion workshop, showing a blue-tinted photograph of an ornate geometric dome and the Leibniz-Zentrum Moderner Orient logo."
 		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
@@ -4270,7 +4296,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/union-islamique-benin-elections.webp",
 		"heroImage": {
 			"src": "images/communications/union-islamique-benin-elections-hero.webp",
-			"alt": "L'Union Islamique du Bénin et les élections législatives: comment comprendre la crise interne"
+			"alt": "Photograph of a man in a grey shirt standing among about a dozen students in white polo shirts in a classroom, with a school banner on the wall and wooden desks in the foreground."
 		},
 		"coordinates": {
 			"latitude": 6.414542574575833,
@@ -4303,7 +4329,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/ALMEDA-logo.webp",
 		"heroImage": {
 			"src": "images/communications/ALMEDA-logo-hero.webp",
-			"alt": "African Literary Metadata (ALMEDA) logo with African geometric pattern in red, gold, green and brown colors"
+			"alt": "Project banner for African Literary Metadata (ALMEDA), with a geometric pattern of concentric arcs in red, gold, green and brown behind the title and a subtitle line."
 		},
 		"coordinates": {
 			"latitude": 59.8585638,
@@ -4378,7 +4404,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/young-muslims-civic-engagement-burkina.webp",
 		"heroImage": {
 			"src": "images/communications/young-muslims-civic-engagement-burkina-hero.webp",
-			"alt": "'Plus rien ne sera jamais comme avant'? Young Muslims' new forms of civic engagement in Burkina Faso (2014-2017)"
+			"alt": "Workshop flyer with a photograph of a man in striped clothing holding a large handwritten book in front of a reed fence, with the programme listed below."
 		},
 		"coordinates": {
 			"latitude": 29.649267030531483,
@@ -4412,7 +4438,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"image": "images/communications/yovo-historian-benin-togo.webp",
 		"heroImage": {
 			"src": "images/communications/yovo-historian-benin-togo-hero.webp",
-			"alt": "A 'Yovo' Historian in Benin and Togo: Conducting Fieldwork in Times of Pandemic and Fears of Jihadism Spreading"
+			"alt": "Group of six men posing outside a building beside a green sign reading Martin-Luther-Universität Halle-Wittenberg, under trees on a sunny day."
 		},
 		"coordinates": {
 			"latitude": 51.4861519467266,

@@ -24,7 +24,7 @@ export const uppsalaUniversity2025: Communication = {
 	image: 'images/communications/ALMEDA-logo.webp',
 	heroImage: {
 		src: 'images/communications/ALMEDA-logo-hero.webp',
-		alt: 'African Literary Metadata (ALMEDA) logo with African geometric pattern in red, gold, green and brown colors'
+		alt: 'Project banner for African Literary Metadata (ALMEDA), with a geometric pattern of concentric arcs in red, gold, green and brown behind the title and a subtitle line.'
 	},
 	coordinates: {
 		latitude: 59.8585638,

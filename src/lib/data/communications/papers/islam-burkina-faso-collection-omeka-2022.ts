@@ -32,7 +32,7 @@ export const islamBurkinaFasoCollectionOmeka: Communication = {
 	image: 'images/communications/islam-burkina-faso-collection-omeka-2022.webp',
 	heroImage: {
 		src: 'images/communications/islam-burkina-faso-collection-omeka-2022-hero.webp',
-		alt: 'Islam Burkina Faso Collection Omeka 2022'
+		alt: "Poster for the annual cluster conference of the Africa Multiple Cluster of Excellence, 'Medialities', 6–9 July 2022, above a photograph of a radiating arrangement of small rectangular pieces on dark blue fabric (artist credit: Wallen Mapondera)."
 	},
 	project: 'Digital Humanities and AI in African Studies'
 };

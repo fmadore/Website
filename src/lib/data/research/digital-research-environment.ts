@@ -19,7 +19,7 @@ export const digitalResearchEnvironment: ResearchProject = {
 		'Building and studying the data infrastructure that connects the Africa Multiple Cluster of Excellence, its four African research centres, and their partners.',
 	imageSrc: 'dre.webp',
 	imageAlt:
-		'The AMIRA home page: the atlas masthead beside a panel counting the research items, projects, people, organisations, and languages in the collection',
+		"Screenshot of the AMIRA home page: a green hero titled 'Africa Multiple Interactive Research Atlas (AMIRA)' beside a panel of collection counts, such as 3,975 research items, 93 projects and 1,643 people.",
 	figCaption: 'AMIRA, the public metadata layer built by the DRE',
 	subtitle:
 		'A research programme on how African research data is described, modelled, and made findable.',

@@ -35,7 +35,7 @@ These ambitions also expose where the work is hardest. An atlas built on relatio
 	image: 'images/communications/reconfiguring-archive-amira-2026.webp',
 	heroImage: {
 		src: 'images/communications/reconfiguring-archive-amira-2026.webp',
-		alt: "Vintage-style cover of the programme for the conference 'Reimagining the Archive in the Post-Truth Era: An International Interdisciplinary Conference,' hosted by Cory Library & Archives at Rhodes University, Makhanda, South Africa, from 29 June to 2 July 2026. The aged-paper design features ornamental borders and antique pointing-hand engravings, with the Rhodes University crest at top left and the International Library of African Music (ILAM) logo at top right."
+		alt: "Cover of the conference programme 'Reimagining the Archive in the Post-Truth Era', Cory Library & Archives, Rhodes University, 29 June to 2 July 2026, on aged paper with pointing-hand engravings and the Rhodes and ILAM logos."
 	},
 	coordinates: {
 		latitude: -33.3131,

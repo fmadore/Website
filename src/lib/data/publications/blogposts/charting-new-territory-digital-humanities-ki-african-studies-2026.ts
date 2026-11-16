@@ -36,7 +36,7 @@ export const chartingNewTerritoryDigitalHumanitiesKiAfricanStudies: Publication 
 	image: 'images/publications/digital-history-bielefeld.webp',
 	heroImage: {
 		src: 'images/publications/digital-history-bielefeld-hero.webp',
-		alt: 'Screenshot of the blogpost'
+		alt: 'Blog card for Digital History Bielefeld: a grey-toned photograph of a workshop, with a presenter gesturing beside a board of sticky notes and participants at laptops, above the post title in German.'
 	},
 	project: 'Digital Humanities and AI in African Studies',
 	citedBy: [

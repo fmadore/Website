@@ -20,7 +20,7 @@ export const chartingNewTerritoryWorkshopHannover: Activity = {
 	`,
 	heroImage: {
 		src: 'images/activities/charting-new-territory-workshop-hannover-hero.webp',
-		alt: 'Charting New Territory: Digital Humanities and AI in African Studies Workshop, Hanover'
+		alt: "Screenshot of the workshop website 'Charting New Territory', showing the heading 'Digital Humanities and AI in African Studies', the label 'A scoping workshop', and a navigation bar with links to About, Participants, Schedule, Practical Info, Position Paper and References."
 	},
 	tags: [
 		'Digital Humanities',

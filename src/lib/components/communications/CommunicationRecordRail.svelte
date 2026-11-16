@@ -44,11 +44,12 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	const plateSize = $derived(imageDimensions(plateSrc));
 	const plateAlt = $derived(typesetQuotes(communication.heroImage?.alt ?? communication.title));
 
-	// Plate caption: the authored caption when there is one, otherwise the venue,
-	// which is the one fact a photograph of a talk always carries. Any trailing
-	// stop is dropped before the idiom's own is appended.
+	// Only an authored caption is printed. The venue is not a caption: most
+	// plates are a conference logo or poster, not a photograph of the venue, and
+	// the ledger below prints the location anyway. Any trailing stop is dropped
+	// before the idiom's own is appended.
 	const plateCaption = $derived.by(() => {
-		const source = communication.heroImage?.caption ?? communication.location;
+		const source = communication.heroImage?.caption;
 		if (!source) return undefined;
 		return typesetQuotes(source.trim().replace(/\.$/, ''));
 	});

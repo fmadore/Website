@@ -32,7 +32,7 @@ export const publishingIslamBurkinaFasoCollection: Communication = {
 	image: 'images/communications/publishing-islam-burkina-faso-collection-2022.webp',
 	heroImage: {
 		src: 'images/communications/publishing-islam-burkina-faso-collection-2022-hero.webp',
-		alt: 'Publishing the Islam Burkina Faso Collection: Collaboration for Digital Scholarship'
+		alt: 'Cover of the conference programme for the 34th Deutscher Orientalistentag (DOT 2022), with the blue and yellow DOT 2022 logo and the Freie Universität Berlin logo.'
 	},
 	project: 'Digital Humanities and AI in African Studies'
 };

@@ -20,7 +20,7 @@ export const threeQuestionsToMadore: Publication = {
 	image: 'images/publications/three-questions-madore-2022.webp',
 	heroImage: {
 		src: 'images/publications/three-questions-madore-2022-hero.webp',
-		alt: 'Screenshot of the blogpost'
+		alt: "Screenshot of the Remoboko blog post 'Three Questions to Dr. Frédérick Madore', showing the blog masthead and a coloured illustration of figures and thatched huts."
 	},
 	country: ['Benin', 'Togo']
 };

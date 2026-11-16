@@ -33,7 +33,7 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 	image: 'images/publications/islam-politique-ouagadougou-2013.webp',
 	heroImage: {
 		src: 'images/publications/islam-politique-ouagadougou-2013-hero.webp',
-		alt: 'Cover of the dissertation'
+		alt: "Title page of a master's thesis (mémoire) on Islam, politics and the public sphere in Ouagadougou (Burkina Faso), Université Laval, 2013."
 	},
 	advisors: ['Muriel Gomez-Perez'],
 	country: ['Burkina Faso'],

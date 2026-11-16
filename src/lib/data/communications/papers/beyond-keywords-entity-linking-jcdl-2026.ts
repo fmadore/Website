@@ -36,7 +36,7 @@ export const beyondKeywordsEntityLinkingJcdl2026: Communication = {
 	image: 'images/communications/jcdl-2026.webp',
 	heroImage: {
 		src: 'images/communications/jcdl-2026.webp',
-		alt: 'Logo of ACM/IEEE JCDL 2026: a white line drawing of the Dallas skyline, its towers joined by network nodes and edges and trailed by strings of binary digits, above the words “ACM/IEEE JCDL 2026” on a dark ground.'
+		alt: "Square logo for ACM/IEEE JCDL 2026: a white line drawing of a city skyline with network nodes and binary digits above the text 'ACM/IEEE JCDL 2026' on a dark ground."
 	},
 	coordinates: {
 		latitude: 33.1003,

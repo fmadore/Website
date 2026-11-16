@@ -24,7 +24,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/communications/ai-africa-symposium-kansas-2026.webp",
 		"heroImage": {
 			"src": "images/communications/ai-africa-symposium-kansas-2026-hero.webp",
-			"alt": "Flyer for the AI and Africa Symposium, held on Zoom on 17 September 2026 from 10am to 1pm, organised by AAAS | KASC and African Digital Humanities at the University of Kansas. Panel I: African History with Frédérick Madore, Karen Ijumba and Fu’ad Lawal, moderated by Dr. Rahina Muazu. Panel II: African Writers Discuss AI with Mubanga Kalimamukwento, Ukamaka Olisakwe and Munyao Kilolo, moderated by Dr. Martha Ndakalako."
+			"alt": "Flyer for the AI and Africa Symposium (Zoom, 17 September 2026, 10am to 1pm), run by AAAS | KASC and African Digital Humanities at the University of Kansas, with portraits of the two panels' speakers and moderators."
 		}
 	},
 	{
@@ -75,7 +75,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"type": "conference",
 		"heroImage": {
 			"src": "images/activities/ENIUGH-hero.webp",
-			"alt": "Photo of Frédérick Madore, Mila Oiva, Gerben Zaagsma, and Kathleen Schlütter at the European Congress on World and Global History"
+			"alt": "Four people with lanyards stand side by side on a tiled floor in front of a wall with the partly obscured sign 'Linnéuniversitetet'."
 		},
 		"panelType": "conference"
 	},
@@ -99,8 +99,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"panelType": "conference",
 		"heroImage": {
 			"src": "images/activities/asa-panel-discussion.webp",
-			"alt": "Author Meets Critics panel at the African Studies Association annual meeting",
-			"caption": "Panel discussion on religious activism at the ASA conference in Chicago"
+			"alt": "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
 		},
 		"type": "conference"
 	},
@@ -125,7 +124,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"panelType": "lecture",
 		"heroImage": {
 			"src": "images/activities/uppsala-2025-hero.webp",
-			"alt": "Frédérick Madore presenting to the ALMEDA team at Uppsala University around a conference table with laptops and a screen displaying research data"
+			"alt": "Several people around a round table with laptops, pastries and water bottles in a meeting room; a man on the left gestures as he speaks, and a wall screen shows an archive record page headed 'Idriss Koudouss Koné'."
 		}
 	},
 	{
@@ -149,7 +148,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/publications/digital-history-bielefeld.webp",
 		"heroImage": {
 			"src": "images/publications/digital-history-bielefeld-hero.webp",
-			"alt": "Screenshot of the blog post on Digital History Bielefeld"
+			"alt": "Social card for the Digital History Bielefeld blog: a black-and-white photograph of a workshop, with a presenter beside a pinboard of cards, above the title 'Charting New Territory: Digital Humanities und Künstliche Intelligenz in den African Studies' by Frédérick Madore and Vincent Hiribarren."
 		}
 	},
 	{
@@ -161,7 +160,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "Three-day workshop in Hanover bringing together 25 researchers from 16 countries to explore digital humanities and AI in African Studies, co-organised with Vincent Hiribarren and funded by the VolkswagenStiftung.",
 		"heroImage": {
 			"src": "images/activities/charting-new-territory-workshop-hannover-hero.webp",
-			"alt": "Charting New Territory: Digital Humanities and AI in African Studies Workshop, Hanover"
+			"alt": "Screenshot of the workshop website 'Charting New Territory', showing the heading 'Digital Humanities and AI in African Studies', the label 'A scoping workshop', and a navigation bar with links to About, Participants, Schedule, Practical Info, Position Paper and References."
 		},
 		"tags": [
 			"Digital Humanities",
@@ -274,7 +273,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "Call for papers for a four-day workshop at the Stellenbosch Institute for Advanced Study (STIAS) in South Africa, 21–24 September 2026, co-organised with Vincent Hiribarren, Emmanuel Ngué Um, and Menno van Zaanen, and funded by the DFG Point Sud programme.",
 		"heroImage": {
 			"src": "images/communications/point-sud-logo.svg",
-			"alt": "DFG Point Sud programme logo"
+			"alt": "Point Sud logo: the black wordmark 'POINT SUD' with an orange dot above and an orange swoosh below."
 		},
 		"tags": [
 			"Digital Humanities",
@@ -335,7 +334,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/activities/The-Digital-Orientalist.webp",
 		"heroImage": {
 			"src": "images/activities/The-Digital-Orientalist-hero.webp",
-			"alt": "The Digital Orientalist review of the Islam West Africa Collection"
+			"alt": "Header of The Digital Orientalist blog post, titled 'Islam West Africa Collection: Dataset, Distant Reading, and Uses of AI for Discourse Analysis': a green-tinted collage of newspaper pages, including the masthead 'Le Pacifique' with a man speaking into a microphone."
 		},
 		"type": "publication"
 	},
@@ -381,7 +380,7 @@ export const activitySummaries: ActivitySummary[] = [
 		],
 		"heroImage": {
 			"src": "images/activities/ecole-nationale-des-chartes.webp",
-			"alt": "École nationale des chartes"
+			"alt": "Façade of the École nationale des chartes: the red logo and the name in black letters on a pale stone wall, with a grey plaque, a notice board beside a barred door, and bicycles parked on the pavement."
 		},
 		"type": "lecture"
 	},
@@ -410,7 +409,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/communications/EHESS-2025.webp",
 		"heroImage": {
 			"src": "images/communications/EHESS-2025-hero.webp",
-			"alt": "Promotional flyer for Frédérick Madore's May 2025 lecture series at EHESS, Paris, featuring talks on Islam in West Africa, digital humanities, religious coexistence, and student activism."
+			"alt": "Flyer for four lectures by Frédérick Madore at the EHESS on 12, 20, 21 and 28 May, with a portrait of the speaker and the logos of the ZMO, IISMM, EHESS and CNRS. Talk titles cover West African Islam, digital humanities, Christian-Muslim relations and religious activism on campuses."
 		},
 		"pdfPath": "files/prog-professeurs-invites_2024-2025_madore.pdf",
 		"pdfTitle": "Flyer",
@@ -435,8 +434,8 @@ export const activitySummaries: ActivitySummary[] = [
 		"panelType": "workshop",
 		"heroImage": {
 			"src": "images/activities/puidoux.webp",
-			"alt": "Crêt-Bérard Monastery",
-			"caption": "Crêt-Bérard Monastery"
+			"alt": "Crêt-Bérard, a stone building with a steep tiled roof, red dormer windows, arched openings and a small tower topped by a cross, on a lawn beside a gravel path under a clear sky.",
+			"caption": "Crêt-Bérard, Puidoux"
 		},
 		"pdfPath": "files/Programme_Atelier-Cret-Berard.pdf",
 		"pdfTitle": "Programme",
@@ -462,7 +461,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/publications/for-whom-for-what-purpose-2026.webp",
 		"heroImage": {
 			"src": "images/publications/for-whom-for-what-purpose-2026.webp",
-			"alt": "Cover of For Whom and For What Purpose? A Position Paper on Digital Humanities and AI in African Studies, ZMO Programmatic Texts 16"
+			"alt": "First page of the position paper 'For Whom and For What Purpose? A Position Paper on Digital Humanities and AI in African Studies', ZMO Programmatic Texts No. 16 (2026), with its abstract and a group photograph of about twenty people on stone steps."
 		}
 	},
 	{
@@ -484,7 +483,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/activities/humanistica-2025-dakar.webp",
 		"heroImage": {
 			"src": "images/activities/humanistica-2025-dakar-hero.webp",
-			"alt": "Humanistica 2025 conference in Dakar"
+			"alt": "Hazy view across a bay of a city skyline of high-rise towers and cranes, with low coastal buildings, palm trees and small wooden boats on the water in the foreground."
 		},
 		"type": "conference"
 	},
@@ -509,7 +508,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/communications/reaf-2026.webp",
 		"heroImage": {
 			"src": "images/communications/reaf-2026-hero.webp",
-			"alt": "9ème édition Rencontres des Études Africaines en France"
+			"alt": "Banner for the 9th Rencontres des Études Africaines en France, 29 June to 2 July 2026 at Campus Condorcet, Aubervilliers, over a colourful painted collage in blue, yellow and white, with the logos of CNRS, Études africaines en France, IRD and Campus Condorcet."
 		},
 		"pdfPath": "files/humanites-numeriques-ia-etudes-africaines-reaf-2026.pdf",
 		"pdfTitle": "Appel à propositions - Humanités numériques (DH) et IA et dans les études africaines (REAF 2026)",
@@ -546,7 +545,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026.webp",
 		"heroImage": {
 			"src": "images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026-hero.webp",
-			"alt": "Poster for the seminar series “Digital History in/of Central Asia and the South Caucasus,” advertising the talk “Islam's ‘Peripheries’: Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia” by Dr. Aksana Ismailbekova (Leibniz-Zentrum Moderner Orient, Berlin) and Dr. Frédérick Madore (University of Bayreuth) on 29 June at 14:00 CET. Portraits of the two speakers appear on the right, with the Max Weber Stiftung and Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU) logos along the top.",
+			"alt": "Poster for the seminar series “Digital History in/of Central Asia and the South Caucasus”, announcing a talk by Dr. Aksana Ismailbekova and Dr. Frédérick Madore on 29 June, with their portraits and the Max Weber Stiftung and FAU logos.",
 			"caption": "Poster for the talk in the “Digital History in/of Central Asia and the South Caucasus” seminar series at Friedrich-Alexander-Universität Erlangen-Nürnberg."
 		},
 		"panelType": "lecture"
@@ -592,7 +591,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"panelType": "publication",
 		"heroImage": {
 			"src": "images/activities/research-africa-reviews-hero.webp",
-			"alt": "Screenshot of Research Africa Reviews journal website showing Volume 9, Issue 3 - December 2025"
+			"alt": "Screenshot of the Duke Research Africa journal website: the heading 'Volume 9, Issue 3 - December, 2025', the ISSN, and a list of highlights including 'Activism in Togo and Benin'."
 		},
 		"type": "publication",
 		"url": "https://researchafrica.duke.edu/sites/default/files/-5-7-Religious-Activism-on-Campuses-in-Togo-and-Benin-Issue3-2025.pdf"
@@ -640,7 +639,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"panelType": "publication",
 		"heroImage": {
 			"src": "images/activities/jmas-review-hero.webp",
-			"alt": "Screenshot of The Journal of Modern African Studies cover showing Volume 63, Issue 4 - December 2025"
+			"alt": "Cover of The Journal of Modern African Studies, Volume 63, Number 4, December 2025: a navy globe illustration under the journal's name in capitals, with two article titles printed at right."
 		},
 		"type": "publication",
 		"url": "https://doi.org/10.1017/S0022278X25101195"
@@ -665,7 +664,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"panelType": "publication",
 		"heroImage": {
 			"src": "images/activities/De-Gruyter-ZMO.webp",
-			"alt": "Book cover of Religiosity on University Campuses in Africa, edited by Abdoulaye Sounaye and Frédérick Madore.",
+			"alt": "Book cover of Religious Activism on Campuses in Togo and Benin by Frédérick Madore: a blue hardback with a street scene of a campus gate and people, shown on a white surface in front of bookshelves.",
 			"caption": "Published March 2025 by De Gruyter"
 		},
 		"type": "publication"
@@ -688,7 +687,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/publications/repenser-categorisation-religieuse-benin.webp",
 		"heroImage": {
 			"src": "images/publications/repenser-categorisation-religieuse-benin.webp",
-			"alt": "Cover of L'Afrique des religions à l'épreuve des chiffres et des catégorisations"
+			"alt": "Cover of L'Afrique des religions à l'épreuve des chiffres et des catégorisations, edited by Pérouse de Montclos, Bernard-Maugiron and Dasré: a photograph of a painted vehicle reading 'God Motors' above a red panel with a white map of Africa."
 		}
 	},
 	{
@@ -731,7 +730,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/communications/point-sud-logo.svg",
 		"heroImage": {
 			"src": "images/communications/point-sud-logo.svg",
-			"alt": "DFG Point Sud programme logo"
+			"alt": "Point Sud logo: the black wordmark 'POINT SUD' with an orange dot above and an orange swoosh below."
 		}
 	},
 	{
@@ -830,7 +829,7 @@ export const activitySummaries: ActivitySummary[] = [
 		],
 		"heroImage": {
 			"src": "images/activities/volkswagenstiftung-open-up-kickoff-2026-hero.webp",
-			"alt": "Frédérick Madore and Aksana Ismailbekova presenting their project at the VolkswagenStiftung \"Open Up\" kick-off event at Herrenhausen Palace in Hanover"
+			"alt": "Two people standing beside a large screen that shows the title slide of the 'Kick-Off Open Up' symposium at Herrenhausen Palace, with the VolkswagenStiftung logo."
 		}
 	},
 	{
@@ -874,7 +873,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"description": "After five years at ZMO, I am moving to the Africa Multiple Cluster of Excellence at the University of Bayreuth as a data curator.",
 		"heroImage": {
 			"src": "images/activities/zmo-farewell-hero.webp",
-			"alt": "The main entrance of the Leibniz-Zentrum Moderner Orient (ZMO) building in Berlin"
+			"alt": "Entrance of the Leibniz-Zentrum Moderner Orient (ZMO) building in Berlin: a red-brick house with a steep gabled roof, a central arched doorway with a wooden door, and white-framed windows under a pale sky."
 		},
 		"tags": [
 			"Career",
@@ -909,7 +908,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"image": "images/communications/zmo-kitchen-talks-podcast-2025.webp",
 		"heroImage": {
 			"src": "images/communications/zmo-kitchen-talks-podcast-2025.webp",
-			"alt": "Frédérick Madore and Elisa Nobel-Dilaty sitting at a table with microphones and headphones in a recording studio for the ZMO Kitchen Talks podcast."
+			"alt": "Two people seated across a table in a recording studio. One wears headphones and a microphone on an arm; water bottles, papers and anatomical posters are visible."
 		},
 		"type": "podcast",
 		"panelType": "media"

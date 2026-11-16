@@ -37,8 +37,7 @@ Reste la question que l'atelier doit poser. Une telle médiation protège-t-elle
 	image: 'images/communications/point-sud-logo.svg',
 	heroImage: {
 		src: 'images/communications/point-sud-logo.svg',
-		alt: 'DFG Point Sud programme logo',
-		caption: ''
+		alt: "Point Sud logo: the black wordmark 'POINT SUD' with an orange dot above and an orange swoosh below."
 	},
 	coordinates: {
 		latitude: -33.9321,

@@ -20,7 +20,7 @@ export const collectionIslamHumanites: Communication = {
 	image: 'images/communications/MANSA-logo.webp',
 	heroImage: {
 		src: 'images/communications/MANSA-logo-hero.webp',
-		alt: 'MANSA Logo'
+		alt: "MANSA logo: a seated, crowned king holding an orb and a sceptre in orange and black, set against large orange columns, above the word 'MANSA' and the names Association des Etudes Mandé and Mande Studies Association."
 	},
 	coordinates: {
 		latitude: 12.65281204482263,

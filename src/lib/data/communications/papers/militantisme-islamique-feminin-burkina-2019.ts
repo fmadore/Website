@@ -30,7 +30,7 @@ export const militantismeIslamiqueFemininBurkina: Communication = {
 	image: 'images/communications/militantisme-islamique-feminin-burkina-2019.webp',
 	heroImage: {
 		src: 'images/communications/militantisme-islamique-feminin-burkina-2019-hero.webp',
-		alt: "Militantisme islamique féminin au Burkina Faso: des processus sinueux d'émancipation religieuse"
+		alt: "Poster for the 2nd international congress of the GIS Institut du Genre, 'Genre et émancipation', 27–30 August 2019, at the Université d'Angers, on a purple ground with ink blots and four partner logos."
 	},
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 };

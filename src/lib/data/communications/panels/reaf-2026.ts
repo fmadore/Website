@@ -47,7 +47,7 @@ Ce panel organisé par Frédérick Madore et Vincent Hiribarren fait suite à la
 	image: 'images/communications/reaf-2026.webp',
 	heroImage: {
 		src: 'images/communications/reaf-2026-hero.webp',
-		alt: '9ème édition Rencontres des Études Africaines en France'
+		alt: 'Banner for the 9th Rencontres des Études Africaines en France, 29 June to 2 July 2026, Campus Condorcet Aubervilliers, with the CNRS, IRD and Études africaines en France logos over a blue and yellow painted collage.'
 	},
 	coordinates: {
 		latitude: 48.911008116361714,

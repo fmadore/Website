@@ -24,8 +24,8 @@ export const etablirFaitiereIslamique: Activity = {
 	panelType: 'workshop',
 	heroImage: {
 		src: 'images/activities/puidoux.webp',
-		alt: 'Crêt-Bérard Monastery',
-		caption: 'Crêt-Bérard Monastery'
+		alt: 'Crêt-Bérard, a stone building with a steep tiled roof, red dormer windows, arched openings and a small tower topped by a cross, on a lawn beside a gravel path under a clear sky.',
+		caption: 'Crêt-Bérard, Puidoux'
 	},
 	pdfPath: 'files/Programme_Atelier-Cret-Berard.pdf',
 	pdfTitle: 'Programme',

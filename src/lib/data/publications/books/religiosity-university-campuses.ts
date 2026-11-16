@@ -27,7 +27,7 @@ export const religiosityUniversityCampuses: Publication = {
 	image: 'images/publications/religiosity-university-campuses.webp',
 	heroImage: {
 		src: 'images/publications/religiosity-university-campuses-hero.webp',
-		alt: 'Cover of Religiosity on University Campuses in Africa'
+		alt: 'Book cover: a congregation kneels in prayer in rows under an open-sided shelter on a sandy campus, with the title Religiosity on University Campuses in Africa below in magenta.'
 	},
 	isEditedVolume: true,
 	project: 'Religious Activism on Campuses in Togo and Benin',

@@ -40,7 +40,7 @@ export const archivesAlgorithmsIwac2025: Activity = {
 	type: 'conference',
 	heroImage: {
 		src: 'images/activities/ENIUGH-hero.webp',
-		alt: 'Photo of Frédérick Madore, Mila Oiva, Gerben Zaagsma, and Kathleen Schlütter at the European Congress on World and Global History'
+		alt: "Four people with lanyards stand side by side on a tiled floor in front of a wall with the partly obscured sign 'Linnéuniversitetet'."
 	},
 	panelType: 'conference'
 };

@@ -30,7 +30,7 @@ const volkswagenStiftungOpenUpKickoff2026: Activity = {
 	],
 	heroImage: {
 		src: 'images/activities/volkswagenstiftung-open-up-kickoff-2026-hero.webp',
-		alt: 'Frédérick Madore and Aksana Ismailbekova presenting their project at the VolkswagenStiftung "Open Up" kick-off event at Herrenhausen Palace in Hanover'
+		alt: "Two people standing beside a large screen that shows the title slide of the 'Kick-Off Open Up' symposium at Herrenhausen Palace, with the VolkswagenStiftung logo."
 	}
 };
 

@@ -32,7 +32,7 @@ export const islamBurkinaCollection: Publication = {
 	image: 'images/publications/revue-d-histoire-contemporaine-de-l-afrique.webp',
 	heroImage: {
 		src: 'images/publications/revue-d-histoire-contemporaine-de-l-afrique-hero.webp',
-		alt: "Cover of Revue d'Histoire Contemporaine de l'Afrique"
+		alt: "Screenshot of the journal's web page for the article 'La Collection Islam Burkina Faso', with the Revue d'Histoire Contemporaine de l'Afrique masthead, author details, DOI and a thumbnail of the collection website."
 	},
 	country: ['Burkina Faso'],
 	project: 'Digital Humanities and AI in African Studies',

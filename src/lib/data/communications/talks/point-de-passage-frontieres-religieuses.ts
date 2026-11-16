@@ -24,7 +24,7 @@ export const pointPassageFrontieresReligieuses: Communication = {
 	image: 'images/communications/point-de-passage-frontieres-religieuses.webp',
 	heroImage: {
 		src: 'images/communications/point-de-passage-frontieres-religieuses-hero.webp',
-		alt: 'Point de passage et frontières religieuses'
+		alt: "Programme poster for the workshop Points de passage et frontières religieuses, with a small portrait beside each speaker's timetable slot and the LASDEL and KU Leuven logos."
 	},
 	coordinates: {
 		latitude: 13.51766342197132,

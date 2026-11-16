@@ -31,7 +31,7 @@ export const activity: Activity = {
 	`,
 	heroImage: {
 		src: 'images/communications/point-sud-logo.svg',
-		alt: 'DFG Point Sud programme logo'
+		alt: "Point Sud logo: the black wordmark 'POINT SUD' with an orange dot above and an orange swoosh below."
 	},
 	tags: [
 		'Digital Humanities',

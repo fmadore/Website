@@ -29,7 +29,7 @@ export const evolutionsNouvellesFormesIslamAfriqueOuest: Communication = {
 	image: 'images/communications/evolutions-nouvelles-formes-islam-afrique-ouest.webp',
 	heroImage: {
 		src: 'images/communications/evolutions-nouvelles-formes-islam-afrique-ouest-hero.webp',
-		alt: "Évolutions et nouvelles formes de l'islam en Afrique de l'Ouest: vers une radicalisation?"
+		alt: "Flyer for a CIRAM round table at Hautes études internationales, Université Laval, 'Évolutions et nouvelles formes de l'islam en Afrique de l'Ouest', on Thursday 24 March 2016, with photographs, a list of speakers and a small book cover."
 	},
 	coordinates: {
 		latitude: 46.7793,

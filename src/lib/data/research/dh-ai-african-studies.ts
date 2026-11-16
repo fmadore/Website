@@ -11,7 +11,8 @@ export const dhAiAfricanStudies: ResearchProject = {
 	shortDescription:
 		'Exploring how DH and AI can transform knowledge production in African studies through ethical, sustainable, and Africa-centred digital infrastructures.',
 	imageSrc: 'IWAC.webp',
-	imageAlt: 'Digital Humanities and AI in African Studies',
+	imageAlt:
+		"Collage in green, red and purple tints of West African press: a blue mosque with a tall minaret, a red mud-brick mosque, magazine covers, and newspaper clippings with French headlines such as 'L'Union islamique appelle les acteurs politiques au dialogue'.",
 	projectName: 'Digital Humanities and AI in African Studies',
 	funder: 'Volkswagen Foundation · DFG Programme Point Sud',
 	seoDescription:

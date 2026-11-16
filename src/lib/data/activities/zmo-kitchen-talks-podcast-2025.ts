@@ -37,7 +37,7 @@ export const zmoKitchenTalksPodcast2025: Activity = {
 	image: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',
 	heroImage: {
 		src: 'images/communications/zmo-kitchen-talks-podcast-2025.webp',
-		alt: 'Frédérick Madore and Elisa Nobel-Dilaty sitting at a table with microphones and headphones in a recording studio for the ZMO Kitchen Talks podcast.'
+		alt: 'Two people seated across a table in a recording studio. One wears headphones and a microphone on an arm; water bottles, papers and anatomical posters are visible.'
 	},
 	type: 'podcast',
 	panelType: 'media'

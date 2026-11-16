@@ -33,6 +33,6 @@ export const activity: Activity = {
 	image: 'images/publications/for-whom-for-what-purpose-2026.webp',
 	heroImage: {
 		src: 'images/publications/for-whom-for-what-purpose-2026.webp',
-		alt: 'Cover of For Whom and For What Purpose? A Position Paper on Digital Humanities and AI in African Studies, ZMO Programmatic Texts 16'
+		alt: "First page of the position paper 'For Whom and For What Purpose? A Position Paper on Digital Humanities and AI in African Studies', ZMO Programmatic Texts No. 16 (2026), with its abstract and a group photograph of about twenty people on stone steps."
 	}
 };

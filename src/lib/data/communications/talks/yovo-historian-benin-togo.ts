@@ -17,7 +17,7 @@ export const yovoHistorianBeninTogo: Communication = {
 	image: 'images/communications/yovo-historian-benin-togo.webp',
 	heroImage: {
 		src: 'images/communications/yovo-historian-benin-togo-hero.webp',
-		alt: "A 'Yovo' Historian in Benin and Togo: Conducting Fieldwork in Times of Pandemic and Fears of Jihadism Spreading"
+		alt: 'Group of six men posing outside a building beside a green sign reading Martin-Luther-Universität Halle-Wittenberg, under trees on a sunny day.'
 	},
 	coordinates: {
 		latitude: 51.4861519467266,

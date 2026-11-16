@@ -39,7 +39,7 @@ export const beyondKeywordsAiIwacMcp2026: Communication = {
 	image: 'images/communications/c2dh.webp',
 	heroImage: {
 		src: 'images/communications/c2dh-hero.webp',
-		alt: 'AI through History, History through AI'
+		alt: "Event page header for 'AI through History, History through AI', beside an illustration of a woman in a long skirt reaching toward a mosaic-like grid of dark and cream tiles, with orange binary digits streaming from it."
 	},
 	coordinates: {
 		latitude: 49.5018, // Maison des Sciences humaines, Esch-sur-Alzette

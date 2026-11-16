@@ -30,7 +30,7 @@ export const rivalitesCollaborationsIslam: Publication = {
 	image: 'images/publications/dissertation-cote-ivoire-burkina-faso-2018.webp',
 	heroImage: {
 		src: 'images/publications/dissertation-cote-ivoire-burkina-faso-2018-hero.webp',
-		alt: 'Cover of the dissertation'
+		alt: "Title page of a doctoral thesis (thèse) on rivalries and collaborations in Islamic associations in Côte d'Ivoire and Burkina Faso (1970–2017), with the Université Laval logo."
 	},
 	abstract: `À première vue, les récentes actions terroristes en Côte d'Ivoire et au Burkina Faso ont laissé croire à une radicalisation de l'islam dans ces deux pays. Cependant, la grande attention médiatique portée sur ces craintes et les nombreuses analyses qui ont été publiées sur les risques d'une montée de l'extrémisme, bien qu'elles soient importantes, éclipsent d'autres dynamiques récentes et plus anciennes caractérisant l'islam ivoirien et burkinabè. Il s'agit de présenter un portrait plus nuancé et dans la longue durée des réalités caractérisant ces communautés musulmanes, qui sont moins couvertes, mais plus prégnantes telles que la participation des musulmans issus de catégories sociales d'ordinaire marginalisées, principalement les jeunes et les femmes, dans les mutations de l'islam à travers leur engagement militant.
 

@@ -25,7 +25,7 @@ export const islamBurkinaCoteIvoire: Communication = {
 	image: 'images/communications/islam-burkina-cote-ivoire.webp',
 	heroImage: {
 		src: 'images/communications/islam-burkina-cote-ivoire-hero.webp',
-		alt: "L'islam au Burkina Faso et en Côte d'Ivoire: éveil et radicalisation?"
+		alt: "Poster for the 76th Archéopat conference, titled 'L'islam au Burkina Faso et en Côte d'Ivoire'. Over a photograph of a half-built mosque with domes and scaffolding on dry ground, a vertical green banner reads 'Archéopat'; the UQAR, PATER and laboratory logos sit along the bottom."
 	},
 	coordinates: {
 		latitude: 48.452593849017894,

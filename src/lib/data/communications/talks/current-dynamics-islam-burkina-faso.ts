@@ -19,7 +19,7 @@ export const currentDynamicsIslamBurkinaFaso: Communication = {
 	image: 'images/communications/current-dynamics-islam-burkina-faso.webp',
 	heroImage: {
 		src: 'images/communications/current-dynamics-islam-burkina-faso-hero.webp',
-		alt: 'Current Dynamics of Islam in Burkina Faso'
+		alt: 'Two men in an office, one standing in a grey sweater beside a projector and laptop stacked on books, gesturing as he speaks; a seated man in a blue plaid shirt listens, and a woman is partly visible at the left.'
 	},
 	coordinates: {
 		latitude: 29.649267030531483,

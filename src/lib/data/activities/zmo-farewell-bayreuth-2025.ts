@@ -22,7 +22,7 @@ export const zmoFarewellBayreuth2025: Activity = {
 	`,
 	heroImage: {
 		src: 'images/activities/zmo-farewell-hero.webp',
-		alt: 'The main entrance of the Leibniz-Zentrum Moderner Orient (ZMO) building in Berlin'
+		alt: 'Entrance of the Leibniz-Zentrum Moderner Orient (ZMO) building in Berlin: a red-brick house with a steep gabled roof, a central arched doorway with a wooden door, and white-framed windows under a pale sky.'
 	},
 	tags: [
 		'Career',

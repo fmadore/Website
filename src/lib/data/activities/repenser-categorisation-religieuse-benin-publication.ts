@@ -22,6 +22,6 @@ export const activity: Activity = {
 	image: 'images/publications/repenser-categorisation-religieuse-benin.webp',
 	heroImage: {
 		src: 'images/publications/repenser-categorisation-religieuse-benin.webp',
-		alt: "Cover of L'Afrique des religions à l'épreuve des chiffres et des catégorisations"
+		alt: "Cover of L'Afrique des religions à l'épreuve des chiffres et des catégorisations, edited by Pérouse de Montclos, Bernard-Maugiron and Dasré: a photograph of a painted vehicle reading 'God Motors' above a red panel with a white map of Africa."
 	}
 };

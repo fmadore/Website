@@ -32,7 +32,7 @@ export const islamIvoirienBurkinabeNumerique: Communication = {
 	image: 'images/communications/islam-ivoirien-burkinabe-numerique-2016.webp',
 	heroImage: {
 		src: 'images/communications/islam-ivoirien-burkinabe-numerique-2016-hero.webp',
-		alt: "L'islam ivoirien et burkinabé à l'ère du numérique: des communautés musulmanes 2.0?"
+		alt: 'Cover of the programme for the 3rd Rencontre des Jeunes Chercheur.e.s en Études Africaines, 14–16 January 2016, with the JCEA logo: an Africa outline behind a magnifying glass and the letters J, C, E, A.'
 	},
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 };

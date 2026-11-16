@@ -25,7 +25,7 @@ export const digitalHumanismsIslamBurkinaFaso: Communication = {
 	image: 'images/communications/DH-islam-burkina-faso.webp',
 	heroImage: {
 		src: 'images/communications/DH-islam-burkina-faso-hero.webp',
-		alt: 'Digital Humanities in the Making: The Islam Burkina Faso Collection'
+		alt: "Poster for the ZMO Open Day ('Tag der offenen Tür') on 16 September 2022, 13 to 17 hours. A brick building with a steep roof and arched entrance appears under a blue overlay, with the ZMO logo at top right."
 	},
 	coordinates: {
 		latitude: 52.42814222811816,

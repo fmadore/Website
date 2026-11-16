@@ -30,7 +30,7 @@ export const aiAfricaSymposiumKansas2026: Activity = {
 	image: 'images/communications/ai-africa-symposium-kansas-2026.webp',
 	heroImage: {
 		src: 'images/communications/ai-africa-symposium-kansas-2026-hero.webp',
-		alt: 'Flyer for the AI and Africa Symposium, held on Zoom on 17 September 2026 from 10am to 1pm, organised by AAAS | KASC and African Digital Humanities at the University of Kansas. Panel I: African History with Frédérick Madore, Karen Ijumba and Fu’ad Lawal, moderated by Dr. Rahina Muazu. Panel II: African Writers Discuss AI with Mubanga Kalimamukwento, Ukamaka Olisakwe and Munyao Kilolo, moderated by Dr. Martha Ndakalako.'
+		alt: "Flyer for the AI and Africa Symposium (Zoom, 17 September 2026, 10am to 1pm), run by AAAS | KASC and African Digital Humanities at the University of Kansas, with portraits of the two panels' speakers and moderators."
 	}
 };
 

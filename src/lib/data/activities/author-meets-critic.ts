@@ -30,8 +30,7 @@ export const authorMeetsCritic: Activity = {
 	panelType: 'conference',
 	heroImage: {
 		src: 'images/activities/asa-panel-discussion.webp',
-		alt: 'Author Meets Critics panel at the African Studies Association annual meeting',
-		caption: 'Panel discussion on religious activism at the ASA conference in Chicago'
+		alt: "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
 	},
 	type: 'conference'
 };

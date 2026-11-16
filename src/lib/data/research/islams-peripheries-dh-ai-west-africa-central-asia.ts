@@ -13,7 +13,7 @@ export const islamsPeripheries: ResearchProject = {
 		'Testing what AI can do with two multilingual collections, to compare Islamic discourse and responses to modernity in West Africa and Central Asia.',
 	imageSrc: 'islams-peripheries.webp',
 	imageAlt:
-		'Collage of three documents: a Central Asian newspaper page in Perso-Arabic script, and two West African Islamic magazine covers in Arabic and French',
+		"Collage of three printed items: at left, a newspaper page in Persian script from the Central Asian press, with a column headed 'News from Samarkand'; at right, two magazine covers, one in Arabic and one in French ('Islam et charlatanisme').",
 	figCaption:
 		'Documents from the two collections: the Central Asian press, and West African Islamic magazines in Arabic and French',
 	subtitle:

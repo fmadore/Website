@@ -35,7 +35,7 @@ export const hadjCoteDIvoire: Publication = {
 	image: 'images/publications/Cahiers-détudes-africaines-229.webp',
 	heroImage: {
 		src: 'images/publications/Cahiers-détudes-africaines-229-hero.webp',
-		alt: "Cover of Cahiers d'études africaines, issue 229"
+		alt: "Back cover of Cahiers d'études africaines, no. 229: a dark panel listing the issue's article titles, including F. Madore and Y. Traoré on the hadj in Côte d'Ivoire, with an ISBN barcode."
 	},
 	country: ["Côte d'Ivoire"],
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",

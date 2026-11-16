@@ -33,7 +33,7 @@ export const talkIslamPeripheriesDhAiWestAfricaCentralAsia2026: Communication = 
 	image: 'images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026.webp',
 	heroImage: {
 		src: 'images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026-hero.webp',
-		alt: "Poster for the seminar series “Digital History in/of Central Asia and the South Caucasus,” advertising the talk “Islam's ‘Peripheries’: Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia” by Dr. Aksana Ismailbekova (Leibniz-Zentrum Moderner Orient, Berlin) and Dr. Frédérick Madore (University of Bayreuth) on 29 June at 14:00 CET. Portraits of the two speakers appear on the right, with the Max Weber Stiftung and Friedrich-Alexander-Universität Erlangen-Nürnberg (FAU) logos along the top."
+		alt: "Seminar poster for 'Digital History in/of Central Asia and the South Caucasus', announcing a talk on 'Islam's Peripheries' by Dr. Aksana Ismailbekova and Dr. Frédérick Madore on 29 June at 14:00 CET. Circular portraits of the two speakers sit at right, with Max Weber Stiftung and FAU logos at top."
 	},
 	coordinates: {
 		latitude: 49.598,

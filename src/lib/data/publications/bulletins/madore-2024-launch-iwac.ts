@@ -24,7 +24,7 @@ export const madore2024LaunchIwac: Publication = {
 	image: 'images/publications/zmo-bulletin-44.webp',
 	heroImage: {
 		src: 'images/publications/zmo-bulletin-44-hero.webp',
-		alt: 'Cover of ZMO Bulletin, issue 44'
+		alt: 'Page 9 of ZMO Bulletin 44 (2024), an article on the Islam West Africa Collection launch, with a photograph of a group of people standing indoors and a column of text.'
 	},
 	project: 'Digital Humanities and AI in African Studies'
 };

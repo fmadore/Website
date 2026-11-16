@@ -29,7 +29,7 @@ export const imamsEspacePublicOuagadougou: Communication = {
 	image: 'images/communications/CAAS-logo.webp',
 	heroImage: {
 		src: 'images/communications/CAAS-logo-hero.webp',
-		alt: 'Canadian Association of African Studies Conference (CAAS)'
+		alt: 'Cropped logo of the Canadian Association of African Studies: an orange and black African mask in front of a dark Africa silhouette, with fragments of lettering on an orange band.'
 	},
 	coordinates: {
 		latitude: 46.7793,

@@ -19,7 +19,7 @@ export const representationsIslamMuslimsTogo: Communication = {
 	image: 'images/communications/representations-islam-muslims-togo.webp',
 	heroImage: {
 		src: 'images/communications/representations-islam-muslims-togo-hero.webp',
-		alt: "Representations of Islam and Muslims in Togo's State-Owned Newspapers Since the 1960s: From Loyal Religious Minority to Potential Threat"
+		alt: 'Online workshop flyer on a green foliage background, with a hand holding a smartphone that shows two smiling people, beside a list of speakers and the University of Florida logo.'
 	},
 	coordinates: {
 		latitude: 29.649267030531483,

@@ -27,6 +27,10 @@ export const goodMuslimBadMuslimTogo: Communication = {
 		'West Africa'
 	],
 	image: 'images/communications/ASA-Logo.svg',
+	heroImage: {
+		src: 'images/communications/ASA-Logo.svg',
+		alt: "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
+	},
 	coordinates: {
 		latitude: 42.346757140313436,
 		longitude: -71.07895521140732

@@ -29,7 +29,7 @@ export const interfaithCoexistenceCampuses: Communication = {
 	image: 'images/communications/interfaith-coexistence-campuses.webp',
 	heroImage: {
 		src: 'images/communications/interfaith-coexistence-campuses.webp',
-		alt: 'Interfaith coexistence on the campuses of the University of Lomé (Togo) and the University of Abomey-Calavi (Benin) since the 1970s'
+		alt: 'Group photo of about twenty people posed in an office in front of a blue and white banner with the GIGA logo. Name cards stand on the table in the foreground.'
 	},
 	coordinates: {
 		latitude: 52.507471922094396,

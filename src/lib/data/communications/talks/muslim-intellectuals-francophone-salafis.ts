@@ -25,7 +25,7 @@ export const muslimIntellectualsFrancophoneSalafis: Communication = {
 	image: 'images/communications/muslim-intellectuals-francophone-salafis.webp',
 	heroImage: {
 		src: 'images/communications/muslim-intellectuals-francophone-salafis-hero.webp',
-		alt: "'Muslim Intellectuals' and 'Francophone Salafis' in West Africa: New Religious Elites?"
+		alt: 'Event flyer with a photograph of a mosque with a green dome, a tall minaret and palm trees, a portrait of a smiling man in a light blue shirt, and the Hamilton Lugar School logos.'
 	},
 	coordinates: {
 		latitude: 39.16823943506577,

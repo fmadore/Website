@@ -27,7 +27,7 @@ export const youngMuslimsCivicEngagementBurkina: Communication = {
 	image: 'images/communications/young-muslims-civic-engagement-burkina.webp',
 	heroImage: {
 		src: 'images/communications/young-muslims-civic-engagement-burkina-hero.webp',
-		alt: "'Plus rien ne sera jamais comme avant'? Young Muslims' new forms of civic engagement in Burkina Faso (2014-2017)"
+		alt: 'Workshop flyer with a photograph of a man in striped clothing holding a large handwritten book in front of a reed fence, with the programme listed below.'
 	},
 	coordinates: {
 		latitude: 29.649267030531483,

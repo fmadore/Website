@@ -36,7 +36,7 @@ export const francophoneMuslimIntellectualsBurkinaFaso: Publication = {
 	image: 'images/publications/africa.webp',
 	heroImage: {
 		src: 'images/publications/africa-hero.webp',
-		alt: 'Cover of Africa journal, volume 90, issue 3'
+		alt: 'Cover of the journal Africa (International African Institute): an orange cover with the masthead AFRICA in large black capitals above a list of article titles.'
 	},
 	country: ['Burkina Faso'],
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",

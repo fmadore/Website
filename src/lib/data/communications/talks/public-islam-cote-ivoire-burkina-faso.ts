@@ -27,7 +27,7 @@ export const publicIslamCoteIvoireBurkinaFaso: Communication = {
 	image: 'images/communications/public-islam-cote-ivoire-burkina-faso.webp',
 	heroImage: {
 		src: 'images/communications/public-islam-cote-ivoire-burkina-faso-hero.webp',
-		alt: "Public Islam in Côte d'Ivoire and Burkina Faso: a comparative overview of the use of media by Muslims since the 1970s"
+		alt: 'Workshop flyer on a dark blue ground, with a photograph of a man in a white robe behind a shop counter stacked with tapes, cases and printed material, and the speaker list below.'
 	},
 	coordinates: {
 		latitude: 29.649267030531483,

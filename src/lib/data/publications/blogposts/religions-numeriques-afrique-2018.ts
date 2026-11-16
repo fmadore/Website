@@ -23,6 +23,6 @@ export const religionsNumeriquesAfrique: Publication = {
 	image: 'images/publications/religions-numeriques-afrique-2018.webp',
 	heroImage: {
 		src: 'images/publications/religions-numeriques-afrique-2018-hero.webp',
-		alt: 'Screenshot of the blogpost'
+		alt: "Screenshot of a French-language blog page, 'Religions numériques en Afrique', showing a promotional poster for an online religious programme, 'L'Eau Miraculeux (Miracle Water)', with a man in a suit beside a water bottle."
 	}
 };

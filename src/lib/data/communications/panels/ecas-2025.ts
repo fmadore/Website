@@ -27,7 +27,7 @@ export const ecas2025Panel: Communication = {
 	image: 'images/communications/ecas-2025.webp',
 	heroImage: {
 		src: 'images/communications/ecas-2025-hero.webp',
-		alt: 'Digital Humanities (DH) and AI in African Studies: Opportunities, Challenges, and Decolonial Perspectives'
+		alt: "Purple banner for the European Conference on African Studies, Prague, 25 to 28 June 2025, with the title 'African, Afropean, Afropolitan' and an orange skyline silhouette of Africa."
 	},
 	coordinates: {
 		latitude: 50.08896481219099,

@@ -32,6 +32,6 @@ export const activity: Activity = {
 	image: 'images/publications/digital-history-bielefeld.webp',
 	heroImage: {
 		src: 'images/publications/digital-history-bielefeld-hero.webp',
-		alt: 'Screenshot of the blog post on Digital History Bielefeld'
+		alt: "Social card for the Digital History Bielefeld blog: a black-and-white photograph of a workshop, with a presenter beside a pinboard of cards, above the title 'Charting New Territory: Digital Humanities und Künstliche Intelligenz in den African Studies' by Frédérick Madore and Vincent Hiribarren."
 	}
 };

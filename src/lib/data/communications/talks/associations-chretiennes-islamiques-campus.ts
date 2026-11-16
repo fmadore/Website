@@ -28,7 +28,7 @@ export const associationsChretiennesIslamiquesCampus: Communication = {
 	image: 'images/communications/associations-chretiennes-islamiques-campus.webp',
 	heroImage: {
 		src: 'images/communications/associations-chretiennes-islamiques-campus-hero.webp',
-		alt: "Associations Chrétiennes et Islamiques sur les Campus de l'Université d'Abomey-Calavi et de l'Université de Lomé depuis 1970: la laïcité à l'université face à l'activisme religieux"
+		alt: "A man in a grey polo shirt speaks beside a wooden lectern in a hall, with a green banner for the LARRED doctoral programme of the Université d'Abomey-Calavi behind him. Audience members in African print cloth sit in the foreground."
 	},
 	coordinates: {
 		latitude: 6.414542574575833,

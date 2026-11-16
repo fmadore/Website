@@ -30,7 +30,7 @@ export const emancipationFeminineMilitantismeIslamique: Communication = {
 	image: 'images/communications/emancipation-feminine-militantisme-islamique.webp',
 	heroImage: {
 		src: 'images/communications/emancipation-feminine-militantisme-islamique-hero.webp',
-		alt: "Émancipation féminine et militantisme islamique en Afrique de l'Ouest depuis 1980: quelques enseignements du Burkina Faso, de la Côte d'Ivoire, du Togo et du Bénin"
+		alt: "Poster for the international workshop 'Femmes africaines dans une société d'hommes' (21 to 22 March 2022). Below the title is a black-and-white photograph of a young woman in a beret and jumper in woodland, with a long strap, possibly a rifle, across one shoulder."
 	},
 	coordinates: {
 		latitude: 12.485158567864516,

@@ -23,7 +23,7 @@ export const rechercheDocumentaireZotero: Communication = {
 	image: 'images/communications/recherche-documentaire-zotero.webp',
 	heroImage: {
 		src: 'images/communications/recherche-documentaire-zotero-hero.webp',
-		alt: 'La recherche documentaire en libre accès et la gestion de références bibliographiques avec Zotero'
+		alt: 'Conference flyer with a smiling portrait of a man with short hair, a blue-boxed theme line about open-access research and Zotero, and the date Friday 7 June 2019 in large blue lettering.'
 	},
 	coordinates: {
 		latitude: 7.686428569920746,

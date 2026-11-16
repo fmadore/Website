@@ -28,6 +28,10 @@ export const universityCampusesAfrica: Communication = {
 	],
 	url: 'https://remoboko.hypotheses.org/4854',
 	image: 'images/communications/REMOBOKO-final-conference.webp',
+	heroImage: {
+		src: 'images/communications/REMOBOKO-final-conference.webp',
+		alt: 'Group photo of about two dozen conference participants standing on steps in front of an arched red-brick building, with a wooden bench to the right.'
+	},
 	coordinates: {
 		latitude: 52.42814222811816,
 		longitude: 13.202338657893593

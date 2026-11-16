@@ -36,7 +36,7 @@ export const activity: Activity = {
 	panelType: 'publication',
 	heroImage: {
 		src: 'images/activities/research-africa-reviews-hero.webp',
-		alt: 'Screenshot of Research Africa Reviews journal website showing Volume 9, Issue 3 - December 2025'
+		alt: "Screenshot of the Duke Research Africa journal website: the heading 'Volume 9, Issue 3 - December, 2025', the ISSN, and a list of highlights including 'Activism in Togo and Benin'."
 	},
 	type: 'publication',
 	url: 'https://researchafrica.duke.edu/sites/default/files/-5-7-Religious-Activism-on-Campuses-in-Togo-and-Benin-Issue3-2025.pdf'

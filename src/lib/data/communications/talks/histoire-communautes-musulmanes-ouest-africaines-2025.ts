@@ -26,7 +26,7 @@ export const talkHistoireCommunautesMusulmanesOuestAfricaines2025: Communication
 	image: 'images/communications/EHESS-2025.webp',
 	heroImage: {
 		src: 'images/communications/EHESS-2025-hero.webp',
-		alt: "Flyer announcing Frédérick Madore's lecture series at EHESS in May 2025"
+		alt: "Flyer for Frédérick Madore's lecture programme as invited professor at the EHESS, listing four sessions from 12 to 28 May, including the 20 May talk on West African Muslim communities and digital humanities. A small portrait of the speaker sits at top left, with ZMO, IISMM, EHESS and CNRS logos."
 	},
 	coordinates: {
 		latitude: 48.9077666570092,

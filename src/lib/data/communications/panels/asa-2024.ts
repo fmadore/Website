@@ -28,6 +28,10 @@ export const asa2024Panel: Communication = {
 		'Religious Activism'
 	],
 	image: 'images/communications/ASA-Logo.svg',
+	heroImage: {
+		src: 'images/communications/ASA-Logo.svg',
+		alt: "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
+	},
 	coordinates: {
 		latitude: 41.892233577101,
 		longitude: -87.62496755899927

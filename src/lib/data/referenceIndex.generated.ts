@@ -139,6 +139,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2024-12-12",
 		"year": 2024,
 		"image": "images/communications/ASA-Logo.svg",
+		"heroImage": {
+			"src": "images/communications/ASA-Logo.svg"
+		},
 		"conference": "67th Meeting of the African Studies Association (ASA)",
 		"location": "Chicago",
 		"country": "United States"
@@ -689,6 +692,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2026-09-09",
 		"year": 2026,
 		"image": "images/publications/for-whom-for-what-purpose-2026.webp",
+		"heroImage": {
+			"src": "images/publications/for-whom-for-what-purpose-2026.webp"
+		},
 		"publisher": "Leibniz-Zentrum Moderner Orient"
 	},
 	"formation-recherche-en-ligne-niamey": {
@@ -778,6 +784,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2019-11-21",
 		"year": 2019,
 		"image": "images/communications/ASA-Logo.svg",
+		"heroImage": {
+			"src": "images/communications/ASA-Logo.svg"
+		},
 		"conference": "62nd Meeting of the African Studies Association (ASA)",
 		"location": "Boston",
 		"country": "United States"
@@ -864,6 +873,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2016-12-03",
 		"year": 2016,
 		"image": "images/communications/ASA-Logo.svg",
+		"heroImage": {
+			"src": "images/communications/ASA-Logo.svg"
+		},
 		"conference": "59th Annual Meeting of the African Studies Association (ASA)",
 		"location": "Washington D.C.",
 		"country": "United States"
@@ -1610,6 +1622,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2019-11-21",
 		"year": 2019,
 		"image": "images/communications/ASA-Logo.svg",
+		"heroImage": {
+			"src": "images/communications/ASA-Logo.svg"
+		},
 		"conference": "62nd Meeting of the African Studies Association (ASA)",
 		"location": "Boston",
 		"country": "United States"
@@ -1737,6 +1752,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2013-05-07",
 		"year": 2013,
 		"image": "images/communications/acfas_81e.webp",
+		"heroImage": {
+			"src": "images/communications/acfas_81e.webp"
+		},
 		"conference": "81e Congrès de l'Association Francophone pour le Savoir (Acfas)",
 		"location": "Université Laval",
 		"country": "Canada"
@@ -2387,6 +2405,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2023-09-06",
 		"year": 2023,
 		"image": "images/communications/REMOBOKO-final-conference.webp",
+		"heroImage": {
+			"src": "images/communications/REMOBOKO-final-conference.webp"
+		},
 		"conference": "University Campuses in Africa and Beyond",
 		"location": "Leibniz-Zentrum Moderner Orient",
 		"country": "Germany"
@@ -2423,6 +2444,9 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"dateISO": "2026-02-18",
 		"year": 2026,
 		"image": "images/communications/VWST-logo.webp",
+		"heroImage": {
+			"src": "images/communications/VWST-logo.webp"
+		},
 		"conference": "Charting New Territory: Digital Humanities and AI in African Studies",
 		"location": "Xplanatorium Herrenhausen, Hanover",
 		"country": "Germany"

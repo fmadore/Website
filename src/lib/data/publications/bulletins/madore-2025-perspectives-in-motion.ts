@@ -25,6 +25,6 @@ export const madore2025PerspectivesInMotion: Publication = {
 	image: 'images/publications/zmo-bulletin-46.webp',
 	heroImage: {
 		src: 'images/publications/zmo-bulletin-46-hero.webp',
-		alt: 'Cover of ZMO Bulletin, issue 46'
+		alt: "Page 7 of ZMO Bulletin 46 (2025), an article on conceptual fields with a colourful word cloud of terms such as 'conceptual field', 'epistemic' and 'discourse', and a small photograph of people at a table in front of a screen."
 	}
 };

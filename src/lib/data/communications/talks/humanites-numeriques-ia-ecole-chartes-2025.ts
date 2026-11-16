@@ -26,7 +26,7 @@ export const humanitesNumeriquesIaEcoleChartes2025: Communication = {
 	image: 'images/activities/ecole-nationale-des-chartes.webp',
 	heroImage: {
 		src: 'images/activities/ecole-nationale-des-chartes.webp',
-		alt: 'École nationale des chartes'
+		alt: 'Facade of the École nationale des chartes, with its red logo and the name in black letters on a pale stone wall. A notice board sits beneath the sign, and bicycles are parked along the pavement at right.'
 	},
 	coordinates: {
 		latitude: 48.8489,

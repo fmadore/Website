@@ -39,7 +39,7 @@ Cette approche ouvre la voie à des analyses computationnelles à grande échell
 	image: 'images/communications/humanistica-2025.webp',
 	heroImage: {
 		src: 'images/communications/humanistica-2025-hero.webp',
-		alt: "Intelligence artificielle et traitement des archives numériques : applications et enjeux dans la Collection Islam Afrique de l'Ouest"
+		alt: "Banner for the Colloque Humanistica 2025, with a blue chevron mark and the French subtitle 'Colloque annuel de l'Association francophone des humanités numériques' in black on white."
 	},
 	coordinates: {
 		latitude: 14.6937,

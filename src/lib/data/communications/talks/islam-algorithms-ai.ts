@@ -25,7 +25,7 @@ export const islamAlgorithmsAi: Communication = {
 	image: 'images/communications/islam-algorithms-ai.webp',
 	heroImage: {
 		src: 'images/communications/islam-algorithms-ai-hero.webp',
-		alt: 'Islam, Algorithms and AI'
+		alt: 'Banner for the ZMO Sommerfest (summer party) on 18 July 2024 at 14:30, with the ZMO logo at top right. A photograph of guests talking on a lawn in front of a brick house fills the left side.'
 	},
 	coordinates: {
 		latitude: 52.42814222811816,

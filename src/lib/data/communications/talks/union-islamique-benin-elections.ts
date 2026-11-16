@@ -25,7 +25,7 @@ export const unionIslamiqueBenin: Communication = {
 	image: 'images/communications/union-islamique-benin-elections.webp',
 	heroImage: {
 		src: 'images/communications/union-islamique-benin-elections-hero.webp',
-		alt: "L'Union Islamique du Bénin et les élections législatives: comment comprendre la crise interne"
+		alt: 'Photograph of a man in a grey shirt standing among about a dozen students in white polo shirts in a classroom, with a school banner on the wall and wooden desks in the foreground.'
 	},
 	coordinates: {
 		latitude: 6.414542574575833,

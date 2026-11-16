@@ -23,7 +23,7 @@ export const salafismeSecuritisationBeninTogo: Communication = {
 	image: 'images/communications/salafisme-securitisation-benin-togo-2022.webp',
 	heroImage: {
 		src: 'images/communications/salafisme-securitisation-benin-togo-2022-hero.webp',
-		alt: "Salafisme et sécuritisation de l'islam au Bénin et au Togo: instrumentalisations diverses d'une 'menace étrangère'"
+		alt: "Black event poster for Panel 4, 'Islam, Violence and Political Salafism', on 2 June 2022, with photographs and names of four speakers and their institutions."
 	},
 	project: 'Muslim Minorities in Southern Cities of Benin and Togo'
 };

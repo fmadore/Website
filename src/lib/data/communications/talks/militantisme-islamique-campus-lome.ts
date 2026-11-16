@@ -27,7 +27,7 @@ export const militantismeIslamiqueCampusLome: Communication = {
 	image: 'images/communications/militantisme-islamique-campus-lome.webp',
 	heroImage: {
 		src: 'images/communications/militantisme-islamique-campus-lome-hero.webp',
-		alt: "Militantisme islamique sur le campus de l'Université de Lomé (Togo) depuis les années 1980: être musulman en contexte minoritaire, laïc et (semi-)autoritaire"
+		alt: 'Orange flyer for a virtual conference by the UQAM Chair on Contemporary Islam in West Africa, with the talk title and a photograph of a smiling man with glasses in a striped blue shirt.'
 	},
 	coordinates: {
 		latitude: 45.513161245085065,

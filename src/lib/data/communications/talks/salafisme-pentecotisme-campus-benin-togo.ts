@@ -30,7 +30,7 @@ export const salafismePentecotismeCampusBeninTogo: Communication = {
 	image: 'images/communications/salafisme-pentecotisme-campus-benin-togo.webp',
 	heroImage: {
 		src: 'images/communications/salafisme-pentecotisme-campus-benin-togo-hero.webp',
-		alt: "Salafisme et pentecôtisme sur les campus au Bénin et au Togo: la laïcité à l'université face à l'activisme religieux"
+		alt: "Dark blue CIRAM poster with the talk title, a teal summary paragraph, the date 8 April 2021 and the speaker's name, with the Université Laval logo at the foot."
 	},
 	coordinates: {
 		latitude: 46.7793,

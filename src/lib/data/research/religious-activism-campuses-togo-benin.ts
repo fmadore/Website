@@ -9,7 +9,8 @@ export const religiousActivismCampuses: ResearchProject = {
 	shortDescription:
 		"Examining how Christian and Muslim student associations transformed university life at the Université de Lomé and the Université d'Abomey-Calavi.",
 	imageSrc: 'campus-activism.webp',
-	imageAlt: 'Religious Activism on Campuses in Togo and Benin',
+	imageAlt:
+		'A two-storey cream building with green trim, arches and an outside staircase on bare sandy ground, framed by two large trees; a small green-domed tower is at left.',
 	audioSrc: 'notebooklm/religious_activism_campus.mp3',
 	projectName: 'Religious Activism on Campuses in Togo and Benin',
 	// The page carries its own Funding panel, so the rail must not repeat it.

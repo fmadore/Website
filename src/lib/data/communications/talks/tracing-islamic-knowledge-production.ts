@@ -28,7 +28,7 @@ export const tracingIslamicKnowledgeProduction: Communication = {
 	image: 'images/communications/perspectives-in-motion.webp',
 	heroImage: {
 		src: 'images/communications/perspectives-in-motion-hero.webp',
-		alt: 'Workshop poster'
+		alt: 'Cover of the programme for the Perspectives in Motion workshop, showing a blue-tinted photograph of an ornate geometric dome and the Leibniz-Zentrum Moderner Orient logo.'
 	},
 	coordinates: {
 		latitude: 52.42814222811816,

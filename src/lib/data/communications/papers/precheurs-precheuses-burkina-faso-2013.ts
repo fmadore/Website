@@ -30,5 +30,9 @@ export const precheursPrecheusesaBurkinaFaso: Communication = {
 		longitude: -71.2825
 	},
 	image: 'images/communications/acfas_81e.webp',
+	heroImage: {
+		src: 'images/communications/acfas_81e.webp',
+		alt: "Poster for the 81st Acfas congress, 'Savoirs sans frontières', giving the dates 6 to 10 May 2013 and Université Laval, Québec City, on a purple and white ground."
+	},
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 };

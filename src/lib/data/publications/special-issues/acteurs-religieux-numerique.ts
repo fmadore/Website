@@ -30,7 +30,7 @@ export const acteursReligieuxNumerique: Publication = {
 	image: 'images/publications/acteurs-religieux-numerique.webp',
 	heroImage: {
 		src: 'images/publications/acteurs-religieux-numerique-hero.webp',
-		alt: 'Cover of Émulations, issue 24'
+		alt: "Cover of the journal Émulations, no. 24 (2017), 'Les acteurs religieux africains à l'ère du numérique', with a row of colourful silhouettes holding a book, a phone and a cup."
 	},
 	isEditedWork: true,
 	tableOfContents: [

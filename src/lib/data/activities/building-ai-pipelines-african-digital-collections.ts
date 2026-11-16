@@ -42,6 +42,6 @@ export const buildingAiPipelinesAfricanDigitalCollections: Activity = {
 	panelType: 'lecture',
 	heroImage: {
 		src: 'images/activities/uppsala-2025-hero.webp',
-		alt: 'Frédérick Madore presenting to the ALMEDA team at Uppsala University around a conference table with laptops and a screen displaying research data'
+		alt: "Several people around a round table with laptops, pastries and water bottles in a meeting room; a man on the left gestures as he speaks, and a wall screen shows an archive record page headed 'Idriss Koudouss Koné'."
 	}
 };

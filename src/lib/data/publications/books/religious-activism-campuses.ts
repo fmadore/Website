@@ -42,7 +42,7 @@ The history of these associations reveals the campus as a microcosm reflecting w
 	image: 'images/publications/religious-activism-campuses.webp',
 	heroImage: {
 		src: 'images/publications/religious-activism-campuses-hero.webp',
-		alt: 'Cover of Religious Activism on Campuses in Togo and Benin'
+		alt: 'Book cover: a blue-bordered De Gruyter cover with a photograph of a campus entrance, a sign reading Entrée Nord and students passing by, above the title Religious Activism on Campuses in Togo and Benin.'
 	},
 	country: ['Benin', 'Togo'],
 	project: 'Religious Activism on Campuses in Togo and Benin',

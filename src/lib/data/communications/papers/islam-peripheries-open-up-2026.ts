@@ -34,7 +34,7 @@ export const islamPeripheriesOpenUp: Communication = {
 	image: 'images/communications/islam-peripheries-open-up-2026.webp',
 	heroImage: {
 		src: 'images/communications/islam-peripheries-open-up-2026-hero.webp',
-		alt: 'VolkswagenStiftung Kick Off "Open Up" event poster, 4–5 March 2026'
+		alt: "VolkswagenStiftung logo with a dotted mark above the kick-off title 'Kick Off „Open Up“' and the dates 4–5 March 2026, on a white ground."
 	},
 	project:
 		"Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia"

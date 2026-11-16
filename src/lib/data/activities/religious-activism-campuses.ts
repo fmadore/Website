@@ -35,7 +35,7 @@ export const religiousActivismCampuses: Activity = {
 	panelType: 'publication',
 	heroImage: {
 		src: 'images/activities/De-Gruyter-ZMO.webp',
-		alt: 'Book cover of Religiosity on University Campuses in Africa, edited by Abdoulaye Sounaye and Frédérick Madore.',
+		alt: 'Book cover of Religious Activism on Campuses in Togo and Benin by Frédérick Madore: a blue hardback with a street scene of a campus gate and people, shown on a white surface in front of bookshelves.',
 		caption: 'Published March 2025 by De Gruyter'
 	},
 	type: 'publication'

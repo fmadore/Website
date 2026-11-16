@@ -146,7 +146,7 @@
 				src={portraitSrc}
 				srcset={portraitSrcset}
 				sizes={portraitSrcset ? PORTRAIT_SIZES : undefined}
-				alt="Frédérick Madore"
+				alt="Portrait of Frédérick Madore, smiling, wearing glasses and a light striped shirt, in front of a brick wall and a white-framed window."
 				width="854"
 				height="742"
 				loading="eager"

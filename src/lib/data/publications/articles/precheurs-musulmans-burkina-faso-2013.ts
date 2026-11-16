@@ -37,7 +37,7 @@ export const precheursMusulmansBurkinaFaso: Publication = {
 	image: 'images/publications/Theologiques.webp',
 	heroImage: {
 		src: 'images/publications/Theologiques-hero.webp',
-		alt: 'Cover of Théologiques, volume 21, issue 2'
+		alt: "Cover of the journal Théologiques: a purple-tinted band with the journal name set vertically, and the issue theme 'La conversion' with a list of contributors."
 	},
 	country: ['Burkina Faso'],
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",

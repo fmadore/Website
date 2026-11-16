@@ -27,7 +27,7 @@ export const nouveauDynamismeSalafismeCoteDIvoire: Communication = {
 	image: 'images/communications/MANSA-logo.webp',
 	heroImage: {
 		src: 'images/communications/MANSA-logo-hero.webp',
-		alt: '10th International Conference of the Mande Studies Association (MANSA)'
+		alt: "MANSA logo: a seated, crowned king holding an orb and a sceptre in orange and black, above the word 'MANSA' and the names Association des Etudes Mandé and Mande Studies Association."
 	},
 	coordinates: {
 		latitude: 5.1998,

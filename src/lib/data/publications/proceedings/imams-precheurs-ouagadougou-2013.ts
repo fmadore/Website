@@ -41,7 +41,7 @@ export const imamsPrecheursOuagadougou2013: Publication = {
 	image: 'images/publications/imams-precheurs-ouagadougou-2013.webp',
 	heroImage: {
 		src: 'images/publications/imams-precheurs-ouagadougou-2013-hero.webp',
-		alt: "Cover of the Actes du 12e colloque international étudiant du Département d'histoire de l'Université Laval"
+		alt: 'Cover of the Actes du 12e colloque international étudiant, with a night photograph of a street and the Artefact logo.'
 	},
 	country: ['Burkina Faso'],
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"

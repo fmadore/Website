@@ -36,7 +36,7 @@ export const responsibleAiAccessMcpServer2026: Communication = {
 	poster: {
 		pdf: 'files/responsible-ai-access-mcp-server-2026-poster.pdf',
 		image: 'images/communications/responsible-ai-access-mcp-server-2026-poster.webp',
-		alt: 'The poster, a portrait sheet set in black and green on white under the RAIS², University of Bayreuth and UBT AI Day logos. Two columns of text sections flank a flow diagram of how AMIRA mediates each tool call, from researcher to AI assistant to the AMIRA MCP server and the AMIRA / Omeka S repository. Below are a radial graph of what co-occurs with Islam, drawn with FindRelated, a table of evaluation results across four queries, and two QR codes for exploring AMIRA and installing the server.',
+		alt: 'Academic poster titled Responsible AI Access to Research Repositories, with the RAIS², University of Bayreuth and UBT AI Day logos. It has two text columns, a flow diagram of how AMIRA mediates each tool call, a radial graph of terms co-occurring with Islam, a table of evaluation results and two QR codes.',
 		caption: 'Poster as presented, A0 portrait (841 × 1189 mm)'
 	},
 	image: 'images/communications/ubt-ai-day-2026-logo.webp',

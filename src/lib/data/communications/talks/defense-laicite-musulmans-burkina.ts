@@ -24,7 +24,7 @@ export const defenseLaiciteMusulmansBurkina: Communication = {
 	image: 'images/communications/workshop-Dakar-2019.webp',
 	heroImage: {
 		src: 'images/communications/workshop-Dakar-2019-hero.webp',
-		alt: 'Debating Laïcité in the Sahel: What Future for Secularism?'
+		alt: "Group photo of about eleven people standing under a blue canopy in front of a banner reading 'West African Research Center, Centre de Recherche Ouest Africain (WARC/CROA)', with a patterned cloth-covered table in front."
 	},
 	coordinates: {
 		latitude: 14.690999882866137,

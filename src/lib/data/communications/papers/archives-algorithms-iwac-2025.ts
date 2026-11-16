@@ -29,7 +29,7 @@ export const archivesAlgorithmsIwac: Communication = {
 	image: 'images/communications/ENIUGH.webp',
 	heroImage: {
 		src: 'images/communications/ENIUGH-hero.webp',
-		alt: 'ENIUGH Conference'
+		alt: "Outdoor sandwich-board sign on a paved square, headed 'Linnéuniversitetet', holding a poster for the European Network on Universal and Global History (ENIUGH), 10–11 September, with yellow circles on a violet ground."
 	},
 	coordinates: {
 		latitude: 56.879, // Coordinates for Linnaeus University in Växjö

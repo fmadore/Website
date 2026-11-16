@@ -20,7 +20,7 @@ export const elitesMusulmanesCoteDIvoireBurkinaFaso: Communication = {
 	image: 'images/communications/elites-musulmanes-cote-divoire-burkina-faso.webp',
 	heroImage: {
 		src: 'images/communications/elites-musulmanes-cote-divoire-burkina-faso-hero.webp',
-		alt: "Les élites musulmanes en Côte d'Ivoire et au Burkina Faso depuis 1990 : des mobilisations politiques contrastées"
+		alt: 'Flyer for a lunchtime lecture (Conférence - Midi) by Frédérick Madore at Université Laval on 25 September 2018, with the title in red, a French summary of the talk and the logos of Hautes études internationales and CIRAM.'
 	},
 	coordinates: {
 		latitude: 46.7793,

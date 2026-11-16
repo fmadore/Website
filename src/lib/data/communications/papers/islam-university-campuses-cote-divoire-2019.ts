@@ -33,7 +33,7 @@ export const islamUniversityCampusesCoteDIvoire: Communication = {
 	image: 'images/communications/islam-university-campuses-cote-divoire-2019.webp',
 	heroImage: {
 		src: 'images/communications/islam-university-campuses-cote-divoire-2019-hero.webp',
-		alt: "Islam on University Campuses in Côte d'Ivoire since the 1970s: 'Muslim Intellectuals' and Francophone Salafism"
+		alt: "Poster for the 8th European Conference on African Studies (ECAS2019), 'Africa: Connections and Disruptions': a man in a checked garment wears a reflective visor against a red ground, beside a gold Africa outline patterned like a circuit board."
 	},
 	project: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso"
 };

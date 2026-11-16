@@ -31,7 +31,7 @@ export const faithBasedStudentOrganizations: Communication = {
 	image: 'images/communications/ecas-2023.webp',
 	heroImage: {
 		src: 'images/communications/ecas-2023-hero.webp',
-		alt: '9th European Conference on African Studies (ECAS)'
+		alt: "Logo of the European Conference on African Studies, 'African Futures, Cologne 2023', with a multicoloured line outline of the African continent."
 	},
 	coordinates: {
 		latitude: 50.928, // Coordinates for University of Cologne

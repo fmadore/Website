@@ -22,7 +22,7 @@ export const communauteMusulmaneBurkinaFaso: Publication = {
 	image: 'images/publications/encyclopaedia-of-islam.webp',
 	heroImage: {
 		src: 'images/publications/encyclopaedia-of-islam-hero.webp',
-		alt: 'Cover of the Encyclopaedia of Islam'
+		alt: 'Cover of Encyclopaedia of Islam THREE, issue 2016:4, with a large white EI logo on blocks of green and yellow.'
 	},
 	tags: ['Burkina Faso', 'Islam', 'Islamic Associations', 'West Africa'],
 	country: ['Burkina Faso'],
