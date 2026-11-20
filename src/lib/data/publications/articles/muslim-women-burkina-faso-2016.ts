@@ -204,6 +204,15 @@ export const muslimWomenBurkinaFaso: Publication = {
 			title: 'Jihad of the Pen: The Sufi Literature of West Africa',
 			source: 'Cairo: American University in Cairo Press, 2018',
 			url: 'https://doi.org/10.2307/j.ctv2ks6zkw'
+		},
+		{
+			wikidataId: 'Q142221478',
+			authors: ['Simon Ramdé'],
+			year: 2026,
+			title:
+				'Quête identitaire des jeunes mères célibataires en difficulté en contexte de pluralité religieuse au Burkina Faso : la spiritualité comme mode de résilience',
+			source: 'PhD dissertation, Université Laval, 2026',
+			url: 'https://hdl.handle.net/20.500.11794/195045'
 		}
 	]
 };

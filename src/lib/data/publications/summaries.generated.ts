@@ -1428,7 +1428,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "L'étude de la participation de trois cohortes d'imams et de prêcheurs de Ouagadougou dans les débats sociopolitiques entre 1960 et 2012 souligne l'importance de l'analyse des interactions intergénérationnelles pour saisir",
-		"citedByCount": 10,
+		"citedByCount": 11,
 		"tocAuthors": [],
 		"sourceDirType": "dissertations"
 	},
@@ -1606,7 +1606,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		],
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "This paper examines how visibility and legitimacy have been defined and achieved by Muslim women who have contributed to the development of Islam in Burkina Faso since the 1970s. We undertake a transversal study of the tr",
-		"citedByCount": 19,
+		"citedByCount": 20,
 		"tocAuthors": [],
 		"sourceDirType": "articles"
 	},

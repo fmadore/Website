@@ -128,6 +128,15 @@ export const madoreIslamPolitiqueOuagadougou2013: Publication = {
 			title: 'Traitement de la question sécuritaire par la presse au Sahel : le cas sénégalais',
 			source: 'Master thesis, Université Laval',
 			url: 'https://hdl.handle.net/20.500.11794/144445'
+		},
+		{
+			wikidataId: 'Q142221478',
+			authors: ['Simon Ramdé'],
+			year: 2026,
+			title:
+				'Quête identitaire des jeunes mères célibataires en difficulté en contexte de pluralité religieuse au Burkina Faso : la spiritualité comme mode de résilience',
+			source: 'PhD dissertation, Université Laval, 2026',
+			url: 'https://hdl.handle.net/20.500.11794/195045'
 		}
 	]
 };
