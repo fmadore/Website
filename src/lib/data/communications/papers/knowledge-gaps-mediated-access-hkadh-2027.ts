@@ -21,6 +21,8 @@ export const knowledgeGapsMediatedAccessHkadh2027: Communication = {
 	country: 'Hong Kong',
 	type: 'conference',
 	language: 'English',
+	slidesUrl:
+		'https://slides.frederickmadore.com/talks/2027-01-21-hong-kong-knowledge-gaps-and-mediated-access/',
 	abstract: `This paper addresses a practical problem in AMIRA, the Africa Multiple Interactive Research Atlas, the research-data platform of the Africa Multiple Cluster of Excellence at the University of Bayreuth (Germany). Its catalogue connects research materials through subjects, concepts and named entities, many of them linked to Library of Congress Subject Headings or Wikidata identifiers. These links identify what a record concerns, but readers may also need an explanation of a concept and of how it is used in the research catalogued in AMIRA.
 
 One option is to retrieve existing Wikidata descriptions or Library of Congress scope notes where available; another is to ask generative AI to draft definitions. Both risk reproducing Western-centred categories and assumptions that may obscure how concepts are understood and debated in African contexts. We propose instead to ground the explanations primarily in the Cluster's own publications, supplemented by podcast and video transcripts and by the research items used in its projects, including recordings, photographs, documents and artworks. This approach brings Africa Multiple's agenda of world-making from the vantage point of Africa into catalogue practice: research from and on Africa informs the explanations through which readers encounter the collection.

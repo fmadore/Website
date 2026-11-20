@@ -2220,6 +2220,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"country": "Hong Kong",
 		"type": "conference",
 		"language": "English",
+		"slidesUrl": "https://slides.frederickmadore.com/talks/2027-01-21-hong-kong-knowledge-gaps-and-mediated-access/",
 		"tags": [
 			"AMIRA",
 			"Africa Multiple",
@@ -4214,6 +4215,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"country": "Germany",
 		"type": "workshop",
 		"language": "English",
+		"slidesUrl": "https://slides.frederickmadore.com/talks/2026-12-03-leipzig-same-name-different-country-ai/",
 		"tags": [
 			"Artificial Intelligence",
 			"AI Agents",
