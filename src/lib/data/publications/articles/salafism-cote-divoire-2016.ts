@@ -243,6 +243,15 @@ export const salafismCoteDIvoire: Publication = {
 				"Peran Muslim Sunni Moderat Dalam Menangkal Gerakan Ektrimisme Jama'at Nusrat Al-Islam Wal-Muslimin (JNIM) Di Pantai Gading",
 			source: 'NUANSA: Jurnal Penelitian Ilmu Sosial dan Keagamaan Islam 23, no. 1 (2026): 233-47',
 			url: 'https://doi.org/10.19105/nuansa.v23i1.24610'
+		},
+		{
+			wikidataId: 'Q142221396',
+			authors: ['Bourahima Diomande'],
+			year: 2026,
+			title:
+				'« Bras ballants » contre « bras croisés » : une relecture du conflit wahhabiyya en Côte d’Ivoire (1946-1980)',
+			source: 'Mazayu : Revue congolaise d’histoire, no. 4 (2026): 135-49',
+			url: 'https://doi.org/10.55595/hk4bhv71'
 		}
 	]
 };
