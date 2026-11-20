@@ -1892,6 +1892,27 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"location": "Cory Library for Historical Research, Makhanda",
 		"country": "South Africa"
 	},
+	"reflexive-structurative-curation-luxembourg-2027": {
+		"id": "reflexive-structurative-curation-luxembourg-2027",
+		"itemType": "communication",
+		"title": "Reflexive Structurative Curation: Towards a FAIR Chance for African Scholarship through Critical Action and Intervention",
+		"authors": [
+			"Neeraj Thandayan Viswajith",
+			"Anke Schürer-Ries",
+			"Oliver Baumann",
+			"Frédérick Madore",
+			"Durgesh Nandini",
+			"Jiayu Yang",
+			"Mirco Schönfeld"
+		],
+		"type": "conference",
+		"date": "28 January 2027",
+		"dateISO": "2027-01-28",
+		"year": 2027,
+		"conference": "Revisiting Metadata: Standardisation, Trust and Power",
+		"location": "University of Luxembourg",
+		"country": "Luxembourg"
+	},
 	"religieux-internet-ntic-burkina-faso-2019": {
 		"id": "religieux-internet-ntic-burkina-faso-2019",
 		"itemType": "publication",

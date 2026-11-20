@@ -2473,6 +2473,66 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"abstractExcerpt": "The Africa Multiple Interactive Research Atlas (AMIRA, https://data.africamultiple.uni-bayreuth.de/) is the public access point for the research (meta)data of the Africa Multiple Cluster of Excellence at the University of"
 	},
 	{
+		"id": "reflexive-structurative-curation-luxembourg-2027",
+		"title": "Reflexive Structurative Curation: Towards a FAIR Chance for African Scholarship through Critical Action and Intervention",
+		"authors": [
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Anke Schürer-Ries",
+				"personId": "anke-schurer-ries"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			"Frédérick Madore",
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
+		],
+		"date": "28 January 2027",
+		"dateISO": "2027-01-28",
+		"year": 2027,
+		"conference": "Revisiting Metadata: Standardisation, Trust and Power",
+		"panelTitle": "Decolonising Description: Curation, Literature and Postcolonial Data",
+		"location": "University of Luxembourg",
+		"country": "Luxembourg",
+		"type": "conference",
+		"language": "English",
+		"tags": [
+			"Africa Multiple",
+			"Digital Humanities",
+			"Metadata",
+			"FAIR Data",
+			"CARE Principles",
+			"Local Contexts",
+			"Linked Open Data",
+			"Data Sovereignty",
+			"Decolonisation",
+			"Critical Action Research"
+		],
+		"url": "https://www.uni.lu/c2dh-en/events/revisiting-metadata/",
+		"urlLabel": "Conference Website",
+		"coordinates": {
+			"latitude": 49.5018,
+			"longitude": 5.9485
+		},
+		"project": "Digital Research Environment (University of Bayreuth)",
+		"abstractExcerpt": "When research data for African scholarship are curated, standard subject and genre vocabularies (such as LCSH, MARC genre lists, and global knowledge graphs) often lack or distort concepts and resource formations – genres"
+	},
+	{
 		"id": "retour-note-synthese-dh-ia-reaf-2026",
 		"title": "Retour sur une note de synthèse analysant la relation entre Humanités Numériques, l’IA et les Études Africaines (Hanovre, février 2026)",
 		"authors": [

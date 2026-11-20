@@ -601,6 +601,45 @@ export const cvCommunications: CvCommunication[] = [
 		"url": "https://ru.za.libguides.com/ilamcoryconf"
 	},
 	{
+		"id": "reflexive-structurative-curation-luxembourg-2027",
+		"title": "Reflexive Structurative Curation: Towards a FAIR Chance for African Scholarship through Critical Action and Intervention",
+		"authors": [
+			{
+				"name": "Neeraj Thandayan Viswajith",
+				"personId": "neeraj-thandayan-viswajith"
+			},
+			{
+				"name": "Anke Schürer-Ries",
+				"personId": "anke-schurer-ries"
+			},
+			{
+				"name": "Oliver Baumann",
+				"personId": "oliver-baumann"
+			},
+			"Frédérick Madore",
+			{
+				"name": "Durgesh Nandini",
+				"personId": "durgesh-nandini"
+			},
+			{
+				"name": "Jiayu Yang",
+				"personId": "jiayu-yang"
+			},
+			{
+				"name": "Mirco Schönfeld",
+				"personId": "mirco-schonfeld"
+			}
+		],
+		"date": "28 January 2027",
+		"dateISO": "2027-01-28",
+		"conference": "Revisiting Metadata: Standardisation, Trust and Power",
+		"panelTitle": "Decolonising Description: Curation, Literature and Postcolonial Data",
+		"location": "University of Luxembourg",
+		"type": "conference",
+		"language": "English",
+		"url": "https://www.uni.lu/c2dh-en/events/revisiting-metadata/"
+	},
+	{
 		"id": "retour-note-synthese-dh-ia-reaf-2026",
 		"title": "Retour sur une note de synthèse analysant la relation entre Humanités Numériques, l’IA et les Études Africaines (Hanovre, février 2026)",
 		"authors": [
