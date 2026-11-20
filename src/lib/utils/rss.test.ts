@@ -4,6 +4,8 @@ import {
 	publicationToRSSItem,
 	generateRSSFeed,
 	generatePublicationsRSSFeed,
+	DEFAULT_RSS_CONFIG,
+	feedDate,
 	type RSSItem
 } from './rss';
 import type { Activity } from '#lib/types/activity.ts';
@@ -69,9 +71,9 @@ describe('publicationToRSSItem', () => {
 		expect(item.description).toContain('2025');
 	});
 
-	it('joins author arrays for the author field', () => {
+	it('keeps each author as a creator of their own', () => {
 		const item = publicationToRSSItem(pub({ authors: ['Jane Doe', 'John Smith'] }), SITE);
-		expect(item.author).toBe('Jane Doe, John Smith');
+		expect(item.creators).toEqual(['Jane Doe', 'John Smith']);
 	});
 });
 
@@ -94,6 +96,27 @@ describe('generateRSSFeed', () => {
 		expect(xml).toContain('<item>');
 	});
 
+	it('names creators with dc:creator, never with the email-only author', () => {
+		const xml = generateRSSFeed([{ ...items[0]!, creators: ['Jane Doe', 'John & Smith'] }]);
+		expect(xml).toContain('xmlns:dc="http://purl.org/dc/elements/1.1/"');
+		expect(xml).toContain('<dc:creator>Jane Doe</dc:creator>');
+		expect(xml).toContain('<dc:creator>John &amp; Smith</dc:creator>');
+		expect(xml).not.toContain('<author>');
+	});
+
+	it('dates a forthcoming item to the build, not to its future date', () => {
+		const built = new Date('2026-11-20T12:00:00Z');
+		const xml = generateRSSFeed(
+			[
+				{ ...items[0]!, pubDate: new Date('2027-01-01T00:00:00Z') },
+				{ ...items[0]!, pubDate: new Date('2025-05-01T00:00:00Z') }
+			],
+			{ ...DEFAULT_RSS_CONFIG, lastBuildDate: built }
+		);
+		const dates = [...xml.matchAll(/<pubDate>([^<]+)<\/pubDate>/g)].map((m) => m[1]);
+		expect(dates).toEqual([built.toUTCString(), 'Thu, 01 May 2025 00:00:00 GMT']);
+	});
+
 	it('escapes XML special characters in titles and descriptions', () => {
 		const xml = generateRSSFeed(items);
 		expect(xml).toContain('<title>Faith &amp; Power</title>');
@@ -102,14 +125,39 @@ describe('generateRSSFeed', () => {
 	});
 });
 
+describe('feedDate', () => {
+	const built = new Date('2026-11-20T00:00:00Z');
+
+	it('keeps a past date and caps a future one at the build date', () => {
+		const past = new Date('2026-01-01T00:00:00Z');
+		expect(feedDate(past, built)).toBe(past);
+		expect(feedDate(new Date('2027-01-01T00:00:00Z'), built)).toBe(built);
+	});
+});
+
 describe('generatePublicationsRSSFeed', () => {
-	it('sorts newest-first and caps at 50 items', () => {
+	it('carries every publication, with no cap', () => {
 		const pubs = Array.from({ length: 60 }, (_, i) =>
 			pub({ id: `p${i}`, dateISO: `2020-01-${String((i % 28) + 1).padStart(2, '0')}` })
 		);
 		const xml = generatePublicationsRSSFeed(pubs);
-		const itemCount = (xml.match(/<item>/g) ?? []).length;
-		expect(itemCount).toBe(50);
+		expect((xml.match(/<item>/g) ?? []).length).toBe(60);
+	});
+
+	it('keeps a forthcoming work at the top but dates it no later than the build', () => {
+		const built = new Date('2026-11-20T12:00:00Z');
+		const xml = generatePublicationsRSSFeed(
+			[
+				pub({ id: 'out', dateISO: '2025-04-01' }),
+				pub({ id: 'forthcoming', dateISO: '2027-01-01' })
+			],
+			{ lastBuildDate: built }
+		);
+		expect(xml.indexOf('/publications/forthcoming<')).toBeLessThan(
+			xml.indexOf('/publications/out<')
+		);
+		expect(xml).not.toContain('2027');
+		expect(xml).toContain(`<pubDate>${built.toUTCString()}</pubDate>`);
 	});
 
 	it('titles the channel as the publications feed', () => {
