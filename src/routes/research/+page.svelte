@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 	import { resolve } from '$app/paths';
 	import { assetHref } from '#lib/utils/paths.ts';
@@ -12,8 +12,10 @@
 	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
-	// Helper to resolve dynamic research project paths
-	const resolvePath = (/** @type {string} */ path) => resolve(/** @type {any} */ (path));
+	// Research project pages are static routes named by id, so their paths are
+	// built from data.
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- resolve() is typed against literal routes
+	const resolvePath = (path: string) => resolve(path as any);
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Research', '/research');
@@ -65,7 +67,7 @@
 	// axis it was supposed to be drawn on. An open-ended period ("2026-") has no
 	// end of its own, so it runs to the latest year any closed period names —
 	// or to the present, if every closed project has already ended.
-	const parseSpan = (/** @type {string} */ years) => {
+	const parseSpan = (years: string) => {
 		const [rawStart = '', rawEnd] = years.split('-');
 		const start = parseInt(rawStart, 10);
 		const end = rawEnd ? parseInt(rawEnd, 10) : Number.NaN;
@@ -240,7 +242,7 @@
      one are set identically — the section head above is the only thing that
      distinguishes them. The whole row is the link; the period hangs in the key
      column and the funder or programme closes the entry in the data voice. -->
-{#snippet entry(/** @type {(typeof researchProjects)[number]} */ project)}
+{#snippet entry(project: (typeof researchProjects)[number])}
 	<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
 	<a
 		class="ledger-row ledger-entry"

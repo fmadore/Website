@@ -75,7 +75,9 @@
 			publication.type === 'chapter' ||
 			publication.type === 'bulletin-article' ||
 			publication.type === 'conference-proceedings' ||
-			publication.type === 'encyclopedia';
+			publication.type === 'encyclopedia' ||
+			publication.type === 'working-paper' ||
+			publication.type === 'report';
 
 		if (!isPagedContent || !publication.pages) return entries;
 
@@ -186,7 +188,6 @@
 		// Working papers are report-shaped for citation managers: an issuing
 		// body and a series number rather than a journal.
 		const isReport = publication.type === 'report' || publication.type === 'working-paper';
-		const extra = publication as unknown as Record<string, string | undefined>;
 
 		return buildHeadTags([
 			// Basic Highwire Press tags
@@ -206,16 +207,13 @@
 			{ name: 'citation_doi', content: publication.doi },
 			{ name: 'citation_isbn', content: publication.isbn },
 			{ name: 'citation_issn', content: publication.issn },
-			// Historical no-op kept verbatim: content is always undefined, so
-			// this tag never renders.
-			{ name: 'citation_eIssn', content: undefined },
 			languageEntries('citation_language'),
 			{ name: 'citation_keywords', content: publication.tags?.join('; ') },
 			// URLs
 			{ name: 'citation_public_url', content: resolveUrl(publication.url) },
 			{ name: 'citation_abstract_html_url', content: `${website.url}${page.url.pathname}` },
 			{ name: 'citation_fulltext_html_url', content: resolveUrl(publication.url) },
-			{ name: 'citation_pdf_url', content: resolveUrl(extra.pdfUrl) },
+			{ name: 'citation_pdf_url', content: resolveUrl(publication.pdfUrl) },
 			// Type-specific journal tags
 			{ name: 'citation_journal_title', content: publication.journal, when: isJournalContent },
 			{ name: 'citation_volume', content: publication.volume, when: isJournalContent },
@@ -260,12 +258,12 @@
 			// Report tags
 			{
 				name: 'citation_technical_report_institution',
-				content: extra.institution || publication.publisher,
+				content: publication.institution || publication.publisher,
 				when: isReport
 			},
 			{
 				name: 'citation_technical_report_number',
-				content: extra.reportNumber ?? publication.issue,
+				content: publication.reportNumber ?? publication.issue,
 				when: isReport
 			},
 			// Dublin Core tags

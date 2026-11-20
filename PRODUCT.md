@@ -49,7 +49,7 @@ This is a falsifiable claim about _record quality_: stale entries, missing works
 
 Other existing capabilities future work should expect to interoperate with:
 
-- Data-driven content: 18 categories held as typed files (56 publications, 84 communications, 35 activities, 16 digital-humanities projects, 6 research projects, 4 teaching entries), aggregated at build time.
+- Data-driven content: 20 categories held as typed files (51 publications, 86 communications, 37 activities, 16 digital-humanities projects, 6 research projects, 4 teaching entries), aggregated at build time.
 - Live client-side filtering and faceting on the index pages, with filter state synced to the URL so a filtered view is linkable.
 - Data visualisations over the publication and communication record (charts, maps, co-authorship and keyword networks).
 - Both a light and a dark theme, each treated as a first-class design pass.

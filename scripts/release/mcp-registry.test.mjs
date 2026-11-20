@@ -15,6 +15,15 @@ describe('mcp/server.json', () => {
 		expect(readFileSync('mcp/src/server.ts', 'utf8')).toContain(`name: '${manifestName}'`);
 		expect(readFileSync('mcp/pack.mjs', 'utf8')).toContain(`name: '${manifestName}'`);
 	});
+
+	// release-mcp.yml stamps server.json onto the release, but the committed copy
+	// is updated by hand afterwards; it once stayed at 0.3.0 through the 0.4.0
+	// release. A version bump in package.json lands with the stamped entry.
+	it('describes the version mcp/package.json is at', () => {
+		const { version } = JSON.parse(readFileSync('mcp/package.json', 'utf8'));
+		expect(committed.version).toBe(version);
+		expect(committed.packages[0].identifier).toBe(releaseUrl(version));
+	});
 });
 
 describe('stampServerJson', () => {

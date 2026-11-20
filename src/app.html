@@ -396,7 +396,7 @@
 				// Both theme-color metas take the resolved ground, so the address bar
 				// follows the *chosen* theme even when it contradicts the OS. The
 				// media attributes stay: they are the answer for a reader with no
-				// JavaScript. Mirrors `toggleTheme` in $lib/stores/themeStore.svelte,
+				// JavaScript. Mirrors `toggleTheme` in #lib/stores/themeStore.svelte.ts,
 				// which re-reads --color-background once the stylesheet exists.
 				const grounds = { light: '#faf7ef', dark: '#081713' };
 				const metas = document.querySelectorAll('meta[name="theme-color"]');
