@@ -15,6 +15,10 @@
  * every Signposting landing page has one; and every BibTeX record the build
  * ships is named by its page. Rules: scripts/lib/signposting.mjs.
  *
+ * It holds every page to one set of social tags: Open Graph by `property=`,
+ * Twitter Cards by `name=`, each key once. Rules:
+ * scripts/checks/check-structured-data-social.mjs.
+ *
  * And it holds every indexable page to a `<title>` of its own (the 404 and
  * offline pages and redirect stubs excepted). Rules:
  * scripts/checks/check-structured-data-titles.mjs.
@@ -23,7 +27,8 @@
  *   node scripts/checks/check-structured-data.mjs
  *
  * Exit code 1 when any block fails to parse or carries a bad URL or date, a
- * Signposting link and the files disagree, or two pages share a `<title>`.
+ * Signposting link and the files disagree, a social tag is repeated or under the
+ * wrong attribute, or two pages share a `<title>`.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -35,6 +40,7 @@ import {
 } from '../lib/structured-data.mjs';
 import { signpostingProblems } from '../lib/signposting.mjs';
 import { duplicateTitles } from './check-structured-data-titles.mjs';
+import { socialTagProblems } from './check-structured-data-social.mjs';
 
 const BUILD_DIR = 'build';
 
@@ -83,6 +89,8 @@ for (const page of pages) {
 		}
 	}
 
+	for (const problem of socialTagProblems(html)) fail(problem, page);
+
 	const signposts = signpostingProblems({ html, origin: SITE_ORIGIN, ships });
 	for (const problem of signposts.problems) fail(`Signposting: ${problem}`, page);
 	for (const path of signposts.described) described.add(path);
@@ -120,6 +128,7 @@ if (failures.size > 0) {
 		'\nBuild JSON-LD addresses with `siteUrl()` from #lib/utils/siteHelpers (never from' +
 			"\nKit's `base`, which is page-relative), and dates with `formatJsonLdDate()`." +
 			'\nSignposting links come from `publicationSignposts()` in #lib/utils/signposting.ts.' +
+			'\nSocial tags (og:*, article:*, twitter:*) belong to SEO.svelte alone.' +
 			'\nRecord page titles come from `recordPageTitle()` in #lib/utils/seoUtils.ts.\n'
 	);
 	exit(1);
@@ -127,5 +136,5 @@ if (failures.size > 0) {
 
 console.log(
 	'[structured-data] OK — every URL is absolute, every date is ISO 8601, ' +
-		'every Signposting link resolves, and every page has a title of its own.'
+		'every Signposting link resolves, every social tag is set once, and every page has a title of its own.'
 );

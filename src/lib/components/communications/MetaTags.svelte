@@ -110,7 +110,9 @@
 		];
 	};
 
-	// Head tag field mapping — order here is emission order.
+	// Head tag field mapping — order here is emission order. No `og:*` or
+	// `twitter:*` tags: SEO.svelte owns the social tags, and a second set here
+	// once disagreed with it (`og:type`, `og:description`) on every talk page.
 	const metaTags = $derived.by(() => {
 		const place = `${communication.location}, ${communication.country}`;
 
@@ -127,19 +129,7 @@
 			{ name: 'DC.coverage', content: place },
 			languages.map((code) => ({ name: 'DC.language', content: code })),
 			// Subject tags from communication tags
-			(communication.tags ?? []).map((tag) => ({ name: 'DC.subject', content: tag })),
-			// Open Graph tags for social media sharing
-			{ name: 'og:title', content: communication.title },
-			{ name: 'og:type', content: 'article' },
-			{ name: 'og:url', content: currentUrl },
-			{ name: 'og:description', content: plainAbstract },
-			{ name: 'og:image', content: resolveUrl(communication.image) },
-			{ name: 'og:site_name', content: author.name },
-			// Twitter Card tags
-			{ name: 'twitter:card', content: 'summary_large_image' },
-			{ name: 'twitter:title', content: communication.title },
-			{ name: 'twitter:description', content: plainAbstract },
-			{ name: 'twitter:image', content: resolveUrl(communication.image) }
+			(communication.tags ?? []).map((tag) => ({ name: 'DC.subject', content: tag }))
 		]);
 	});
 </script>
