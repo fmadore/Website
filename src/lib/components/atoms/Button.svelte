@@ -95,7 +95,6 @@
 	<a
 		{href}
 		class={buttonClasses}
-		role="button"
 		aria-disabled={disabled || loading}
 		aria-label={ariaLabel}
 		{...rest}
@@ -224,6 +223,15 @@
 		stroke-dashoffset: 0;
 		transform-origin: center;
 		animation: btn-spinner-fill 1.4s ease-in-out infinite;
+	}
+
+	/* The spinner is the component's only motion: it stops for a reader who
+	 * asked for less, and the still ring goes on marking the loading state. */
+	@media (--reduced-motion) {
+		.btn-spinner,
+		.btn-spinner-fill {
+			animation: none;
+		}
 	}
 
 	@keyframes btn-spin {

@@ -531,7 +531,7 @@
 	}
 
 	/* Respect user motion preferences */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--reduced-motion) {
 		.media-player,
 		.loading-spinner {
 			transition: none;
