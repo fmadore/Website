@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { website } from '#lib/data/siteConfig.ts';
 import {
 	SITE_ORIGIN,
+	duplicateNodeIds,
 	extractJsonLdBlocks,
 	isIsoDate,
 	structuredDataProblems,
@@ -105,5 +106,34 @@ describe('structuredDataProblems', () => {
 				copyrightYear: 2024
 			})
 		).toEqual([]);
+	});
+});
+
+describe('duplicateNodeIds', () => {
+	const person = { '@type': 'Person', '@id': 'https://x.test/#person', name: 'A' };
+
+	it('finds an @id named by two nodes in separate blocks', () => {
+		const blocks = [
+			{ '@context': 'https://schema.org', '@graph': [{ '@type': 'WebSite' }, person] },
+			{ '@context': 'https://schema.org', '@graph': [{ ...person, jobTitle: 'B' }] }
+		];
+		expect(duplicateNodeIds(blocks)).toEqual(['https://x.test/#person']);
+	});
+
+	it('finds one repeated inside a single graph, or as a block root', () => {
+		expect(duplicateNodeIds([{ '@graph': [person, person] }])).toEqual([person['@id']]);
+		expect(duplicateNodeIds([person, { '@context': 'https://schema.org', ...person }])).toEqual([
+			person['@id']
+		]);
+	});
+
+	it('does not count a bare reference, or a nested node, as a node', () => {
+		const page = {
+			'@type': 'WebPage',
+			'@id': 'https://x.test/cv',
+			mainEntity: { '@id': person['@id'] },
+			author: person
+		};
+		expect(duplicateNodeIds([{ '@graph': [page, person, { '@id': person['@id'] }] }])).toEqual([]);
 	});
 });

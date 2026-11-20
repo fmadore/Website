@@ -3,7 +3,6 @@
 	import {
 		createBreadcrumbSchema,
 		createWebPageSchema,
-		createPersonSchema,
 		combineSchemas,
 		type BreadcrumbItem
 	} from '#lib/utils/jsonLdSchemas.ts';
@@ -130,11 +129,6 @@
 	const jsonLdString = $derived.by(() => {
 		const schemas: object[] = [...additionalSchemas];
 
-		// Check if a Person schema is already provided in additionalSchemas
-		const hasPersonSchema = additionalSchemas.some(
-			(schema) => (schema as Record<string, unknown>)['@type'] === 'Person'
-		);
-
 		// Add breadcrumb schema if breadcrumbs provided
 		if (breadcrumbs.length > 0) {
 			schemas.push(createBreadcrumbSchema(breadcrumbs));
@@ -153,11 +147,9 @@
 			})
 		);
 
-		// For ProfilePage, include the Person schema as the mainEntity target
-		// Only add default Person schema if one isn't already provided
-		if (pageType === 'ProfilePage' && !hasPersonSchema) {
-			schemas.push(createPersonSchema());
-		}
+		// No Person node here: the root layout publishes the one `#person` on
+		// every page (the home page's fuller one in its place), and a
+		// ProfilePage's `mainEntity` names it by `@id`.
 
 		return schemas.length > 0 ? combineSchemas(schemas) : '';
 	});

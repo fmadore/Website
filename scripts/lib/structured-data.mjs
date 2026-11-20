@@ -119,3 +119,33 @@ export function structuredDataProblems(data, origin = SITE_ORIGIN) {
 	visit(data, '');
 	return problems;
 }
+
+/**
+ * The `@id`s that name more than one top-level node across a page's JSON-LD
+ * blocks (each block's root, or each member of its `@graph`). A node that
+ * appears twice under one `@id` is two descriptions of one thing, and a
+ * consumer merges or picks between them unpredictably: the home page once
+ * carried the layout's minimal Person beside its own fuller one, and /cv a
+ * second copy of the minimal one. A bare `{ "@id": … }` reference is not a
+ * node and is not counted.
+ *
+ * @param {unknown[]} blocks parsed JSON-LD blocks of one page
+ * @returns {string[]}
+ */
+export function duplicateNodeIds(blocks) {
+	/** @type {Map<string, number>} */
+	const counts = new Map();
+	for (const block of blocks) {
+		if (!block || typeof block !== 'object') continue;
+		const graph = /** @type {{ '@graph'?: unknown }} */ (block)['@graph'];
+		const nodes = Array.isArray(graph) ? graph : [block];
+		for (const node of nodes) {
+			if (!node || typeof node !== 'object') continue;
+			const id = /** @type {Record<string, unknown>} */ (node)['@id'];
+			const keys = Object.keys(node).filter((key) => key !== '@id' && key !== '@context');
+			if (typeof id !== 'string' || keys.length === 0) continue;
+			counts.set(id, (counts.get(id) ?? 0) + 1);
+		}
+	}
+	return [...counts].filter(([, count]) => count > 1).map(([id]) => id);
+}
