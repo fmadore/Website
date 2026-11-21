@@ -45,7 +45,7 @@
 							<a href={review.url} target="_blank" rel="noopener" class="review-link">
 								{review.author}<span class="review-cite-arrow" aria-hidden="true">
 									&nbsp;↗
-								</span><span class="sr-only"> (opens in new tab)</span>
+								</span><span class="sr-only">&nbsp;(opens in new tab)</span>
 							</a>
 						{:else}
 							<span>{review.author}</span>
@@ -67,7 +67,7 @@
 									aria-hidden="true"
 								>
 									&nbsp;↗
-								</span><span class="sr-only"> (opens in new tab)</span>
+								</span><span class="sr-only">&nbsp;(opens in new tab)</span>
 							</a>
 						{/if}
 					</p>
@@ -77,7 +77,7 @@
 						{#if review.url}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 							<a href={review.url} target="_blank" rel="noopener" class="review-ref-link">
-								{review.title}<span class="sr-only"> (opens in new tab)</span>
+								{review.title}<span class="sr-only">&nbsp;(opens in new tab)</span>
 							</a>
 						{:else}
 							{review.title}

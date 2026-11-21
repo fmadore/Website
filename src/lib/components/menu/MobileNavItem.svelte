@@ -72,7 +72,7 @@
 								aria-hidden="true"
 							>
 								&nbsp;↗
-							</span><span class="sr-only"> (opens in new tab)</span>{/if}
+							</span><span class="sr-only">&nbsp;(opens in new tab)</span>{/if}
 					</a>
 					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				</li>

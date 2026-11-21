@@ -54,7 +54,7 @@
 								<use href="#{CV_GLYPH.publons}" />
 							</svg>
 							<span>Verified on Web of Science</span>
-							<span class="sr-only"> (opens in new tab)</span>
+							<span class="sr-only">&nbsp;(opens in new tab)</span>
 						</a>
 						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}

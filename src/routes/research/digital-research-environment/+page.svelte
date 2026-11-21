@@ -11,7 +11,7 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			Africa Multiple Cluster of Excellence<span class="sr-only"> (opens in new tab)</span>
+			Africa Multiple Cluster of Excellence<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>
 		at the University of Bayreuth. We design, build, and maintain the data systems that connect researchers
 		across the
@@ -20,16 +20,16 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			Africa Multiple Research Centres<span class="sr-only"> (opens in new tab)</span>
+			Africa Multiple Research Centres<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>
 		(AMRCs) and partner institutions worldwide: research data management, knowledge-graph development,
 		AI-assisted processing, and digital literacy, grounded in the
 		<a href="https://www.go-fair.org/fair-principles/" target="_blank" rel="noopener noreferrer">
-			FAIR<span class="sr-only"> (opens in new tab)</span>
+			FAIR<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>
 		and
 		<a href="https://www.gida-global.org/careprinciples" target="_blank" rel="noopener noreferrer">
-			CARE<span class="sr-only"> (opens in new tab)</span>
+			CARE<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a> principles. I joined as Data Curator in 2026.
 	</p>
 
@@ -46,7 +46,9 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			Africa Multiple Interactive Research Atlas<span class="sr-only"> (opens in new tab)</span>
+			Africa Multiple Interactive Research Atlas<span class="sr-only">
+				&nbsp;(opens in new tab)
+			</span>
 		</a>
 		(AMIRA), an Omeka S site that makes the collections searchable from one place
 		<ItemReference id="reconfiguring-archive-amira-2026" />: nearly 4,000 research items, more than
@@ -93,7 +95,7 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			dashboards, network graphs, and maps<span class="sr-only"> (opens in new tab)</span>
+			dashboards, network graphs, and maps<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a> that foreground connections: the subjects that co-occur across collections, the collaboration
 		networks no single catalogue record makes visible.
 	</p>
@@ -104,7 +106,7 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			AMIRA MCP server<span class="sr-only"> (opens in new tab)</span>
+			AMIRA MCP server<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a> lets an assistant query the collection directly, so answers are drawn from the records and cite
 		them, which reduces the hallucination that comes from asking a model what it already knows. Building
 		and evaluating that layer is the current strand of the work.

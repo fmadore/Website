@@ -141,7 +141,7 @@ place to decide that.
 				class="btn btn-accent btn-block"
 			>
 				{primaryLabel}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)
+					&nbsp;(opens in new tab)
 				</span>
 			</a>
 		{/if}
@@ -158,7 +158,7 @@ place to decide that.
 				class="btn btn-outline-secondary btn-block"
 			>
 				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)
+					&nbsp;(opens in new tab)
 				</span>
 			</a>
 		{/each}

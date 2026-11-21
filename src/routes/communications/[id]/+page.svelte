@@ -273,7 +273,7 @@
 						loading="lazy"
 						decoding="async"
 						use:plateFallback
-					/><span class="sr-only"> (PDF, opens in new tab)</span>
+					/><span class="sr-only">&nbsp;(PDF, opens in new tab)</span>
 				</a>
 				<figcaption class="plate-caption">{posterCaption}</figcaption>
 			</figure>

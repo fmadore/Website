@@ -319,7 +319,7 @@
 				<!-- The arrow marks the leaving link; the accessible name says so in
 				     words, since a glyph is not one. -->
 				{action.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)
+					&nbsp;(opens in new tab)
 				</span>
 			</a>
 		{/each}

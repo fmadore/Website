@@ -67,7 +67,7 @@
 				</svg>
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 				<a href={link.url} target="_blank" rel="noopener noreferrer">
-					{link.displayUrl}<span class="sr-only"> (opens in new tab)</span>
+					{link.displayUrl}<span class="sr-only">&nbsp;(opens in new tab)</span>
 				</a>
 			</div>
 		{/each}

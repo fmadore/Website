@@ -61,7 +61,7 @@
 						</span>{/if}
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
 					<a href={link.url} target="_blank" rel="noopener noreferrer" class:link-url={!link.label}>
-						{projectLinkText(link)}<span class="sr-only"> (opens in new tab)</span>
+						{projectLinkText(link)}<span class="sr-only">&nbsp;(opens in new tab)</span>
 					</a>
 				{/each}
 			</div>
@@ -78,7 +78,7 @@
 						<!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html typesetQuotesInHtml(
 							isLast ? review.text : trimTerminalPeriod(review.text)
 						)}<!-- eslint-enable svelte/no-at-html-tags --><span class="sr-only">
-							(opens in new tab)
+							&nbsp;(opens in new tab)
 						</span>
 					</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if !isLast}<span
 							class="review-sep"

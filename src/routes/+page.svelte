@@ -114,7 +114,7 @@
 							{#if card.store.label === 'Microsoft Store'}
 								<Icon icon="local:microsoft-store" width="14" height="14" aria-hidden="true" />
 							{/if}
-							{card.store.label}<span class="sr-only"> (opens in new tab)</span>
+							{card.store.label}<span class="sr-only">&nbsp;(opens in new tab)</span>
 						</a>
 					{/if}
 				</p>
@@ -197,14 +197,16 @@
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					Cluster of Excellence “Africa Multiple”<span class="sr-only"> (opens in new tab)</span>
+					Cluster of Excellence “Africa Multiple”<span class="sr-only">
+						&nbsp;(opens in new tab)
+					</span>
 				</a>, I am
 				<a
 					href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html"
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					Data Curator<span class="sr-only"> (opens in new tab)</span>
+					Data Curator<span class="sr-only">&nbsp;(opens in new tab)</span>
 				</a>
 				and a researcher in the
 				<a
@@ -212,7 +214,7 @@
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					Research Section Digitalities<span class="sr-only"> (opens in new tab)</span>
+					Research Section Digitalities<span class="sr-only">&nbsp;(opens in new tab)</span>
 				</a>. As curator, I help design the systems that make research data findable and reusable
 				under the FAIR and CARE principles, and I work with colleagues on the digital literacy and
 				ethical standards that curation demands. As Co-Principal Investigator of
@@ -234,7 +236,7 @@
 				education, and the public sphere in Benin, Burkina Faso, Côte d’Ivoire, and Togo since the
 				1960s. Before Bayreuth, I was a Research Fellow at
 				<a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer">
-					Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only"> (opens in new tab)</span>
+					Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only">&nbsp;(opens in new tab)</span>
 				</a>
 				in Berlin, and before that a
 				<a
@@ -242,11 +244,11 @@
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					Banting Postdoctoral Fellow<span class="sr-only"> (opens in new tab)</span>
+					Banting Postdoctoral Fellow<span class="sr-only">&nbsp;(opens in new tab)</span>
 				</a>
 				at the
 				<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer">
-					University of Florida<span class="sr-only"> (opens in new tab)</span>
+					University of Florida<span class="sr-only">&nbsp;(opens in new tab)</span>
 				</a>.
 			</p>
 			<p>
@@ -255,7 +257,7 @@
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					Communitology<span class="sr-only"> (opens in new tab)</span>
+					Communitology<span class="sr-only">&nbsp;(opens in new tab)</span>
 				</a>
 				to produce specialised Country of Origin Information (COI) reports for asylum and immigration
 				cases involving Benin, Côte d’Ivoire, and Togo.

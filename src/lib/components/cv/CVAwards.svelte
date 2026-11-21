@@ -18,7 +18,7 @@
 				rel="noopener noreferrer"
 				class="cv-title"
 			>
-				{typesetQuotes(award.title)}<span class="sr-only"> (opens in new tab)</span>
+				{typesetQuotes(award.title)}<span class="sr-only">&nbsp;(opens in new tab)</span>
 			</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title">
 				{typesetQuotes(award.title)}
 			</span>{/if}, {typesetQuotes(award.institution)}.

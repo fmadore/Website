@@ -303,7 +303,9 @@
 									rel="noopener noreferrer"
 									aria-label="Open work: {work.title} (opens in new tab)"
 								>
-									Open work<span class="sr-only"> (opens in new tab)</span><span aria-hidden="true">
+									Open work<span class="sr-only">&nbsp;(opens in new tab)</span><span
+										aria-hidden="true"
+									>
 										&nbsp;↗
 									</span>
 								</a>

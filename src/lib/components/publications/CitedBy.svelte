@@ -41,7 +41,7 @@
 							{#if citingWork.url}
 								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 								<a href={citingWork.url} target="_blank" rel="noopener" class="citation-link">
-									{citingWork.title}<span class="sr-only"> (opens in new tab)</span>
+									{citingWork.title}<span class="sr-only">&nbsp;(opens in new tab)</span>
 								</a>
 							{:else}
 								{citingWork.title}

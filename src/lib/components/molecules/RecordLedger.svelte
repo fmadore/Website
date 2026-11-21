@@ -58,7 +58,7 @@ DOI would break the link.
 										class="meta-icon"
 										aria-hidden="true"
 									/>{/if}{row.value}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-									(opens in new tab)
+									&nbsp;(opens in new tab)
 								</span>
 							</a>
 						{:else if row.href}

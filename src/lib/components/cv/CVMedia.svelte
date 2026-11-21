@@ -39,7 +39,7 @@
 							DOI:
 							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 							<a href="https://doi.org/{podcast.doi}" target="_blank" rel="noopener noreferrer">
-								{podcast.doi}<span class="sr-only"> (opens in new tab)</span>
+								{podcast.doi}<span class="sr-only">&nbsp;(opens in new tab)</span>
 							</a><!-- eslint-enable svelte/no-navigation-without-resolve -->
 						</span>
 					{/if}

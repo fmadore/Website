@@ -42,7 +42,7 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			Python-based workflows<span class="sr-only"> (opens in new tab)</span>
+			Python-based workflows<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>
 		open up vast, under-resourced collections. The same approach turns a static archive into
 		<a
@@ -50,21 +50,21 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			interactive visualisations<span class="sr-only"> (opens in new tab)</span>
+			interactive visualisations<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>:
 		<a
 			href="https://islam.zmo.de/s/westafrica/page/entity-networks"
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			networks of who appears alongside whom<span class="sr-only"> (opens in new tab)</span>
+			networks of who appears alongside whom<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>,
 		<a
 			href="https://islam.zmo.de/s/westafrica/page/words-over-time"
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			word frequencies traced year by year<span class="sr-only"> (opens in new tab)</span>
+			word frequencies traced year by year<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>,
 		<a
 			href="https://islam.zmo.de/s/westafrica/page/topic-modelling"
@@ -72,7 +72,7 @@
 			rel="noopener noreferrer"
 		>
 			a semantic map that places 12,000 articles by textual similarity<span class="sr-only">
-				(opens in new tab)
+				&nbsp;(opens in new tab)
 			</span>
 		</a>. Most link back to the documents behind them, so readers can test their own questions
 		against the sources.
@@ -84,7 +84,9 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			<em>Islam West Africa Collection</em> (IWAC)<span class="sr-only"> (opens in new tab)</span>
+			<em>Islam West Africa Collection</em> (IWAC)<span class="sr-only">
+				&nbsp;(opens in new tab)
+			</span>
 		</a>, whose 30-million-word corpus tests the limits of AI in historical research <ItemReference
 			id="zmo-kitchen-talks-ai-islamic-african-studies"
 		/>. Working from Moretti’s (2000) “<a
@@ -92,13 +94,13 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			distant reading<span class="sr-only"> (opens in new tab)</span>
+			distant reading<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>”, I treat AI as a “co-intelligence” (<a
 			href="https://www.penguinrandomhouse.com/books/741805/co-intelligence-by-ethan-mollick/"
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			Mollick, 2024<span class="sr-only"> (opens in new tab)</span>
+			Mollick, 2024<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>) for corpora too large to read in their entirety. AI-assisted sentiment analysis, for
 		instance, examines how Islam and Muslims are represented in Francophone West African newspapers,
 		with the results visualised in an
@@ -107,7 +109,7 @@
 			target="_blank"
 			rel="noopener noreferrer"
 		>
-			interactive dashboard<span class="sr-only"> (opens in new tab)</span>
+			interactive dashboard<span class="sr-only">&nbsp;(opens in new tab)</span>
 		</a>. Human judgement still decides what the patterns mean; AI offers a workable way of handling
 		the volume of digital material African history now generates.
 	</p>

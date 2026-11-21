@@ -117,7 +117,7 @@
 									<svg class="doi-link-icon" aria-hidden="true" focusable="false">
 										<use href="#{CV_GLYPH.doi}" />
 									</svg><span class="doi-link-text">doi:{pub.doi}</span><span class="sr-only">
-										(opens in new tab)
+										&nbsp;(opens in new tab)
 									</span>
 								</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.url && !pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
@@ -141,7 +141,7 @@
 											class="review-link no-underline"
 										>
 											{typesetQuotes(review.journal)}<span class="sr-only">
-												(opens in new tab)
+												&nbsp;(opens in new tab)
 											</span>
 										</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
 									{/each}

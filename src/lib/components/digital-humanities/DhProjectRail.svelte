@@ -160,7 +160,7 @@ reader checks before installing anything.
 								{typesetQuotes(projectLinkText(link))}<span aria-hidden="true">&nbsp;↗</span><span
 									class="sr-only"
 								>
-									(opens in new tab)
+									&nbsp;(opens in new tab)
 								</span>
 							</a>
 						{/each}
@@ -181,7 +181,7 @@ reader checks before installing anything.
 			rel="noopener noreferrer"
 		>
 			{ctaLabel}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-				(opens in new tab)
+				&nbsp;(opens in new tab)
 			</span>
 		</a>
 		<!-- eslint-enable svelte/no-navigation-without-resolve -->

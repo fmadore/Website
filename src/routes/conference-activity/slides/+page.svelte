@@ -176,7 +176,9 @@
 								rel="noopener noreferrer"
 								aria-label="Open deck: {deck.title} (opens in new tab)"
 							>
-								Open deck<span class="sr-only"> (opens in new tab)</span><span aria-hidden="true">
+								Open deck<span class="sr-only">&nbsp;(opens in new tab)</span><span
+									aria-hidden="true"
+								>
 									&nbsp;↗
 								</span>
 							</a>

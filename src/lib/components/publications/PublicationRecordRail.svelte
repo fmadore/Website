@@ -208,7 +208,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 				class="btn btn-accent btn-block"
 			>
 				Open publication<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)
+					&nbsp;(opens in new tab)
 				</span>
 			</a>
 		{/if}
@@ -220,7 +220,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 				class="btn btn-outline-secondary btn-block"
 			>
 				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)
+					&nbsp;(opens in new tab)
 				</span>
 			</a>
 		{/each}

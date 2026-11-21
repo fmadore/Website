@@ -223,7 +223,7 @@ Usage:
 								target="_blank"
 								rel="noopener noreferrer"
 							>
-								doi:{dateline.doi}<span class="sr-only"> (opens in new tab)</span>
+								doi:{dateline.doi}<span class="sr-only">&nbsp;(opens in new tab)</span>
 							</a>{/if}
 					</p>
 				{/if}

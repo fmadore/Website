@@ -19,7 +19,7 @@
 				rel="noopener noreferrer"
 				class="cv-title"
 			>
-				{typesetQuotes(grant.title)}<span class="sr-only"> (opens in new tab)</span>
+				{typesetQuotes(grant.title)}<span class="sr-only">&nbsp;(opens in new tab)</span>
 			</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title">
 				{typesetQuotes(grant.title)}
 			</span>{/if}, {typesetQuotes(grant.funder)}.

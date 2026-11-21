@@ -167,7 +167,7 @@
 				{typesetQuotes(cta.label)}{#if cta.external}<span aria-hidden="true">&nbsp;↗</span><span
 						class="sr-only"
 					>
-						(opens in new tab)
+						&nbsp;(opens in new tab)
 					</span>{/if}
 			</a>
 		{/each}

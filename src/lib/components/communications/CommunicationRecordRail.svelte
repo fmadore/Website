@@ -194,7 +194,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 				{communication.urlLabel ?? 'Open presentation'}<span aria-hidden="true">&nbsp;↗</span><span
 					class="sr-only"
 				>
-					(opens in new tab)
+					&nbsp;(opens in new tab)
 				</span>
 			</a>
 		{/if}
@@ -219,7 +219,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 				class="btn btn-outline-secondary btn-block"
 			>
 				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)
+					&nbsp;(opens in new tab)
 				</span>
 			</a>
 		{/each}

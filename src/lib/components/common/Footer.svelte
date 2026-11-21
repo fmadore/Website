@@ -59,7 +59,7 @@
 										</svg>
 									</span>
 									<span class="footer-link-name">{link.name}</span>
-									{#if isExternal}<span class="sr-only"> (opens in new tab)</span>{/if}
+									{#if isExternal}<span class="sr-only">&nbsp;(opens in new tab)</span>{/if}
 								</a>
 								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							</li>

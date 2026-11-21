@@ -144,7 +144,7 @@
 									decoding="async"
 									use:plateFallback
 								/>
-								<span class="sr-only"> (opens in new tab)</span>
+								<span class="sr-only">&nbsp;(opens in new tab)</span>
 							</a>
 						{:else}
 							<img
@@ -211,7 +211,7 @@
 				<!-- eslint-disable svelte/no-at-html-tags -->
 				<a href={project.publication.url} target="_blank" rel="noopener noreferrer">
 					{@html typesetQuotesInHtml(project.publication.text)}<span class="sr-only">
-						(opens in new tab)
+						&nbsp;(opens in new tab)
 					</span>
 				</a>
 				<!-- eslint-enable svelte/no-at-html-tags -->
@@ -237,7 +237,7 @@
 								<!-- eslint-disable svelte/no-at-html-tags -->
 								<a href={review.url} target="_blank" rel="noopener noreferrer">
 									{@html typesetQuotesInHtml(review.text)}<span class="sr-only">
-										(opens in new tab)
+										&nbsp;(opens in new tab)
 									</span>
 								</a>
 								<!-- eslint-enable svelte/no-at-html-tags -->
