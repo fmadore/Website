@@ -47,11 +47,11 @@
 	<section class="section output-record" aria-labelledby="output-record-title">
 		<div class="output-head">
 			<h2 class="section-title" id="output-record-title">Publications and talks per year</h2>
-			<span class="dateline"
-				>{first}–{last}{#if hasForthcoming}<span class="output-key"
-						><span class="output-key-swatch" aria-hidden="true"></span>forthcoming</span
-					>{/if}</span
-			>
+			<span class="dateline">
+				{first}–{last}{#if hasForthcoming}<span class="output-key">
+						<span class="output-key-swatch" aria-hidden="true"></span>forthcoming
+					</span>{/if}
+			</span>
 		</div>
 		<p class="sr-only">{summary}</p>
 

@@ -47,14 +47,18 @@
 			type="button"
 			class:active={dataset === 'locations'}
 			aria-pressed={dataset === 'locations'}
-			onclick={() => (dataset = 'locations')}>{locationLabel}</button
+			onclick={() => (dataset = 'locations')}
 		>
+			{locationLabel}
+		</button>
 		<button
 			type="button"
 			class:active={dataset === 'collaborators'}
 			aria-pressed={dataset === 'collaborators'}
-			onclick={() => (dataset = 'collaborators')}>Collaborators</button
+			onclick={() => (dataset = 'collaborators')}
 		>
+			Collaborators
+		</button>
 	</div>
 	{#if dataset === 'collaborators'}
 		<div class="affiliation-filters">

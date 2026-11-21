@@ -171,15 +171,15 @@
 			<div class="now-row now-row--group">
 				<dt>Projects</dt>
 				<dd>
-					<a href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
-						><em>Islam’s ‘Peripheries’</em></a
-					>, Co-PI, Volkswagen Foundation
+					<a href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}>
+						<em>Islam’s ‘Peripheries’</em>
+					</a>, Co-PI, Volkswagen Foundation
 				</dd>
 				<dd class="now-when">2026–2028</dd>
 				<dd class="now-also">
-					<a href={resolve('/research/dh-ai-african-studies')}
-						><em>Digital Humanities and Artificial Intelligence in African Studies</em></a
-					>, Volkswagen Foundation and DFG Point Sud
+					<a href={resolve('/research/dh-ai-african-studies')}>
+						<em>Digital Humanities and Artificial Intelligence in African Studies</em>
+					</a>, Volkswagen Foundation and DFG Point Sud
 				</dd>
 				<dd class="now-when now-also">2025–2027</dd>
 			</div>
@@ -199,28 +199,32 @@
 					href="https://www.africamultiple.uni-bayreuth.de/en/index.html"
 					target="_blank"
 					rel="noopener noreferrer"
-					>Cluster of Excellence “Africa Multiple”<span class="sr-only">
-						(opens in new tab)</span
-					></a
-				>, I am
+				>
+					Cluster of Excellence “Africa Multiple”<span class="sr-only"> (opens in new tab)</span>
+				</a>, I am
 				<a
 					href="https://www.africamultiple.uni-bayreuth.de/en/1_5-Digital-Solutions1/index.html"
 					target="_blank"
-					rel="noopener noreferrer">Data Curator<span class="sr-only"> (opens in new tab)</span></a
+					rel="noopener noreferrer"
 				>
+					Data Curator<span class="sr-only"> (opens in new tab)</span>
+				</a>
 				and a researcher in the
 				<a
 					href="https://www.africamultiple.uni-bayreuth.de/en/1_2-Research/Research-Sections-AM-2_0/Digitalities/index.html"
 					target="_blank"
 					rel="noopener noreferrer"
-					>Research Section Digitalities<span class="sr-only"> (opens in new tab)</span></a
-				>. As curator, I help design the systems that make research data findable and reusable under
-				the FAIR and CARE principles, and I work with colleagues on the digital literacy and ethical
-				standards that curation demands. As Co-Principal Investigator of
+				>
+					Research Section Digitalities<span class="sr-only"> (opens in new tab)</span>
+				</a>. As curator, I help design the systems that make research data findable and reusable
+				under the FAIR and CARE principles, and I work with colleagues on the digital literacy and
+				ethical standards that curation demands. As Co-Principal Investigator of
 				<a
 					href={resolve('/research/islams-peripheries-dh-ai-west-africa-central-asia')}
-					data-sveltekit-preload-data><em>Islam’s ‘Peripheries’</em></a
+					data-sveltekit-preload-data
 				>
+					<em>Islam’s ‘Peripheries’</em>
+				</a>
 				(2026–2028), a Volkswagen Foundation project with Aksana Ismailbekova, I use AI to compare Islamic
 				discourse in two multilingual collections, from West Africa and Central Asia. The project also
 				tests new ways into them, from searching across languages to querying them in plain language through
@@ -232,27 +236,30 @@
 				examines how Muslim communities, particularly youth and women, have engaged with politics,
 				education, and the public sphere in Benin, Burkina Faso, Côte d’Ivoire, and Togo since the
 				1960s. Before Bayreuth, I was a Research Fellow at
-				<a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
-					>Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only"> (opens in new tab)</span></a
-				>
+				<a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer">
+					Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only"> (opens in new tab)</span>
+				</a>
 				in Berlin, and before that a
 				<a
 					href="https://banting.fellowships-bourses.gc.ca/en/home-accueil.html"
 					target="_blank"
 					rel="noopener noreferrer"
-					>Banting Postdoctoral Fellow<span class="sr-only"> (opens in new tab)</span></a
 				>
+					Banting Postdoctoral Fellow<span class="sr-only"> (opens in new tab)</span>
+				</a>
 				at the
-				<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer"
-					>University of Florida<span class="sr-only"> (opens in new tab)</span></a
-				>.
+				<a href="https://www.ufl.edu/" target="_blank" rel="noopener noreferrer">
+					University of Florida<span class="sr-only"> (opens in new tab)</span>
+				</a>.
 			</p>
 			<p>
 				Beyond academia, I work with <a
 					href="https://communitology.co/"
 					target="_blank"
-					rel="noopener noreferrer">Communitology<span class="sr-only"> (opens in new tab)</span></a
+					rel="noopener noreferrer"
 				>
+					Communitology<span class="sr-only"> (opens in new tab)</span>
+				</a>
 				to produce specialised Country of Origin Information (COI) reports for asylum and immigration
 				cases involving Benin, Côte d’Ivoire, and Togo.
 			</p>

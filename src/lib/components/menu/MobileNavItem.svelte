@@ -69,8 +69,10 @@
 					>
 						{typesetQuotes(subItem.name)}{#if isExternal}<span
 								class="external-mark"
-								aria-hidden="true">&nbsp;↗</span
-							><span class="sr-only"> (opens in new tab)</span>{/if}
+								aria-hidden="true"
+							>
+								&nbsp;↗
+							</span><span class="sr-only"> (opens in new tab)</span>{/if}
 					</a>
 					<!-- eslint-enable svelte/no-navigation-without-resolve -->
 				</li>

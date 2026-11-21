@@ -167,13 +167,13 @@
 				<!-- Caption strip, the plate idiom: the affordance sits below the
 				     image on its own ground rather than washing over it. -->
 				<span class="deck-facade-bar">
-					<span class="deck-facade-play"
-						><Icon icon="lucide:play" width="16" height="16" aria-hidden="true" /></span
-					>
+					<span class="deck-facade-play">
+						<Icon icon="lucide:play" width="16" height="16" aria-hidden="true" />
+					</span>
 					<span class="deck-facade-label">View slides</span>
-					<span class="deck-facade-hint">Loads the interactive deck</span><span class="sr-only"
-						>: {title}</span
-					>
+					<span class="deck-facade-hint">Loads the interactive deck</span><span class="sr-only">
+						: {title}
+					</span>
 				</span>
 			</button>
 		{/if}

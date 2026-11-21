@@ -700,8 +700,10 @@
 						href={resolve(`/publications?tag=${encodeURIComponent(term.word)}`)}
 						rel="nofollow"
 						style="font-size: {term.size}px;"
-						title={countOf(term.count, 'publication')}>{term.word}</a
+						title={countOf(term.count, 'publication')}
 					>
+						{term.word}
+					</a>
 				{/each}
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</div>
@@ -766,9 +768,9 @@
 		{#if fullTextTerms.length > 0}
 			<div class="key-terms">
 				{#each fullTextTerms as term (term.word)}
-					<span style="font-size: {term.size}px;" title={countOf(term.count, 'occurrence')}
-						>{term.word}</span
-					>
+					<span style="font-size: {term.size}px;" title={countOf(term.count, 'occurrence')}>
+						{term.word}
+					</span>
 				{/each}
 			</div>
 		{:else}

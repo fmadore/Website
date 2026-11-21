@@ -258,13 +258,13 @@
 				     text (so the kind line can align it on its baseline), and a
 				     text node here would collapse to a mono space on top of the
 				     mark's own margin. -->
-				<span class="bib-kind-note"
-					>{#if note.icon}<Icon
+				<span class="bib-kind-note">
+					{#if note.icon}<Icon
 							icon={note.icon}
 							class="bib-kind-icon"
 							aria-hidden="true"
-						/>{/if}{note.label}</span
-				>
+						/>{/if}{note.label}
+				</span>
 			{/each}
 		</p>
 
@@ -319,8 +319,8 @@
 				<!-- The arrow marks the leaving link; the accessible name says so in
 				     words, since a glyph is not one. -->
 				{action.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)</span
-				>
+					(opens in new tab)
+				</span>
 			</a>
 		{/each}
 		{#if reference}

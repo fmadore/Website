@@ -18,10 +18,11 @@
 				target="_blank"
 				rel="noopener noreferrer"
 				class="cv-title"
-				>{typesetQuotes(grant.title)}<span class="sr-only"> (opens in new tab)</span></a
-			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title"
-				>{typesetQuotes(grant.title)}</span
-			>{/if}, {typesetQuotes(grant.funder)}.
+			>
+				{typesetQuotes(grant.title)}<span class="sr-only"> (opens in new tab)</span>
+			</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title">
+				{typesetQuotes(grant.title)}
+			</span>{/if}, {typesetQuotes(grant.funder)}.
 		{#if grant.amount}
 			<div class="cv-note">
 				{grant.amount.toLocaleString('en-US')}

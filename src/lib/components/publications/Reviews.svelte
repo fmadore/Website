@@ -43,9 +43,10 @@
 						{#if review.url}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
 							<a href={review.url} target="_blank" rel="noopener" class="review-link">
-								{review.author}<span class="review-cite-arrow" aria-hidden="true">&nbsp;↗</span
-								><span class="sr-only"> (opens in new tab)</span></a
-							>
+								{review.author}<span class="review-cite-arrow" aria-hidden="true">
+									&nbsp;↗
+								</span><span class="sr-only"> (opens in new tab)</span>
+							</a>
 						{:else}
 							<span>{review.author}</span>
 						{/if}
@@ -61,10 +62,13 @@
 								target="_blank"
 								rel="noopener"
 								class="review-doi"
-								><Icon icon="academicons:doi" class="review-doi-icon" aria-hidden="true" />DOI<span
-									aria-hidden="true">&nbsp;↗</span
-								><span class="sr-only"> (opens in new tab)</span></a
 							>
+								<Icon icon="academicons:doi" class="review-doi-icon" aria-hidden="true" />DOI<span
+									aria-hidden="true"
+								>
+									&nbsp;↗
+								</span><span class="sr-only"> (opens in new tab)</span>
+							</a>
 						{/if}
 					</p>
 
@@ -72,9 +76,9 @@
 					<p class="review-ref">
 						{#if review.url}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a href={review.url} target="_blank" rel="noopener" class="review-ref-link"
-								>{review.title}<span class="sr-only"> (opens in new tab)</span></a
-							>
+							<a href={review.url} target="_blank" rel="noopener" class="review-ref-link">
+								{review.title}<span class="sr-only"> (opens in new tab)</span>
+							</a>
 						{:else}
 							{review.title}
 						{/if}

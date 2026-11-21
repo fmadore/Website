@@ -226,8 +226,9 @@
 						class="chip"
 						rel="nofollow"
 						href={resolve(`/conference-activity?tag=${encodeURIComponent(tag)}`)}
-						>{typesetQuotes(tag)}</a
 					>
+						{typesetQuotes(tag)}
+					</a>
 				{/each}
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</div>
@@ -272,8 +273,8 @@
 						loading="lazy"
 						decoding="async"
 						use:plateFallback
-					/><span class="sr-only"> (PDF, opens in new tab)</span></a
-				>
+					/><span class="sr-only"> (PDF, opens in new tab)</span>
+				</a>
 				<figcaption class="plate-caption">{posterCaption}</figcaption>
 			</figure>
 		</section>
@@ -326,9 +327,9 @@
 			<div class="ledger ledger--ruled comm-participants">
 				{#each participants as participant, index (participant.name + index)}
 					<div class="ledger-row">
-						<span class="ledger-key"
-							>{participant.role ? typesetQuotes(participant.role) : 'Participant'}</span
-						>
+						<span class="ledger-key">
+							{participant.role ? typesetQuotes(participant.role) : 'Participant'}
+						</span>
 						<span class="ledger-content">
 							<span class="ledger-title">{typesetQuotes(participant.name)}</span>
 							{#if participant.affiliation}

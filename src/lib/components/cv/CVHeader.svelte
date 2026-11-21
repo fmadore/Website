@@ -40,9 +40,9 @@
 <section class="cv-contact-section">
 	<!-- Address -->
 	<div class="cv-contact-group">
-		<svg class="cv-contact-icon" width="16" height="16" aria-hidden="true" focusable="false"
-			><use href="#{glyphId(ADDRESS_GLYPH)}" /></svg
-		>
+		<svg class="cv-contact-icon" width="16" height="16" aria-hidden="true" focusable="false">
+			<use href="#{glyphId(ADDRESS_GLYPH)}" />
+		</svg>
 		<div>
 			{address.institution}<br />
 			{#if address.department}
@@ -62,13 +62,13 @@
 	<div class="cv-links-group">
 		{#each cvLinks as link (link.url)}
 			<div class="cv-link-item">
-				<svg class="cv-contact-icon" width="16" height="16" aria-hidden="true" focusable="false"
-					><use href="#{glyphId(link.icon)}" /></svg
-				>
+				<svg class="cv-contact-icon" width="16" height="16" aria-hidden="true" focusable="false">
+					<use href="#{glyphId(link.icon)}" />
+				</svg>
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-				<a href={link.url} target="_blank" rel="noopener noreferrer"
-					>{link.displayUrl}<span class="sr-only"> (opens in new tab)</span></a
-				>
+				<a href={link.url} target="_blank" rel="noopener noreferrer">
+					{link.displayUrl}<span class="sr-only"> (opens in new tab)</span>
+				</a>
 			</div>
 		{/each}
 	</div>

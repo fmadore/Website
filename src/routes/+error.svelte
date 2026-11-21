@@ -137,9 +137,9 @@
 
 		<!-- A non-breaking space: Svelte trims a trailing ordinary one inside the
 		     span, and the live DOM read `←Back to the homepage`. -->
-		<a class="error-home" href={resolve('/')}
-			><span aria-hidden="true">&larr;&nbsp;</span>Back to the homepage</a
-		>
+		<a class="error-home" href={resolve('/')}>
+			<span aria-hidden="true">&larr;&nbsp;</span>Back to the homepage
+		</a>
 	</div>
 </div>
 

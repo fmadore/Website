@@ -35,8 +35,10 @@
 				<a
 					class="chip no-underline"
 					rel="nofollow"
-					href={pageHref(`${baseUrl}${encodeURIComponent(tag)}`)}>{typesetQuotes(tag)}</a
+					href={pageHref(`${baseUrl}${encodeURIComponent(tag)}`)}
 				>
+					{typesetQuotes(tag)}
+				</a>
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			{/each}
 		</div>

@@ -141,14 +141,14 @@ place to decide that.
 				class="btn btn-accent btn-block"
 			>
 				{primaryLabel}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)</span
-				>
+					(opens in new tab)
+				</span>
 			</a>
 		{/if}
 		{#if hasDocument}
-			<a href="#document" class="btn btn-outline-primary btn-block"
-				>View document<span aria-hidden="true">&nbsp;↓</span></a
-			>
+			<a href="#document" class="btn btn-outline-primary btn-block">
+				View document<span aria-hidden="true">&nbsp;↓</span>
+			</a>
 		{/if}
 		{#each additionalUrls as link (link.url)}
 			<a
@@ -158,17 +158,17 @@ place to decide that.
 				class="btn btn-outline-secondary btn-block"
 			>
 				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)</span
-				>
+					(opens in new tab)
+				</span>
 			</a>
 		{/each}
 		{#if activity.year != null}
 			<!-- The year's own archive: the one place this record goes that is not
 			     the work itself. It was a ledger row until the ledger stopped
 			     restating the eyebrow; as a destination it belongs in the stack. -->
-			<a href={yearHref} class="btn btn-outline-secondary btn-block"
-				>View the {activity.year} log<span aria-hidden="true">&nbsp;→</span></a
-			>
+			<a href={yearHref} class="btn btn-outline-secondary btn-block">
+				View the {activity.year} log<span aria-hidden="true">&nbsp;→</span>
+			</a>
 		{/if}
 	</div>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->

@@ -28,8 +28,10 @@
 		<a
 			href={resolve('/communications/[id]', { id: comm.id })}
 			lang={titleLangAttr(comm.language)}
-			class="cv-record-link">{quoteTitle(comm.title)}</a
-		>{#if venue(comm)}, <em>{typesetQuotes(venue(comm))}</em>{/if}{#if comm.location}, {typesetQuotes(
+			class="cv-record-link"
+		>
+			{quoteTitle(comm.title)}
+		</a>{#if venue(comm)}, <em>{typesetQuotes(venue(comm))}</em>{/if}{#if comm.location}, {typesetQuotes(
 				comm.location
 			)}{/if},
 		{formatDayMonth(comm.dateISO)}.

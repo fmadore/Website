@@ -10,10 +10,12 @@
 			href="https://www.zmo.de/en/people/dr-aksana-ismailbekova"
 			target="_blank"
 			rel="noopener noreferrer"
-			>Aksana Ismailbekova<span class="sr-only"> (opens in new tab)</span></a
-		>, this project tests what artificial intelligence (AI) can do with two multilingual collections
-		on Islamic communities in West Africa and Central Asia. Between them they hold thousands of
-		documents whose volume and range of languages have kept most of the material out of reach.
+		>
+			Aksana Ismailbekova<span class="sr-only"> (opens in new tab)</span>
+		</a>, this project tests what artificial intelligence (AI) can do with two multilingual
+		collections on Islamic communities in West Africa and Central Asia. Between them they hold
+		thousands of documents whose volume and range of languages have kept most of the material out of
+		reach.
 	</p>
 
 	<p>
@@ -34,9 +36,9 @@
 		</li>
 		<li>
 			<strong>Access through MCP and a chatbot.</strong> We plan a
-			<a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer"
-				>Model Context Protocol<span class="sr-only"> (opens in new tab)</span></a
-			> (MCP) server that gives any AI assistant a single interface onto both collections, with a companion
+			<a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">
+				Model Context Protocol<span class="sr-only"> (opens in new tab)</span>
+			</a> (MCP) server that gives any AI assistant a single interface onto both collections, with a companion
 			“skill” that encodes curatorial judgement: search strategies, transliteration variants, documented
 			bias. A researcher should then be able to put one question in natural language to both collections
 			at once, without reading every language in them. The intended deliverable is a conversational assistant
@@ -51,32 +53,35 @@
 				href="https://github.com/fmadore/AI-NER-Validator"
 				target="_blank"
 				rel="noopener noreferrer"
-				>human-in-the-loop validation<span class="sr-only"> (opens in new tab)</span></a
-			>, and all code, data, and publications are to be released open access under FAIR principles.
+			>
+				human-in-the-loop validation<span class="sr-only"> (opens in new tab)</span>
+			</a>, and all code, data, and publications are to be released open access under FAIR
+			principles.
 		</li>
 	</ol>
 
 	<h2>Two “peripheral” collections</h2>
 	<p>
-		Both are held at <a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer"
-			>Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only"> (opens in new tab)</span></a
-		>:
+		Both are held at <a href="https://www.zmo.de/en" target="_blank" rel="noopener noreferrer">
+			Leibniz-Zentrum Moderner Orient (ZMO)<span class="sr-only"> (opens in new tab)</span>
+		</a>:
 	</p>
 	<ul>
 		<li>
-			The <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer"
-				><em>Islam West Africa Collection</em><span class="sr-only"> (opens in new tab)</span></a
-			>: nearly 21,000 items (newspapers, Islamic publications, photographs, and some 35,000 minutes
-			of audio and video, including Hausa recordings) covering Islam and Muslim communities in six
-			West African countries from the 1960s onward.
+			The <a href="https://islam.zmo.de/s/westafrica/" target="_blank" rel="noopener noreferrer">
+				<em>Islam West Africa Collection</em><span class="sr-only"> (opens in new tab)</span>
+			</a>: nearly 21,000 items (newspapers, Islamic publications, photographs, and some 35,000
+			minutes of audio and video, including Hausa recordings) covering Islam and Muslim communities
+			in six West African countries from the 1960s onward.
 		</li>
 		<li>
 			The <a
 				href="https://www.zmo.de/en/library/special-collection-1/translate-to-english-reinhard-eisener-bestand"
 				target="_blank"
 				rel="noopener noreferrer"
-				><em>Reinhard Eisener Collection</em><span class="sr-only"> (opens in new tab)</span></a
-			>: 1,546 documents across 50 archival boxes in eight languages (Russian, Uzbek, Tajik,
+			>
+				<em>Reinhard Eisener Collection</em><span class="sr-only"> (opens in new tab)</span>
+			</a>: 1,546 documents across 50 archival boxes in eight languages (Russian, Uzbek, Tajik,
 			Persian, Turki, English, German, French), on the Emirate of Bukhara (1917&ndash;30), early
 			Soviet governance, and the Tajik civil war (1992&ndash;97).
 		</li>

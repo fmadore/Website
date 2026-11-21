@@ -208,8 +208,8 @@ The other half of the old <PublicationAside> — tags and key terms — is
 				class="btn btn-accent btn-block"
 			>
 				Open publication<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)</span
-				>
+					(opens in new tab)
+				</span>
 			</a>
 		{/if}
 		{#each extraLinks as link (link.url)}
@@ -220,8 +220,8 @@ The other half of the old <PublicationAside> — tags and key terms — is
 				class="btn btn-outline-secondary btn-block"
 			>
 				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)</span
-				>
+					(opens in new tab)
+				</span>
 			</a>
 		{/each}
 	</div>

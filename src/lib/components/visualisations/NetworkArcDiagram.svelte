@@ -455,8 +455,10 @@ background texture is now the whole subject of the chart.
 							dominant-baseline="middle"
 							fill={colors.textLight}
 							font-family={colors.fontFamily}
-							font-size={fontSize - 1}>{String(i + 1).padStart(2, '0')}</text
+							font-size={fontSize - 1}
 						>
+							{String(i + 1).padStart(2, '0')}
+						</text>
 						<text
 							class="arc-name"
 							x={nameX}
@@ -464,8 +466,10 @@ background texture is now the whole subject of the chart.
 							dominant-baseline="middle"
 							fill={colors.text}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{typesetQuotes(fitName(row.id))}</text
+							font-size={fontSize}
 						>
+							{typesetQuotes(fitName(row.id))}
+						</text>
 						{#if barMax > 0}
 							<rect
 								class="arc-bar"
@@ -484,8 +488,10 @@ background texture is now the whole subject of the chart.
 							dominant-baseline="middle"
 							fill={colors.textLight}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{row.weight}</text
+							font-size={fontSize}
 						>
+							{row.weight}
+						</text>
 					</g>
 				{/each}
 			</g>

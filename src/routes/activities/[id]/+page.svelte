@@ -241,9 +241,9 @@
 			{#each tags as tag (tag)}
 				<!-- Label typeset; the href keeps the raw tag the filter matches. -->
 				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- tag search URL -->
-				<a class="chip" rel="nofollow" href={resolve(`/activities?tag=${encodeURIComponent(tag)}`)}
-					>{typesetQuotes(tag)}</a
-				>
+				<a class="chip" rel="nofollow" href={resolve(`/activities?tag=${encodeURIComponent(tag)}`)}>
+					{typesetQuotes(tag)}
+				</a>
 			{/each}
 		</div>
 	</div>

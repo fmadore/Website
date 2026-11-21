@@ -158,9 +158,9 @@ Usage:
 		     and still ends on the record's own title. -->
 		<nav class="record-breadcrumb" aria-label="Breadcrumb">
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed path -->
-			<a href={section.href} class="record-breadcrumb-link"
-				><span aria-hidden="true">←&nbsp;</span>{section.label}</a
-			>
+			<a href={section.href} class="record-breadcrumb-link">
+				<span aria-hidden="true">←&nbsp;</span>{section.label}
+			</a>
 		</nav>
 
 		<!-- The whole record is one article: masthead, body column and metadata
@@ -180,13 +180,13 @@ Usage:
 							<!-- No whitespace between the mark and the word: a text node there
 							     collapses to a mono space on top of the mark's own margin, which
 							     doubled the gap. -->
-							<span class="record-eyebrow-token"
-								>{#if token.icon}<Icon
+							<span class="record-eyebrow-token">
+								{#if token.icon}<Icon
 										icon={token.icon}
 										class="record-eyebrow-icon"
 										aria-hidden="true"
-									/>{/if}{token.label}</span
-							>
+									/>{/if}{token.label}
+							</span>
 						{/each}
 					</p>
 				{/if}
@@ -194,9 +194,9 @@ Usage:
 				<!-- A year range is its own unbreakable run, so a balanced title never
 				     sets "1970–" at a line end with "2023" under it. Text nodes only. -->
 				<h1 class="record-title" lang={titleLang} data-length={titleSize}>
-					{#each titleRuns as run, index (index)}{#if run.nowrap}<span class="record-title-nowrap"
-								>{run.text}</span
-							>{:else}{run.text}{/if}{/each}
+					{#each titleRuns as run, index (index)}{#if run.nowrap}<span class="record-title-nowrap">
+								{run.text}
+							</span>{:else}{run.text}{/if}{/each}
 				</h1>
 
 				{#if dateline && hasDateline}
@@ -205,20 +205,26 @@ Usage:
 					<p class="dateline record-dateline">
 						{#each dateline.parts as part, index (index)}{#if index > 0}<span
 									class="record-dateline-sep"
-									aria-hidden="true">&nbsp;·</span
-								><wbr />
-							{/if}<span class="record-dateline-part">{part}</span
-							>{/each}{#if dateline.doi}{#if dateline.parts.length > 0}<span
+									aria-hidden="true"
+								>
+									&nbsp;·
+								</span><wbr />
+							{/if}<span class="record-dateline-part">
+								{part}
+							</span>{/each}{#if dateline.doi}{#if dateline.parts.length > 0}<span
 									class="record-dateline-sep"
-									aria-hidden="true">&nbsp;·</span
-								><wbr />
+									aria-hidden="true"
+								>
+									&nbsp;·
+								</span><wbr />
 							{/if}<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external DOI resolver --><a
 								class="record-dateline-doi"
 								href="https://doi.org/{dateline.doi}"
 								target="_blank"
 								rel="noopener noreferrer"
-								>doi:{dateline.doi}<span class="sr-only"> (opens in new tab)</span></a
-							>{/if}
+							>
+								doi:{dateline.doi}<span class="sr-only"> (opens in new tab)</span>
+							</a>{/if}
 					</p>
 				{/if}
 

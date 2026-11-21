@@ -203,9 +203,9 @@
 								     "Publications 42". The space lives inside the expression: as a
 								     literal before `{count === 1 …}` Svelte trimmed it at compile
 								     time and the accessible name read "Publications 42entries". -->
-								<span class="cv-toc-count"
-									>{count}<span class="sr-only">{count === 1 ? ' entry' : ' entries'}</span></span
-								>
+								<span class="cv-toc-count">
+									{count}<span class="sr-only">{count === 1 ? ' entry' : ' entries'}</span>
+								</span>
 							{/if}
 						</button>
 					</li>

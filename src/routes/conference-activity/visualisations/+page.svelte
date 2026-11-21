@@ -652,8 +652,10 @@
 						href={resolve(`/conference-activity?tag=${encodeURIComponent(term.word)}`)}
 						rel="nofollow"
 						style="font-size: {term.size}px;"
-						title={countOf(term.count, 'talk')}>{term.word}</a
+						title={countOf(term.count, 'talk')}
 					>
+						{term.word}
+					</a>
 				{/each}
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</div>

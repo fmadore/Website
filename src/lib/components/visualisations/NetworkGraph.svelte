@@ -689,8 +689,9 @@ no two channels carry the same value.
 									font-family={resolvedColors.fontFamily}
 									font-size={node.kind === 'center' ? fontSize + 2 : fontSize}
 									font-weight={node.kind === 'center' ? 700 : 400}
-									>{typesetQuotes(node.label.text)}</text
 								>
+									{typesetQuotes(node.label.text)}
+								</text>
 							{/if}
 						</g>
 					{/each}

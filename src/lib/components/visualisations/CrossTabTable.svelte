@@ -97,8 +97,10 @@ string: a screen reader reads it as what it is.
 									style="--ink: {ink(n)}%"
 									rel="nofollow"
 									href={cellHref(row.key, column)}
-									aria-label="{n} {noun(n)}: {row.key}, {columnLabel(column)}">{n}</a
+									aria-label="{n} {noun(n)}: {row.key}, {columnLabel(column)}"
 								>
+									{n}
+								</a>
 							{:else}
 								<span class="crosstab-fill" style="--ink: {ink(n)}%">{n}</span>
 							{/if}

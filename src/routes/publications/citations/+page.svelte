@@ -272,8 +272,10 @@
 								<p class="citation-cites">
 									Cites <a
 										href={resolve('/publications/[id]', { id: group.publicationId })}
-										data-sveltekit-preload-code="tap"><cite>{group.publicationTitle}</cite></a
+										data-sveltekit-preload-code="tap"
 									>
+										<cite>{group.publicationTitle}</cite>
+									</a>
 								</p>
 								{#each group.passages as passage, i (i)}
 									<figure class="citation-passage">
@@ -301,9 +303,9 @@
 									rel="noopener noreferrer"
 									aria-label="Open work: {work.title} (opens in new tab)"
 								>
-									Open work<span class="sr-only"> (opens in new tab)</span><span aria-hidden="true"
-										>&nbsp;↗</span
-									>
+									Open work<span class="sr-only"> (opens in new tab)</span><span aria-hidden="true">
+										&nbsp;↗
+									</span>
 								</a>
 								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							{/if}
@@ -335,11 +337,11 @@
 		<p>
 			This page is an experiment, and a work in progress. It tests whether a language model can
 			recover, from the full texts of the works that cite mine, the sentences in which they do so.
-			The pilot read every work that cites one article, <cite
-				>The New Vitality of Salafism in Côte d’Ivoire</cite
-			> (2016), and recorded each of my publications those works cite. Works citing only my other publications
-			are still to be read; the coverage table at the foot of the page says how far each publication has
-			got.
+			The pilot read every work that cites one article, <cite>
+				The New Vitality of Salafism in Côte d’Ivoire
+			</cite> (2016), and recorded each of my publications those works cite. Works citing only my other
+			publications are still to be read; the coverage table at the foot of the page says how far each
+			publication has got.
 		</p>
 		<p>
 			{models}, a language model made by Anthropic, located each passage in the full text of the
@@ -372,8 +374,10 @@
 							<a
 								class="link-animated"
 								href={resolve('/publications/[id]', { id: pub.id })}
-								data-sveltekit-preload-code="tap"><cite>{pub.title}</cite></a
+								data-sveltekit-preload-code="tap"
 							>
+								<cite>{pub.title}</cite>
+							</a>
 						</p>
 						{#if pub.bibliographyOnly.length > 0}
 							<p class="coverage-note">Bibliography only: {names(pub.bibliographyOnly)}</p>

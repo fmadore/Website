@@ -54,9 +54,9 @@
 									rel={isExternal ? 'external noopener noreferrer' : undefined}
 								>
 									<span class="footer-link-icon" aria-hidden="true">
-										<svg width="15" height="15" focusable="false"
-											><use href="#{glyphId(link.icon)}" /></svg
-										>
+										<svg width="15" height="15" focusable="false">
+											<use href="#{glyphId(link.icon)}" />
+										</svg>
 									</span>
 									<span class="footer-link-name">{link.name}</span>
 									{#if isExternal}<span class="sr-only"> (opens in new tab)</span>{/if}

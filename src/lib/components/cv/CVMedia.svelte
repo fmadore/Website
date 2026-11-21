@@ -24,21 +24,24 @@
 					<a
 						href={resolve('/communications/[id]', { id: podcast.id })}
 						lang={titleLangAttr(podcast.language)}
-						class="cv-record-link">{quoteTitle(podcast.title)}</a
-					>{#if podcast.conference}, <em>{typesetQuotes(podcast.conference)}</em
-						>{/if}{#if podcast.episode}, ep. {podcast.episode}{/if}.
+						class="cv-record-link"
+					>
+						{quoteTitle(podcast.title)}
+					</a>{#if podcast.conference}, <em>
+							{typesetQuotes(podcast.conference)}
+						</em>{/if}{#if podcast.episode}, ep. {podcast.episode}{/if}.
 					{#if cvPodcastDate(podcast)}{cvPodcastDate(podcast)}.{/if}
 					{#if podcast.doi}
-						<span class="cv-note"
-							><svg class="cv-doi-mark" aria-hidden="true" focusable="false"
-								><use href="#{CV_GLYPH.doi}" /></svg
-							>
+						<span class="cv-note">
+							<svg class="cv-doi-mark" aria-hidden="true" focusable="false">
+								<use href="#{CV_GLYPH.doi}" />
+							</svg>
 							DOI:
 							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-							<a href="https://doi.org/{podcast.doi}" target="_blank" rel="noopener noreferrer"
-								>{podcast.doi}<span class="sr-only"> (opens in new tab)</span></a
-							><!-- eslint-enable svelte/no-navigation-without-resolve --></span
-						>
+							<a href="https://doi.org/{podcast.doi}" target="_blank" rel="noopener noreferrer">
+								{podcast.doi}<span class="sr-only"> (opens in new tab)</span>
+							</a><!-- eslint-enable svelte/no-navigation-without-resolve -->
+						</span>
 					{/if}
 					{#if podcast.url}
 						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
@@ -47,8 +50,10 @@
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Listen to {podcast.title} (opens in new tab)"
-							class="cv-detail">Listen<span aria-hidden="true">&nbsp;↗</span></a
+							class="cv-detail"
 						>
+							Listen<span aria-hidden="true">&nbsp;↗</span>
+						</a>
 						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}
 				</CVEntry>
@@ -75,8 +80,10 @@
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Link to {media.outlet}: {media.topic} (opens in new tab)"
-							class="cv-detail">Link<span aria-hidden="true">&nbsp;↗</span></a
+							class="cv-detail"
 						>
+							Link<span aria-hidden="true">&nbsp;↗</span>
+						</a>
 						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}
 				</CVEntry>

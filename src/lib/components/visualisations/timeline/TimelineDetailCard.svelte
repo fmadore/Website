@@ -83,8 +83,8 @@
 						class="meta-swatch"
 						style="--_cat-color: {getCategoryColor(item.category)};"
 						aria-hidden="true"
-					></span>{formatRange(item)}</span
-				>
+					></span>{formatRange(item)}
+				</span>
 				<span class="meta-dot" aria-hidden="true">•</span>
 				<span class="detail-subtitle">{item.subtitle || getCategoryLabel(item.category)}</span>
 			</div>

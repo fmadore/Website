@@ -52,9 +52,9 @@
 >
 	{#if backLinkHref}
 		<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pageHref() resolves the path -->
-		<a href={pageHref(backLinkHref)} class="back-link"
-			><span aria-hidden="true">← </span>{backLinkLabel.replace(/^←s*/, '')}</a
-		>
+		<a href={pageHref(backLinkHref)} class="back-link">
+			<span aria-hidden="true">← </span>{backLinkLabel.replace(/^←s*/, '')}
+		</a>
 	{/if}
 
 	<div class="header-content">
