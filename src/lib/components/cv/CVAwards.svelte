@@ -17,10 +17,11 @@
 				target="_blank"
 				rel="noopener noreferrer"
 				class="cv-title"
-				>{typesetQuotes(award.title)}<span class="sr-only"> (opens in new tab)</span></a
-			><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title"
-				>{typesetQuotes(award.title)}</span
-			>{/if}, {typesetQuotes(award.institution)}.
+			>
+				{typesetQuotes(award.title)}<span class="sr-only">&nbsp;(opens in new tab)</span>
+			</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title">
+				{typesetQuotes(award.title)}
+			</span>{/if}, {typesetQuotes(award.institution)}.
 		{#if award.details}
 			<p class="cv-detail">{typesetQuotes(award.details)}</p>
 		{/if}

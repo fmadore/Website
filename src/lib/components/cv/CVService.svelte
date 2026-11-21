@@ -35,9 +35,9 @@
 		<div class="ledger ledger--tight ledger--ruled" data-cv-ledger>
 			{#each peerReviews as review (review.id)}
 				<CVEntry year={review.year}>
-					{#if review.count && review.count > 1}{review.count}&nbsp;{review.type}s{:else}{review.type}{/if}{#if review.journal}&nbsp;–&nbsp;<em
-							>{typesetQuotes(review.journal)}</em
-						>{:else if review.publisher}&nbsp;–&nbsp;{typesetQuotes(review.publisher)}{/if}.
+					{#if review.count && review.count > 1}{review.count}&nbsp;{review.type}s{:else}{review.type}{/if}{#if review.journal}&nbsp;–&nbsp;<em>
+							{typesetQuotes(review.journal)}
+						</em>{:else if review.publisher}&nbsp;–&nbsp;{typesetQuotes(review.publisher)}{/if}.
 					{#if review.details}
 						<div class="cv-detail">{typesetQuotes(review.details)}</div>
 					{/if}
@@ -50,12 +50,12 @@
 							class="verification-badge"
 							data-pdf-hide
 						>
-							<svg width="16" height="16" aria-hidden="true" focusable="false"
-								><use href="#{CV_GLYPH.publons}" /></svg
-							>
+							<svg width="16" height="16" aria-hidden="true" focusable="false">
+								<use href="#{CV_GLYPH.publons}" />
+							</svg>
 							<span>Verified on Web of Science</span>
-							<span class="sr-only"> (opens in new tab)</span></a
-						>
+							<span class="sr-only">&nbsp;(opens in new tab)</span>
+						</a>
 						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 					{/if}
 				</CVEntry>

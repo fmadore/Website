@@ -193,15 +193,15 @@
 					<div class="dossier-body">
 						<p class="eyebrow dossier-dateline">
 							<span>{leadProject.period}</span>
-							{#if leadProject.credit}<span class="eyebrow-sep" aria-hidden="true">·</span><span
-									>{leadProject.credit}</span
-								>{/if}
+							{#if leadProject.credit}<span class="eyebrow-sep" aria-hidden="true">·</span><span>
+									{leadProject.credit}
+								</span>{/if}
 						</p>
 						<h3 class="dossier-title">
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->
-							<a class="link-animated" href={resolvePath(`/research/${leadProject.id}`)}
-								>{leadProject.title}</a
-							>
+							<a class="link-animated" href={resolvePath(`/research/${leadProject.id}`)}>
+								{leadProject.title}
+							</a>
 						</h3>
 						<p class="dossier-desc">{leadProject.shortDescription}</p>
 						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved via resolvePath -->

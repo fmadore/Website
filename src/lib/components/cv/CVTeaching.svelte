@@ -48,12 +48,14 @@
 				<CVEntry year={lecture.year}>
 					<!-- A lecture that is a talk on record links to its page; the
 					     <strong> wraps the link so the PDF export keeps the weight. -->
-					<strong
-						>{#if lecture.talkId}<a
+					<strong>
+						{#if lecture.talkId}<a
 								href={resolve('/communications/[id]', { id: lecture.talkId })}
-								class="cv-record-link">{typesetQuotes(lecture.title)}</a
-							>{:else}{typesetQuotes(lecture.title)}{/if}</strong
-					>, <em>{typesetQuotes(lecture.course)}</em>,
+								class="cv-record-link"
+							>
+								{typesetQuotes(lecture.title)}
+							</a>{:else}{typesetQuotes(lecture.title)}{/if}
+					</strong>, <em>{typesetQuotes(lecture.course)}</em>,
 					{#if lecture.format}{lecture.format},{/if}
 					{typesetQuotes(lectureHostAndLevel(lecture))}.
 				</CVEntry>

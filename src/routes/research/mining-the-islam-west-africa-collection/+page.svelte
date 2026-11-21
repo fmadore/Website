@@ -6,7 +6,7 @@
 
 <!-- Fallback content in case redirect doesn't work -->
 <p>
-	Redirecting to <a href={resolve('/research/dh-ai-african-studies')}
-		>Digital Humanities and AI in African Studies</a
-	>...
+	Redirecting to <a href={resolve('/research/dh-ai-african-studies')}>
+		Digital Humanities and AI in African Studies
+	</a>...
 </p>

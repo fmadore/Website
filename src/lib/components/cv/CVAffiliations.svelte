@@ -22,11 +22,11 @@
 				     and an accent that marks half a section has stopped marking
 				     anything. The one standing appointment keeps the signal. -->
 				<CVEntry year={formatAffiliationPeriod(aff.period)}>
-					<span class="cv-title">{typesetQuotes(aff.name)}</span>{#if aff.abbreviation}<span
-							>&nbsp;({aff.abbreviation})</span
-						>{/if}{#if aff.parentOrganization}<span
-							>,&nbsp;{typesetQuotes(aff.parentOrganization)}</span
-						>{/if}.
+					<span class="cv-title">{typesetQuotes(aff.name)}</span>{#if aff.abbreviation}<span>
+							&nbsp;({aff.abbreviation})
+						</span>{/if}{#if aff.parentOrganization}<span>
+							,&nbsp;{typesetQuotes(aff.parentOrganization)}
+						</span>{/if}.
 					{#if aff.roles && aff.roles.length > 0}
 						{#each aff.roles as role (role.title + role.period.start)}
 							<div class="cv-note">

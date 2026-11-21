@@ -546,14 +546,18 @@ shown as markers while preserving the reader's country-shading preference.
 					type="button"
 					class:active={viewMode === 'markers'}
 					aria-pressed={viewMode === 'markers'}
-					onclick={() => selectViewMode('markers')}>Markers</button
+					onclick={() => selectViewMode('markers')}
 				>
+					Markers
+				</button>
 				<button
 					type="button"
 					class:active={viewMode === 'choropleth'}
 					aria-pressed={viewMode === 'choropleth'}
-					onclick={() => selectViewMode('choropleth')}>Country shading</button
+					onclick={() => selectViewMode('choropleth')}
 				>
+					Country shading
+				</button>
 			</div>
 
 			<!-- One persistent region, so "Try again" has somewhere to send focus

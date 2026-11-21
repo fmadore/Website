@@ -167,8 +167,8 @@
 				{typesetQuotes(cta.label)}{#if cta.external}<span aria-hidden="true">&nbsp;↗</span><span
 						class="sr-only"
 					>
-						(opens in new tab)</span
-					>{/if}
+						&nbsp;(opens in new tab)
+					</span>{/if}
 			</a>
 		{/each}
 		<!-- eslint-enable svelte/no-navigation-without-resolve -->

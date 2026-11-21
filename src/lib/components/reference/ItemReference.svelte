@@ -201,8 +201,8 @@
 	     immediately followed by punctuation ("… (Madore, 2025), examines"). Any
 	     newline between the last child and </span> renders as a space before that
 	     comma, so the tags below deliberately abut. Do not reflow. -->
-	<span bind:this={spanEl} class="item-reference {showPreview ? 'preview-visible' : ''}"
-		><ReferenceLink
+	<span bind:this={spanEl} class="item-reference {showPreview ? 'preview-visible' : ''}">
+		<ReferenceLink
 			{item}
 			{itemType}
 			{label}
@@ -238,8 +238,8 @@
 					onpointerleave={handlePointerLeave}
 					onclose={() => togglePreview(false)}
 				/>
-			</div>{/if}</span
-	>
+			</div>{/if}
+	</span>
 	<!-- Unresolved: the sentence keeps its citation, set as the prose around it.
 	     No stamp, no brackets, no `--color-danger` — that ink is reserved for
 	     form validation, and a citation the reader cannot act on is not their

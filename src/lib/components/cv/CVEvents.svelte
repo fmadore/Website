@@ -27,8 +27,10 @@
 		<a
 			href={resolve('/communications/[id]', { id: comm.id })}
 			lang={titleLangAttr(comm.language)}
-			class="cv-record-link">{quoteTitle(comm.title)}</a
-		>{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {dateDisplay}.
+			class="cv-record-link"
+		>
+			{quoteTitle(comm.title)}
+		</a>{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {dateDisplay}.
 		{#if comm.url}
 			<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 			<a
@@ -36,8 +38,10 @@
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Link to {comm.title} (opens in new tab)"
-				class="cv-detail">Link<span aria-hidden="true">&nbsp;↗</span></a
+				class="cv-detail"
 			>
+				Link<span aria-hidden="true">&nbsp;↗</span>
+			</a>
 			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		{/if}
 	{/snippet}

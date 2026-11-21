@@ -97,10 +97,10 @@
 			<div class="section-head">
 				<h2 class="section-title">Courses taught</h2>
 				{#if courses.length > 0}
-					<span class="dateline"
-						>{courses.length}
-						{courses.length === 1 ? 'entry' : 'entries'} · {courseSpan}</span
-					>
+					<span class="dateline">
+						{courses.length}
+						{courses.length === 1 ? 'entry' : 'entries'} · {courseSpan}
+					</span>
 				{/if}
 			</div>
 
@@ -112,10 +112,10 @@
 						<div class="ledger-row ledger-row--meta">
 							<span class="ledger-key">
 								{course.period ?? course.year}
-								<span class="ledger-status"
-									>{course.level}{#if course.sections}
-										· {course.sections}{/if}</span
-								>
+								<span class="ledger-status">
+									{course.level}{#if course.sections}
+										· {course.sections}{/if}
+								</span>
 							</span>
 
 							<span class="ledger-content">
@@ -158,10 +158,10 @@
 			<div class="section-head">
 				<h2 class="section-title">Guest lectures and workshops</h2>
 				{#if data.lectures.length > 0}
-					<span class="dateline"
-						>{data.lectures.length}
-						{data.lectures.length === 1 ? 'entry' : 'entries'} · {lectureSpan}</span
-					>
+					<span class="dateline">
+						{data.lectures.length}
+						{data.lectures.length === 1 ? 'entry' : 'entries'} · {lectureSpan}
+					</span>
 				{/if}
 			</div>
 

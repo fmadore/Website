@@ -194,22 +194,22 @@ to emit, and widening it for one button would be the wrong place to decide that.
 				{communication.urlLabel ?? 'Open presentation'}<span aria-hidden="true">&nbsp;↗</span><span
 					class="sr-only"
 				>
-					(opens in new tab)</span
-				>
+					&nbsp;(opens in new tab)
+				</span>
 			</a>
 		{/if}
 		{#if posterPdf}
-			<a href="#poster" class="btn btn-outline-primary btn-block"
-				>View poster<span aria-hidden="true">&nbsp;↓</span></a
-			>
-			<a href={assetHref(posterPdf)} download class="btn btn-outline-primary btn-block"
-				>Download PDF</a
-			>
+			<a href="#poster" class="btn btn-outline-primary btn-block">
+				View poster<span aria-hidden="true">&nbsp;↓</span>
+			</a>
+			<a href={assetHref(posterPdf)} download class="btn btn-outline-primary btn-block">
+				Download PDF
+			</a>
 		{/if}
 		{#if hasSlides}
-			<a href="#slides" class="btn btn-outline-primary btn-block"
-				>View slides<span aria-hidden="true">&nbsp;↓</span></a
-			>
+			<a href="#slides" class="btn btn-outline-primary btn-block">
+				View slides<span aria-hidden="true">&nbsp;↓</span>
+			</a>
 		{/if}
 		{#each additionalUrls as link (link.url)}
 			<a
@@ -219,8 +219,8 @@ to emit, and widening it for one button would be the wrong place to decide that.
 				class="btn btn-outline-secondary btn-block"
 			>
 				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					(opens in new tab)</span
-				>
+					&nbsp;(opens in new tab)
+				</span>
 			</a>
 		{/each}
 	</div>

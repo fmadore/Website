@@ -28,9 +28,10 @@
 				<li>
 					<a class="feed-item" href={resolve('/activities/[id]', { id: activity.id })}>
 						<span class="feed-date" class:feed-date--current={i === 0}>
-							<time datetime={activity.dateISO}
-								>{formatDayMonth(activity.dateISO)} {yearOf(activity.dateISO)}</time
-							>
+							<time datetime={activity.dateISO}>
+								{formatDayMonth(activity.dateISO)}
+								{yearOf(activity.dateISO)}
+							</time>
 						</span>
 						<span class="feed-title">{typesetQuotes(activity.title)}</span>
 					</a>

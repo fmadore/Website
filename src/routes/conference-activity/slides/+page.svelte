@@ -153,9 +153,9 @@
 						<div class="ledger-content">
 							<h2 class="ledger-title deck-entry-title" lang={deck.titleLang}>
 								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- pre-resolved route -->
-								<a class="link-animated" href={deck.href} data-sveltekit-preload-code="tap"
-									>{deck.title}</a
-								>
+								<a class="link-animated" href={deck.href} data-sveltekit-preload-code="tap">
+									{deck.title}
+								</a>
 							</h2>
 							{#if deck.venue}
 								<p class="ledger-desc deck-entry-venue">{deck.venue}</p>
@@ -176,9 +176,11 @@
 								rel="noopener noreferrer"
 								aria-label="Open deck: {deck.title} (opens in new tab)"
 							>
-								Open deck<span class="sr-only"> (opens in new tab)</span><span aria-hidden="true"
-									>&nbsp;↗</span
+								Open deck<span class="sr-only">&nbsp;(opens in new tab)</span><span
+									aria-hidden="true"
 								>
+									&nbsp;↗
+								</span>
 							</a>
 							<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						{/if}

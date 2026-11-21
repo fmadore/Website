@@ -56,10 +56,15 @@ filtered here. Rows render at once — no entrance transition (the motion rule).
 				<li class="ledger-row">
 					<span class="ledger-key">{item.date ?? ''}</span>
 					<span class="ledger-content">
-						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed by the caller -->
-						<a class="ledger-title related-item" href="{baseItemUrl}{item.id}" lang={item.titleLang}
-							>{typesetQuotes(item.title ?? item.id)}</a
+						<!-- eslint-disable svelte/no-navigation-without-resolve -- base-prefixed by the caller -->
+						<a
+							class="ledger-title related-item"
+							href="{baseItemUrl}{item.id}"
+							lang={item.titleLang}
 						>
+							{typesetQuotes(item.title ?? item.id)}
+						</a>
+						<!-- eslint-enable svelte/no-navigation-without-resolve -->
 						{#if item.authors && item.authors.length > 0}
 							<span class="related-authors">{typesetQuotes(item.authors.join(', '))}</span>
 						{/if}
@@ -74,8 +79,9 @@ filtered here. Rows render at once — no entrance transition (the motion rule).
 				class="ledger-action ledger-action--standalone related-all"
 				href={viewAllLink}
 				rel={project ? 'nofollow' : undefined}
-				>All work in this project<span aria-hidden="true">&nbsp;→</span></a
 			>
+				All work in this project<span aria-hidden="true">&nbsp;→</span>
+			</a>
 			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		{/if}
 	</section>

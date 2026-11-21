@@ -28,9 +28,9 @@
 	{#if title}
 		<div class="audio-content">
 			<p class="audio-description">
-				<a href="https://notebooklm.google/audio" target="_blank" rel="noopener noreferrer"
-					>Google NotebookLM<span class="sr-only"> (opens in new tab)</span></a
-				>
+				<a href="https://notebooklm.google/audio" target="_blank" rel="noopener noreferrer">
+					Google NotebookLM<span class="sr-only">&nbsp;(opens in new tab)</span>
+				</a>
 				generates spoken discussions from uploaded documents. This conversation was generated from the
 				publications of this project; it is synthetic, not a recorded interview.
 			</p>

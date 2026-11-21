@@ -98,8 +98,9 @@
 					class="chip"
 					rel="nofollow"
 					href={resolve(`/digital-humanities?skill=${encodeURIComponent(skill)}`)}
-					>{typesetQuotes(skill)}</a
 				>
+					{typesetQuotes(skill)}
+				</a>
 			{/each}
 			<!-- eslint-enable svelte/no-navigation-without-resolve -->
 		</div>
@@ -143,8 +144,8 @@
 									decoding="async"
 									use:plateFallback
 								/>
-								<span class="sr-only"> (opens in new tab)</span></a
-							>
+								<span class="sr-only">&nbsp;(opens in new tab)</span>
+							</a>
 						{:else}
 							<img
 								src={item.src}
@@ -208,11 +209,11 @@
 				<!-- Safe: project.publication.text is trusted project data -->
 				<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 				<!-- eslint-disable svelte/no-at-html-tags -->
-				<a href={project.publication.url} target="_blank" rel="noopener noreferrer"
-					>{@html typesetQuotesInHtml(project.publication.text)}<span class="sr-only">
-						(opens in new tab)</span
-					></a
-				>
+				<a href={project.publication.url} target="_blank" rel="noopener noreferrer">
+					{@html typesetQuotesInHtml(project.publication.text)}<span class="sr-only">
+						&nbsp;(opens in new tab)
+					</span>
+				</a>
 				<!-- eslint-enable svelte/no-at-html-tags -->
 				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</p>
@@ -234,11 +235,11 @@
 								<!-- Safe: review.text is trusted project data -->
 								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
 								<!-- eslint-disable svelte/no-at-html-tags -->
-								<a href={review.url} target="_blank" rel="noopener noreferrer"
-									>{@html typesetQuotesInHtml(review.text)}<span class="sr-only">
-										(opens in new tab)</span
-									></a
-								>
+								<a href={review.url} target="_blank" rel="noopener noreferrer">
+									{@html typesetQuotesInHtml(review.text)}<span class="sr-only">
+										&nbsp;(opens in new tab)
+									</span>
+								</a>
 								<!-- eslint-enable svelte/no-at-html-tags -->
 								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							</p>

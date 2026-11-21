@@ -126,7 +126,7 @@
 			</button>
 			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external deck on the slides subdomain -->
 			<a class="deck-chrome-btn" href={src} target="_blank" rel="noopener noreferrer">
-				<span>Open deck<span class="sr-only"> (opens in new tab)</span></span>
+				<span>Open deck<span class="sr-only">&nbsp;(opens in new tab)</span></span>
 				<Icon icon="lucide:arrow-up-right" width="13" height="13" aria-hidden="true" />
 			</a>
 		</span>
@@ -153,7 +153,7 @@
 					<span class="dateline">The deck could not be loaded.</span>
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external deck on the slides subdomain -->
 					<a class="deck-chrome-btn" href={src} target="_blank" rel="noopener noreferrer">
-						<span>Open deck<span class="sr-only"> (opens in new tab)</span></span>
+						<span>Open deck<span class="sr-only">&nbsp;(opens in new tab)</span></span>
 						<Icon icon="lucide:arrow-up-right" width="13" height="13" aria-hidden="true" />
 					</a>
 				</span>
@@ -167,13 +167,13 @@
 				<!-- Caption strip, the plate idiom: the affordance sits below the
 				     image on its own ground rather than washing over it. -->
 				<span class="deck-facade-bar">
-					<span class="deck-facade-play"
-						><Icon icon="lucide:play" width="16" height="16" aria-hidden="true" /></span
-					>
+					<span class="deck-facade-play">
+						<Icon icon="lucide:play" width="16" height="16" aria-hidden="true" />
+					</span>
 					<span class="deck-facade-label">View slides</span>
-					<span class="deck-facade-hint">Loads the interactive deck</span><span class="sr-only"
-						>: {title}</span
-					>
+					<span class="deck-facade-hint">Loads the interactive deck</span><span class="sr-only">
+						: {title}
+					</span>
 				</span>
 			</button>
 		{/if}

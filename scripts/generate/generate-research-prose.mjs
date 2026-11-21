@@ -139,6 +139,14 @@ function toPlainText(markup, file) {
 	const unknown = text.match(/<([A-Z]\w+)/);
 	if (unknown) throw new Error(`${file}: unhandled component <${unknown[1]}> in the prose`);
 
+	// Svelte 5 drops the whitespace at the start and end of an element's
+	// content, so Prettier's `<a …>\n\tName\n</a>,` renders as `Name,`. Only
+	// that layout whitespace (a run with a line break) goes: a space typed on
+	// the line, as in `<span class="sr-only"> (opens…`, is the author's.
+	text = text
+		.replace(/(<(?!(?:br|hr|img|input|wbr)\b)[a-z][\w-]*\b[^>]*>)[^\S\n]*\n\s*/gi, '$1')
+		.replace(/\s*\n[^\S\n]*(<\/[a-z][\w-]*>)/gi, '$1');
+
 	// Block boundaries become paragraph breaks.
 	text = text.replace(/<\/(p|h[1-6]|li|blockquote|figcaption)>/g, '\n\n');
 	text = text.replace(/<br\s*\/?>/g, '\n');

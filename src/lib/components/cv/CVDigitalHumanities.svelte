@@ -36,8 +36,10 @@
 	{#snippet entry(project)}
 		<a
 			href={resolve('/digital-humanities/[id]', { id: project.id })}
-			class="cv-title cv-record-link">{typesetQuotes(project.title)}</a
+			class="cv-title cv-record-link"
 		>
+			{typesetQuotes(project.title)}
+		</a>
 		{#if project.shortDescription}
 			<div class="cv-note">{typesetQuotes(project.shortDescription)}</div>
 		{/if}
@@ -54,12 +56,13 @@
 					<!-- Non-breaking spaces, not plain ones: Svelte trims literal whitespace
 					     at element edges, and the PDF exporter reads these text nodes, so
 					     without them the export glues the dot to the preceding address. -->
-					{#if i > 0}<span class="dh-links-sep" aria-hidden="true" data-pdf-keep>&nbsp;·&nbsp;</span
-						>{/if}
+					{#if i > 0}<span class="dh-links-sep" aria-hidden="true" data-pdf-keep>
+							&nbsp;·&nbsp;
+						</span>{/if}
 					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
-					<a href={link.url} target="_blank" rel="noopener noreferrer" class:link-url={!link.label}
-						>{projectLinkText(link)}<span class="sr-only"> (opens in new tab)</span></a
-					>
+					<a href={link.url} target="_blank" rel="noopener noreferrer" class:link-url={!link.label}>
+						{projectLinkText(link)}<span class="sr-only">&nbsp;(opens in new tab)</span>
+					</a>
 				{/each}
 			</div>
 		{/each}
@@ -71,15 +74,17 @@
 					<!-- Citations are separated by semicolons, so all but the last shed
 					     their terminal full stop rather than reading "(2023).;". -->
 					<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-					<a href={review.url} target="_blank" rel="noopener noreferrer"
-						><!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html typesetQuotesInHtml(
+					<a href={review.url} target="_blank" rel="noopener noreferrer">
+						<!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html typesetQuotesInHtml(
 							isLast ? review.text : trimTerminalPeriod(review.text)
 						)}<!-- eslint-enable svelte/no-at-html-tags --><span class="sr-only">
-							(opens in new tab)</span
-						></a
-					><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if !isLast}<span
-							class="review-sep">;&nbsp;</span
-						>{/if}
+							&nbsp;(opens in new tab)
+						</span>
+					</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if !isLast}<span
+							class="review-sep"
+						>
+							;&nbsp;
+						</span>{/if}
 				{/each}
 			</div>
 		{/if}

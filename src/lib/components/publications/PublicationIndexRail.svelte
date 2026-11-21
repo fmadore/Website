@@ -70,8 +70,10 @@ Block one — cover, Record ledger, access stack — is <PublicationRecordRail>.
 				<a
 					class="chip"
 					rel="nofollow"
-					href={resolve(`/publications?tag=${encodeURIComponent(tag)}`)}>{typesetQuotes(tag)}</a
+					href={resolve(`/publications?tag=${encodeURIComponent(tag)}`)}
 				>
+					{typesetQuotes(tag)}
+				</a>
 			{/each}
 		</div>
 	</div>

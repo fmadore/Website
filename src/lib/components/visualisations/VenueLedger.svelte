@@ -57,8 +57,10 @@ as the list it is, and needs no separate data table.
 										class="no-underline"
 										href={workHref(work)}
 										title={work.title}
-										aria-label="{work.year}: {work.title}">{work.year}</a
+										aria-label="{work.year}: {work.title}"
 									>
+										{work.year}
+									</a>
 								{/each}
 							</p>
 						</div>
@@ -87,8 +89,10 @@ as the list it is, and needs no separate data table.
 										class="no-underline venue-tail-link"
 										href={workHref(work)}
 										title="{work.title} ({work.year})"
-										aria-label="{venue.name}: {work.title} ({work.year})">{venue.name}</a
+										aria-label="{venue.name}: {work.title} ({work.year})"
 									>
+										{venue.name}
+									</a>
 								{/each}
 							</p>
 						</div>

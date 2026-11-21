@@ -273,9 +273,9 @@
 				     the past record, the hero and the facet summary count the whole
 				     index, and a reader who saw 74 against 79 had nothing to tell
 				     them where the other five went. -->
-				<span class="record-head-count"
-					>{matchCount} of {totalEntries} entries · {upcomingCommunications.length} forthcoming above</span
-				>
+				<span class="record-head-count">
+					{matchCount} of {totalEntries} entries · {upcomingCommunications.length} forthcoming above
+				</span>
 			</div>
 		{:else if !anyNarrowing}
 			<!-- The unnarrowed index with nothing ahead of it. Saying so is the

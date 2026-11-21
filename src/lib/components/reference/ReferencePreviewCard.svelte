@@ -169,13 +169,9 @@
 				{:else if itemType === 'communication'}
 					{#if item.type}
 						<p class="card-meta">
-							<span class="meta-label"
-								>{item.type === 'event'
-									? 'Event'
-									: item.type === 'podcast'
-										? 'Podcast'
-										: 'Talk'}</span
-							>
+							<span class="meta-label">
+								{item.type === 'event' ? 'Event' : item.type === 'podcast' ? 'Podcast' : 'Talk'}
+							</span>
 						</p>
 					{/if}
 					{#if item.type === 'event'}

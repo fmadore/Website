@@ -45,42 +45,49 @@
 							{#if pub.type !== 'book' && pub.type !== 'blogpost'}<a
 									{href}
 									{lang}
-									class="cv-record-link">{quoteTitle(pub.title)}</a
-								>.{/if}
+									class="cv-record-link"
+								>
+									{quoteTitle(pub.title)}
+								</a>.{/if}
 							{#if (pub.type === 'article' || pub.type === 'bulletin-article') && pub.journal}
 								<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
 									pub.volume,
 									pub.issue
 								)}{#if pub.pages}: {pub.pages}{/if}.
 							{:else if pub.type === 'chapter' && pub.book}
-								In {#if pub.editors}{formatEditorList(pub.editors)} (eds.),&nbsp;{/if}<em
-									>{typesetQuotes(pub.book)}</em
-								>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city = typesetQuotes(
-										pub.placeOfPublication
-									)}{@const publisher = typesetQuotes(pub.publisher)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}{/if}{#if pub.pages},
+								In {#if pub.editors}{formatEditorList(pub.editors)} (eds.),&nbsp;{/if}<em>
+									{typesetQuotes(pub.book)}
+								</em>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
+										typesetQuotes(pub.placeOfPublication)}{@const publisher = typesetQuotes(
+										pub.publisher
+									)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}{/if}{#if pub.pages},
 									{pub.pages}{/if}.
 							{:else if pub.type === 'book'}
 								<!-- The <em> wraps the link, not the reverse: the PDF export reads a
 								     link as one plain string, and italic only from an ancestor. -->
-								<em><a {href} {lang} class="cv-record-link">{typesetQuotes(pub.title)}</a></em
-								>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city = typesetQuotes(
-										pub.placeOfPublication
-									)}{@const publisher = typesetQuotes(pub.publisher)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}.{:else}.{/if}
+								<em>
+									<a {href} {lang} class="cv-record-link">{typesetQuotes(pub.title)}</a>
+								</em>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
+										typesetQuotes(pub.placeOfPublication)}{@const publisher = typesetQuotes(
+										pub.publisher
+									)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}.{:else}.{/if}
 							{:else if pub.type === 'special-issue' && pub.journal}
 								<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
 									pub.volume,
 									pub.issue
 								)}.
 							{:else if pub.type === 'working-paper'}
-								{#if pub.series || pub.journal}<em>{typesetQuotes(pub.series || pub.journal)}</em
-									>{#if pub.issue}&nbsp;{pub.issue}{/if}{/if}{#if pub.pages}: {pub.pages}{/if}{#if pub.publisher && pub.publisher !== (pub.series || pub.journal)}.
+								{#if pub.series || pub.journal}<em>
+										{typesetQuotes(pub.series || pub.journal)}
+									</em>{#if pub.issue}&nbsp;{pub.issue}{/if}{/if}{#if pub.pages}: {pub.pages}{/if}{#if pub.publisher && pub.publisher !== (pub.series || pub.journal)}.
 									{typesetQuotes(pub.publisher)}{/if}.
 							{:else if pub.type === 'report'}
 								{#if pub.journal}<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
 										pub.volume,
 										pub.issue
-									)}{:else if pub.publisher}<em>{typesetQuotes(pub.publisher)}</em
-									>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{/if}{#if pub.pages}, {pub.pages}{/if}.
+									)}{:else if pub.publisher}<em>
+										{typesetQuotes(pub.publisher)}
+									</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{/if}{#if pub.pages}, {pub.pages}{/if}.
 							{:else if pub.type === 'encyclopedia' && pub.encyclopediaTitle}
 								In <em>{typesetQuotes(pub.encyclopediaTitle)}</em>{#if pub.publisher}, {typesetQuotes(
 										pub.publisher
@@ -90,8 +97,9 @@
 								     post carries a date that formats to nothing, which printed
 								     "The Digital Orientalist, ." -->
 								{@const blogDate = formatBlogDate(pub.dateISO)}
-								<a {href} {lang} class="cv-record-link">{quoteTitle(pub.title)}</a
-								>{#if pub.publisher}. <em>{typesetQuotes(pub.publisher)}</em>{/if}{#if blogDate}, {blogDate}{/if}.
+								<a {href} {lang} class="cv-record-link">
+									{quoteTitle(pub.title)}
+								</a>{#if pub.publisher}. <em>{typesetQuotes(pub.publisher)}</em>{/if}{#if blogDate}, {blogDate}{/if}.
 							{:else if pub.type === 'conference-proceedings'}
 								In <em>{typesetQuotes(pub.proceedingsTitle)}</em>.
 							{:else}
@@ -105,19 +113,22 @@
 									target="_blank"
 									rel="noopener noreferrer"
 									class="doi-link"
-									><svg class="doi-link-icon" aria-hidden="true" focusable="false"
-										><use href="#{CV_GLYPH.doi}" /></svg
-									><span class="doi-link-text">doi:{pub.doi}</span><span class="sr-only">
-										(opens in new tab)</span
-									></a
-								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
+								>
+									<svg class="doi-link-icon" aria-hidden="true" focusable="false">
+										<use href="#{CV_GLYPH.doi}" />
+									</svg><span class="doi-link-text">doi:{pub.doi}</span><span class="sr-only">
+										&nbsp;(opens in new tab)
+									</span>
+								</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.url && !pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label="Link to {pub.title} (opens in new tab)"
-									class="cv-aside-link">Link<span aria-hidden="true">&nbsp;↗</span></a
-								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
+									class="cv-aside-link"
+								>
+									Link<span aria-hidden="true">&nbsp;↗</span>
+								</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 							{#if pub.reviewedBy && pub.reviewedBy.length > 0}
 								<p class="cv-detail">
 									Reviewed in
@@ -128,10 +139,11 @@
 											target="_blank"
 											rel="noopener noreferrer"
 											class="review-link no-underline"
-											>{typesetQuotes(review.journal)}<span class="sr-only">
-												(opens in new tab)</span
-											></a
-										><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
+										>
+											{typesetQuotes(review.journal)}<span class="sr-only">
+												&nbsp;(opens in new tab)
+											</span>
+										</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
 									{/each}
 								</p>
 							{/if}
@@ -152,16 +164,20 @@
 							<a
 								href={resolve('/publications/[id]', { id: pub.id })}
 								lang={titleLangAttr(pub.language)}
-								class="cv-title cv-record-link">{typesetQuotes(pub.title)}</a
-							>.
+								class="cv-title cv-record-link"
+							>
+								{typesetQuotes(pub.title)}
+							</a>.
 							{#if pub.type}<span class="pub-type-badge">{pub.type}</span>{/if}
 							{#if pub.url}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label="Link to {pub.title} (opens in new tab)"
-									class="cv-aside-link">Link<span aria-hidden="true">&nbsp;↗</span></a
-								><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
+									class="cv-aside-link"
+								>
+									Link<span aria-hidden="true">&nbsp;↗</span>
+								</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
 						</CVEntry>
 					{/each}
 				{/each}

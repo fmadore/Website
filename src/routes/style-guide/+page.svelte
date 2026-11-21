@@ -1360,14 +1360,16 @@
 							{:else}
 								<span
 									class="context-specimen context-specimen--serif"
-									style="font-size: var({size.token})">{size.specimen}</span
+									style="font-size: var({size.token})"
 								>
+									{size.specimen}
+								</span>
 							{/if}
 							<span class="ledger-desc">{size.use}</span>
 						</span>
-						<span class="ledger-meta ledger-meta--figures"
-							>{size.token} · {resolved[size.token] ?? '–'}</span
-						>
+						<span class="ledger-meta ledger-meta--figures">
+							{size.token} · {resolved[size.token] ?? '–'}
+						</span>
 					</div>
 				{/each}
 			</div>
@@ -1396,14 +1398,14 @@
 					<div class="ledger-row ledger-row--meta">
 						<span class="ledger-key">{preset.token.replace('--font-variation-', '')}</span>
 						<span class="ledger-content">
-							<span class="width-specimen" style="font-variation-settings: var({preset.token})"
-								>Ink + Signal</span
-							>
+							<span class="width-specimen" style="font-variation-settings: var({preset.token})">
+								Ink + Signal
+							</span>
 							<span class="ledger-desc">{preset.use}</span>
 						</span>
-						<span class="ledger-meta ledger-meta--figures"
-							>{preset.token} · {resolved[preset.token] ?? '–'}</span
-						>
+						<span class="ledger-meta ledger-meta--figures">
+							{preset.token} · {resolved[preset.token] ?? '–'}
+						</span>
 					</div>
 				{/each}
 			</div>
@@ -1419,15 +1421,15 @@
 					<div class="ledger-row ledger-row--meta">
 						<span class="ledger-key">{step.token.replace('--line-height-', '')}</span>
 						<span class="ledger-content">
-							<span class="leading-specimen" style="line-height: var({step.token})"
-								>Cet article examine l'activisme religieux des étudiants musulmans sur les campus du
-								Togo et du Bénin.</span
-							>
+							<span class="leading-specimen" style="line-height: var({step.token})">
+								Cet article examine l'activisme religieux des étudiants musulmans sur les campus du
+								Togo et du Bénin.
+							</span>
 							<span class="ledger-desc">{step.use}</span>
 						</span>
-						<span class="ledger-meta ledger-meta--figures"
-							>{step.token} · {resolved[step.token] ?? '–'}</span
-						>
+						<span class="ledger-meta ledger-meta--figures">
+							{step.token} · {resolved[step.token] ?? '–'}
+						</span>
 					</div>
 				{/each}
 			</div>
@@ -1477,13 +1479,15 @@
 								style:font-size="var({role.size})"
 								style:font-weight={role.heading && headingCasts[role.heading]?.weight}
 								style:font-variation-settings={role.heading &&
-									headingCasts[role.heading]?.variation}>{role.specimen}</span
+									headingCasts[role.heading]?.variation}
 							>
+								{role.specimen}
+							</span>
 							<span class="ledger-desc">{role.use}</span>
 						</span>
-						<span class="ledger-meta ledger-meta--figures"
-							>{role.token} · {resolved[role.token] ?? '–'}</span
-						>
+						<span class="ledger-meta ledger-meta--figures">
+							{role.token} · {resolved[role.token] ?? '–'}
+						</span>
 					</div>
 				{/each}
 			</div>
@@ -1507,17 +1511,21 @@
 						<span class="ledger-content">
 							<span
 								class="weight-specimen weight-specimen--data"
-								style:font-weight="var({step.token})">De Gruyter · ZMO-Studien 48 · 2025</span
+								style:font-weight="var({step.token})"
 							>
+								De Gruyter · ZMO-Studien 48 · 2025
+							</span>
 							<span
 								class="weight-specimen weight-specimen--title"
-								style:font-weight="var({step.token})">The archive, read closely</span
+								style:font-weight="var({step.token})"
 							>
+								The archive, read closely
+							</span>
 							<span class="ledger-desc">{step.use}</span>
 						</span>
-						<span class="ledger-meta ledger-meta--figures"
-							>{step.token} · {resolved[step.token] ?? '–'}</span
-						>
+						<span class="ledger-meta ledger-meta--figures">
+							{step.token} · {resolved[step.token] ?? '–'}
+						</span>
 					</div>
 				{/each}
 			</div>
@@ -1597,11 +1605,11 @@
 
 			{@render subhead('spacing-motion')}
 			<p class="guide-note">
-				Transitions animate colour and border only, at <span class="data-voice"
-					>--duration-fast</span
-				>, with the media controls at <span class="data-voice">--duration-normal</span>; the loading
-				spinners turn at the two slowest steps. Two easings, neither of which overshoots, and no
-				transform moves on hover.
+				Transitions animate colour and border only, at <span class="data-voice">
+					--duration-fast
+				</span>, with the media controls at <span class="data-voice">--duration-normal</span>; the
+				loading spinners turn at the two slowest steps. Two easings, neither of which overshoots,
+				and no transform moves on hover.
 			</p>
 			<div class="stat-ledger duration-ledger">
 				{#each [...durationTokens, ...easeTokens] as token (token)}
@@ -1717,9 +1725,9 @@
 				{/each}
 			</ul>
 			<p class="guide-caption">
-				Recorded rather than hidden: in midnight <span class="data-voice"
-					>--color-background-muted</span
-				>
+				Recorded rather than hidden: in midnight <span class="data-voice">
+					--color-background-muted
+				</span>
 				and <span class="data-voice">--color-surface-elevated</span> resolve to the same film step, as
 				the two adjacent hexes in § 1 show. The film ramp has three steps for four paper roles, so the
 				raised sheet has no midnight identity of its own: it is the sunken one. Daylight keeps them at
@@ -1838,8 +1846,10 @@
 					<a
 						class="no-underline"
 						rel="nofollow"
-						href={resolve(`/publications?tag=${encodeURIComponent(term)}`)}>{term}</a
+						href={resolve(`/publications?tag=${encodeURIComponent(term)}`)}
 					>
+						{term}
+					</a>
 				{/each}
 			</p>
 			<!-- eslint-enable svelte/no-navigation-without-resolve -->
@@ -2014,9 +2024,9 @@
 				specimen, and these are the other two.
 			</p>
 			<div class="chip-row guide-field">
-				<button type="button" class="mono-action"
-					>Clear all <span aria-hidden="true">✕</span></button
-				>
+				<button type="button" class="mono-action">
+					Clear all <span aria-hidden="true">✕</span>
+				</button>
 				<button type="button" class="mono-action">
 					Clear years <span aria-hidden="true">✕</span>
 				</button>
@@ -2186,8 +2196,10 @@
 			</div>
 			<p class="guide-caption">
 				The disabled state at half opacity. The loading state, which hides only the label (<span
-					class="data-voice">.btn-loading .btn-text</span
+					class="data-voice"
 				>
+					.btn-loading .btn-text
+				</span>
 				takes
 				<span class="data-voice">visibility: hidden</span>) and keeps the control's own text colour,
 				because the spinner strokes in <span class="data-voice">currentColor</span>: the box holds
@@ -2215,8 +2227,9 @@
 					<button
 						type="button"
 						class="btn btn-secondary focus-ring-specimen focus-ring-specimen--inset"
-						>Inset ring</button
 					>
+						Inset ring
+					</button>
 				</div>
 			</figure>
 			<div class="ledger ledger--tight ledger--ruled" style="--ledger-meta-w: 17rem">
@@ -2266,31 +2279,30 @@
 					<span class="ledger-key">Hover</span>
 					<span class="ledger-content">
 						<span class="button-row"><button type="button" class="chip">Islam</button></span>
-						<span class="ledger-desc"
-							>Point at it: the edge steps to the strong border and the label to emphasis ink. A
-							hover must still read at 4.5:1, which <span class="data-voice"
-								>hover-contrast.spec.ts</span
-							>
-							measures in both themes.</span
-						>
+						<span class="ledger-desc">
+							Point at it: the edge steps to the strong border and the label to emphasis ink. A
+							hover must still read at 4.5:1, which <span class="data-voice">
+								hover-contrast.spec.ts
+							</span>
+							measures in both themes.
+						</span>
 					</span>
 				</div>
 				<div class="ledger-row">
 					<span class="ledger-key">Focus-visible</span>
 					<span class="ledger-content">
-						<span class="button-row"
-							><button type="button" class="chip focus-ring-specimen">Islam</button></span
-						>
+						<span class="button-row">
+							<button type="button" class="chip focus-ring-specimen">Islam</button>
+						</span>
 						<span class="ledger-desc">The one ring, at its offset.</span>
 					</span>
 				</div>
 				<div class="ledger-row">
 					<span class="ledger-key">Selected</span>
 					<span class="ledger-content">
-						<span class="button-row"
-							><button type="button" class="chip chip--selected" aria-pressed="true">Islam</button
-							></span
-						>
+						<span class="button-row">
+							<button type="button" class="chip chip--selected" aria-pressed="true">Islam</button>
+						</span>
 						<span class="ledger-desc">A solid ink fill under inverted type.</span>
 					</span>
 				</div>
@@ -2298,11 +2310,10 @@
 					<span class="ledger-key">Disabled</span>
 					<span class="ledger-content">
 						<span class="button-row"><Button variant="secondary" label="Disabled" disabled /></span>
-						<span class="ledger-desc"
-							>Half opacity and a not-allowed cursor. Chips carry no disabled style of their own.
-							The pager's Previous and Next dim their ink and edge instead, so the label stays
-							readable.</span
-						>
+						<span class="ledger-desc">
+							Half opacity and a not-allowed cursor. Chips carry no disabled style of their own. The
+							pager's Previous and Next dim their ink and edge instead, so the label stays readable.
+						</span>
 					</span>
 				</div>
 			</div>
@@ -2318,46 +2329,46 @@
 				<div class="ledger-row ledger-row--meta">
 					<span class="ledger-key">Print</span>
 					<span class="ledger-content">
-						<span class="ledger-desc"
-							>The Paper Rule. What prints is what a reader can act on there: the wordmark over its
+						<span class="ledger-desc">
+							The Paper Rule. What prints is what a reader can act on there: the wordmark over its
 							4px rule, the document, the imprint. Controls do not print. Ink is
 							<span class="data-voice">--color-print-ink</span> on
 							<span class="data-voice">--color-print-ground</span>, theme-stable, so a page printed
-							from midnight never comes out cream.</span
-						>
+							from midnight never comes out cream.
+						</span>
 					</span>
-					<span class="ledger-meta ledger-meta--figures"
-						>base/typography.css, which indexes the component sheets</span
-					>
+					<span class="ledger-meta ledger-meta--figures">
+						base/typography.css, which indexes the component sheets
+					</span>
 				</div>
 				<div class="ledger-row ledger-row--meta">
 					<span class="ledger-key">Reduced motion</span>
 					<span class="ledger-content">
-						<span class="ledger-desc"
-							>Every transition drops to none and scrolling stops smoothing. Each component that
-							transitions carries its own guard; there is no global switch.</span
-						>
+						<span class="ledger-desc">
+							Every transition drops to none and scrolling stops smoothing. Each component that
+							transitions carries its own guard; there is no global switch.
+						</span>
 					</span>
-					<span class="ledger-meta ledger-meta--figures"
-						>base/reset.css, buttons.css, ink-signal.css, typography.css</span
-					>
+					<span class="ledger-meta ledger-meta--figures">
+						base/reset.css, buttons.css, ink-signal.css, typography.css
+					</span>
 				</div>
 				<div class="ledger-row ledger-row--meta">
 					<span class="ledger-key">Contrast</span>
 					<span class="ledger-content">
-						<span class="ledger-desc"
-							>A reader who asks for more contrast gets heavier edges: a
+						<span class="ledger-desc">
+							A reader who asks for more contrast gets heavier edges: a
 							<span class="data-voice">.btn</span> border thickens to 2px and its focus outline to
 							4px, and the navigation, media and reference controls thicken theirs. Every block is
 							written <span class="data-voice">@media (--high-contrast)</span>, which compiles to
 							<span class="data-voice">prefers-contrast: more</span>. Until 2026-10-21 they were
 							written <span class="data-voice">prefers-contrast: high</span>, a value the spec does
-							not define, and matched nothing.</span
-						>
+							not define, and matched nothing.
+						</span>
 					</span>
-					<span class="ledger-meta ledger-meta--figures"
-						>base/media.css, buttons.css, navigation-utilities.css</span
-					>
+					<span class="ledger-meta ledger-meta--figures">
+						base/media.css, buttons.css, navigation-utilities.css
+					</span>
 				</div>
 			</div>
 		</section>
@@ -2513,8 +2524,10 @@
 						href={resolve(`/publications?tag=${encodeURIComponent(term.word)}`)}
 						rel="nofollow"
 						style="font-size: {term.size}px;"
-						title="{term.count} publications">{term.word}</a
+						title="{term.count} publications"
 					>
+						{term.word}
+					</a>
 				{/each}
 			</div>
 			<!-- eslint-enable svelte/no-navigation-without-resolve -->

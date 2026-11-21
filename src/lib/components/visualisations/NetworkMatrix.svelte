@@ -291,8 +291,10 @@ ledger — ruled, gridded, set in the data voice.
 							dominant-baseline="middle"
 							fill={colors.text}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{typesetQuotes(truncateLabel(node.id, maxLabelChars))}</text
+							font-size={fontSize}
 						>
+							{typesetQuotes(truncateLabel(node.id, maxLabelChars))}
+						</text>
 					{/each}
 
 					{#each matrix.nodes as node, i (node.id)}
@@ -307,8 +309,10 @@ ledger — ruled, gridded, set in the data voice.
 							dominant-baseline="middle"
 							fill={colors.text}
 							font-family={colors.fontFamily}
-							font-size={fontSize}>{typesetQuotes(truncateLabel(node.id, maxLabelChars))}</text
+							font-size={fontSize}
 						>
+							{typesetQuotes(truncateLabel(node.id, maxLabelChars))}
+						</text>
 					{/each}
 				</g>
 			{/if}

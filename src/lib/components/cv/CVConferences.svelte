@@ -32,9 +32,12 @@
 						<a
 							href={resolve('/communications/[id]', { id: comm.id })}
 							lang={titleLangAttr(comm.language)}
-							class="cv-record-link">{quoteTitle(organisedPanelTitle(comm))}</a
-						>{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
-							>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {formatDayMonth(
+							class="cv-record-link"
+						>
+							{quoteTitle(organisedPanelTitle(comm))}
+						</a>{#if comm.conference}, <em>
+								{typesetQuotes(comm.conference)}
+							</em>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if}, {formatDayMonth(
 							comm.dateISO
 						)}.
 					</CVEntry>
@@ -55,9 +58,12 @@
 						<a
 							href={resolve('/communications/[id]', { id: comm.id })}
 							lang={titleLangAttr(comm.language)}
-							class="cv-record-link">{quoteTitle(comm.title)}</a
-						>{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
-							>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},
+							class="cv-record-link"
+						>
+							{quoteTitle(comm.title)}
+						</a>{#if comm.conference}, <em>
+								{typesetQuotes(comm.conference)}
+							</em>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},
 						{formatDayMonth(comm.dateISO)}.
 					</CVEntry>
 				{/each}
@@ -77,9 +83,12 @@
 						<a
 							href={resolve('/communications/[id]', { id: comm.id })}
 							lang={titleLangAttr(comm.language)}
-							class="cv-record-link">{quoteTitle(comm.title)}</a
-						>{#if comm.conference}, <em>{typesetQuotes(comm.conference)}</em
-							>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},
+							class="cv-record-link"
+						>
+							{quoteTitle(comm.title)}
+						</a>{#if comm.conference}, <em>
+								{typesetQuotes(comm.conference)}
+							</em>{/if}{#if comm.location}, {typesetQuotes(comm.location)}{/if},
 						{formatDayMonth(comm.dateISO)}.
 					</CVEntry>
 				{/each}

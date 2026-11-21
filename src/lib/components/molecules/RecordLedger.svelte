@@ -52,20 +52,20 @@ DOI would break the link.
 					<dd class="meta-value" class:meta-value--accent={row.accent}>
 						{#if row.href && row.external}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a href={row.href} target="_blank" rel="noopener" class="meta-link"
-								>{#if row.icon}<Icon
+							<a href={row.href} target="_blank" rel="noopener" class="meta-link">
+								{#if row.icon}<Icon
 										icon={row.icon}
 										class="meta-icon"
 										aria-hidden="true"
 									/>{/if}{row.value}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-									(opens in new tab)</span
-								></a
-							>
+									&nbsp;(opens in new tab)
+								</span>
+							</a>
 						{:else if row.href}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed internal path -->
-							<a href={row.href} class="meta-link"
-								>{row.value}<span aria-hidden="true">&nbsp;→</span></a
-							>
+							<a href={row.href} class="meta-link">
+								{row.value}<span aria-hidden="true">&nbsp;→</span>
+							</a>
 						{:else}
 							{row.value}
 						{/if}

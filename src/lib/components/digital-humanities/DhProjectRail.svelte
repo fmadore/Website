@@ -156,13 +156,13 @@ reader checks before installing anything.
 					>
 						{#each group.links as link (link.url)}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
-							<a class="meta-link" href={link.url} target="_blank" rel="noopener noreferrer"
-								>{typesetQuotes(projectLinkText(link))}<span aria-hidden="true">&nbsp;↗</span><span
+							<a class="meta-link" href={link.url} target="_blank" rel="noopener noreferrer">
+								{typesetQuotes(projectLinkText(link))}<span aria-hidden="true">&nbsp;↗</span><span
 									class="sr-only"
 								>
-									(opens in new tab)</span
-								></a
-							>
+									&nbsp;(opens in new tab)
+								</span>
+							</a>
 						{/each}
 					</dd>
 				</div>
@@ -181,8 +181,8 @@ reader checks before installing anything.
 			rel="noopener noreferrer"
 		>
 			{ctaLabel}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-				(opens in new tab)</span
-			>
+				&nbsp;(opens in new tab)
+			</span>
 		</a>
 		<!-- eslint-enable svelte/no-navigation-without-resolve -->
 	</div>
