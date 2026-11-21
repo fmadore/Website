@@ -145,11 +145,27 @@ export function svelteMarkupToHtml(markup: string): string {
 			if (literal === undefined || trimmed.length !== literal.length + 2) {
 				throw new Error(`Prose contains the expression {${expression}}`);
 			}
-			out += html.slice(cursor, open) + literal;
+			// Held as a sentinel until the trim below, which must not eat it.
+			out += html.slice(cursor, open) + literal.replace(/\s/g, KEPT_SPACE);
 		}
 		cursor = close + 1;
 	}
-	return out + html.slice(cursor);
+	return trimElementWhitespace(out + html.slice(cursor)).replaceAll(KEPT_SPACE, ' ');
+}
+
+/** Stands in for a space written as an expression (`{' '}`), which Svelte keeps. */
+const KEPT_SPACE = '\u0000';
+
+/**
+ * Svelte 5 drops the whitespace at the start and end of an element's content,
+ * so Prettier's `<a …>\n\tName\n</a>,` renders as `Name,`. Only that layout
+ * whitespace (a run with a line break) goes: a space typed on the line, as in
+ * `<span class="sr-only"> (opens…`, is the author's and the twin keeps it.
+ */
+function trimElementWhitespace(html: string): string {
+	return html
+		.replace(/(<(?!(?:br|hr|img|input|wbr)\b)[a-z][\w-]*\b[^>]*>)[^\S\n]*\n\s*/gi, '$1')
+		.replace(/\s*\n[^\S\n]*(<\/[a-z][\w-]*>)/gi, '$1');
 }
 
 /** The prose a route page writes inside `container`, as Markdown with twin-aware links. */

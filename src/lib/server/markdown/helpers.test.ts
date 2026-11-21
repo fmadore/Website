@@ -134,6 +134,15 @@ describe('Svelte prose', () => {
 		expect(html).not.toMatch(/Button|RelevantGrants|View all|Unknown/);
 	});
 
+	it('drops the layout whitespace at an element’s edges, as Svelte 5 renders it', () => {
+		const html = svelteMarkupToHtml(
+			`<p>With <a href="/x">\n\t\tA Name<span class="sr-only"> (opens in new tab)</span>\n\t</a>, then\n\t(<a href="/y">\n\t\tMollick\n\t</a>, 2024).{' '}<em>Kept</em><br />\n\tline</p>`
+		);
+		expect(html).toBe(
+			'<p>With <a href="/x">A Name<span class="sr-only"> (opens in new tab)</span></a>, then\n\t(<a href="/y">Mollick</a>, 2024). <em>Kept</em><br />\n\tline</p>'
+		);
+	});
+
 	it('refuses markup it cannot read, rather than dropping prose', () => {
 		expect(() => svelteMarkupToHtml('<p>{#if x}a{/if}</p>')).toThrow(/Svelte blocks/);
 		expect(() => svelteMarkupToHtml('<Mystery />')).toThrow(/<Mystery>/);
