@@ -102,8 +102,11 @@ const libByTitle = new Map();
 let libCount = 0;
 let libOk = false;
 try {
+	// Bounded: a Zotero that is running but hung would otherwise stall the
+	// audit indefinitely instead of falling through to the catch below.
 	const res = await fetch(
-		'http://localhost:23119/api/users/0/items?q=Madore&qmode=titleCreatorYear&limit=300&itemType=-attachment&format=json'
+		'http://localhost:23119/api/users/0/items?q=Madore&qmode=titleCreatorYear&limit=300&itemType=-attachment&format=json',
+		{ signal: AbortSignal.timeout(10_000) }
 	);
 	const items = await res.json();
 	libOk = true;

@@ -37,6 +37,7 @@
 	import { typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
 	import { addNewTabHints } from '#lib/utils/newTabHint.ts';
 	import MetaTags from '#lib/components/activities/MetaTags.svelte';
+	import { author } from '#lib/data/siteConfig.ts';
 
 	// Get data from the load function
 	let { data }: { data: PageData } = $props();
@@ -180,6 +181,13 @@
 	ogImage={activity.heroImage?.src
 		? assetHref(activity.heroImage.src)
 		: asset('images/Profile-picture.webp')}
+	ogImageAlt={activity.heroImage?.src ? activity.heroImage.alt : undefined}
+	article={{
+		publishedTime: activity.dateISO,
+		modifiedTime: activity.dateISO,
+		section: 'Academic Activities',
+		author: author.name
+	}}
 	mainEntity={recordEntityId(`/activities/${activity.id}`)}
 />
 

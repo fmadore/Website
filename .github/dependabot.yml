@@ -58,8 +58,8 @@ updates:
       # Data visualization libraries
       visualization:
         patterns:
-          - 'd3'
-          - '@types/d3'
+          - 'd3-*'
+          - '@types/d3-*'
           - 'echarts*'
           - 'maplibre-gl'
         update-types:

@@ -62,7 +62,7 @@
 
 	/* The register is print: the only motion on this page is the spinner that
 	 * says an export is running, and it stops for a reader who asked for less. */
-	@media (prefers-reduced-motion: reduce) {
+	@media (--reduced-motion) {
 		:global(.animate-spin) {
 			animation: none;
 		}

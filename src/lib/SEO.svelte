@@ -3,7 +3,6 @@
 	import {
 		createBreadcrumbSchema,
 		createWebPageSchema,
-		createPersonSchema,
 		combineSchemas,
 		type BreadcrumbItem
 	} from '#lib/utils/jsonLdSchemas.ts';
@@ -19,7 +18,21 @@
 		keywords?: string;
 		canonical?: string;
 		ogImage?: string;
+		/** Text alternative for `ogImage` (`og:image:alt`, `twitter:image:alt`). */
+		ogImageAlt?: string;
 		type?: string;
+		/**
+		 * Open Graph `article:*` fields, for a page whose `type` is `article`.
+		 * This component owns every social tag (`og:*`, `article:*`,
+		 * `twitter:*`): a record's MetaTags carries Highwire, Dublin Core and
+		 * COinS only, so a page never ships two disagreeing sets.
+		 */
+		article?: {
+			publishedTime?: string;
+			modifiedTime?: string;
+			section?: string;
+			author?: string;
+		};
 		// Breadcrumb navigation for rich snippets
 		breadcrumbs?: BreadcrumbItem[];
 		// Page type for WebPage schema
@@ -59,7 +72,9 @@
 		keywords = 'Frédérick Madore, Islam, West Africa, Digital Humanities, Research',
 		canonical = '',
 		ogImage = asset('images/Profile-picture.webp'),
+		ogImageAlt,
 		type = 'website',
+		article,
 		breadcrumbs = [],
 		pageType = 'WebPage',
 		datePublished,
@@ -114,11 +129,6 @@
 	const jsonLdString = $derived.by(() => {
 		const schemas: object[] = [...additionalSchemas];
 
-		// Check if a Person schema is already provided in additionalSchemas
-		const hasPersonSchema = additionalSchemas.some(
-			(schema) => (schema as Record<string, unknown>)['@type'] === 'Person'
-		);
-
 		// Add breadcrumb schema if breadcrumbs provided
 		if (breadcrumbs.length > 0) {
 			schemas.push(createBreadcrumbSchema(breadcrumbs));
@@ -137,11 +147,9 @@
 			})
 		);
 
-		// For ProfilePage, include the Person schema as the mainEntity target
-		// Only add default Person schema if one isn't already provided
-		if (pageType === 'ProfilePage' && !hasPersonSchema) {
-			schemas.push(createPersonSchema());
-		}
+		// No Person node here: the root layout publishes the one `#person` on
+		// every page (the home page's fuller one in its place), and a
+		// ProfilePage's `mainEntity` names it by `@id`.
 
 		return schemas.length > 0 ? combineSchemas(schemas) : '';
 	});
@@ -181,21 +189,39 @@
 	{/if}
 	<link rel="describedby" type="text/plain" href="{website.url}/llms.txt" />
 
-	<!-- Open Graph / Facebook -->
+	<!-- Open Graph / Facebook: `property=`, per the Open Graph protocol. -->
 	<meta property="og:type" content={type} />
 	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:title" content={socialTitle} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={ogImageUrl} />
+	{#if ogImageAlt}
+		<meta property="og:image:alt" content={ogImageAlt} />
+	{/if}
 	<meta property="og:site_name" content={author.name} />
 	<meta property="og:locale" content="en_US" />
+	{#if article?.publishedTime}
+		<meta property="article:published_time" content={article.publishedTime} />
+	{/if}
+	{#if article?.modifiedTime}
+		<meta property="article:modified_time" content={article.modifiedTime} />
+	{/if}
+	{#if article?.author}
+		<meta property="article:author" content={article.author} />
+	{/if}
+	{#if article?.section}
+		<meta property="article:section" content={article.section} />
+	{/if}
 
-	<!-- Twitter -->
-	<meta property="twitter:card" content="summary_large_image" />
-	<meta property="twitter:url" content={canonicalUrl} />
-	<meta property="twitter:title" content={socialTitle} />
-	<meta property="twitter:description" content={description} />
-	<meta property="twitter:image" content={ogImageUrl} />
+	<!-- Twitter: `name=`, per the Twitter Cards markup. -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:url" content={canonicalUrl} />
+	<meta name="twitter:title" content={socialTitle} />
+	<meta name="twitter:description" content={description} />
+	<meta name="twitter:image" content={ogImageUrl} />
+	{#if ogImageAlt}
+		<meta name="twitter:image:alt" content={ogImageAlt} />
+	{/if}
 
 	<!-- No site-wide citation_author: Google Scholar reads it as the authors of
 	     the paper on the page, and says not to use it for the website's author.

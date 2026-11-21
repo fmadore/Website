@@ -35,7 +35,7 @@ This site is built with:
 - [SvelteKit 3](https://svelte.dev/docs/kit) with [Svelte 5 runes](https://svelte.dev/docs/svelte/what-are-runes) - Frontend framework, fully prerendered to static HTML
 - [TypeScript](https://www.typescriptlang.org/) (strict, `noUncheckedIndexedAccess`) - Language
 - Custom token-driven CSS system — the **Ink + Signal** design language (see `src/styles/CSS-README.md`)
-- Content as typed TypeScript data files in `src/lib/data/` (18 categories), auto-discovered via `import.meta.glob`
+- Content as typed TypeScript data files in `src/lib/data/` (20 categories), auto-discovered via `import.meta.glob`
 - Deployed to [GitHub Pages](https://pages.github.com/) via GitHub Actions
 
 ### Machine-Readable Data

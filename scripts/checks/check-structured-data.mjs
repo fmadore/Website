@@ -15,6 +15,14 @@
  * every Signposting landing page has one; and every BibTeX record the build
  * ships is named by its page. Rules: scripts/lib/signposting.mjs.
  *
+ * Within a page, no two JSON-LD nodes share an `@id` (the Person node was
+ * once published twice on / and /cv). Rule: `duplicateNodeIds` in the same
+ * module.
+ *
+ * It holds every page to one set of social tags: Open Graph by `property=`,
+ * Twitter Cards by `name=`, each key once. Rules:
+ * scripts/checks/check-structured-data-social.mjs.
+ *
  * And it holds every indexable page to a `<title>` of its own (the 404 and
  * offline pages and redirect stubs excepted). Rules:
  * scripts/checks/check-structured-data-titles.mjs.
@@ -22,19 +30,23 @@
  * Usage:
  *   node scripts/checks/check-structured-data.mjs
  *
- * Exit code 1 when any block fails to parse or carries a bad URL or date, a
- * Signposting link and the files disagree, or two pages share a `<title>`.
+ * Exit code 1 when any block fails to parse or carries a bad URL or date, two
+ * nodes on one page share an `@id`, a
+ * Signposting link and the files disagree, a social tag is repeated or under the
+ * wrong attribute, or two pages share a `<title>`.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { exit } from 'node:process';
 import {
 	SITE_ORIGIN,
+	duplicateNodeIds,
 	extractJsonLdBlocks,
 	structuredDataProblems
 } from '../lib/structured-data.mjs';
 import { signpostingProblems } from '../lib/signposting.mjs';
 import { duplicateTitles } from './check-structured-data-titles.mjs';
+import { socialTagProblems } from './check-structured-data-social.mjs';
 
 const BUILD_DIR = 'build';
 
@@ -69,6 +81,7 @@ let blocks = 0;
 for (const page of pages) {
 	const html = readFileSync(`${BUILD_DIR}${page}`, 'utf8');
 	titled.push({ path: page, html });
+	const parsed = [];
 	for (const body of extractJsonLdBlocks(html)) {
 		blocks += 1;
 		let data;
@@ -78,10 +91,17 @@ for (const page of pages) {
 			fail(`unparseable JSON-LD: ${err.message}`, page);
 			continue;
 		}
+		parsed.push(data);
 		for (const { key, value, problem } of structuredDataProblems(data)) {
 			fail(`${key}: ${problem} — ${JSON.stringify(value)}`, page);
 		}
 	}
+
+	for (const id of duplicateNodeIds(parsed)) {
+		fail(`JSON-LD: two nodes share the @id ${id}`, page);
+	}
+
+	for (const problem of socialTagProblems(html)) fail(problem, page);
 
 	const signposts = signpostingProblems({ html, origin: SITE_ORIGIN, ships });
 	for (const problem of signposts.problems) fail(`Signposting: ${problem}`, page);
@@ -120,6 +140,7 @@ if (failures.size > 0) {
 		'\nBuild JSON-LD addresses with `siteUrl()` from #lib/utils/siteHelpers (never from' +
 			"\nKit's `base`, which is page-relative), and dates with `formatJsonLdDate()`." +
 			'\nSignposting links come from `publicationSignposts()` in #lib/utils/signposting.ts.' +
+			'\nSocial tags (og:*, article:*, twitter:*) belong to SEO.svelte alone.' +
 			'\nRecord page titles come from `recordPageTitle()` in #lib/utils/seoUtils.ts.\n'
 	);
 	exit(1);
@@ -127,5 +148,5 @@ if (failures.size > 0) {
 
 console.log(
 	'[structured-data] OK — every URL is absolute, every date is ISO 8601, ' +
-		'every Signposting link resolves, and every page has a title of its own.'
+		'every Signposting link resolves, every social tag is set once, and every page has a title of its own.'
 );

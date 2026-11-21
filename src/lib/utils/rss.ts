@@ -4,6 +4,7 @@ import { getContributorNames } from '#lib/utils/contributor.ts';
 import { author, website } from '#lib/data/siteConfig.ts';
 import { getRssDescription, getEmailWithName } from '#lib/utils/siteHelpers.ts';
 import { stripHtml } from '#lib/utils/textUtils.ts';
+import { BUILT_AT } from '#lib/utils/buildDate.ts';
 
 // ============================================================================
 // RSS FEED CONFIGURATION
@@ -31,7 +32,12 @@ export interface RSSItem {
 	description: string;
 	pubDate: Date;
 	guid: string;
-	author?: string;
+	/**
+	 * Names of the people who made the item, one `<dc:creator>` each. Not
+	 * `<author>`: RSS 2.0 reserves that for an email address, and validators
+	 * flag a bare name in it.
+	 */
+	creators?: string[];
 	categories?: string[];
 	content?: string; // For content:encoded extension
 }
@@ -87,6 +93,17 @@ function formatRFC822Date(date: Date): string {
 }
 
 /**
+ * The date an item is announced with: its own, or the build date when its own
+ * is still ahead. A forthcoming work is dated to its expected publication
+ * (`2027`), and a future `pubDate` pins it above everything already out in
+ * most feed readers, for months. Order is unaffected: items are sorted by
+ * their own dates before this is applied.
+ */
+export function feedDate(date: Date, builtAt: Date = BUILT_AT): Date {
+	return date.getTime() > builtAt.getTime() ? builtAt : date;
+}
+
+/**
  * Truncates text to a specified length, preserving word boundaries
  */
 function truncateText(text: string, maxLength: number = 300): string {
@@ -120,7 +137,7 @@ export function activityToRSSItem(activity: Activity, siteUrl: string): RSSItem 
 		description: description || 'No description available',
 		pubDate,
 		guid: `${siteUrl}/activities/${activity.id}`,
-		author: author.name,
+		creators: [author.name],
 		categories: activity.tags || [],
 		content: activity.content
 	};
@@ -149,9 +166,9 @@ export function publicationToRSSItem(publication: Publication, siteUrl: string):
 		description,
 		pubDate,
 		guid: `${siteUrl}/publications/${publication.id}`,
-		author: Array.isArray(publication.authors)
-			? getContributorNames(publication.authors).join(', ')
-			: author.name,
+		creators: Array.isArray(publication.authors)
+			? getContributorNames(publication.authors)
+			: [author.name],
 		categories: publication.tags || []
 	};
 }
@@ -167,7 +184,7 @@ export function generateRSSFeed(
 	items: RSSItem[],
 	config: RSSFeedConfig = DEFAULT_RSS_CONFIG
 ): string {
-	const lastBuildDate = config.lastBuildDate || new Date();
+	const lastBuildDate = config.lastBuildDate || BUILT_AT;
 
 	// Build the channel element
 	let channel = `
@@ -210,11 +227,11 @@ export function generateRSSFeed(
       <title>${escapeXml(item.title)}</title>
       <link>${escapeXml(item.link)}</link>
       <description>${escapeXml(item.description)}</description>
-      <pubDate>${formatRFC822Date(item.pubDate)}</pubDate>
+      <pubDate>${formatRFC822Date(feedDate(item.pubDate, lastBuildDate))}</pubDate>
       <guid isPermaLink="true">${escapeXml(item.guid)}</guid>`;
 
-			if (item.author) {
-				itemXml += `\n      <author>${escapeXml(item.author)}</author>`;
+			for (const creator of item.creators ?? []) {
+				itemXml += `\n      <dc:creator>${escapeXml(creator)}</dc:creator>`;
 			}
 
 			// Add categories
@@ -262,7 +279,11 @@ export function generatePublicationsRSSFeed(
 	const items = publications.map((pub) => publicationToRSSItem(pub, fullConfig.siteUrl));
 	items.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
 
-	return generateRSSFeed(items.slice(0, 50), fullConfig);
+	// No cap: the feed carries every publication. The corpus grows by a few
+	// works a year and each item is a short excerpt, so the whole list stays
+	// small, and a cap of 50 once dropped the oldest record silently when the
+	// 51st was added.
+	return generateRSSFeed(items, fullConfig);
 }
 
 /**

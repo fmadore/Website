@@ -17,6 +17,7 @@
 	import { useGtm } from '#lib/utils/gtm.svelte.ts';
 	import { useNetworkMonitor } from '#lib/utils/networkMonitor.svelte.ts';
 	import JsonLd from '#lib/components/common/JsonLd.svelte';
+	import { combineSchemas } from '#lib/utils/jsonLdSchemas.ts';
 
 	// Readiness signal for progressive enhancements and browser checks.
 	onMount(() => {
@@ -32,8 +33,13 @@
 	// Destructure children and data from $props using LayoutProps
 	let { children, data }: LayoutProps = $props();
 
-	// Global JSON-LD for WebSite and Person schemas
-	const globalJsonLd = $derived((data as { globalJsonLd?: string })?.globalJsonLd ?? '');
+	// Global JSON-LD: WebSite and Person. A page whose load supplies a fuller
+	// Person (`personSchema`, the home page) has it published here in place of
+	// the minimal one: one node per `@id` on every page.
+	const globalJsonLd = $derived.by(() => {
+		const ownPerson = (page.data as { personSchema?: object }).personSchema;
+		return combineSchemas([data.globalSchemas.webSite, ownPerson ?? data.globalSchemas.person]);
+	});
 
 	// Monitor network status
 	useNetworkMonitor();

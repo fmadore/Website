@@ -22,8 +22,6 @@
 	const portraitSrcset = buildSrcset(portraitSrc);
 	const PORTRAIT_SIZES = '(max-width: 767px) calc(100vw - 2rem), (max-width: 1023px) 15rem, 300px';
 
-	const additionalSchemas = $derived(data.personSchema ? [data.personSchema] : []);
-
 	// "Upcoming" was fixed when the page was built. Once the page is live, check
 	// the date again, so a talk that has passed since the last build is never
 	// announced as next. Before hydration (and for the prerender) the build's
@@ -73,7 +71,6 @@
 	canonical={website.url}
 	pageType="ProfilePage"
 	dateModified={profile.dateModified}
-	{additionalSchemas}
 />
 
 {#snippet dhCard(card: (typeof data.collections)[number])}
