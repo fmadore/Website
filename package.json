@@ -126,7 +126,7 @@
 		"d3-zoom": "^3.0.1",
 		"echarts": "^6.1.0",
 		"jspdf": "^4.2.1",
-		"maplibre-gl": "^6.17.0"
+		"maplibre-gl": "^6.19.0"
 	},
 	"imports": {
 		"#lib": "./src/lib/index.ts",
