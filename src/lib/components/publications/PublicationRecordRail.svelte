@@ -15,14 +15,9 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	import { generateBibtex } from '#lib/utils/bibtexGenerator.ts';
 	import { formatReferenceHtml, formatReferenceText } from '#lib/utils/citationFormatter.ts';
 	import { createCopyFeedback } from '#lib/utils/clipboard.svelte.ts';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import RecordPlate from '#lib/components/molecules/RecordPlate.svelte';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { plateFallback } from '#lib/actions/plateFallback.ts';
-
-	// The rail is 380px wide from --lg up; below that the cover spans the
-	// single column. The intrinsic size reserves the plate's box before the
-	// lazily loaded bytes arrive, so the record never shifts around it.
-	const COVER_SIZES = '(max-width: 1024px) 100vw, 380px';
 
 	interface Props {
 		publication: Publication;
@@ -38,8 +33,6 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	const coverSrc = $derived(
 		resolveImagePath(publication.image ?? publication.heroImage?.src, basePrefix())
 	);
-	const coverSrcset = $derived(buildSrcset(coverSrc));
-	const coverSize = $derived(imageDimensions(coverSrc));
 	const coverAlt = $derived(
 		typesetQuotes(publication.heroImage?.alt ?? `Cover of ${publication.title}`)
 	);
@@ -175,23 +168,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	}
 </script>
 
-{#if coverSrc}
-	<figure class="rail-plate">
-		<img
-			class="plate"
-			src={coverSrc}
-			srcset={coverSrcset}
-			sizes={coverSrcset ? COVER_SIZES : undefined}
-			width={coverSize?.width}
-			height={coverSize?.height}
-			alt={coverAlt}
-			loading="lazy"
-			decoding="async"
-			use:plateFallback
-		/>
-		<figcaption class="plate-caption">Fig. 1. Cover.</figcaption>
-	</figure>
-{/if}
+<RecordPlate src={coverSrc} alt={coverAlt} caption="Fig. 1. Cover." />
 
 <RecordLedger rows={metadataRows} />
 

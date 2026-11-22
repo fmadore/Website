@@ -14,14 +14,9 @@
 	// `railPrimary` slot) and derives every value below from the grant record.
 	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
 	import type { ProjectCtaLink } from '#lib/types/research.ts';
-	import { buildSrcset } from '#lib/utils/imageVariants.ts';
+	import RecordPlate from '#lib/components/molecules/RecordPlate.svelte';
 	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { plateFallback } from '#lib/actions/plateFallback.ts';
-
-	// The rail is 380px wide from --lg up; below that the plate spans the single
-	// column. Same contract as the record rails.
-	const PLATE_SIZES = '(max-width: 1024px) 100vw, 380px';
 
 	interface Props {
 		/** Fully-resolved plate image src. */
@@ -68,7 +63,6 @@
 		showFunding = true
 	}: Props = $props();
 
-	const plateSrcset = $derived(buildSrcset(plateSrc));
 	const displayPlateAlt = $derived(typesetQuotes(plateAlt));
 
 	// Plate caption — "Fig. 1." is the figure's number, so the stop belongs to it
@@ -119,25 +113,9 @@
 	});
 </script>
 
-{#if plateSrc}
-	<figure class="rail-plate">
-		<img
-			class="plate project-plate"
-			src={plateSrc}
-			srcset={plateSrcset}
-			sizes={plateSrcset ? PLATE_SIZES : undefined}
-			width="380"
-			height="285"
-			alt={displayPlateAlt}
-			loading="lazy"
-			decoding="async"
-			use:plateFallback
-		/>
-		{#if plateFigCaption}
-			<figcaption class="plate-caption">{plateFigCaption}</figcaption>
-		{/if}
-	</figure>
-{/if}
+<!-- The research plates are variously shaped (16:9, 4:3, square, 2:1), so the
+     rail crops them all to one ratio rather than letting its height jump. -->
+<RecordPlate src={plateSrc} alt={displayPlateAlt} caption={plateFigCaption} crop />
 
 <RecordLedger rows={metadataRows} label="Project" />
 
@@ -174,13 +152,3 @@
 		<!-- eslint-enable svelte/no-navigation-without-resolve -->
 	</div>
 {/if}
-
-<style>
-	/* The research plates are variously shaped (16:9, 4:3, square, 2:1) and the
-	 * records carry no per-image dimensions, so the rail crops them all to one
-	 * ratio rather than letting the rail's height jump between projects. */
-	.project-plate {
-		aspect-ratio: 4 / 3;
-		height: auto;
-	}
-</style>

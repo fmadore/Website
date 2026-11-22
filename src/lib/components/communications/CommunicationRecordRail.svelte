@@ -15,14 +15,9 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
 	import { formatAuthorList, formatCommunicationCitation } from '#lib/utils/citationFormatter.ts';
 	import { createCopyFeedback } from '#lib/utils/clipboard.svelte.ts';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import RecordPlate from '#lib/components/molecules/RecordPlate.svelte';
 	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { plateFallback } from '#lib/actions/plateFallback.ts';
-
-	// The rail is 380px wide from --lg up; below that the plate spans the single
-	// column. The intrinsic size reserves the plate's box before the lazily
-	// loaded bytes arrive, so the record never shifts around it.
-	const PLATE_SIZES = '(max-width: 1024px) 100vw, 380px';
 
 	interface Props {
 		communication: Communication;
@@ -40,8 +35,6 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	const plateSrc = $derived(
 		resolveImagePath(communication.heroImage?.src ?? communication.image, basePrefix())
 	);
-	const plateSrcset = $derived(buildSrcset(plateSrc));
-	const plateSize = $derived(imageDimensions(plateSrc));
 	const plateAlt = $derived(typesetQuotes(communication.heroImage?.alt ?? communication.title));
 
 	// Only an authored caption is printed. The venue is not a caption: most
@@ -157,25 +150,7 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	}
 </script>
 
-{#if plateSrc}
-	<figure class="rail-plate">
-		<img
-			class="plate"
-			src={plateSrc}
-			srcset={plateSrcset}
-			sizes={plateSrcset ? PLATE_SIZES : undefined}
-			width={plateSize?.width}
-			height={plateSize?.height}
-			alt={plateAlt}
-			loading="lazy"
-			decoding="async"
-			use:plateFallback
-		/>
-		{#if plateFigCaption}
-			<figcaption class="plate-caption">{plateFigCaption}</figcaption>
-		{/if}
-	</figure>
-{/if}
+<RecordPlate src={plateSrc} alt={plateAlt} caption={plateFigCaption} />
 
 <RecordLedger rows={metadataRows} />
 

@@ -36,15 +36,11 @@ reader checks before installing anything.
 	import { basePrefix } from '#lib/utils/paths.ts';
 	import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 	import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import RecordPlate from '#lib/components/molecules/RecordPlate.svelte';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { plateFallback } from '#lib/actions/plateFallback.ts';
 	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
 	import { applicationPlatform, applicationStatusLabel } from '#lib/utils/projectGroups.ts';
-
-	// The rail is 380px wide from --lg up; below that the plate spans the single
-	// column. Same contract as the record rails.
-	const PLATE_SIZES = '(max-width: 1024px) 100vw, 380px';
 
 	interface Props {
 		project: DigitalHumanitiesProject;
@@ -60,8 +56,6 @@ reader checks before installing anything.
 	const plateSrc = $derived(
 		resolveImagePath(project.heroImageUrl ?? project.imageUrl, basePrefix())
 	);
-	const plateSrcset = $derived(buildSrcset(plateSrc));
-	const plateSize = $derived(imageDimensions(plateSrc));
 
 	// The project's public addresses, grouped site / code / data.
 	const linkGroups = $derived(groupProjectLinks(project));
@@ -119,24 +113,9 @@ reader checks before installing anything.
 	);
 </script>
 
-{#if plateSrc}
-	<!-- No caption: the records carry no authored provenance for these plates,
-	     and a caption that restates the headline is not a caption. -->
-	<figure class="rail-plate">
-		<img
-			class="plate"
-			src={plateSrc}
-			srcset={plateSrcset}
-			sizes={plateSrcset ? PLATE_SIZES : undefined}
-			width={plateSize?.width}
-			height={plateSize?.height}
-			alt=""
-			loading="lazy"
-			decoding="async"
-			use:plateFallback
-		/>
-	</figure>
-{/if}
+<!-- No caption: the records carry no authored provenance for these plates,
+     and a caption that restates the headline is not a caption. -->
+<RecordPlate src={plateSrc} alt="" />
 
 <RecordLedger rows={applicationRows} label="Application" />
 

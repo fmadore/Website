@@ -17,25 +17,14 @@ bibliographic record; `generateBibtex` is the publication export format and is
 shared verbatim with the MCP server, and widening it here would be the wrong
 place to decide that.
 -->
-<script module lang="ts">
-	/**
-	 * The rail is 380px wide from --lg up; below that the plate spans the single
-	 * column. Exported because the route preloads this image for LCP, and the
-	 * preload scanner only resolves the same candidate as the rendered <img> if
-	 * its `imagesizes` matches this string exactly — a mismatch downloads a
-	 * second, differently sized copy that nothing on the page ever uses.
-	 */
-	export const RAIL_PLATE_SIZES = '(max-width: 1024px) 100vw, 380px';
-</script>
-
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { basePrefix } from '#lib/utils/paths.ts';
 	import type { Activity } from '#lib/types/activity.ts';
 	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import RecordPlate from '#lib/components/molecules/RecordPlate.svelte';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { plateFallback } from '#lib/actions/plateFallback.ts';
 
 	interface Props {
 		activity: Activity;
@@ -51,8 +40,6 @@ place to decide that.
 	const plateSrc = $derived(
 		resolveImagePath(activity.heroImage?.src ?? activity.image, basePrefix())
 	);
-	const plateSrcset = $derived(buildSrcset(plateSrc));
-	const plateSize = $derived(imageDimensions(plateSrc));
 	const plateAlt = $derived(typesetQuotes(activity.heroImage?.alt ?? activity.title));
 
 	// Only an authored caption is printed. Nothing here records where or by whom
@@ -105,26 +92,8 @@ place to decide that.
 	);
 </script>
 
-{#if plateSrc}
-	<figure class="rail-plate">
-		<img
-			class="plate"
-			src={plateSrc}
-			srcset={plateSrcset}
-			sizes={plateSrcset ? RAIL_PLATE_SIZES : undefined}
-			width={plateSize?.width}
-			height={plateSize?.height}
-			alt={plateAlt}
-			loading="eager"
-			fetchpriority="high"
-			decoding="async"
-			use:plateFallback
-		/>
-		{#if plateFigCaption}
-			<figcaption class="plate-caption">{plateFigCaption}</figcaption>
-		{/if}
-	</figure>
-{/if}
+<!-- The activity's plate is its page's LCP image (the route preloads it). -->
+<RecordPlate src={plateSrc} alt={plateAlt} caption={plateFigCaption} priority />
 
 <RecordLedger rows={metadataRows} />
 

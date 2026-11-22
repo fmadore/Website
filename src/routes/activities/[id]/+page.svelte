@@ -20,9 +20,8 @@
 	import { assetHref, basePrefix } from '#lib/utils/paths.ts';
 	import { buildSrcset, resolveImagePath } from '#lib/utils/imageVariants.ts';
 	import RecordLayout, { type EyebrowToken } from '#lib/components/common/RecordLayout.svelte';
-	import ActivityRecordRail, {
-		RAIL_PLATE_SIZES
-	} from '#lib/components/activities/ActivityRecordRail.svelte';
+	import ActivityRecordRail from '#lib/components/activities/ActivityRecordRail.svelte';
+	import { RAIL_PLATE_SIZES } from '#lib/components/molecules/RecordPlate.svelte';
 	import ItemReference from '#lib/components/reference/ItemReference.svelte';
 	import type { PageData } from './$types';
 
