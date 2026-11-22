@@ -20,7 +20,9 @@
  * module.
  *
  * It holds every page to one set of social tags: Open Graph by `property=`,
- * Twitter Cards by `name=`, each key once. Rules:
+ * Twitter Cards by `name=`, each key once; and to a card image every platform
+ * renders: a WebP, PNG or JPEG that ships, whose declared size is the file's
+ * and whose card type fits its shape. Rules:
  * scripts/checks/check-structured-data-social.mjs.
  *
  * And it holds every indexable page to a `<title>` of its own (the 404 and
@@ -46,7 +48,12 @@ import {
 } from '../lib/structured-data.mjs';
 import { signpostingProblems } from '../lib/signposting.mjs';
 import { duplicateTitles } from './check-structured-data-titles.mjs';
-import { socialTagProblems } from './check-structured-data-social.mjs';
+import sharp from 'sharp';
+import {
+	socialImageProblems,
+	socialImageSizeProblems,
+	socialTagProblems
+} from './check-structured-data-social.mjs';
 
 const BUILD_DIR = 'build';
 
@@ -77,6 +84,8 @@ const fail = (description, page) =>
 const described = new Set();
 const titled = [];
 let blocks = 0;
+/** site image path → pages declaring it, with the size and card each declares */
+const cardImages = new Map();
 
 for (const page of pages) {
 	const html = readFileSync(`${BUILD_DIR}${page}`, 'utf8');
@@ -102,10 +111,29 @@ for (const page of pages) {
 	}
 
 	for (const problem of socialTagProblems(html)) fail(problem, page);
+	const card = socialImageProblems(html, { origin: SITE_ORIGIN, ships });
+	for (const problem of card.problems) fail(problem, page);
+	if (card.measure) {
+		cardImages.set(card.measure.path, [
+			...(cardImages.get(card.measure.path) ?? []),
+			{ page, ...card.measure }
+		]);
+	}
 
 	const signposts = signpostingProblems({ html, origin: SITE_ORIGIN, ships });
 	for (const problem of signposts.problems) fail(`Signposting: ${problem}`, page);
 	for (const path of signposts.described) described.add(path);
+}
+
+// The size a page declares for its card is the file's size.
+for (const [path, uses] of cardImages) {
+	if (!ships(path)) continue;
+	const { width, height } = await sharp(`${BUILD_DIR}${path}`).metadata();
+	for (const use of uses) {
+		for (const problem of socialImageSizeProblems(use, { width, height })) {
+			fail(`${problem} (${path})`, use.page);
+		}
+	}
 }
 
 // A metadata record no page names is invisible to a harvester following links.
@@ -140,7 +168,8 @@ if (failures.size > 0) {
 		'\nBuild JSON-LD addresses with `siteUrl()` from #lib/utils/siteHelpers (never from' +
 			"\nKit's `base`, which is page-relative), and dates with `formatJsonLdDate()`." +
 			'\nSignposting links come from `publicationSignposts()` in #lib/utils/signposting.ts.' +
-			'\nSocial tags (og:*, article:*, twitter:*) belong to SEO.svelte alone.' +
+			'\nSocial tags (og:*, article:*, twitter:*) belong to SEO.svelte alone; its card' +
+			'\nimage comes from `socialImage()` in #lib/utils/socialImage.ts.' +
 			'\nRecord page titles come from `recordPageTitle()` in #lib/utils/seoUtils.ts.\n'
 	);
 	exit(1);
@@ -148,5 +177,6 @@ if (failures.size > 0) {
 
 console.log(
 	'[structured-data] OK — every URL is absolute, every date is ISO 8601, ' +
-		'every Signposting link resolves, every social tag is set once, and every page has a title of its own.'
+		'every Signposting link resolves, every social tag is set once, every card image is a sized raster, ' +
+		'and every page has a title of its own.'
 );
