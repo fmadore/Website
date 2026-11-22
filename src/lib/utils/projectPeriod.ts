@@ -65,3 +65,18 @@ export function parseProjectPeriod(
 	if (match[2]) return { startYear, endYear: Math.max(startYear, currentYear), ongoing: true };
 	return { startYear, endYear: startYear, ongoing: false };
 }
+
+/**
+ * A parsed period as a table key reads it: `2013–2018`, `since 2026`, a single
+ * year, or `no recorded period` for a project whose record gives none. Shared by
+ * the project timelines of both visualisation pages.
+ */
+export function periodLabel(
+	period: Pick<ProjectPeriod, 'startYear' | 'endYear' | 'ongoing'> | null | undefined
+): string {
+	if (!period) return 'no recorded period';
+	if (period.ongoing) return `since ${period.startYear}`;
+	return period.startYear === period.endYear
+		? String(period.startYear)
+		: `${period.startYear}–${period.endYear}`;
+}

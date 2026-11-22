@@ -23,7 +23,6 @@
 	import VizDataTable from '#lib/components/visualisations/VizDataTable.svelte';
 	import CollaboratorExplorer from '#lib/components/visualisations/CollaboratorExplorer.svelte';
 	import { buildPublicationCollaborators } from '#lib/utils/collaboratorAggregation.ts';
-	import type { Institution, Person } from '#lib/types/person.ts';
 	import ContentsLedger from '#lib/components/common/ContentsLedger.svelte';
 	import LanguageToggle, {
 		languageToggleOptions
@@ -39,7 +38,9 @@
 		stackedTableRows
 	} from '#lib/utils/vizAggregation.ts';
 	import { allResearchProjects } from '#lib/data/research/index.ts';
-	import { parseProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { parseProjectPeriod, periodLabel } from '#lib/utils/projectPeriod.ts';
+	import { CollaboratorLocations } from '#lib/utils/collaboratorLocations.svelte.ts';
+	import LocationMapPlate from '#lib/components/visualisations/LocationMapPlate.svelte';
 	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 	// Shared page layout for the two visualisation routes.
 	import '#styles/components/viz-page.css';
@@ -58,7 +59,6 @@
 	import type { LocationDatum } from '#lib/data/geo.ts';
 	import { scaleKeyTerms } from '#lib/utils/keyTerms.ts';
 	import { corpusSummary } from '#lib/data/analysis/corpusSummary.generated.ts';
-	import { inView } from '#lib/actions/inView.ts';
 	import type { NgramFrequency } from '#lib/types/index.ts';
 
 	type CitationYearData = { year: number; count: number };
@@ -263,15 +263,6 @@
 		)
 	);
 	const formatGanttType = (type: string): string => PUBLICATION_TYPE_GANTT_LABELS[type] || type;
-	/** `2013–2018`, `since 2026`, or `no recorded period`, for the table key. */
-	const periodLabel = (period: (typeof projectTimelineData)[number]['period']): string =>
-		!period
-			? 'no recorded period'
-			: period.ongoing
-				? `since ${period.startYear}`
-				: period.startYear === period.endYear
-					? String(period.startYear)
-					: `${period.startYear}–${period.endYear}`;
 
 	// Calculate publisher location data for map visualization
 	const publisherLocationData: LocationDatum[] = $derived(
@@ -287,49 +278,15 @@
 		publisherLocationData.reduce((sum, loc) => sum + loc.count, 0)
 	);
 
-	let locationDataset = $state<'locations' | 'collaborators'>('locations');
-	let collaborationYear = $state<number | undefined>(undefined);
-	let includeUncertain = $state(false);
-	let affiliationStatus = $state<'idle' | 'loading' | 'ready' | 'error'>('idle');
-	let collaboratorPeople = $state.raw<Person[]>([]);
-	let collaboratorInstitutions = $state.raw<Institution[]>([]);
 	const collaborationYears = $derived(
 		[...new Set(allPublications.map((publication) => publication.year))].sort((a, b) => b - a)
 	);
-	const collaboratorLocations = $derived(
-		buildPublicationCollaborators(
-			allPublications,
-			collaboratorPeople,
-			collaboratorInstitutions,
-			collaborationYear,
-			includeUncertain
-		)
-	);
-	const selectedLocationData = $derived(
-		locationDataset === 'collaborators' ? collaboratorLocations.locations : publisherLocationData
-	);
-
-	async function loadAffiliations() {
-		if (affiliationStatus === 'loading' || affiliationStatus === 'ready') return;
-		affiliationStatus = 'loading';
-		try {
-			const [peopleModule, institutionsModule] = await Promise.all([
-				import('#lib/data/people/index.ts'),
-				import('#lib/data/institutions.ts')
-			]);
-			collaboratorPeople = peopleModule.allPeople;
-			collaboratorInstitutions = institutionsModule.institutions;
-			affiliationStatus = 'ready';
-		} catch (error) {
-			affiliationStatus = 'error';
-			if (import.meta.env.DEV) console.error('Affiliation evidence failed to load:', error);
-		}
-	}
-
-	// The registry is substantial and belongs only to the selected collaborator view.
-	$effect(() => {
-		if (locationDataset === 'collaborators' && affiliationStatus === 'idle')
-			void loadAffiliations();
+	// The locations section: the dataset toggle, the registries the collaborator
+	// view resolves, and the lazily loaded map (CollaboratorLocations).
+	const locations = new CollaboratorLocations({
+		locations: () => publisherLocationData,
+		collaborators: (people, institutions, year, includeUncertain) =>
+			buildPublicationCollaborators(allPublications, people, institutions, year, includeUncertain)
 	});
 
 	// Accessor functions for the year-axis bar charts
@@ -363,45 +320,10 @@
 			cells: [entry.outsidePeriod]
 		}))
 	);
-	/*
-	 * The map plate, loaded when it is about to be read.
-	 *
-	 * MapLibre is 966 KiB of JavaScript and nearly four seconds of main thread,
-	 * and it then fetches ~1.7 MiB of vector tiles — for a plate that sits
-	 * fourteen viewports below the fold at 375px. Mounting it on page load spent
-	 * the entire performance budget of this page before the reader had seen the
-	 * first chart. So the component is imported on `use:inView` (the shared
-	 * 400px gate), inside the box the section has already reserved.
-	 */
-	let PublisherMap:
-		typeof import('#lib/components/visualisations/LocationMap.svelte').default | null =
-		$state(null);
-	let mapRequested = false;
-	let mapChunkFailed = $state(false);
-
-	function loadPublisherMap() {
-		if (mapRequested) return;
-		mapRequested = true;
-		import('#lib/components/visualisations/LocationMap.svelte')
-			.then((module) => {
-				PublisherMap = module.default;
-			})
-			.catch((error) => {
-				// A cold offline load or a stale service-worker manifest can lose the
-				// chunk. The countries are tabled under the plate either way, so the
-				// section says so rather than holding "Loading map…" for ever.
-				mapChunkFailed = true;
-				if (import.meta.env.DEV) console.error('map chunk failed to load:', error);
-			});
-	}
-
-	// When the map cannot load there are no view modes to switch between, so the
-	// section's note must stop promising them.
-	let publisherMapFailed = $state(false);
 	const locationDescription = $derived(
-		locationDataset === 'collaborators'
+		locations.dataset === 'collaborators'
 			? 'Institutional affiliations of co-authors and co-editors, with the shared works recorded for each person. Chapter contributors to the edited volumes appear in the collaboration network, not on this map.'
-			: publisherMapFailed || mapChunkFailed
+			: locations.mapUnavailable
 				? 'The countries of the publishers and journals, taken from the place of publication recorded on each work.'
 				: 'The countries of the publishers and journals, taken from the place of publication recorded on each work. Switch between proportional markers and country shading; select a country to list its publications.'
 	);
@@ -539,9 +461,9 @@
 			no: '§ 11',
 			title: 'Publisher and collaborator locations',
 			count:
-				locationDataset === 'collaborators'
-					? affiliationStatus === 'ready'
-						? countOf(collaboratorLocations.mappedPeople, 'collaborator')
+				locations.dataset === 'collaborators'
+					? locations.affiliationStatus === 'ready'
+						? countOf(locations.collaborators.mappedPeople, 'collaborator')
 						: ''
 					: publisherLocationData.length > 0
 						? `${publisherLocationData.length} countries, ${totalWithLocation} publications`
@@ -905,37 +827,19 @@
 
 	<VizSection {...sections.locations} description={locationDescription}>
 		<CollaboratorExplorer
-			bind:dataset={locationDataset}
-			bind:year={collaborationYear}
-			bind:includeUncertain
+			bind:dataset={locations.dataset}
+			bind:year={locations.year}
+			bind:includeUncertain={locations.includeUncertain}
 			locationLabel="Publishers"
 			locationData={publisherLocationData}
-			collaborators={collaboratorLocations}
-			status={affiliationStatus}
-			retry={loadAffiliations}
+			collaborators={locations.collaborators}
+			status={locations.affiliationStatus}
+			retry={locations.loadAffiliations}
 			years={collaborationYears}
 			basePath="/publications"
 			itemLabel="Publications"
 		>
-			{#if PublisherMap}
-				<PublisherMap
-					data={selectedLocationData}
-					precisePoints={locationDataset === 'collaborators'}
-					loadingPoints={affiliationStatus === 'idle' || affiliationStatus === 'loading'}
-					basePath="/publications"
-					itemLabel="publication"
-					bind:failed={publisherMapFailed}
-				/>
-			{:else if mapChunkFailed}
-				<div class="state-note map-plate-note" role="status">
-					<span class="dateline">Map unavailable</span>
-					<p>The map could not be loaded. The data table below holds the same records.</p>
-				</div>
-			{:else}
-				<div class="state-note map-plate-note" role="status" use:inView={loadPublisherMap}>
-					<span class="dateline">Loading map…</span>
-				</div>
-			{/if}
+			<LocationMapPlate {locations} basePath="/publications" itemLabel="publication" />
 		</CollaboratorExplorer>
 	</VizSection>
 
@@ -991,15 +895,6 @@
 		text-decoration: underline;
 		text-decoration-thickness: 1px;
 		text-underline-offset: 3px;
-	}
-
-	/* The map plate before its chunk arrives, and if it never does. The panel is
-	   the shared `.state-note` idiom; this only makes it fill the 500px box the
-	   section reserved, as `.map-state-note` does inside LocationMap — so the
-	   pending, failed and drawn states all occupy the same plate. */
-	.map-plate-note {
-		width: 100%;
-		height: 100%;
 	}
 
 	/* Empty state for the sections that are typeset rather than plated. */

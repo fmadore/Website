@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatProjectPeriod, parseProjectPeriod } from './projectPeriod';
+import { formatProjectPeriod, parseProjectPeriod, periodLabel } from './projectPeriod';
 import { allResearchProjects } from '#lib/data/research/index.ts';
 
 describe('formatProjectPeriod', () => {
@@ -78,5 +78,15 @@ describe('parseProjectPeriod', () => {
 		for (const project of allResearchProjects) {
 			expect(parseProjectPeriod(project.years, 2026), project.id).toBeDefined();
 		}
+	});
+});
+
+describe('periodLabel', () => {
+	it('keys a period as the visualisation tables print it', () => {
+		expect(periodLabel(parseProjectPeriod('2013-2018', 2026))).toBe('2013–2018');
+		expect(periodLabel(parseProjectPeriod('2026-', 2026))).toBe('since 2026');
+		expect(periodLabel(parseProjectPeriod('2020', 2026))).toBe('2020');
+		expect(periodLabel(null)).toBe('no recorded period');
+		expect(periodLabel(undefined)).toBe('no recorded period');
 	});
 });
