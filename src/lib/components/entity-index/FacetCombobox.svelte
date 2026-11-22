@@ -28,7 +28,7 @@
 
 	interface Props {
 		/** The full option universe for this facet, as raw data values. */
-		options: string[];
+		options: readonly string[];
 		/** Live disjunctive facet counts, keyed by raw value. */
 		counts: Record<string, number>;
 		/** Currently selected raw values. */
@@ -37,9 +37,11 @@
 		label: string;
 		/** Toggles one raw value. Focus stays in the field, the list stays open. */
 		ontoggle: (value: string) => void;
+		/** The display form of a raw value, where it is a key (a person id). */
+		labelOf?: (value: string) => string;
 	}
 
-	let { options, counts, selected, label, ontoggle }: Props = $props();
+	let { options, counts, selected, label, ontoggle, labelOf = (value) => value }: Props = $props();
 
 	// Per-instance id: two comboboxes sit in one grid, and colliding option ids
 	// would make `aria-activedescendant` ambiguous.
@@ -55,7 +57,7 @@
 	let input = $state<HTMLInputElement>();
 	let list = $state<HTMLElement>();
 
-	const matches = $derived(matchFacetOptions(options, query, counts));
+	const matches = $derived(matchFacetOptions(options, query, counts, labelOf));
 	/** Rendered rows: the closed list is deliberately empty (see the markup). */
 	const rows = $derived(open ? matches : []);
 	const fieldLabel = $derived(`Find among ${options.length} ${label}`);
@@ -207,7 +209,7 @@
 				>
 					<span class="facet-combobox-mark" class:facet-combobox-mark--on={on} aria-hidden="true"
 					></span>
-					<span class="facet-combobox-name">{typesetQuotes(option)}</span>
+					<span class="facet-combobox-name">{typesetQuotes(labelOf(option))}</span>
 					<span class="facet-combobox-count">{counts[option] ?? 0}</span>
 				</li>
 			{/each}

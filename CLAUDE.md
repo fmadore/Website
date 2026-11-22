@@ -463,12 +463,12 @@ token its three WebMCP audits turn from not applicable to scored.
 
 ### Filter Implementation
 
-Entity-index pages instantiate `new EntityFilterSystem(config)` from `#lib/utils/entityFilterSystem.svelte.ts` and read/mutate it directly (no store `$` prefix):
+Entity-index pages instantiate `new EntityFilterSystem(config)` from `#lib/utils/entityFilterSystem.svelte.ts` and read/mutate it directly (no store `$` prefix). The config lists the page's **dimensions** (`EntityDimension` in `entityFilterCore.ts`): key, URL `param` (plus any `legacyParams` still read), `label`, `options`, `match`/`countExtractor`, and `placement` (`bar-primary`, `bar-secondary`, `grid-list`, `grid-chips`, with `limit` for a cut facet and `yearsBeside` for the column the year slider shares). The filter bar, the facet grid, the "Filtered by" line and the URL sync all read that list, so a new facet is one entry. A keyed facet (the co-authors, keyed on `personId` through `utils/personFacet.ts`) supplies `valueLabel` for its display form and `alias` for the names old links and agents use; tags take `tagAlias`.
 
-- Toggle facet values: `system.toggle('types' | 'tags' | …, value)`
+- Toggle facet values: `system.toggle(key, value)`; set from a URL: `system.setFromUrl(key, values)`
 - Range filters: `system.updateYearRange(min, max)`, `system.resetYearRange()`
 - Clear all: `system.clearAllFilters()`
-- Pass `system.activeFilters` to the `urlFilterSync` action for URL⇄state sync
+- URL⇄state sync: `use:urlFilterSync={{ system, search: system.search, sort }}` (`years: false` on a page with no year control). The WebMCP `show_publications` tool writes the publications index's parameters from `PUBLICATION_URL_DIMENSIONS`, which a runes test holds to the index's dimensions
 
 ### Citation/Bibliography
 

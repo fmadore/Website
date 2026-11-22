@@ -62,9 +62,9 @@ it('clears in place, so references captured by pages and actions stay live', () 
 	const captured = system.activeFilters;
 	// Arrow-bound: pages pass these around detached from the instance.
 	const { toggle, clearAllFilters } = system;
-	system.setters.setTags(['Togo']);
+	system.setFromUrl('tags', ['Togo']);
 	toggle('tags', 'Benin');
-	system.setters.setYearRange({ min: 2020, max: 2030 });
+	system.setYearRange({ min: 2020, max: 2030 });
 	expect(ids(system.filteredItems)).toEqual(['c', 'd']);
 
 	clearAllFilters();
@@ -76,8 +76,8 @@ it('clears in place, so references captured by pages and actions stay live', () 
 
 it('maps URL values onto the option lists, dropping what the corpus lacks', () => {
 	const system = createSystem();
-	system.setters.setTags(['islam', 'ISLAM', 'Nonexistent', 'Togo']);
-	system.setters.setTypes(['Book']);
+	system.setFromUrl('tags', ['islam', 'ISLAM', 'Nonexistent', 'Togo']);
+	system.setFromUrl('types', ['Book']);
 	expect(system.activeFilters.tags).toEqual(['Islam', 'Togo']);
 	expect(system.activeFilters.types).toEqual(['book']);
 	expect(system.activeFilterCount).toBe(3);
@@ -86,9 +86,9 @@ it('maps URL values onto the option lists, dropping what the corpus lacks', () =
 
 it('takes an open-ended year range from the URL', () => {
 	const system = createSystem();
-	system.setters.setYearRange({ min: 2020, max: Infinity });
+	system.setYearRange({ min: 2020, max: Infinity });
 	expect(ids(system.filteredItems)).toEqual(['c', 'd']);
-	system.setters.setYearRange({ min: -Infinity, max: 2016 });
+	system.setYearRange({ min: -Infinity, max: 2016 });
 	expect(ids(system.filteredItems)).toEqual(['a']);
 });
 

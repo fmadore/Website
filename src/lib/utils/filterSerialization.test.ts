@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
-	ARRAY_FILTER_PARAMS,
 	serializeFiltersToQuery,
 	parseArrayFilterParam,
+	parseDimensionParam,
 	canonicalizeFacetValues,
 	parseSearchParam,
 	parseYearRangeParams,
@@ -10,16 +10,30 @@ import {
 	yearRangesEqual,
 	parseSortParam,
 	foldedAliasLookup,
+	type UrlFilterDimension,
 	type UrlSyncableFilters
 } from './filterSerialization';
+
+/** The publications index's dimensions, as the URL names them, in its order. */
+const DIMS: UrlFilterDimension[] = [
+	{ key: 'types', param: 'type' },
+	{ key: 'tags', param: 'tag' },
+	{ key: 'languages', param: 'language' },
+	{ key: 'authors', param: 'author' },
+	{ key: 'countries', param: 'country' },
+	{ key: 'projects', param: 'project' }
+];
+
+const serialize = (filters: UrlSyncableFilters, searchTerm?: string, sort?: string) =>
+	serializeFiltersToQuery(filters, DIMS, searchTerm, sort);
 
 /** Parses a serialized query back into the filter shape, as the action does. */
 function parseQuery(queryString: string): UrlSyncableFilters {
 	const params = new URLSearchParams(queryString);
 	const filters: UrlSyncableFilters = {};
-	for (const [param, key] of ARRAY_FILTER_PARAMS) {
-		const values = parseArrayFilterParam(params, param);
-		if (values.length) filters[key] = values;
+	for (const dimension of DIMS) {
+		const values = parseDimensionParam(params, dimension);
+		if (values.length) filters[dimension.key] = values;
 	}
 	const range = parseYearRangeParams(params.get('year_min'), params.get('year_max'));
 	if (range) filters.yearRange = range;
@@ -28,23 +42,21 @@ function parseQuery(queryString: string): UrlSyncableFilters {
 
 describe('serializeFiltersToQuery', () => {
 	it('returns an empty string when nothing is active', () => {
-		expect(serializeFiltersToQuery({})).toBe('');
-		expect(serializeFiltersToQuery({ types: [], tags: [], languages: [], yearRange: null })).toBe(
-			''
-		);
+		expect(serialize({})).toBe('');
+		expect(serialize({ types: [], tags: [], languages: [], yearRange: null })).toBe('');
 	});
 
 	it('serializes a single value per dimension', () => {
-		expect(serializeFiltersToQuery({ types: ['book'] })).toBe('type=book');
-		expect(serializeFiltersToQuery({ tags: ['Islam'] })).toBe('tag=Islam');
+		expect(serialize({ types: ['book'] })).toBe('type=book');
+		expect(serialize({ tags: ['Islam'] })).toBe('tag=Islam');
 	});
 
 	it('serializes multiple values as repeated params (one entry per value)', () => {
-		expect(serializeFiltersToQuery({ tags: ['a', 'b', 'c'] })).toBe('tag=a&tag=b&tag=c');
+		expect(serialize({ tags: ['a', 'b', 'c'] })).toBe('tag=a&tag=b&tag=c');
 	});
 
 	it('maps every dimension to its param name', () => {
-		const query = serializeFiltersToQuery({
+		const query = serialize({
 			types: ['book'],
 			tags: ['t1'],
 			languages: ['French'],
@@ -58,25 +70,23 @@ describe('serializeFiltersToQuery', () => {
 	});
 
 	it('serializes the year range as year_min/year_max', () => {
-		expect(serializeFiltersToQuery({ yearRange: { min: 2010, max: 2020 } })).toBe(
-			'year_min=2010&year_max=2020'
-		);
+		expect(serialize({ yearRange: { min: 2010, max: 2020 } })).toBe('year_min=2010&year_max=2020');
 	});
 
 	it('serializes the search term as q, and only when it holds something', () => {
-		expect(serializeFiltersToQuery({}, 'islam')).toBe('q=islam');
-		expect(serializeFiltersToQuery({}, '')).toBe('');
-		expect(serializeFiltersToQuery({}, '   ')).toBe('');
-		expect(serializeFiltersToQuery({ types: ['book'] }, 'islam')).toBe('type=book&q=islam');
+		expect(serialize({}, 'islam')).toBe('q=islam');
+		expect(serialize({}, '')).toBe('');
+		expect(serialize({}, '   ')).toBe('');
+		expect(serialize({ types: ['book'] }, 'islam')).toBe('type=book&q=islam');
 	});
 
 	it('never serializes a page number', () => {
 		// The page is a position in the list the filters define, not a filter.
-		expect(serializeFiltersToQuery({ types: ['book'] }, 'islam')).not.toContain('page');
+		expect(serialize({ types: ['book'] }, 'islam')).not.toContain('page');
 	});
 
 	it('URL-encodes values that need it', () => {
-		const query = serializeFiltersToQuery({ tags: ['Côte d’Ivoire & more'] });
+		const query = serialize({ tags: ['Côte d’Ivoire & more'] });
 		const parsed = new URLSearchParams(query);
 		expect(parsed.getAll('tag')).toEqual(['Côte d’Ivoire & more']);
 	});
@@ -160,7 +170,7 @@ describe('parseSearchParam', () => {
 	});
 
 	it('round-trips a term with spaces and punctuation', () => {
-		const query = serializeFiltersToQuery({}, 'Côte d’Ivoire & Islam');
+		const query = serialize({}, 'Côte d’Ivoire & Islam');
 		expect(parseSearchParam(new URLSearchParams(query))).toBe('Côte d’Ivoire & Islam');
 	});
 });
@@ -204,21 +214,17 @@ describe('round-trip serialization', () => {
 			projects: ["Islam's 'Peripheries': DH, Algorithmic Analysis"],
 			yearRange: { min: 2005, max: 2024 }
 		};
-		expect(parseQuery(serializeFiltersToQuery(filters))).toEqual(filters);
+		expect(parseQuery(serialize(filters))).toEqual(filters);
 	});
 
 	it('an open-ended range goes back out as its one bound', () => {
-		expect(serializeFiltersToQuery({ yearRange: { min: 2018, max: Infinity } })).toBe(
-			'year_min=2018'
-		);
-		expect(serializeFiltersToQuery({ yearRange: { min: -Infinity, max: 2015 } })).toBe(
-			'year_max=2015'
-		);
+		expect(serialize({ yearRange: { min: 2018, max: Infinity } })).toBe('year_min=2018');
+		expect(serialize({ yearRange: { min: -Infinity, max: 2015 } })).toBe('year_max=2015');
 		expect(parseQuery('year_max=2015')).toEqual({ yearRange: { min: -Infinity, max: 2015 } });
 	});
 
 	it('empty filters round-trip to empty filters', () => {
-		expect(parseQuery(serializeFiltersToQuery({}))).toEqual({});
+		expect(parseQuery(serialize({}))).toEqual({});
 	});
 });
 
@@ -268,11 +274,11 @@ describe('yearRangesEqual', () => {
 
 describe('sort in the URL', () => {
 	it('serializes a non-default sort after the filters and the search', () => {
-		expect(serializeFiltersToQuery({ types: ['book'] }, 'islam', 'citations')).toBe(
+		expect(serialize({ types: ['book'] }, 'islam', 'citations')).toBe(
 			'type=book&q=islam&sort=citations'
 		);
-		expect(serializeFiltersToQuery({}, '', 'title')).toBe('sort=title');
-		expect(serializeFiltersToQuery({}, '', '')).toBe('');
+		expect(serialize({}, '', 'title')).toBe('sort=title');
+		expect(serialize({}, '', '')).toBe('');
 	});
 
 	it('reads a known sort, folding case, and falls back on anything else', () => {
@@ -310,5 +316,31 @@ describe('retired spellings in shared links', () => {
 			'Artificial Intelligence'
 		]);
 		expect(canonicalizeFacetValues(['AI'], vocabulary)).toEqual([]);
+	});
+});
+
+describe('parseDimensionParam', () => {
+	it('reads a dimension under its parameter and any legacy one, once each', () => {
+		const params = new URLSearchParams('cited=A&project=B&project=A');
+		expect(
+			parseDimensionParam(params, { key: 'cited', param: 'cited', legacyParams: ['project'] })
+		).toEqual(['A', 'B']);
+	});
+
+	it('writes only the current parameter back', () => {
+		expect(
+			serializeFiltersToQuery({ cited: ['A'] }, [
+				{ key: 'cited', param: 'cited', legacyParams: ['project'] }
+			])
+		).toBe('cited=A');
+	});
+
+	it('keeps the order the page declares its dimensions in', () => {
+		expect(
+			serializeFiltersToQuery({ access: ['Open access'], types: ['book'] }, [
+				{ key: 'types', param: 'type' },
+				{ key: 'access', param: 'access' }
+			])
+		).toBe('type=book&access=Open+access');
 	});
 });

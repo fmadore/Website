@@ -8,8 +8,10 @@
  * `as unknown as` casts — and pass `activeFilters` straight to the
  * `urlFilterSync` action (its deep reactivity is what the action tracks).
  *
- * The filter/option shape is fixed (both index pages share it); only the item
- * type is generic. The free-text search lives here too (`searchTerm`, with
+ * Each page declares the dimensions it offers (`EntityDimension`: key, URL
+ * parameter, heading, vocabulary, match and count, placement), so a facet is
+ * one entry rather than an edit to the core (#220); the item type and the set
+ * of keys are generic. The free-text search lives here too (`searchTerm`, with
  * `searchFields` from the config), because it narrows the facet counts as well
  * as the list. The `activeFilters` object identity is stable for the life
  * of the instance — updates mutate its members — so captured references
@@ -22,44 +24,41 @@
 
 import type { YearRange } from '#lib/types/index.ts';
 import {
-	ENTITY_ARRAY_FILTER_KEYS,
 	filterEntityItems,
 	computeDisjunctiveFacets,
 	countActiveFilters,
+	emptyFilters,
 	toggleArrayValue,
 	normalizeYearRange,
-	DEFAULT_FACET_LABELS,
-	type EntityFacetLabels,
+	type EntityDimension,
 	type EntityIndexFilters,
-	type EntityArrayFilterKey,
-	type EntityIndexFilterOptions,
-	type EntityArrayDimension
+	type EntityIndexFilterOptions
 } from './entityFilterCore';
-import { canonicalizeFacetValues, foldedAliasLookup } from './filterSerialization';
+import {
+	canonicalizeFacetValues,
+	foldedAliasLookup,
+	type UrlFilterDimension
+} from './filterSerialization';
 import { TAG_ALIASES } from '#lib/data/tagVocabulary.ts';
+import { haystackMatches, parseSearchQuery, searchHaystack } from './searchText';
+
+export type { EntityDimension, EntityIndexFilters, EntityIndexFilterOptions };
 
 /**
  * Retired tag spellings onto the current vocabulary, for links shared before a
- * rename (`?tag=AI` → `Artificial Intelligence`). Tags only: the other facets
- * have no alias table.
+ * rename (`?tag=AI` → `Artificial Intelligence`): the `alias` of every index's
+ * tags dimension.
  */
-const tagAlias = foldedAliasLookup(TAG_ALIASES);
-import { haystackMatches, parseSearchQuery, searchHaystack } from './searchText';
+export const tagAlias = foldedAliasLookup(TAG_ALIASES);
 
-export {
-	ENTITY_ARRAY_FILTER_KEYS,
-	type EntityIndexFilters,
-	type EntityArrayFilterKey,
-	type EntityIndexFilterOptions,
-	type EntityArrayDimension
-};
-
-export interface EntityFilterConfig<TItem> {
+export interface EntityFilterConfig<TItem, K extends string> {
 	items: TItem[];
-	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>;
+	/** The facets this index offers, in the order the bar and grid draw them. */
+	dimensions: readonly EntityDimension<TItem, K>[];
 	/** Returns true if the item falls within the given year range. */
 	matchesYearRange: (item: TItem, range: YearRange) => boolean;
-	filterOptions: EntityIndexFilterOptions;
+	/** The corpus years, for the year slider. */
+	years: number[];
 	/**
 	 * The fields the free-text search reads, as the row prints them. Given,
 	 * the search becomes part of the system: it narrows `filteredItems` and
@@ -67,32 +66,24 @@ export interface EntityFilterConfig<TItem> {
 	 * has already removed. Omitted, `searchTerm` narrows nothing.
 	 */
 	searchFields?: (item: TItem) => readonly string[];
-	/** Facet headings where this index's dimension means something specific. */
-	labels?: Partial<EntityFacetLabels>;
 }
 
-export class EntityFilterSystem<TItem> {
-	readonly filterOptions: EntityIndexFilterOptions;
+export class EntityFilterSystem<TItem, K extends string = string> {
+	/** The facets, as the page declared them. */
+	readonly dimensions: readonly EntityDimension<TItem, K>[];
+	readonly filterOptions: EntityIndexFilterOptions<K>;
 	/** The heading each facet prints, in the grid and the "Filtered by" line. */
-	readonly labels: EntityFacetLabels;
+	readonly labels: Record<K, string>;
 
 	private readonly items: TItem[];
 	private readonly searchFields?: (item: TItem) => readonly string[];
 	/** Each item's folded search text, built on the first search. */
 	private haystacks: Map<TItem, string> | undefined;
-	private readonly dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>;
 	private readonly matchesYearRange: (item: TItem, range: YearRange) => boolean;
+	private readonly byKey: Map<K, EntityDimension<TItem, K>>;
 
 	/** Deep-reactive filter state; mutated in place, never reassigned. */
-	readonly activeFilters: EntityIndexFilters = $state({
-		types: [],
-		yearRange: null,
-		tags: [],
-		languages: [],
-		authors: [],
-		countries: [],
-		projects: []
-	});
+	readonly activeFilters: EntityIndexFilters<K>;
 
 	/** The free-text search, as typed. Synced as `q` through `search`. */
 	searchTerm = $state('');
@@ -132,20 +123,22 @@ export class EntityFilterSystem<TItem> {
 		)
 	);
 
-	readonly counts = $derived(this.facets.counts);
+	readonly counts = $derived.by(() => this.facets.counts);
 
 	/**
 	 * Per dimension, how many items clearing that dimension alone would return —
 	 * the number an "All" option prints. Read it rather than summing `counts`:
 	 * a multi-valued dimension (languages, tags) double-counts in that sum.
 	 */
-	readonly totals = $derived(this.facets.totals);
+	readonly totals = $derived.by(() => this.facets.totals);
 
 	/**
 	 * How many filter values are set (each facet value once, a year range
 	 * once); above zero, the filters narrow the index.
 	 */
-	readonly activeFilterCount = $derived(countActiveFilters(this.activeFilters));
+	readonly activeFilterCount = $derived.by(() =>
+		countActiveFilters(this.activeFilters, this.dimensions)
+	);
 
 	/** Whether the search box holds anything (what `q` serializes). */
 	readonly hasSearch = $derived(this.searchTerm.trim().length > 0);
@@ -159,13 +152,30 @@ export class EntityFilterSystem<TItem> {
 	/** Accessor pair in the shape the `urlFilterSync` action takes for `q`. */
 	readonly search: { value: string };
 
-	constructor(config: EntityFilterConfig<TItem>) {
+	/** The dimensions as the `urlFilterSync` action reads and writes them. */
+	readonly urlDimensions: readonly UrlFilterDimension[];
+
+	constructor(config: EntityFilterConfig<TItem, K>) {
 		this.items = config.items;
 		this.dimensions = config.dimensions;
 		this.matchesYearRange = config.matchesYearRange;
-		this.filterOptions = config.filterOptions;
 		this.searchFields = config.searchFields;
-		this.labels = { ...DEFAULT_FACET_LABELS, ...config.labels };
+		// eslint-disable-next-line svelte/prefer-svelte-reactivity -- a lookup over fixed config, never observed
+		this.byKey = new Map(config.dimensions.map((dimension) => [dimension.key, dimension]));
+		const options = { years: config.years } as EntityIndexFilterOptions<K>;
+		const labels = {} as Record<K, string>;
+		for (const dimension of config.dimensions) {
+			(options as Record<K, readonly string[]>)[dimension.key] = dimension.options;
+			labels[dimension.key] = dimension.label;
+		}
+		this.filterOptions = options;
+		this.labels = labels;
+		this.activeFilters = $state(emptyFilters(config.dimensions));
+		this.urlDimensions = config.dimensions.map((dimension) => ({
+			key: dimension.key,
+			param: dimension.param,
+			legacyParams: dimension.legacyParams
+		}));
 		// eslint-disable-next-line @typescript-eslint/no-this-alias -- the accessor's getters need the instance
 		const system = this;
 		this.search = {
@@ -189,15 +199,26 @@ export class EntityFilterSystem<TItem> {
 		return haystack;
 	}
 
-	// Methods are arrow-bound so they can be passed around unbound
-	// (onclick={system.resetYearRange}, setter maps, …).
+	/** The dimension declared under `key`, if this index offers it. */
+	dimension = (key: K): EntityDimension<TItem, K> | undefined => this.byKey.get(key);
 
-	toggle = (key: EntityArrayFilterKey, value: string): void => {
-		this.activeFilters[key] = toggleArrayValue(this.activeFilters[key], value);
+	/** The display form of a value: its dimension's label for it, else itself. */
+	valueLabel = (key: K, value: string): string => this.byKey.get(key)?.valueLabel?.(value) ?? value;
+
+	// Methods are arrow-bound so they can be passed around unbound
+	// (onclick={system.resetYearRange}, the URL sync, …).
+
+	/** The state's facet values, typed as the plain record they are. */
+	private get values(): Record<K, string[]> {
+		return this.activeFilters;
+	}
+
+	toggle = (key: K, value: string): void => {
+		this.values[key] = toggleArrayValue(this.values[key], value);
 	};
 
-	setValues = (key: EntityArrayFilterKey, values: string[]): void => {
-		this.activeFilters[key] = values;
+	setValues = (key: K, values: string[]): void => {
+		this.values[key] = values;
 	};
 
 	updateYearRange = (min: number, max: number): void => {
@@ -214,7 +235,7 @@ export class EntityFilterSystem<TItem> {
 	};
 
 	clearAllFilters = (): void => {
-		for (const key of ENTITY_ARRAY_FILTER_KEYS) this.activeFilters[key] = [];
+		for (const { key } of this.dimensions) this.values[key] = [];
 		this.activeFilters.yearRange = null;
 	};
 
@@ -225,30 +246,19 @@ export class EntityFilterSystem<TItem> {
 	};
 
 	/**
-	 * Sets a dimension from values that came from outside the page (a URL):
-	 * each is mapped onto the dimension's option list, so a hand-typed or
-	 * differently-cased deep link selects the chip the page prints, and a value
-	 * the corpus does not hold is dropped instead of filtering to nothing.
+	 * Sets a dimension from values that came from outside the page (a URL, an
+	 * agent): each is mapped onto the dimension's vocabulary through its alias
+	 * (a retired tag, a person's name for their id) and then case- and
+	 * accent-insensitively, so a hand-typed or differently-cased deep link
+	 * selects the facet value the page prints, and a value the corpus does not
+	 * hold is dropped instead of filtering to nothing.
 	 */
-	private setFromUrl = (key: EntityArrayFilterKey, values: string[]): void => {
+	setFromUrl = (key: string, values: string[]): void => {
+		const dimension = this.byKey.get(key as K);
+		if (!dimension) return;
 		this.setValues(
-			key,
-			canonicalizeFacetValues(
-				values,
-				this.filterOptions[key],
-				key === 'tags' ? tagAlias : undefined
-			)
+			dimension.key,
+			canonicalizeFacetValues(values, dimension.options, dimension.alias)
 		);
-	};
-
-	/** Setter map in the shape the `urlFilterSync` action expects. */
-	readonly setters = {
-		setTypes: (v: string[]) => this.setFromUrl('types', v),
-		setTags: (v: string[]) => this.setFromUrl('tags', v),
-		setLanguages: (v: string[]) => this.setFromUrl('languages', v),
-		setAuthors: (v: string[]) => this.setFromUrl('authors', v),
-		setCountries: (v: string[]) => this.setFromUrl('countries', v),
-		setProjects: (v: string[]) => this.setFromUrl('projects', v),
-		setYearRange: (range: YearRange | null) => this.setYearRange(range)
 	};
 }

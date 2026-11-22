@@ -10,10 +10,7 @@
 	import EntityEmptyState from '#lib/components/entity-index/EntityEmptyState.svelte';
 	import { snapshot } from '$app/navigation';
 	import { urlFilterSync } from '#lib/actions/urlFilterSync.svelte.ts';
-	import {
-		EntityFilterSystem,
-		type EntityArrayDimension
-	} from '#lib/utils/entityFilterSystem.svelte.ts';
+	import { EntityFilterSystem } from '#lib/utils/entityFilterSystem.svelte.ts';
 	import { summariseYears } from '#lib/utils/entityFilterCore.ts';
 	import { byFrequencyThenAlpha, countOccurrences } from '#lib/utils/facetOrdering.ts';
 	import { CITING_WORK_KIND_LABELS, type CitingWorkRow } from '#lib/utils/citationContexts.ts';
@@ -37,8 +34,8 @@
 	 * them, grouped by the publication cited. The quotation takes the document
 	 * voice; where it sits (page, citation form, note) is apparatus and takes
 	 * the data voice under it. The facets are the index pages' own: the kind of
-	 * work in the type row, its language, the cited publication (filed under
-	 * `projects`), the citing authors and the years. Works read without a
+	 * work in the type row, its language, the cited publication, the citing
+	 * authors and the years. Works read without a
 	 * quotable passage, and those not read yet, are counted in the coverage
 	 * table, so the page never implies that every citation was quoted.
 	 *
@@ -49,16 +46,12 @@
 	const coverage = untrack(() => data.coverage);
 	const models = untrack(() => data.models).join(', ');
 
-	const anyOf = (
-		values: (work: CitingWorkRow) => string[]
-	): EntityArrayDimension<CitingWorkRow> => ({
-		match: (work, active) => values(work).some((value) => active.includes(value)),
+	/** A dimension that matches a work holding any of the active values. */
+	const anyOf = (values: (work: CitingWorkRow) => string[]) => ({
+		match: (work: CitingWorkRow, active: string[]) =>
+			values(work).some((value) => active.includes(value)),
 		countExtractor: values
 	});
-	const unused: EntityArrayDimension<CitingWorkRow> = {
-		match: () => true,
-		countExtractor: () => []
-	};
 	const ranked = (lists: string[][]) => {
 		const counts = countOccurrences(lists);
 		return byFrequencyThenAlpha([...counts.keys()], counts);
@@ -68,7 +61,7 @@
 	const languageOf = (work: CitingWorkRow) => [work.language];
 	const citedOf = (work: CitingWorkRow) => work.groups.map((group) => group.publicationTitle);
 
-	const filters = new EntityFilterSystem<CitingWorkRow>({
+	const filters = new EntityFilterSystem({
 		items: works,
 		searchFields: (work) => [
 			work.title,
@@ -81,28 +74,48 @@
 				...group.passages.map((passage) => passage.text)
 			])
 		],
-		// The page files the cited publication under `projects` and the citing
-		// authors under `authors`; the headings say what they hold.
-		labels: { projects: 'Cited publication', authors: 'Citing authors' },
-		dimensions: {
-			types: anyOf(kindOf),
-			languages: anyOf(languageOf),
-			projects: anyOf(citedOf),
-			authors: anyOf((work) => work.authors),
-			tags: unused,
-			countries: unused
-		},
 		matchesYearRange: (work, range) => work.year >= range.min && work.year <= range.max,
-		filterOptions: {
-			types: ranked(works.map(kindOf)),
-			years: [...new Set(works.map((work) => work.year))].sort((a, b) => a - b),
-			tags: [],
-			languages: ranked(works.map(languageOf)),
-			authors: ranked(works.map((work) => work.authors)),
-			countries: [],
-			// Coverage is ordered most quoted first; the facet keeps that order.
-			projects: coverage.filter((pub) => pub.quoted > 0).map((pub) => pub.title)
-		}
+		years: [...new Set(works.map((work) => work.year))].sort((a, b) => a - b),
+		// The page's own keys. The cited publication was once filed under the
+		// publications index's `projects` and shared as `?project=`, which
+		// still selects it.
+		dimensions: [
+			{
+				key: 'kinds',
+				param: 'type',
+				label: 'Type',
+				placement: 'bar-primary',
+				options: ranked(works.map(kindOf)),
+				...anyOf(kindOf)
+			},
+			{
+				key: 'languages',
+				param: 'language',
+				label: 'Language',
+				placement: 'bar-secondary',
+				options: ranked(works.map(languageOf)),
+				...anyOf(languageOf)
+			},
+			{
+				key: 'cited',
+				param: 'cited',
+				legacyParams: ['project'],
+				label: 'Cited publication',
+				placement: 'grid-list',
+				// Coverage is ordered most quoted first; the facet keeps that order.
+				options: coverage.filter((pub) => pub.quoted > 0).map((pub) => pub.title),
+				...anyOf(citedOf)
+			},
+			{
+				key: 'citingAuthors',
+				param: 'author',
+				label: 'Citing authors',
+				placement: 'grid-list',
+				limit: 8,
+				options: ranked(works.map((work) => work.authors)),
+				...anyOf((work) => work.authors)
+			}
+		]
 	});
 	const af = filters.activeFilters;
 
@@ -128,8 +141,8 @@
 		sorted.map((work) => ({
 			work,
 			groups:
-				af.projects.length > 0
-					? work.groups.filter((group) => af.projects.includes(group.publicationTitle))
+				af.cited.length > 0
+					? work.groups.filter((group) => af.cited.includes(group.publicationTitle))
 					: work.groups
 		}))
 	);
@@ -192,10 +205,7 @@
 
 <JsonLd id="breadcrumb-json-ld-publications-citations" json={breadcrumbJsonLd} />
 
-<div
-	class="entity-index"
-	use:urlFilterSync={{ filters: af, setters: filters.setters, search: filters.search, sort }}
->
+<div class="entity-index" use:urlFilterSync={{ system: filters, search: filters.search, sort }}>
 	<Breadcrumb items={breadcrumbItems} />
 
 	<header class="index-hero index-masthead">

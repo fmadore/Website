@@ -1,4 +1,4 @@
-<script lang="ts" generics="TItem">
+<script lang="ts" generics="TItem, K extends string">
 	// The tally of an index: what is narrowing the list, how much of it survives,
 	// and the way out. It sits directly under the search and type row, so a
 	// reader who types sees the count move in the first viewport rather than
@@ -11,7 +11,7 @@
 	import { clearKeepingFocus } from './focusAfterClear';
 
 	interface Props {
-		filters: EntityFilterSystem<TItem>;
+		filters: EntityFilterSystem<TItem, K>;
 		totalEntries: number;
 		minYear: number;
 		maxYear: number;
@@ -36,13 +36,15 @@
 
 	/* What is narrowing the list, in the reader's own words, grouped under the
 	 * facet headings the grid prints: `Tags: Islam or Togo · Held in: Togo`.
-	 * Type codes go through the page's labels; everything else is the authored
-	 * value, typeset. */
+	 * Type codes go through the page's labels, a keyed value (a person id)
+	 * through its dimension's; everything else is the authored value, typeset. */
+	const primaryKey = $derived(filters.dimensions.find((d) => d.placement === 'bar-primary')?.key);
 	const groups = $derived(
-		describeActiveFilters(af, {
-			labels: filters.labels,
+		describeActiveFilters(af, filters.dimensions, {
 			valueLabel: (key, value) =>
-				key === 'types' ? (typeLabels?.[value] ?? value) : typesetQuotes(value),
+				key === primaryKey
+					? (typeLabels?.[value] ?? value)
+					: typesetQuotes(filters.valueLabel(key, value)),
 			yearReadout: yearRangeReadout(af.yearRange, minYear, maxYear),
 			searchTerm: filters.searchTerm
 		})

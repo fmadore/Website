@@ -1,8 +1,4 @@
-import {
-	EntityFilterSystem,
-	type EntityArrayDimension,
-	type EntityFilterConfig
-} from '../src/lib/utils/entityFilterSystem.svelte';
+import { EntityFilterSystem } from '../src/lib/utils/entityFilterSystem.svelte';
 
 export interface Item {
 	id: string;
@@ -21,39 +17,59 @@ export const items: Item[] = [
 /** A project name with a comma and apostrophes inside it, for the round trip. */
 export const PROJECT = "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis";
 
-const inert: EntityArrayDimension<Item> = { match: () => true, countExtractor: () => undefined };
+export type Key = 'types' | 'tags' | 'projects' | 'countries';
 
-/** A two-dimension system over `items`, wired the way the index pages wire theirs. */
+/** A small system over `items`, wired the way the index pages wire theirs. */
 export function createSystem(
-	extra: Pick<EntityFilterConfig<Item>, 'searchFields' | 'labels'> = {}
-): EntityFilterSystem<Item> {
-	return new EntityFilterSystem<Item>({
-		...extra,
+	extra: {
+		searchFields?: (item: Item) => readonly string[];
+		labels?: Partial<Record<Key, string>>;
+	} = {}
+): EntityFilterSystem<Item, Key> {
+	const label = (key: Key, fallback: string) => extra.labels?.[key] ?? fallback;
+	return new EntityFilterSystem<Item, Key>({
 		items,
+		searchFields: extra.searchFields,
+		years: [2023, 2021, 2019, 2016],
 		matchesYearRange: (item, range) => item.year >= range.min && item.year <= range.max,
-		dimensions: {
-			types: {
+		dimensions: [
+			{
+				key: 'types',
+				param: 'type',
+				label: label('types', 'Type'),
+				placement: 'bar-primary',
+				options: ['article', 'book', 'chapter'],
 				match: (item, values) => values.includes(item.type),
 				countExtractor: (item) => item.type
 			},
-			tags: {
+			{
+				key: 'projects',
+				param: 'project',
+				label: label('projects', 'Projects'),
+				placement: 'grid-list',
+				options: [PROJECT],
+				match: () => true,
+				countExtractor: () => undefined
+			},
+			{
+				key: 'countries',
+				param: 'country',
+				label: label('countries', 'Countries'),
+				placement: 'grid-list',
+				options: [],
+				match: () => true,
+				countExtractor: () => undefined
+			},
+			{
+				key: 'tags',
+				param: 'tag',
+				label: label('tags', 'Tags'),
+				placement: 'grid-chips',
+				options: ['Islam', 'Togo', 'Benin'],
 				match: (item, values) => item.tags.some((tag) => values.includes(tag)),
 				countExtractor: (item) => item.tags
-			},
-			languages: inert,
-			authors: inert,
-			countries: inert,
-			projects: inert
-		},
-		filterOptions: {
-			types: ['article', 'book', 'chapter'],
-			years: [2023, 2021, 2019, 2016],
-			tags: ['Islam', 'Togo', 'Benin'],
-			languages: [],
-			authors: [],
-			countries: [],
-			projects: [PROJECT]
-		}
+			}
+		]
 	});
 }
 

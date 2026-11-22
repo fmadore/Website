@@ -11,26 +11,24 @@
 import type { YearRange } from '#lib/types/index.ts';
 import { normalizeSearchText } from '#lib/utils/searchText.ts';
 
-/** The subset of filter state that round-trips through the URL. */
-export interface UrlSyncableFilters {
-	types?: string[];
-	tags?: string[];
-	languages?: string[];
-	authors?: string[];
-	countries?: string[];
-	projects?: string[];
-	yearRange?: YearRange | null;
-}
+/**
+ * The filter state that round-trips through the URL: each dimension's values
+ * under its key, and the year range.
+ */
+export type UrlSyncableFilters = { yearRange?: YearRange | null } & {
+	[key: string]: string[] | YearRange | null | undefined;
+};
 
-/** URL query parameter name for each array-valued filter dimension. */
-export const ARRAY_FILTER_PARAMS = [
-	['type', 'types'],
-	['tag', 'tags'],
-	['language', 'languages'],
-	['author', 'authors'],
-	['country', 'countries'],
-	['project', 'projects']
-] as const satisfies ReadonlyArray<readonly [string, keyof UrlSyncableFilters]>;
+/**
+ * One array-valued dimension as the URL carries it: its state key, its
+ * parameter, and any parameter it was once shared under (read, never written).
+ * The index pages take these from their `EntityDimension`s.
+ */
+export interface UrlFilterDimension {
+	key: string;
+	param: string;
+	legacyParams?: readonly string[];
+}
 
 /** URL query parameter carrying the page-local free-text search. */
 export const SEARCH_PARAM = 'q';
@@ -57,12 +55,13 @@ export const SORT_PARAM = 'sort';
  */
 export function serializeFiltersToQuery(
 	filters: UrlSyncableFilters,
+	dimensions: readonly UrlFilterDimension[],
 	searchTerm = '',
 	sort = ''
 ): string {
 	const urlParams = new URLSearchParams();
 
-	for (const [param, key] of ARRAY_FILTER_PARAMS) {
+	for (const { param, key } of dimensions) {
 		const values = filters[key] as string[] | undefined;
 		if (!values?.length) continue;
 		for (const v of values) urlParams.append(param, v);
@@ -117,6 +116,24 @@ export function parseArrayFilterParam(
 	paramName: string
 ): string[] {
 	return [...new Set(searchParams.getAll(paramName).filter(Boolean))];
+}
+
+/**
+ * A dimension's values from a URL: its parameter's entries, then any legacy
+ * parameter's (`?project=` on the citations page, from before its cited
+ * publication had a key of its own), de-duplicated.
+ */
+export function parseDimensionParam(
+	searchParams: Pick<URLSearchParams, 'getAll'>,
+	dimension: UrlFilterDimension
+): string[] {
+	return [
+		...new Set(
+			[dimension.param, ...(dimension.legacyParams ?? [])].flatMap((param) =>
+				parseArrayFilterParam(searchParams, param)
+			)
+		)
+	];
 }
 
 /**

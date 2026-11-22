@@ -35,7 +35,7 @@ describe('cvPublicationParts', () => {
 		expect(
 			read(
 				cvPublicationParts(
-					pub({ type: 'article', journal: 'Africa', volume: 12, issue: 3, pages: '45–67' })
+					pub({ type: 'article', journal: 'Africa', volume: '12', issue: '3', pages: '45–67' })
 				)
 			)
 		).toBe('[“A Title”]. *Africa* 12 (3): 45–67.');
@@ -77,7 +77,7 @@ describe('cvPublicationParts', () => {
 
 	it('sets a special issue as its journal and number', () => {
 		expect(
-			read(cvPublicationParts(pub({ type: 'special-issue', journal: 'Islam', issue: 2 })))
+			read(cvPublicationParts(pub({ type: 'special-issue', journal: 'Islam', issue: '2' })))
 		).toBe('[“A Title”]. *Islam* (2).');
 	});
 

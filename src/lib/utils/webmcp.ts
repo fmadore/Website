@@ -55,6 +55,7 @@ import {
 } from '#lib/utils/apiSearch.ts';
 import {
 	serializeFiltersToQuery,
+	type UrlFilterDimension,
 	type UrlSyncableFilters
 } from '#lib/utils/filterSerialization.ts';
 import type { WebMcpToolName } from '#lib/utils/webmcpToolNames.ts';
@@ -254,6 +255,21 @@ const PUBLICATION_SORTS = ['date', 'title', 'citations'] as const;
  * a co-author (its `Co-authors` facet) and the sort row. Kept apart from
  * PUBLICATION_FILTERS, which `search_publications` shares with the MCP server.
  */
+/**
+ * The publications index's filter parameters, as its dimensions declare them
+ * (`data/publications/filters.svelte.ts`; `indexFilters.test.svelte.ts` holds
+ * the two in step). Listed here rather than imported: that module carries the
+ * whole dataset, and this one is loaded on every page.
+ */
+export const PUBLICATION_URL_DIMENSIONS: readonly UrlFilterDimension[] = [
+	{ key: 'types', param: 'type' },
+	{ key: 'languages', param: 'language' },
+	{ key: 'projects', param: 'project' },
+	{ key: 'authors', param: 'author' },
+	{ key: 'countries', param: 'country' },
+	{ key: 'tags', param: 'tag' }
+];
+
 const SHOW_PUBLICATION_FILTERS = {
 	...PUBLICATION_FILTERS,
 	author: {
@@ -650,7 +666,12 @@ function buildTools({ navigate, fetch }: WebMcpOptions): WebMcpTool[] {
 					const query = text(args, 'query') ?? '';
 					const sort = choice(args, 'sort', PUBLICATION_SORTS) ?? 'date';
 					// The default order is no parameter, as the index writes it.
-					const qs = serializeFiltersToQuery(filters, query, sort === 'date' ? '' : sort);
+					const qs = serializeFiltersToQuery(
+						filters,
+						PUBLICATION_URL_DIMENSIONS,
+						query,
+						sort === 'date' ? '' : sort
+					);
 					const path = `/publications${qs ? `?${qs}` : ''}`;
 					// Cancelled while the document loaded: the reader's page is
 					// no longer the agent's to change.

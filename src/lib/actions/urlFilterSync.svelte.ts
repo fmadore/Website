@@ -4,28 +4,29 @@ import { browser } from '$app/env';
 import { untrack } from 'svelte';
 import type { Action } from 'svelte/action';
 import {
-	ARRAY_FILTER_PARAMS,
 	serializeFiltersToQuery,
-	parseArrayFilterParam,
+	parseDimensionParam,
 	parseSearchParam,
 	parseSortParam,
 	parseYearRangeParams,
 	arrayValuesEqual,
 	yearRangesEqual,
+	type UrlFilterDimension,
 	type UrlSyncableFilters
 } from '#lib/utils/filterSerialization.ts';
+import type { YearRange } from '#lib/types/index.ts';
 
-type ActiveFilters = UrlSyncableFilters;
-
-interface FilterSetters {
-	setTypes?: (value: string[]) => void;
-	setTags?: (value: string[]) => void;
-	setLanguages?: (value: string[]) => void;
-	setAuthors?: (value: string[]) => void;
-	setCountries?: (value: string[]) => void;
-	setProjects?: (value: string[]) => void;
-	setYearRange?: (value: { min: number; max: number } | null) => void;
-	// Add other setters corresponding to ActiveFilters
+/**
+ * What the action needs of a filter system (`EntityFilterSystem` is one): its
+ * reactive state, its dimensions as the URL names them, and the two ways a URL
+ * writes back into it.
+ */
+export interface UrlSyncableSystem {
+	readonly activeFilters: UrlSyncableFilters;
+	readonly urlDimensions: readonly UrlFilterDimension[];
+	/** Sets a dimension from URL values, mapping them onto its vocabulary. */
+	setFromUrl: (key: string, values: string[]) => void;
+	setYearRange: (range: YearRange | null) => void;
 }
 
 /**
@@ -51,25 +52,19 @@ export interface SortAccessor {
 }
 
 interface UrlFilterSyncParams {
-	/** Reactive filters object (using $state runes) */
-	filters: ActiveFilters;
-	/** Setter functions for each filter category */
-	setters: FilterSetters;
+	/** The page's filter system. */
+	system: UrlSyncableSystem;
+	/**
+	 * Whether the year range rides in the URL (`year_min`/`year_max`). Off for
+	 * a page with no year control (/activities), where a hand-written bound
+	 * would narrow the list with nothing on the page to say so or undo it.
+	 */
+	years?: boolean;
 	/** Optional free-text search, synced as `q`. */
 	search?: SearchTermAccessor;
 	/** Optional sort order, synced as `sort` when it is not the default. */
 	sort?: SortAccessor;
 }
-
-/** Setter name for each array-valued filter key. */
-const ARRAY_FILTER_SETTERS = {
-	types: 'setTypes',
-	tags: 'setTags',
-	languages: 'setLanguages',
-	authors: 'setAuthors',
-	countries: 'setCountries',
-	projects: 'setProjects'
-} as const;
 
 /**
  * Svelte Action to synchronize filter state with URL query parameters.
@@ -78,18 +73,12 @@ const ARRAY_FILTER_SETTERS = {
  *
  * @example
  * ```svelte
- * <script>
- *   let filters = $state({ types: [], tags: [] });
- *
- *   function setTypes(value: string[]) { filters.types = value; }
- *   function setTags(value: string[]) { filters.tags = value; }
- * </script>
- *
- * <div use:urlFilterSync={{ filters, setters: { setTypes, setTags } }}>
+ * <div use:urlFilterSync={{ system: filters, search: filters.search }}>
  * ```
  */
 export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, params) => {
-	const { filters, setters, search, sort } = params;
+	const { system, search, sort, years = true } = params;
+	const filters = system.activeFilters;
 	let initialUrlApplied = false;
 	let lastFiltersString = '';
 
@@ -114,7 +103,12 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		// contain commas (e.g. project names like "Islam's 'Peripheries':
 		// Digital Humanities, Algorithmic Analysis, ..."); the year range
 		// serializes as year_min/year_max.
-		const queryString = serializeFiltersToQuery(filters, search?.value ?? '', sortParam());
+		const queryString = serializeFiltersToQuery(
+			filters,
+			system.urlDimensions,
+			search?.value ?? '',
+			sortParam()
+		);
 		const basePath = page.url.pathname;
 		const hash = untrack(() => currentAddress().hash);
 		const targetUrl = `${basePath}${queryString ? `?${queryString}` : ''}${hash}`;
@@ -176,15 +170,13 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 	function syncFromUrl(searchParams: Pick<URLSearchParams, 'get' | 'getAll'>) {
 		let filtersChanged = false;
 
-		// Sync array filters: compare order-insensitively and update via the
-		// dimension's setter only when the URL disagrees with current state.
-		for (const [paramName, filterKey] of ARRAY_FILTER_PARAMS) {
-			const setter = setters[ARRAY_FILTER_SETTERS[filterKey]];
-			if (!setter) continue; // Skip if setter doesn't exist
-			const valuesFromUrl = parseArrayFilterParam(searchParams, paramName);
-			const currentValues = filters[filterKey];
+		// Sync array filters: compare order-insensitively and update only when
+		// the URL disagrees with current state.
+		for (const dimension of system.urlDimensions) {
+			const valuesFromUrl = parseDimensionParam(searchParams, dimension);
+			const currentValues = filters[dimension.key] as string[] | undefined;
 			if (!arrayValuesEqual(valuesFromUrl, currentValues)) {
-				setter(valuesFromUrl);
+				system.setFromUrl(dimension.key, valuesFromUrl);
 				filtersChanged = true;
 			}
 		}
@@ -208,15 +200,12 @@ export const urlFilterSync: Action<HTMLElement, UrlFilterSyncParams> = (node, pa
 		}
 
 		// Sync year range filter
-		if (setters.setYearRange) {
-			const newRange = parseYearRangeParams(
-				searchParams.get('year_min'),
-				searchParams.get('year_max')
-			);
-			if (!yearRangesEqual(newRange, filters.yearRange)) {
-				setters.setYearRange(newRange);
-				filtersChanged = true;
-			}
+		const newRange = years
+			? parseYearRangeParams(searchParams.get('year_min'), searchParams.get('year_max'))
+			: null;
+		if (!yearRangesEqual(newRange, filters.yearRange)) {
+			system.setYearRange(newRange);
+			filtersChanged = true;
 		}
 
 		if (filtersChanged) {

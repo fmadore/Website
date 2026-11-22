@@ -47,8 +47,7 @@ function mount(path: string, arrive: () => void = () => at(path)) {
 	};
 	stop = $effect.root(() => {
 		urlFilterSync({} as HTMLElement, {
-			filters: system.activeFilters,
-			setters: system.setters,
+			system,
 			search
 		});
 	});
@@ -172,7 +171,7 @@ it('reads a mixed-case, repeated deep link onto the chips the page prints', () =
 	expect(system.activeFilters.tags).toEqual(['Islam']);
 	expect(system.activeFilters.yearRange).toEqual({ min: 2020, max: Infinity });
 	expect(ids(system.filteredItems)).toEqual([]);
-	system.setters.setTags([]);
+	system.setFromUrl('tags', []);
 	flushSync();
 	expect(ids(system.filteredItems)).toEqual(['c', 'd']);
 	expect(replaced.at(-1)).toBe('/publications?year_min=2020');
@@ -181,7 +180,7 @@ it('reads a mixed-case, repeated deep link onto the chips the page prints', () =
 it('keeps a comma inside one value', () => {
 	const project = PROJECT;
 	const first = mount('/publications');
-	first.system.setters.setProjects([project]);
+	first.system.setFromUrl('projects', [project]);
 	flushSync();
 	const written = new URL(replaced.at(-1)!, ORIGIN);
 	stop?.();
@@ -208,8 +207,7 @@ function mountWithSort(path: string, arrive: () => void = () => at(path)) {
 	};
 	stop = $effect.root(() => {
 		urlFilterSync({} as HTMLElement, {
-			filters: system.activeFilters,
-			setters: system.setters,
+			system,
 			search: system.search,
 			sort
 		});

@@ -14,7 +14,8 @@ import {
 	communicationSummariesByCountry as communicationsByCountry
 } from './summaries';
 import { author as siteAuthor } from '#lib/data/siteConfig.ts';
-import { EntityFilterSystem } from '#lib/utils/entityFilterSystem.svelte.ts';
+import { EntityFilterSystem, tagAlias } from '#lib/utils/entityFilterSystem.svelte.ts';
+import { buildPersonFacet, type Credit } from '#lib/utils/personFacet.ts';
 import { getContributorNames } from '#lib/utils/contributor.ts';
 import {
 	COMMUNICATION_TYPE_BADGE_LABELS,
@@ -22,23 +23,39 @@ import {
 	COMMUNICATION_TYPE_LIST_LABELS
 } from '#lib/utils/typeUtils.ts';
 
+// --- Co-authors, keyed on people ---
+
+const credits = (comm: CommunicationSummary): Credit[] =>
+	(comm.authors ?? []).map((contributor) =>
+		typeof contributor === 'string'
+			? { name: contributor }
+			: { name: contributor.name, personId: contributor.personId }
+	);
+
+const people = buildPersonFacet(allCommunications.flatMap(credits));
+const siteAuthorKey = people.alias(siteAuthor.name);
+
+/** A talk's co-presenters as facet keys, the site's own author left out. */
+const coAuthorKeys = (comm: CommunicationSummary): string[] =>
+	[...new Set(credits(comm).map(people.keyOf))].filter((key) => key !== siteAuthorKey);
+
 // --- Computed unique values ---
 
-const allCoAuthors = Array.from(
-	new Set(allCommunications.flatMap((comm) => getContributorNames(comm.authors)))
-)
-	.filter((author) => author !== siteAuthor.name)
-	.sort();
+// One-shot build-time tallies over a fixed dataset, never reactive state.
 
-const allLanguages = Array.from(
-	new Set(
-		allCommunications.flatMap((comm) => {
-			if (!comm.language) return [];
-			if (Array.isArray(comm.language)) return comm.language;
-			return comm.language.split(',').map((l) => l.trim());
-		})
-	)
-).sort();
+const allCoAuthors = Array.from(new Set(allCommunications.flatMap(coAuthorKeys))).sort((a, b) =>
+	people.label(a).localeCompare(people.label(b))
+);
+
+/** A talk's languages, from a list or a comma-separated field. */
+const talkLanguages = (comm: CommunicationSummary): string[] =>
+	!comm.language
+		? []
+		: Array.isArray(comm.language)
+			? comm.language
+			: comm.language.split(',').map((l) => l.trim());
+
+const allLanguages = Array.from(new Set(allCommunications.flatMap(talkLanguages))).sort();
 
 const allCountries = Object.keys(communicationsByCountry || {});
 
@@ -51,17 +68,18 @@ const allProjects = Array.from(
 // lists show the meaningful ones; ties fall back to alphabetical.
 
 const tagFrequency = countOccurrences(allCommunications.map((comm) => comm.tags ?? []));
-const coAuthorFrequency = countOccurrences(
-	allCommunications.map((comm) =>
-		getContributorNames(comm.authors).filter((a) => a !== siteAuthor.name)
-	)
-);
+const coAuthorFrequency = countOccurrences(allCommunications.map(coAuthorKeys));
 
 // Countries by how many talks were held there: alphabetical and cut at eight,
 // the list hid the United States (12) while printing Cameroon (1).
 const countryFrequency = countOccurrences(
 	allCommunications.map((comm) => (comm.country ? [comm.country] : []))
 );
+
+// --- Slides: a one-value facet over the talks whose deck is published ---
+
+export const WITH_SLIDES = 'With slides';
+const slidesOf = (comm: CommunicationSummary) => (comm.slidesUrl ? WITH_SLIDES : undefined);
 
 // --- Free-text search ---
 
@@ -98,69 +116,91 @@ export function communicationSearchFields(comm: CommunicationSummary): string[] 
 
 // --- Filter System ---
 
-export const communicationFilters = new EntityFilterSystem<CommunicationSummary>({
+type Talk = CommunicationSummary;
+
+export const communicationFilters = new EntityFilterSystem({
 	items: allCommunications,
 	searchFields: communicationSearchFields,
-	// Where the talk was given, not what it was about: the publications index
-	// reads the same parameter as the countries a work studies.
-	labels: { countries: 'Held in' },
-	matchesYearRange: (comm: CommunicationSummary, range: YearRange) =>
+	matchesYearRange: (comm: Talk, range: YearRange) =>
 		!!comm.year && comm.year >= range.min && comm.year <= range.max,
-	dimensions: {
-		types: {
-			match: (comm: CommunicationSummary, values: string[]) =>
-				!!comm.type && values.includes(comm.type),
-			countExtractor: (comm: CommunicationSummary) => comm.type
+	years: Object.keys(communicationsByYear || {})
+		.map(Number)
+		.sort((a, b) => b - a),
+	dimensions: [
+		{
+			key: 'types',
+			param: 'type',
+			label: 'Type',
+			placement: 'bar-primary',
+			options: Object.keys(communicationsByType || {}).sort(),
+			match: (comm: Talk, values: string[]) => !!comm.type && values.includes(comm.type),
+			countExtractor: (comm: Talk) => comm.type
 		},
-		tags: {
-			match: (comm: CommunicationSummary, values: string[]) =>
+		{
+			key: 'languages',
+			param: 'language',
+			label: 'Language',
+			placement: 'bar-secondary',
+			options: allLanguages,
+			match: (comm: Talk, values: string[]) => talkLanguages(comm).some((l) => values.includes(l)),
+			countExtractor: (comm: Talk) => (comm.language ? talkLanguages(comm) : undefined)
+		},
+		{
+			key: 'projects',
+			param: 'project',
+			label: 'Projects',
+			placement: 'grid-list',
+			options: allProjects,
+			match: (comm: Talk, values: string[]) => !!comm.project && values.includes(comm.project),
+			countExtractor: (comm: Talk) => comm.project
+		},
+		{
+			key: 'authors',
+			param: 'author',
+			label: 'Co-authors',
+			placement: 'grid-list',
+			limit: 8,
+			options: byFrequencyThenAlpha(allCoAuthors, coAuthorFrequency),
+			valueLabel: people.label,
+			alias: people.alias,
+			match: (comm: Talk, values: string[]) =>
+				coAuthorKeys(comm).some((key) => values.includes(key)),
+			countExtractor: coAuthorKeys
+		},
+		{
+			key: 'countries',
+			param: 'country',
+			// Where the talk was given, not what it was about: the publications
+			// index reads the same parameter as the countries a work studies.
+			label: 'Held in',
+			placement: 'grid-list',
+			limit: 8,
+			noun: 'countries',
+			yearsBeside: true,
+			options: byFrequencyThenAlpha(allCountries, countryFrequency),
+			match: (comm: Talk, values: string[]) => !!comm.country && values.includes(comm.country),
+			countExtractor: (comm: Talk) => comm.country
+		},
+		{
+			key: 'tags',
+			param: 'tag',
+			label: 'Tags',
+			placement: 'grid-chips',
+			limit: 12,
+			alias: tagAlias,
+			options: byFrequencyThenAlpha(allTags || [], tagFrequency),
+			match: (comm: Talk, values: string[]) =>
 				!!comm.tags && comm.tags.some((t) => values.includes(t)),
-			countExtractor: (comm: CommunicationSummary) => comm.tags
+			countExtractor: (comm: Talk) => comm.tags
 		},
-		languages: {
-			match: (comm: CommunicationSummary, values: string[]) => {
-				const langs = comm.language
-					? Array.isArray(comm.language)
-						? comm.language
-						: comm.language.split(',').map((l) => l.trim())
-					: [];
-				return langs.some((l) => values.includes(l));
-			},
-			countExtractor: (comm: CommunicationSummary) => {
-				if (!comm.language) return undefined;
-				return Array.isArray(comm.language)
-					? comm.language
-					: comm.language.split(',').map((l) => l.trim());
-			}
-		},
-		authors: {
-			match: (comm: CommunicationSummary, values: string[]) => {
-				const authors = getContributorNames(comm.authors);
-				return authors.some((a) => a !== siteAuthor.name && values.includes(a));
-			},
-			countExtractor: (comm: CommunicationSummary) =>
-				getContributorNames(comm.authors).filter((a) => a !== siteAuthor.name)
-		},
-		countries: {
-			match: (comm: CommunicationSummary, values: string[]) =>
-				!!comm.country && values.includes(comm.country),
-			countExtractor: (comm: CommunicationSummary) => comm.country
-		},
-		projects: {
-			match: (comm: CommunicationSummary, values: string[]) =>
-				!!comm.project && values.includes(comm.project),
-			countExtractor: (comm: CommunicationSummary) => comm.project
+		{
+			key: 'slides',
+			param: 'slides',
+			label: 'Slides',
+			placement: 'grid-chips',
+			options: allCommunications.some((comm) => comm.slidesUrl) ? [WITH_SLIDES] : [],
+			match: (comm: Talk, values: string[]) => values.includes(slidesOf(comm) ?? ''),
+			countExtractor: slidesOf
 		}
-	},
-	filterOptions: {
-		types: Object.keys(communicationsByType || {}).sort(),
-		years: Object.keys(communicationsByYear || {})
-			.map(Number)
-			.sort((a, b) => b - a),
-		tags: byFrequencyThenAlpha(allTags || [], tagFrequency),
-		languages: allLanguages,
-		authors: byFrequencyThenAlpha(allCoAuthors, coAuthorFrequency),
-		countries: byFrequencyThenAlpha(allCountries, countryFrequency),
-		projects: allProjects
-	}
+	]
 });

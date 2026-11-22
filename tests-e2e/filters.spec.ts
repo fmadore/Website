@@ -367,3 +367,26 @@ test('the activities log searches through ?q= like the sibling indexes', async (
 	await expect(page).toHaveURL(/q=zzzzqqxx/);
 	await expect(page.getByRole('button', { name: /^Clear/ })).toHaveCount(1);
 });
+
+test('a co-author link by name selects the person, keyed on their id', async ({ page }) => {
+	// Two spellings of one person, merged by the person id the records carry.
+	// An active grid facet opens the grid itself.
+	await page.goto('/publications?author=Mirco%20Schoenfeld');
+	await ready(page);
+	const row = page.getByRole('button', { name: /^Mirco Sch(ö|oe)nfeld/ });
+	await expect(row).toHaveCount(1);
+	await expect(row).toHaveAttribute('aria-pressed', 'true');
+	// Any change writes the state back, naming the person by their key.
+	await page.locator('.facet-tags .chip').first().click();
+	await expect(page).toHaveURL(/author=mirco-schonfeld/);
+});
+
+test('the publications index filters by open access', async ({ page }) => {
+	await page.goto('/publications?access=Open%20access');
+	await ready(page);
+	await expect(page.getByRole('button', { name: /^Open access \d+/ })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
+	await expect(page.getByText(/Access: Open access/)).toBeVisible();
+});
