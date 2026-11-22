@@ -6,7 +6,10 @@ import {
 	communicationSummariesByDate,
 	communicationSummariesWithSlides
 } from '#lib/data/communications/summaries.ts';
-import { HEAVY_COMMUNICATION_FIELDS } from '#lib/data/communications/summaryConfig.ts';
+import {
+	HEAVY_COMMUNICATION_FIELDS,
+	HEAVY_COMMUNICATION_PAPER_FIELDS
+} from '#lib/data/communications/summaryConfig.ts';
 import { ABSTRACT_EXCERPT_LENGTH } from '#lib/data/publications/summaryConfig.ts';
 import { truncateAbstract } from '#lib/utils/textUtils.ts';
 
@@ -52,19 +55,28 @@ describe('communication summaries', () => {
 			expect(summary, `no summary for ${communication.id}`).toBeDefined();
 			const heavy: readonly string[] = HEAVY_COMMUNICATION_FIELDS;
 			for (const [key, value] of Object.entries(communication)) {
-				if (heavy.includes(key)) continue;
+				// `papers` is projected too; its own test below covers it.
+				if (heavy.includes(key) || key === 'papers') continue;
 				expect(summary![key as keyof typeof summary], `${communication.id}.${key}`).toEqual(value);
 			}
 		}
 	});
 
-	it('keep the panel programmes the networks are built from', () => {
+	it('keep the panel programmes the networks are built from, without paper abstracts', () => {
 		// `papers[].authors` feeds the co-presenter and institution networks on
-		// /conference-activity/visualisations, so the projection may not drop it.
+		// /conference-activity/visualisations, so the projection may not drop it;
+		// each paper's abstract is printed only on the talk's record page.
+		const heavy: readonly string[] = HEAVY_COMMUNICATION_PAPER_FIELDS;
 		for (const communication of allCommunications) {
-			if (!communication.papers) continue;
-			expect(summariesById.get(communication.id)!.papers, communication.id).toEqual(
-				communication.papers
+			const summary = summariesById.get(communication.id)!;
+			if (!communication.papers) {
+				expect('papers' in summary, communication.id).toBe(false);
+				continue;
+			}
+			expect(summary.papers, communication.id).toEqual(
+				communication.papers.map((paper) =>
+					Object.fromEntries(Object.entries(paper).filter(([key]) => !heavy.includes(key)))
+				)
 			);
 		}
 	});

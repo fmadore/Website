@@ -14,6 +14,7 @@
  *   - `abstractExcerpt`, where a record has an abstract: its first
  *     ABSTRACT_EXCERPT_LENGTH + 1 characters, one more than the longest
  *     truncation a row applies (see scripts/lib/summary-projection.mjs);
+ *   - for talks, each `papers[]` entry without its `abstract`;
  *   - for publications, `citedByCount`, `tocAuthors` (the table of contents'
  *     contributors, which the authors facet counts) and `sourceDirType`.
  * The record pages keep reading the full records, through their server loads.
@@ -51,7 +52,8 @@ import {
 } from '../../src/lib/data/publications/summaryConfig.ts';
 import {
 	CV_COMMUNICATION_FIELDS,
-	HEAVY_COMMUNICATION_FIELDS
+	HEAVY_COMMUNICATION_FIELDS,
+	HEAVY_COMMUNICATION_PAPER_FIELDS
 } from '../../src/lib/data/communications/summaryConfig.ts';
 import { HEAVY_ACTIVITY_FIELDS } from '../../src/lib/data/activities/summaryConfig.ts';
 import { HEAVY_DH_FIELDS } from '../../src/lib/data/digital-humanities/summaryConfig.ts';
@@ -102,7 +104,18 @@ const DATASETS = [
 				type: ['CvCommunication', '#lib/types/communication.ts'],
 				fields: CV_COMMUNICATION_FIELDS
 			}
-		]
+		],
+		extend(summary) {
+			// A panel's programme stays (the networks read `papers[].authors`),
+			// each paper without the abstract only the record page prints.
+			if (Array.isArray(summary.papers)) {
+				summary.papers = summary.papers.map((paper) =>
+					Object.fromEntries(
+						Object.entries(paper).filter(([key]) => !HEAVY_COMMUNICATION_PAPER_FIELDS.includes(key))
+					)
+				);
+			}
+		}
 	},
 	{
 		dir: 'src/lib/data/activities',

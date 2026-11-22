@@ -1,4 +1,8 @@
-import type { CvCommunicationField, HeavyCommunicationField } from '#lib/types/communication.ts';
+import type {
+	CvCommunicationField,
+	HeavyCommunicationField,
+	HeavyCommunicationPaperField
+} from '#lib/types/communication.ts';
 
 /**
  * Shared between the summaries generator
@@ -14,8 +18,14 @@ import type { CvCommunicationField, HeavyCommunicationField } from '#lib/types/c
 
 /** The fields the projection drops; see `HeavyCommunicationField`. */
 export const HEAVY_COMMUNICATION_FIELDS = [
-	'abstract'
+	'abstract',
+	'heroImage'
 ] as const satisfies readonly HeavyCommunicationField[];
+
+/** The fields each `papers[]` entry drops; see `HeavyCommunicationPaperField`. */
+export const HEAVY_COMMUNICATION_PAPER_FIELDS = [
+	'abstract'
+] as const satisfies readonly HeavyCommunicationPaperField[];
 
 /** The fields the CV view keeps; see `CvCommunicationField`. */
 export const CV_COMMUNICATION_FIELDS = [
