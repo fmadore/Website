@@ -18,6 +18,7 @@ shared verbatim with the MCP server, and widening it here would be the wrong
 place to decide that.
 -->
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { resolve } from '$app/paths';
 	import { basePrefix } from '#lib/utils/paths.ts';
 	import type { Activity } from '#lib/types/activity.ts';
@@ -100,19 +101,11 @@ place to decide that.
 <!-- CTAs — the one pine fill is the record's own destination; the document jump,
      the year archive and every mirror below them are outlines. -->
 {#if activity.url || additionalUrls.length > 0 || hasDocument || activity.year != null}
-	<!-- eslint-disable svelte/no-navigation-without-resolve -- external activity links, plus an in-page anchor -->
 	<div class="rail-cta">
 		{#if activity.url}
-			<a
-				href={activity.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-accent btn-block"
-			>
-				{primaryLabel}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={activity.url} class="btn btn-accent btn-block" glyph>
+				{primaryLabel}
+			</ExternalLink>
 		{/if}
 		{#if hasDocument}
 			<a href="#document" class="btn btn-outline-primary btn-block">
@@ -120,16 +113,9 @@ place to decide that.
 			</a>
 		{/if}
 		{#each additionalUrls as link (link.url)}
-			<a
-				href={link.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-outline-secondary btn-block"
-			>
-				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={link.url} class="btn btn-outline-secondary btn-block" glyph>
+				{link.label}
+			</ExternalLink>
 		{/each}
 		{#if activity.year != null}
 			<!-- The year's own archive: the one place this record goes that is not
@@ -140,5 +126,4 @@ place to decide that.
 			</a>
 		{/if}
 	</div>
-	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 {/if}

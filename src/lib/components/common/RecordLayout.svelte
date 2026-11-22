@@ -53,6 +53,7 @@ Usage:
 </script>
 
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import type { Snippet } from 'svelte';
 	import Icon from '@iconify/svelte';
 	import JsonLd from '#lib/components/common/JsonLd.svelte';
@@ -217,14 +218,9 @@ Usage:
 								>
 									&nbsp;·
 								</span><wbr />
-							{/if}<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external DOI resolver --><a
-								class="record-dateline-doi"
-								href="https://doi.org/{dateline.doi}"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								doi:{dateline.doi}<span class="sr-only">&nbsp;(opens in new tab)</span>
-							</a>{/if}
+							{/if}<ExternalLink class="record-dateline-doi" href="https://doi.org/{dateline.doi}">
+								doi:{dateline.doi}
+							</ExternalLink>{/if}
 					</p>
 				{/if}
 
@@ -537,7 +533,7 @@ Usage:
 	/* The prose-link idiom: ink at rest over a pine underline, pine under the
 	   pointer. The eyebrow above already spends the accent; a second pine
 	   string a line below it would not be scarce. */
-	.record-dateline-doi {
+	:global(.record-dateline-doi) {
 		color: inherit;
 		text-decoration: underline;
 		text-decoration-color: var(--color-accent);
@@ -547,11 +543,11 @@ Usage:
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.record-dateline-doi:hover {
+	:global(.record-dateline-doi):hover {
 		color: var(--color-accent);
 	}
 
-	.record-dateline-doi:focus-visible {
+	:global(.record-dateline-doi):focus-visible {
 		outline: var(--focus-outline);
 		outline-offset: var(--focus-outline-offset);
 	}
@@ -614,7 +610,7 @@ Usage:
 
 	@media (prefers-reduced-motion: reduce) {
 		.record-breadcrumb-link,
-		.record-dateline-doi {
+		:global(.record-dateline-doi) {
 			transition: none;
 		}
 	}

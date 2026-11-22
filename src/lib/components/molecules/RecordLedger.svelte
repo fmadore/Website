@@ -30,6 +30,7 @@ DOI would break the link.
 </script>
 
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import Icon from '@iconify/svelte';
 
 	interface Props {
@@ -51,16 +52,13 @@ DOI would break the link.
 					<dt class="meta-key">{row.key}</dt>
 					<dd class="meta-value" class:meta-value--accent={row.accent}>
 						{#if row.href && row.external}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a href={row.href} target="_blank" rel="noopener" class="meta-link">
+							<ExternalLink href={row.href} class="meta-link" glyph>
 								{#if row.icon}<Icon
 										icon={row.icon}
 										class="meta-icon"
 										aria-hidden="true"
-									/>{/if}{row.value}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-									&nbsp;(opens in new tab)
-								</span>
-							</a>
+									/>{/if}{row.value}
+							</ExternalLink>
 						{:else if row.href}
 							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- base-prefixed internal path -->
 							<a href={row.href} class="meta-link">

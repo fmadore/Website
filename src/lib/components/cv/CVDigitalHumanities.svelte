@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { allDhProjectSummaries as allDhProjects } from '#lib/data/digital-humanities/summaries.ts';
 	import { formatCVYearRange, trimTerminalPeriod } from '#lib/utils/cvFormatters.ts';
 	import { splitCvProjects } from '#lib/utils/cvSections.ts';
@@ -73,18 +74,12 @@
 					{@const isLast = i === project.reviews.length - 1}
 					<!-- Citations are separated by semicolons, so all but the last shed
 					     their terminal full stop rather than reading "(2023).;". -->
-					<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-					<a href={review.url} target="_blank" rel="noopener noreferrer">
+
+					<ExternalLink href={review.url}>
 						<!-- eslint-disable svelte/no-at-html-tags -- Safe: review.text is from trusted static project data files -->{@html typesetQuotesInHtml(
 							isLast ? review.text : trimTerminalPeriod(review.text)
-						)}<!-- eslint-enable svelte/no-at-html-tags --><span class="sr-only">
-							&nbsp;(opens in new tab)
-						</span>
-					</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if !isLast}<span
-							class="review-sep"
-						>
-							;&nbsp;
-						</span>{/if}
+						)}<!-- eslint-enable svelte/no-at-html-tags -->
+					</ExternalLink>{#if !isLast}<span class="review-sep"> ;&nbsp; </span>{/if}
 				{/each}
 			</div>
 		{/if}

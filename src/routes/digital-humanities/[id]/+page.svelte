@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import SEO from '#lib/SEO.svelte';
 	import { pageTitle } from '#lib/utils/siteHelpers.ts';
 	import { recordEntityId } from '#lib/utils/jsonLdSchemas.ts';
@@ -133,8 +134,7 @@
 						<IframeRenderer {...item} />
 					{:else if item.type === 'image'}
 						{#if item.linkUrl}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a href={item.linkUrl} target="_blank" rel="noopener noreferrer" class="embed-link">
+							<ExternalLink href={item.linkUrl} class="embed-link">
 								<img
 									src={item.src}
 									alt={item.alt}
@@ -145,8 +145,7 @@
 									decoding="async"
 									use:plateFallback
 								/>
-								<span class="sr-only">&nbsp;(opens in new tab)</span>
-							</a>
+							</ExternalLink>
 						{:else}
 							<img
 								src={item.src}
@@ -208,15 +207,12 @@
 			</div>
 			<p class="apparatus-text">
 				<!-- Safe: project.publication.text is trusted project data -->
-				<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+
 				<!-- eslint-disable svelte/no-at-html-tags -->
-				<a href={project.publication.url} target="_blank" rel="noopener noreferrer">
-					{@html typesetQuotesInHtml(project.publication.text)}<span class="sr-only">
-						&nbsp;(opens in new tab)
-					</span>
-				</a>
+				<ExternalLink href={project.publication.url}>
+					{@html typesetQuotesInHtml(project.publication.text)}
+				</ExternalLink>
 				<!-- eslint-enable svelte/no-at-html-tags -->
-				<!-- eslint-enable svelte/no-navigation-without-resolve -->
 			</p>
 		</section>
 	{/if}
@@ -234,15 +230,12 @@
 						<div class="ledger-content">
 							<p class="apparatus-text">
 								<!-- Safe: review.text is trusted project data -->
-								<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
+
 								<!-- eslint-disable svelte/no-at-html-tags -->
-								<a href={review.url} target="_blank" rel="noopener noreferrer">
-									{@html typesetQuotesInHtml(review.text)}<span class="sr-only">
-										&nbsp;(opens in new tab)
-									</span>
-								</a>
+								<ExternalLink href={review.url}>
+									{@html typesetQuotesInHtml(review.text)}
+								</ExternalLink>
 								<!-- eslint-enable svelte/no-at-html-tags -->
-								<!-- eslint-enable svelte/no-navigation-without-resolve -->
 							</p>
 							{#if review.quote}
 								<blockquote class="review-quote">{typesetQuotes(review.quote)}</blockquote>
@@ -293,7 +286,7 @@
 		margin-block-end: 0;
 	}
 
-	.embed-link {
+	:global(.embed-link) {
 		display: block;
 	}
 

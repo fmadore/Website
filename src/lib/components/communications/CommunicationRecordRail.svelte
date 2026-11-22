@@ -10,6 +10,7 @@ verbatim with the MCP server; a talk is not a bibliographic record it knows how
 to emit, and widening it for one button would be the wrong place to decide that.
 -->
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { assetHref, basePrefix } from '#lib/utils/paths.ts';
 	import type { Communication } from '#lib/types/communication.ts';
 	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
@@ -157,21 +158,12 @@ to emit, and widening it for one button would be the wrong place to decide that.
 <!-- CTAs — the one pine fill is the record's own destination; the poster and
      deck jumps, the poster's PDF and every mirror below them are outlines. -->
 {#if communication.url || additionalUrls.length > 0 || hasSlides || posterPdf}
-	<!-- eslint-disable svelte/no-navigation-without-resolve -- external talk links, a static file, in-page anchors -->
+	<!-- eslint-disable svelte/no-navigation-without-resolve -- a static file and in-page anchors -->
 	<div class="rail-cta">
 		{#if communication.url}
-			<a
-				href={communication.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-accent btn-block"
-			>
-				{communication.urlLabel ?? 'Open presentation'}<span aria-hidden="true">&nbsp;↗</span><span
-					class="sr-only"
-				>
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={communication.url} class="btn btn-accent btn-block" glyph>
+				{communication.urlLabel ?? 'Open presentation'}
+			</ExternalLink>
 		{/if}
 		{#if posterPdf}
 			<a href="#poster" class="btn btn-outline-primary btn-block">
@@ -187,16 +179,9 @@ to emit, and widening it for one button would be the wrong place to decide that.
 			</a>
 		{/if}
 		{#each additionalUrls as link (link.url)}
-			<a
-				href={link.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-outline-secondary btn-block"
-			>
-				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={link.url} class="btn btn-outline-secondary btn-block" glyph>
+				{link.label}
+			</ExternalLink>
 		{/each}
 	</div>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->

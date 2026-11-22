@@ -33,6 +33,7 @@ licence, interface languages) sits above the addresses, which is what a
 reader checks before installing anything.
 -->
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { basePrefix } from '#lib/utils/paths.ts';
 	import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 	import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
@@ -134,14 +135,9 @@ reader checks before installing anything.
 						class:meta-value--accent={group.type === 'site' && !ctaLink}
 					>
 						{#each group.links as link (link.url)}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
-							<a class="meta-link" href={link.url} target="_blank" rel="noopener noreferrer">
-								{typesetQuotes(projectLinkText(link))}<span aria-hidden="true">&nbsp;↗</span><span
-									class="sr-only"
-								>
-									&nbsp;(opens in new tab)
-								</span>
-							</a>
+							<ExternalLink class="meta-link" href={link.url} glyph>
+								{typesetQuotes(projectLinkText(link))}
+							</ExternalLink>
 						{/each}
 					</dd>
 				</div>
@@ -152,18 +148,9 @@ reader checks before installing anything.
 
 {#if ctaLink}
 	<div class="rail-cta">
-		<!-- eslint-disable svelte/no-navigation-without-resolve -- external project address -->
-		<a
-			class="btn btn-accent btn-block"
-			href={ctaLink.url}
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			{ctaLabel}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-				&nbsp;(opens in new tab)
-			</span>
-		</a>
-		<!-- eslint-enable svelte/no-navigation-without-resolve -->
+		<ExternalLink class="btn btn-accent btn-block" href={ctaLink.url} glyph>
+			{ctaLabel}
+		</ExternalLink>
 	</div>
 {/if}
 
@@ -199,7 +186,7 @@ reader checks before installing anything.
 	 * `.ledger-action` takes is deliberately not applied here: these are
 	 * addresses that wrap, and 44px boxes on a 24px pitch would overlap each
 	 * other and the key beside them. */
-	.address-stack a {
+	.address-stack :global(a) {
 		display: block;
 		padding-block: calc((var(--space-6) - 1lh) / 2);
 		margin-block: calc((1lh - var(--space-6)) / 2);

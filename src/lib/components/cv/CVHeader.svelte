@@ -17,6 +17,7 @@
 </script>
 
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { address, author } from '#lib/data/siteConfig.ts';
 	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 	import { formatCvEditionDate } from '#lib/utils/cvSections.ts';
@@ -65,10 +66,9 @@
 				<svg class="cv-contact-icon" width="16" height="16" aria-hidden="true" focusable="false">
 					<use href="#{glyphId(link.icon)}" />
 				</svg>
-				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-				<a href={link.url} target="_blank" rel="noopener noreferrer">
-					{link.displayUrl}<span class="sr-only">&nbsp;(opens in new tab)</span>
-				</a>
+				<ExternalLink href={link.url}>
+					{link.displayUrl}
+				</ExternalLink>
 			</div>
 		{/each}
 	</div>
@@ -189,7 +189,7 @@
 	/* Each address in the stack is a 24px-tall target (WCAG 2.5.8): the xs
 	 * mono line is 19px on its own, and four of them at a 4px gap sat closer
 	 * than a fingertip. Height only — the row stays a single line. */
-	.cv-link-item a {
+	.cv-link-item :global(a) {
 		display: inline-flex;
 		align-items: center;
 		min-height: var(--space-6);

@@ -13,6 +13,7 @@
 </script>
 
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { resolve } from '$app/paths';
 	import { author, address } from '#lib/data/siteConfig.ts';
 	import { BUILT_AT } from '#lib/utils/buildDate.ts';
@@ -97,18 +98,18 @@
 		<span class="footer-copyright">© {currentYear} {author.fullName}</span>
 		<!-- The reuse terms (#lib/data/licensing.ts), in the © line's register:
 		     a rights statement is data, not prose. -->
-		<!-- eslint-disable svelte/no-navigation-without-resolve -- external licence deeds -->
+
 		<p class="footer-rights">
-			Text <a href={LICENSING.text.url} target="_blank" rel="noopener noreferrer license">
-				{LICENSING.text.name}<span class="sr-only">&nbsp;(opens in new tab)</span>
-			</a>
+			Text <ExternalLink href={LICENSING.text.url} rel="noopener noreferrer license">
+				{LICENSING.text.name}
+			</ExternalLink>
 			· Metadata
-			<a href={LICENSING.metadata.url} target="_blank" rel="noopener noreferrer license">
-				{LICENSING.metadata.name}<span class="sr-only">&nbsp;(opens in new tab)</span>
-			</a>
+			<ExternalLink href={LICENSING.metadata.url} rel="noopener noreferrer license">
+				{LICENSING.metadata.name}
+			</ExternalLink>
 			· Abstracts and images © their holders
 		</p>
-		<!-- eslint-enable svelte/no-navigation-without-resolve -->
+
 		<!-- The type credit doubles as the door to the living style guide. -->
 		<a class="footer-typecredit" href="{resolve('/style-guide')}#colophon">
 			Set in Archivo, Newsreader &amp; Spline Sans Mono.
@@ -332,7 +333,7 @@
 		color: var(--color-footer-text-muted);
 	}
 
-	.footer-rights a {
+	.footer-rights :global(a) {
 		color: inherit;
 		text-decoration: underline;
 		text-decoration-thickness: var(--rule-hairline);
@@ -340,11 +341,11 @@
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.footer-rights a:hover {
+	.footer-rights :global(a):hover {
 		color: var(--color-footer-accent);
 	}
 
-	.footer-rights a:focus-visible {
+	.footer-rights :global(a):focus-visible {
 		outline: var(--focus-outline);
 		outline-color: var(--color-footer-accent);
 		outline-offset: var(--focus-outline-offset);

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import SEO from '#lib/SEO.svelte';
 	import { pageTitle } from '#lib/utils/siteHelpers.ts';
 	import '#styles/components/entity-index.css';
@@ -295,21 +296,14 @@
 						<span class="ledger-meta citation-meta">
 							<span class="citation-kind">{typeLabels[work.kind]}</span>
 							{#if work.url}
-								<!-- eslint-disable svelte/no-navigation-without-resolve -- external citing work -->
-								<a
+								<ExternalLink
 									class="ledger-action"
 									href={work.url}
-									target="_blank"
-									rel="noopener noreferrer"
 									aria-label="Open work: {work.title} (opens in new tab)"
+									glyph
 								>
-									Open work<span class="sr-only">&nbsp;(opens in new tab)</span><span
-										aria-hidden="true"
-									>
-										&nbsp;↗
-									</span>
-								</a>
-								<!-- eslint-enable svelte/no-navigation-without-resolve -->
+									Open work
+								</ExternalLink>
 							{/if}
 						</span>
 					</article>

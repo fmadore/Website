@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { resolve } from '$app/paths';
 	import { cvPublicationsByDate as publicationsByDate } from '#lib/data/publications/cv.ts';
 	import type { CvPublication } from '#lib/types/index.ts';
@@ -108,18 +109,11 @@
 								{#if pub.book}In <em>{typesetQuotes(pub.book)}</em>.{/if}
 								{#if pub.publisher}{typesetQuotes(pub.publisher)}.{/if}
 							{/if}
-							{#if pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
-									href="https://doi.org/{pub.doi}"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="doi-link"
-								>
+							{#if pub.doi}<ExternalLink href="https://doi.org/{pub.doi}" class="doi-link">
 									<svg class="doi-link-icon" aria-hidden="true" focusable="false">
 										<use href="#{CV_GLYPH.doi}" />
-									</svg><span class="doi-link-text">doi:{pub.doi}</span><span class="sr-only">
-										&nbsp;(opens in new tab)
-									</span>
-								</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
+									</svg><span class="doi-link-text">doi:{pub.doi}</span>
+								</ExternalLink>{/if}
 							{#if pub.url && !pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
 									target="_blank"
@@ -133,17 +127,9 @@
 								<p class="cv-detail">
 									Reviewed in
 									{#each pub.reviewedBy as review, i (review.title + review.year)}
-										<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-										<a
-											href={review.url}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="review-link no-underline"
-										>
-											{typesetQuotes(review.journal)}<span class="sr-only">
-												&nbsp;(opens in new tab)
-											</span>
-										</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
+										<ExternalLink href={review.url} class="review-link no-underline">
+											{typesetQuotes(review.journal)}
+										</ExternalLink>{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
 									{/each}
 								</p>
 							{/if}
@@ -198,9 +184,9 @@
 	/* DOI — the Academicons mark and the identifier in the data voice. An
 	 * inline SVG in place of the former Zenodo badge image, which cost one
 	 * third-party request per publication and reserved a width that varied
-	 * with each badge. The `.doi-link` hook is load-bearing: the PDF generator
+	 * with each badge. The `:global(.doi-link)` hook is load-bearing: the PDF generator
 	 * and the print stylesheet both key off it. */
-	.doi-link {
+	:global(.doi-link) {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1);
@@ -214,7 +200,7 @@
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.doi-link:hover {
+	:global(.doi-link):hover {
 		color: var(--color-accent);
 		text-decoration: underline;
 	}

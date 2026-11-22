@@ -9,6 +9,7 @@ The other half of the old <PublicationAside> — tags and key terms — is
 <PublicationIndexRail>, which belongs *after* the document it indexes.
 -->
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { basePrefix } from '#lib/utils/paths.ts';
 	import type { Publication } from '#lib/types/index.ts';
 	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
@@ -175,34 +176,18 @@ The other half of the old <PublicationAside> — tags and key terms — is
 <!-- CTAs. The block is only printed when it has a control: the rail is a flex
      column with its own gap, so an empty stack reads as a stray interval. -->
 {#if accessHref || extraLinks.length > 0}
-	<!-- eslint-disable svelte/no-navigation-without-resolve -- external publication links -->
 	<div class="rail-cta">
 		{#if accessHref}
-			<a
-				href={accessHref}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-accent btn-block"
-			>
-				Open publication<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={accessHref} class="btn btn-accent btn-block" glyph>
+				Open publication
+			</ExternalLink>
 		{/if}
 		{#each extraLinks as link (link.url)}
-			<a
-				href={link.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-outline-secondary btn-block"
-			>
-				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={link.url} class="btn btn-outline-secondary btn-block" glyph>
+				{link.label}
+			</ExternalLink>
 		{/each}
 	</div>
-	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 {/if}
 
 <!-- ═══ CITE ═══

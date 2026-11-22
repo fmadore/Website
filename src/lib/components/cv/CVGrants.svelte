@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { grantsByDate } from '#lib/data/grants/index.ts';
 	import { formatCVYearRange } from '#lib/utils/cvFormatters.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
@@ -13,14 +14,9 @@
 	emptyMessage="No grants or fellowships listed."
 >
 	{#snippet entry(grant)}
-		{#if grant.url}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
-				href={grant.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="cv-title"
-			>
-				{typesetQuotes(grant.title)}<span class="sr-only">&nbsp;(opens in new tab)</span>
-			</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title">
+		{#if grant.url}<ExternalLink href={grant.url} class="cv-title">
+				{typesetQuotes(grant.title)}
+			</ExternalLink>{:else}<span class="cv-title">
 				{typesetQuotes(grant.title)}
 			</span>{/if}, {typesetQuotes(grant.funder)}.
 		{#if grant.amount}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import SEO from '#lib/SEO.svelte';
 	import { pageTitle } from '#lib/utils/siteHelpers.ts';
 	import PageHeader from '#lib/components/common/PageHeader.svelte';
@@ -168,21 +169,14 @@
 						     not the current thing, so it never takes the accent. -->
 						<span class="deck-entry-type">{deck.typeLabel}</span>
 						{#if deck.slidesUrl}
-							<!-- eslint-disable svelte/no-navigation-without-resolve -- external deck on the slides subdomain -->
-							<a
+							<ExternalLink
 								class="ledger-action"
 								href={deck.slidesUrl}
-								target="_blank"
-								rel="noopener noreferrer"
 								aria-label="Open deck: {deck.title} (opens in new tab)"
+								glyph
 							>
-								Open deck<span class="sr-only">&nbsp;(opens in new tab)</span><span
-									aria-hidden="true"
-								>
-									&nbsp;↗
-								</span>
-							</a>
-							<!-- eslint-enable svelte/no-navigation-without-resolve -->
+								Open deck
+							</ExternalLink>
 						{/if}
 					</span>
 				</article>
