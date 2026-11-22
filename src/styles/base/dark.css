@@ -15,9 +15,6 @@ html.dark {
 	--color-primary-dark: var(--sys-color-paper-raised);
 	--color-primary-light: var(--sys-color-cream-soft);
 
-	/* Secondary — muted cream */
-	--color-secondary: var(--sys-color-cream-muted);
-
 	/* Accent — pine, brightened for the negative. The "dark" step is the
 	 * emphatic step (hover, pressed), and a negative deepens by getting
 	 * lighter: on the film ground it lifts toward the cream rather than
@@ -67,7 +64,6 @@ html.dark {
 	--sys-viz-7: oklch(0.52 0.09 30); /* umber / deep clay */
 
 	/* Functional states */
-	--color-success: var(--sys-color-success-bright);
 	--color-danger: var(--sys-color-danger-bright);
 	/* Same rule as the accent: the emphatic step lifts toward the cream. */
 	--color-danger-dark: color-mix(

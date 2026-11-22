@@ -70,7 +70,7 @@
 		{
 			id: 'colour-functional',
 			label: 'Functional',
-			tokens: ['--color-danger', '--color-danger-dark', '--color-success']
+			tokens: ['--color-danger', '--color-danger-dark']
 		},
 		{
 			id: 'colour-footer',
@@ -152,8 +152,7 @@
 			role: 'Danger hover',
 			day: '--sys-color-danger-deep',
 			night: { mix: '--sys-color-danger-bright' }
-		},
-		{ role: 'Success', day: '--sys-color-success', night: '--sys-color-success-bright' }
+		}
 	];
 	const anchorTokens = [
 		...new Set(
@@ -2120,11 +2119,10 @@
 				</div>
 			</figure>
 			<p class="guide-caption">
-				No validation state is drawn here, and that is the honest reading:
-				<span class="data-voice">--color-danger</span> and
-				<span class="data-voice">--color-success</span> are swatched in § 1 and reserved for form
-				validation, but the site carries no form at all. Both tokens are spent today on status
-				instead (an offline banner, a media error), and
+				No validation state is drawn here, and that is the honest reading: the site carries no form
+				at all, so there is no success colour.
+				<span class="data-voice">--color-danger</span>, swatched in § 1, is spent on status instead
+				(an offline banner, a media error), and
 				<span class="data-voice">.btn-danger</span> has no consumer.
 			</p>
 

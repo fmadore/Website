@@ -591,11 +591,9 @@ th {
 		--color-primary: var(--sys-color-ink);
 		--color-primary-dark: var(--sys-color-ink-deep);
 		--color-primary-light: var(--sys-color-ink-soft);
-		--color-secondary: var(--sys-color-ink-muted);
 		--color-accent: var(--sys-color-pine);
 		--color-accent-dark: var(--sys-color-pine-deep);
 		--color-highlight: var(--sys-color-pine);
-		--color-success: var(--sys-color-success);
 		--color-danger: var(--sys-color-danger);
 		--color-danger-dark: var(--sys-color-danger-deep);
 

@@ -219,8 +219,6 @@ export const CHART_COLOR_FALLBACKS = {
 	white: '#ffffff',
 	accent: '#1e6a56', // pine — the signal accent (--color-accent)
 	highlight: '#1e6a56', // pine (--color-highlight)
-	success: '#5c6b3a', // muted olive (--color-success)
-	secondary: '#5c5442', // muted ink (--color-secondary)
 	// The --sys-viz-* series, resolved from OKLCH to literal hex. Keep in step
 	// with variables.css; designTokenParity.test.ts converts the tokens and
 	// fails if these drift.
@@ -254,8 +252,6 @@ export const CHART_COLOR_FALLBACKS_DARK: Partial<
 	surfaceRgb: '8, 23, 19', // film ground #081713
 	accent: '#4fbb99', // pine-bright (--color-accent)
 	highlight: '#4fbb99', // pine-bright (--color-highlight)
-	success: '#8a9a5b', // success-bright (--color-success)
-	secondary: '#b3a88d', // muted cream (--color-secondary)
 	plum: '#a185c3', // --sys-viz-6 oklch(0.665 0.095 305)
 	mauve: '#8e516f', // --sys-viz-5 oklch(0.515 0.09 350)
 	sage: '#536d2e', // --sys-viz-3 oklch(0.5 0.095 128)
@@ -302,8 +298,6 @@ export interface ResolvedChartColors {
 	white: string;
 	accent: string;
 	highlight: string;
-	success: string;
-	secondary: string;
 	plum: string;
 	mauve: string;
 	sage: string;
@@ -341,8 +335,6 @@ export function getResolvedChartColors(): ResolvedChartColors {
 		white: getCSSVariableValueWithFallback('--color-white', fb.white),
 		accent: getCSSVariableValueWithFallback('--color-accent', fb.accent),
 		highlight: getCSSVariableValueWithFallback('--color-highlight', fb.highlight),
-		success: getCSSVariableValueWithFallback('--color-success', fb.success),
-		secondary: getCSSVariableValueWithFallback('--color-secondary', fb.secondary),
 		// Ink + Signal viz companions, read from the OKLCH-anchored --sys-viz-*
 		// tokens so charts recolour with the theme instead of the retired
 		// plum/mauve/sage/slate-blue system hues.
