@@ -13,6 +13,7 @@
 	import { resolve } from '$app/paths';
 	import { assetHref } from '#lib/utils/paths.ts';
 	import { plateFallback } from '#lib/actions/plateFallback.ts';
+	import '#styles/components/record-prose.css';
 
 	import type { PageData } from './$types';
 

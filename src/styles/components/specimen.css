@@ -1,0 +1,78 @@
+/*
+ * SPECIMEN FRAME — the style guide's exhibit frame.
+ *
+ * Imported route-scoped by /style-guide, its one consumer, rather than from
+ * the global idiom sheet: ink-signal.css is inlined into every prerendered
+ * page, and no other page frames a specimen.
+ */
+
+/* ===========================================================================
+ * SPECIMEN FRAME — a demonstrated idiom, framed as a specimen
+ *
+ * A documentation page has a problem no other page has: it must set a live
+ * demo of an idiom that is itself page chrome. A ruled section head or a
+ * masthead demonstrated bare reads as the page's own head, and the reader
+ * cannot tell the exhibit from the room it hangs in.
+ *
+ * So the demo is framed the way this system frames anything shown rather than
+ * said: as a PLATE. A 1px box edge, the raised paper ground, square corners,
+ * no shadow — the same drawn object as `.plate`, `.facet-combobox-panel` and
+ * the panels. Not a card: a card is a bounded record you can click into, and
+ * an exhibit is neither bounded content nor a destination.
+ *
+ * The caption comes FIRST, before the demo, and is the data voice: it names
+ * what is being shown ("Specimen — record prose"), which is a label a database
+ * could hold, not a sentence the scholar wrote. Its hairline separates the
+ * apparatus from the exhibit; the frame's own edge encloses both.
+ *
+ *   <figure class="specimen">
+ *     <figcaption class="specimen-label">Specimen — record prose</figcaption>
+ *     …the demo…
+ *   </figure>
+ *
+ * Consumer: /style-guide.
+ * =========================================================================== */
+
+.specimen {
+	margin: 0;
+	padding: var(--space-lg);
+	border: var(--border-width-thin) solid var(--color-border);
+	border-radius: 0;
+	background: var(--color-surface);
+}
+
+.specimen-label {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-medium);
+	text-transform: uppercase;
+	letter-spacing: var(--tracking-label);
+	color: var(--color-text-light);
+	padding-bottom: var(--space-sm);
+	border-bottom: var(--rule-hairline) solid var(--color-hairline);
+	margin-bottom: var(--space-lg);
+}
+
+/* Some idioms draw their own full-width rules — a section head is opened by a
+ * 3px rule that has to run to the frame's edge to read as the rule it is, and
+ * an inset one reads as a stray underline. Those demos take the flush variant,
+ * which drops the frame's padding. The label is apparatus rather than exhibit,
+ * so it keeps its own inset; only its hairline runs the full width, like every
+ * other rule in the system. */
+.specimen--flush {
+	padding: 0;
+}
+
+.specimen--flush > .specimen-label {
+	padding: var(--space-md) var(--space-md) var(--space-sm);
+}
+
+@media (--sm-down) {
+	.specimen {
+		padding: var(--space-md);
+	}
+
+	.specimen--flush {
+		padding: 0;
+	}
+}

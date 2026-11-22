@@ -33,7 +33,17 @@ import { fileURLToPath } from 'node:url';
 
 const src = fileURLToPath(new URL('..', import.meta.url));
 
-const IDIOM_SHEET = 'styles/components/ink-signal.css';
+/**
+ * The global idiom sheet, and the route-scoped sheets its single-consumer
+ * idioms moved to (#219) so that every page stopped inlining them: they are
+ * still idioms the guide demonstrates, only no longer paid for everywhere.
+ */
+const IDIOM_SHEETS = [
+	'styles/components/ink-signal.css',
+	'styles/components/record-prose.css',
+	'styles/components/specimen.css',
+	'styles/components/viz-page.css'
+];
 const GUIDE = 'routes/style-guide/+page.svelte';
 
 /**
@@ -45,7 +55,11 @@ const GUIDE = 'routes/style-guide/+page.svelte';
  * it cannot be. An allowlist is where this kind of guard goes to die, so it
  * started at zero and any growth is a reviewed decision.
  */
-const ALLOWED_UNDOCUMENTED: string[] = [];
+const ALLOWED_UNDOCUMENTED: string[] = [
+	// The visualisation pages' own layout wrapper, which shares viz-page.css
+	// with the two ledgers those pages set: page layout, not an idiom.
+	'viz-page-container'
+];
 
 function read(relative: string): string {
 	return readFileSync(`${src}/${relative}`, 'utf8');
@@ -97,7 +111,7 @@ function importedComponentSources(guide: string): { file: string; source: string
 		.map((file) => ({ file, source: read(file) }));
 }
 
-const idiomSheet = read(IDIOM_SHEET);
+const idiomSheet = IDIOM_SHEETS.map(read).join('\n');
 const guideSource = read(GUIDE);
 const componentSources = importedComponentSources(guideSource);
 
@@ -119,7 +133,7 @@ describe('the style guide documents every idiom it ships', () => {
 		expect(componentSources.length).toBeGreaterThan(0);
 	});
 
-	it('shows every class ink-signal.css declares', () => {
+	it('shows every class the idiom sheets declare', () => {
 		const undocumented = classes.filter((name) => {
 			if (ALLOWED_UNDOCUMENTED.includes(name)) return false;
 			if (occurs(name, guideSource)) return false;
@@ -128,7 +142,7 @@ describe('the style guide documents every idiom it ships', () => {
 
 		expect(
 			undocumented,
-			`These idioms ship in ${IDIOM_SHEET} but appear neither on ${GUIDE} nor in a component it ` +
+			`These idioms ship in ${IDIOM_SHEETS.join(', ')} but appear neither on ${GUIDE} nor in a component it ` +
 				`renders. Document each one on the style guide in this change — a class the guide never ` +
 				`shows is a class DESIGN.md cannot be checked against.`
 		).toEqual([]);

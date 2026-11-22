@@ -1,7 +1,10 @@
 /*
  * Shared layout for the two visualisation pages
- * (/publications/visualisations, /conference-activity/visualisations).
- * Imported route-scoped by those pages; section heading/description styles
+ * (/publications/visualisations, /conference-activity/visualisations), and
+ * the two ledgers only they set: the proportion ledger and the stat ledger.
+ * Imported route-scoped by those pages (and by /style-guide, which
+ * demonstrates the ledgers) rather than from the global idiom sheet, which is
+ * inlined into every prerendered page. Section heading/description styles
  * live in the VizSection component.
  */
 
@@ -16,4 +19,108 @@
 	.viz-page-container {
 		padding: var(--space-md) 0;
 	}
+}
+
+/* ---------------------------------------------------------------------------
+ * PROPORTION LEDGER — a share of a whole, keyed on a category.
+ *
+ * The year meter's three columns with a category in the key instead of a year:
+ * mono label, `.hbar` proportion bar, mono count and share. Same rows, same
+ * hairlines, same meter — only the key changes, which is why it takes its own
+ * name rather than borrowing the year meter's.
+ *
+ * It exists so that a two- or three-slice pie never has to. A split of a whole
+ * across a handful of categories is a proportion, not a distribution: the
+ * ledger states it in one line each, with the exact count beside the share,
+ * where a doughnut spends a whole plate on two arcs and makes the reader
+ * estimate what the row simply prints.
+ *
+ * Set the fill with `style="--pct: 62%"`, and mark the bar `aria-hidden` — the
+ * count and share beside it already carry the value to a screen reader. The
+ * rows are not links, so no hover or focus treatment: this is apparatus, not
+ * navigation.
+ *
+ * Consumers: the language sections of both visualisation pages, and the
+ * /style-guide § 6 demonstration.
+ * ------------------------------------------------------------------------- */
+
+.proportion-ledger {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.proportion-ledger li {
+	margin: 0;
+	border-top: var(--rule-hairline) solid var(--color-hairline);
+}
+
+.proportion-ledger li:first-child {
+	border-top: none;
+}
+
+.proportion-row {
+	display: grid;
+	grid-template-columns: 8rem 1fr auto;
+	align-items: center;
+	gap: var(--space-3);
+	padding: var(--space-2) 0;
+}
+
+/* Wider than the year meter's 3.25rem key: a language or a category name is
+   words, where a year is always four figures. */
+.proportion-key {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	letter-spacing: var(--tracking-figures);
+	color: var(--color-text-soft);
+}
+
+.proportion-meta {
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-2xs);
+	font-weight: var(--font-weight-semibold);
+	letter-spacing: var(--tracking-figures);
+	color: var(--color-text-light);
+	min-width: 6ch;
+	text-align: right;
+}
+
+/* The key gives up a third of its track before the bar does: on a narrow
+   column the meter is the thing that has to stay readable. */
+@media (--sm-down) {
+	.proportion-row {
+		grid-template-columns: 6rem 1fr auto;
+		gap: var(--space-2);
+	}
+}
+
+/* ===========================================================================
+ * STAT LEDGER — "the corpus, in numbers"
+ * =========================================================================== */
+
+.stat-ledger {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	font-family: var(--font-family-mono);
+	font-size: var(--font-size-sm);
+	letter-spacing: var(--tracking-figures);
+	color: var(--color-text-soft);
+}
+
+.stat-row {
+	display: flex;
+	justify-content: space-between;
+	gap: var(--space-3);
+}
+
+.stat-value {
+	font-variant-numeric: tabular-nums;
+	color: var(--color-text-emphasis);
+}
+
+.stat-value--accent {
+	color: var(--color-accent);
 }

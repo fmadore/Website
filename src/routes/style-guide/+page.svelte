@@ -28,6 +28,9 @@
 	 * stylesheet that owns it rather than restating its declarations locally —
 	 * a restatement is exactly the drift this page exists to prevent. */
 	import '#styles/components/entity-index.css';
+	import '#styles/components/record-prose.css';
+	import '#styles/components/specimen.css';
+	import '#styles/components/viz-page.css';
 
 	const breadcrumbs = createSectionBreadcrumbs('Style Guide', '/style-guide');
 
