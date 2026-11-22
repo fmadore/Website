@@ -13,6 +13,7 @@ It is also the site's own idiom rather than a borrowed one: a matrix is a
 ledger — ruled, gridded, set in the data voice.
 -->
 <script lang="ts">
+	import { normalizeSearchText as fold } from '#lib/utils/searchText.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { getResolvedChartColors, colorWithOpacity } from '#lib/utils/chartColorUtils.ts';
@@ -129,12 +130,6 @@ ledger — ruled, gridded, set in the data voice.
 	const maxLabelChars = $derived(Math.floor((labelSpace - 8) / (fontSize * 0.62)));
 
 	// --- Highlight ---------------------------------------------------------
-	function fold(value: string): string {
-		return value
-			.toLowerCase()
-			.normalize('NFD')
-			.replace(/\p{Diacritic}/gu, '');
-	}
 	const foldedQuery = $derived(fold(highlightQuery.trim()));
 	// Collected as an array and frozen into a Set at the end: the derived
 	// recomputes wholesale, so nothing mutates the Set after it is read.

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { normalizeSearchText as fold } from '#lib/utils/searchText.ts';
 	/**
 	 * Interactive controls for a network graph section: a top-N slider, edge-kind
 	 * toggle chips, and a diacritic-insensitive search box. Placed above the
@@ -53,15 +54,10 @@
 			: [...visibleKinds, kind];
 	}
 
-	// Diacritic-insensitive matching, the same fold the network components use,
+	// Diacritic-insensitive matching, the site's one search fold
+	// (`normalizeSearchText`, shared with the network components),
 	// applied to the vocabulary this control actually offers. A query that hits
 	// nothing gets said out loud rather than leaving the chart silently unchanged.
-	function fold(value: string): string {
-		return value
-			.toLowerCase()
-			.normalize('NFD')
-			.replace(/\p{Diacritic}/gu, '');
-	}
 	const trimmedQuery = $derived(searchQuery.trim());
 	const noMatches = $derived.by(() => {
 		const folded = fold(trimmedQuery);

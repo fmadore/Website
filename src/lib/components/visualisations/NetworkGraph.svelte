@@ -20,6 +20,7 @@ Colour encodes the node/edge kind, size and link distance encode the weight;
 no two channels carry the same value.
 -->
 <script lang="ts">
+	import { normalizeSearchText as fold } from '#lib/utils/searchText.ts';
 	import RecoveryActions from './RecoveryActions.svelte';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { innerWidth } from 'svelte/reactivity/window';
@@ -149,13 +150,6 @@ no two channels carry the same value.
 
 	// --- Highlight (drives styling only) -----------------------------------
 	// Diacritic-insensitive matching ("Frédérick" matches "frederick").
-	function fold(value: string): string {
-		return value
-			.toLowerCase()
-			.normalize('NFD')
-			.replace(/\p{Diacritic}/gu, '');
-	}
-
 	const foldedQuery = $derived(fold(highlightQuery.trim()));
 	const matchedIds = $derived(
 		foldedQuery
