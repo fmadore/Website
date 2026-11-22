@@ -276,8 +276,6 @@ function renderDh(project) {
 	if (project.award) info.push(`> Award: ${project.award}`);
 	for (const link of project.links || [])
 		info.push(`> ${(link.type || 'site').replace(/^\w/, (c) => c.toUpperCase())}: ${link.url}`);
-	if (project.linkUrl && !(project.links || []).some((l) => l.url === project.linkUrl))
-		info.push(`> Site: ${project.linkUrl}`);
 	L.push(...info, '');
 
 	if (project.imageUrl) L.push(`![${project.title}](${SITE}${project.imageUrl})`, '');

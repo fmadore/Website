@@ -70,13 +70,31 @@ export interface SoftwareApplication {
 	licence?: string;
 	/** The interface languages, as printed, e.g. ['English', 'French']. */
 	interfaceLanguages?: string[];
+	/**
+	 * schema.org `applicationCategory`, from the values Google recognises.
+	 * Defaults to `DesktopApplication` (`DEFAULT_APPLICATION_CATEGORY`), which
+	 * every application on file was until a server template joined them.
+	 */
+	category?: ApplicationCategory;
 }
 
-/**
- * A public address for the project: its live site, a source repository, a
- * published dataset. Distinct from `linkUrl`, which redirects the project's
- * card away from its detail page — these are additive apparatus.
- */
+/** The `applicationCategory` values Google's software-app rich result recognises. */
+export type ApplicationCategory =
+	| 'BusinessApplication'
+	| 'CommunicationApplication'
+	| 'DesignApplication'
+	| 'DesktopApplication'
+	| 'DesktopEnhancementApplication'
+	| 'DeveloperApplication'
+	| 'EducationalApplication'
+	| 'MultimediaApplication'
+	| 'ReferenceApplication'
+	| 'SecurityApplication'
+	| 'UtilitiesApplication';
+
+export const DEFAULT_APPLICATION_CATEGORY: ApplicationCategory = 'DesktopApplication';
+
+/** A public address for the project: its live site, a source repository, a published dataset. */
 export interface ProjectLink {
 	url: string;
 	/**
@@ -97,14 +115,11 @@ export interface DigitalHumanitiesProject {
 	imageUrl: string; // Main image for card and fallback hero
 	heroImageUrl?: string; // Optional dedicated hero image for detail page
 
-	linkUrl?: string; // Optional: External link to the live project
-	// linkTarget will be derived: '_blank' for external, '_self' for internal to /digital-humanities/[id]
-	// actionText will be derived: 'Visit Site ->' or 'Explore project ->'
-
 	/**
 	 * Public addresses for the project — live site, source repositories,
-	 * datasets. Printed as apparatus under the CV entry; unlike `linkUrl` they
-	 * never change where the project's card points.
+	 * datasets. Printed as apparatus under the CV entry and the record rail, and
+	 * carried into the structured data (`buildDhProjectJsonLd`). A project's
+	 * card always points at its own page here.
 	 */
 	links?: ProjectLink[];
 

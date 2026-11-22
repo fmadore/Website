@@ -20,19 +20,11 @@ const LINK_KEYS: readonly { type: ProjectLinkType; key: string }[] = [
 	{ type: 'data', key: 'Data' }
 ] as const;
 
-/**
- * Groups a project's public addresses by kind, dropping empty groups.
- *
- * `linkUrl` is folded in as a site: a project that redirects its card
- * externally should still list that address alongside the rest.
- */
+/** Groups a project's public addresses by kind, dropping empty groups. */
 export function groupProjectLinks(
-	project: Pick<DigitalHumanitiesProject, 'linkUrl' | 'links'>
+	project: Pick<DigitalHumanitiesProject, 'links'>
 ): ProjectLinkGroup[] {
-	const all: ProjectLink[] = [
-		...(project.linkUrl ? [{ url: project.linkUrl, type: 'site' as const }] : []),
-		...(project.links ?? [])
-	];
+	const all: ProjectLink[] = project.links ?? [];
 
 	return LINK_KEYS.map(({ type, key }) => ({
 		type,
@@ -45,6 +37,14 @@ export function groupProjectLinks(
  * What to print for a link: its explicit label, or the bare address — which is
  * what a CV should show, and what a reader can copy off a printed page.
  */
+/** A project's addresses of one kind, in record order. */
+export function projectLinksOfType(
+	project: Pick<DigitalHumanitiesProject, 'links'>,
+	type: ProjectLinkType
+): ProjectLink[] {
+	return (project.links ?? []).filter((link) => (link.type ?? 'site') === type);
+}
+
 export function projectLinkText(link: ProjectLink): string {
 	return link.label ?? formatDisplayUrl(link.url);
 }

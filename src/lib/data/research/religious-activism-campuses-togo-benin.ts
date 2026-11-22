@@ -14,7 +14,9 @@ export const religiousActivismCampuses: ResearchProject = {
 	audioSrc: 'notebooklm/religious_activism_campus.mp3',
 	projectName: 'Religious Activism on Campuses in Togo and Benin',
 	// The page carries its own Funding panel, so the rail must not repeat it.
-	showFunding: false
+	showFunding: false,
+	seoDescription:
+		"Five decades of Christian and Muslim student associations at the Université de Lomé and the Université d'Abomey-Calavi, from one-party rule to mass enrolment."
 };
 
 export default religiousActivismCampuses;

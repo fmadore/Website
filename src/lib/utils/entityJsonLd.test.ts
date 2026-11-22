@@ -337,12 +337,49 @@ describe('buildDhProjectJsonLd', () => {
 	});
 
 	it('keeps an external project site as its url, and this page as its page', () => {
-		const ld = buildDhProjectJsonLd(project({ linkUrl: 'https://example.org/' }));
+		const ld = buildDhProjectJsonLd(
+			project({
+				links: [
+					{ url: 'https://example.org/', type: 'site' },
+					{ url: 'https://mirror.example.org/' }
+				]
+			})
+		);
 		expect(ld['@type']).toBe('WebSite');
 		expect(ld.url).toBe('https://example.org/');
+		// An untyped link is a site, as on the CV.
+		expect(ld.sameAs).toEqual(['https://mirror.example.org/']);
 		expect(ld.mainEntityOfPage).toEqual({
 			'@id': `${website.url}/digital-humanities/proj-1#webpage`
 		});
+	});
+
+	it('is a CreativeWork at its own page when it has no site', () => {
+		const ld = buildDhProjectJsonLd(project({}));
+		expect(ld['@type']).toBe('CreativeWork');
+		expect(ld.url).toBe(`${website.url}/digital-humanities/proj-1`);
+		expect(ld.sameAs).toBeUndefined();
+		expect(ld.hasPart).toBeUndefined();
+	});
+
+	it('carries repositories and datasets as parts', () => {
+		const ld = buildDhProjectJsonLd(
+			project({
+				links: [
+					{ url: 'https://github.com/x/y', label: 'x/y', type: 'code' },
+					{ url: 'https://huggingface.co/datasets/x/z', type: 'data' }
+				]
+			})
+		);
+		expect(ld.hasPart).toEqual([
+			{ '@type': 'SoftwareSourceCode', name: 'x/y', codeRepository: 'https://github.com/x/y' },
+			{
+				'@type': 'Dataset',
+				name: 'huggingface.co/datasets/x/z',
+				description: 'A dataset linked from the A Project project.',
+				url: 'https://huggingface.co/datasets/x/z'
+			}
+		]);
 	});
 
 	it('models an application as a SoftwareApplication, installed from its first install link', () => {
@@ -350,6 +387,7 @@ describe('buildDhProjectJsonLd', () => {
 			project({
 				application: { status: 'released', operatingSystem: 'Windows 11', licence: 'MIT' },
 				links: [
+					{ url: 'https://example.org/app', type: 'site' },
 					{ url: 'https://github.com/x/y', type: 'code' },
 					{ url: 'https://apps.microsoft.com/detail/X', type: 'install' },
 					{ url: 'https://github.com/x/y/releases', type: 'install' }
@@ -358,9 +396,31 @@ describe('buildDhProjectJsonLd', () => {
 		);
 		expect(ld['@type']).toBe('SoftwareApplication');
 		expect(ld.url).toBe(`${website.url}/digital-humanities/proj-1`);
+		expect(ld.sameAs).toEqual(['https://example.org/app']);
 		expect(ld.operatingSystem).toBe('Windows 11');
 		expect(ld.applicationCategory).toBe('DesktopApplication');
 		expect(ld.installUrl).toBe('https://apps.microsoft.com/detail/X');
 		expect(ld.license).toBe('https://spdx.org/licenses/MIT.html');
+		expect(ld.hasPart).toEqual([
+			{
+				'@type': 'SoftwareSourceCode',
+				name: 'github.com/x/y',
+				codeRepository: 'https://github.com/x/y',
+				targetProduct: { '@id': `${website.url}/digital-humanities/proj-1#record` }
+			}
+		]);
+	});
+
+	it('takes the application category from the record', () => {
+		const ld = buildDhProjectJsonLd(
+			project({
+				application: {
+					status: 'released',
+					operatingSystem: 'Linux (Docker)',
+					category: 'DeveloperApplication'
+				}
+			})
+		);
+		expect(ld.applicationCategory).toBe('DeveloperApplication');
 	});
 });

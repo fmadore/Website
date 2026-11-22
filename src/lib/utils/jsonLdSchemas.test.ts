@@ -170,8 +170,10 @@ describe('buildDhProjectJsonLd', () => {
 			...over
 		}) as unknown as DigitalHumanitiesProject;
 
-	it('uses WebSite + external link when linkUrl is present', () => {
-		const result = buildDhProjectJsonLd(project({ linkUrl: 'https://example.org' }));
+	it('uses WebSite + external link when a site link is present', () => {
+		const result = buildDhProjectJsonLd(
+			project({ links: [{ url: 'https://example.org', type: 'site' }] })
+		);
 		expect(result['@type']).toBe('WebSite');
 		expect(result.url).toBe('https://example.org');
 	});
