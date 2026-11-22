@@ -18,7 +18,7 @@ export const activity: Activity = {
 	panelType: 'publication',
 	image: 'images/activities/The-Digital-Orientalist.webp',
 	heroImage: {
-		src: 'images/activities/The-Digital-Orientalist-hero.webp',
+		src: 'images/activities/The-Digital-Orientalist.webp',
 		alt: "Header of The Digital Orientalist blog post, titled 'Islam West Africa Collection: Dataset, Distant Reading, and Uses of AI for Discourse Analysis': a green-tinted collage of newspaper pages, including the masthead 'Le Pacifique' with a man speaking into a microphone."
 	},
 	type: 'publication'

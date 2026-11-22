@@ -296,7 +296,7 @@
 			cast: 'tracking-specimen--display',
 			size: '--font-size-4xl',
 			specimen: 'Signal',
-			use: 'the nameplate, --font-size-display, 5xl'
+			use: 'the nameplate, --font-size-display'
 		},
 		{
 			token: '--tracking-display',
@@ -434,14 +434,13 @@
 		'--font-size-lg'
 	];
 	/* Each display step is set in the cut of the heading tier that uses it
-	 * (`cast`), with that tier's tracking role. The two steps no heading uses
-	 * borrow the nearest tier's cut. */
+	 * (`cast`), with that tier's tracking role. The one step no heading uses
+	 * borrows the nearest tier's cut. */
 	const displayScale: { token: string; cast: HeadingTag; tracking: string; label: string }[] = [
 		{ token: '--font-size-xl', cast: 'h3', tracking: '--tracking-display-sm', label: 'h3 cut' },
 		{ token: '--font-size-2xl', cast: 'h3', tracking: '--tracking-display-sm', label: 'h3' },
 		{ token: '--font-size-3xl', cast: 'h2', tracking: '--tracking-display', label: 'h2' },
-		{ token: '--font-size-4xl', cast: 'h1', tracking: '--tracking-display', label: 'h1' },
-		{ token: '--font-size-5xl', cast: 'h1', tracking: '--tracking-display-lg', label: 'h1 cut' }
+		{ token: '--font-size-4xl', cast: 'h1', tracking: '--tracking-display', label: 'h1' }
 	];
 
 	/* ===== Heading casts — read off live headings.
@@ -1033,6 +1032,7 @@
 	canonical="https://www.frederickmadore.com/style-guide"
 	{breadcrumbs}
 	pageType="WebPage"
+	noindex
 />
 
 <!-- Every section head is drawn from `sections`, so its § number, its id and

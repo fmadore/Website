@@ -22,6 +22,7 @@ import { applicationSummary, splitProjectGroups } from '#lib/utils/projectGroups
 import { PUBLICATION_TYPE_SEO_LABELS } from '#lib/utils/publicationTypeLabels.ts';
 import { WEBMCP_TOOL_NAMES } from '#lib/utils/webmcpToolNames.ts';
 import { entries } from '#lib/server/markdown/markdown.ts';
+import { LICENSING } from '#lib/data/licensing.ts';
 import { markdownUrl, pageUrl } from '#lib/server/markdown/site.ts';
 
 const SITE = website.url;
@@ -218,6 +219,12 @@ export function buildLlmsTxt(): string {
 	item('Activities RSS feed', `${SITE}${website.rssPath}`, 'Latest activity entries.');
 	item('Publications RSS feed', `${SITE}/publications/rss.xml`, 'Latest publications.');
 	item('XML sitemap', `${SITE}/sitemap.xml`, 'Every indexable web page.');
+
+	heading('Licence');
+	for (const term of [LICENSING.metadata, LICENSING.text, LICENSING.thirdParty, LICENSING.code]) {
+		if ('url' in term) item(term.name, term.url, term.scope);
+		else lines.push(`- ${term.name}: ${term.scope}`);
+	}
 
 	heading('Contact and profiles');
 	lines.push(`- Email: ${contact.email}`);

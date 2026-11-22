@@ -33,7 +33,7 @@ export const digitalHoardingOpenArchivesWarsaw: Communication = {
 	},
 	image: 'images/communications/digital-hoarding-open-archives-warsaw-2026.webp',
 	heroImage: {
-		src: 'images/communications/digital-hoarding-open-archives-warsaw-2026-hero.webp',
+		src: 'images/communications/digital-hoarding-open-archives-warsaw-2026.webp',
 		alt: "Poster for the workshop 'Non-European Approaches in European Academia', held on 16 April 2026, with a photograph of a group applauding in a library room above a brown panel listing six guest speakers and the venue in Warsaw."
 	},
 	project:

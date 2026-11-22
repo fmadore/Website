@@ -286,7 +286,6 @@
 	--font-size-2xl: clamp(1.875rem, 1.781rem + 0.469vw, 2.109rem);
 	--font-size-3xl: clamp(2.344rem, 2.227rem + 0.586vw, 2.637rem);
 	--font-size-4xl: clamp(2.93rem, 2.784rem + 0.732vw, 3.296rem);
-	--font-size-5xl: clamp(3.663rem, 3.48rem + 0.915vw, 4.12rem);
 
 	/* Contextual font sizes */
 	--font-size-body: var(--font-size-base);
@@ -329,7 +328,7 @@
 	 *
 	 * Display voice — Archivo. Heavy wide cuts close up as they grow, so the
 	 * negative tracking deepens one step per size tier.
-	 *   --tracking-display-lg   nameplate, --font-size-display, 5xl
+	 *   --tracking-display-lg   nameplate, --font-size-display
 	 *   --tracking-display      h1–h2: 4xl, 3xl — page and record titles
 	 *   --tracking-display-sm   h3 and below: 2xl → base — section heads,
 	 *                           wordmarks, deck and subhead labels
@@ -462,8 +461,6 @@
 	/* 112px */
 	--space-32: 8rem;
 	/* 128px */
-	--space-48: 12rem;
-	/* 192px */
 
 	/* Semantic spacing (for component design) */
 	--space-3xs: var(--space-0-5);

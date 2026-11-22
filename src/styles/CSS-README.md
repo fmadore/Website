@@ -83,7 +83,7 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 #### Spacing System (4px base)
 
 - **Semantic scale**: `--space-3xs` through `--space-4xl`
-- **Numeric scale**: `--space-px` through `--space-48`
+- **Numeric scale**: `--space-px` through `--space-32`
 - **Tight variant**: `--space-xl-tight` (28px)
 - **Reading rhythm**: `--space-reading`, `--space-reading-loose` for detail-page sections
 
@@ -92,9 +92,9 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 - **Font families**: `--font-family-display` (Archivo — nameplate, h1–h3, section heads, big data numbers), `--font-family-serif` (Newsreader — all prose, h4–h5, captions, italics; the reading default), `--font-family-mono` (Spline Sans Mono — the data voice: eyebrows, datelines, counts, nav, chips, DOIs, pagination; **never body copy**). There is no fourth family: `--font-family-sans` was removed once nothing used it — form controls take `font: inherit` from the reset, so its stated purpose never existed, while chart containers and the network plate were quietly inheriting it.
 - **Archivo width axis**: `--font-variation-nameplate/-wordmark/-display/-headline` presets for the wide, heavy display cut, one per tier
 - **Type scale**: Fluid `clamp()` steps with forked ratios — Minor Third (1.2) for body/UI, Major Third (1.25) for display; plus `--font-size-nameplate` and `--font-size-display` for mastheads and index heroes
-- **Semantic sizes**: `--font-size-2xs` through `--font-size-5xl`, `--font-size-heading-1..6`
+- **Semantic sizes**: `--font-size-2xs` through `--font-size-4xl`, `--font-size-heading-1..6`
 - **Line heights / weights**: `--line-height-*` (plus the contextual `--line-height-heading/-body/-caption`), `--font-weight-*`
-- **Tracking**: eight `--tracking-*` roles keyed to voice and size — no component writes a raw `em` value. Display (Archivo) tightens as it grows: `--tracking-display-lg` (nameplate, `--font-size-display`, 5xl), `--tracking-display` (h1–h2), `--tracking-display-sm` (h3 and below). Serif (Newsreader) titles take `--tracking-title`; prose sets none. The data voice (mono caps) loosens as it shrinks: `--tracking-eyebrow` (the 2xs bold kicker, one per module), `--tracking-label` (the 2xs caps default — stamps, nav, facet controls, datelines), `--tracking-caps` (the compact tier: caps at xs–sm, and dense 2xs caps in runs — chips, badges, chart chrome), `--tracking-figures` (mixed-case mono: DOIs, counts, years, meta values)
+- **Tracking**: eight `--tracking-*` roles keyed to voice and size — no component writes a raw `em` value. Display (Archivo) tightens as it grows: `--tracking-display-lg` (nameplate, `--font-size-display`), `--tracking-display` (h1–h2), `--tracking-display-sm` (h3 and below). Serif (Newsreader) titles take `--tracking-title`; prose sets none. The data voice (mono caps) loosens as it shrinks: `--tracking-eyebrow` (the 2xs bold kicker, one per module), `--tracking-label` (the 2xs caps default — stamps, nav, facet controls, datelines), `--tracking-caps` (the compact tier: caps at xs–sm, and dense 2xs caps in runs — chips, badges, chart chrome), `--tracking-figures` (mixed-case mono: DOIs, counts, years, meta values)
 
 #### Focus Ring (Accessibility)
 
