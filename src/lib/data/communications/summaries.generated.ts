@@ -2825,6 +2825,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"country": "Benin",
 		"type": "lecture",
 		"language": "French",
+		"abstractLanguage": "English",
 		"tags": [
 			"Religious Associations",
 			"Universities",
@@ -2857,6 +2858,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"country": "France",
 		"type": "workshop",
 		"language": "French",
+		"abstractLanguage": "English",
 		"tags": [
 			"West Africa",
 			"Islam",

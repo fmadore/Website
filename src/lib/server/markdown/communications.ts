@@ -84,6 +84,7 @@ export function communicationMarkdown(talk: Communication): string {
 			['Country', text(talk.country)],
 			['Date', text(talk.date)],
 			['Language', text(language)],
+			['Abstract language', text(talk.abstractLanguage)],
 			['DOI', talk.doi ? link(talk.doi, `https://doi.org/${talk.doi}`) : undefined],
 			['Project', projectField(talk.project)],
 			['Tags', text((talk.tags ?? []).join(', '))],

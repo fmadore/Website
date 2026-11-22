@@ -13,6 +13,7 @@ export const associationsChretiennesIslamiquesCampus: Communication = {
 	country: 'Benin',
 	type: 'lecture',
 	language: 'French',
+	abstractLanguage: 'English',
 	abstract:
 		'A study of Christian and Islamic associations on the campuses of the University of Abomey-Calavi and the University of Lomé since 1970, examining secularism in universities in the face of religious activism.',
 	tags: [

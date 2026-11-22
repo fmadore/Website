@@ -14,6 +14,7 @@ export const collectionIslamAfriqueOuest: Communication = {
 	country: 'France',
 	type: 'workshop',
 	language: 'French',
+	abstractLanguage: 'English',
 	abstract:
 		'A presentation of the West African Islam Collection, offering new perspectives on the history of Muslim communities through press and digital humanities.',
 	tags: [

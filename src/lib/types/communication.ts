@@ -20,6 +20,12 @@ export type Communication = {
 	location: string; // City/venue
 	country: string; // Country where the conference took place
 	abstract?: string; // Abstract or description (optional)
+	/**
+	 * The abstract's language, when it is not the talk's: a talk given in
+	 * French whose abstract is on file in English. The record page marks the
+	 * abstract with it rather than with `language` (WCAG 3.1.2).
+	 */
+	abstractLanguage?: string;
 	url?: string; // Optional: URL to presentation slides, video, etc.
 	urlLabel?: string; // Optional: Custom label for the primary URL button (default: "Access Presentation")
 	additionalUrls?: Array<{ label: string; url: string }>; // Additional URLs with labels
