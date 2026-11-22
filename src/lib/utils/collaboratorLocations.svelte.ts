@@ -31,23 +31,36 @@ export type LocationDataset = 'locations' | 'collaborators';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- the component's own props type lives in a chunk this module may not reach
 export type LocationMapComponent = Component<any>;
 
+/** Neither load ever runs on the server: they answer the browser's scroll and clicks. */
+const notOnServer = () => Promise.reject(new Error('Not loaded during server rendering'));
+
 /**
  * Module-level, so a second visit to either page reuses the loaded chunk, and
  * a failed attempt is forgotten rather than cached.
+ *
+ * The `import.meta.env.SSR` branch is not defensive: it is what keeps the
+ * `import()` out of the server build. SvelteKit inlines the CSS of every
+ * dynamic import the server bundle still holds, so a loader left in it put
+ * LocationMap's styles and map-chrome.css (2.3 kB gzipped) into the prerendered
+ * head of both visualisation pages, for a plate a dozen viewports down.
  */
-const loadLocationMap = retryableLoader(
-	async (): Promise<LocationMapComponent> =>
-		(await import('#lib/components/visualisations/LocationMap.svelte')).default
-);
+const loadLocationMap: () => Promise<LocationMapComponent> = import.meta.env.SSR
+	? notOnServer
+	: retryableLoader(
+			async () => (await import('#lib/components/visualisations/LocationMap.svelte')).default
+		);
 
 /** The two registries the collaborator view resolves affiliations from. */
-const loadRegistries = retryableLoader(async () => {
-	const [peopleModule, institutionsModule] = await Promise.all([
-		import('#lib/data/people/index.ts'),
-		import('#lib/data/institutions.ts')
-	]);
-	return { people: peopleModule.allPeople, institutions: institutionsModule.institutions };
-});
+const loadRegistries: () => Promise<{ people: Person[]; institutions: Institution[] }> = import.meta
+	.env.SSR
+	? notOnServer
+	: retryableLoader(async () => {
+			const [peopleModule, institutionsModule] = await Promise.all([
+				import('#lib/data/people/index.ts'),
+				import('#lib/data/institutions.ts')
+			]);
+			return { people: peopleModule.allPeople, institutions: institutionsModule.institutions };
+		});
 
 export interface CollaboratorLocationsOptions {
 	/** The records' own locations (publishers, venues), read reactively. */

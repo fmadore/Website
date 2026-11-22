@@ -77,7 +77,7 @@ const KIT_CLIENT_ENTRIES =
 const APP_SHARED =
 	/[\\/]src[\\/]lib[\\/](utils|actions|components[\\/](atoms|molecules|common|menu|entity-index)|SEO\.svelte|data[\\/]siteConfig)/;
 const APP_SHARED_DENY =
-	/(choropleth|echartsCore|mapPopups|maplibre|networkLayout|pdfRichText|pdfCvGenerator|pdfCvLayout|pdfDesignTokens|useECharts|useMapLibre|grantsJsonLd|imageVariants|jsonLdSchemas|slidePoster|timelineData|vizAggregation|Header\.svelte)/;
+	/(choropleth|echartsCore|mapPopups|maplibre|networkLayout|pdfRichText|pdfCvGenerator|pdfCvLayout|pdfDesignTokens|useECharts|useMapLibre|collaboratorLocations|researchProjectJsonLd|imageVariants|jsonLdSchemas|slidePoster|timelineData|vizAggregation|Header\.svelte)/;
 
 /** The tree-shaking wrapper that rides in the `echarts` chunk with the library. */
 const ECHARTS_GLUE = /[\\/]src[\\/]lib[\\/]utils[\\/]echartsCore\.ts$/;
