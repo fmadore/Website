@@ -29,7 +29,7 @@ export const presentationDiscussionReligiousActivismCampusCiram2025: Communicati
 	url: 'https://www.ciram.hei.ulaval.ca/activite/discussion-autour-du-livre-religious-activism-on-campuses-in-togo-and-benin/',
 	image: 'images/communications/ciram-2025.webp',
 	heroImage: {
-		src: 'images/communications/ciram-2025-hero.webp',
+		src: 'images/communications/ciram-2025.webp',
 		alt: 'Poster for an online book talk with Frédérick Madore on “Religious Activism on Campuses in Togo and Benin”, 6 Nov 2025'
 	},
 	coordinates: {

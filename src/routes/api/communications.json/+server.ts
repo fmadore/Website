@@ -25,6 +25,7 @@ const serialise = (comm: Communication) =>
 		year: comm.year,
 		language: comm.language,
 		abstract: comm.abstract,
+		abstractLanguage: comm.abstractLanguage,
 
 		// Venue
 		conference: comm.conference,

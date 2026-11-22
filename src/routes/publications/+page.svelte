@@ -27,7 +27,6 @@
 	// and the system also holds the free-text search, so the facet counts
 	// narrow with it. No store prefixes, no casts.
 	const filters = publicationFilters;
-	const af = filters.activeFilters;
 
 	// Breadcrumbs for this section
 	const breadcrumbs = createSectionBreadcrumbs('Publications', '/publications');
@@ -119,10 +118,7 @@
 	pageType="CollectionPage"
 />
 
-<div
-	class="entity-index"
-	use:urlFilterSync={{ filters: af, setters: filters.setters, search: filters.search, sort }}
->
+<div class="entity-index" use:urlFilterSync={{ system: filters, search: filters.search, sort }}>
 	<!-- ═══ INDEX HERO ═══ -->
 	<header class="index-hero index-masthead">
 		<div class="index-hero-lede">

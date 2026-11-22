@@ -1,4 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
+import { LICENSING } from '#lib/data/licensing.ts';
 import { author, address, contact, website } from '#lib/data/siteConfig.ts';
 import { allPublications, publicationsByDate } from '#lib/data/publications/index.ts';
 import { allCommunications, communicationsByDate } from '#lib/data/communications/index.ts';
@@ -32,7 +33,10 @@ export const GET: RequestHandler = async () => {
 		site: {
 			name: `${author.name} — academic website`,
 			url: SITE,
-			license: 'MIT',
+			// What may be reused, and on what terms (#lib/data/licensing.ts): the
+			// records are CC0, the author's prose CC BY 4.0, abstracts and images
+			// their holders', the code MIT.
+			license: LICENSING,
 			source: 'https://github.com/fmadore/website'
 		},
 		person: {

@@ -15,6 +15,7 @@ the peer/contributor edges become arcs in the gutter beside it. What was
 background texture is now the whole subject of the chart.
 -->
 <script lang="ts">
+	import { normalizeSearchText as fold } from '#lib/utils/searchText.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { innerWidth } from 'svelte/reactivity/window';
 	import { getResolvedChartColors } from '#lib/utils/chartColorUtils.ts';
@@ -205,12 +206,6 @@ background texture is now the whole subject of the chart.
 	});
 
 	// --- Highlight ---------------------------------------------------------
-	function fold(value: string): string {
-		return value
-			.toLowerCase()
-			.normalize('NFD')
-			.replace(/\p{Diacritic}/gu, '');
-	}
 	const foldedQuery = $derived(fold(highlightQuery.trim()));
 	const matchedIds = $derived(
 		foldedQuery

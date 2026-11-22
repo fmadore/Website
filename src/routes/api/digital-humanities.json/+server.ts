@@ -47,7 +47,6 @@ const serialise = (project: DigitalHumanitiesProject) =>
 			})
 		),
 		links: buildLinks([
-			{ label: 'Project', url: project.linkUrl },
 			// `links` carries a `type` ('site' | 'install' | 'code' | 'data'); the label defaults
 			// to the bare URL on the CV, so fall back to the type for a stable key.
 			...(project.links ?? []).map((link) => ({

@@ -398,11 +398,22 @@ test('citations in context quotes each citing work and filters by cited publicat
 		.getByRole('button', { name: /^Rivalités et collaborations/ })
 		.first()
 		.click();
-	await expect(page).toHaveURL(/project=/);
+	await expect(page).toHaveURL(/cited=/);
 	const cites = page.locator('#citations .citation-cites');
 	await expect(cites.first()).toBeVisible();
 	const cited = await cites.allTextContents();
 	expect(cited.every((line) => line.includes('Rivalités et collaborations'))).toBe(true);
+
+	// A link shared before the facet had its own key (`?project=`) still
+	// selects it.
+	const legacy = new URL(page.url());
+	const title = legacy.searchParams.get('cited')!;
+	await page.goto(`/publications/citations?project=${encodeURIComponent(title)}`);
+	await ready(page);
+	await expect(cites.first()).toBeVisible();
+	expect((await cites.allTextContents()).every((line) => line.includes(title.slice(0, 25)))).toBe(
+		true
+	);
 
 	await expect(page.getByRole('heading', { level: 2, name: 'Coverage' })).toBeVisible();
 });

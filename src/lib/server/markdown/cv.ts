@@ -48,11 +48,8 @@ import type { CvPublication } from '#lib/types/publication.ts';
 import { BUILT_AT } from '#lib/utils/buildDate.ts';
 import {
 	formatAffiliationPeriod,
-	formatBlogDate,
 	formatCVAuthorList,
 	formatCVYearRange,
-	formatEditorList,
-	formatVolumeIssueDisplay,
 	getCVDisplayYear,
 	groupPublicationsByType,
 	terminalPeriod,
@@ -82,7 +79,8 @@ import { applicationSummary } from '#lib/utils/projectGroups.ts';
 import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
 import { getPublicationTypeDisplayName } from '#lib/utils/publicationTypeLabels.ts';
 import { quoteTitle, typesetQuotes, typesetQuotesInHtml } from '#lib/utils/typesetQuotes.ts';
-import { htmlToMarkdown } from './htmlToMarkdown';
+import { escapeMarkdownText, htmlToMarkdown } from './htmlToMarkdown';
+import { cvPublicationParts } from '#lib/utils/cvPublicationParts.ts';
 import { blocks, bullets, document, fields, inline, link, section } from './markdown';
 import { markdownUrl, pageUrl, resolveLink, SITE } from './site';
 
@@ -270,64 +268,21 @@ function education(): string {
 // Publications (CVPublications)
 // ---------------------------------------------------------------------------
 
-/** "Berlin: De Gruyter", or whichever of the two the record has. */
-function placeAndPublisher(pub: CvPublication): string {
-	const city = typesetQuotes(pub.placeOfPublication);
-	const publisher = typesetQuotes(pub.publisher);
-	return inline(city && publisher ? `${city}: ${publisher}` : city || publisher);
-}
-
-/** Everything after the title: the venue apparatus, branch for branch as the component sets it. */
-function publicationVenue(pub: CvPublication, twin: string): string {
-	const volumeIssue = inline(formatVolumeIssueDisplay(pub.volume, pub.issue));
-	const vi = volumeIssue ? ` ${volumeIssue}` : '';
-	const pages = (separator: string) => (pub.pages ? `${separator}${inline(pub.pages)}` : '');
-	const imprint = placeAndPublisher(pub);
-
-	if ((pub.type === 'article' || pub.type === 'bulletin-article') && pub.journal) {
-		return `${em(pub.journal)}${vi}${pages(': ')}.`;
-	}
-	if (pub.type === 'chapter' && pub.book) {
-		const editors = pub.editors ? `${inline(formatEditorList(pub.editors))} (eds.), ` : '';
-		return `In ${editors}${em(pub.book)}${imprint ? `. ${imprint}` : ''}${pages(', ')}.`;
-	}
-	if (pub.type === 'book') {
-		return `${markdownLink(em(pub.title), twin)}${imprint ? `. ${imprint}.` : '.'}`;
-	}
-	if (pub.type === 'special-issue' && pub.journal) {
-		return `${em(pub.journal)}${vi}.`;
-	}
-	if (pub.type === 'working-paper') {
-		const series = pub.series || pub.journal;
-		const seriesPart = series ? `${em(series)}${pub.issue ? ` ${inline(pub.issue)}` : ''}` : '';
-		const publisher = pub.publisher && pub.publisher !== series ? `. ${text(pub.publisher)}` : '';
-		return `${seriesPart}${pages(': ')}${publisher}.`;
-	}
-	if (pub.type === 'report') {
-		const host = pub.journal
-			? `${em(pub.journal)}${vi}`
-			: pub.publisher
-				? `${em(pub.publisher)}${vi}`
-				: '';
-		return `${host}${pages(', ')}.`;
-	}
-	if (pub.type === 'encyclopedia' && pub.encyclopediaTitle) {
-		return `In ${em(pub.encyclopediaTitle)}${pub.publisher ? `, ${text(pub.publisher)}` : ''}.`;
-	}
-	if (pub.type === 'blogpost') {
-		const date = pub.dateISO ? formatBlogDate(pub.dateISO) : '';
-		return `${link(quoteTitle(pub.title), twin)}${pub.publisher ? `. ${em(pub.publisher)}` : ''}${date ? `, ${inline(date)}` : ''}.`;
-	}
-	if (pub.type === 'conference-proceedings') {
-		return `In ${em(pub.proceedingsTitle)}.`;
-	}
-	return [
-		pub.journal && `In ${em(pub.journal)}.`,
-		pub.book && `In ${em(pub.book)}.`,
-		pub.publisher && `${text(pub.publisher)}.`
-	]
-		.filter(Boolean)
-		.join(' ');
+/**
+ * The title and venue of a publication, from the segments the page sets
+ * (`cvPublicationParts`): roman text escaped as it stands, a host title in
+ * italic, the work's own title as a link to its twin.
+ */
+function publicationCitation(pub: CvPublication, twin: string): string {
+	return cvPublicationParts(pub)
+		.map((part) => {
+			if (part.kind === 'text') return escapeMarkdownText(part.text);
+			if (part.kind === 'italic') return `*${inline(part.text)}*`;
+			return part.italic ? markdownLink(`*${inline(part.text)}*`, twin) : link(part.text, twin);
+		})
+		.join('')
+		.replace(/\s+/g, ' ')
+		.trim();
 }
 
 /** "Reviewed in *A*, *B*, and *C*." with the component's separators. */
@@ -351,8 +306,7 @@ function publicationEntry(pub: CvPublication): string {
 	const record = [
 		formattedAuthors &&
 			`${fromHtml(formattedAuthors)}${edited ? ' (eds.),' : terminalPeriod(formattedAuthors)}`,
-		pub.type !== 'book' && pub.type !== 'blogpost' && `${link(quoteTitle(pub.title), twin)}.`,
-		publicationVenue(pub, twin),
+		publicationCitation(pub, twin),
 		pub.doi && link(`doi:${pub.doi}`, `https://doi.org/${pub.doi}`),
 		pub.url && !pub.doi && outLink('Link', pub.url)
 	]

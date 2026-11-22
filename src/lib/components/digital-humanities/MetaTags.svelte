@@ -7,6 +7,7 @@
 	import { page } from '$app/state';
 	import { author, website } from '#lib/data/siteConfig.ts';
 	import { buildCoins, buildHeadTags, toLastFirstFormat } from '#lib/utils/metaTags.ts';
+	import { projectLinksOfType } from '#lib/utils/projectLinks.ts';
 	import BaseMetaTags from '#lib/components/common/BaseMetaTags.svelte';
 
 	let { project }: { project: DigitalHumanitiesProject } = $props();
@@ -32,7 +33,7 @@
 			['rft.creator', authorLastFirst],
 			['rft.date', projectYear],
 			['rft.source', author.name],
-			['rft.identifier', project.linkUrl || currentUrl],
+			['rft.identifier', currentUrl],
 			['rft.description', project.shortDescription],
 			['rft.language', 'en']
 		])
@@ -53,7 +54,11 @@
 			{ name: 'DC.date', content: projectYear },
 			{ name: 'DC.identifier', content: currentUrl },
 			{ name: 'DC.language', content: 'en' },
-			{ name: 'DC.relation', content: project.linkUrl },
+			// The project's own sites, when it has any.
+			projectLinksOfType(project, 'site').map((link) => ({
+				name: 'DC.relation',
+				content: link.url
+			})),
 			// Subject tags from the project's skills/methods
 			(project.skills ?? []).map((skill) => ({ name: 'DC.subject', content: skill })),
 			{ name: 'DC.subject', content: 'Digital Humanities' }

@@ -210,7 +210,20 @@ export interface CreativeWorkJsonLd extends BaseJsonLd {
 	operatingSystem?: string;
 	applicationCategory?: string;
 	installUrl?: string;
+	/** A project's repositories and datasets (see `buildDhProjectJsonLd`). */
+	hasPart?: JsonLdProjectPart[];
 }
+
+/** A repository or dataset a digital-humanities project publishes. */
+export type JsonLdProjectPart =
+	| {
+			'@type': 'SoftwareSourceCode';
+			name: string;
+			codeRepository: string;
+			/** The application the code builds, by its record `@id`. */
+			targetProduct?: { '@id': string };
+	  }
+	| { '@type': 'Dataset'; name: string; description: string; url: string };
 
 // --- Person Page Types ---
 
@@ -268,4 +281,38 @@ export function formatPlaces(countries: string[]): JsonLdPlace[] {
  */
 export function formatJsonLdDate(dateISO: string | undefined): string | undefined {
 	return dateISO && /^\d{4}(-\d{2}(-\d{2})?)?$/.test(dateISO) ? dateISO : undefined;
+}
+
+// --- Research Project Types ---
+
+/** A node named by `@id` alone, with enough to read it out of context. */
+export interface JsonLdNodeReference {
+	'@type': string;
+	'@id': string;
+	name: string;
+}
+
+/**
+ * A research project (schema.org ResearchProject, an Organization): its
+ * period, its members, the grants that fund it (MonetaryGrant nodes in the
+ * same graph, by `@id`) and the publications and talks it produced (their
+ * record nodes, by `@id`).
+ */
+export interface ResearchProjectJsonLd {
+	'@context': 'https://schema.org';
+	'@type': 'ResearchProject';
+	'@id': string;
+	url: string;
+	mainEntityOfPage: { '@id': string };
+	name: string;
+	alternateName?: string;
+	description?: string;
+	image?: string;
+	foundingDate?: string;
+	dissolutionDate?: string;
+	member: JsonLdPerson[];
+	areaServed?: { '@type': 'Place'; name: string }[];
+	keywords?: string;
+	funding?: { '@id': string }[];
+	subjectOf?: JsonLdNodeReference[];
 }

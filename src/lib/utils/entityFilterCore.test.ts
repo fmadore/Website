@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
 import {
-	ENTITY_ARRAY_FILTER_KEYS,
 	filterEntityItems,
 	computeFacetCounts,
 	computeDisjunctiveFacets,
@@ -15,8 +14,8 @@ import {
 	truncateSearchTerm,
 	hasGridFilters,
 	describeActiveFilters,
-	type EntityArrayDimension,
-	type EntityArrayFilterKey,
+	emptyFilters as emptyFiltersFor,
+	type EntityDimension,
 	type EntityIndexFilters
 } from './entityFilterCore';
 
@@ -64,52 +63,78 @@ const items: TestItem[] = [
 	{ id: 'p4', type: 'chapter', year: 2020 }
 ];
 
-const dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TestItem>> = {
-	types: {
+type Key = 'types' | 'languages' | 'projects' | 'authors' | 'countries' | 'tags';
+
+/** The six dimensions the index pages declare, in the order they draw them. */
+const dimensions: EntityDimension<TestItem, Key>[] = [
+	{
+		key: 'types',
+		param: 'type',
+		label: 'Type',
+		placement: 'bar-primary',
+		options: [],
 		match: (item, values) => values.includes(item.type),
 		countExtractor: (item) => item.type
 	},
-	tags: {
-		match: (item, values) => !!item.tags && item.tags.some((t) => values.includes(t)),
-		countExtractor: (item) => item.tags
-	},
-	languages: {
+	{
+		key: 'languages',
+		param: 'language',
+		label: 'Language',
+		placement: 'bar-secondary',
+		options: [],
 		match: (item, values) => {
 			const langs = item.language ? item.language.split(',').map((l) => l.trim()) : [];
 			return langs.some((l) => values.includes(l));
 		},
 		countExtractor: (item) => item.language?.split(',').map((l) => l.trim())
 	},
-	authors: {
+	{
+		key: 'projects',
+		param: 'project',
+		label: 'Projects',
+		placement: 'grid-list',
+		options: [],
+		match: (item, values) => !!item.project && values.includes(item.project),
+		countExtractor: (item) => item.project
+	},
+	{
+		key: 'authors',
+		param: 'author',
+		label: 'Co-authors',
+		placement: 'grid-list',
+		options: [],
 		match: (item, values) => !!item.authors && item.authors.some((a) => values.includes(a)),
 		countExtractor: (item) => item.authors
 	},
-	countries: {
+	{
+		key: 'countries',
+		param: 'country',
+		label: 'Countries',
+		placement: 'grid-list',
+		options: [],
 		match: (item, values) => !!item.country && item.country.some((c) => values.includes(c)),
 		countExtractor: (item) => item.country
 	},
-	projects: {
-		match: (item, values) => !!item.project && values.includes(item.project),
-		countExtractor: (item) => item.project
+	{
+		key: 'tags',
+		param: 'tag',
+		label: 'Tags',
+		placement: 'grid-chips',
+		options: [],
+		match: (item, values) => !!item.tags && item.tags.some((t) => values.includes(t)),
+		countExtractor: (item) => item.tags
 	}
-};
+];
+const KEYS = dimensions.map((dimension) => dimension.key);
 
 const matchesYearRange = (item: TestItem, range: { min: number; max: number }) =>
 	item.year >= range.min && item.year <= range.max;
 
-function emptyFilters(): EntityIndexFilters {
-	return {
-		types: [],
-		yearRange: null,
-		tags: [],
-		languages: [],
-		authors: [],
-		countries: [],
-		projects: []
-	};
+function emptyFilters(): EntityIndexFilters<Key> {
+	return emptyFiltersFor(dimensions);
 }
 
-function filtered(overrides: Partial<EntityIndexFilters>): TestItem[] {
+function filtered(overrides: Partial<EntityIndexFilters<Key>>): TestItem[] {
 	return filterEntityItems(
 		items,
 		{ ...emptyFilters(), ...overrides },
@@ -162,7 +187,7 @@ describe('filterEntityItems', () => {
 describe('computeFacetCounts', () => {
 	it('counts every dimension over the given items', () => {
 		const counts = computeFacetCounts(items, dimensions);
-		expect(Object.keys(counts).sort()).toEqual([...ENTITY_ARRAY_FILTER_KEYS].sort());
+		expect(Object.keys(counts).sort()).toEqual([...KEYS].sort());
 		expect(counts.types).toEqual({ book: 1, article: 2, chapter: 1 });
 		expect(counts.tags).toEqual({ Islam: 2, Benin: 1 });
 		expect(counts.languages).toEqual({ French: 2, English: 2 });
@@ -409,54 +434,44 @@ describe('truncateSearchTerm', () => {
 
 it('extracts each eligible facet once while calculating counts and totals together', () => {
 	let calls = 0;
-	const instrumented = Object.fromEntries(
-		ENTITY_ARRAY_FILTER_KEYS.map((key) => [
-			key,
-			{
-				...dimensions[key],
-				countExtractor: (item: TestItem) => {
-					calls++;
-					return dimensions[key].countExtractor(item);
-				}
-			}
-		])
-	) as typeof dimensions;
-	const filters: EntityIndexFilters = {
-		types: [],
-		tags: [],
-		languages: [],
-		authors: [],
-		countries: [],
-		projects: [],
-		yearRange: null
-	};
+	const instrumented = dimensions.map((d) => ({
+		...d,
+		countExtractor: (item: TestItem) => {
+			calls++;
+			return d.countExtractor(item);
+		}
+	}));
+	const filters = emptyFilters();
 	const result = computeDisjunctiveFacets(items, filters, instrumented, () => true);
-	expect(calls).toBe(items.length * ENTITY_ARRAY_FILTER_KEYS.length);
+	expect(calls).toBe(items.length * KEYS.length);
 	expect(result.counts).toEqual(computeFacetCounts(items, dimensions));
-	expect(Object.values(result.totals)).toEqual(ENTITY_ARRAY_FILTER_KEYS.map(() => items.length));
+	expect(Object.values(result.totals)).toEqual(KEYS.map(() => items.length));
 });
 
 describe('countActiveFilters', () => {
 	it('is zero with nothing set', () => {
-		expect(countActiveFilters(emptyFilters())).toBe(0);
+		expect(countActiveFilters(emptyFilters(), dimensions)).toBe(0);
 	});
 
 	it('counts each facet value once and a year range once', () => {
 		expect(
-			countActiveFilters({
-				...emptyFilters(),
-				types: ['book', 'article'],
-				tags: ['Islam'],
-				projects: ['P1'],
-				yearRange: { min: 2010, max: 2015 }
-			})
+			countActiveFilters(
+				{
+					...emptyFilters(),
+					types: ['book', 'article'],
+					tags: ['Islam'],
+					projects: ['P1'],
+					yearRange: { min: 2010, max: 2015 }
+				},
+				dimensions
+			)
 		).toBe(5);
 	});
 
 	it('covers every array dimension', () => {
 		const filters = emptyFilters();
-		for (const key of ENTITY_ARRAY_FILTER_KEYS) filters[key] = ['x'];
-		expect(countActiveFilters(filters)).toBe(ENTITY_ARRAY_FILTER_KEYS.length);
+		for (const key of KEYS) filters[key] = ['x'];
+		expect(countActiveFilters(filters, dimensions)).toBe(KEYS.length);
 	});
 });
 
@@ -550,15 +565,17 @@ describe('the search as an external predicate', () => {
 
 describe('hasGridFilters', () => {
 	it('is set by a grid facet or a year range, never by the bar’s type or language', () => {
-		expect(hasGridFilters(emptyFilters())).toBe(false);
-		expect(hasGridFilters({ ...emptyFilters(), types: ['book'], languages: ['French'] })).toBe(
-			false
-		);
-		expect(hasGridFilters({ ...emptyFilters(), tags: ['Islam'] })).toBe(true);
-		expect(hasGridFilters({ ...emptyFilters(), countries: ['Togo'] })).toBe(true);
-		expect(hasGridFilters({ ...emptyFilters(), authors: ['Bob'] })).toBe(true);
-		expect(hasGridFilters({ ...emptyFilters(), projects: ['P1'] })).toBe(true);
-		expect(hasGridFilters({ ...emptyFilters(), yearRange: { min: 2015, max: 2020 } })).toBe(true);
+		expect(hasGridFilters(emptyFilters(), dimensions)).toBe(false);
+		expect(
+			hasGridFilters({ ...emptyFilters(), types: ['book'], languages: ['French'] }, dimensions)
+		).toBe(false);
+		expect(hasGridFilters({ ...emptyFilters(), tags: ['Islam'] }, dimensions)).toBe(true);
+		expect(hasGridFilters({ ...emptyFilters(), countries: ['Togo'] }, dimensions)).toBe(true);
+		expect(hasGridFilters({ ...emptyFilters(), authors: ['Bob'] }, dimensions)).toBe(true);
+		expect(hasGridFilters({ ...emptyFilters(), projects: ['P1'] }, dimensions)).toBe(true);
+		expect(
+			hasGridFilters({ ...emptyFilters(), yearRange: { min: 2015, max: 2020 } }, dimensions)
+		).toBe(true);
 	});
 });
 
@@ -572,8 +589,8 @@ describe('describeActiveFilters', () => {
 				types: ['book'],
 				yearRange: { min: 2015, max: 2020 }
 			},
+			dimensions.map((d) => (d.key === 'countries' ? { ...d, label: 'Countries studied' } : d)),
 			{
-				labels: { countries: 'Countries studied' },
 				valueLabel: (key, value) => (key === 'types' ? 'Books' : value),
 				yearReadout: '2015–2020',
 				searchTerm: '  salafism '
@@ -589,6 +606,6 @@ describe('describeActiveFilters', () => {
 	});
 
 	it('is empty when nothing narrows', () => {
-		expect(describeActiveFilters(emptyFilters(), { searchTerm: '  ' })).toEqual([]);
+		expect(describeActiveFilters(emptyFilters(), dimensions, { searchTerm: '  ' })).toEqual([]);
 	});
 });

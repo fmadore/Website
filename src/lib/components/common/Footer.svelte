@@ -13,9 +13,11 @@
 </script>
 
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { resolve } from '$app/paths';
 	import { author, address } from '#lib/data/siteConfig.ts';
 	import { BUILT_AT } from '#lib/utils/buildDate.ts';
+	import { LICENSING } from '#lib/data/licensing.ts';
 	import GlyphSprite from './GlyphSprite.svelte';
 	import { glyphId } from './glyphPath.ts';
 
@@ -94,6 +96,20 @@
 	<!-- Colophon rule — the fine-book signature line -->
 	<div class="footer-colophon container">
 		<span class="footer-copyright">© {currentYear} {author.fullName}</span>
+		<!-- The reuse terms (#lib/data/licensing.ts), in the © line's register:
+		     a rights statement is data, not prose. -->
+
+		<p class="footer-rights">
+			Text <ExternalLink href={LICENSING.text.url} rel="noopener noreferrer license">
+				{LICENSING.text.name}
+			</ExternalLink>
+			· Metadata
+			<ExternalLink href={LICENSING.metadata.url} rel="noopener noreferrer license">
+				{LICENSING.metadata.name}
+			</ExternalLink>
+			· Abstracts and images © their holders
+		</p>
+
 		<!-- The type credit doubles as the door to the living style guide. -->
 		<a class="footer-typecredit" href="{resolve('/style-guide')}#colophon">
 			Set in Archivo, Newsreader &amp; Spline Sans Mono.
@@ -305,6 +321,34 @@
 		letter-spacing: var(--tracking-label);
 		text-transform: uppercase;
 		color: var(--color-footer-text-muted);
+	}
+
+	.footer-rights {
+		margin: 0;
+		font-family: var(--font-family-mono);
+		font-size: var(--font-size-2xs);
+		font-weight: var(--font-weight-medium);
+		letter-spacing: var(--tracking-label);
+		text-transform: uppercase;
+		color: var(--color-footer-text-muted);
+	}
+
+	.footer-rights :global(a) {
+		color: inherit;
+		text-decoration: underline;
+		text-decoration-thickness: var(--rule-hairline);
+		text-underline-offset: 0.2em;
+		transition: color var(--duration-fast) var(--ease-out);
+	}
+
+	.footer-rights :global(a):hover {
+		color: var(--color-footer-accent);
+	}
+
+	.footer-rights :global(a):focus-visible {
+		outline: var(--focus-outline);
+		outline-color: var(--color-footer-accent);
+		outline-offset: var(--focus-outline-offset);
 	}
 
 	.footer-typecredit {

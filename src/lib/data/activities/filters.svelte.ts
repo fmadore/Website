@@ -2,10 +2,8 @@
  * Activities Filters
  *
  * Instantiates the runed EntityFilterSystem for the /activities log — the same
- * filter architecture as /publications and /conference-activity. Activities
- * only carry type/tag/year dimensions; the system's remaining dimensions
- * (languages, authors, countries, projects) are declared as inert no-ops with
- * empty vocabularies so no UI or URL surface ever exercises them.
+ * filter architecture as /publications and /conference-activity. The log
+ * declares only the two dimensions it has, type and tag.
  */
 
 import type { ActivitySummary, YearRange } from '#lib/types/index.ts';
@@ -13,10 +11,7 @@ import {
 	activitySummariesByDate as activitiesByDate,
 	activitySummariesByYear as activitiesByYear
 } from './summaries';
-import {
-	EntityFilterSystem,
-	type EntityArrayDimension
-} from '#lib/utils/entityFilterSystem.svelte.ts';
+import { EntityFilterSystem, tagAlias } from '#lib/utils/entityFilterSystem.svelte.ts';
 import { ACTIVITY_TYPE_BADGE_LABELS } from '#lib/utils/typeUtils.ts';
 
 // --- Vocabularies ---
@@ -42,10 +37,6 @@ const allTypes = Array.from(
 );
 
 // Dimensions activities don't have — empty vocabulary, never matches/counts.
-const inertDimension: EntityArrayDimension<ActivitySummary> = {
-	match: () => true,
-	countExtractor: () => undefined
-};
 
 // --- Free-text search ---
 
@@ -63,36 +54,37 @@ export function activitySearchFields(activity: ActivitySummary): string[] {
 
 // --- Filter System ---
 
-export const activityFilters = new EntityFilterSystem<ActivitySummary>({
+export const activityFilters = new EntityFilterSystem({
 	items: activitiesByDate,
 	searchFields: activitySearchFields,
 	matchesYearRange: (activity: ActivitySummary, range: YearRange) =>
 		activity.year >= range.min && activity.year <= range.max,
-	dimensions: {
-		types: {
+	years: Object.keys(activitiesByYear)
+		.map(Number)
+		.sort((a, b) => b - a),
+	// The log offers two facets, drawn by its own page rather than by the
+	// entity-index bar and grid.
+	dimensions: [
+		{
+			key: 'types',
+			param: 'type',
+			label: 'Type',
+			placement: 'bar-primary',
+			options: allTypes,
 			match: (activity: ActivitySummary, values: string[]) =>
 				!!activity.type && values.includes(activity.type),
 			countExtractor: (activity: ActivitySummary) => activity.type
 		},
-		tags: {
+		{
+			key: 'tags',
+			param: 'tag',
+			label: 'Tags',
+			placement: 'grid-chips',
+			alias: tagAlias,
+			options: allTags,
 			match: (activity: ActivitySummary, values: string[]) =>
 				!!activity.tags && activity.tags.some((t) => values.includes(t)),
 			countExtractor: (activity: ActivitySummary) => activity.tags
-		},
-		languages: inertDimension,
-		authors: inertDimension,
-		countries: inertDimension,
-		projects: inertDimension
-	},
-	filterOptions: {
-		types: allTypes,
-		years: Object.keys(activitiesByYear)
-			.map(Number)
-			.sort((a, b) => b - a),
-		tags: allTags,
-		languages: [],
-		authors: [],
-		countries: [],
-		projects: []
-	}
+		}
+	]
 });

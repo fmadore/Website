@@ -32,10 +32,16 @@ import { normalizeSearchText as foldFacetText } from '#lib/utils/searchText.ts';
  * answers "what would narrow this list most" rather than "what is common in the
  * corpus".
  */
-export function rankFacetOptions(options: readonly string[], counts: Record<string, number>) {
+export function rankFacetOptions(
+	options: readonly string[],
+	counts: Record<string, number>,
+	/** The display form of a keyed value (a person id), for the alphabetical tie-break. */
+	labelOf: (value: string) => string = (value) => value
+) {
 	return [...options].sort(
 		(a, b) =>
-			(counts[b] ?? 0) - (counts[a] ?? 0) || a.localeCompare(b, undefined, { numeric: true })
+			(counts[b] ?? 0) - (counts[a] ?? 0) ||
+			labelOf(a).localeCompare(labelOf(b), undefined, { numeric: true })
 	);
 }
 
@@ -47,13 +53,15 @@ export function rankFacetOptions(options: readonly string[], counts: Record<stri
 export function matchFacetOptions(
 	options: readonly string[],
 	query: string,
-	counts: Record<string, number>
+	counts: Record<string, number>,
+	/** The display form a reader types against, where the value is a key. */
+	labelOf: (value: string) => string = (value) => value
 ): string[] {
 	const needle = foldFacetText(query.trim());
 	const pool = needle
-		? options.filter((option) => foldFacetText(option).includes(needle))
+		? options.filter((option) => foldFacetText(labelOf(option)).includes(needle))
 		: options;
-	return rankFacetOptions(pool, counts);
+	return rankFacetOptions(pool, counts, labelOf);
 }
 
 /**

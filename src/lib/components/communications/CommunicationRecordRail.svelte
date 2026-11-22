@@ -10,19 +10,15 @@ verbatim with the MCP server; a talk is not a bibliographic record it knows how
 to emit, and widening it for one button would be the wrong place to decide that.
 -->
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { assetHref, basePrefix } from '#lib/utils/paths.ts';
 	import type { Communication } from '#lib/types/communication.ts';
 	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
 	import { formatAuthorList, formatCommunicationCitation } from '#lib/utils/citationFormatter.ts';
 	import { createCopyFeedback } from '#lib/utils/clipboard.svelte.ts';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import RecordPlate from '#lib/components/molecules/RecordPlate.svelte';
 	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { plateFallback } from '#lib/actions/plateFallback.ts';
-
-	// The rail is 380px wide from --lg up; below that the plate spans the single
-	// column. The intrinsic size reserves the plate's box before the lazily
-	// loaded bytes arrive, so the record never shifts around it.
-	const PLATE_SIZES = '(max-width: 1024px) 100vw, 380px';
 
 	interface Props {
 		communication: Communication;
@@ -40,8 +36,6 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	const plateSrc = $derived(
 		resolveImagePath(communication.heroImage?.src ?? communication.image, basePrefix())
 	);
-	const plateSrcset = $derived(buildSrcset(plateSrc));
-	const plateSize = $derived(imageDimensions(plateSrc));
 	const plateAlt = $derived(typesetQuotes(communication.heroImage?.alt ?? communication.title));
 
 	// Only an authored caption is printed. The venue is not a caption: most
@@ -157,46 +151,19 @@ to emit, and widening it for one button would be the wrong place to decide that.
 	}
 </script>
 
-{#if plateSrc}
-	<figure class="rail-plate">
-		<img
-			class="plate"
-			src={plateSrc}
-			srcset={plateSrcset}
-			sizes={plateSrcset ? PLATE_SIZES : undefined}
-			width={plateSize?.width}
-			height={plateSize?.height}
-			alt={plateAlt}
-			loading="lazy"
-			decoding="async"
-			use:plateFallback
-		/>
-		{#if plateFigCaption}
-			<figcaption class="plate-caption">{plateFigCaption}</figcaption>
-		{/if}
-	</figure>
-{/if}
+<RecordPlate src={plateSrc} alt={plateAlt} caption={plateFigCaption} />
 
 <RecordLedger rows={metadataRows} />
 
 <!-- CTAs — the one pine fill is the record's own destination; the poster and
      deck jumps, the poster's PDF and every mirror below them are outlines. -->
 {#if communication.url || additionalUrls.length > 0 || hasSlides || posterPdf}
-	<!-- eslint-disable svelte/no-navigation-without-resolve -- external talk links, a static file, in-page anchors -->
+	<!-- eslint-disable svelte/no-navigation-without-resolve -- a static file and in-page anchors -->
 	<div class="rail-cta">
 		{#if communication.url}
-			<a
-				href={communication.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-accent btn-block"
-			>
-				{communication.urlLabel ?? 'Open presentation'}<span aria-hidden="true">&nbsp;↗</span><span
-					class="sr-only"
-				>
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={communication.url} class="btn btn-accent btn-block" glyph>
+				{communication.urlLabel ?? 'Open presentation'}
+			</ExternalLink>
 		{/if}
 		{#if posterPdf}
 			<a href="#poster" class="btn btn-outline-primary btn-block">
@@ -212,16 +179,9 @@ to emit, and widening it for one button would be the wrong place to decide that.
 			</a>
 		{/if}
 		{#each additionalUrls as link (link.url)}
-			<a
-				href={link.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-outline-secondary btn-block"
-			>
-				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={link.url} class="btn btn-outline-secondary btn-block" glyph>
+				{link.label}
+			</ExternalLink>
 		{/each}
 	</div>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->

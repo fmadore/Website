@@ -28,7 +28,7 @@ export const archivesAlgorithmsIwac: Communication = {
 	url: 'https://eniugh.org/events/global-and-transregional-histories-digtally-connected/',
 	image: 'images/communications/ENIUGH.webp',
 	heroImage: {
-		src: 'images/communications/ENIUGH-hero.webp',
+		src: 'images/communications/ENIUGH.webp',
 		alt: "Outdoor sandwich-board sign on a paved square, headed 'Linnéuniversitetet', holding a poster for the European Network on Universal and Global History (ENIUGH), 10–11 September, with yellow circles on a violet ground."
 	},
 	coordinates: {

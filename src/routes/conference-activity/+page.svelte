@@ -32,7 +32,6 @@
 	// The runed filter system: `af` is the stable deep-reactive filter state.
 	// (Mirrors the /publications page.)
 	const filters = communicationFilters;
-	const af = filters.activeFilters;
 
 	// Breadcrumbs + organiser-role schema.org Event graph.
 	const breadcrumbs = createSectionBreadcrumbs('Talks & Events', '/conference-activity');
@@ -177,10 +176,7 @@
 
 <JsonLd id="organised-workshops-json-ld" json={organisedWorkshopsJsonLd} />
 
-<div
-	class="entity-index"
-	use:urlFilterSync={{ filters: af, setters: filters.setters, search: filters.search, sort }}
->
+<div class="entity-index" use:urlFilterSync={{ system: filters, search: filters.search, sort }}>
 	<!-- ═══ INDEX HERO ═══ -->
 	<header class="index-hero index-masthead">
 		<div class="index-hero-lede">

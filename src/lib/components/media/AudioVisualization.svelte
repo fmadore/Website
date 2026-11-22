@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	let { title = '' }: { title?: string } = $props();
 </script>
 
@@ -28,9 +29,7 @@
 	{#if title}
 		<div class="audio-content">
 			<p class="audio-description">
-				<a href="https://notebooklm.google/audio" target="_blank" rel="noopener noreferrer">
-					Google NotebookLM<span class="sr-only">&nbsp;(opens in new tab)</span>
-				</a>
+				<ExternalLink href="https://notebooklm.google/audio">Google NotebookLM</ExternalLink>
 				generates spoken discussions from uploaded documents. This conversation was generated from the
 				publications of this project; it is synthetic, not a recorded interview.
 			</p>
@@ -126,11 +125,11 @@
 		color: var(--color-text-emphasis);
 	}
 
-	:global(html.dark) .audio-description a {
+	:global(html.dark) .audio-description :global(a) {
 		color: var(--color-text-emphasis);
 	}
 
-	:global(html.dark) .audio-description a:hover {
+	:global(html.dark) .audio-description :global(a):hover {
 		color: var(--color-primary-light);
 	}
 

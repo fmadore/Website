@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import type { CitingWork } from '#lib/types/publication.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
@@ -39,10 +40,9 @@
 					<div class="ledger-content">
 						<p class="ledger-title citation-title">
 							{#if citingWork.url}
-								<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-								<a href={citingWork.url} target="_blank" rel="noopener" class="citation-link">
-									{citingWork.title}<span class="sr-only">&nbsp;(opens in new tab)</span>
-								</a>
+								<ExternalLink href={citingWork.url} class="citation-link">
+									{citingWork.title}
+								</ExternalLink>
 							{:else}
 								{citingWork.title}
 							{/if}
@@ -79,19 +79,19 @@
 		margin: 0;
 	}
 
-	.citation-link {
+	:global(.citation-link) {
 		color: inherit;
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.citation-link:hover {
+	:global(.citation-link):hover {
 		color: var(--color-accent);
 		text-decoration: underline;
 	}
 
 	/* External link indicator */
-	.citation-link:after {
+	:global(.citation-link):after {
 		content: '↗';
 		font-size: var(--font-size-sm);
 		margin-left: var(--space-2xs);
@@ -117,7 +117,7 @@
 	}
 
 	/* Enhanced focus states for accessibility */
-	.citation-link:focus-visible {
+	:global(.citation-link):focus-visible {
 		outline: var(--focus-outline);
 		outline-offset: var(--focus-outline-offset);
 	}

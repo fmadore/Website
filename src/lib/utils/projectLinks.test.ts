@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { groupProjectLinks, projectLinkText } from './projectLinks';
+import { groupProjectLinks, projectLinkText, projectLinksOfType } from './projectLinks';
 
 describe('groupProjectLinks', () => {
 	it('returns nothing when a project has no addresses', () => {
@@ -37,17 +37,6 @@ describe('groupProjectLinks', () => {
 		]);
 	});
 
-	it('folds linkUrl in as the first site', () => {
-		const groups = groupProjectLinks({
-			linkUrl: 'https://example.org/live',
-			links: [{ url: 'https://example.org/mirror' }]
-		});
-		expect(groups[0]!.links.map((l) => l.url)).toEqual([
-			'https://example.org/live',
-			'https://example.org/mirror'
-		]);
-	});
-
 	it('drops kinds the project has no links for', () => {
 		const groups = groupProjectLinks({ links: [{ url: 'https://github.com/a/b', type: 'code' }] });
 		expect(groups.map((g) => g.type)).toEqual(['code']);
@@ -65,5 +54,22 @@ describe('projectLinkText', () => {
 		expect(
 			projectLinkText({ url: 'https://github.com/fmadore/IwacSearch', label: 'IwacSearch' })
 		).toBe('IwacSearch');
+	});
+});
+
+describe('projectLinksOfType', () => {
+	it('picks one kind in declaration order, an untyped link counting as a site', () => {
+		const project = {
+			links: [
+				{ url: 'https://example.org/live' },
+				{ url: 'https://github.com/a/b', type: 'code' as const },
+				{ url: 'https://example.org/mirror', type: 'site' as const }
+			]
+		};
+		expect(projectLinksOfType(project, 'site').map((l) => l.url)).toEqual([
+			'https://example.org/live',
+			'https://example.org/mirror'
+		]);
+		expect(projectLinksOfType(project, 'data')).toEqual([]);
 	});
 });

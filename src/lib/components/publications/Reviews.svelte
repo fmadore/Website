@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import Icon from '@iconify/svelte';
 	import type { ReviewWork } from '#lib/types/publication.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
@@ -41,12 +42,9 @@
 
 					<p class="review-attribution">
 						{#if review.url}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a href={review.url} target="_blank" rel="noopener" class="review-link">
-								{review.author}<span class="review-cite-arrow" aria-hidden="true">
-									&nbsp;↗
-								</span><span class="sr-only">&nbsp;(opens in new tab)</span>
-							</a>
+							<ExternalLink href={review.url} class="review-link">
+								{review.author}<span class="review-cite-arrow" aria-hidden="true"> &nbsp;↗ </span>
+							</ExternalLink>
 						{:else}
 							<span>{review.author}</span>
 						{/if}
@@ -56,29 +54,18 @@
 						<span class="review-year">{review.year}</span>
 						{#if review.doi}
 							<span class="review-sep" aria-hidden="true">·</span>
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a
-								href="https://doi.org/{review.doi}"
-								target="_blank"
-								rel="noopener"
-								class="review-doi"
-							>
-								<Icon icon="academicons:doi" class="review-doi-icon" aria-hidden="true" />DOI<span
-									aria-hidden="true"
-								>
-									&nbsp;↗
-								</span><span class="sr-only">&nbsp;(opens in new tab)</span>
-							</a>
+							<ExternalLink href="https://doi.org/{review.doi}" class="review-doi" glyph>
+								<Icon icon="academicons:doi" class="review-doi-icon" aria-hidden="true" />DOI
+							</ExternalLink>
 						{/if}
 					</p>
 
 					<!-- Full review reference in serif — the record behind the quote. -->
 					<p class="review-ref">
 						{#if review.url}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external link -->
-							<a href={review.url} target="_blank" rel="noopener" class="review-ref-link">
-								{review.title}<span class="sr-only">&nbsp;(opens in new tab)</span>
-							</a>
+							<ExternalLink href={review.url} class="review-ref-link">
+								{review.title}
+							</ExternalLink>
 						{:else}
 							{review.title}
 						{/if}
@@ -174,14 +161,14 @@
 		color: var(--color-text-muted);
 	}
 
-	.review-link {
+	.reviews-section :global(.review-link) {
 		color: var(--color-text-emphasis);
 		font-weight: var(--font-weight-semibold);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.review-link:hover {
+	.reviews-section :global(.review-link):hover {
 		color: var(--color-accent);
 	}
 
@@ -193,19 +180,19 @@
 	 * this record's. Pine is reserved for the record's own DOI in the rail, so
 	 * the ramp stays readable: one accented DOI per page means "this work".
 	 * Here the mark and the emphasis ink carry it, as on the author link beside. */
-	.review-doi {
+	.reviews-section :global(.review-doi) {
 		color: var(--color-text-emphasis);
 		font-weight: var(--font-weight-semibold);
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.review-doi:hover {
+	.reviews-section :global(.review-doi):hover {
 		color: var(--color-accent);
 		text-decoration: underline;
 	}
 
-	.review-doi :global(.review-doi-icon) {
+	.reviews-section :global(.review-doi) :global(.review-doi-icon) {
 		width: 1.2em;
 		height: 1.2em;
 		vertical-align: -0.25em;
@@ -222,21 +209,21 @@
 		max-width: var(--measure-note);
 	}
 
-	.review-ref-link {
+	.reviews-section :global(.review-ref-link) {
 		color: inherit;
 		text-decoration: none;
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.review-ref-link:hover {
+	.reviews-section :global(.review-ref-link):hover {
 		color: var(--color-accent);
 		text-decoration: underline;
 	}
 
 	/* Enhanced focus states for accessibility */
-	.review-link:focus-visible,
-	.review-doi:focus-visible,
-	.review-ref-link:focus-visible {
+	.reviews-section :global(.review-link):focus-visible,
+	.reviews-section :global(.review-doi):focus-visible,
+	.reviews-section :global(.review-ref-link):focus-visible {
 		outline: var(--focus-outline);
 		outline-offset: var(--focus-outline-offset);
 	}
@@ -250,14 +237,14 @@
 			align-items: center;
 		}
 
-		.review-link,
-		.review-doi {
+		.reviews-section :global(.review-link),
+		.reviews-section :global(.review-doi) {
 			display: inline-flex;
 			align-items: center;
 			min-height: 44px;
 		}
 
-		.review-ref-link {
+		.reviews-section :global(.review-ref-link) {
 			display: inline-block;
 			min-height: 44px;
 			padding-block: var(--space-2-5);
@@ -265,9 +252,9 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.review-link,
-		.review-doi,
-		.review-ref-link {
+		.reviews-section :global(.review-link),
+		.reviews-section :global(.review-doi),
+		.reviews-section :global(.review-ref-link) {
 			transition: none;
 		}
 	}

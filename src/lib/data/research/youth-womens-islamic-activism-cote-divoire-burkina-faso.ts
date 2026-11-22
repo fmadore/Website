@@ -12,7 +12,9 @@ export const youthWomensIslamicActivism: ResearchProject = {
 	imageAlt:
 		'A large crowd seated and standing under a blue tarpaulin. Many women in white veils hold framed certificates, while a man in white at lower left photographs the gathering on a tablet.',
 	projectName: "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
-	funder: 'Social Sciences and Humanities Research Council of Canada (SSHRC)'
+	funder: 'Social Sciences and Humanities Research Council of Canada (SSHRC)',
+	seoDescription:
+		"New forms of Islamic activism among youth and women in Côte d'Ivoire and Burkina Faso since the 1990s: media, the internet and contested religious authority."
 };
 
 export default youthWomensIslamicActivism;

@@ -102,7 +102,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2025,
 		"image": "images/communications/ENIUGH.webp",
 		"heroImage": {
-			"src": "images/communications/ENIUGH-hero.webp"
+			"src": "images/communications/ENIUGH.webp"
 		},
 		"conference": "Eighth European Congress on World and Global History",
 		"location": "Linnaeus University",
@@ -481,7 +481,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2026,
 		"image": "images/communications/digital-hoarding-open-archives-warsaw-2026.webp",
 		"heroImage": {
-			"src": "images/communications/digital-hoarding-open-archives-warsaw-2026-hero.webp"
+			"src": "images/communications/digital-hoarding-open-archives-warsaw-2026.webp"
 		},
 		"conference": "Non-European Approaches in European Academia: Strategies for De-Europeanizing Research",
 		"location": "Tadeusz Manteuffel Institute of History, Polish Academy of Sciences, Warsaw",
@@ -933,7 +933,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2026,
 		"image": "images/communications/reaf-2026.webp",
 		"heroImage": {
-			"src": "images/communications/reaf-2026-hero.webp"
+			"src": "images/communications/reaf-2026.webp"
 		},
 		"conference": "9èmes Rencontres des études africaines en France (REAF)",
 		"location": "Paris",
@@ -1027,7 +1027,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2013,
 		"image": "images/publications/imams-precheurs-ouagadougou-2013.webp",
 		"heroImage": {
-			"src": "images/publications/imams-precheurs-ouagadougou-2013-hero.webp"
+			"src": "images/publications/imams-precheurs-ouagadougou-2013.webp"
 		},
 		"publisher": "Artefact"
 	},
@@ -1217,7 +1217,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2026,
 		"image": "images/communications/islam-peripheries-open-up-2026.webp",
 		"heroImage": {
-			"src": "images/communications/islam-peripheries-open-up-2026-hero.webp"
+			"src": "images/communications/islam-peripheries-open-up-2026.webp"
 		},
 		"conference": "Kick-off 'Open Up'",
 		"location": "Xplanatorium Herrenhausen, Hanover",
@@ -1423,7 +1423,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2026,
 		"image": "images/publications/zmo-jahrbuch.webp",
 		"heroImage": {
-			"src": "images/publications/zmo-jahrbuch-hero.webp"
+			"src": "images/publications/zmo-jahrbuch.webp"
 		},
 		"journal": "Shared World - People, Faiths, Ideas, Practices: New Directions in Research 2023-2025, Jahrbuch",
 		"publisher": "Leibniz-Zentrum Moderner Orient"
@@ -1772,7 +1772,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2025,
 		"image": "images/communications/ciram-2025.webp",
 		"heroImage": {
-			"src": "images/communications/ciram-2025-hero.webp"
+			"src": "images/communications/ciram-2025.webp"
 		},
 		"conference": "Conférences midi du CIRAM",
 		"location": "Université Laval",
@@ -2139,7 +2139,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2026,
 		"image": "images/communications/reaf-2026.webp",
 		"heroImage": {
-			"src": "images/communications/reaf-2026-hero.webp"
+			"src": "images/communications/reaf-2026.webp"
 		},
 		"conference": "9èmes Rencontres des études africaines en France (REAF)",
 		"location": "Paris",
@@ -2213,7 +2213,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2017,
 		"image": "images/publications/salafisme-cote-ivoire-2017.webp",
 		"heroImage": {
-			"src": "images/publications/salafisme-cote-ivoire-2017-hero.webp"
+			"src": "images/publications/salafisme-cote-ivoire-2017.webp"
 		}
 	},
 	"salafisme-pentecotisme-campus-benin-togo": {
@@ -2374,7 +2374,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2024,
 		"image": "images/communications/perspectives-in-motion.webp",
 		"heroImage": {
-			"src": "images/communications/perspectives-in-motion-hero.webp"
+			"src": "images/communications/perspectives-in-motion.webp"
 		},
 		"conference": "Workshop Perspectives in Motion: Conceptual Fields from the Global South",
 		"location": "Leibniz-Zentrum Moderner Orient",
@@ -2446,7 +2446,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2025,
 		"image": "images/communications/ALMEDA-logo.webp",
 		"heroImage": {
-			"src": "images/communications/ALMEDA-logo-hero.webp"
+			"src": "images/communications/ALMEDA-logo.webp"
 		},
 		"conference": "Work talk ALMEDA project",
 		"location": "Uppsala University",
@@ -2485,7 +2485,7 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"year": 2025,
 		"image": "images/communications/SADILAR.webp",
 		"heroImage": {
-			"src": "images/communications/SADILAR-hero.webp"
+			"src": "images/communications/SADILAR.webp"
 		},
 		"conference": "SADiLaR Digital Humanities colloquia",
 		"location": "North-West University",

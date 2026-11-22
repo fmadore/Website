@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { awardsByDate } from '#lib/data/awards/index.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVSection from './CVSection.svelte';
@@ -12,14 +13,9 @@
 	emptyMessage="No awards or honours listed."
 >
 	{#snippet entry(award)}
-		{#if award.url}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
-				href={award.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="cv-title"
-			>
-				{typesetQuotes(award.title)}<span class="sr-only">&nbsp;(opens in new tab)</span>
-			</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{:else}<span class="cv-title">
+		{#if award.url}<ExternalLink href={award.url} class="cv-title">
+				{typesetQuotes(award.title)}
+			</ExternalLink>{:else}<span class="cv-title">
 				{typesetQuotes(award.title)}
 			</span>{/if}, {typesetQuotes(award.institution)}.
 		{#if award.details}

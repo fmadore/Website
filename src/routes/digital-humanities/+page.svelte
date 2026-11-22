@@ -11,7 +11,7 @@
 	import Pagination from '#lib/components/molecules/Pagination.svelte';
 	import { allDhProjectSummaries as allDhProjects } from '#lib/data/digital-humanities/summaries.ts';
 	import { buildSrcset } from '#lib/utils/imageVariants.ts';
-	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { formatProjectPeriod, parseProjectPeriod } from '#lib/utils/projectPeriod.ts';
 	import { BUILT_AT } from '#lib/utils/buildDate.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import { applicationSummary } from '#lib/utils/projectGroups.ts';
@@ -62,20 +62,23 @@
 	 * Sorted by start year so the strip reads as a chronology rather than as the
 	 * catalogue's own order, which is a relevance ranking.
 	 */
-	const parseSpan = (years: string) => {
-		const [rawStart = '', rawEnd] = years.split('-');
-		const start = parseInt(rawStart, 10);
-		if (Number.isNaN(start)) return null;
-		// `2026-` splits to ['2026', ''] — open-ended, still running.
-		const open = rawEnd !== undefined && rawEnd.trim() === '';
-		const end = rawEnd ? parseInt(rawEnd, 10) : start;
-		return { start, end: Number.isNaN(end) ? start : end, open };
-	};
-	const spans = allDhProjects
-		.map((project) => ({ id: project.id, span: parseSpan(project.years) }))
-		.filter((row): row is { id: string; span: NonNullable<ReturnType<typeof parseSpan>> } =>
-			Boolean(row.span)
-		);
+	// `2026-` is open-ended, still running (its bar runs to the axis end, so its
+	// own end stays its start, as the sort below expects); a single year is a point.
+	const spans = allDhProjects.flatMap((project) => {
+		const period = parseProjectPeriod(project.years, BUILT_AT.getUTCFullYear());
+		return period
+			? [
+					{
+						id: project.id,
+						span: {
+							start: period.startYear,
+							end: period.ongoing ? period.startYear : period.endYear,
+							open: period.ongoing
+						}
+					}
+				]
+			: [];
+	});
 	const AXIS_START = spans.length > 0 ? Math.min(...spans.map((row) => row.span.start)) : 0;
 	const AXIS_END = Math.max(
 		BUILT_AT.getUTCFullYear(),
@@ -240,7 +243,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8">
+<div class="py-8">
 	<div class="max-w-6xl mx-auto">
 		<!-- HERO — the 4px masthead rule, a mono infrastructure eyebrow, the
 		     shared Archivo `.index-title`, a serif standfirst, and the record's

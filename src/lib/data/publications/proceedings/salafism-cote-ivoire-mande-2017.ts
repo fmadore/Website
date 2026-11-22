@@ -23,7 +23,7 @@ export const salafismCoteIvoire2017: Publication = {
 	openAccess: true,
 	image: 'images/publications/salafisme-cote-ivoire-2017.webp',
 	heroImage: {
-		src: 'images/publications/salafisme-cote-ivoire-2017-hero.webp',
+		src: 'images/publications/salafisme-cote-ivoire-2017.webp',
 		alt: 'Title page of the proceedings of the Tenth International Conference of the Mande Studies Association, Intersecting Identities: Coexistence, Conflict and Reconciliation in West Africa and Its Diasporas, with the MANSA logo.'
 	},
 	country: ["Côte d'Ivoire"],

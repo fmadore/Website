@@ -33,18 +33,15 @@ licence, interface languages) sits above the addresses, which is what a
 reader checks before installing anything.
 -->
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { basePrefix } from '#lib/utils/paths.ts';
 	import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
 	import { groupProjectLinks, projectLinkText } from '#lib/utils/projectLinks.ts';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import RecordPlate from '#lib/components/molecules/RecordPlate.svelte';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { plateFallback } from '#lib/actions/plateFallback.ts';
 	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
 	import { applicationPlatform, applicationStatusLabel } from '#lib/utils/projectGroups.ts';
-
-	// The rail is 380px wide from --lg up; below that the plate spans the single
-	// column. Same contract as the record rails.
-	const PLATE_SIZES = '(max-width: 1024px) 100vw, 380px';
 
 	interface Props {
 		project: DigitalHumanitiesProject;
@@ -60,8 +57,6 @@ reader checks before installing anything.
 	const plateSrc = $derived(
 		resolveImagePath(project.heroImageUrl ?? project.imageUrl, basePrefix())
 	);
-	const plateSrcset = $derived(buildSrcset(plateSrc));
-	const plateSize = $derived(imageDimensions(plateSrc));
 
 	// The project's public addresses, grouped site / code / data.
 	const linkGroups = $derived(groupProjectLinks(project));
@@ -119,24 +114,9 @@ reader checks before installing anything.
 	);
 </script>
 
-{#if plateSrc}
-	<!-- No caption: the records carry no authored provenance for these plates,
-	     and a caption that restates the headline is not a caption. -->
-	<figure class="rail-plate">
-		<img
-			class="plate"
-			src={plateSrc}
-			srcset={plateSrcset}
-			sizes={plateSrcset ? PLATE_SIZES : undefined}
-			width={plateSize?.width}
-			height={plateSize?.height}
-			alt=""
-			loading="lazy"
-			decoding="async"
-			use:plateFallback
-		/>
-	</figure>
-{/if}
+<!-- No caption: the records carry no authored provenance for these plates,
+     and a caption that restates the headline is not a caption. -->
+<RecordPlate src={plateSrc} alt="" />
 
 <RecordLedger rows={applicationRows} label="Application" />
 
@@ -155,14 +135,9 @@ reader checks before installing anything.
 						class:meta-value--accent={group.type === 'site' && !ctaLink}
 					>
 						{#each group.links as link (link.url)}
-							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external project address -->
-							<a class="meta-link" href={link.url} target="_blank" rel="noopener noreferrer">
-								{typesetQuotes(projectLinkText(link))}<span aria-hidden="true">&nbsp;↗</span><span
-									class="sr-only"
-								>
-									&nbsp;(opens in new tab)
-								</span>
-							</a>
+							<ExternalLink class="meta-link" href={link.url} glyph>
+								{typesetQuotes(projectLinkText(link))}
+							</ExternalLink>
 						{/each}
 					</dd>
 				</div>
@@ -173,18 +148,9 @@ reader checks before installing anything.
 
 {#if ctaLink}
 	<div class="rail-cta">
-		<!-- eslint-disable svelte/no-navigation-without-resolve -- external project address -->
-		<a
-			class="btn btn-accent btn-block"
-			href={ctaLink.url}
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			{ctaLabel}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-				&nbsp;(opens in new tab)
-			</span>
-		</a>
-		<!-- eslint-enable svelte/no-navigation-without-resolve -->
+		<ExternalLink class="btn btn-accent btn-block" href={ctaLink.url} glyph>
+			{ctaLabel}
+		</ExternalLink>
 	</div>
 {/if}
 
@@ -220,7 +186,7 @@ reader checks before installing anything.
 	 * `.ledger-action` takes is deliberately not applied here: these are
 	 * addresses that wrap, and 44px boxes on a 24px pitch would overlap each
 	 * other and the key beside them. */
-	.address-stack a {
+	.address-stack :global(a) {
 		display: block;
 		padding-block: calc((var(--space-6) - 1lh) / 2);
 		margin-block: calc((1lh - var(--space-6)) / 2);

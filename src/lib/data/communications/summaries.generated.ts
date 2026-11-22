@@ -31,10 +31,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://www.ciram.hei.ulaval.ca/evolutions-et-nouvelles-formes-de-lislam-en-afrique-de-louest-vers-une-radicalisation/",
 		"image": "images/communications/evolutions-nouvelles-formes-islam-afrique-ouest.webp",
-		"heroImage": {
-			"src": "images/communications/evolutions-nouvelles-formes-islam-afrique-ouest-hero.webp",
-			"alt": "Flyer for a CIRAM round table at Hautes études internationales, Université Laval, 'Évolutions et nouvelles formes de l'islam en Afrique de l'Ouest', on Thursday 24 March 2016, with photographs, a list of speakers and a small book cover."
-		},
 		"coordinates": {
 			"latitude": 46.7793,
 			"longitude": -71.2825
@@ -110,10 +106,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://islam.zmo.de/s/westafrica/item/244",
 		"image": "images/communications/poster-launch-IWAC.webp",
-		"heroImage": {
-			"src": "images/communications/poster-launch-IWAC-hero.webp",
-			"alt": "Poster for the launch of the Islam West Africa Collection"
-		},
 		"coordinates": {
 			"latitude": 52.53113443481993,
 			"longitude": 13.400499597613717
@@ -194,10 +186,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"urlLabel": "Workshop Website",
 		"additionalUrls": [],
 		"image": "images/communications/point-sud-logo.svg",
-		"heroImage": {
-			"src": "images/communications/point-sud-logo.svg",
-			"alt": "Point Sud logo: the black wordmark 'POINT SUD' with an orange dot above and an orange swoosh below."
-		},
 		"coordinates": {
 			"latitude": -33.9321,
 			"longitude": 18.8602
@@ -421,10 +409,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://remoboko.hypotheses.org/4854",
 		"image": "images/communications/REMOBOKO-final-conference.webp",
-		"heroImage": {
-			"src": "images/communications/REMOBOKO-final-conference.webp",
-			"alt": "Group photo of about two dozen conference participants standing on steps in front of an arched red-brick building, with a wooden bench to the right."
-		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
 			"longitude": 13.202338657893593
@@ -630,10 +614,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"url": "https://fmadore.github.io/dh-ai-african-studies-2026/",
 		"urlLabel": "Workshop Website",
 		"image": "images/communications/VWST-logo.webp",
-		"heroImage": {
-			"src": "images/communications/VWST-logo.webp",
-			"alt": "VolkswagenStiftung logo: a grid of dark blue dots beside the wordmark 'VolkswagenStiftung'."
-		},
 		"coordinates": {
 			"latitude": 52.395,
 			"longitude": 9.7036
@@ -842,10 +822,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"url": "https://remoboko.hypotheses.org/activities/workshops/workshop-2021",
 		"urlLabel": "Workshop Website",
 		"image": "images/communications/workshop-religion-in-higher-educational-institutions-2021.webp",
-		"heroImage": {
-			"src": "images/communications/workshop-religion-in-higher-educational-institutions-2021-hero.webp",
-			"alt": "Group photo of the participants of the workshop"
-		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
 			"longitude": 13.202338657893593
@@ -1055,10 +1031,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"url": "https://remoboko.hypotheses.org/religions-on-campus-coexisting-traditions-reformulating-the-secular-and-life-projects",
 		"urlLabel": "Workshop Website",
 		"image": "images/communications/workshop-religions-on-campus-2022.webp",
-		"heroImage": {
-			"src": "images/communications/workshop-religions-on-campus-2022-hero.webp",
-			"alt": "Group photo of the participants of the workshop"
-		},
 		"coordinates": {
 			"latitude": 13.51766342197132,
 			"longitude": 2.101838007060417
@@ -1181,10 +1153,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Muslim Minorities"
 		],
 		"image": "images/communications/ASA-Logo.svg",
-		"heroImage": {
-			"src": "images/communications/ASA-Logo.svg",
-			"alt": "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
-		},
 		"coordinates": {
 			"latitude": 42.346757140313436,
 			"longitude": -71.07895521140732
@@ -1198,8 +1166,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "ashley-e-leinweber",
 						"affiliation": "Missouri State University"
 					}
-				],
-				"abstract": "The history of the Congolese Muslim minority, estimated at 5-10% of the population, was one of repression and marginalization. Islam arrived in eastern Congo in the pre-colonial period (c. 1860) as Swahili-Arab traders from east Africa penetrated the interior as far as present-day Maniema province in search of ivory and slaves. Congolese Muslims experienced intense repression during the colonial period, resulting in detachment from politics and the state that carried over after independence. In addition, deep internal divisions at the local, provincial, and national levels riddled the community for decades. Surprisingly, in the post-conflict period the Muslim minority became increasingly active, as evidenced by a proliferation of Islamic associations. In particular, there was a concerted effort to establish Muslim public schools throughout the country. In addition, members of the Muslim community have expressed interest in furthering their participation in fledgling democratic institutions. This paper analyzes the history of the Muslim community’s marginalization from the state and recent attempts to overcome internal divisions in order to increase its social and political footprint. It ultimately argues that the Muslim minority has been able to overcome historic state repression to engage in hybrid governance with the weak Congolese state."
+				]
 			},
 			{
 				"title": "Un/making religious difference through auditory practices? Muslims as a religious minority in southwestern Uganda",
@@ -1209,8 +1176,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "dorothea-schulz",
 						"affiliation": "University of Münster"
 					}
-				],
-				"abstract": "How does a focus on auditory aesthetic practices enhance our understanding of the dynamics of religious coexistence? How do audible constructions of religious difference relate to practices and conventions that circumscribe realms of religious coexistence beyond the “public ear”? In Uganda, Muslims form numerically and politically a religious minority. In the Ankole region in southwestern Uganda, relations between Muslims and Christians are shaped by a shared repertoire of symbolic forms and patterns of sociality, yet also by past violent altercation and, more recently, by religious competition fueled by the activities of transnational actors and funds. In an urban setting characterized by latent and antagonism between specific groups of Muslims and of Christians, efforts to claim public presence through auditory practices have particular political poignancy. The paper explores how select religious leaders, Muslims and Christians, respond to a situation they deplore as a cacophony of public sound, religious argument, and normative positions. In response to this “cacophony”, Christian and Muslim leaders seek to instill in their followers particular modes of sonic (and visual) attentiveness so as to navigate the challenges of a highly heterogeneous religious and normative field. In a critical reassessment of Adorno’s seminal 1938 article on changing modes of perception (“Hörgewohnheiten”), the paper examines how religious leaders conceive of the proper relationship between believers’ (ethical and sensory) “perceptiveness”, religious devotion and dedication to “God’s cause”."
+				]
 			},
 			{
 				"title": "The Challenges of Ahmadiyya Community’s Commitment for Development and Modern Humanitarianism",
@@ -1220,8 +1186,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "katrin-langewiesche",
 						"affiliation": "Johannes Gutenberg University of Mainz"
 					}
-				],
-				"abstract": "This paper offers a perspective on how a Muslim minority is engaged with the state and how its marginalization influenced struggles for recognition and participation in the public sphere through the example of the Ahmadiyya Movement and the evolution of their social welfare activities in West Africa, by placing a special emphasis on Burkina Faso. The paper describes the contemporary social welfare activities of the Ahmadiyya Muslim Community and their NGOs in Burkina Faso and the problems arising in contact with other Islamic Communities and their Faith-based organizations (FBOs) in this country. Finally, the politics of Humanitarianism of the Ahmadiyya Muslim Community is discussed, and it is argued that humanitarian aid is one of the issues favoring public recognition as well as interreligious dialogue to which the Ahmadis are equally strongly committed."
+				]
 			},
 			{
 				"title": "“Good Muslim, Bad Muslim” in Togo: The Construction of a Religious Minority Amid a Constitutional Crisis (2017-2018)",
@@ -1230,8 +1195,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"name": "Frédérick Madore",
 						"affiliation": "University of Florida"
 					}
-				],
-				"abstract": "Historically, Togo’s Muslim minority has played a negligible role in politics. However, the constitutional crisis that erupted in 2017 when unprecedented anti-government protests spread across the country, demanding an end to the fifty-years of rule by the Gnassingbé family, attracted attention as an apparent Islamic “awakening”. Tipki Atchadam, the new opposition figurehead, built a strong popular base in the center and north of the country, especially among Muslims and his Tem ethnic group, in regions that were traditionally strongholds of the ruling regime. This paper will examine the “good/bad Muslim” rhetoric used by the Togolese state which has equated Muslims’ outspoken criticism of the regime with a dangerous rise of political Islam. Atchadam and his Parti National Panafricain (PNP) were regularly accused of links to violent Islamist radicals. Two well-known imams who were close to the PNP, were also imprisoned for issuing calls for jihad against the state. Furthermore, I argue that these events reflect latent intergenerational conflicts within the Muslim community. The tacit support given by Union Musulmane du Togo representatives—the “good Muslims”—to the regime on its management of the crisis has seriously undermined their credibility among youth and have contributed to the emergence of new voices."
+				]
 			}
 		],
 		"participants": [
@@ -1272,10 +1236,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Religious Activism"
 		],
 		"image": "images/communications/ASA-Logo.svg",
-		"heroImage": {
-			"src": "images/communications/ASA-Logo.svg",
-			"alt": "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
-		},
 		"coordinates": {
 			"latitude": 41.892233577101,
 			"longitude": -87.62496755899927
@@ -1348,10 +1308,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Metadata"
 		],
 		"image": "images/communications/ecas-2025.webp",
-		"heroImage": {
-			"src": "images/communications/ecas-2025-hero.webp",
-			"alt": "Purple banner for the European Conference on African Studies, Prague, 25 to 28 June 2025, with the title 'African, Afropean, Afropolitan' and an orange skyline silhouette of Africa."
-		},
 		"coordinates": {
 			"latitude": 50.08896481219099,
 			"longitude": 14.416024062407818
@@ -1365,8 +1321,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "ashleigh-harris",
 						"affiliation": "Uppsala University"
 					}
-				],
-				"abstract": "The ALMEDA project is comprised of three interrelated work packages: the first investigates the history of literary metadata on the African continent in order to understand how colonial cataloguing systems came to construct the idea of the 'literary work' as book-based and thus dismissive of Africa's oral cultures. Secondly, and as a corrective to this history, ALMEDA is developing a metadata ontology specifically designed for African genres in African languages. Not only does this knowledge structure enable data entry and searchability in multiple languages, but it also involves a unique descriptive model that allows African-language genres to inhabit their own categories, rather than having to be forced into European literary ontologies. Thirdly, the project is creating a linked open metadata repository, run as a Wikibase instance, which will – when launched – be the means through which users can search for and enter data. In this presentation of the project, I aim to show some of the challenges and potentials we face in the area of African Studies when working with Linked Open Data and to present ALMEDA's emerging methods of addressing those problems. The project seeks feedback from as wide a range of stakeholders and Africanists as possible, and the paper encourages feedback on our ontology and our tentative resolutions to the challenges of addressing multilingual needs in a database of this scale."
+				]
 			},
 			{
 				"title": "The Islamic Cultural Archive (ICA): Enabling New Digital Modes of Knowledge Production Through Cross-Lingual Ontologies",
@@ -1381,8 +1336,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "rudiger-seesemann",
 						"affiliation": "University of Bayreuth"
 					}
-				],
-				"abstract": "This paper presents the Islamic Cultural Archive (ICA), a database at the Africa Multiple Cluster of Excellence at the University of Bayreuth (Germany) designed to digitally enhance collaborative research on Islam in Africa in English, French and Arabic. The ICA is a digital platform to handle data through an ontology-based digital research environment building on WissKI, a set of modules that combines the Drupal content management system with semantic web technology. Connecting diverse languages and data from various digital and digitized media, the research team members generate metadata through a shared ontology to create synergies between various research foci and interests, ranging from the nexus of Islamic knowledge production, dissemination, and acquisition to the socio-religious, political-economic, and cultural dimensions of Islamic learning in Africa. There are plans to expand the thematic scope of the data collection in the future. What makes the project especially significant for decolonial methodologies and epistemologies is the joint development of cross-lingual ontologies with mainly African academic partners, enabling the ICA to reflect the relational and reflexive knowledge production involved in its creation and thus setting new standards for transcontinental and transdisciplinary research."
+				]
 			},
 			{
 				"title": "Re-imagining Africa's Past in Digital Age: Using Linked Open Data to revolutionise Archive Connectivity and Accessibility",
@@ -1397,8 +1351,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "david-maina",
 						"affiliation": "British Institute of Eastern Africa"
 					}
-				],
-				"abstract": "This project will develop Linked Open Data methodologies connecting multidisciplinary archival collections for the first time, revolutionizing accessibility to materials from different regions in Africa. We will demonstrate how data from different regions is interlinked, using examples from the British Institute of Eastern Africa (BIEA) archive and the British Institute of Libya and Northern Africa Studies (BILNAS). This project's use of Linked Open Data will have an impact on knowledge production by creating an avenue where African researchers can re-interpret data collected in the colonial and postcolonial period through an indigenous lens, using Afrocentric frameworks to deconstruct and reconstruct identities which were often misrepresented by Eurocentric research in the past. For example, the portal will create an avenue where pre-colonial African trade links and exchanges within the continent and beyond can be illuminated. An early focus on the connections between Islamic architecture collections across different institutions - including those outside of Africa in the Levant and Italy, representing Roman, Byzantine and Islamic civilisations - has raised the profile of these archives and provided archivists with leverage to advocate for increased time and resources spent on improving metadata and digitising these collections. We are demonstrating the potential of these methods through digital storytelling and map-based data visualizations, showing how Linked Open Data can facilitate answers to new and complex research questions. We will also comment on the limitations of the Anglocentric collection descriptions, and of reinterpretation of the materials when they remain under the control of organisations in the Global North."
+				]
 			},
 			{
 				"title": "Taking the ESCALATOR from Humanities to Digital Humanities",
@@ -1413,8 +1366,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "jessica-mabaso",
 						"affiliation": "South African Centre for Digital Language Resources"
 					}
-				],
-				"abstract": "The South African Centre for Digital Language Resources (SADiLaR) is a research infrastructure that, among others, aims to build research capacity in Digital Humanities across South Africa. While SADiLaR has successfully conducted training activities to familiarize participants with Digital Humanities tools, these efforts in the past have been ad hoc, lacking both follow-up support and dedicated channels for on-going assistance. The ESCALATOR project was conceived to address these limitations. Following a needs assessment that identified demand for a Digital Humanities community of practice, the project implements several strategic initiatives. Training activities have been restructured into a progressive curriculum designed to develop champions who can provide direct support to researchers at their respective universities. A Slack platform has been established to facilitate information sharing about funding opportunities and events, while also serving as a forum for questions and answers. The project organizes regional DH-IGNITE in-person events to foster networking and showcase research possibilities across universities. Additionally, a stakeholder mapping tool enables researchers to position themselves within the broader Digital Humanities landscape, facilitating collaboration among scholars working on similar topics. These coordinated efforts create a model that may benefit others seeking to develop similar communities of practice in Digital Humanities."
+				]
 			},
 			{
 				"title": "AI-Powered Analysis of Arabic Manuscripts: Accelerating Access to Sudan's Endangered Archives",
@@ -1424,8 +1376,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "albrecht-hofheinz",
 						"affiliation": "University of Oslo"
 					}
-				],
-				"abstract": "Sudan's public and private archives face existential threats from ongoing civil war, risking the loss of historical sources before their voices can challenge dominant narratives still shaped by colonial accounts and the weight of metropolitan perspectives in the Global North. The Sudan Collection at the University of Bergen, containing copies of approximately 5000 documents from Sudanese archives, has become increasingly vital given the precarious state of the originals, particularly land documents that may inform post-war settlements. The Universities of Bergen, Oslo, and Khartoum are collaborating to digitize and catalogue this collection for UNESCO World Heritage List nomination. While digitization provides unprecedented access, traditional textual scholarship struggles to keep pace, and Arabic HTR (handwritten text recognition) remains limited by extensive pre-training requirements. This paper presents an innovative method to unlock large Arabic manuscript collections using Google's Document AI, accessed through a simple programming interface. Despite imperfect HTR output, this tool, combined with large language models, enables effective automated content analysis and summarization. By reducing the time required to identify materials warranting detailed examination, this workflow frees valuable resources for in-depth textual analysis. This methodology has been validated by comparing results against conventionally studied samples. The presentation will demonstrate both the technical workflow and its application to a unique corpus of 600+ manuscript pages from 18th-20th century Sudan in the Bergen collection. This approach not only expedites research but also amplifies local voices preserved within these manuscripts, contributing to a more inclusive and representative understanding of Sudanese history."
+				]
 			},
 			{
 				"title": "Data Riddles: Mapping Senufo as a Case Study",
@@ -1435,8 +1386,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "susan-elizabeth-gagliardi",
 						"affiliation": "Emory University"
 					}
-				],
-				"abstract": "Mapping Senufo: Art, Evidence, and the Production of Knowledge—a collaborative, iterative, born-digital publication project—focuses on arts recognized as Senufo, one of the most celebrated and documented styles of so-called historical, traditional, or classical arts of Africa since the early twentieth century. Senufo also names a language family and a cultural or ethnic group spanning the borders of present-day Burkina Faso, Côte d'Ivoire, and Mali. Recent generations of local knowledge experts in this region report transmission of insights through riddles that invite each learner to arrive at their own conclusions based on careful observation, reflection, and experimentation. This form of knowledge dissemination encourages slow thinking and processing of information that the digital realm tends to thwart through its promise of fast facts accessible in an instant to anyone with a data connection. For instance, when they consult museum websites, users might assume the details presented to them rest on solid evidence. However, available data often constitute riddles more than indisputable details. In this presentation, Susan Elizabeth Gagliardi draws on her work with the Mapping Senufo project team to demonstrate possibilities for slowing down engagement in the digital realm and recuperating processes of observation, reflection, and experimentation. She reflects on what the project team has learned along the way and examines possible next steps."
+				]
 			},
 			{
 				"title": "Historian vs AI: who reads and analyses archives best?",
@@ -1450,8 +1400,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"name": "Frédérick Madore",
 						"affiliation": "Leibniz-Zentrum Moderner Orient"
 					}
-				],
-				"abstract": "This paper evaluates the potential of large language models in relation to human source criticism, examining two contrasting cases. First, we revisit the British Colonial Office files on the Cameroon War (1957–63), comparing a historian's interpretations with the summaries and targeted answers on chronology, agency and motive provided by Gemini 2.5 Pro. Secondly, we scale up to the Islam West Africa Collection, comprising 24 million words from 15,000 newspaper clippings and 1,500 Islamic publications. This collection is processed through custom pipelines that repair OCR errors, reconstruct layout, tag entities and measure sentiment. While AI excels at scale and pattern detection, it also perpetuates colonial framings, highlighting the necessity of human oversight and contextual judgement. Rather than victory for one side, the evidence points to a collaborative model in which historians design prompts, audit outputs, and ensure that interpretation remains accountable, while machines handle routine, corpus-wide tasks."
+				]
 			}
 		],
 		"project": "Digital Humanities and AI in African Studies",
@@ -1484,10 +1433,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://reaf2026.sciencesconf.org/data/pages/A33.pdf",
 		"image": "images/communications/reaf-2026.webp",
-		"heroImage": {
-			"src": "images/communications/reaf-2026-hero.webp",
-			"alt": "Banner for the 9th Rencontres des Études Africaines en France, 29 June to 2 July 2026, Campus Condorcet Aubervilliers, with the CNRS, IRD and Études africaines en France logos over a blue and yellow painted collage."
-		},
 		"coordinates": {
 			"latitude": 48.911008116361714,
 			"longitude": 2.366853761147573
@@ -1501,8 +1446,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "mbaye-diouf",
 						"affiliation": "Université Cheikh Anta Diop de Dakar"
 					}
-				],
-				"abstract": "Dans un contexte de multiplication et de numérisation des archives audiovisuelles, l'intelligence artificielle (IA) s'affirme comme un levier incontournable dans les processus d'indexation et de mise en valeur du patrimoine.\n\nCette communication interroge les effets de l'automatisation sur la construction du sens, en particulier dans le cadre du traitement des patrimoines immatériels africains. À partir d'une étude de cas centrée sur le Xooy, cérémonie divinatoire sérère reconnue comme patrimoine immatériel au Sénégal, l'analyse met en évidence les limites des systèmes algorithmiques face à la complexité des savoirs rituels, des langues vernaculaires et des contextes d'énonciation. L'indexation automatisée, bien qu'efficace, peut également engendrer des réductions sémantiques, des ruptures contextuelles et une occultation des logiques culturelles sous-jacentes de ce réservoir complexe de savoirs oraux, de pratiques symboliques et de cosmologies locales.\n\nEn mobilisant les apports de l'histoire culturelle, les études critiques sur les données et de l'anthropologie du numérique, cette communication plaide pour une patrimonialisation hybride, combinant intelligence artificielle et médiation humaine, afin de préserver la pluralité interprétative et la mémoire située des pratiques culturelles."
+				]
 			},
 			{
 				"title": "Du terrain aux algorithmes : l'intelligence artificielle au service de la linguistique historique africaine",
@@ -1512,8 +1456,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "promise-dodzi-kpoglu",
 						"affiliation": "LLACAN, Centre national de la recherche scientifique"
 					}
-				],
-				"abstract": "La linguistique africaine a longtemps intégré les innovations technologiques dans la documentation et la description. Toutefois, les avancées récentes en intelligence artificielle ouvrent la voie à ce que celles-ci dépassent leurs fonctions traditionnelles pour devenir des outils d'analyse et de la théorisation. Cette étude explore cette question à partir des langues dogons, dont la documentation est riche, mais dont l'étude historique reste limitée par la rareté des données adéquates et l'inaccessibilité du terrain.\n\nJe montre comment des corpus initialement destinés à la description peuvent être mobilisés dans un cadre computationnel afin d'aborder des problématiques historiques. Ainsi, en combinant un modèle de simulation bayésienne et un modèle d'apprentissage profond, l'étude examine la trajectoire diachronique d'un sous-groupe de langues dogon. L'idée est de modéliser les dynamiques d'innovation lexicale, d'emprunt et d'héritage afin d'identifier les processus responsables de la diversité actuelle.\n\nLes résultats suggèrent que, contre l'hypothèse existante, la diversité s'explique moins par des emprunts massifs que par un processus interne de changement. Au-delà du cas dogon, les résultats démontrent le potentiel de l'intelligence artificielle à renouveler la linguistique africaine, en permettant d'explorer des questions autrefois limitées par les contraintes de terrain et la rareté des données appropriées. Cette étude invite donc à repenser, de manière générale, la place du numérique dans la linguistique africaine, non plus seulement comme un instrument de traitement et de documentation, mais comme un véritable vecteur de renouvellement analytique et théorique."
+				]
 			},
 			{
 				"title": "Quels impacts de l'IA sur les sciences humaines ?",
@@ -1523,8 +1466,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "racine-oumar-n-diaye",
 						"affiliation": "Université de Nouadhibou"
 					}
-				],
-				"abstract": "L'Intelligence Artificielle (IA) est l'ensemble des théories et techniques mises en œuvre en vue de réaliser des machines capables de simuler l'intelligence humaine. L'IA, classée dans le domaine des sciences dites cognitives peut-elle être utile aux humanités, plus précisément à l'Histoire ?\n\nCertes, l'IA favorise considérablement l'individualisation des parcours. Elle permet de travailler sur le tutorat intelligent et au plus près des besoins de l'apprenant, de son rythme, etc. Mieux, elle prend en compte le profil au plus près de son évolution, elle permet ainsi d'aller vers « l'educational data mining ». Cet ensemble permet de faire évoluer le scénario même de l'apprentissage.\n\nEst-ce suffisant ? Nous pensons que non ! La limite opérationnelle ne se situerait pas sur les représentations d'ordres gestuels et de postures ? Les techniques du métier par exemple, les savoirs faire, les savoirs-être et les savoirs faire-faire qui relèvent de l'intelligence adaptative, les apprentissages comportemental et situationnel sont-ils bien pris en compte ? Qui plus est, une dimension émotionnelle, inconsciente s'invite dans l'histoire. L'histoire est à la recherche de l'homme et des pistes de son évolution. Les IA s'occupent-elles de l'HOMME ? Mettent-elles l'humain au centre de leurs préoccupations ? Leur gestion de cette donne demeure complexe. Cet état de fait expliquerait, en partie, que toutes les technologies disruptives aient eu leur part de peur et d'inconnu.\n\nD'autre part, les études ont démontré que l'on pouvait réellement apprendre à travers les environnements fournis et dédiés par les IA. Ils permettent une intégration de tuteurs dits intelligents et des scénarios. Des essais très manichéens comme la « guerre des intelligences », « Intelligence Unleashed » et « The Impact of AI on Learning, Teaching, and Education » ont vu jour. Mais cet imbroglio scientifique et technique peut-il remplacer l'historien ? Non ! C'est une technologie de rupture où on doit mettre de l'éthique. L'IA, outil complémentaire des humanités, doit entretenir des interactions avec celles-ci : d'une part, l'intelligence artificielle doit permettre d'élargir le champ d'étude des disciplines en question en y apportant de nouveaux outils, et, d'autre part, les humanités doivent pouvoir concevoir des paradigmes et méthodes permettant de mieux analyser les impacts sociétaux de celle-ci. Nous devons nous orienter vers des approches qui stipulent une hypothèse de bonne entente, et qui favorisent une cohabitation efficiente et pacifique entre cette intelligence dite artificielle et celle du cerveau car l'intelligence naturelle demeure, de nos jours, irremplaçable encore."
+				]
 			},
 			{
 				"title": "Retrouver la révolte malgache de 1947. Le deep learning appliqué aux inventaires de destruction.",
@@ -1539,8 +1481,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "stephane-lamasse",
 						"affiliation": "LAMOP, PIREH, Université Paris 1 Panthéon-Sorbonne"
 					}
-				],
-				"abstract": "Dans cette communication, nous allons montrer quelques résultats d'un projet de recherche en cours, mené dans le cadre d'une thèse de doctorat, qui vise à réexaminer la révolte malgache de 1947 par le prisme des dégâts matériels, recensés dans des inventaires de pertes, grâce à l'usage du deep learning. L'objectif est double : mieux comprendre l'ampleur des destructions matérielles et interroger ce que le deep learning, en tant que méthodologie, permet de voir dans un contexte colonial marqué par les rapports de domination.\n\nLe contexte colonial malgache constitue un terrain d'expérience privilégié pour expérimenter les apports du deep learning. D'une part, les dossiers d'indemnisation produits par l'administration coloniale une documentation abondante, normative et fortement structurée, qui se prête à un traitement sériel. D'autre part, l'hétérogénéité de ces archives, mélangeant formulaires, structures tabulaires, imprimés et manuscrites, offre un cas d'étude pour tester l'efficacité du deep learning. À cela s'ajoutent les enjeux linguistiques liés à la coexistence du français et du malgache.\n\nComment l'entrainement d'un modèle de deep learning pour affronter cette documentation peut être envisagé pour relire la révolte malgache de 1947 ? D'abord, j'analyserai comment cette documentation, produite selon des logiques administratives propres, a façonné une représentation particulière des destructions imputées aux insurgés. Cette première partie permettra de parler aussi de la mise en sens de la donnée au sein des inventaires de pertes. Je présenterai ensuite, les différentes stratégies de traitement appliquées à cette documentation. J'exposerai à la fois les avancées et les limites rencontrées. Enfin, deux ou trois études de cas permettront d'illustrer concrètement la manière dont cette approche transdisciplinaire reconfigurer l'analyse de la révolte malgache de 1947 et ouvre de nouvelles perspectives d'interprétation."
+				]
 			},
 			{
 				"title": "Retour sur une note de synthèse analysant la relation entre Humanités Numériques, l'IA et les Études Africaines (Hanovre, février 2025)",
@@ -1554,8 +1495,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 						"personId": "vincent-hiribarren",
 						"affiliation": "King's College London"
 					}
-				],
-				"abstract": "Dans ce papier, Frédérick Madore et Vincent Hiribarren analysent le contenu d'une note de synthèse préparée par une équipe de trente chercheur.es et praticien·nes en Humanités numériques sur le rapport entre Humanités numériques, l'IA et études africaines (financement Fondation Volkswagen) en février 2025. Cette note de synthèse s'attarde principalement sur les trois points suivants 1) Intégration méthodologique et préservation numérique 2) Favoriser une collaboration équitable 3) Cadre éthique et souveraineté numérique."
+				]
 			}
 		],
 		"participants": [],
@@ -1587,10 +1527,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Archives"
 		],
 		"image": "images/communications/humanistica-2025.webp",
-		"heroImage": {
-			"src": "images/communications/humanistica-2025-hero.webp",
-			"alt": "Banner for the Colloque Humanistica 2025, with a blue chevron mark and the French subtitle 'Colloque annuel de l'Association francophone des humanités numériques' in black on white."
-		},
 		"coordinates": {
 			"latitude": 14.6937,
 			"longitude": -17.4665
@@ -1624,10 +1560,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://eniugh.org/events/global-and-transregional-histories-digtally-connected/",
 		"image": "images/communications/ENIUGH.webp",
-		"heroImage": {
-			"src": "images/communications/ENIUGH-hero.webp",
-			"alt": "Outdoor sandwich-board sign on a paved square, headed 'Linnéuniversitetet', holding a poster for the European Network on Universal and Global History (ENIUGH), 10–11 September, with yellow circles on a violet ground."
-		},
 		"coordinates": {
 			"latitude": 56.879,
 			"longitude": 14.8059
@@ -1661,10 +1593,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/c2dh.webp",
-		"heroImage": {
-			"src": "images/communications/c2dh-hero.webp",
-			"alt": "Event page header for 'AI through History, History through AI', beside an illustration of a woman in a long skirt reaching toward a mosaic-like grid of dark and cream tiles, with orange binary digits streaming from it."
-		},
 		"coordinates": {
 			"latitude": 49.5018,
 			"longitude": 5.9485
@@ -1720,10 +1648,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"url": "https://2026.jcdl.org/program/#s=thu-p12",
 		"urlLabel": "Conference Programme",
 		"image": "images/communications/jcdl-2026.webp",
-		"heroImage": {
-			"src": "images/communications/jcdl-2026.webp",
-			"alt": "Square logo for ACM/IEEE JCDL 2026: a white line drawing of a city skyline with network nodes and binary digits above the text 'ACM/IEEE JCDL 2026' on a dark ground."
-		},
 		"coordinates": {
 			"latitude": 33.1003,
 			"longitude": -96.8213
@@ -1755,10 +1679,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/MANSA-logo.webp",
-		"heroImage": {
-			"src": "images/communications/MANSA-logo-hero.webp",
-			"alt": "MANSA logo: a seated, crowned king holding an orb and a sceptre in orange and black, set against large orange columns, above the word 'MANSA' and the names Association des Etudes Mandé and Mande Studies Association."
-		},
 		"coordinates": {
 			"latitude": 12.65281204482263,
 			"longitude": -7.929792400856658
@@ -1793,10 +1713,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Universities"
 		],
 		"image": "images/communications/ecas-2023.webp",
-		"heroImage": {
-			"src": "images/communications/ecas-2023-hero.webp",
-			"alt": "Logo of the European Conference on African Studies, 'African Futures, Cologne 2023', with a multicoloured line outline of the African continent."
-		},
 		"coordinates": {
 			"latitude": 50.928,
 			"longitude": 6.929
@@ -1833,10 +1749,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": 17.6389
 		},
 		"image": "images/communications/generations-imam-benin-2021.webp",
-		"heroImage": {
-			"src": "images/communications/generations-imam-benin-2021-hero.webp",
-			"alt": "Poster for the 'Beyond Crisis and Insecurity' West Africa conference, 16–19 June 2021, with three partner logos (Uppsala Universitet, Forum for Africa Studies, MANSA), a photograph of a 'Place de la Liberté' street sign and the hashtag #MANSAUppsala2021."
-		},
 		"project": "Muslim Minorities in Southern Cities of Benin and Togo",
 		"abstractExcerpt": "With the alarming deterioration of the security situation in Burkina Faso, recent reports have warned about the risk of the spread of jihadism in coastal West Africa. The kidnapping of two French tourists and the killing "
 	},
@@ -1866,10 +1778,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/ASA-Logo.svg",
-		"heroImage": {
-			"src": "images/communications/ASA-Logo.svg",
-			"alt": "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
-		},
 		"coordinates": {
 			"latitude": 42.346757140313436,
 			"longitude": -71.07895521140732
@@ -1903,10 +1811,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/ASA-Logo.svg",
-		"heroImage": {
-			"src": "images/communications/ASA-Logo.svg",
-			"alt": "African Studies Association logo: large red and orange letters 'ASA' with a starburst of red and orange rays at the left, above the words 'African Studies Association' in black."
-		},
 		"coordinates": {
 			"latitude": 38.92446346750211,
 			"longitude": -77.05449990304827
@@ -1944,10 +1848,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/ecas-2025.webp",
-		"heroImage": {
-			"src": "images/communications/ecas-2025-hero.webp",
-			"alt": "Poster for the European Conference on African Studies, 'African, Afropean, Afropolitan', Prague, 25–28 June 2025, in orange on a purple ground, beside an orange Africa silhouette built from vertical bars."
-		},
 		"coordinates": {
 			"latitude": 50.08896481219099,
 			"longitude": 14.416024062407818
@@ -1981,10 +1881,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/CAAS-logo.webp",
-		"heroImage": {
-			"src": "images/communications/CAAS-logo-hero.webp",
-			"alt": "Cropped logo of the Canadian Association of African Studies: an orange and black African mask in front of a dark Africa silhouette, with fragments of lettering on an orange band."
-		},
 		"coordinates": {
 			"latitude": 46.7793,
 			"longitude": -71.2825
@@ -2018,10 +1914,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Media"
 		],
 		"image": "images/communications/University_of_Texas_at_Austin_seal.webp",
-		"heroImage": {
-			"src": "images/communications/University_of_Texas_at_Austin_seal-hero.webp",
-			"alt": "University of Texas at Austin Seal"
-		},
 		"coordinates": {
 			"latitude": 30.2849,
 			"longitude": -97.7341
@@ -2059,10 +1951,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": 11.5674
 		},
 		"image": "images/communications/islam-burkina-faso-collection-omeka-2022.webp",
-		"heroImage": {
-			"src": "images/communications/islam-burkina-faso-collection-omeka-2022-hero.webp",
-			"alt": "Poster for the annual cluster conference of the Africa Multiple Cluster of Excellence, 'Medialities', 6–9 July 2022, above a photograph of a radiating arrangement of small rectangular pieces on dark blue fabric (artist credit: Wallen Mapondera)."
-		},
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "Despite the growing popularity of digital humanities, a limited number of initiatives related to Islam in Sub-Saharan Africa have attempted to mobilize digital tools to analyze and disseminate research data. Launched in 2"
 	},
@@ -2096,10 +1984,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": 2.382
 		},
 		"image": "images/communications/islam-ivoirien-burkinabe-numerique-2016.webp",
-		"heroImage": {
-			"src": "images/communications/islam-ivoirien-burkinabe-numerique-2016-hero.webp",
-			"alt": "Cover of the programme for the 3rd Rencontre des Jeunes Chercheur.e.s en Études Africaines, 14–16 January 2016, with the JCEA logo: an Africa outline behind a magnifying glass and the letters J, C, E, A."
-		},
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Plusieurs études ont récemment été publiées sur la médiatisation de l’islam subsaharien par le biais de cassettes audio, de la presse, de la radio et de la télévision. Ces travaux, essentiels pour comprendre les nouvelles"
 	},
@@ -2138,10 +2022,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": 9.7036
 		},
 		"image": "images/communications/islam-peripheries-open-up-2026.webp",
-		"heroImage": {
-			"src": "images/communications/islam-peripheries-open-up-2026-hero.webp",
-			"alt": "VolkswagenStiftung logo with a dotted mark above the kick-off title 'Kick Off „Open Up“' and the dates 4–5 March 2026, on a white ground."
-		},
 		"project": "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 		"abstractExcerpt": "This presentation introduced the project \"Islam's 'Peripheries'\" to the other funded projects at the VolkswagenStiftung \"Open Up\" kick-off event. In Islamic studies, sub-Saharan Africa and Central Asia are often treated a"
 	},
@@ -2179,10 +2059,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": -3.1892
 		},
 		"image": "images/communications/islam-university-campuses-cote-divoire-2019.webp",
-		"heroImage": {
-			"src": "images/communications/islam-university-campuses-cote-divoire-2019-hero.webp",
-			"alt": "Poster for the 8th European Conference on African Studies (ECAS2019), 'Africa: Connections and Disruptions': a man in a checked garment wears a reflective visor against a red ground, beside a gold Africa outline patterned like a circuit board."
-		},
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "In the 1970s, many Ivorian Muslim students had an 'inferiority complex' regarding their Islamic identity in a space dominated by secular and Christian ideologies. With the support of elders educated in arab countries, you"
 	},
@@ -2236,10 +2112,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"url": "https://2027.hkadh.org/",
 		"urlLabel": "Conference Website",
 		"image": "images/communications/hkadh-2027.webp",
-		"heroImage": {
-			"src": "images/communications/hkadh-2027-hero.webp",
-			"alt": "Logo of HKADH 2027: the lowercase letters “hk” in white inside a solid blue circle, followed by “adh” in large blue lowercase letters and “2027” in smaller blue numerals, on a white ground."
-		},
 		"coordinates": {
 			"latitude": 22.4686,
 			"longitude": 114.1946
@@ -2272,10 +2144,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Media"
 		],
 		"image": "images/communications/CAAS-logo.webp",
-		"heroImage": {
-			"src": "images/communications/CAAS-logo-hero.webp",
-			"alt": "Cropped logo of the Canadian Association of African Studies: an orange and black African mask in front of a dark Africa silhouette, with fragments of lettering on an orange band."
-		},
 		"coordinates": {
 			"latitude": 45.4231,
 			"longitude": -75.6831
@@ -2310,10 +2178,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": -0.5515
 		},
 		"image": "images/communications/militantisme-islamique-feminin-burkina-2019.webp",
-		"heroImage": {
-			"src": "images/communications/militantisme-islamique-feminin-burkina-2019-hero.webp",
-			"alt": "Poster for the 2nd international congress of the GIS Institut du Genre, 'Genre et émancipation', 27–30 August 2019, at the Université d'Angers, on a purple ground with ink blots and four partner logos."
-		},
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "L’engagement militant de différentes cohortes de musulmanes impliquées au sein de l’Association des Élèves et Étudiants Musulmans du Burkina (AEEMB) et du Cercle d’Études de Recherches et de Formation Islamiques (CERFI) d"
 	},
@@ -2341,10 +2205,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/MANSA-logo.webp",
-		"heroImage": {
-			"src": "images/communications/MANSA-logo-hero.webp",
-			"alt": "MANSA logo: a seated, crowned king holding an orb and a sceptre in orange and black, above the word 'MANSA' and the names Association des Etudes Mandé and Mande Studies Association."
-		},
 		"coordinates": {
 			"latitude": 5.1998,
 			"longitude": -3.734
@@ -2385,10 +2245,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": -71.2825
 		},
 		"image": "images/communications/acfas_81e.webp",
-		"heroImage": {
-			"src": "images/communications/acfas_81e.webp",
-			"alt": "Poster for the 81st Acfas congress, 'Savoirs sans frontières', giving the dates 6 to 10 May 2013 and Université Laval, Québec City, on a purple and white ground."
-		},
 		"project": "Youth and Women's Islamic Activism in Côte d'Ivoire and Burkina Faso",
 		"abstractExcerpt": "Depuis le tournant des années 1990, la visibilité accrue de l’islam dans l’espace public au Burkina Faso s’est manifestée entre autres par l’émergence de prêcheurs et prêcheuses de plus en plus médiatisés. La participatio"
 	},
@@ -2426,10 +2282,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": 13.2879
 		},
 		"image": "images/communications/publishing-islam-burkina-faso-collection-2022.webp",
-		"heroImage": {
-			"src": "images/communications/publishing-islam-burkina-faso-collection-2022-hero.webp",
-			"alt": "Cover of the conference programme for the 34th Deutscher Orientalistentag (DOT 2022), with the blue and yellow DOT 2022 logo and the Freie Universität Berlin logo."
-		},
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "Despite the growing popularity of digital humanities, a limited number of initiatives related to Islam in Sub-Saharan Africa have attempted to mobilize digital tools to analyze and disseminate research data. Launched in 2"
 	},
@@ -2461,10 +2313,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"urlLabel": "Conference Website",
 		"slidesUrl": "https://slides.frederickmadore.com/talks/2026-07-01-rhodes-reconfiguring-archive/",
 		"image": "images/communications/reconfiguring-archive-amira-2026.webp",
-		"heroImage": {
-			"src": "images/communications/reconfiguring-archive-amira-2026.webp",
-			"alt": "Cover of the conference programme 'Reimagining the Archive in the Post-Truth Era', Cory Library & Archives, Rhodes University, 29 June to 2 July 2026, on aged paper with pointing-hand engravings and the Rhodes and ILAM logos."
-		},
 		"coordinates": {
 			"latitude": -33.3131,
 			"longitude": 26.5194
@@ -2564,10 +2412,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": 2.366288
 		},
 		"image": "images/communications/reaf-2026.webp",
-		"heroImage": {
-			"src": "images/communications/reaf-2026-hero.webp",
-			"alt": "Banner for the 9th Rencontres des Études Africaines en France, 29 June to 2 July 2026, Campus Condorcet Aubervilliers, with the CNRS, IRD and Études africaines en France logos over a blue and yellow painted collage."
-		},
 		"project": "Digital Humanities and AI in African Studies",
 		"abstractExcerpt": "Dans ce papier, Frédérick Madore et Vincent Hiribarren analysent le contenu d'une note de synthèse préparée par une équipe de trente chercheur.es et praticien·nes en Humanités numériques sur le rapport entre Humanités num"
 	},
@@ -2602,10 +2446,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/Gaston_Berger_University_logo.webp",
-		"heroImage": {
-			"src": "images/communications/Gaston_Berger_University_logo-hero.webp",
-			"alt": "Gaston Berger University Logo"
-		},
 		"coordinates": {
 			"latitude": 16.0598,
 			"longitude": -16.4244
@@ -2641,10 +2481,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": 14.3244
 		},
 		"image": "images/communications/salafisme-securitisation-benin-togo-2022.webp",
-		"heroImage": {
-			"src": "images/communications/salafisme-securitisation-benin-togo-2022-hero.webp",
-			"alt": "Black event poster for Panel 4, 'Islam, Violence and Political Salafism', on 2 June 2022, with photographs and names of four speakers and their institutions."
-		},
 		"project": "Muslim Minorities in Southern Cities of Benin and Togo",
 		"abstractExcerpt": "Au cours des dernières années, la détérioration de la situation sécuritaire au Sahel a laissé craindre à une extension du djihadisme aux pays côtiers du Golfe de Guinée. L’arrestation d’une vingtaine de présumés djihadist"
 	},
@@ -2677,10 +2513,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"url": "https://fmadore.github.io/stias-dh-ai-workshop-2026/",
 		"urlLabel": "Workshop Website",
 		"image": "images/communications/point-sud-logo.svg",
-		"heroImage": {
-			"src": "images/communications/point-sud-logo.svg",
-			"alt": "Point Sud logo: the black wordmark 'POINT SUD' with an orange dot above and an orange swoosh below."
-		},
 		"coordinates": {
 			"latitude": -33.9321,
 			"longitude": 18.8602
@@ -2775,10 +2607,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			}
 		],
 		"image": "images/communications/zmo-kitchen-talks-logo.webp",
-		"heroImage": {
-			"src": "images/communications/zmo-kitchen-talks-logo.webp",
-			"alt": "ZMO Kitchen Talks podcast logo."
-		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
 			"longitude": 13.202338657893593
@@ -2834,10 +2662,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"url": "https://cikm2026.diag.uniroma1.it/",
 		"urlLabel": "Conference Website",
 		"image": "images/communications/cikm-2026.webp",
-		"heroImage": {
-			"src": "images/communications/cikm-2026-hero.webp",
-			"alt": "Logo of CIKM 2026 in Rome: the Colosseum, Trajan’s Column and the shell of the Auditorium Parco della Musica stand side by side beneath an arc of network nodes and edges in the green, white and red of the Italian flag, with the wordmark “CIKM 2026” set below in heavy black capitals."
-		},
 		"coordinates": {
 			"latitude": 41.9289,
 			"longitude": 12.4739
@@ -2899,10 +2723,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"caption": "Poster as presented, A0 portrait (841 × 1189 mm)"
 		},
 		"image": "images/communications/ubt-ai-day-2026-logo.webp",
-		"heroImage": {
-			"src": "images/communications/ubt-ai-day-2026-logo.webp",
-			"alt": "Logo of UBT AI Day 26, the University of Bayreuth’s AI Day: the letters set in a geometric sans over two lines, “UBT AI” above “DAY”, with the AI and the A of DAY picked out in green and the year 26 stacked sideways at the right."
-		},
 		"coordinates": {
 			"latitude": 49.9427,
 			"longitude": 11.5674
@@ -2937,10 +2757,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"url": "https://calendar.ku.edu/event/ai-and-africa-symposium",
 		"urlLabel": "Event Website",
 		"image": "images/communications/ai-africa-symposium-kansas-2026.webp",
-		"heroImage": {
-			"src": "images/communications/ai-africa-symposium-kansas-2026-hero.webp",
-			"alt": "Flyer for the AI and Africa Symposium, a Zoom event on 17 September 2026 organised by the University of Kansas. Two panels are listed, each with three speaker portraits and a named moderator, under the AAAS | KASC and African Digital Humanities logos."
-		},
 		"coordinates": {
 			"latitude": 38.9543,
 			"longitude": -95.2558
@@ -3009,6 +2825,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"country": "Benin",
 		"type": "lecture",
 		"language": "French",
+		"abstractLanguage": "English",
 		"tags": [
 			"Religious Associations",
 			"Universities",
@@ -3020,10 +2837,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/associations-chretiennes-islamiques-campus.webp",
-		"heroImage": {
-			"src": "images/communications/associations-chretiennes-islamiques-campus-hero.webp",
-			"alt": "A man in a grey polo shirt speaks beside a wooden lectern in a hall, with a green banner for the LARRED doctoral programme of the Université d'Abomey-Calavi behind him. Audience members in African print cloth sit in the foreground."
-		},
 		"coordinates": {
 			"latitude": 6.414542574575833,
 			"longitude": 2.3407357046550015
@@ -3045,6 +2858,7 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"country": "France",
 		"type": "workshop",
 		"language": "French",
+		"abstractLanguage": "English",
 		"tags": [
 			"West Africa",
 			"Islam",
@@ -3055,10 +2869,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Archives"
 		],
 		"image": "images/communications/distam-2024.webp",
-		"heroImage": {
-			"src": "images/communications/distam-2024-hero.webp",
-			"alt": "DISTAM logo"
-		},
 		"coordinates": {
 			"latitude": 43.52854733305117,
 			"longitude": 5.418119777598703
@@ -3089,10 +2899,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://sahelresearch.africa.ufl.edu/events-activities/sahel-seminars/",
 		"image": "images/communications/current-dynamics-islam-burkina-faso.webp",
-		"heroImage": {
-			"src": "images/communications/current-dynamics-islam-burkina-faso-hero.webp",
-			"alt": "Two men in an office, one standing in a grey sweater beside a projector and laptop stacked on books, gesturing as he speaks; a seated man in a blue plaid shirt listens, and a woman is partly visible at the left."
-		},
 		"coordinates": {
 			"latitude": 29.649267030531483,
 			"longitude": -82.34204912970114
@@ -3123,10 +2929,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/workshop-Dakar-2019.webp",
-		"heroImage": {
-			"src": "images/communications/workshop-Dakar-2019-hero.webp",
-			"alt": "Group photo of about eleven people standing under a blue canopy in front of a banner reading 'West African Research Center, Centre de Recherche Ouest Africain (WARC/CROA)', with a patterned cloth-covered table in front."
-		},
 		"coordinates": {
 			"latitude": 14.690999882866137,
 			"longitude": -17.471180613754807
@@ -3161,10 +2963,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://web.archive.org/web/20250411145918/https://zzf-potsdam.de/forschung/doktorand_innen/master-class",
 		"image": "images/communications/zzf-logo.webp",
-		"heroImage": {
-			"src": "images/communications/zzf-logo-hero.webp",
-			"alt": "Leibniz Centre for Contemporary History Potsdam (ZZF) Logo"
-		},
 		"coordinates": {
 			"latitude": 52.39576849534208,
 			"longitude": 13.05789249482127
@@ -3201,10 +2999,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"longitude": 21.011357126938524
 		},
 		"image": "images/communications/digital-hoarding-open-archives-warsaw-2026.webp",
-		"heroImage": {
-			"src": "images/communications/digital-hoarding-open-archives-warsaw-2026-hero.webp",
-			"alt": "Poster for the workshop 'Non-European Approaches in European Academia', held on 16 April 2026, with a photograph of a group applauding in a library room above a brown panel listing six guest speakers and the venue in Warsaw."
-		},
 		"project": "Islam's 'Peripheries': Digital Humanities, Algorithmic Analysis, and AI in West Africa and Central Asia",
 		"abstractExcerpt": "Arlette Farge's celebrated model of archival research — the slow, tactile encounter with documents in a silent reading room — presupposes well-ordered European institutions. For historians of West Africa, the reality is d"
 	},
@@ -3275,10 +3069,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"IWAC"
 		],
 		"image": "images/communications/DH-islam-burkina-faso.webp",
-		"heroImage": {
-			"src": "images/communications/DH-islam-burkina-faso-hero.webp",
-			"alt": "Poster for the ZMO Open Day ('Tag der offenen Tür') on 16 September 2022, 13 to 17 hours. A brick building with a steep roof and arched entrance appears under a blue overlay, with the ZMO logo at top right."
-		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
 			"longitude": 13.202338657893593
@@ -3315,10 +3105,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"slidesUrl": "https://slides.frederickmadore.com/talks/2026-05-06-dga-dormant-collections/",
 		"url": "https://asienforschung.de/events/roundtable-2-digital-humanities-und-kuenstliche-intelligenz-in-den-regionalwissenschaften/",
 		"image": "images/communications/dormant-digital-collections-ai-triage-dga-2026.webp",
-		"heroImage": {
-			"src": "images/communications/dormant-digital-collections-ai-triage-dga-2026-hero.webp",
-			"alt": "Announcement card for DGA Roundtable 2: \"Digital Humanities und Künstliche Intelligenz in den Regionalwissenschaften\", scheduled for 6 May 2026. The DGA logo, two horizontal teal bars beneath the letters, sits centred on a pale teal background."
-		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
 			"longitude": 13.202338657893593
@@ -3350,10 +3136,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://www.ciram.hei.ulaval.ca/les-elites-musulmanes-en-cote-divoire-et-au-burkina-faso-depuis-1990-des-mobilisations-politiques-contrastees/",
 		"image": "images/communications/elites-musulmanes-cote-divoire-burkina-faso.webp",
-		"heroImage": {
-			"src": "images/communications/elites-musulmanes-cote-divoire-burkina-faso-hero.webp",
-			"alt": "Flyer for a lunchtime lecture (Conférence - Midi) by Frédérick Madore at Université Laval on 25 September 2018, with the title in red, a French summary of the talk and the logos of Hautes études internationales and CIRAM."
-		},
 		"coordinates": {
 			"latitude": 46.7793,
 			"longitude": -71.2825
@@ -3387,10 +3169,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Benin"
 		],
 		"image": "images/communications/emancipation-feminine-militantisme-islamique.webp",
-		"heroImage": {
-			"src": "images/communications/emancipation-feminine-militantisme-islamique-hero.webp",
-			"alt": "Poster for the international workshop 'Femmes africaines dans une société d'hommes' (21 to 22 March 2022). Below the title is a black-and-white photograph of a young woman in a beret and jumper in woodland, with a long strap, possibly a rifle, across one shoulder."
-		},
 		"coordinates": {
 			"latitude": 12.485158567864516,
 			"longitude": -8.052197170497216
@@ -3424,10 +3202,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Côte d'Ivoire"
 		],
 		"image": "images/communications/puidoux.webp",
-		"heroImage": {
-			"src": "images/communications/puidoux-hero.webp",
-			"alt": "Group photo of about fourteen people standing on a paved courtyard outside a stone building with arched windows and a glass entrance."
-		},
 		"coordinates": {
 			"latitude": 46.494026160672135,
 			"longitude": 6.779523450902999
@@ -3457,10 +3231,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Niger"
 		],
 		"image": "images/communications/lasdel-logo.webp",
-		"heroImage": {
-			"src": "images/communications/lasdel-logo-hero.webp",
-			"alt": "Laboratoire d'Etudes et de Recherches sur les Dynamiques Sociales et le Développement Local (LASDEL) Logo"
-		},
 		"coordinates": {
 			"latitude": 13.51766342197132,
 			"longitude": 2.101838007060417
@@ -3490,10 +3260,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Burkina Faso"
 		],
 		"image": "images/communications/formation-recherche-en-ligne-ouagadougou.jpeg",
-		"heroImage": {
-			"src": "images/communications/formation-recherche-en-ligne-ouagadougou.jpeg",
-			"alt": "Screenshot of the Zoom meeting"
-		},
 		"coordinates": {
 			"latitude": 12.37676356958207,
 			"longitude": -1.503981368946586
@@ -3527,10 +3293,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://doi.org/10.58079/13pmz",
 		"image": "images/communications/EHESS-2025.webp",
-		"heroImage": {
-			"src": "images/communications/EHESS-2025-hero.webp",
-			"alt": "Flyer for Frédérick Madore's lecture programme as invited professor at the EHESS, listing four sessions from 12 to 28 May, including the 20 May talk on West African Muslim communities and digital humanities. A small portrait of the speaker sits at top left, with ZMO, IISMM, EHESS and CNRS logos."
-		},
 		"coordinates": {
 			"latitude": 48.9077666570092,
 			"longitude": 2.3673775647314854
@@ -3560,10 +3322,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Computational Methods"
 		],
 		"image": "images/activities/ecole-nationale-des-chartes.webp",
-		"heroImage": {
-			"src": "images/activities/ecole-nationale-des-chartes.webp",
-			"alt": "Facade of the École nationale des chartes, with its red logo and the name in black letters on a pale stone wall. A notice board sits beneath the sign, and bicycles are parked along the pavement at right."
-		},
 		"coordinates": {
 			"latitude": 48.8489,
 			"longitude": 2.3536
@@ -3596,10 +3354,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/interfaith-coexistence-campuses.webp",
-		"heroImage": {
-			"src": "images/communications/interfaith-coexistence-campuses.webp",
-			"alt": "Group photo of about twenty people posed in an office in front of a blue and white banner with the GIGA logo. Name cards stand on the table in the foreground."
-		},
 		"coordinates": {
 			"latitude": 52.507471922094396,
 			"longitude": 13.390146758300627
@@ -3643,10 +3397,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Training"
 		],
 		"image": "images/communications/BIGSAS-logo.webp",
-		"heroImage": {
-			"src": "images/communications/BIGSAS-logo-hero.webp",
-			"alt": "Logo of the Bayreuth International Graduate School of African Studies (BIGSAS): a stylised eye over a yellow and ochre field, with “BIGSAS” in large capitals and the school’s full name beneath."
-		},
 		"coordinates": {
 			"latitude": 49.9427,
 			"longitude": 11.5674
@@ -3679,10 +3429,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/islam-algorithms-ai.webp",
-		"heroImage": {
-			"src": "images/communications/islam-algorithms-ai-hero.webp",
-			"alt": "Banner for the ZMO Sommerfest (summer party) on 18 July 2024 at 14:30, with the ZMO logo at top right. A photograph of guests talking on a lawn in front of a brick house fills the left side."
-		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
 			"longitude": 13.202338657893593
@@ -3712,10 +3458,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/islam-burkina-cote-ivoire.webp",
-		"heroImage": {
-			"src": "images/communications/islam-burkina-cote-ivoire-hero.webp",
-			"alt": "Poster for the 76th Archéopat conference, titled 'L'islam au Burkina Faso et en Côte d'Ivoire'. Over a photograph of a half-built mosque with domes and scaffolding on dry ground, a vertical green banner reads 'Archéopat'; the UQAR, PATER and laboratory logos sit along the bottom."
-		},
 		"coordinates": {
 			"latitude": 48.452593849017894,
 			"longitude": -68.5121099219544
@@ -3756,10 +3498,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		"urlLabel": "Seminar Series Website",
 		"slidesUrl": "https://slides.frederickmadore.com/talks/2026-06-29-erlangen-islam-peripheries/",
 		"image": "images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026.webp",
-		"heroImage": {
-			"src": "images/communications/islam-peripheries-dh-ai-west-africa-central-asia-2026-hero.webp",
-			"alt": "Seminar poster for 'Digital History in/of Central Asia and the South Caucasus', announcing a talk on 'Islam's Peripheries' by Dr. Aksana Ismailbekova and Dr. Frédérick Madore on 29 June at 14:00 CET. Circular portraits of the two speakers sit at right, with Max Weber Stiftung and FAU logos at top."
-		},
 		"coordinates": {
 			"latitude": 49.598,
 			"longitude": 11.0042
@@ -3821,10 +3559,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/militantisme-islamique-campus-lome.webp",
-		"heroImage": {
-			"src": "images/communications/militantisme-islamique-campus-lome-hero.webp",
-			"alt": "Orange flyer for a virtual conference by the UQAM Chair on Contemporary Islam in West Africa, with the talk title and a photograph of a smiling man with glasses in a striped blue shirt."
-		},
 		"coordinates": {
 			"latitude": 45.513161245085065,
 			"longitude": -73.56029863019006
@@ -3861,10 +3595,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://doi.org/10.58079/13pmz",
 		"image": "images/communications/EHESS-2025.webp",
-		"heroImage": {
-			"src": "images/communications/EHESS-2025-hero.webp",
-			"alt": "Flyer announcing Frédérick Madore's lecture series at EHESS in May 2025"
-		},
 		"coordinates": {
 			"latitude": 48.911008116361714,
 			"longitude": 2.366853761147573
@@ -3894,10 +3624,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Islam"
 		],
 		"image": "images/communications/muslim-intellectuals-francophone-salafis.webp",
-		"heroImage": {
-			"src": "images/communications/muslim-intellectuals-francophone-salafis-hero.webp",
-			"alt": "Event flyer with a photograph of a mosque with a green dome, a tall minaret and palm trees, a portrait of a smiling man in a light blue shirt, and the Hamilton Lugar School logos."
-		},
 		"coordinates": {
 			"latitude": 39.16823943506577,
 			"longitude": -86.52300137629928
@@ -3928,10 +3654,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/point-de-passage-frontieres-religieuses.webp",
-		"heroImage": {
-			"src": "images/communications/point-de-passage-frontieres-religieuses-hero.webp",
-			"alt": "Programme poster for the workshop Points de passage et frontières religieuses, with a small portrait beside each speaker's timetable slot and the LASDEL and KU Leuven logos."
-		},
 		"coordinates": {
 			"latitude": 13.51766342197132,
 			"longitude": 2.101838007060417
@@ -3991,10 +3713,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://www.ciram.hei.ulaval.ca/activite/discussion-autour-du-livre-religious-activism-on-campuses-in-togo-and-benin/",
 		"image": "images/communications/ciram-2025.webp",
-		"heroImage": {
-			"src": "images/communications/ciram-2025-hero.webp",
-			"alt": "Poster for an online book talk with Frédérick Madore on “Religious Activism on Campuses in Togo and Benin”, 6 Nov 2025"
-		},
 		"coordinates": {
 			"latitude": 46.7793,
 			"longitude": -71.2825
@@ -4026,10 +3744,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/public-islam-cote-ivoire-burkina-faso.webp",
-		"heroImage": {
-			"src": "images/communications/public-islam-cote-ivoire-burkina-faso-hero.webp",
-			"alt": "Workshop flyer on a dark blue ground, with a photograph of a man in a white robe behind a shop counter stacked with tapes, cases and printed material, and the speaker list below."
-		},
 		"coordinates": {
 			"latitude": 29.649267030531483,
 			"longitude": -82.34204912970114
@@ -4065,10 +3779,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://doi.org/10.58079/13pmz",
 		"image": "images/communications/EHESS-2025.webp",
-		"heroImage": {
-			"src": "images/communications/EHESS-2025-hero.webp",
-			"alt": "Flyer announcing Frédérick Madore's lecture series at EHESS in May 2025"
-		},
 		"coordinates": {
 			"latitude": 48.9077666570092,
 			"longitude": 2.3673775647314854
@@ -4101,10 +3811,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Digital Tools"
 		],
 		"image": "images/communications/recherche-documentaire-zotero.webp",
-		"heroImage": {
-			"src": "images/communications/recherche-documentaire-zotero-hero.webp",
-			"alt": "Conference flyer with a smiling portrait of a man with short hair, a blue-boxed theme line about open-access research and Zotero, and the date Friday 7 June 2019 in large blue lettering."
-		},
 		"coordinates": {
 			"latitude": 7.686428569920746,
 			"longitude": -5.0666995366353405
@@ -4141,10 +3847,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 		],
 		"url": "https://doi.org/10.58079/13pmz",
 		"image": "images/communications/EHESS-2025.webp",
-		"heroImage": {
-			"src": "images/communications/EHESS-2025-hero.webp",
-			"alt": "Flyer announcing Frédérick Madore's lecture series at EHESS in May 2025"
-		},
 		"coordinates": {
 			"latitude": 48.911008116361714,
 			"longitude": 2.366853761147573
@@ -4178,10 +3880,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Islam"
 		],
 		"image": "images/communications/paris-cite.webp",
-		"heroImage": {
-			"src": "images/communications/paris-cite-hero.webp",
-			"alt": "Université Paris Cité logo"
-		},
 		"coordinates": {
 			"latitude": 48.85569290213881,
 			"longitude": 2.331850397015674
@@ -4211,10 +3909,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/representations-islam-muslims-togo.webp",
-		"heroImage": {
-			"src": "images/communications/representations-islam-muslims-togo-hero.webp",
-			"alt": "Online workshop flyer on a green foliage background, with a hand holding a smartphone that shows two smiling people, beside a list of speakers and the University of Florida logo."
-		},
 		"coordinates": {
 			"latitude": 29.649267030531483,
 			"longitude": -82.34204912970114
@@ -4249,10 +3943,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Religious Activism"
 		],
 		"image": "images/communications/salafisme-pentecotisme-campus-benin-togo.webp",
-		"heroImage": {
-			"src": "images/communications/salafisme-pentecotisme-campus-benin-togo-hero.webp",
-			"alt": "Dark blue CIRAM poster with the talk title, a teal summary paragraph, the date 8 April 2021 and the speaker's name, with the Université Laval logo at the foot."
-		},
 		"coordinates": {
 			"latitude": 46.7793,
 			"longitude": -71.2825
@@ -4321,10 +4011,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Digital Humanities"
 		],
 		"image": "images/communications/perspectives-in-motion.webp",
-		"heroImage": {
-			"src": "images/communications/perspectives-in-motion-hero.webp",
-			"alt": "Cover of the programme for the Perspectives in Motion workshop, showing a blue-tinted photograph of an ornate geometric dome and the Leibniz-Zentrum Moderner Orient logo."
-		},
 		"coordinates": {
 			"latitude": 52.42814222811816,
 			"longitude": 13.202338657893593
@@ -4356,10 +4042,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/union-islamique-benin-elections.webp",
-		"heroImage": {
-			"src": "images/communications/union-islamique-benin-elections-hero.webp",
-			"alt": "Photograph of a man in a grey shirt standing among about a dozen students in white polo shirts in a classroom, with a school banner on the wall and wooden desks in the foreground."
-		},
 		"coordinates": {
 			"latitude": 6.414542574575833,
 			"longitude": 2.3407357046550015
@@ -4389,10 +4071,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"Archives"
 		],
 		"image": "images/communications/ALMEDA-logo.webp",
-		"heroImage": {
-			"src": "images/communications/ALMEDA-logo-hero.webp",
-			"alt": "Project banner for African Literary Metadata (ALMEDA), with a geometric pattern of concentric arcs in red, gold, green and brown behind the title and a subtitle line."
-		},
 		"coordinates": {
 			"latitude": 59.8585638,
 			"longitude": 17.6389267
@@ -4429,10 +4107,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			}
 		],
 		"image": "images/communications/SADILAR.webp",
-		"heroImage": {
-			"src": "images/communications/SADILAR-hero.webp",
-			"alt": "Poster for the SADiLaR DH Colloquium on 20 August 2025 at 10:00 SAST. Title reads: “When AI Meets the Archive: Transforming the Islam West Africa Collection with Large Language Models.” Speaker: Frédérick Madore. The right side features a digital illustration of binary code with document icons connected by lines and a large magnifying glass."
-		},
 		"coordinates": {
 			"latitude": -26.693492,
 			"longitude": 27.093062
@@ -4464,10 +4138,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/young-muslims-civic-engagement-burkina.webp",
-		"heroImage": {
-			"src": "images/communications/young-muslims-civic-engagement-burkina-hero.webp",
-			"alt": "Workshop flyer with a photograph of a man in striped clothing holding a large handwritten book in front of a reed fence, with the programme listed below."
-		},
 		"coordinates": {
 			"latitude": 29.649267030531483,
 			"longitude": -82.34204912970114
@@ -4498,10 +4168,6 @@ export const communicationSummaries: CommunicationSummary[] = [
 			"West Africa"
 		],
 		"image": "images/communications/yovo-historian-benin-togo.webp",
-		"heroImage": {
-			"src": "images/communications/yovo-historian-benin-togo-hero.webp",
-			"alt": "Group of six men posing outside a building beside a green sign reading Martin-Luther-Universität Halle-Wittenberg, under trees on a sunny day."
-		},
 		"coordinates": {
 			"latitude": 51.4861519467266,
 			"longitude": 11.969523822453674

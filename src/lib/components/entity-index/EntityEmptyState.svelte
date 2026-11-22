@@ -1,4 +1,4 @@
-<script lang="ts" generics="TItem">
+<script lang="ts" generics="TItem, K extends string">
 	// The empty state every index shares: what failed to match, the corpus that
 	// is still there (the Count Rule), and the one way back (the Clearing Rule).
 	// The tally above drops its own clear control while this block shows, so
@@ -8,7 +8,7 @@
 	import { clearKeepingFocus } from './focusAfterClear';
 
 	interface Props {
-		filters: EntityFilterSystem<TItem>;
+		filters: EntityFilterSystem<TItem, K>;
 		totalEntries: number;
 		minYear: number;
 		maxYear: number;

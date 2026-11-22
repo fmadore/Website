@@ -27,7 +27,9 @@ export const omekaSDocker: DigitalHumanitiesProject = {
 	application: {
 		status: 'released',
 		operatingSystem: 'Linux (Docker)',
-		licence: 'MIT'
+		licence: 'MIT',
+		// Server software a team deploys, not an app a reader installs on a desktop.
+		category: 'DeveloperApplication'
 	},
 	links: [
 		{

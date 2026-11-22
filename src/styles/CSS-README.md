@@ -83,7 +83,7 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 #### Spacing System (4px base)
 
 - **Semantic scale**: `--space-3xs` through `--space-4xl`
-- **Numeric scale**: `--space-px` through `--space-48`
+- **Numeric scale**: `--space-px` through `--space-32`
 - **Tight variant**: `--space-xl-tight` (28px)
 - **Reading rhythm**: `--space-reading`, `--space-reading-loose` for detail-page sections
 
@@ -92,9 +92,9 @@ There are no `--shadow-*` tokens. Depth comes from ink density and rule weight, 
 - **Font families**: `--font-family-display` (Archivo — nameplate, h1–h3, section heads, big data numbers), `--font-family-serif` (Newsreader — all prose, h4–h5, captions, italics; the reading default), `--font-family-mono` (Spline Sans Mono — the data voice: eyebrows, datelines, counts, nav, chips, DOIs, pagination; **never body copy**). There is no fourth family: `--font-family-sans` was removed once nothing used it — form controls take `font: inherit` from the reset, so its stated purpose never existed, while chart containers and the network plate were quietly inheriting it.
 - **Archivo width axis**: `--font-variation-nameplate/-wordmark/-display/-headline` presets for the wide, heavy display cut, one per tier
 - **Type scale**: Fluid `clamp()` steps with forked ratios — Minor Third (1.2) for body/UI, Major Third (1.25) for display; plus `--font-size-nameplate` and `--font-size-display` for mastheads and index heroes
-- **Semantic sizes**: `--font-size-2xs` through `--font-size-5xl`, `--font-size-heading-1..6`
+- **Semantic sizes**: `--font-size-2xs` through `--font-size-4xl`, `--font-size-heading-1..6`
 - **Line heights / weights**: `--line-height-*` (plus the contextual `--line-height-heading/-body/-caption`), `--font-weight-*`
-- **Tracking**: eight `--tracking-*` roles keyed to voice and size — no component writes a raw `em` value. Display (Archivo) tightens as it grows: `--tracking-display-lg` (nameplate, `--font-size-display`, 5xl), `--tracking-display` (h1–h2), `--tracking-display-sm` (h3 and below). Serif (Newsreader) titles take `--tracking-title`; prose sets none. The data voice (mono caps) loosens as it shrinks: `--tracking-eyebrow` (the 2xs bold kicker, one per module), `--tracking-label` (the 2xs caps default — stamps, nav, facet controls, datelines), `--tracking-caps` (the compact tier: caps at xs–sm, and dense 2xs caps in runs — chips, badges, chart chrome), `--tracking-figures` (mixed-case mono: DOIs, counts, years, meta values)
+- **Tracking**: eight `--tracking-*` roles keyed to voice and size — no component writes a raw `em` value. Display (Archivo) tightens as it grows: `--tracking-display-lg` (nameplate, `--font-size-display`), `--tracking-display` (h1–h2), `--tracking-display-sm` (h3 and below). Serif (Newsreader) titles take `--tracking-title`; prose sets none. The data voice (mono caps) loosens as it shrinks: `--tracking-eyebrow` (the 2xs bold kicker, one per module), `--tracking-label` (the 2xs caps default — stamps, nav, facet controls, datelines), `--tracking-caps` (the compact tier: caps at xs–sm, and dense 2xs caps in runs — chips, badges, chart chrome), `--tracking-figures` (mixed-case mono: DOIs, counts, years, meta values)
 
 #### Focus Ring (Accessibility)
 
@@ -172,9 +172,19 @@ The vocabulary of the design system, in one place. Every class belongs to exactl
 - **Contents ledger** — the table of contents a long document opens with: `.contents-ledger` (the `<nav>`, keyed at `--ledger-key-w: 4rem` for "§ 14") wrapping a `.ledger.ledger--ruled` of `.ledger-row--meta` rows, with `.contents-link` on the title (quiet ink at rest, pine underline on hover, 24px touch floor). One density step under a record ledger — it is apparatus pointing at the page, not the page itself. Rendered by `ContentsLedger.svelte`; used by both visualisation pages and `/style-guide`
 - **Chips**: `.chip` (flat, square, 1px border, mono caps, `.chip-count` appended; `.chip--selected` = solid ink fill), `.chip-row`
 - **Text actions**: `.mono-action` — the one control that is a line of type rather than a box (`Clear all ✕`, `Clear years ✕`, `All N tags ↓`): reset native button, accent mono caps, 24px target (44px on a coarse pointer), focus ring. Pine at rest because its job is always the current narrowing and the way out of it. `.facet-toggle` is its sibling for the `More filters` disclosure — ink at rest (a permanent control of the narrow layout, not a current state), and `display: none` above `--lg`, where the apparatus it opens is already laid out
-- **Data as ornament**: `.year-bars` / `.year-bar` / `.year-bar--current` (output distribution as ink bars, accent on the newest year), `.hbar` / `.hbar--current` (horizontal proportion meter — a hard-stop `linear-gradient` fill via `--pct`), `.key-terms` (frequency-scaled term cloud), `.stat-ledger` / `.stat-row` / `.stat-value`
+- **Data as ornament**: `.year-bars` / `.year-bar` / `.year-bar--current` (output distribution as ink bars, accent on the newest year), `.hbar` / `.hbar--current` (horizontal proportion meter — a hard-stop `linear-gradient` fill via `--pct`), `.key-terms` (frequency-scaled term cloud). The visualisation pages' `.stat-ledger` / `.stat-row` / `.stat-value` and `.proportion-ledger` live route-scoped in `components/viz-page.css`, not here
 - **Editorial**: `.drop-cap` (three-line Newsreader initial in ink), `.plate` / `.plate-caption` (images as plates: 1px border, square, serif-italic caption), `.standfirst` (serif-italic deck)
-- **Specimen frame**: `.specimen` — a `<figure>` framing a live demo of an idiom that is itself page chrome, so a documentation page can show a masthead or a ruled section head without the reader mistaking the exhibit for the room. Drawn as a plate (1px box edge, `--color-surface` ground, square, no shadow), never a card. `.specimen-label` is the first child, in the data voice, closed by a hairline; `.specimen--flush` drops the inner padding for demos whose own full-width rules must reach the frame's edge. Consumer: `/style-guide`
+- **Specimen frame**: `.specimen` — a `<figure>` framing a live demo of an idiom that is itself page chrome, so a documentation page can show a masthead or a ruled section head without the reader mistaking the exhibit for the room. Drawn as a plate (1px box edge, `--color-surface` ground, square, no shadow), never a card. `.specimen-label` is the first child, in the data voice, closed by a hairline; `.specimen--flush` drops the inner padding for demos whose own full-width rules must reach the frame's edge. Consumer: `/style-guide`, which imports it from `components/specimen.css`
+
+> **Single-consumer idioms are route-scoped.** `ink-signal.css` is inlined
+> into every prerendered page, so an idiom only one or two routes set does not
+> belong in it: `.specimen*` (`components/specimen.css`), `.record-prose*`
+> (`components/record-prose.css`), the two visualisation ledgers
+> (`components/viz-page.css`) are imported by the routes that use them, and
+> the facet combobox is scoped in `FacetCombobox.svelte`. The style guide
+> imports each sheet it demonstrates; `styleGuideCoverage.test.ts` reads them
+> all.
+
 - **Rail apparatus**: `.rail-label` (a mono section label closed by a hairline) over `.meta-ledger` / `.meta-row` / `.meta-key` / `.meta-value` (a record's catalogue entry — both columns are the data voice). The label's hairline and the first row's own top hairline are the same boundary, so `.rail-label + .meta-ledger .meta-row:first-child` drops the row's rule: one boundary, one mark. The selector is adjacent-sibling because every consumer sets the label immediately before the `<dl>`
 
 > **Gradients are permitted only where they encode data.** Three exist, all data
@@ -240,7 +250,7 @@ The utilities are not a design vocabulary. Records are set in the idioms (`.ledg
 
 ### Spacing (`utilities/spacing.css`)
 
-`.mx-auto`, `.mt-4`, `.mb-8`, `.p-8`, `.px-4`, `.py-8`, used by the route shells. Values map to the semantic tokens.
+`.mx-auto`, `.mt-4`, `.mb-8`, `.p-8`, `.py-8`, used by the route shells. Values map to the semantic tokens.
 
 ### Layout (`utilities/layout.css`)
 

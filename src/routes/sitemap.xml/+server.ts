@@ -78,8 +78,10 @@ export const GET: RequestHandler = async () => {
 		{ path: '/conference-activity', priority: 0.7, changefreq: 'monthly' },
 		{ path: '/conference-activity/slides', priority: 0.8, changefreq: 'monthly' },
 		{ path: '/conference-activity/visualisations', priority: 0.8, changefreq: 'monthly' },
-		{ path: '/teaching/guest-lectures', priority: 0.8, changefreq: 'monthly' },
-		{ path: '/style-guide', priority: 0.5, changefreq: 'monthly' }
+		{ path: '/teaching/guest-lectures', priority: 0.8, changefreq: 'monthly' }
+		// /style-guide is deliberately absent: it is the design system's reference,
+		// reached from the colophon credit in the footer, and is `noindex, follow`
+		// so it never stands in a search for the scholar's work.
 		// The RSS feeds are deliberately absent. A sitemap advertises indexable
 		// pages; a feed is not one, so listing it only buys a crawl that ends in
 		// "Crawled - currently not indexed". Readers and aggregators find the

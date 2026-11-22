@@ -109,7 +109,7 @@ its share — so the step is a convenience, not the only route.
 <SEO title={pageTitle(`Activities (${year})`)} description={seoDescription} />
 
 <JsonLd id="breadcrumb-json-ld-activities-year" json={breadcrumbJsonLd} />
-<div class="container py-8">
+<div class="py-8">
 	<div class="max-w-6xl mx-auto activities-page">
 		<Breadcrumb items={breadcrumbItems} />
 

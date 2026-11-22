@@ -23,7 +23,7 @@ export const uppsalaUniversity2025: Communication = {
 	],
 	image: 'images/communications/ALMEDA-logo.webp',
 	heroImage: {
-		src: 'images/communications/ALMEDA-logo-hero.webp',
+		src: 'images/communications/ALMEDA-logo.webp',
 		alt: 'Project banner for African Literary Metadata (ALMEDA), with a geometric pattern of concentric arcs in red, gold, green and brown behind the title and a subtitle line.'
 	},
 	coordinates: {

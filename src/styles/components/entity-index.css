@@ -11,7 +11,9 @@
 .entity-index {
 	max-width: var(--content-width-6xl);
 	margin: 0 auto;
-	padding: var(--space-8) var(--space-4) var(--space-16);
+	/* Block padding only: the gutter is the page rail's (the One Rail Rule),
+	 * and a second one set the index's left edge inside the masthead's. */
+	padding: var(--space-8) 0 var(--space-16);
 }
 
 /* ═══ INDEX HERO ═══ */
@@ -575,7 +577,7 @@
 
 @media (--sm-down) {
 	.entity-index {
-		padding: var(--space-6) var(--space-4) var(--space-12);
+		padding: var(--space-6) 0 var(--space-12);
 	}
 }
 

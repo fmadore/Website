@@ -59,7 +59,7 @@ export const activity: Activity = {
 	type: 'conference',
 	image: 'images/communications/reaf-2026.webp',
 	heroImage: {
-		src: 'images/communications/reaf-2026-hero.webp',
+		src: 'images/communications/reaf-2026.webp',
 		alt: 'Banner for the 9th Rencontres des Études Africaines en France, 29 June to 2 July 2026 at Campus Condorcet, Aubervilliers, over a colourful painted collage in blue, yellow and white, with the logos of CNRS, Études africaines en France, IRD and Campus Condorcet.'
 	},
 	pdfPath: 'files/humanites-numeriques-ia-etudes-africaines-reaf-2026.pdf',

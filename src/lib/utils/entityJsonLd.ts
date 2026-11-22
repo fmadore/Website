@@ -9,7 +9,10 @@ import type { Activity } from '#lib/types/activity.ts';
 import type { Publication } from '#lib/types/publication.ts';
 import type { Contributor } from '#lib/types/contributor.ts';
 import type { Communication } from '#lib/types/communication.ts';
-import type { DigitalHumanitiesProject } from '#lib/types/digitalHumanities.ts';
+import {
+	DEFAULT_APPLICATION_CATEGORY,
+	type DigitalHumanitiesProject
+} from '#lib/types/digitalHumanities.ts';
 import type { ReviewWork } from '#lib/types/index.ts';
 import type {
 	PublicationJsonLd,
@@ -22,8 +25,12 @@ import type {
 	ThesisJsonLd,
 	JsonLdScholarlyArticleCitation,
 	EventJsonLd,
-	CreativeWorkJsonLd
+	CreativeWorkJsonLd,
+	JsonLdProjectPart,
+	ResearchProjectJsonLd,
+	JsonLdNodeReference
 } from '#lib/types/jsonld.ts';
+import type { ResearchProject } from '#lib/types/research.ts';
 import { formatAuthor, formatAuthors, formatPlaces, formatJsonLdDate } from '#lib/types/jsonld.ts';
 import { author, address, website } from '#lib/data/siteConfig.ts';
 import { siteUrl } from '#lib/utils/siteHelpers.ts';
@@ -36,6 +43,8 @@ import {
 import { jsonLdLanguage } from '#lib/utils/languageUtils.ts';
 import { stripHtml } from '#lib/utils/textUtils.ts';
 import { splitNames } from '#lib/utils/nameUtils.ts';
+import { projectLinkText, projectLinksOfType } from '#lib/utils/projectLinks.ts';
+import { parseProjectPeriod } from '#lib/utils/projectPeriod.ts';
 
 /**
  * The identity every record node carries: its own `@id`, its page as `url`,
@@ -416,36 +425,67 @@ export function buildCommunicationJsonLd(communication: Communication): EventJso
 /**
  * Build the schema.org JSON-LD object for a digital-humanities project page.
  *
- * Applications are modelled as SoftwareApplication, projects with an external
- * link as WebSite, and the rest as CreativeWork.
+ * Applications are modelled as SoftwareApplication, projects with a `site`
+ * link as WebSite, and the rest as CreativeWork; code and data links become
+ * SoftwareSourceCode and Dataset parts.
  */
 export function buildDhProjectJsonLd(project: DigitalHumanitiesProject): CreativeWorkJsonLd {
 	const identity = recordIdentity(`/digital-humanities/${project.id}`);
+	const sites = projectLinksOfType(project, 'site');
+	const app = project.application;
+
+	// An application is software; a project whose main output is its own site is
+	// that site; anything else (a pipeline, a collection of exhibits) is a work.
 	const jsonLdObject: Partial<CreativeWorkJsonLd> = {
 		'@context': 'https://schema.org',
-		'@type': project.application
-			? 'SoftwareApplication'
-			: project.linkUrl
-				? 'WebSite'
-				: 'CreativeWork',
+		'@type': app ? 'SoftwareApplication' : sites.length > 0 ? 'WebSite' : 'CreativeWork',
 		...identity,
 		name: project.title,
-		description: project.seoDescription || project.shortDescription,
-		// A project with its own site is that site; the page here describes it.
-		url: project.linkUrl || identity.url
+		description: project.seoDescription || project.shortDescription
 	};
+
+	// A site is the project itself: the first is its `url` (the page here stays
+	// `mainEntityOfPage`), any further one the same thing elsewhere. An
+	// application keeps this page as its `url` and its site as `sameAs`.
+	if (sites.length > 0) {
+		const [first, ...rest] = sites.map((link) => link.url);
+		if (app) jsonLdObject.sameAs = [first!, ...rest];
+		else {
+			jsonLdObject.url = first;
+			if (rest.length > 0) jsonLdObject.sameAs = rest;
+		}
+	}
 
 	jsonLdObject.author = [siteAuthorIdentity()];
 
-	const app = project.application;
 	if (app) {
 		jsonLdObject.operatingSystem = app.operatingSystem;
-		// A desktop application: schema.org has no narrower type for one.
-		jsonLdObject.applicationCategory = 'DesktopApplication';
-		const install = project.links?.find((link) => link.type === 'install');
+		jsonLdObject.applicationCategory = app.category ?? DEFAULT_APPLICATION_CATEGORY;
+		const install = projectLinksOfType(project, 'install')[0];
 		if (install) jsonLdObject.installUrl = install.url;
 		if (app.licence) jsonLdObject.license = `https://spdx.org/licenses/${app.licence}.html`;
 	}
+
+	// The project's repositories and datasets, as parts of it. schema.org puts
+	// `codeRepository` on SoftwareSourceCode, not on the application or the
+	// work, so each repository is a node of its own.
+	const parts: JsonLdProjectPart[] = [
+		...projectLinksOfType(project, 'code').map((link): JsonLdProjectPart => ({
+			'@type': 'SoftwareSourceCode',
+			name: projectLinkText(link),
+			codeRepository: link.url,
+			...(app ? { targetProduct: { '@id': identity['@id'] } } : {})
+		})),
+		...projectLinksOfType(project, 'data').map((link): JsonLdProjectPart => ({
+			'@type': 'Dataset',
+			name: projectLinkText(link),
+			// All a record can say of every data link: some are the project's
+			// output, some its source corpus, and the link does not record which.
+			description: `A dataset linked from the ${project.title} project.`,
+			url: link.url
+		}))
+	];
+	if (parts.length > 0) jsonLdObject.hasPart = parts;
 
 	const image = project.heroImageUrl || project.imageUrl;
 	if (image) {
@@ -494,4 +534,89 @@ export function buildActivityJsonLd(activity: Activity): BlogPostingJsonLd {
 	}
 
 	return jsonLdObject as BlogPostingJsonLd;
+}
+
+/** What a research project's node points at: records in the same graph or on other pages. */
+export interface ResearchProjectLinks {
+	/** The `@id`s of the project's MonetaryGrant nodes (see `createMonetaryGrantSchemas`). */
+	grantIds: string[];
+	/** The project's publications, newest first. */
+	publications: Pick<Publication, 'id' | 'title'>[];
+	/** The project's talks, newest first. */
+	communications: Pick<Communication, 'id' | 'title'>[];
+	/** Co-directors, as the rail prints them. */
+	directors: string[];
+}
+
+/**
+ * Build the schema.org ResearchProject node for a research project page: the
+ * record the page is about, tied to the grants that fund it and to the
+ * publications and talks it produced. Those are named by the `@id` their own
+ * record pages give them (`recordEntityId`), so a consumer that follows the
+ * link lands on the full record rather than on a second, thinner copy here.
+ */
+export function buildResearchProjectJsonLd(
+	project: Pick<
+		ResearchProject,
+		| 'id'
+		| 'title'
+		| 'shortTitle'
+		| 'years'
+		| 'current'
+		| 'shortDescription'
+		| 'seoDescription'
+		| 'seoKeywords'
+		| 'imageSrc'
+		| 'regions'
+	>,
+	links: ResearchProjectLinks
+): ResearchProjectJsonLd {
+	const path = `/research/${project.id}`;
+	const node: ResearchProjectJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'ResearchProject',
+		'@id': recordEntityId(path),
+		url: siteUrl(path),
+		mainEntityOfPage: { '@id': webPageId(path) },
+		name: project.title,
+		description: project.seoDescription || project.shortDescription,
+		image: siteUrl(`/images/research/${project.imageSrc}`),
+		member: [
+			siteAuthorIdentity(),
+			...links.directors.filter((name) => name !== author.name).map((name) => formatAuthor(name))
+		]
+	};
+	if (project.shortTitle && project.shortTitle !== project.title) {
+		node.alternateName = project.shortTitle;
+	}
+
+	// The period: a start year always; an end year only once the work is over,
+	// so a current project's planned end is not stated as a fact.
+	const period = parseProjectPeriod(project.years, 0);
+	if (period) {
+		node.foundingDate = String(period.startYear);
+		if (!period.ongoing && !project.current) node.dissolutionDate = String(period.endYear);
+	}
+
+	if (project.regions?.length) {
+		node.areaServed = project.regions.map((name) => ({ '@type': 'Place', name }));
+	}
+	if (project.seoKeywords) node.keywords = project.seoKeywords;
+	if (links.grantIds.length > 0) node.funding = links.grantIds.map((id) => ({ '@id': id }));
+
+	const outputs: JsonLdNodeReference[] = [
+		...links.publications.map((publication) => ({
+			'@type': 'CreativeWork',
+			'@id': recordEntityId(`/publications/${publication.id}`),
+			name: publication.title
+		})),
+		...links.communications.map((communication) => ({
+			'@type': 'Event',
+			'@id': recordEntityId(`/communications/${communication.id}`),
+			name: communication.title
+		}))
+	];
+	if (outputs.length > 0) node.subjectOf = outputs;
+
+	return node;
 }

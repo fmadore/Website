@@ -9,7 +9,7 @@
 	import { createSectionBreadcrumbs } from '#lib/utils/jsonLdSchemas.ts';
 	import { allResearchProjects } from '#lib/data/research/index.ts';
 	import { buildSrcset } from '#lib/utils/imageVariants.ts';
-	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
+	import { formatProjectPeriod, parseProjectPeriod } from '#lib/utils/projectPeriod.ts';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 
 	// Research project pages are static routes named by id, so their paths are
@@ -67,26 +67,24 @@
 	// axis it was supposed to be drawn on. An open-ended period ("2026-") has no
 	// end of its own, so it runs to the latest year any closed period names —
 	// or to the present, if every closed project has already ended.
-	const parseSpan = (years: string) => {
-		const [rawStart = '', rawEnd] = years.split('-');
-		const start = parseInt(rawStart, 10);
-		const end = rawEnd ? parseInt(rawEnd, 10) : Number.NaN;
-		return { start, end: Number.isNaN(end) ? null : end };
-	};
-	const spans = researchProjects.map((p) => parseSpan(p.years));
-	const CAREER_START = Math.min(...spans.map((s) => s.start));
+	const builtYear = BUILT_AT.getUTCFullYear();
+	const periods = researchProjects.flatMap((p) => {
+		const period = parseProjectPeriod(p.years, builtYear);
+		return period ? [{ project: p, period }] : [];
+	});
+	const CAREER_START = Math.min(...periods.map(({ period }) => period.startYear));
+	// An open-ended project runs to the axis end, so only closed ones set it.
 	const CAREER_END = Math.max(
-		BUILT_AT.getUTCFullYear(),
-		...spans.flatMap((s) => (s.end === null ? [] : [s.end]))
+		builtYear,
+		...periods.flatMap(({ period }) => (period.ongoing ? [] : [period.endYear]))
 	);
 	const AXIS_SPAN = Math.max(1, CAREER_END - CAREER_START);
-	const timelineBars = researchProjects.map((p) => {
-		const span = parseSpan(p.years);
-		const start = span.start;
-		const end = span.end ?? CAREER_END;
+	const timelineBars = periods.map(({ project, period }) => {
+		const start = period.startYear;
+		const end = period.ongoing ? CAREER_END : period.endYear;
 		const left = ((start - CAREER_START) / AXIS_SPAN) * 100;
 		const width = Math.max(((end - start) / AXIS_SPAN) * 100, 4);
-		return { title: p.title, current: !!p.current, left, width };
+		return { title: project.title, current: !!project.current, left, width };
 	});
 
 	// The dossier plate is the reading column's own width until --md, then a
@@ -103,7 +101,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8">
+<div class="py-8">
 	<div class="max-w-6xl mx-auto">
 		<!-- The section masthead: the index tier of the shared PageHeader, so
 		     /research opens on the same 4px rule, the same Archivo display size

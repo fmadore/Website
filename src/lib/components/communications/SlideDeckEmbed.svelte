@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { basePrefix } from '#lib/utils/paths.ts';
 	import Icon from '@iconify/svelte';
 	import { buildSrcset, resolveImagePath } from '#lib/utils/imageVariants.ts';
@@ -124,11 +125,10 @@
 				<Icon icon="lucide:maximize" width="13" height="13" aria-hidden="true" />
 				<span>Fullscreen</span>
 			</button>
-			<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external deck on the slides subdomain -->
-			<a class="deck-chrome-btn" href={src} target="_blank" rel="noopener noreferrer">
-				<span>Open deck<span class="sr-only">&nbsp;(opens in new tab)</span></span>
+			<ExternalLink class="deck-chrome-btn" href={src}>
+				<span>Open deck</span>
 				<Icon icon="lucide:arrow-up-right" width="13" height="13" aria-hidden="true" />
-			</a>
+			</ExternalLink>
 		</span>
 	</div>
 
@@ -151,11 +151,10 @@
 				{@render posterPlate()}
 				<span class="deck-facade-bar deck-facade-bar--failed">
 					<span class="dateline">The deck could not be loaded.</span>
-					<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external deck on the slides subdomain -->
-					<a class="deck-chrome-btn" href={src} target="_blank" rel="noopener noreferrer">
-						<span>Open deck<span class="sr-only">&nbsp;(opens in new tab)</span></span>
+					<ExternalLink class="deck-chrome-btn" href={src}>
+						<span>Open deck</span>
 						<Icon icon="lucide:arrow-up-right" width="13" height="13" aria-hidden="true" />
-					</a>
+					</ExternalLink>
 				</span>
 			</div>
 		{:else}
@@ -229,7 +228,7 @@
 	}
 
 	/* Chrome buttons — flat square mono chips. */
-	.deck-chrome-btn {
+	:global(.deck-chrome-btn) {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1);
@@ -250,12 +249,12 @@
 			border-color var(--duration-fast) var(--ease-out);
 	}
 
-	.deck-chrome-btn:hover {
+	:global(.deck-chrome-btn):hover {
 		color: var(--color-accent);
 		border-color: var(--color-accent);
 	}
 
-	.deck-chrome-btn:focus-visible {
+	:global(.deck-chrome-btn):focus-visible {
 		outline: var(--focus-outline);
 		outline-offset: var(--focus-outline-offset);
 	}
@@ -387,7 +386,7 @@
 	/* The chrome actions are 22px mono chips; a coarse pointer gets the 44px
 	   floor every other control takes (the Touch Floor Rule). */
 	@media (--touch) {
-		.deck-chrome-btn {
+		:global(.deck-chrome-btn) {
 			min-height: 44px;
 		}
 	}
@@ -444,7 +443,7 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.deck-chrome-btn,
+		:global(.deck-chrome-btn),
 		.deck-facade-bar {
 			transition: none;
 		}

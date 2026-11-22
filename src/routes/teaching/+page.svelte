@@ -65,7 +65,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8">
+<div class="py-8">
 	<div class="max-w-6xl mx-auto">
 		<!-- The section masthead, on the index tier: /teaching is a sibling of
 		     /research and /publications and opens on the same rule and the same

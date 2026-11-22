@@ -27,12 +27,16 @@ co-director, programme or grant simply drop those rows.
 	import RelevantCommunications from '#lib/components/panels/RelevantCommunications.svelte';
 	import MediaPlayer from '#lib/components/media/MediaPlayer.svelte';
 	import ResearchProjectAside from '#lib/components/research/ResearchProjectAside.svelte';
-	import { GRANTS_SCRIPT_ID, buildGrantsJsonLd } from '#lib/utils/grantsJsonLd.ts';
+	import {
+		RESEARCH_PROJECT_SCRIPT_ID,
+		buildResearchProjectGraph
+	} from '#lib/utils/researchProjectJsonLd.ts';
+	import { recordEntityId } from '#lib/utils/jsonLdSchemas.ts';
 	import { allGrants } from '#lib/data/grants/index.ts';
 	import { allPublicationSummaries as allPublications } from '#lib/data/publications/summaries.ts';
 	import { allCommunicationSummaries as allCommunications } from '#lib/data/communications/summaries.ts';
 	import type { Grant, ResearchProject } from '#lib/types/index.ts';
-	import { website, pageTitle } from '#lib/utils/siteHelpers.ts';
+	import { pageTitle } from '#lib/utils/siteHelpers.ts';
 	import { resolve } from '$app/paths';
 	import { assetHref } from '#lib/utils/paths.ts';
 	import { formatProjectPeriod } from '#lib/utils/projectPeriod.ts';
@@ -58,6 +62,8 @@ co-director, programme or grant simply drop those rows.
 		cardTitle,
 		id,
 		years,
+		current,
+		shortDescription,
 		imageSrc,
 		imageAlt,
 		seoDescription,
@@ -82,8 +88,6 @@ co-director, programme or grant simply drop those rows.
 		{ label: 'Research', path: '/research' },
 		{ label: shortTitle, path: `/research/${id}` }
 	]);
-
-	const grantsJsonLd = $derived(buildGrantsJsonLd(projectName, `${website.url}/research/${id}`));
 
 	/** Every grant attached to this project, most recently started first. */
 	const projectGrants = $derived<Grant[]>(
@@ -170,6 +174,30 @@ co-director, programme or grant simply drop those rows.
 		allCommunications.some((communication) => communication.project === projectName)
 	);
 
+	/**
+	 * The page's record: a ResearchProject node funded by the project's awarded
+	 * grants, which share its graph, and naming the publications and talks the
+	 * related-work panels list.
+	 */
+	const projectJsonLd = $derived(
+		buildResearchProjectGraph(
+			{
+				id,
+				title,
+				shortTitle,
+				years,
+				current,
+				shortDescription,
+				seoDescription,
+				seoKeywords,
+				imageSrc,
+				regions,
+				projectName
+			},
+			{ publications: allPublications, communications: allCommunications, directors }
+		)
+	);
+
 	/** Whether the reading column would print anything at all. */
 	const hasDocument = $derived(Boolean(children) || Boolean(audioSrc));
 </script>
@@ -184,6 +212,7 @@ co-director, programme or grant simply drop those rows.
 	keywords={seoKeywords}
 	ogImage={assetHref(`images/research/${imageSrc}`)}
 	type="article"
+	mainEntity={recordEntityId(`/research/${id}`)}
 />
 
 {#snippet deck()}
@@ -257,8 +286,8 @@ co-director, programme or grant simply drop those rows.
 	title={displayTitle}
 	{deck}
 	{breadcrumbItems}
-	jsonLdScriptId={GRANTS_SCRIPT_ID}
-	jsonLdString={grantsJsonLd ?? undefined}
+	jsonLdScriptId={RESEARCH_PROJECT_SCRIPT_ID}
+	jsonLdString={projectJsonLd}
 	main={hasDocument ? documentColumn : undefined}
 	{railPrimary}
 	related={hasPublications || hasCommunications ? related : undefined}

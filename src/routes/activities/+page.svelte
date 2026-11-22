@@ -161,14 +161,7 @@
 	pageType="CollectionPage"
 />
 
-<div
-	class="container py-8"
-	use:urlFilterSync={{
-		filters: af,
-		setters: { setTags: filters.setters.setTags, setTypes: filters.setters.setTypes },
-		search: filters.search
-	}}
->
+<div class="py-8" use:urlFilterSync={{ system: filters, search: filters.search, years: false }}>
 	<div class="max-w-6xl mx-auto activities-page">
 		<!-- HERO — mono log eyebrow (tally + span), Archivo masthead, serif
 		     standfirst, all opened by the 4px rule the two sibling indexes open on.

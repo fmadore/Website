@@ -1,20 +1,19 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { resolve } from '$app/paths';
 	import { cvPublicationsByDate as publicationsByDate } from '#lib/data/publications/cv.ts';
 	import type { CvPublication } from '#lib/types/index.ts';
 	import {
 		groupPublicationsByType,
-		formatVolumeIssueDisplay,
 		formatCVAuthorList,
-		formatEditorList,
 		terminalPeriod,
-		formatBlogDate,
 		getCVDisplayYear
 	} from '#lib/utils/cvFormatters.ts';
+	import { cvPublicationParts } from '#lib/utils/cvPublicationParts.ts';
 	import { isCvPublication } from '#lib/utils/cvSections.ts';
 	import { getPublicationTypeDisplayName } from '#lib/utils/publicationTypeLabels.ts';
 	import { titleLangAttr } from '#lib/utils/languageUtils.ts';
-	import { quoteTitle, typesetQuotes } from '#lib/utils/typesetQuotes.ts';
+	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
 	import CVEntry from './CVEntry.svelte';
 	import { CV_GLYPH } from './CVGlyphs.svelte';
 
@@ -42,84 +41,20 @@
 							<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: formatCVAuthorList output (bolds site author) over static data files -->
 							{#if formattedAuthors}{@html formattedAuthors}{#if (pub.type === 'book' && pub.isEditedVolume) || pub.type === 'special-issue'}&nbsp;(eds.),{:else}{authorStop}{/if}
 							{/if}
-							{#if pub.type !== 'book' && pub.type !== 'blogpost'}<a
-									{href}
-									{lang}
-									class="cv-record-link"
-								>
-									{quoteTitle(pub.title)}
-								</a>.{/if}
-							{#if (pub.type === 'article' || pub.type === 'bulletin-article') && pub.journal}
-								<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
-									pub.volume,
-									pub.issue
-								)}{#if pub.pages}: {pub.pages}{/if}.
-							{:else if pub.type === 'chapter' && pub.book}
-								In {#if pub.editors}{formatEditorList(pub.editors)} (eds.),&nbsp;{/if}<em>
-									{typesetQuotes(pub.book)}
-								</em>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
-										typesetQuotes(pub.placeOfPublication)}{@const publisher = typesetQuotes(
-										pub.publisher
-									)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}{/if}{#if pub.pages},
-									{pub.pages}{/if}.
-							{:else if pub.type === 'book'}
-								<!-- The <em> wraps the link, not the reverse: the PDF export reads a
-								     link as one plain string, and italic only from an ancestor. -->
-								<em>
-									<a {href} {lang} class="cv-record-link">{typesetQuotes(pub.title)}</a>
-								</em>{#if pub.placeOfPublication || pub.publisher}.&nbsp;{@const city =
-										typesetQuotes(pub.placeOfPublication)}{@const publisher = typesetQuotes(
-										pub.publisher
-									)}{#if city && publisher}{city}: {publisher}{:else if city}{city}{:else if publisher}{publisher}{/if}.{:else}.{/if}
-							{:else if pub.type === 'special-issue' && pub.journal}
-								<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
-									pub.volume,
-									pub.issue
-								)}.
-							{:else if pub.type === 'working-paper'}
-								{#if pub.series || pub.journal}<em>
-										{typesetQuotes(pub.series || pub.journal)}
-									</em>{#if pub.issue}&nbsp;{pub.issue}{/if}{/if}{#if pub.pages}: {pub.pages}{/if}{#if pub.publisher && pub.publisher !== (pub.series || pub.journal)}.
-									{typesetQuotes(pub.publisher)}{/if}.
-							{:else if pub.type === 'report'}
-								{#if pub.journal}<em>{typesetQuotes(pub.journal)}</em>{formatVolumeIssueDisplay(
-										pub.volume,
-										pub.issue
-									)}{:else if pub.publisher}<em>
-										{typesetQuotes(pub.publisher)}
-									</em>{formatVolumeIssueDisplay(pub.volume, pub.issue)}{/if}{#if pub.pages}, {pub.pages}{/if}.
-							{:else if pub.type === 'encyclopedia' && pub.encyclopediaTitle}
-								In <em>{typesetQuotes(pub.encyclopediaTitle)}</em>{#if pub.publisher}, {typesetQuotes(
-										pub.publisher
-									)}{/if}.
-							{:else if pub.type === 'blogpost'}
-								<!-- Guard on the formatted date, not on `dateISO`: a forthcoming
-								     post carries a date that formats to nothing, which printed
-								     "The Digital Orientalist, ." -->
-								{@const blogDate = formatBlogDate(pub.dateISO)}
-								<a {href} {lang} class="cv-record-link">
-									{quoteTitle(pub.title)}
-								</a>{#if pub.publisher}. <em>{typesetQuotes(pub.publisher)}</em>{/if}{#if blogDate}, {blogDate}{/if}.
-							{:else if pub.type === 'conference-proceedings'}
-								In <em>{typesetQuotes(pub.proceedingsTitle)}</em>.
-							{:else}
-								<!-- Generic fallback -->
-								{#if pub.journal}In <em>{typesetQuotes(pub.journal)}</em>.{/if}
-								{#if pub.book}In <em>{typesetQuotes(pub.book)}</em>.{/if}
-								{#if pub.publisher}{typesetQuotes(pub.publisher)}.{/if}
-							{/if}
-							{#if pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
-									href="https://doi.org/{pub.doi}"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="doi-link"
-								>
+							<!-- Title and venue, segment for segment as the Markdown twin sets them
+							     (cvPublicationParts). A book's <em> wraps its link, not the
+							     reverse: the PDF export reads a link as one plain string, and
+							     italic only from an ancestor. -->
+							{#each cvPublicationParts(pub) as part, index (index)}{#if part.kind === 'text'}{part.text}{:else if part.kind === 'italic'}<em>
+										{part.text}
+									</em>{:else if part.italic}<em>
+										<a {href} {lang} class="cv-record-link">{part.text}</a>
+									</em>{:else}<a {href} {lang} class="cv-record-link">{part.text}</a>{/if}{/each}
+							{#if pub.doi}<ExternalLink href="https://doi.org/{pub.doi}" class="doi-link">
 									<svg class="doi-link-icon" aria-hidden="true" focusable="false">
 										<use href="#{CV_GLYPH.doi}" />
-									</svg><span class="doi-link-text">doi:{pub.doi}</span><span class="sr-only">
-										&nbsp;(opens in new tab)
-									</span>
-								</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{/if}
+									</svg><span class="doi-link-text">doi:{pub.doi}</span>
+								</ExternalLink>{/if}
 							{#if pub.url && !pub.doi}<!-- eslint-disable svelte/no-navigation-without-resolve -- external link --><a
 									href={pub.url}
 									target="_blank"
@@ -133,17 +68,9 @@
 								<p class="cv-detail">
 									Reviewed in
 									{#each pub.reviewedBy as review, i (review.title + review.year)}
-										<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-										<a
-											href={review.url}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="review-link no-underline"
-										>
-											{typesetQuotes(review.journal)}<span class="sr-only">
-												&nbsp;(opens in new tab)
-											</span>
-										</a><!-- eslint-enable svelte/no-navigation-without-resolve -->{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
+										<ExternalLink href={review.url} class="review-link no-underline">
+											{typesetQuotes(review.journal)}
+										</ExternalLink>{#if i < pub.reviewedBy.length - 2},&nbsp;{:else if i === pub.reviewedBy.length - 2},&nbsp;and&nbsp;{:else}.{/if}
 									{/each}
 								</p>
 							{/if}
@@ -198,9 +125,9 @@
 	/* DOI — the Academicons mark and the identifier in the data voice. An
 	 * inline SVG in place of the former Zenodo badge image, which cost one
 	 * third-party request per publication and reserved a width that varied
-	 * with each badge. The `.doi-link` hook is load-bearing: the PDF generator
+	 * with each badge. The `:global(.doi-link)` hook is load-bearing: the PDF generator
 	 * and the print stylesheet both key off it. */
-	.doi-link {
+	:global(.doi-link) {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1);
@@ -214,7 +141,7 @@
 		transition: color var(--duration-fast) var(--ease-out);
 	}
 
-	.doi-link:hover {
+	:global(.doi-link):hover {
 		color: var(--color-accent);
 		text-decoration: underline;
 	}

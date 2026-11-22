@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { peerReviewsByDate } from '#lib/data/peer-reviews/index.ts';
 	import { editorialMembershipsByDate } from '#lib/data/editorial-memberships/index.ts';
 	import { realEditorialMemberships, realPeerReviews } from '#lib/utils/cvSections.ts';
@@ -42,21 +43,12 @@
 						<div class="cv-detail">{typesetQuotes(review.details)}</div>
 					{/if}
 					{#if review.publons_record}
-						<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-						<a
-							href={review.publons_record}
-							target="_blank"
-							rel="noopener noreferrer"
-							class="verification-badge"
-							data-pdf-hide
-						>
+						<ExternalLink href={review.publons_record} class="verification-badge" data-pdf-hide>
 							<svg width="16" height="16" aria-hidden="true" focusable="false">
 								<use href="#{CV_GLYPH.publons}" />
 							</svg>
 							<span>Verified on Web of Science</span>
-							<span class="sr-only">&nbsp;(opens in new tab)</span>
-						</a>
-						<!-- eslint-enable svelte/no-navigation-without-resolve -->
+						</ExternalLink>
 					{/if}
 				</CVEntry>
 			{/each}
@@ -73,7 +65,7 @@
 	/* Verification affordance — DATA voice: square, mono uppercase, hairline
 	 * outline, no fill. Accent on hover. Opens with the Publons mark, the
 	 * platform that holds the reviewer record the link resolves to. */
-	.verification-badge {
+	:global(.verification-badge) {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--space-1-5);
@@ -94,17 +86,17 @@
 		text-decoration: none;
 	}
 
-	.verification-badge :global(svg) {
+	:global(.verification-badge) :global(svg) {
 		flex-shrink: 0;
 	}
 
 	@media (--touch) {
-		.verification-badge {
+		:global(.verification-badge) {
 			min-height: var(--space-11);
 		}
 	}
 
-	.verification-badge:hover {
+	:global(.verification-badge):hover {
 		color: var(--color-accent);
 		border-color: var(--color-accent);
 	}

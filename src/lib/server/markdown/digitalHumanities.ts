@@ -27,18 +27,13 @@ const linkedHtml = (html: string, url: string) =>
 function addresses(project: DigitalHumanitiesProject): string {
 	const seen = new Set<string>();
 	return bullets(
-		[
-			project.linkUrl ? { url: project.linkUrl, label: 'Project site' } : undefined,
-			...(project.links ?? []).map((address) => ({
-				url: address.url,
-				label: address.label ?? address.url.replace(/^https?:\/\/(?:www\.)?/, '').replace(/\/$/, '')
-			}))
-		].map((address) => {
-			if (!address) return undefined;
+		(project.links ?? []).map((address) => {
+			const label =
+				address.label ?? address.url.replace(/^https?:\/\/(?:www\.)?/, '').replace(/\/$/, '');
 			const url = resolveLink(address.url);
 			if (seen.has(url)) return undefined;
 			seen.add(url);
-			return link(address.label, url);
+			return link(label, url);
 		})
 	);
 }

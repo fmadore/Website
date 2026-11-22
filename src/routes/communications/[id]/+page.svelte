@@ -35,6 +35,10 @@
 	// The talk's language, set on its title and abstract when it is a single
 	// language other than the page's English (WCAG 3.1.2).
 	const contentLang = $derived(titleLangAttr(communication.language));
+	// The abstract can be in another language than the talk (`abstractLanguage`).
+	const abstractLang = $derived(
+		titleLangAttr(communication.abstractLanguage ?? communication.language)
+	);
 
 	// Define breadcrumb items (used for JSON-LD structured data)
 	// The trail feeds the BreadcrumbList structured data, where the name is a
@@ -243,7 +247,7 @@
 			<div class="section-head">
 				<h2 id="comm-abstract-head" class="section-title">Abstract</h2>
 			</div>
-			<div class="comm-abstract" lang={contentLang}>
+			<div class="comm-abstract" lang={abstractLang}>
 				{#each abstractParagraphs as paragraph, index (index)}
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -- Safe: abstracts are trusted static data, and carry inline markup (<i> around transliterated terms). -->
 					<p class="comm-abstract-p" class:drop-cap={index === 0}>{@html paragraph}</p>

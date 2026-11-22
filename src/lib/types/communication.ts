@@ -20,6 +20,12 @@ export type Communication = {
 	location: string; // City/venue
 	country: string; // Country where the conference took place
 	abstract?: string; // Abstract or description (optional)
+	/**
+	 * The abstract's language, when it is not the talk's: a talk given in
+	 * French whose abstract is on file in English. The record page marks the
+	 * abstract with it rather than with `language` (WCAG 3.1.2).
+	 */
+	abstractLanguage?: string;
 	url?: string; // Optional: URL to presentation slides, video, etc.
 	urlLabel?: string; // Optional: Custom label for the primary URL button (default: "Access Presentation")
 	additionalUrls?: Array<{ label: string; url: string }>; // Additional URLs with labels
@@ -47,13 +53,7 @@ export type Communication = {
 	};
 	type?: CommunicationType; // Type of communication
 	language?: string | string[]; // Language(s) of the communication - can be a single language or multiple languages
-	papers?: Array<{
-		// Papers presented at the panel
-		title: string; // Paper title
-		// Paper authors with optional affiliation and person link
-		authors: Array<{ name: string; affiliation?: string; personId?: string }>;
-		abstract?: string; // Optional paper abstract
-	}>;
+	papers?: CommunicationPaper[]; // Papers presented at the panel
 	participants?: Array<{
 		// Additional participants
 		name: string; // Participant name
@@ -74,6 +74,14 @@ export type Communication = {
 	teaching?: TalkTeaching;
 };
 
+/** A paper presented at a panel. */
+export type CommunicationPaper = {
+	title: string; // Paper title
+	// Paper authors with optional affiliation and person link
+	authors: Array<{ name: string; affiliation?: string; personId?: string }>;
+	abstract?: string; // Optional paper abstract
+};
+
 /** How a talk given as teaching reads in the guest-lecture lists. */
 export type TalkTeaching = {
 	/** Host institution and country, as the guest lectures name theirs: "Université Laval (Canada)". */
@@ -85,12 +93,20 @@ export type TalkTeaching = {
 };
 
 /**
- * The fields a `CommunicationSummary` drops. Only `abstract`: it is 46% of the
- * dataset's bytes and no list row, CV entry, timeline card or facet prints it
- * in full. `papers` stays — the conference visualisations build the
- * co-presenter and institution networks from `papers[].authors`.
+ * The fields a `CommunicationSummary` drops: `abstract`, 46% of the dataset's
+ * bytes, which no list row, CV entry, timeline card or facet prints in full,
+ * and `heroImage`, which only the talk's own record page shows. `papers`
+ * stays — the conference visualisations build the co-presenter and
+ * institution networks from `papers[].authors` — but each paper loses its
+ * `abstract` (`HeavyCommunicationPaperField`), printed only on the record page.
  */
-export type HeavyCommunicationField = 'abstract';
+export type HeavyCommunicationField = 'abstract' | 'heroImage';
+
+/** The fields each `papers[]` entry of a `CommunicationSummary` drops. */
+export type HeavyCommunicationPaperField = 'abstract';
+
+/** A panel paper as the summaries carry it. */
+export type CommunicationPaperSummary = Omit<CommunicationPaper, HeavyCommunicationPaperField>;
 
 /**
  * A talk as the index, the CV, the timeline and the research pages see it:
@@ -105,7 +121,9 @@ export type HeavyCommunicationField = 'abstract';
  * unchanged. Read `abstractExcerpt`, never `abstract` — a summary does not
  * carry it.
  */
-export type CommunicationSummary = Omit<Communication, HeavyCommunicationField> & {
+export type CommunicationSummary = Omit<Communication, HeavyCommunicationField | 'papers'> & {
+	/** The panel programme, each paper without its abstract. */
+	papers?: CommunicationPaperSummary[];
 	/**
 	 * The abstract's opening, one character longer than
 	 * ABSTRACT_EXCERPT_LENGTH (see data/publications/summaryConfig.ts), so any

@@ -29,7 +29,7 @@ export const talkWhenAIMeetsTheArchive2025: Communication = {
 	additionalUrls: [{ label: 'Video Recording', url: 'https://youtu.be/OhbPYA4_URo' }],
 	image: 'images/communications/SADILAR.webp',
 	heroImage: {
-		src: 'images/communications/SADILAR-hero.webp',
+		src: 'images/communications/SADILAR.webp',
 		alt: 'Poster for the SADiLaR DH Colloquium on 20 August 2025 at 10:00 SAST. Title reads: “When AI Meets the Archive: Transforming the Islam West Africa Collection with Large Language Models.” Speaker: Frédérick Madore. The right side features a digital illustration of binary code with document icons connected by lines and a large magnifying glass.'
 	},
 	coordinates: {

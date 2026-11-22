@@ -9,20 +9,16 @@ The other half of the old <PublicationAside> — tags and key terms — is
 <PublicationIndexRail>, which belongs *after* the document it indexes.
 -->
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { basePrefix } from '#lib/utils/paths.ts';
 	import type { Publication } from '#lib/types/index.ts';
 	import RecordLedger, { type MetaRow } from '#lib/components/molecules/RecordLedger.svelte';
 	import { generateBibtex } from '#lib/utils/bibtexGenerator.ts';
 	import { formatReferenceHtml, formatReferenceText } from '#lib/utils/citationFormatter.ts';
 	import { createCopyFeedback } from '#lib/utils/clipboard.svelte.ts';
-	import { buildSrcset, imageDimensions, resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import { resolveImagePath } from '#lib/utils/imageVariants.ts';
+	import RecordPlate from '#lib/components/molecules/RecordPlate.svelte';
 	import { typesetQuotes } from '#lib/utils/typesetQuotes.ts';
-	import { plateFallback } from '#lib/actions/plateFallback.ts';
-
-	// The rail is 380px wide from --lg up; below that the cover spans the
-	// single column. The intrinsic size reserves the plate's box before the
-	// lazily loaded bytes arrive, so the record never shifts around it.
-	const COVER_SIZES = '(max-width: 1024px) 100vw, 380px';
 
 	interface Props {
 		publication: Publication;
@@ -38,8 +34,6 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	const coverSrc = $derived(
 		resolveImagePath(publication.image ?? publication.heroImage?.src, basePrefix())
 	);
-	const coverSrcset = $derived(buildSrcset(coverSrc));
-	const coverSize = $derived(imageDimensions(coverSrc));
 	const coverAlt = $derived(
 		typesetQuotes(publication.heroImage?.alt ?? `Cover of ${publication.title}`)
 	);
@@ -175,57 +169,25 @@ The other half of the old <PublicationAside> — tags and key terms — is
 	}
 </script>
 
-{#if coverSrc}
-	<figure class="rail-plate">
-		<img
-			class="plate"
-			src={coverSrc}
-			srcset={coverSrcset}
-			sizes={coverSrcset ? COVER_SIZES : undefined}
-			width={coverSize?.width}
-			height={coverSize?.height}
-			alt={coverAlt}
-			loading="lazy"
-			decoding="async"
-			use:plateFallback
-		/>
-		<figcaption class="plate-caption">Fig. 1. Cover.</figcaption>
-	</figure>
-{/if}
+<RecordPlate src={coverSrc} alt={coverAlt} caption="Fig. 1. Cover." />
 
 <RecordLedger rows={metadataRows} />
 
 <!-- CTAs. The block is only printed when it has a control: the rail is a flex
      column with its own gap, so an empty stack reads as a stray interval. -->
 {#if accessHref || extraLinks.length > 0}
-	<!-- eslint-disable svelte/no-navigation-without-resolve -- external publication links -->
 	<div class="rail-cta">
 		{#if accessHref}
-			<a
-				href={accessHref}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-accent btn-block"
-			>
-				Open publication<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={accessHref} class="btn btn-accent btn-block" glyph>
+				Open publication
+			</ExternalLink>
 		{/if}
 		{#each extraLinks as link (link.url)}
-			<a
-				href={link.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="btn btn-outline-secondary btn-block"
-			>
-				{link.label}<span aria-hidden="true">&nbsp;↗</span><span class="sr-only">
-					&nbsp;(opens in new tab)
-				</span>
-			</a>
+			<ExternalLink href={link.url} class="btn btn-outline-secondary btn-block" glyph>
+				{link.label}
+			</ExternalLink>
 		{/each}
 	</div>
-	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 {/if}
 
 <!-- ═══ CITE ═══

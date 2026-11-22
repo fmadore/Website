@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { asset } from '$app/paths';
 	import {
 		createBreadcrumbSchema,
 		createWebPageSchema,
@@ -10,6 +9,7 @@
 	import { getDefaultDescription, author, website } from '#lib/utils/siteHelpers.ts';
 	import JsonLd from '#lib/components/common/JsonLd.svelte';
 	import { markdownTwinPath } from '#lib/utils/markdownTwin.ts';
+	import { DEFAULT_SOCIAL_IMAGE_ALT, socialImage } from '#lib/utils/socialImage.ts';
 
 	interface Props {
 		// SEO props
@@ -17,6 +17,10 @@
 		description?: string;
 		keywords?: string;
 		canonical?: string;
+		/**
+		 * The card image. Defaults to the portrait; a vector, or a format a
+		 * platform may reject, is swapped for a raster by `socialImage()`.
+		 */
 		ogImage?: string;
 		/** Text alternative for `ogImage` (`og:image:alt`, `twitter:image:alt`). */
 		ogImageAlt?: string;
@@ -71,7 +75,7 @@
 		description = getDefaultDescription(),
 		keywords = 'Frédérick Madore, Islam, West Africa, Digital Humanities, Research',
 		canonical = '',
-		ogImage = asset('images/Profile-picture.webp'),
+		ogImage,
 		ogImageAlt,
 		type = 'website',
 		article,
@@ -99,19 +103,16 @@
 	const socialTitle = $derived(schemaName ?? title);
 
 	/**
-	 * Open Graph and Twitter want an absolute image URL. Scrapers mostly resolve
-	 * a relative one against the page, but it isn't guaranteed and the value is
-	 * read out of context often enough — a card cache, a chat unfurl, a feed
-	 * reader — for the guess to matter.
-	 *
-	 * Resolved rather than concatenated, because `paths.relative` is on: `base`
-	 * renders as `.` or `..` according to the page's depth, not as an empty
-	 * string, so gluing the origin to the front yields `https://host/../images/…`.
-	 * That does normalise in a compliant parser, but it is exactly the sort of
-	 * thing a naive one gets wrong. `new URL` does the same resolution a browser
-	 * would, at build time, and passes an already-absolute URL through untouched.
+	 * Open Graph and Twitter want an absolute image URL, in a format every
+	 * platform renders, with its size declared. `socialImage()` resolves the
+	 * page's image against its canonical address (`paths.relative` makes an
+	 * `asset()` path page-relative), swaps an SVG or AVIF for a raster, reads
+	 * the size off the image manifest, and picks the summary card for a
+	 * portrait image, which the large card would crop.
 	 */
-	const ogImageUrl = $derived(new URL(ogImage, canonicalUrl).href);
+	const card = $derived(socialImage(ogImage, canonicalUrl));
+	/** The page's own alt, unless the default image stood in for its image. */
+	const cardAlt = $derived(card.fallback || !ogImage ? DEFAULT_SOCIAL_IMAGE_ALT : ogImageAlt);
 
 	/**
 	 * The page's Markdown twin, for agents (llms.txt v2): `/publications/x` →
@@ -194,9 +195,13 @@
 	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:title" content={socialTitle} />
 	<meta property="og:description" content={description} />
-	<meta property="og:image" content={ogImageUrl} />
-	{#if ogImageAlt}
-		<meta property="og:image:alt" content={ogImageAlt} />
+	<meta property="og:image" content={card.url} />
+	{#if card.width && card.height}
+		<meta property="og:image:width" content={String(card.width)} />
+		<meta property="og:image:height" content={String(card.height)} />
+	{/if}
+	{#if cardAlt}
+		<meta property="og:image:alt" content={cardAlt} />
 	{/if}
 	<meta property="og:site_name" content={author.name} />
 	<meta property="og:locale" content="en_US" />
@@ -214,13 +219,13 @@
 	{/if}
 
 	<!-- Twitter: `name=`, per the Twitter Cards markup. -->
-	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:card" content={card.card} />
 	<meta name="twitter:url" content={canonicalUrl} />
 	<meta name="twitter:title" content={socialTitle} />
 	<meta name="twitter:description" content={description} />
-	<meta name="twitter:image" content={ogImageUrl} />
-	{#if ogImageAlt}
-		<meta name="twitter:image:alt" content={ogImageAlt} />
+	<meta name="twitter:image" content={card.url} />
+	{#if cardAlt}
+		<meta name="twitter:image:alt" content={cardAlt} />
 	{/if}
 
 	<!-- No site-wide citation_author: Google Scholar reads it as the authors of

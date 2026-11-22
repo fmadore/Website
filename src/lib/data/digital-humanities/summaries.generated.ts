@@ -729,7 +729,8 @@ export const dhProjectSummaries: DigitalHumanitiesSummary[] = [
 		"application": {
 			"status": "released",
 			"operatingSystem": "Linux (Docker)",
-			"licence": "MIT"
+			"licence": "MIT",
+			"category": "DeveloperApplication"
 		},
 		"links": [
 			{

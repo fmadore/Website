@@ -32,7 +32,7 @@ export const madore2026IwacPrivateDatabasePublicResource: Publication = {
 	openAccess: true,
 	image: 'images/publications/zmo-jahrbuch.webp',
 	heroImage: {
-		src: 'images/publications/zmo-jahrbuch-hero.webp',
+		src: 'images/publications/zmo-jahrbuch.webp',
 		alt: 'Cover of the ZMO publication New Directions in Research 2023–2025, titled Shared World: People, Faiths, Ideas, Practices, with two hands passing a tray of paper cups of tea.'
 	},
 	project: 'Digital Humanities and AI in African Studies'

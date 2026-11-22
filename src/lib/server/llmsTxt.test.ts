@@ -32,13 +32,14 @@ describe('llms.txt', () => {
 			'Software and applications',
 			'Tools for agents',
 			'Feeds and data',
+			'Licence',
 			'Contact and profiles',
 			'Optional'
 		]);
 		for (const section of sections) {
 			for (const line of section.split('\n').slice(1).filter(Boolean)) {
 				expect(line, line).toMatch(
-					/^- (?:\[[^\]]+\]\(https?:\/\/[^)\s]+\)(?:: \S.*)?|[A-Z][a-z]+: .+)$/
+					/^- (?:\[[^\]]+\]\(https?:\/\/[^)\s]+\)(?:: \S.*)?|[A-Z][a-z]+(?: [a-z]+)*: .+)$/
 				);
 			}
 		}
@@ -107,5 +108,17 @@ describe('llms.txt', () => {
 		const ownCopy = lines.filter((line) => !summaries.some((summary) => line.includes(summary)));
 		expect(ownCopy.join(' ')).not.toContain('—');
 		expect(ownCopy.join(' ')).not.toMatch(/communications? /i);
+	});
+});
+
+describe('the licence section', () => {
+	it('states every term the API manifest carries', async () => {
+		const { LICENSING } = await import('#lib/data/licensing.ts');
+		const text = buildLlmsTxt();
+		const section = text.split(/^## Licence$/m)[1]!.split(/^## /m)[0]!;
+		for (const term of Object.values(LICENSING)) {
+			expect(section).toContain(term.name);
+			expect(section).toContain(term.scope);
+		}
 	});
 });

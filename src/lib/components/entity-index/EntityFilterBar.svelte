@@ -16,7 +16,7 @@
 	];
 </script>
 
-<script lang="ts" generics="TItem">
+<script lang="ts" generics="TItem, K extends string">
 	// Filter bar of the entity-index pages (/publications, /conference-activity,
 	// the citations page): free-text search, type chips, the tally, language
 	// chips, the `More filters` disclosure and the sort row. Styled by
@@ -32,7 +32,7 @@
 	import EntityFilterSummary from './EntityFilterSummary.svelte';
 
 	interface Props {
-		filters: EntityFilterSystem<TItem>;
+		filters: EntityFilterSystem<TItem, K>;
 		/** Full type labels (title attribute, and the tally's "Type:" values). */
 		typeLabels: Record<string, string>;
 		/** Short chip labels for the compact type row. */
@@ -72,7 +72,11 @@
 	}: Props = $props();
 
 	const af = $derived(filters.activeFilters);
-	const options = $derived(filters.filterOptions);
+
+	// The bar draws the page's two bar facets: the primary row (types, opened by
+	// "All N") and the labelled secondary row (language), whatever their keys.
+	const primary = $derived(filters.dimensions.find((d) => d.placement === 'bar-primary'));
+	const secondary = $derived(filters.dimensions.find((d) => d.placement === 'bar-secondary'));
 
 	/* The grid is closed by default at every width, so the list starts in the
 	 * first viewport. A filter on one of its facets (a `?tag=` deep link, Back
@@ -80,7 +84,7 @@
 	 * filter is never left behind a closed disclosure. Only the arrival of such
 	 * a filter opens it; a reader who then closes the grid keeps it closed, and
 	 * the tally still names what is set. */
-	const gridActive = $derived(hasGridFilters(af));
+	const gridActive = $derived(hasGridFilters(af, filters.dimensions));
 	$effect(() => {
 		if (gridActive) untrack(() => (facetsOpen = true));
 	});
@@ -109,68 +113,74 @@
 		     screen and must keep those as their accessible names (SC 2.5.3), so
 		     the thing being filtered is named on the container instead of being
 		     smuggled into each chip's `aria-label`. -->
-		<div class="chip-row type-chips" role="group" aria-label="Type">
-			<!-- "All" prints what clearing this row returns, not the corpus total:
-			     under another active facet the two differ, and the chip would be
-			     asserting a count clicking it does not produce. Same rule below
-			     for the language row. -->
-			<button
-				type="button"
-				class="chip"
-				class:chip--selected={af.types.length === 0}
-				aria-pressed={af.types.length === 0}
-				data-count={filters.totals.types}
-				onclick={() => filters.setValues('types', [])}
-			>
-				All <span class="chip-count">{filters.totals.types}</span>
-			</button>
-			{#each options.types as type (type)}
+		{#if primary}
+			{@const key = primary.key}
+			<div class="chip-row type-chips" role="group" aria-label={primary.label}>
+				<!-- "All" prints what clearing this row returns, not the corpus total:
+				     under another active facet the two differ, and the chip would be
+				     asserting a count clicking it does not produce. Same rule below
+				     for the language row. -->
 				<button
 					type="button"
 					class="chip"
-					class:chip--selected={af.types.includes(type)}
-					aria-pressed={af.types.includes(type)}
-					data-count={filters.counts.types[type] ?? 0}
-					onclick={() => filters.toggle('types', type)}
-					title={typesetQuotes(typeLabels[type] ?? type)}
+					class:chip--selected={af[key].length === 0}
+					aria-pressed={af[key].length === 0}
+					data-count={filters.totals[key]}
+					onclick={() => filters.setValues(key, [])}
 				>
-					{typesetQuotes(typeChipLabels[type] ?? typeLabels[type] ?? type)}
-					<span class="chip-count">{filters.counts.types[type] ?? 0}</span>
+					All <span class="chip-count">{filters.totals[key]}</span>
 				</button>
-			{/each}
-		</div>
+				{#each primary.options as type (type)}
+					<button
+						type="button"
+						class="chip"
+						class:chip--selected={af[key].includes(type)}
+						aria-pressed={af[key].includes(type)}
+						data-count={filters.counts[key][type] ?? 0}
+						onclick={() => filters.toggle(key, type)}
+						title={typesetQuotes(typeLabels[type] ?? type)}
+					>
+						{typesetQuotes(typeChipLabels[type] ?? typeLabels[type] ?? type)}
+						<span class="chip-count">{filters.counts[key][type] ?? 0}</span>
+					</button>
+				{/each}
+			</div>
+		{/if}
 	</div>
 
 	<div class="filter-bar-bottom">
 		<!-- Language is a facet like type and tags, so it is drawn like them: the
 		     same chips, not its own row of underlined options. The visible label
 		     keeps it apart from the type row above, which also opens on "All N". -->
-		<div class="chip-row language-chips" role="group" aria-label="Language">
-			<span class="filter-group-label">Language:</span>
-			<button
-				type="button"
-				class="chip"
-				class:chip--selected={af.languages.length === 0}
-				aria-pressed={af.languages.length === 0}
-				data-count={filters.totals.languages}
-				onclick={() => filters.setValues('languages', [])}
-			>
-				All <span class="chip-count">{filters.totals.languages}</span>
-			</button>
-			{#each options.languages as lang (lang)}
+		{#if secondary}
+			{@const key = secondary.key}
+			<div class="chip-row language-chips" role="group" aria-label={secondary.label}>
+				<span class="filter-group-label">{secondary.label}:</span>
 				<button
 					type="button"
 					class="chip"
-					class:chip--selected={af.languages.includes(lang)}
-					aria-pressed={af.languages.includes(lang)}
-					data-count={filters.counts.languages[lang] ?? 0}
-					onclick={() => filters.toggle('languages', lang)}
+					class:chip--selected={af[key].length === 0}
+					aria-pressed={af[key].length === 0}
+					data-count={filters.totals[key]}
+					onclick={() => filters.setValues(key, [])}
 				>
-					{lang}
-					<span class="chip-count">{filters.counts.languages[lang] ?? 0}</span>
+					All <span class="chip-count">{filters.totals[key]}</span>
 				</button>
-			{/each}
-		</div>
+				{#each secondary.options as lang (lang)}
+					<button
+						type="button"
+						class="chip"
+						class:chip--selected={af[key].includes(lang)}
+						aria-pressed={af[key].includes(lang)}
+						data-count={filters.counts[key][lang] ?? 0}
+						onclick={() => filters.toggle(key, lang)}
+					>
+						{lang}
+						<span class="chip-count">{filters.counts[key][lang] ?? 0}</span>
+					</button>
+				{/each}
+			</div>
+		{/if}
 
 		<div class="filter-bar-controls">
 			<button

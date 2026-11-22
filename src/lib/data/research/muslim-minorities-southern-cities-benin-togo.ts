@@ -13,7 +13,9 @@ export const muslimMinoritiesSouthernCities: ResearchProject = {
 		"A blue-painted mosque with a tall minaret and a 'MOSQUÉE' sign, behind a blue wall decorated with cut-outs of the African continent. A sandy street runs past; a palm tree and a motorcyclist are at right.",
 	audioSrc: 'notebooklm/muslim-minorities-southern-cties-Benin-Togo.mp3',
 	projectName: 'Muslim Minorities in Southern Cities of Benin and Togo',
-	programme: 'Banting Postdoctoral Fellowships'
+	programme: 'Banting Postdoctoral Fellowships',
+	seoDescription:
+		'Muslim minorities in Cotonou, Porto-Novo and Lomé since the 1960s: religious practice, citizenship, and how political elites turn terror narratives against dissent.'
 };
 
 export default muslimMinoritiesSouthernCities;

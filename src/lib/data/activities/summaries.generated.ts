@@ -191,7 +191,7 @@ export const activitySummaries: ActivitySummary[] = [
 		],
 		"panelType": "lecture",
 		"heroImage": {
-			"src": "images/communications/ciram-2025-hero.webp",
+			"src": "images/communications/ciram-2025.webp",
 			"alt": "Poster for an online book talk with Frédérick Madore on “Religious Activism on Campuses in Togo and Benin”, 6 Nov 2025"
 		},
 		"type": "lecture",
@@ -333,7 +333,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"panelType": "publication",
 		"image": "images/activities/The-Digital-Orientalist.webp",
 		"heroImage": {
-			"src": "images/activities/The-Digital-Orientalist-hero.webp",
+			"src": "images/activities/The-Digital-Orientalist.webp",
 			"alt": "Header of The Digital Orientalist blog post, titled 'Islam West Africa Collection: Dataset, Distant Reading, and Uses of AI for Discourse Analysis': a green-tinted collage of newspaper pages, including the masthead 'Le Pacifique' with a man speaking into a microphone."
 		},
 		"type": "publication"
@@ -507,7 +507,7 @@ export const activitySummaries: ActivitySummary[] = [
 		"type": "conference",
 		"image": "images/communications/reaf-2026.webp",
 		"heroImage": {
-			"src": "images/communications/reaf-2026-hero.webp",
+			"src": "images/communications/reaf-2026.webp",
 			"alt": "Banner for the 9th Rencontres des Études Africaines en France, 29 June to 2 July 2026 at Campus Condorcet, Aubervilliers, over a colourful painted collage in blue, yellow and white, with the logos of CNRS, Études africaines en France, IRD and Campus Condorcet."
 		},
 		"pdfPath": "files/humanites-numeriques-ia-etudes-africaines-reaf-2026.pdf",
@@ -859,7 +859,7 @@ export const activitySummaries: ActivitySummary[] = [
 		],
 		"image": "images/communications/SADILAR.webp",
 		"heroImage": {
-			"src": "images/communications/SADILAR-hero.webp",
+			"src": "images/communications/SADILAR.webp",
 			"alt": "Poster for the SADiLaR DH Colloquium on 20 August 2025 at 10:00 SAST. Title reads: \"When AI Meets the Archive: Transforming the Islam West Africa Collection with Large Language Models.\" Speaker: Frédérick Madore. The right side features a digital illustration of binary code with document icons connected by lines and a large magnifying glass."
 		},
 		"type": "lecture"

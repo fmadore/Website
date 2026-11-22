@@ -168,9 +168,7 @@ describe('chart colour fallbacks match variables.css', () => {
 		['border', '--color-border'],
 		['surface', '--color-surface'],
 		['accent', '--color-accent'],
-		['highlight', '--color-highlight'],
-		['success', '--color-success'],
-		['secondary', '--color-secondary']
+		['highlight', '--color-highlight']
 	];
 
 	for (const [key, token] of mapping) {
@@ -226,8 +224,6 @@ describe('midnight chart fallbacks match dark.css', () => {
 		['surface', '--color-surface'],
 		['accent', '--color-accent'],
 		['highlight', '--color-highlight'],
-		['success', '--color-success'],
-		['secondary', '--color-secondary'],
 		['slateBlue', '--sys-viz-2'],
 		['sage', '--sys-viz-3'],
 		['ochre', '--sys-viz-4'],

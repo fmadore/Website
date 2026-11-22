@@ -28,6 +28,9 @@
 	 * stylesheet that owns it rather than restating its declarations locally —
 	 * a restatement is exactly the drift this page exists to prevent. */
 	import '#styles/components/entity-index.css';
+	import '#styles/components/record-prose.css';
+	import '#styles/components/specimen.css';
+	import '#styles/components/viz-page.css';
 
 	const breadcrumbs = createSectionBreadcrumbs('Style Guide', '/style-guide');
 
@@ -67,7 +70,7 @@
 		{
 			id: 'colour-functional',
 			label: 'Functional',
-			tokens: ['--color-danger', '--color-danger-dark', '--color-success']
+			tokens: ['--color-danger', '--color-danger-dark']
 		},
 		{
 			id: 'colour-footer',
@@ -149,8 +152,7 @@
 			role: 'Danger hover',
 			day: '--sys-color-danger-deep',
 			night: { mix: '--sys-color-danger-bright' }
-		},
-		{ role: 'Success', day: '--sys-color-success', night: '--sys-color-success-bright' }
+		}
 	];
 	const anchorTokens = [
 		...new Set(
@@ -293,7 +295,7 @@
 			cast: 'tracking-specimen--display',
 			size: '--font-size-4xl',
 			specimen: 'Signal',
-			use: 'the nameplate, --font-size-display, 5xl'
+			use: 'the nameplate, --font-size-display'
 		},
 		{
 			token: '--tracking-display',
@@ -431,14 +433,13 @@
 		'--font-size-lg'
 	];
 	/* Each display step is set in the cut of the heading tier that uses it
-	 * (`cast`), with that tier's tracking role. The two steps no heading uses
-	 * borrow the nearest tier's cut. */
+	 * (`cast`), with that tier's tracking role. The one step no heading uses
+	 * borrows the nearest tier's cut. */
 	const displayScale: { token: string; cast: HeadingTag; tracking: string; label: string }[] = [
 		{ token: '--font-size-xl', cast: 'h3', tracking: '--tracking-display-sm', label: 'h3 cut' },
 		{ token: '--font-size-2xl', cast: 'h3', tracking: '--tracking-display-sm', label: 'h3' },
 		{ token: '--font-size-3xl', cast: 'h2', tracking: '--tracking-display', label: 'h2' },
-		{ token: '--font-size-4xl', cast: 'h1', tracking: '--tracking-display', label: 'h1' },
-		{ token: '--font-size-5xl', cast: 'h1', tracking: '--tracking-display-lg', label: 'h1 cut' }
+		{ token: '--font-size-4xl', cast: 'h1', tracking: '--tracking-display', label: 'h1' }
 	];
 
 	/* ===== Heading casts — read off live headings.
@@ -1030,6 +1031,7 @@
 	canonical="https://www.frederickmadore.com/style-guide"
 	{breadcrumbs}
 	pageType="WebPage"
+	noindex
 />
 
 <!-- Every section head is drawn from `sections`, so its § number, its id and
@@ -1053,7 +1055,7 @@
 	<h3 class="rail-label" class:guide-subhead={!bare} {id}>{subheads[id]}</h3>
 {/snippet}
 
-<div class="container py-8">
+<div class="py-8">
 	<div class="max-w-6xl mx-auto">
 		<PageHeader title="Style guide" typeBadgeText="Ink + Signal" />
 
@@ -2117,11 +2119,10 @@
 				</div>
 			</figure>
 			<p class="guide-caption">
-				No validation state is drawn here, and that is the honest reading:
-				<span class="data-voice">--color-danger</span> and
-				<span class="data-voice">--color-success</span> are swatched in § 1 and reserved for form
-				validation, but the site carries no form at all. Both tokens are spent today on status
-				instead (an offline banner, a media error), and
+				No validation state is drawn here, and that is the honest reading: the site carries no form
+				at all, so there is no success colour.
+				<span class="data-voice">--color-danger</span>, swatched in § 1, is spent on status instead
+				(an offline banner, a media error), and
 				<span class="data-voice">.btn-danger</span> has no consumer.
 			</p>
 

@@ -10,45 +10,74 @@
 
 import type { YearRange } from '#lib/types/index.ts';
 
-export interface EntityIndexFilters {
-	types: string[];
-	yearRange: YearRange | null;
-	tags: string[];
-	languages: string[];
-	authors: string[];
-	countries: string[];
-	projects: string[];
-}
+/**
+ * Where a dimension's facet is drawn, which also fixes how it reads:
+ *
+ * - `bar-primary`: the filter bar's first chip row, opened by "All N" (types);
+ * - `bar-secondary`: the bar's labelled second row (language);
+ * - `grid-list`: a column of ledger rows in the `More filters` grid, cut at
+ *   `limit` with a combobox for the tail (projects, co-authors, countries);
+ * - `grid-chips`: a chip row in the grid, cut the same way (tags, and the
+ *   one- or two-value facets: open access, status, slides).
+ *
+ * The grid lays its facets out in the order the page declares them.
+ */
+export type FacetPlacement = 'bar-primary' | 'bar-secondary' | 'grid-list' | 'grid-chips';
 
-/** The array-valued filter dimensions (everything except `yearRange`). */
-export type EntityArrayFilterKey = Exclude<keyof EntityIndexFilters, 'yearRange'>;
-
-export const ENTITY_ARRAY_FILTER_KEYS: EntityArrayFilterKey[] = [
-	'types',
-	'tags',
-	'languages',
-	'authors',
-	'countries',
-	'projects'
-];
-
-export interface EntityIndexFilterOptions {
-	types: string[];
-	years: number[];
-	tags: string[];
-	languages: string[];
-	authors: string[];
-	countries: string[];
-	projects: string[];
-}
-
-/** One array-valued filter dimension: how to match and how to count. */
-export interface EntityArrayDimension<TItem> {
+/**
+ * One array-valued filter dimension, described whole: its state key, the URL
+ * parameter it is shared under, its heading, its vocabulary, how it matches and
+ * counts, and where its facet is drawn. An index page lists the dimensions it
+ * offers; the filter system, the URL sync, the facet grid and the "Filtered by"
+ * line all read the same list, so a new facet is one entry, not an edit to the
+ * core.
+ */
+export interface EntityDimension<TItem, K extends string = string> {
+	key: K;
+	/** URL parameter: one entry per value (`?tag=a&tag=b`). */
+	param: string;
+	/**
+	 * Parameters this dimension was once shared under, still read (and then
+	 * written as `param`), so a link shared before a rename keeps its filter.
+	 */
+	legacyParams?: readonly string[];
+	/** The heading the facet prints, in the grid and the "Filtered by" line. */
+	label: string;
+	/** The values the facet offers, in the order it prints them. */
+	options: readonly string[];
 	/** Returns true if the item matches any of the active filter values. */
 	match: (item: TItem, activeValues: string[]) => boolean;
 	/** Extracts countable value(s) from an item for the facet counts. */
 	countExtractor: (item: TItem) => string | string[] | undefined | null;
+	placement: FacetPlacement;
+	/** For a cut facet: how many values print before the combobox takes over. */
+	limit?: number;
+	/**
+	 * The grid's year slider shares this facet's column (the countries).
+	 * Without one, the years take a column of their own after the lists.
+	 */
+	yearsBeside?: boolean;
+	/** The facet as a plural noun, where the heading is not one ("countries" for "Held in"). */
+	noun?: string;
+	/** The display form of a value, where it is a key (a person id). */
+	valueLabel?: (value: string) => string;
+	/**
+	 * Maps a value from outside the page (a URL, an agent) onto the
+	 * vocabulary before matching: a retired tag spelling, a person's name for
+	 * their id.
+	 */
+	alias?: (value: string) => string;
 }
+
+/** The filter state: each dimension's selected values, and the year range. */
+export type EntityIndexFilters<K extends string = string> = Record<K, string[]> & {
+	yearRange: YearRange | null;
+};
+
+/** The vocabulary of each dimension, plus the corpus years. */
+export type EntityIndexFilterOptions<K extends string = string> = Record<K, readonly string[]> & {
+	years: number[];
+};
 
 /**
  * A narrowing that is not a facet: the index's free-text search. It applies to
@@ -57,44 +86,66 @@ export interface EntityArrayDimension<TItem> {
  */
 export type EntityItemPredicate<TItem> = (item: TItem) => boolean;
 
+type Dimensions<TItem, K extends string> = readonly EntityDimension<TItem, K>[];
+
+/** A fresh, empty filter state for these dimensions. */
+export function emptyFilters<K extends string>(
+	dimensions: readonly { key: K }[]
+): EntityIndexFilters<K> {
+	const filters = { yearRange: null } as EntityIndexFilters<K>;
+	for (const { key } of dimensions) (filters as Record<K, string[]>)[key] = [];
+	return filters;
+}
+
+/** Whether an item passes the search, the year range and every dimension but `skip`. */
+function admits<TItem, K extends string>(
+	item: TItem,
+	filters: EntityIndexFilters<K>,
+	dimensions: Dimensions<TItem, K>,
+	matchesYearRange: (item: TItem, range: YearRange) => boolean,
+	predicate: EntityItemPredicate<TItem> | undefined,
+	skip?: K
+): boolean {
+	if (predicate && !predicate(item)) return false;
+	if (filters.yearRange && !matchesYearRange(item, filters.yearRange)) return false;
+	for (const dimension of dimensions) {
+		if (dimension.key === skip) continue;
+		const active = filters[dimension.key];
+		if (active.length > 0 && !dimension.match(item, active)) return false;
+	}
+	return true;
+}
+
 /**
  * Items matching every active dimension (AND across dimensions; each
  * dimension's `match` decides its own within-dimension semantics).
  * A dimension with no active values does not narrow.
  */
-export function filterEntityItems<TItem>(
+export function filterEntityItems<TItem, K extends string>(
 	items: TItem[],
-	filters: EntityIndexFilters,
-	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
+	filters: EntityIndexFilters<K>,
+	dimensions: Dimensions<TItem, K>,
 	matchesYearRange: (item: TItem, range: YearRange) => boolean,
 	predicate?: EntityItemPredicate<TItem>
 ): TItem[] {
-	return items.filter((item) => {
-		if (predicate && !predicate(item)) return false;
-		if (filters.yearRange && !matchesYearRange(item, filters.yearRange)) return false;
-		for (const key of ENTITY_ARRAY_FILTER_KEYS) {
-			const active = filters[key];
-			if (active.length > 0 && !dimensions[key].match(item, active)) return false;
-		}
-		return true;
-	});
+	return items.filter((item) => admits(item, filters, dimensions, matchesYearRange, predicate));
 }
 
 /** Per-dimension value counts over the given (already filtered) items. */
-export function computeFacetCounts<TItem>(
+export function computeFacetCounts<TItem, K extends string>(
 	items: TItem[],
-	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>
-): Record<EntityArrayFilterKey, Record<string, number>> {
-	const result = {} as Record<EntityArrayFilterKey, Record<string, number>>;
-	for (const key of ENTITY_ARRAY_FILTER_KEYS) {
-		result[key] = countDimension(items, dimensions[key].countExtractor);
+	dimensions: Dimensions<TItem, K>
+): Record<K, Record<string, number>> {
+	const result = {} as Record<K, Record<string, number>>;
+	for (const dimension of dimensions) {
+		result[dimension.key] = countDimension(items, dimension.countExtractor);
 	}
 	return result;
 }
 
 function countDimension<T>(
 	items: T[],
-	extractor: EntityArrayDimension<T>['countExtractor']
+	extractor: EntityDimension<T>['countExtractor']
 ): Record<string, number> {
 	const counts: Record<string, number> = Object.create(null);
 	for (const item of items) {
@@ -105,32 +156,6 @@ function countDimension<T>(
 		}
 	}
 	return counts;
-}
-
-/**
- * The items one dimension's facet is counted over: everything the year range
- * and every *other* active dimension still admit, with the counted dimension
- * itself ignored. Shared by the facet counts and the per-dimension totals so
- * the two can never disagree about what "with this facet cleared" means.
- */
-function eligibleItemsForDimension<TItem>(
-	countedKey: EntityArrayFilterKey,
-	items: TItem[],
-	filters: EntityIndexFilters,
-	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
-	matchesYearRange: (item: TItem, range: YearRange) => boolean,
-	predicate?: EntityItemPredicate<TItem>
-): TItem[] {
-	return items.filter((item) => {
-		if (predicate && !predicate(item)) return false;
-		if (filters.yearRange && !matchesYearRange(item, filters.yearRange)) return false;
-		for (const key of ENTITY_ARRAY_FILTER_KEYS) {
-			if (key === countedKey) continue;
-			const active = filters[key];
-			if (active.length > 0 && !dimensions[key].match(item, active)) return false;
-		}
-		return true;
-	});
 }
 
 /**
@@ -149,31 +174,25 @@ function eligibleItemsForDimension<TItem>(
  * `predicate` (the search) narrows every count and total: it is not a facet
  * the "All" option clears, so what clicking "All" produces still has it.
  */
-export function computeDisjunctiveFacets<TItem>(
+export function computeDisjunctiveFacets<TItem, K extends string>(
 	items: TItem[],
-	filters: EntityIndexFilters,
-	dimensions: Record<EntityArrayFilterKey, EntityArrayDimension<TItem>>,
+	filters: EntityIndexFilters<K>,
+	dimensions: Dimensions<TItem, K>,
 	matchesYearRange: (item: TItem, range: YearRange) => boolean,
 	predicate?: EntityItemPredicate<TItem>
 ): {
-	counts: Record<EntityArrayFilterKey, Record<string, number>>;
-	totals: Record<EntityArrayFilterKey, number>;
+	counts: Record<K, Record<string, number>>;
+	totals: Record<K, number>;
 } {
-	const counts = {} as Record<EntityArrayFilterKey, Record<string, number>>;
-	const totals = {} as Record<EntityArrayFilterKey, number>;
-	for (const countedKey of ENTITY_ARRAY_FILTER_KEYS) {
-		const eligibleItems = eligibleItemsForDimension(
-			countedKey,
-			items,
-			filters,
-			dimensions,
-			matchesYearRange,
-			predicate
+	const counts = {} as Record<K, Record<string, number>>;
+	const totals = {} as Record<K, number>;
+	for (const counted of dimensions) {
+		const eligibleItems = items.filter((item) =>
+			admits(item, filters, dimensions, matchesYearRange, predicate, counted.key)
 		);
-		counts[countedKey] = countDimension(eligibleItems, dimensions[countedKey].countExtractor);
-		totals[countedKey] = eligibleItems.length;
+		counts[counted.key] = countDimension(eligibleItems, counted.countExtractor);
+		totals[counted.key] = eligibleItems.length;
 	}
-
 	return { counts, totals };
 }
 
@@ -182,54 +201,42 @@ export function computeDisjunctiveFacets<TItem>(
  * year range once. The number the "N filters active" readout prints, and —
  * above zero — whether the filters narrow the index at all.
  */
-export function countActiveFilters(filters: EntityIndexFilters): number {
+export function countActiveFilters<K extends string>(
+	filters: EntityIndexFilters<K>,
+	dimensions: readonly { key: K }[]
+): number {
 	let count = filters.yearRange ? 1 : 0;
-	for (const key of ENTITY_ARRAY_FILTER_KEYS) count += filters[key].length;
+	for (const { key } of dimensions) count += filters[key].length;
 	return count;
 }
 
+/** Whether a dimension's facet sits in the `More filters` grid. */
+export const inGrid = (dimension: { placement: FacetPlacement }): boolean =>
+	dimension.placement === 'grid-list' || dimension.placement === 'grid-chips';
+
 /**
- * The facets laid out in the `More filters` grid rather than in the filter
- * bar. The grid is closed by default, so a filter on one of these (a deep
+ * Whether any facet inside the `More filters` grid, or the year range, is set.
+ * The grid is closed by default, so a filter on one of its facets (a deep
  * link, Back to a filtered view) is what opens it: an active filter is never
  * left behind a closed disclosure.
  */
-export const GRID_FILTER_KEYS = ['projects', 'authors', 'countries', 'tags'] as const;
-
-/** Whether any facet inside the `More filters` grid, or the year range, is set. */
-export function hasGridFilters(filters: EntityIndexFilters): boolean {
-	return !!filters.yearRange || GRID_FILTER_KEYS.some((key) => filters[key].length > 0);
+export function hasGridFilters<K extends string>(
+	filters: EntityIndexFilters<K>,
+	dimensions: readonly { key: K; placement: FacetPlacement }[]
+): boolean {
+	return (
+		!!filters.yearRange ||
+		dimensions.some((dimension) => inGrid(dimension) && filters[dimension.key].length > 0)
+	);
 }
-
-/** The heading each facet prints, in the grid and in the "Filtered by" line. */
-export type EntityFacetLabels = Record<EntityArrayFilterKey, string>;
-
-export const DEFAULT_FACET_LABELS: EntityFacetLabels = {
-	types: 'Type',
-	languages: 'Language',
-	projects: 'Projects',
-	authors: 'Co-authors',
-	countries: 'Countries',
-	tags: 'Tags'
-};
 
 /** One facet's part of the "Filtered by" line: its heading and its values. */
 export interface ActiveFilterGroup {
-	key: EntityArrayFilterKey | 'yearRange' | 'search';
+	key: string;
 	label: string;
 	/** Joined with "or" when printed: values within one facet widen (OR). */
 	values: string[];
 }
-
-/** The order the line reads in: the bar's controls, then the grid's columns. */
-const DESCRIBED_KEYS: EntityArrayFilterKey[] = [
-	'types',
-	'languages',
-	'projects',
-	'authors',
-	'countries',
-	'tags'
-];
 
 /**
  * What is narrowing the list, grouped by facet. A bare run of values ("ISLAM ·
@@ -237,14 +244,18 @@ const DESCRIBED_KEYS: EntityArrayFilterKey[] = [
  * tags widen the list (OR) while a tag and a country narrow it (AND); grouped
  * under their headings the line states the rule: `Tags: Islam or Togo ·
  * Countries: Togo`. The search leads, quoted, since it narrows like a facet and
- * the tally counts it as one.
+ * the tally counts it as one. Facets read in the order the page draws them:
+ * the bar's rows, then the grid's columns.
  */
-export function describeActiveFilters(
-	filters: EntityIndexFilters,
+export function describeActiveFilters<K extends string>(
+	filters: EntityIndexFilters<K>,
+	dimensions: readonly Pick<
+		EntityDimension<unknown, K>,
+		'key' | 'label' | 'placement' | 'valueLabel'
+	>[],
 	options: {
-		labels?: Partial<EntityFacetLabels>;
 		/** Display form of a value (type codes → labels, typeset quotes). */
-		valueLabel?: (key: EntityArrayFilterKey, value: string) => string;
+		valueLabel?: (key: K, value: string) => string;
 		/** The year read-out, printed when a range is set. */
 		yearReadout?: string;
 		searchTerm?: string;
@@ -254,13 +265,20 @@ export function describeActiveFilters(
 	const term = options.searchTerm?.trim();
 	if (term)
 		groups.push({ key: 'search', label: 'Search', values: [`“${truncateSearchTerm(term)}”`] });
-	for (const key of DESCRIBED_KEYS) {
-		const values = filters[key];
+	const ordered = [
+		...dimensions.filter((dimension) => !inGrid(dimension)),
+		...dimensions.filter(inGrid)
+	];
+	for (const dimension of ordered) {
+		const values = filters[dimension.key];
 		if (values.length === 0) continue;
 		groups.push({
-			key,
-			label: options.labels?.[key] ?? DEFAULT_FACET_LABELS[key],
-			values: values.map((value) => options.valueLabel?.(key, value) ?? value)
+			key: dimension.key,
+			label: dimension.label,
+			values: values.map(
+				(value) =>
+					options.valueLabel?.(dimension.key, value) ?? dimension.valueLabel?.(value) ?? value
+			)
 		});
 	}
 	if (filters.yearRange && options.yearReadout) {

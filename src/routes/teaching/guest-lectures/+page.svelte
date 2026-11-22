@@ -54,7 +54,7 @@
 
 <JsonLd id="breadcrumb-json-ld-guest-lectures" json={breadcrumbJsonLd} />
 
-<div class="container py-8">
+<div class="py-8">
 	<Breadcrumb items={breadcrumbItems} />
 	<PageHeader title="Guest lectures and workshops" />
 

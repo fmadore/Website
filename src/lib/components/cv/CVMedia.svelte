@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExternalLink from '#lib/components/atoms/ExternalLink.svelte';
 	import { mediaAppearancesByDate } from '#lib/data/media-appearances/index.ts';
 	import { cvCommunicationsByDate as communicationsByDate } from '#lib/data/communications/cv.ts';
 	import { cvPodcastDate, cvPodcastKey, splitCvTalks } from '#lib/utils/cvSections.ts';
@@ -37,10 +38,10 @@
 								<use href="#{CV_GLYPH.doi}" />
 							</svg>
 							DOI:
-							<!-- eslint-disable svelte/no-navigation-without-resolve -- external link -->
-							<a href="https://doi.org/{podcast.doi}" target="_blank" rel="noopener noreferrer">
-								{podcast.doi}<span class="sr-only">&nbsp;(opens in new tab)</span>
-							</a><!-- eslint-enable svelte/no-navigation-without-resolve -->
+
+							<ExternalLink href="https://doi.org/{podcast.doi}">
+								{podcast.doi}
+							</ExternalLink>
 						</span>
 					{/if}
 					{#if podcast.url}

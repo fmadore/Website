@@ -258,7 +258,7 @@ The scale is deliberately forked. Body and UI steps follow a minor third (1.2) t
 
 ## Layout
 
-The spatial model is an 8-point grid built on a 4px baseline, exposed as both a numeric scale (`space-1` … `space-48`) and a semantic one (`3xs` 2px through `4xl` 96px). Two half-steps on the numeric ladder are live by design and are not drift: `--space-2-5` (10px) is the `.ledger--tight` row padding, the most repeated interval on the CV, and `--space-1-5` (6px) is the gap under a label rule. Containers step at 640 / 768 / 1024 / 1280 / 1536px, and breakpoints are addressed exclusively through PostCSS custom media (`@media (--md)`), never hardcoded pixel queries.
+The spatial model is an 8-point grid built on a 4px baseline, exposed as both a numeric scale (`space-1` … `space-32`) and a semantic one (`3xs` 2px through `4xl` 96px). Two half-steps on the numeric ladder are live by design and are not drift: `--space-2-5` (10px) is the `.ledger--tight` row padding, the most repeated interval on the CV, and `--space-1-5` (6px) is the gap under a label rule. Containers step at 640 / 768 / 1024 / 1280 / 1536px, and breakpoints are addressed exclusively through PostCSS custom media (`@media (--md)`), never hardcoded pixel queries.
 
 **The ledger** is the standard record layout: a CSS grid of a hanging mono key column (default 7rem, tunable per instance) and a serif content column, with a 1px hairline on every row and baseline alignment between the columns. A three-column variant adds a right-aligned mono meta column (default 12rem). **The section** is the standard content module: a 3px ink rule, 12px of padding, then an Archivo head, with 48px separating one section from the next.
 
