@@ -48,7 +48,7 @@
 	{breadcrumbs}
 />
 
-<div class="container mx-auto px-4 py-8">
+<div class="py-8">
 	<PageHeader
 		title="Career Timeline"
 		backLinkHref="cv"

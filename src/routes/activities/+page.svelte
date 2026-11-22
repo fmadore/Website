@@ -162,7 +162,7 @@
 />
 
 <div
-	class="container py-8"
+	class="py-8"
 	use:urlFilterSync={{
 		filters: af,
 		setters: { setTags: filters.setters.setTags, setTypes: filters.setters.setTypes },

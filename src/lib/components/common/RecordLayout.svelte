@@ -147,7 +147,7 @@ Usage:
 <JsonLd id={BREADCRUMB_SCRIPT_ID} json={breadcrumbJsonLd} />
 <JsonLd id={jsonLdScriptId} json={jsonLdString} />
 
-<div class="container py-8">
+<div class="py-8">
 	<div class="record-shell">
 		<!-- Breadcrumb — mono, muted. Deliberate editorial variant of the shared
 		     <Breadcrumb> molecule: a back-link ("← Publications") and nothing

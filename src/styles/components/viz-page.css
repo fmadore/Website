@@ -8,11 +8,12 @@
 .viz-page-container {
 	max-width: var(--container-xl);
 	margin: 0 auto;
-	padding: var(--space-xl) var(--space-md);
+	/* Block padding only: the gutter is the page rail's (the One Rail Rule). */
+	padding: var(--space-xl) 0;
 }
 
 @media (--md-down) {
 	.viz-page-container {
-		padding: var(--space-md) var(--space-sm);
+		padding: var(--space-md) 0;
 	}
 }

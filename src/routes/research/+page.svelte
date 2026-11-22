@@ -103,7 +103,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8">
+<div class="py-8">
 	<div class="max-w-6xl mx-auto">
 		<!-- The section masthead: the index tier of the shared PageHeader, so
 		     /research opens on the same 4px rule, the same Archivo display size

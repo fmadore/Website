@@ -240,7 +240,7 @@ The utilities are not a design vocabulary. Records are set in the idioms (`.ledg
 
 ### Spacing (`utilities/spacing.css`)
 
-`.mx-auto`, `.mt-4`, `.mb-8`, `.p-8`, `.px-4`, `.py-8`, used by the route shells. Values map to the semantic tokens.
+`.mx-auto`, `.mt-4`, `.mb-8`, `.p-8`, `.py-8`, used by the route shells. Values map to the semantic tokens.
 
 ### Layout (`utilities/layout.css`)
 

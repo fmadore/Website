@@ -240,7 +240,7 @@
 	pageType="CollectionPage"
 />
 
-<div class="container py-8">
+<div class="py-8">
 	<div class="max-w-6xl mx-auto">
 		<!-- HERO — the 4px masthead rule, a mono infrastructure eyebrow, the
 		     shared Archivo `.index-title`, a serif standfirst, and the record's

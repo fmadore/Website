@@ -1053,7 +1053,7 @@
 	<h3 class="rail-label" class:guide-subhead={!bare} {id}>{subheads[id]}</h3>
 {/snippet}
 
-<div class="container py-8">
+<div class="py-8">
 	<div class="max-w-6xl mx-auto">
 		<PageHeader title="Style guide" typeBadgeText="Ink + Signal" />
 
