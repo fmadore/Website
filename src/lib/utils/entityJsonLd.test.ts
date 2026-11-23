@@ -239,9 +239,9 @@ describe('buildCommunicationJsonLd', () => {
 		});
 	});
 
-	it('places the talk in its conference as superEvent, not as organizer', () => {
+	it('omits the parent event when the record only supplies its name', () => {
 		const ld = buildCommunicationJsonLd(comm({ conference: 'ECAS 2025' }));
-		expect(ld.superEvent).toEqual({ '@type': 'Event', name: 'ECAS 2025' });
+		expect(ld).not.toHaveProperty('superEvent');
 		expect(ld.organizer).toBeUndefined();
 	});
 

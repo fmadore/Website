@@ -385,14 +385,6 @@ export function buildCommunicationJsonLd(communication: Communication): EventJso
 		};
 	}
 
-	// The conference is the event the talk was part of, not its organiser.
-	if (communication.conference) {
-		jsonLdObject.superEvent = {
-			'@type': 'Event',
-			name: communication.conference
-		};
-	}
-
 	if (communication.authors && communication.authors.length > 0) {
 		jsonLdObject.performer = formatPeopleWithSiteIdentity(communication.authors);
 	}

@@ -182,8 +182,6 @@ export interface EventJsonLd extends BaseJsonLd {
 	endDate?: string;
 	location?: JsonLdPlace | { '@type': 'VirtualLocation'; url?: string };
 	organizer?: JsonLdOrganization;
-	/** The conference or series the talk was given at. */
-	superEvent?: { '@type': 'Event'; name: string };
 	performer?: JsonLdAgent[];
 	eventAttendanceMode?: string;
 	/** A work exhibited at the event: a poster session's poster. */
