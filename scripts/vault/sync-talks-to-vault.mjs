@@ -35,14 +35,14 @@ import {
 	loadModule,
 	normKey,
 	noteIndex,
-	noteIndexByKey,
 	readFrontmatter,
-	sanitizeFilename,
 	hyphenTag,
 	yamlStr,
 	setFrontmatterKeys,
-	spliceGenerated
+	spliceGenerated,
+	createNote
 } from '../lib/vault-sync-lib.mjs';
+import { SUBTYPE_FOLDER, planTalkNotes } from '../lib/vault-notes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_ROOT = path.resolve(__dirname, '..', '..');
@@ -70,15 +70,6 @@ const HUB_BY_ID = {
 // normalisation alone — e.g. the DRE hub lives under a different name).
 const PROJECT_ALIASES = {
 	'Digital Research Environment (University of Bayreuth)': 'Digital Research Environment (DRE)'
-};
-
-const SUBTYPE_FOLDER = {
-	events: 'Events',
-	panels: 'Panels',
-	papers: 'Papers',
-	podcasts: 'Podcasts',
-	posters: 'Posters',
-	talks: 'Talks'
 };
 
 // ---- rendering -------------------------------------------------------------
@@ -235,15 +226,25 @@ for (const f of files) {
 }
 
 const ctx = buildContext();
-const stats = { created: 0, updated: 0, unchanged: 0, skipped: 0, moved: 0, byType: {} };
+const stats = {
+	created: 0,
+	updated: 0,
+	unchanged: 0,
+	skipped: 0,
+	conflict: 0,
+	moved: 0,
+	byType: {}
+};
+const conflicts = [];
 const unmatchedProjects = new Set();
 const adoptedSlugs = [];
 const moves = [];
 
 const SUBTYPE_DIRS = new Set(Object.values(SUBTYPE_FOLDER).map((f) => path.join(OUT_DIR, f)));
 
-// Every note that already names its talk, wherever it sits under Communications/.
-const bySlug = noteIndexByKey(OUT_DIR, 'slug');
+// Every talk's note: the one that names it (`slug`), wherever it sits under
+// Communications/, else its home path; and the `slug` index, for orphans.
+const { notes: talkNotes, bySlug } = planTalkNotes(VAULT, comms);
 
 for (const { c, subtype } of comms) {
 	const folder = SUBTYPE_FOLDER[subtype] || 'Talks';
@@ -251,24 +252,27 @@ for (const { c, subtype } of comms) {
 	if (c.project && !projectLink(c.project, ctx).startsWith('[[')) unmatchedProjects.add(c.project);
 
 	const dir = path.join(OUT_DIR, folder);
-	const fname = `${c.year || ''} ${sanitizeFilename(c.title)}`.trim() + '.md';
-	const home = path.join(dir, fname);
 
 	// By slug first; by the filename this script would give it, once, for a
-	// note that predates the key.
-	let full = bySlug.get(c.id) ?? null;
-	let adopt = false;
-	if (!full && existsSync(home)) {
-		full = home;
-		adopt = true;
-	}
+	// note that predates the key (planTalkNotes, shared with the projects sync,
+	// which links these notes before this script has written them).
+	const note = talkNotes.get(c.id);
+	const full = note.status === 'existing' || note.status === 'adopted' ? note.file : null;
+	const adopt = note.status === 'adopted';
 
 	const generated = renderGenerated(c, ctx);
 	let content = null;
 	let action;
-	let target = full ?? home;
+	let target = note.file;
 
-	if (full) {
+	if (note.status === 'manual') {
+		action = 'skipped'; // manual note without a marker — don't touch
+	} else if (note.status === 'conflict') {
+		// The home path holds a note naming another talk, or a talk earlier in
+		// this run with the same year and title claimed it.
+		action = 'conflict';
+		conflicts.push(`${path.relative(VAULT, note.file)} ← slug: ${c.id}`);
+	} else if (full) {
 		const existing = readFileSync(full, 'utf8');
 		if (!existing.includes(BEGIN)) {
 			action = 'skipped'; // manual note without a marker — don't touch
@@ -312,12 +316,17 @@ for (const { c, subtype } of comms) {
 		action = 'created';
 	}
 
-	stats[action]++;
-	if (WRITE) {
+	if (WRITE && action === 'created') {
+		if (!createNote(target, content)) {
+			action = 'conflict';
+			conflicts.push(`${path.relative(VAULT, target)} ← slug: ${c.id}`);
+		}
+	} else if (WRITE && full) {
 		mkdirSync(path.dirname(target), { recursive: true });
-		if (full && target !== full) renameSync(full, target);
+		if (target !== full) renameSync(full, target);
 		if (content) writeFileSync(target, content, 'utf8');
 	}
+	stats[action]++;
 	if (action !== 'unchanged') console.log(`${action.padEnd(9)} ${path.relative(OUT_DIR, target)}`);
 }
 
@@ -334,8 +343,12 @@ console.log('\n--- summary ---');
 console.log('talks loaded:', comms.length);
 console.log('by folder:', JSON.stringify(stats.byType));
 console.log(
-	`created: ${stats.created}  updated: ${stats.updated}  unchanged: ${stats.unchanged}  skipped(manual): ${stats.skipped}  moved: ${stats.moved}`
+	`created: ${stats.created}  updated: ${stats.updated}  unchanged: ${stats.unchanged}  skipped(manual): ${stats.skipped}  conflict: ${stats.conflict}  moved: ${stats.moved}`
 );
+if (conflicts.length) {
+	console.log('\nnot created, the path is taken (left untouched):');
+	for (const c of conflicts) console.log(`  ${c}`);
+}
 if (adoptedSlugs.length) {
 	console.log('\nmatched by filename (slug written in), review these:');
 	for (const a of adoptedSlugs) console.log(`  ${a}`);

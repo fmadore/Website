@@ -195,7 +195,8 @@ export function readFrontmatter(raw) {
 
 /**
  * Replace a fixed set of frontmatter keys, leaving every other key — and its
- * formatting — untouched. `updates` maps key → rendered value.
+ * formatting — untouched. `updates` maps key → rendered value; a value of
+ * `null` removes the key (and any continuation lines) instead.
  *
  * Deliberately line surgery rather than parse-and-dump: round-tripping the
  * vault's YAML through a serialiser reorders keys, restyles quotes and mangles
@@ -204,7 +205,10 @@ export function readFrontmatter(raw) {
 export function setFrontmatterKeys(raw, updates) {
 	const { fm, body } = splitNote(raw);
 	if (fm === null) {
-		const lines = Object.entries(updates).map(([k, v]) => `${k}: ${v}`);
+		const lines = Object.entries(updates)
+			.filter(([, v]) => v !== null)
+			.map(([k, v]) => `${k}: ${v}`);
+		if (!lines.length) return raw;
 		return `---\n${lines.join('\n')}\n---\n\n${body}`;
 	}
 
@@ -220,11 +224,11 @@ export function setFrontmatterKeys(raw, updates) {
 		}
 		// Swallow the old value, including any indented or `- ` continuation lines.
 		while (i + 1 < lines.length && /^(\s+\S|- )/.test(lines[i + 1])) i += 1;
-		out.push(`${key}: ${remaining.get(key)}`);
+		if (remaining.get(key) !== null) out.push(`${key}: ${remaining.get(key)}`);
 		remaining.delete(key);
 	}
 
-	for (const [k, v] of remaining) out.push(`${k}: ${v}`);
+	for (const [k, v] of remaining) if (v !== null) out.push(`${k}: ${v}`);
 	return `---\n${out.join('\n')}\n---\n${body}`;
 }
 

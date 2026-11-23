@@ -2,7 +2,33 @@ import { expect, it } from 'vitest';
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { walkData, loadModule, createClaims, createNote, pathTaken } from './vault-sync-lib.mjs';
+import {
+	walkData,
+	loadModule,
+	createClaims,
+	createNote,
+	pathTaken,
+	setFrontmatterKeys
+} from './vault-sync-lib.mjs';
+
+it('setFrontmatterKeys removes a key set to null, continuation lines included', () => {
+	const note = [
+		'---',
+		'title: "A"',
+		'authors:',
+		'  - "One"',
+		'  - "Two"',
+		'openalex: W1',
+		'year: 2020',
+		'---',
+		'body',
+		''
+	].join('\n');
+	expect(setFrontmatterKeys(note, { authors: null, openalex: null, wikidata: null })).toBe(
+		['---', 'title: "A"', 'year: 2020', '---', 'body', ''].join('\n')
+	);
+	expect(setFrontmatterKeys('body\n', { openalex: null })).toBe('body\n');
+});
 
 it('createNote writes a new note but never replaces an existing one', () => {
 	const dir = mkdtempSync(path.join(tmpdir(), 'vault-lib-'));

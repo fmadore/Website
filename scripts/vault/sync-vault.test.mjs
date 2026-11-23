@@ -1,14 +1,31 @@
-// A record with no note of its own gets a new one at a filename derived from
-// its title. Whatever already sits at that path (a note written by hand, or one
-// whose slug was removed or renamed) must survive the sync byte for byte, and
-// the run must say so, in a dry run and a write alike (#234).
+// The website → vault syncs, run as the user runs them, against a scratch vault.
+//
+// - A record with no note of its own gets a new one at a filename derived from
+//   its title. Whatever already sits at that path (a note written by hand, or
+//   one whose slug was removed or renamed) must survive the sync byte for byte,
+//   and the run must say so, in a dry run and a write alike (#234).
+// - One full sync on a fresh vault draws every cross-link, and a second one
+//   changes nothing (#235).
+// - An identifier the site no longer records leaves the note; a link the user
+//   set by hand stays (#236).
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { loadModule, sanitizeFilename, walkData } from '../lib/vault-sync-lib.mjs';
+import {
+	loadModule,
+	readFrontmatter,
+	sanitizeFilename,
+	setFrontmatterKeys,
+	walkData
+} from '../lib/vault-sync-lib.mjs';
+import { loadProjects, loadPublications } from '../lib/vault-notes.mjs';
+
+const FULL_SYNC = ['publications', 'projects', 'sections', 'talks'].map(
+	(family) => `sync-${family}-to-vault.mjs`
+);
 
 const ROOT = path.resolve(import.meta.dirname, '..', '..');
 const HANDWRITTEN = '# My own note\n\nWritten by hand, never generated.\n';
@@ -66,7 +83,7 @@ describe('sync-publications-to-vault', () => {
 		// Every other record still gets its note.
 		const created = readdirSync(path.join(vault, RECORDS)).filter((f) => f.endsWith('.md'));
 		expect(created.length).toBeGreaterThan(1);
-	});
+	}, 60_000);
 });
 
 describe('sync-projects-to-vault', () => {
@@ -84,7 +101,7 @@ describe('sync-projects-to-vault', () => {
 		expect(written).toMatch(/conflict: 1\b/);
 		expect(written).toContain(`← website_slug: research/${project.id}`);
 		expect(readFileSync(file, 'utf8')).toBe(content);
-	});
+	}, 60_000);
 
 	it('reports an unslugged note as a conflict in a dry run without --adopt', async () => {
 		const project = await firstRecord('research');
@@ -95,5 +112,71 @@ describe('sync-projects-to-vault', () => {
 		expect(dry).toMatch(/conflict: 1\b/);
 		expect(dry).toContain('--adopt previews title matches');
 		expect(readFileSync(file, 'utf8')).toBe(HANDWRITTEN);
-	});
+	}, 60_000);
+});
+
+describe('a full sync', () => {
+	it('draws every project link on a fresh vault, and a second run changes nothing', async () => {
+		for (const script of FULL_SYNC) sync(script, '--write');
+
+		// Every publication whose project is a research project names its note,
+		// although the projects sync ran after the publications sync.
+		const { research } = await loadProjects(ROOT);
+		const names = new Set(research.map((r) => r.projectName).filter(Boolean));
+		const linked = (await loadPublications(ROOT)).filter((p) => names.has(p.project));
+		expect(linked.length).toBeGreaterThan(0);
+		const records = path.join(vault, 'Université/Publications/Records');
+		const withProject = readdirSync(records).filter(
+			(f) => readFrontmatter(readFileSync(path.join(records, f), 'utf8')).project
+		);
+		expect(withProject).toHaveLength(linked.length);
+
+		// And the project notes link the talks, written by the last script.
+		const projects = path.join(vault, 'Tâches et projets/Projects');
+		const talkNames = new Set(
+			readdirSync(path.join(vault, 'Université/Communications'), { recursive: true })
+				.filter((f) => String(f).endsWith('.md'))
+				.map((f) => path.basename(String(f), '.md'))
+		);
+		const projectText = readdirSync(projects, { recursive: true })
+			.filter((f) => String(f).endsWith('.md'))
+			.map((f) => readFileSync(path.join(projects, String(f)), 'utf8'))
+			.join('\n');
+		const talkLinks = [...projectText.matchAll(/\[\[([^\]]+)\]\]/g)].filter(([, name]) =>
+			talkNames.has(name)
+		);
+		expect(talkLinks.length).toBeGreaterThan(0);
+
+		for (const script of FULL_SYNC) {
+			const again = sync(script, '--write');
+			expect(again, script).toMatch(/created: 0\b/);
+			expect(again, script).toMatch(/updated: 0\b/);
+		}
+	}, 120_000);
+});
+
+describe('site-owned identifiers', () => {
+	it('removes an identifier the site no longer records, and keeps a hand-set link', async () => {
+		sync('sync-publications-to-vault.mjs', '--write');
+		const p = (await loadPublications(ROOT)).find((r) => !r.openAlexId);
+		const file = path.join(
+			vault,
+			'Université/Publications/Records',
+			`${p.year} ${sanitizeFilename(p.title)}.md`
+		);
+		writeFileSync(
+			file,
+			setFrontmatterKeys(readFileSync(file, 'utf8'), {
+				openalex: 'W0000000000',
+				zotero_note: '"[[@handset2026]]"'
+			}),
+			'utf8'
+		);
+
+		const out = sync('sync-publications-to-vault.mjs', '--write');
+		const fm = readFrontmatter(readFileSync(file, 'utf8'));
+		expect(fm.openalex).toBeUndefined();
+		expect(fm.zotero_note).toBe('[[@handset2026]]');
+		expect(out).toContain('openalex W0000000000');
+	}, 60_000);
 });

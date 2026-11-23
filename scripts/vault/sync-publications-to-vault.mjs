@@ -31,23 +31,27 @@ import {
 	walkData,
 	loadModule,
 	normTitle,
-	noteIndexByKey,
-	sanitizeFilename,
 	hyphenTag,
 	yamlStr,
 	splitNote,
+	readFrontmatter,
 	setFrontmatterKeys,
 	spliceGenerated,
-	createClaims,
 	createNote
 } from '../lib/vault-sync-lib.mjs';
+import {
+	loadPublications,
+	loadProjects,
+	planPublicationNotes,
+	planProjectNotes,
+	projectSitePath,
+	noteName
+} from '../lib/vault-notes.mjs';
 
 const SITE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const VAULT = vaultRoot();
-const OUT_DIR = path.join(VAULT, 'Université/Publications/Records');
 const TEXTES_DIR = path.join(VAULT, 'Université/Publications/Textes');
 const ZOTERO_DIR = path.join(VAULT, 'Zotero');
-const PROJECTS_DIR = path.join(VAULT, 'Tâches et projets/Projects');
 const SITE = 'https://www.frederickmadore.com';
 
 const WRITE = process.argv.includes('--write');
@@ -78,12 +82,8 @@ const TYPE_LABEL = {
 
 // ---- load the site's publications ------------------------------------------
 
-const pubs = [];
-for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data/publications'))) {
-	const record = await loadModule(file);
-	if (record?.id && record.title) pubs.push(record);
-}
-pubs.sort((a, b) => (b.dateISO || '').localeCompare(a.dateISO || ''));
+const pubs = await loadPublications(SITE_ROOT);
+const projects = await loadProjects(SITE_ROOT);
 
 /**
  * Where citing works cite each publication (src/lib/data/citation-contexts/),
@@ -125,20 +125,23 @@ if (existsSync(TEXTES_DIR)) {
 	}
 }
 
-/** projectName → vault note basename, via the notes the projects sync stamped. */
-const projectNotes = new Map();
-for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data/research'))) {
-	const record = await loadModule(file);
-	if (record?.projectName) projectNotes.set(record.projectName, `research/${record.id}`);
-}
-const projectBySlug = noteIndexByKey(PROJECTS_DIR, 'website_slug');
+/**
+ * projectName → the research project's note, as the projects sync will leave
+ * it: planned rather than looked up, so a fresh vault gets the link on the
+ * first run although the projects sync runs after this one (see vault-notes).
+ */
+const projectSlugByName = new Map(
+	projects.research
+		.filter((record) => record.projectName)
+		.map((record) => [record.projectName, projectSitePath('research', record.id)])
+);
+const { notes: projectNotes } = planProjectNotes(VAULT, projects);
 const projectLink = (projectName) => {
-	const slug = projectNotes.get(projectName);
-	const note = slug ? projectBySlug.get(slug) : null;
-	return note ? `[[${path.basename(note, '.md')}]]` : null;
+	const name = noteName(projectNotes.get(projectSlugByName.get(projectName)));
+	return name ? `[[${name}]]` : null;
 };
 
-const bySlug = noteIndexByKey(path.join(VAULT, 'Université/Publications'), 'website_slug');
+const { notes: publicationNotes, bySlug } = planPublicationNotes(VAULT, pubs);
 
 // ---- rendering -------------------------------------------------------------
 
@@ -288,7 +291,7 @@ const stats = { created: 0, updated: 0, unchanged: 0, conflict: 0 };
 const noZotero = [];
 const noProject = [];
 const conflicts = [];
-const claim = createClaims();
+const removed = [];
 
 for (const p of pubs) {
 	const doi = normDoi(p.doi);
@@ -302,14 +305,13 @@ for (const p of pubs) {
 
 	const slug = `publications/${p.id}`;
 	const generated = render(p, matches);
-	const target = bySlug.get(slug);
+	const note = publicationNotes.get(p.id);
+	const full = note.file;
 
-	let full;
 	let content;
 	let action;
 
-	if (target) {
-		full = target;
+	if (note.status === 'existing') {
 		const existing = readFileSync(full, 'utf8');
 		const spliced = spliceGenerated(existing, generated);
 		if (spliced === null) {
@@ -324,27 +326,38 @@ for (const p of pubs) {
 			website_slug: slug,
 			website_url: `${SITE}/publications/${p.id}`
 		};
-		// `project` is owned, not seeded: on a first run the project notes may not
-		// carry their slug yet, so the link resolves to nothing and would stay
-		// missing forever if it were only written at creation.
+		// `project` is owned, not seeded: a project renamed or newly attached on
+		// the site must reach a note created before it. Like the other lookups
+		// (`zotero_note`, `texte`), it is only ever set: a lookup that misses must
+		// not erase a link the user may have made by hand.
 		if (project) owned.project = yamlStr(project);
 		owned.cited_by = String(p.citedBy?.length ?? 0);
 		owned.reviewed_by = String(p.reviewedBy?.length ?? 0);
-		// Recorded on the site after the note was created, so owned rather than seeded.
-		if (p.openAccess !== undefined) owned.open_access = String(p.openAccess === true);
-		if (p.wikidataId) owned.wikidata = p.wikidataId;
-		if (p.openAlexId) owned.openalex = p.openAlexId;
 		if (zotero) owned.zotero_note = yamlStr(`[[${zotero}]]`);
 		if (texte) owned.texte = yamlStr(`[[${texte}]]`);
-		content = setFrontmatterKeys(content, owned);
+		// The site's identifiers, owned outright: recorded after the note was
+		// created (a DOI once a forthcoming article appears), and removed when the
+		// site withdraws one (a misattributed OpenAlex id), so a vault query never
+		// reads a value the site no longer stands behind.
+		const identifiers = {
+			doi: p.doi ? yamlStr(p.doi) : null,
+			isbn: p.isbn ? yamlStr(p.isbn) : null,
+			open_access: p.openAccess === undefined ? null : String(p.openAccess === true),
+			wikidata: p.wikidataId || null,
+			openalex: p.openAlexId || null
+		};
+		const before = readFrontmatter(existing);
+		for (const [key, value] of Object.entries(identifiers))
+			if (value === null && key in before)
+				removed.push(`${path.relative(VAULT, full)}: ${key} ${before[key]}`);
+		content = setFrontmatterKeys(content, { ...owned, ...identifiers });
 		action = content === existing ? 'unchanged' : 'updated';
 		if (action === 'unchanged') content = null;
 	} else {
-		full = path.join(OUT_DIR, `${p.year} ${sanitizeFilename(p.title)}.md`);
 		content = `${seedFrontmatter(p, matches)}\n\n${generated}\n\n## My notes\n`;
 		// No note carries the slug, so the record gets a new one, but never on top
-		// of a note already at that path (see createClaims in vault-sync-lib).
-		action = claim(full) ? 'created' : 'conflict';
+		// of a note already at that path (#234; see planPublicationNotes).
+		action = note.status === 'new' ? 'created' : 'conflict';
 	}
 
 	if (WRITE && action === 'created') {
@@ -378,6 +391,10 @@ if (conflicts.length) {
 			' website_slug to it to adopt it, or rename it):'
 	);
 	for (const c of conflicts) console.log(`  ${c}`);
+}
+if (removed.length) {
+	console.log('\nidentifiers the site no longer records, removed from the note:');
+	for (const r of removed) console.log(`  ${r}`);
 }
 if (noZotero.length) {
 	console.log('\nno Zotero literature note yet (generate via the Zotero connector):');

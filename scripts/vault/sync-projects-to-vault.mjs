@@ -25,7 +25,7 @@
 //   seeded — everything else, written once at creation and never again
 // Drift in seeded fields is reported at the end, not silently corrected.
 
-import { readFileSync, writeFileSync, globSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, globSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { getContributorNames } from '../../src/lib/utils/contributor.ts';
@@ -38,8 +38,6 @@ import {
 	loadModule,
 	normKey,
 	noteIndex,
-	noteIndexByKey,
-	sanitizeFilename,
 	hyphenTag,
 	yamlStr,
 	readFrontmatter,
@@ -49,36 +47,30 @@ import {
 	htmlToMarkdown,
 	decodeEntities,
 	replaceToFixedPoint,
-	createClaims,
 	createNote
 } from '../lib/vault-sync-lib.mjs';
+import {
+	loadProjects,
+	loadPublications,
+	loadTalks,
+	planProjectNotes,
+	planPublicationNotes,
+	planTalkNotes,
+	projectSitePath,
+	noteName
+} from '../lib/vault-notes.mjs';
 
 const SITE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const VAULT = vaultRoot();
-const PROJECTS_DIR = path.join(VAULT, 'Tâches et projets/Projects');
-const DH_DIR = path.join(PROJECTS_DIR, 'DH');
 const CONCEPTS_DIR = path.join(VAULT, 'Zotero/Concepts');
 const SITE = 'https://www.frederickmadore.com';
 
 const WRITE = process.argv.includes('--write');
 const ADOPT = process.argv.includes('--adopt') || WRITE;
 
-/**
- * The site path a record lives at, used as its `website_slug`. It has to carry
- * the section, not just the id: `dh-ai-african-studies` is both a research
- * project and a digital-humanities project, and a bare id would collapse the
- * two onto one note.
- */
-const sitePath = (kind, id) => `${kind === 'dh' ? 'digital-humanities' : 'research'}/${id}`;
-
-/**
- * Records whose vault note already exists outside `Projects/`, or under a name
- * no normalisation will match. Without this the script would create a second,
- * competing note beside a hub the vault already links heavily.
- */
-const NOTE_ALIASES = {
-	'research/digital-research-environment': 'Bayreuth/DRE/Digital Research Environment (DRE).md'
-};
+// A project's `website_slug` is its site path (projectSitePath), and the notes
+// that live outside Projects/ are PROJECT_NOTE_ALIASES, both in vault-notes.
+const sitePath = projectSitePath;
 
 // ---- research prose --------------------------------------------------------
 // The narrative of a research project lives as markup in its route page, not in
@@ -141,17 +133,7 @@ function proseToMarkdown(markup, file, refLink) {
 
 // ---- load the site's records ----------------------------------------------
 
-const dhProjects = [];
-for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data/digital-humanities'))) {
-	const record = await loadModule(file);
-	if (record?.id) dhProjects.push(record);
-}
-
-const researchProjects = [];
-for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data/research'))) {
-	const record = await loadModule(file);
-	if (record?.id) researchProjects.push(record);
-}
+const { dh: dhProjects, research: researchProjects } = await loadProjects(SITE_ROOT);
 
 const proseBySlug = new Map();
 for (const file of globSync('src/routes/research/*/+page.svelte', { cwd: SITE_ROOT }).sort()) {
@@ -223,24 +205,29 @@ for (const file of walkData(path.join(SITE_ROOT, 'src/lib/data/fieldworks'))) {
 
 // ---- vault side ------------------------------------------------------------
 
-const bySlug = noteIndexByKey(PROJECTS_DIR, 'website_slug');
-for (const [slug, rel] of Object.entries(NOTE_ALIASES)) {
-	if (!bySlug.has(slug) && existsSync(path.join(VAULT, rel)))
-		bySlug.set(slug, path.join(VAULT, rel));
-}
+// Which note is each project's (by `website_slug`, a vault alias, a title match
+// to adopt, or a new one), and which note each talk and publication has or
+// will have once its own sync runs: planned, not looked up, so one full sync
+// draws every link although the talks sync runs after this one (vault-notes).
+const { notes: projectNotes, bySlug } = planProjectNotes(
+	VAULT,
+	{ dh: dhProjects, research: researchProjects },
+	{ adopt: ADOPT }
+);
 const concepts = noteIndex(CONCEPTS_DIR);
-// Communications carry the site id as `slug`; publication records carry the
-// site path as `website_slug` once sync-publications-to-vault.mjs has run.
-const itemNotes = new Map([
-	...noteIndexByKey(path.join(VAULT, 'Université/Communications'), 'slug'),
-	...[...noteIndexByKey(path.join(VAULT, 'Université/Publications'), 'website_slug')].map(
-		([slug, file]) => [slug.replace(/^publications\//, ''), file]
-	)
-]);
+const itemNotes = new Map(
+	[
+		...planTalkNotes(VAULT, await loadTalks(SITE_ROOT)).notes,
+		...planPublicationNotes(VAULT, await loadPublications(SITE_ROOT)).notes
+	].flatMap(([id, entry]) => {
+		const name = noteName(entry);
+		return name ? [[id, name]] : [];
+	})
+);
 
 const refLink = (id) => {
 	const note = itemNotes.get(id);
-	if (note) return `[[${path.basename(note, '.md')}]]`;
+	if (note) return `[[${note}]]`;
 	const ref = refById.get(id);
 	if (!ref) return '';
 	const label = ref.cite ? `(${ref.cite})` : ref.title;
@@ -409,55 +396,18 @@ function seedFrontmatter(project, kind) {
 // ---- adoption --------------------------------------------------------------
 // One-time bootstrap: the vault's project notes predate this script and were
 // hand-copied from the site, so almost all of them already have a counterpart.
-// Match them by title once and stamp the slug in; afterwards the slug is the
-// only thing that matters.
+// Match them by title once (planProjectNotes, under ADOPT) and stamp the slug
+// in, with the rest of the owned keys; afterwards the slug is the only thing
+// that matters.
 
-const adopted = [];
-if (ADOPT) {
-	const byTitle = noteIndexByKey(PROJECTS_DIR, 'title');
-	const byName = new Map();
-	for (const file of globSync('**/*.md', { cwd: PROJECTS_DIR })) {
-		byName.set(normKey(path.basename(file, '.md')), path.join(PROJECTS_DIR, file));
-	}
-	for (const [kind, list] of [
-		['dh', dhProjects],
-		['research', researchProjects]
-	]) {
-		for (const project of list) {
-			const slug = sitePath(kind, project.id);
-			if (bySlug.has(slug)) continue;
-			const candidates = [
-				project.title,
-				project.shortTitle,
-				project.cardTitle,
-				project.projectName
-			];
-			let hit = null;
-			for (const candidate of candidates) {
-				if (!candidate) continue;
-				hit = byTitle.get(candidate) || byName.get(normKey(candidate));
-				if (hit) break;
-			}
-			if (!hit) continue;
-			if (readFrontmatter(readFileSync(hit, 'utf8')).website_slug) continue;
-			adopted.push({ id: slug, kind, note: path.relative(VAULT, hit) });
-			bySlug.set(slug, hit);
-			if (WRITE) {
-				writeFileSync(
-					hit,
-					setFrontmatterKeys(readFileSync(hit, 'utf8'), { website_slug: slug }),
-					'utf8'
-				);
-			}
-		}
-	}
-}
+const adopted = [...projectNotes]
+	.filter(([, entry]) => entry.status === 'adopted')
+	.map(([slug, entry]) => ({ id: slug, note: path.relative(VAULT, entry.file) }));
 
 // ---- main ------------------------------------------------------------------
 
 const stats = { created: 0, adopted: 0, updated: 0, unchanged: 0, conflict: 0 };
 const conflicts = [];
-const claim = createClaims();
 const drift = [];
 const conceptHints = [];
 
@@ -467,16 +417,15 @@ for (const [kind, list] of [
 ]) {
 	for (const project of list) {
 		const generated = kind === 'dh' ? renderDh(project) : renderResearch(project);
-		const slug = sitePath(kind, project.id);
+		const slug = projectSitePath(kind, project.id);
 		const url = `${SITE}/${slug}`;
-		const target = bySlug.get(slug);
+		const note = projectNotes.get(slug);
+		const full = note.file;
 
-		let full;
 		let content;
 		let action;
 
-		if (target) {
-			full = target;
+		if (note.status === 'existing' || note.status === 'adopted') {
 			const existing = readFileSync(full, 'utf8');
 			const spliced = spliceGenerated(existing, generated);
 			if (spliced === null) {
@@ -524,13 +473,11 @@ for (const [kind, list] of [
 				content = null;
 			}
 		} else {
-			const dir = kind === 'dh' ? DH_DIR : PROJECTS_DIR;
-			full = path.join(dir, `${sanitizeFilename(project.title)}.md`);
 			content = `${seedFrontmatter(project, kind)}\n\n${generated}\n\n## My notes\n`;
-			// Never on top of a note already at that path: adoption above skips a
+			// Never on top of a note already at that path (#234): adoption skips a
 			// note that carries another slug, and a dry run without --adopt does
-			// not adopt at all (see createClaims in vault-sync-lib).
-			action = claim(full) ? 'created' : 'conflict';
+			// not adopt at all (see planProjectNotes).
+			action = note.status === 'new' ? 'created' : 'conflict';
 		}
 
 		if (WRITE && action === 'created') {
