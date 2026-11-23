@@ -20,7 +20,7 @@
 // Ownership matches sync-projects-to-vault.mjs: the marked block and a small set
 // of frontmatter keys are rewritten every run, everything else is written once.
 
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { getContributorNames } from '../../src/lib/utils/contributor.ts';
@@ -37,7 +37,9 @@ import {
 	yamlStr,
 	splitNote,
 	setFrontmatterKeys,
-	spliceGenerated
+	spliceGenerated,
+	createClaims,
+	createNote
 } from '../lib/vault-sync-lib.mjs';
 
 const SITE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -282,9 +284,11 @@ function seedFrontmatter(p, matches) {
 
 // ---- main ------------------------------------------------------------------
 
-const stats = { created: 0, updated: 0, unchanged: 0 };
+const stats = { created: 0, updated: 0, unchanged: 0, conflict: 0 };
 const noZotero = [];
 const noProject = [];
+const conflicts = [];
+const claim = createClaims();
 
 for (const p of pubs) {
 	const doi = normDoi(p.doi);
@@ -338,14 +342,20 @@ for (const p of pubs) {
 	} else {
 		full = path.join(OUT_DIR, `${p.year} ${sanitizeFilename(p.title)}.md`);
 		content = `${seedFrontmatter(p, matches)}\n\n${generated}\n\n## My notes\n`;
-		action = 'created';
+		// No note carries the slug, so the record gets a new one, but never on top
+		// of a note already at that path (see createClaims in vault-sync-lib).
+		action = claim(full) ? 'created' : 'conflict';
 	}
 
-	stats[action] += 1;
-	if (WRITE && content) {
-		mkdirSync(path.dirname(full), { recursive: true });
+	if (WRITE && action === 'created') {
+		if (!createNote(full, content)) action = 'conflict';
+	} else if (WRITE && content && action !== 'conflict') {
 		writeFileSync(full, content, 'utf8');
 	}
+	if (action === 'conflict')
+		conflicts.push(`${path.relative(VAULT, full)} ← website_slug: ${slug}`);
+
+	stats[action] += 1;
 	if (action !== 'unchanged') console.log(`${action.padEnd(9)} ${path.relative(VAULT, full)}`);
 }
 
@@ -358,8 +368,17 @@ const orphans = [...bySlug.entries()]
 
 console.log('\n--- summary ---');
 console.log(`publications: ${pubs.length}`);
-console.log(`created: ${stats.created}  updated: ${stats.updated}  unchanged: ${stats.unchanged}`);
+console.log(
+	`created: ${stats.created}  updated: ${stats.updated}  unchanged: ${stats.unchanged}  conflict: ${stats.conflict}`
+);
 console.log(`matched to a Zotero note: ${pubs.length - noZotero.length}/${pubs.length}`);
+if (conflicts.length) {
+	console.log(
+		'\nnot created, a note already sits at the path (left untouched; add the' +
+			' website_slug to it to adopt it, or rename it):'
+	);
+	for (const c of conflicts) console.log(`  ${c}`);
+}
 if (noZotero.length) {
 	console.log('\nno Zotero literature note yet (generate via the Zotero connector):');
 	for (const n of noZotero) console.log(`  ${n}`);

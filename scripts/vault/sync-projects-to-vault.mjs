@@ -25,7 +25,7 @@
 //   seeded — everything else, written once at creation and never again
 // Drift in seeded fields is reported at the end, not silently corrected.
 
-import { readFileSync, writeFileSync, mkdirSync, globSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, globSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { getContributorNames } from '../../src/lib/utils/contributor.ts';
@@ -48,7 +48,9 @@ import {
 	splitNote,
 	htmlToMarkdown,
 	decodeEntities,
-	replaceToFixedPoint
+	replaceToFixedPoint,
+	createClaims,
+	createNote
 } from '../lib/vault-sync-lib.mjs';
 
 const SITE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -453,7 +455,9 @@ if (ADOPT) {
 
 // ---- main ------------------------------------------------------------------
 
-const stats = { created: 0, adopted: 0, updated: 0, unchanged: 0 };
+const stats = { created: 0, adopted: 0, updated: 0, unchanged: 0, conflict: 0 };
+const conflicts = [];
+const claim = createClaims();
 const drift = [];
 const conceptHints = [];
 
@@ -523,14 +527,21 @@ for (const [kind, list] of [
 			const dir = kind === 'dh' ? DH_DIR : PROJECTS_DIR;
 			full = path.join(dir, `${sanitizeFilename(project.title)}.md`);
 			content = `${seedFrontmatter(project, kind)}\n\n${generated}\n\n## My notes\n`;
-			action = 'created';
+			// Never on top of a note already at that path: adoption above skips a
+			// note that carries another slug, and a dry run without --adopt does
+			// not adopt at all (see createClaims in vault-sync-lib).
+			action = claim(full) ? 'created' : 'conflict';
 		}
 
-		stats[action] += 1;
-		if (WRITE && content) {
-			mkdirSync(path.dirname(full), { recursive: true });
+		if (WRITE && action === 'created') {
+			if (!createNote(full, content)) action = 'conflict';
+		} else if (WRITE && content && action !== 'conflict') {
 			writeFileSync(full, content, 'utf8');
 		}
+		if (action === 'conflict')
+			conflicts.push(`${path.relative(VAULT, full)} ← website_slug: ${slug}`);
+
+		stats[action] += 1;
 		if (action !== 'unchanged') console.log(`${action.padEnd(9)} ${path.relative(VAULT, full)}`);
 
 		const hits = linkedConcepts(kind === 'dh' ? project.skills : project.regions);
@@ -550,8 +561,17 @@ const orphans = [...bySlug.entries()]
 console.log('\n--- summary ---');
 console.log(`records: ${dhProjects.length} DH + ${researchProjects.length} research`);
 console.log(
-	`created: ${stats.created}  adopted: ${stats.adopted}  updated: ${stats.updated}  unchanged: ${stats.unchanged}`
+	`created: ${stats.created}  adopted: ${stats.adopted}  updated: ${stats.updated}  unchanged: ${stats.unchanged}  conflict: ${stats.conflict}`
 );
+if (conflicts.length) {
+	console.log(
+		'\nnot created, a note already sits at the path (left untouched; add the' +
+			' website_slug to it to adopt it, or rename it' +
+			(ADOPT ? '' : '; --adopt previews title matches') +
+			'):'
+	);
+	for (const c of conflicts) console.log(`  ${c}`);
+}
 if (adopted.length) {
 	console.log(`\nadopted (title match → website_slug), review these:`);
 	for (const a of adopted) console.log(`  ${a.id}  ←  ${a.note}`);

@@ -8,7 +8,14 @@
 // commit by construction rather than by discipline.
 
 import ts from 'typescript';
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import {
+	readFileSync,
+	readdirSync,
+	existsSync,
+	lstatSync,
+	mkdirSync,
+	writeFileSync
+} from 'node:fs';
 import path from 'node:path';
 
 export const BEGIN = '%% begin generated (website sync) %%';
@@ -219,6 +226,58 @@ export function setFrontmatterKeys(raw, updates) {
 
 	for (const [k, v] of remaining) out.push(`${k}: ${v}`);
 	return `---\n${out.join('\n')}\n---\n${body}`;
+}
+
+// ---- creating notes --------------------------------------------------------
+//
+// A record with no note of its own (no note carries its slug) gets a new one at
+// the filename the script derives from its title. That path can already be
+// taken: a note written by hand, or one whose slug was removed or renamed. The
+// vault has no undo, so a new note is only ever written where nothing is, and
+// an occupied path is reported as a conflict for the user to resolve.
+
+/** Whether anything (file, directory, link) already sits at `file`. */
+export function pathTaken(file) {
+	try {
+		lstatSync(file);
+		return true;
+	} catch (err) {
+		if (err.code !== 'ENOENT') throw err;
+		return false;
+	}
+}
+
+/**
+ * Plan the creation of new notes in one run. `claim(file)` answers whether a
+ * new note may go to `file`: not when something is already there, and not when
+ * an earlier record in the same run has claimed it (two records whose titles
+ * sanitise to one filename). Paths compare case-insensitively, as they do on
+ * Windows and macOS, where the vault lives.
+ */
+export function createClaims() {
+	const claimed = new Set();
+	return (file) => {
+		const key = path.resolve(file).normalize('NFC').toLowerCase();
+		if (claimed.has(key) || pathTaken(file)) return false;
+		claimed.add(key);
+		return true;
+	};
+}
+
+/**
+ * Write a new note, never replacing anything. Returns false, having written
+ * nothing, when the path is taken — `wx` makes the check and the write one
+ * operation, so a planning check that has gone stale cannot cost a note.
+ */
+export function createNote(file, content) {
+	mkdirSync(path.dirname(file), { recursive: true });
+	try {
+		writeFileSync(file, content, { encoding: 'utf8', flag: 'wx' });
+		return true;
+	} catch (err) {
+		if (err.code !== 'EEXIST') throw err;
+		return false;
+	}
 }
 
 /** Swap the marked region. Returns null when the note carries no marker. */
