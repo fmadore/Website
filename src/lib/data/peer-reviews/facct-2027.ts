@@ -7,7 +7,7 @@ export const facct2027: PeerReview = {
 	type: 'Conference Paper',
 	count: 3,
 	year: 2026,
-	dateISO: '2026-11-14'
+	dateISO: '2026-11-23'
 };
 
 export default facct2027;
