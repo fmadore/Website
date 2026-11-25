@@ -208,6 +208,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pages": "1-12",
 		"language": "English",
 		"doi": "10.1145/3805696.3846031",
+		"image": "images/publications/jcdl-2026-proceedings.webp",
 		"tags": [
 			"Entity Linking",
 			"Wikidata",
@@ -266,6 +267,7 @@ export const publicationSummaries: PublicationSummary[] = [
 		"pages": "8034-8039",
 		"language": "English",
 		"doi": "10.1145/3799682.3840034",
+		"image": "images/publications/cikm-2026-proceedings.webp",
 		"tags": [
 			"Entity Linking",
 			"Entity Disambiguation",

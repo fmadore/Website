@@ -26,6 +26,11 @@ export const beyondKeywordsEntityLinkingResearchMetadata2026: Publication = {
 	pages: '1-12',
 	language: 'English',
 	doi: '10.1145/3805696.3846031',
+	image: 'images/publications/jcdl-2026-proceedings.webp',
+	heroImage: {
+		src: 'images/publications/jcdl-2026-proceedings.webp',
+		alt: 'Title page of JCDL ’26, Proceedings of the 26th ACM/IEEE Joint Conference on Digital Libraries (Dallas, Texas, 13–16 October 2026), edited by Haihua Chen, Jim Jansen, Jiqun Liu, Mark V. Albert, Junhua Ding and Jiangping Chen.'
+	},
 	abstract: `Research databases accumulate rich metadata, including subject keywords, themes, geographic and cultural references, but much of this data remains largely isolated, making it difficult to retrieve and reuse across different databases. The key problem is semantic grounding: without stable identifiers, databases that describe the same cultural practice or geographic region cannot recognise that they do so.
 
 We present Context-Aware Routing for Entity Linking (CAREL), a training-free, cost-efficient pipeline that links research metadata keywords to Wikidata QIDs. These stable identifiers support semantically grounded cross-database search and provide a basis for future knowledge graph construction. CAREL processes heterogeneous keywords through a four-layer cascade built around a novel Cross-lingual Retrieval Consensus (CRC) signal, which turns the agreement among language-conditioned retrieval ranks into a measure of linking confidence without requiring annotated data. Routing through the layers follows the ambiguity of each keyword: rule-based layers resolve the clear cases, and keywords not resolved by the rule-based stages reach a locally deployed open-source large language model (LLM), which bounds inference cost.
