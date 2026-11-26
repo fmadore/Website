@@ -32,34 +32,6 @@
 	});
 	const nextTalk = $derived(data.upcoming.find((talk) => !today || talk.dateISO >= today));
 
-	// What the page says about each collection and app; the title, image and
-	// platform line come from the record itself.
-	const DH_COPY: Record<string, { blurb: string; stats?: [string, string][] }> = {
-		iwac: {
-			blurb:
-				'Newspapers, Islamic publications, documents and audiovisual records, processed with OCR, transcription and entity recognition.',
-			stats: [
-				['20,944', 'Items'],
-				['6', 'Countries']
-			]
-		},
-		amira: {
-			blurb:
-				'The collections of research centres in Burkina Faso, Kenya, Nigeria and South Africa, searchable in one place.',
-			stats: [
-				['3,800', 'Items'],
-				['90+', 'Projects']
-			]
-		},
-		kalamu: {
-			blurb:
-				'Read scans and handwriting, transcribe interviews and analyse texts with AI, then check every result against its source.'
-		},
-		'live-translation': {
-			blurb: 'Live captions and translations over meetings, video calls and slides.'
-		}
-	};
-
 	const COVER_SIZES = '(max-width: 767px) 30vw, 10rem';
 	const DH_SIZES = '(max-width: 767px) 8rem, 12rem';
 </script>
@@ -74,7 +46,6 @@
 />
 
 {#snippet dhCard(card: (typeof data.collections)[number])}
-	{@const copy = DH_COPY[card.id]}
 	{@const src = assetHref(card.imageUrl)}
 	{@const size = imageDimensions(src)}
 	<li class="dh-card">
@@ -93,10 +64,10 @@
 			<h4 class="dh-title">
 				<a href={resolve('/digital-humanities/[id]', { id: card.id })}>{card.title}</a>
 			</h4>
-			{#if copy}<p class="dh-blurb">{copy.blurb}</p>{/if}
-			{#if copy?.stats}
+			<p class="dh-blurb">{card.blurb}</p>
+			{#if card.stats}
 				<dl class="dh-stats">
-					{#each copy.stats as [value, label] (label)}
+					{#each card.stats as [value, label] (label)}
 						<div>
 							<dt class="dh-stat-label">{label}</dt>
 							<dd class="dh-stat-value">{value}</dd>

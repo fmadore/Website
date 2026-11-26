@@ -14,22 +14,64 @@ import {
 } from '#lib/utils/homeDigest.ts';
 import { featuredPublicationIds } from '#lib/data/homeFeatured.ts';
 
-/** The collections and the apps the home page shows, in the order it shows them. */
-const COLLECTIONS = ['iwac', 'amira'];
-const APPS = ['kalamu', 'live-translation'];
+interface DhCopy {
+	blurb: string;
+	stats?: [string, string][];
+}
 
-function dhCards(ids: string[]) {
+/**
+ * What the home page says about each collection and app; the title, image and
+ * platform line come from the record itself. The id lists below are typed
+ * against these keys, so a card cannot exist without its copy, and `dhCards`
+ * fails the build if a listed id names no record.
+ */
+const DH_COPY = {
+	iwac: {
+		blurb:
+			'Newspapers, Islamic publications, documents and audiovisual records, processed with OCR, transcription and entity recognition.',
+		stats: [
+			['20,944', 'Items'],
+			['6', 'Countries']
+		]
+	},
+	amira: {
+		blurb:
+			'The collections of research centres in Burkina Faso, Kenya, Nigeria and South Africa, searchable in one place.',
+		stats: [
+			['3,800', 'Items'],
+			['90+', 'Projects']
+		]
+	},
+	kalamu: {
+		blurb:
+			'Read scans and handwriting, transcribe interviews and analyse texts with AI, then check every result against its source.'
+	},
+	'live-translation': {
+		blurb: 'Live captions and translations over meetings, video calls and slides.'
+	}
+} satisfies Record<string, DhCopy>;
+
+type DhCardId = keyof typeof DH_COPY;
+
+/** The collections and the apps the home page shows, in the order it shows them. */
+const COLLECTIONS: DhCardId[] = ['iwac', 'amira'];
+const APPS: DhCardId[] = ['kalamu', 'live-translation'];
+
+function dhCards(ids: DhCardId[]) {
 	return ids.map((id) => {
 		const project = allDhProjectSummaries.find((p) => p.id === id);
 		if (!project) throw new Error(`Home page: no digital-humanities record "${id}"`);
 		const install = project.links?.find((link) => link.type === 'install');
+		const copy: DhCopy = DH_COPY[id];
 		return {
 			id,
 			title: project.title,
 			imageUrl: project.imageUrl,
 			// What a reader needs before installing: the platform, and where to get it.
 			platform: project.application?.operatingSystem,
-			store: install ? { label: install.label, url: install.url } : undefined
+			store: install ? { label: install.label, url: install.url } : undefined,
+			blurb: copy.blurb,
+			stats: copy.stats
 		};
 	});
 }
