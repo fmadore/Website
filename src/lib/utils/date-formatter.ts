@@ -82,11 +82,6 @@ export function getYearFromISODate(isoDate: string): number {
 }
 
 /**
- * Whether an item's `date` field marks it as not-yet-published.
- * Recognises the English and French (accented and unaccented) labels used
- * across the dataset. Such items are floated above dated entries when sorting.
- */
-/**
  * A date as `YYYY-MM-DD` in the reader's own time zone — not
  * `toISOString()`, which is UTC and turns the evening before midnight UTC
  * into the next day (or the morning after into the previous one).
@@ -97,6 +92,11 @@ export function localISODate(date: Date): string {
 	return `${date.getFullYear()}-${month}-${day}`;
 }
 
+/**
+ * Whether an item's `date` field marks it as not-yet-published.
+ * Recognises the English and French (accented and unaccented) labels used
+ * across the dataset. Such items are floated above dated entries when sorting.
+ */
 export function isForthcoming(item: { date?: string }): boolean {
 	const d = item.date?.trim().toLowerCase();
 	return d === 'forthcoming' || d === 'à paraître' || d === 'a paraitre';

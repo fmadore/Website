@@ -23,6 +23,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { SITE_ORIGIN } from '../lib/structured-data.mjs';
 import { getContributorNames } from '../../src/lib/utils/contributor.ts';
 import {
 	BEGIN,
@@ -52,7 +53,7 @@ const SITE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..
 const VAULT = vaultRoot();
 const TEXTES_DIR = path.join(VAULT, 'Université/Publications/Textes');
 const ZOTERO_DIR = path.join(VAULT, 'Zotero');
-const SITE = 'https://www.frederickmadore.com';
+const SITE = SITE_ORIGIN;
 
 const WRITE = process.argv.includes('--write');
 

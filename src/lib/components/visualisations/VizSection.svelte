@@ -44,9 +44,6 @@ carry a unique one.
 		title,
 		count = '',
 		description = '',
-		// Accepted so existing callers keep compiling; sections now space
-		// themselves via `.section`, so nothing reads it.
-		last: _last = false,
 		variant,
 		height,
 		placeholderHeight,
@@ -67,8 +64,6 @@ carry a unique one.
 		count?: string;
 		/** Serif note under the heading. Hidden when empty. */
 		description?: string;
-		/** No-op. Kept so existing callers compile; sections space themselves. */
-		last?: boolean;
 		/** Card sizing preset. Ignored unless `hasData` is set. */
 		variant?: Variant;
 		/** CSS height applied when `hasData` is true (e.g. "450px"). */

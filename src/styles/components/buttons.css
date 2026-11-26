@@ -276,7 +276,6 @@
 .btn[aria-disabled='true'] {
 	opacity: var(--opacity-50);
 	cursor: not-allowed;
-	transform: none !important;
 }
 
 /* ===== SURFACE VARIANT =====

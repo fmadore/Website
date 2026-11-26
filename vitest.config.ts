@@ -45,14 +45,9 @@ export default defineConfig({
 		}
 	},
 	test: {
-		// `scripts/` holds build-time tooling and `mcp/` is a separate package;
-		// both are tested here but deliberately left out of the coverage ratchet
-		// below, which measures site code only.
-		include: [
-			'src/**/*.{test,spec}.ts',
-			'scripts/**/*.{test,spec}.mjs',
-			'mcp/src/**/*.{test,spec}.ts'
-		],
+		// `scripts/` holds build-time tooling: tested here but deliberately left
+		// out of the coverage ratchet below, which measures site code only.
+		include: ['src/**/*.{test,spec}.ts', 'scripts/**/*.{test,spec}.mjs'],
 		environment: 'node',
 		// Persist transformed modules in node_modules/.vitest-cache so reruns
 		// and separate processes reuse them; transforming is ~70% of a run

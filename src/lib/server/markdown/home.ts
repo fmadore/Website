@@ -11,7 +11,7 @@ import { bullets, document, entries, fields, inline, link, section } from './mar
 import { markdownUrl, SITE } from './site';
 import { pageProseMarkdown } from './svelteProse';
 
-/** How many log entries the home page's rail prints. */
+/** How many log entries the twin lists (the HTML rail shows four). */
 const LATEST_ACTIVITIES = 5;
 
 export function homeMarkdown(): string {

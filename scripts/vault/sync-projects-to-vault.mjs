@@ -28,6 +28,7 @@
 import { readFileSync, writeFileSync, globSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { SITE_ORIGIN } from '../lib/structured-data.mjs';
 import { getContributorNames } from '../../src/lib/utils/contributor.ts';
 import { applicationSummary, projectGroup } from '../../src/lib/utils/projectGroups.ts';
 import {
@@ -63,7 +64,7 @@ import {
 const SITE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const VAULT = vaultRoot();
 const CONCEPTS_DIR = path.join(VAULT, 'Zotero/Concepts');
-const SITE = 'https://www.frederickmadore.com';
+const SITE = SITE_ORIGIN;
 
 const WRITE = process.argv.includes('--write');
 const ADOPT = process.argv.includes('--adopt') || WRITE;

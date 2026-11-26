@@ -26,6 +26,7 @@
 import { readFileSync, writeFileSync, mkdirSync, renameSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { SITE_ORIGIN } from '../lib/structured-data.mjs';
 import { getContributorNames } from '../../src/lib/utils/contributor.ts';
 import {
 	BEGIN,
@@ -55,7 +56,7 @@ const CONCEPTS_DIR = path.join(VAULT, 'Zotero/Concepts');
 const PROJECTS_DIR = path.join(VAULT, 'Tâches et projets/Projects');
 
 const WRITE = process.argv.includes('--write');
-const SITE = 'https://www.frederickmadore.com';
+const SITE = SITE_ORIGIN;
 const talkUrl = (id) => `${SITE}/communications/${id}`;
 /** A site-relative file (a poster's PDF) as an absolute address. */
 const siteFile = (p) => (/^https?:\/\//.test(p) ? p : `${SITE}/${String(p).replace(/^\/+/, '')}`);

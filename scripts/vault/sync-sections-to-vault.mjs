@@ -22,6 +22,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { SITE_ORIGIN } from '../lib/structured-data.mjs';
 import {
 	BEGIN,
 	END,
@@ -39,7 +40,7 @@ import { applicationSummary, splitProjectGroups } from '../../src/lib/utils/proj
 
 const SITE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const VAULT = vaultRoot();
-const SITE = 'https://www.frederickmadore.com';
+const SITE = SITE_ORIGIN;
 const WRITE = process.argv.includes('--write');
 
 const TYPE_LABEL = {

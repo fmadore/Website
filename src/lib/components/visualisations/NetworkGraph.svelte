@@ -670,7 +670,7 @@ no two channels carry the same value.
 									cy={node.y}
 									r={node.r}
 									fill={nodeColors[node.kind]}
-									stroke={node.kind === 'center' ? resolvedColors.surface : resolvedColors.surface}
+									stroke={resolvedColors.surface}
 									stroke-width={node.kind === 'center' ? 2 : 1}
 								/>
 							{/if}

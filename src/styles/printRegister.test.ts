@@ -347,15 +347,6 @@ describe('the print register', () => {
 				file: 'lib/components/visualisations/NetworkControls.svelte',
 				matches: (d) => selectorOf(d).includes('::-webkit-calendar-picker-indicator'),
 				reason: "overrides Chrome's own datalist arrow, a UA (third-party) style"
-			},
-			{
-				file: 'styles/components/buttons.css',
-				matches: (d) =>
-					/\.btn:disabled/.test(selectorOf(d)) &&
-					d.property === 'transform' &&
-					d.value.startsWith('none'),
-				reason:
-					'defensive: a disabled .btn never moves, whatever a consumer adds (no hover transforms remain, so this can go)'
 			}
 		]);
 		expect(uncovered).toEqual([]);

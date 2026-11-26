@@ -33,9 +33,7 @@
 		initialView = [20, 0] as [number, number],
 		initialZoom = 2,
 		maxZoom = 19,
-		maxClusterZoom: _maxClusterZoom = 18,
 		preferDarkMode = null as boolean | null,
-		restrictBounds: _restrictBounds = true,
 		showLegend = false,
 		noun = 'talk'
 	}: {
@@ -43,9 +41,7 @@
 		initialView?: [number, number];
 		initialZoom?: number;
 		maxZoom?: number;
-		maxClusterZoom?: number;
 		preferDarkMode?: boolean | null;
-		restrictBounds?: boolean;
 		/** When true, renders a colour legend for the activity-type markers. */
 		showLegend?: boolean;
 		/** Reader-facing noun for the honest state when the map cannot load. */
