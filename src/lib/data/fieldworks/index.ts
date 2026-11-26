@@ -12,7 +12,7 @@ const templateIds = ['fieldwork-template-id'];
 
 // Dynamically import all fieldwork files, excluding index.ts, the template and filters.svelte.ts
 const fieldworkModules = import.meta.glob<Record<string, unknown>>(
-	['./*.ts', '!./index.ts', '!./fieldwork-template.ts', '!./filters.svelte.ts'],
+	['./*.ts', '!./index.ts', '!./*.test.ts', '!./fieldwork-template.ts', '!./filters.svelte.ts'],
 	{ eager: true }
 );
 

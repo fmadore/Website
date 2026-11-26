@@ -9,7 +9,7 @@ const templateIds: string[] = [
 	// 'appointment-template-id'
 ];
 
-const appointmentModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts'], {
+const appointmentModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts', '!./*.test.ts'], {
 	eager: true
 });
 

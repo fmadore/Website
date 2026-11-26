@@ -9,7 +9,9 @@ const templateIds: string[] = [
 	// 'grant-template-id'
 ];
 
-const grantModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts'], { eager: true });
+const grantModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts', '!./*.test.ts'], {
+	eager: true
+});
 
 const allGrants: Grant[] = loadData<Grant>(grantModules, templateIds, 'grant');
 

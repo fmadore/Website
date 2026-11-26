@@ -23,7 +23,8 @@ const communicationModules = import.meta.glob<ModuleType>(
 		'./events/*.ts',
 		'./podcasts/*.ts',
 		'!./*/index.ts',
-		'!./*/*-template.ts'
+		'!./*/*-template.ts',
+		'!./*/*.test.ts'
 	],
 	{ eager: true }
 );

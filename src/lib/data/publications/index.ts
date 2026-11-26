@@ -28,7 +28,8 @@ const publicationModules = import.meta.glob(
 		'./dissertations/*.ts',
 		'./proceedings/*.ts',
 		'./working-papers/*.ts',
-		'!./*/*-template.ts'
+		'!./*/*-template.ts',
+		'!./*/*.test.ts'
 	],
 	{ eager: true }
 );

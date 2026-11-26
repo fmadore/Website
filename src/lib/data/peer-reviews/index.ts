@@ -8,7 +8,7 @@ type ModuleType = Record<string, unknown>;
 const templateIds: string[] = ['peer-review-template-id'];
 
 const peerReviewModules = import.meta.glob<ModuleType>(
-	['./*.ts', '!./index.ts', '!./peer-review-template.ts'],
+	['./*.ts', '!./index.ts', '!./peer-review-template.ts', '!./*.test.ts'],
 	{ eager: true }
 );
 

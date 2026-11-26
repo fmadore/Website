@@ -2,9 +2,12 @@ import type { ResearchRole } from '#lib/types/researchRole.ts';
 import { loadData } from '#lib/utils/dataLoader.ts';
 
 // Dynamically import all research role files
-const roleModules = import.meta.glob<Record<string, ResearchRole>>(['./*.ts', '!./index.ts'], {
-	eager: true
-});
+const roleModules = import.meta.glob<Record<string, ResearchRole>>(
+	['./*.ts', '!./index.ts', '!./*.test.ts'],
+	{
+		eager: true
+	}
+);
 
 // Load and validate research roles using loadData
 const allResearchRoles: ResearchRole[] = loadData<ResearchRole>(roleModules, [], 'research-role');

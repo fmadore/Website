@@ -4,7 +4,9 @@ import { loadData } from '#lib/utils/dataLoader.ts';
 
 type ModuleType = Record<string, unknown>;
 
-const projectModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts'], { eager: true });
+const projectModules = import.meta.glob<ModuleType>(['./*.ts', '!./index.ts', '!./*.test.ts'], {
+	eager: true
+});
 
 /**
  * Research projects, ordered as the landing page prints them: explicit `order`

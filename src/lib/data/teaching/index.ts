@@ -5,7 +5,7 @@ export type { TeachingExperience };
 
 // Dynamically import teaching experience files (excluding guest-lectures which has a different type)
 const teachingModules = import.meta.glob<Record<string, TeachingExperience>>(
-	['./*.ts', '!./index.ts', '!./guest-lectures.ts'],
+	['./*.ts', '!./index.ts', '!./*.test.ts', '!./guest-lectures.ts'],
 	{ eager: true }
 );
 

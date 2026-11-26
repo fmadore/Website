@@ -3,14 +3,14 @@ import { loadData } from '#lib/utils/dataLoader.ts';
 
 // Dynamically import all affiliation files (excluding template and index)
 const affiliationModules = import.meta.glob<Record<string, ProfessionalAffiliation>>(
-	['./*.ts', '!./template.ts', '!./index.ts'],
+	['./*.ts', '!./template.ts', '!./index.ts', '!./*.test.ts'],
 	{ eager: true }
 );
 
-// Load and validate affiliations using loadData (template has no id to filter since it's commented out)
+// Load and validate affiliations (the glob already leaves out the template)
 export const allAffiliations: ProfessionalAffiliation[] = loadData<ProfessionalAffiliation>(
 	affiliationModules,
-	'affiliation-template-id',
+	[],
 	'affiliation'
 );
 
