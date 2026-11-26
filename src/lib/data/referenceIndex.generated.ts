@@ -247,6 +247,10 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"date": "2026",
 		"dateISO": "2026-10-13",
 		"year": 2026,
+		"image": "images/publications/jcdl-2026-proceedings.webp",
+		"heroImage": {
+			"src": "images/publications/jcdl-2026-proceedings.webp"
+		},
 		"publisher": "Association for Computing Machinery"
 	},
 	"beyond-keywords-multilingual-research-metadata-cikm-2026": {
@@ -265,6 +269,10 @@ export const referenceIndex: Record<string, ReferenceIndexEntry> = {
 		"date": "2026",
 		"dateISO": "2026-11-06",
 		"year": 2026,
+		"image": "images/publications/cikm-2026-proceedings.webp",
+		"heroImage": {
+			"src": "images/publications/cikm-2026-proceedings.webp"
+		},
 		"publisher": "Association for Computing Machinery"
 	},
 	"charting-new-territory-digital-humanities-ki-african-studies-2026": {
