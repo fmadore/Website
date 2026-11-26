@@ -8,6 +8,15 @@ import {
 import { author as siteAuthor } from '#lib/data/siteConfig.ts';
 
 describe('formatCVAuthorList', () => {
+	it('escapes names, since the CV renders the byline as HTML', () => {
+		expect(formatCVAuthorList(['<img src=x onerror=alert(1)>'])).toBe(
+			'&lt;img src=x onerror=alert(1)&gt;'
+		);
+		expect(formatCVAuthorList([siteAuthor.name, 'Smith & <b>Jones</b>'])).toBe(
+			`<strong>${siteAuthor.name}</strong> and Smith &amp; &lt;b&gt;Jones&lt;/b&gt;`
+		);
+	});
+
 	it('recognizes the site owner and coauthors represented by person references', () => {
 		expect(formatCVAuthorList([{ name: siteAuthor.name, personId: 'frederick-madore' }])).toBe('');
 		expect(

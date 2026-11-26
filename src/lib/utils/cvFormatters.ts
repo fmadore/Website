@@ -4,6 +4,7 @@ import { getContributorNames } from '#lib/utils/contributor.ts';
 import type { AffiliationPeriod } from '#lib/types/affiliation.ts';
 import { author as siteAuthor } from '#lib/data/siteConfig.ts';
 import { formatAuthorsWithEtAl, joinNames, splitNames } from '#lib/utils/nameUtils.ts';
+import { escapeHtml } from '#lib/utils/citationFormatter.ts';
 
 /**
  * Returns the year label to show in the CV gutter. Forthcoming publications
@@ -26,16 +27,20 @@ export function getCVDisplayYear(pub: Pick<Publication, 'date' | 'year'>): strin
  * Collective work (a two-dozen-signatory position paper) collapses to
  * "A, B, C et al." rather than running a full page of names down the ledger;
  * the site owner is always held in view, however late they sign.
+ *
+ * The result is HTML (the CV renders it with `{@html}`), so every name is
+ * escaped before the site owner's is wrapped in `<strong>`.
  */
 export function formatCVAuthorList(
 	authorsInput: readonly Contributor[] | string | undefined
 ): string {
 	if (!authorsInput) return '';
 
-	const authorsArray =
+	const authorsArray = (
 		typeof authorsInput === 'string'
 			? authorsInput.split(' and ')
-			: getContributorNames(authorsInput);
+			: getContributorNames(authorsInput)
+	).map(escapeHtml);
 
 	const numAuthors = authorsArray.length;
 	if (numAuthors === 0) return '';
@@ -43,14 +48,15 @@ export function formatCVAuthorList(
 	// If the site owner is the only author, return empty string
 	if (numAuthors === 1) {
 		const only = authorsArray[0] ?? '';
-		return only === siteAuthor.name ? '' : only;
+		return only === escapeHtml(siteAuthor.name) ? '' : only;
 	}
 
 	// Multiple authors - bold the site owner's name, join CV-style
 	// (", " between entries, " and " before the last, no serial comma).
-	const boldedAuthor = `<strong>${siteAuthor.name}</strong>`;
+	const ownName = escapeHtml(siteAuthor.name);
+	const boldedAuthor = `<strong>${ownName}</strong>`;
 	return formatAuthorsWithEtAl(
-		authorsArray.map((author) => (author === siteAuthor.name ? boldedAuthor : author)),
+		authorsArray.map((author) => (author === ownName ? boldedAuthor : author)),
 		{ mustInclude: boldedAuthor }
 	);
 }

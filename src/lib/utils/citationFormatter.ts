@@ -335,7 +335,8 @@ export interface ReferenceTextOptions {
  */
 const STANDALONE_TYPES: ReadonlySet<Publication['type']> = new Set(['book']);
 
-function escapeHtml(text: string): string {
+/** Escapes the three characters that would let a name or title open markup. */
+export function escapeHtml(text: string): string {
 	return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
