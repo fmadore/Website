@@ -100,6 +100,11 @@
 	}
 
 	function handleLinkClick(event: MouseEvent) {
+		// A click with `detail === 0` was synthesised by the keyboard (Enter on
+		// a link). Focus already shows the preview, so Enter follows the link:
+		// otherwise a keyboard user could never reach the cited work, since the
+		// card's own link is out of the tab order (WCAG 2.1.1).
+		if (event.detail === 0) return;
 		// On touch devices, first click opens preview, second click follows link
 		if (isTouchDevice) {
 			if (!showPreview) {
@@ -215,9 +220,13 @@
 			onfocus={handleFocus}
 			onblur={handleBlur}
 			onkeydown={(e) => {
-				if (e.key === 'Enter' || e.key === ' ') {
+				// Enter is left to the link (see handleLinkClick). Space, which
+				// does nothing on a link, pins the preview (focus may already show
+				// it, unpinned) or closes a pinned one. Touch devices show no
+				// preview on focus, so Space is how a keyboard opens it there.
+				if (e.key === ' ') {
 					e.preventDefault();
-					togglePreview();
+					togglePreview(!(showPreview && viaClick));
 				}
 				if (e.key === 'Escape') togglePreview(false);
 			}}

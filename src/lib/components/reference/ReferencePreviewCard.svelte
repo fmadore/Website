@@ -88,6 +88,9 @@
 		onpointerleave?.();
 	}
 
+	let navigateTimer: ReturnType<typeof setTimeout> | undefined;
+	$effect(() => () => clearTimeout(navigateTimer));
+
 	// Handle card click with animation
 	async function handleCardClick(event: MouseEvent) {
 		event.preventDefault();
@@ -102,7 +105,10 @@
 		isPositioned = false;
 
 		// Wait for the close animation, then dismiss the parent state and navigate.
-		setTimeout(() => {
+		// If the preview is dismissed meanwhile (Escape, outside click), the card
+		// unmounts and the effect below cancels the navigation.
+		navigateTimer = setTimeout(() => {
+			navigateTimer = undefined;
 			onclose?.();
 			// eslint-disable-next-line svelte/no-navigation-without-resolve -- itemUrl pre-resolved via resolve()
 			goto(itemUrl);

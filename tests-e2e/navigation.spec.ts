@@ -85,7 +85,7 @@ test('inline citations resolve on load and after client-side navigation', async 
 		expect(await references.count()).toBeGreaterThan(0);
 		await expect(page.locator('main')).not.toContainText(id);
 		await references.first().locator('a').first().focus();
-		await page.keyboard.press('Enter');
+		await page.keyboard.press(' ');
 		await expect(page.locator('[role="dialog"] .card-title').first()).not.toBeEmpty();
 		await page.keyboard.press('Escape');
 	};
@@ -99,4 +99,22 @@ test('inline citations resolve on load and after client-side navigation', async 
 	await page.locator('main a[href="/research/dh-ai-african-studies"]').first().click();
 	await expect(page).toHaveURL(/\/research\/dh-ai-african-studies$/);
 	await expectResolved('stias-dh-ai-african-studies-workshop-2026');
+});
+
+/**
+ * Space opens a citation's preview; Enter follows the citation. The card's own
+ * link is out of the tab order, so Enter is a keyboard user's only way to reach
+ * the cited work (WCAG 2.1.1).
+ */
+test('Enter on an inline citation opens the cited record', async ({ page }) => {
+	await page.goto('/research/muslim-minorities-southern-cities-benin-togo');
+	await ready(page);
+	const link = page.locator('main .item-reference a').first();
+	const href = await link.getAttribute('href');
+	expect(href).toBeTruthy();
+	await link.focus();
+	await page.keyboard.press(' ');
+	await expect(page.locator('[role="dialog"]').first()).toBeVisible();
+	await page.keyboard.press('Enter');
+	await expect(page).toHaveURL(/\/(publications|communications)\/[^/]+$/);
 });
